@@ -1,0 +1,667 @@
+/* Main Styles - Cyberpunk Passion OS */
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    background: var(--wallpaper-url);
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body::before {
+    content: 'SOLUTIONS';
+    position: fixed;
+    bottom: 100px;
+    /* Position above the dock */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 60px;
+    font-weight: 900;
+    letter-spacing: 12px;
+    color: rgba(0, 240, 255, 0.08);
+    /* Cyan color from loading screen, subtle */
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Global Scan Lines */
+.scan-lines {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 240, 255, 0.03) 2px,
+            rgba(0, 240, 255, 0.03) 4px);
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Grid Background */
+.grid-background {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    perspective: 500px;
+    transform: rotateX(60deg);
+    transform-origin: center top;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Lock Screen / Login Panel */
+.lock-screen {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-login);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0f0a1a 100%);
+    font-family: var(--font-family);
+}
+
+.login-panel {
+    background: rgba(10, 10, 20, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: 4px;
+    padding: 60px;
+    text-align: center;
+    position: relative;
+    box-shadow:
+        0 0 60px rgba(0, 240, 255, 0.2),
+        inset 0 0 60px rgba(0, 240, 255, 0.05);
+    min-width: 400px;
+}
+
+/* Corner Accents */
+.corner-accent {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: var(--neon-cyan);
+    border-style: solid;
+}
+
+.corner-accent.tl {
+    top: 0;
+    left: 0;
+    border-width: 2px 0 0 2px;
+}
+
+.corner-accent.tr {
+    top: 0;
+    right: 0;
+    border-width: 2px 2px 0 0;
+}
+
+.corner-accent.bl {
+    bottom: 0;
+    left: 0;
+    border-width: 0 0 2px 2px;
+}
+
+.corner-accent.br {
+    bottom: 0;
+    right: 0;
+    border-width: 0 2px 2px 0;
+}
+
+.os-title {
+    font-size: 48px;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta), var(--neon-cyan));
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+    margin-bottom: 10px;
+    letter-spacing: 8px;
+}
+
+.os-subtitle {
+    color: rgba(0, 240, 255, 0.6);
+    font-size: 12px;
+    letter-spacing: 4px;
+    margin-bottom: 40px;
+}
+
+.login-avatar-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a1a2e, #2a1a4e);
+    margin: 0 auto 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--neon-cyan);
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+    position: relative;
+}
+
+.login-avatar-ring {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    border-top-color: var(--neon-magenta);
+    animation: spin 2s linear infinite;
+}
+
+.login-avatar-icon {
+    font-size: 40px;
+    color: #fff;
+}
+
+.login-username {
+    color: var(--neon-cyan);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+}
+
+.login-role {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 11px;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+.cyber-button {
+    background: transparent;
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    padding: 15px 50px;
+    font-size: 14px;
+    font-family: inherit;
+    letter-spacing: 4px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.cyber-button:hover {
+    background: var(--neon-cyan);
+    color: #0a0a0f;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
+}
+
+.boot-sequence {
+    min-height: 200px;
+    text-align: left;
+    font-family: 'Courier New', monospace;
+    padding: 20px;
+}
+
+.boot-line {
+    color: rgba(0, 240, 255, 0.7);
+    font-size: 13px;
+    margin-bottom: 12px;
+    animation: fadeSlide 0.3s ease;
+}
+
+.boot-line.active {
+    color: var(--neon-green);
+}
+
+.cursor-blink {
+    animation: blink 0.5s infinite;
+}
+
+/* Top Bar */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: rgba(10, 10, 20, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 100;
+}
+
+.top-bar-left,
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.brand {
+    color: var(--neon-cyan);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.version {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 11px;
+}
+
+.status-item {
+    color: rgba(0, 240, 255, 0.6);
+    font-size: 11px;
+}
+
+.status-item.text-green {
+    color: rgba(0, 255, 136, 0.6);
+}
+
+.status-item.time-display {
+    color: var(--neon-cyan);
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+/* Desktop Icons */
+.desktop-icons {
+    position: absolute;
+    top: 60px;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    /* Vertical stack as per design */
+    gap: 25px;
+    z-index: 10;
+}
+
+.desktop-icon {
+    background: transparent;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    color: inherit;
+    width: auto;
+}
+
+.desktop-icon:hover {
+    transform: scale(1.1);
+}
+
+.desktop-icon-box {
+    width: 60px;
+    height: 60px;
+    background: rgba(10, 10, 20, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 8px;
+}
+
+.desktop-icon-emoji {
+    font-size: 24px;
+    line-height: 1;
+    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+}
+
+.desktop-icon:hover .desktop-icon-box {
+    transform: scale(1.05);
+    box-shadow:
+        0 0 30px currentColor,
+        0 0 50px rgba(0, 240, 255, 0.3);
+    border-color: currentColor;
+    background: rgba(10, 10, 20, 0.8);
+}
+
+.desktop-icon:active .desktop-icon-box {
+    transform: scale(0.95);
+}
+
+.desktop-icon-label {
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-align: center;
+    max-width: 80px;
+    color: var(--neon-cyan);
+}
+
+/* Dock (formerly Taskbar) */
+.taskbar.dock-style {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: 90%;
+    height: auto;
+    background: rgba(10, 10, 20, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 12px;
+    padding: 12px 25px;
+    display: flex;
+    gap: 15px;
+    z-index: 100;
+    align-items: center;
+    box-shadow: none;
+}
+
+.dock-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.dock-section-label {
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: rgba(0, 240, 255, 0.5);
+    text-transform: uppercase;
+}
+
+.dock-launchers,
+.taskbar-windows {
+    display: flex;
+    gap: 12px;
+}
+
+.dock-separator {
+    width: 1px;
+    height: 40px;
+    background: rgba(0, 240, 255, 0.3);
+}
+
+.taskbar-window-btn {
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    transition: all 0.2s ease;
+    min-width: unset;
+    max-width: unset;
+    position: relative;
+}
+
+/* Show labels on hover for better UX */
+.taskbar-window-btn:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 240, 255, 0.9);
+    color: #0a0a0f;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+    margin-bottom: 8px;
+}
+
+.taskbar-window-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--neon-cyan);
+}
+
+.taskbar-window-btn span {
+    display: none;
+    /* Hide text in dock mode */
+}
+
+.taskbar-window-btn .dock-icon-emoji {
+    display: block !important;
+    /* Force emoji to show */
+}
+
+.taskbar-window-btn:hover {
+    transform: translateY(-5px);
+}
+
+.taskbar-window-btn.dock-icon:hover {
+    filter: brightness(1.2);
+}
+
+.taskbar-window-btn.active {
+    background: rgba(0, 240, 255, 0.3);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 15px var(--neon-cyan);
+    animation: dockPulse 2s ease-in-out infinite;
+}
+
+.taskbar-window-btn.minimized {
+    opacity: 0.6;
+}
+
+.taskbar-window-btn.minimized::before {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    opacity: 0.5;
+}
+
+.dock-icon-emoji {
+    display: block;
+    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+}
+
+/* Animations */
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes dockPulse {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 15px var(--neon-cyan),
+            0 0 25px rgba(0, 240, 255, 0.3);
+    }
+
+    50% {
+        box-shadow:
+            0 0 20px var(--neon-cyan),
+            0 0 35px rgba(0, 240, 255, 0.5);
+    }
+}
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 2001;
+    /* Above login screen (2000) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+.lightbox-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.lightbox-media {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-media img {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    transition: transform 0.1s ease-out;
+    /* Smooth pan */
+    transform-origin: center;
+}
+
+.lightbox-ambient {
+    position: absolute;
+    inset: -20%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(50px) brightness(0.5);
+    opacity: 0.3;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.lightbox-close:hover {
+    background: var(--neon-cyan);
+    color: #000;
+    transform: rotate(90deg);
+}
+
+.lightbox-prev,
+.lightbox-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    color: var(--neon-cyan);
+    width: 50px;
+    height: 80px;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.lightbox-prev:hover,
+.lightbox-next:hover {
+    background: rgba(0, 240, 255, 0.1);
+    border-color: var(--neon-cyan);
+}
+
+.lightbox-prev {
+    left: 20px;
+}
+
+.lightbox-next {
+    right: 20px;
+}
+
+.lightbox-caption {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    font-size: 14px;
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}

@@ -1,0 +1,630 @@
+# Passion OS - Development Changelog
+
+---
+
+title: Passion OS Changelog
+version: 2.56
+last_updated: 2025-11-27
+
+---
+
+<!-- AI Context: Complete development history organized by phases.
+     Related files: All js/*.js, css/*.css
+     See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## Overview
+
+This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## Phase 3: Core OS Features (November 2025)
+
+### Summary
+
+Enhanced window management, desktop interaction, routing, and mobile support. Focus on professional OS-like experience with smooth animations and modern web features.
+
+### 3.1 Enhanced Window Manager v1.0
+
+**Files Modified**: `js/windows.js`, `css/windows.css`
+
+**Features**:
+
+- Smooth open animation (300ms cubic-bezier, scale from 0.85 + slide up 20px)
+- Smooth close animation (200ms fade + scale to 0.9)
+- Minimize to dock animation (250ms shrink to 0.3 scale + drop to bottom)
+- Active window glow (enhanced 80px cyan border shadow)
+- Closing state class for graceful transitions
+
+**Code Changes**:
+
+```javascript
+// js/windows.js:466-487
+close(id) {
+    windowObj.element.classList.add('closing');
+    setTimeout(() => {
+        windowObj.element.remove();
+        State.unregisterWindow(id);
+        this.removeFromTaskbar(id);
+    }, 200);
+}
+```
+
+**CSS States**:
+
+- `.window.visible` - Full opacity, scale 1
+- `.window.minimized` - Opacity 0, scale 0.3, translateY(100vh)
+- `.window.closing` - Opacity 0, scale 0.9
+- `.window.active` - Enhanced border glow
+
+**Testing**: See FEATURE_VERIFICATION.md section "Window Manager v1.0"
+
+---
+
+### 3.2 Desktop Icon System v1.0
+
+**Files Modified**: `js/desktop.js`, `css/styles.css`
+
+**Features**:
+
+- Right-click context menus per icon
+    - "Open" - Launches application
+    - "Properties" - Shows icon metadata window
+- Enhanced hover glow effects
+    - Color-matched 30px shadow
+    - 50px cyan ambient glow
+    - Border color matches icon color
+- Scale animations (1.1x hover, 0.95x click)
+
+**Code Changes**:
+
+```javascript
+// js/desktop.js:159-163
+icon.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    this.showIconContextMenu(e.clientX, e.clientY, item);
+});
+```
+
+**Customization**:
+
+```javascript
+// js/desktop.js:10-45 DESKTOP_ITEMS array
+{
+    id: 'custom-app',
+    label: 'MY_APP',
+    icon: '🚀',
+    color: '#00f0ff',
+    action: () => this.openCustom()
+}
+```
+
+---
+
+### 3.3 Dock v1.0 (Enhanced)
+
+**Files Modified**: `js/windows.js`, `css/styles.css`
+
+**Features**:
+
+- Active window pulsing glow (2s infinite animation)
+- Minimized window indicators (0.6 opacity + cyan dot)
+- Smart click behavior
+    - Active window → Minimize
+    - Minimized window → Restore
+    - Inactive window → Focus
+- Hover tooltips (`title` attribute)
+- Icon float animation (5px translateY)
+
+**CSS Animation**:
+
+```css
+/* css/styles.css:430-437 */
+@keyframes dockPulse {
+    0%,
+    100% {
+        box-shadow:
+            0 0 15px var(--neon-cyan),
+            0 0 25px rgba(0, 240, 255, 0.3);
+    }
+    50% {
+        box-shadow:
+            0 0 20px var(--neon-cyan),
+            0 0 35px rgba(0, 240, 255, 0.5);
+    }
+}
+```
+
+---
+
+### 3.4 Client-Side Routing
+
+**Files Created**: `js/router.js` (75 lines)
+
+**Files Modified**: `js/login.js`
+
+**Features**:
+
+- History API integration (`pushState`, `popstate`)
+- Route mapping to window opens:
+    - `/about` → ABOUT_ME window
+    - `/work` → Applications window
+    - `/media` → Media Vault window
+    - `/connect` → Contact window
+    - `/settings` → Settings window
+    - `/resume` → Resume window
+    - `/terminal` → Terminal window
+- Browser back/forward button support
+- Deep linking (shareable URLs)
+- Link interception for internal navigation
+
+**Usage**:
+
+```javascript
+// Navigate programmatically
+Router.navigate('/about');
+
+// Add custom route
+Router.addRoute('/custom', () => Desktop.openCustom());
+```
+
+**Testing**: Navigate to `http://localhost:5173/about` after login
+
+---
+
+### 3.5 Mobile Detection Scaffold
+
+**Files Created**: `js/mobile.js` (155 lines)
+
+**Files Modified**: `js/login.js`
+
+**Features**:
+
+- Mobile device detection (user agent + touch + screen size)
+- Automatic responsive CSS injection:
+    - Full-screen windows on mobile
+    - 3-column icon grid
+    - Scaled dock (95% max-width)
+    - Touch-friendly context menus
+- Hover effects disabled on touch devices
+- Viewport meta tag auto-injection
+- Mobile optimized toast notification
+
+**Detection Logic**:
+
+```javascript
+// js/mobile.js:9-18
+isMobile() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isSmallScreen = window.innerWidth <= 768;
+
+    return mobileRegex.test(userAgent) || (isTouchDevice && isSmallScreen);
+}
+```
+
+**Responsive Breakpoints**:
+
+- Desktop: >768px
+- Mobile: ≤768px
+
+---
+
+### 3.6 Admin Dashboard v1.0
+
+**Files Created**: `js/admin.js` (965 lines), `css/admin.css` (465 lines)
+
+**Files Created**: `ADMIN_DASHBOARD_GUIDE.md`
+
+**Files Modified**: `index.html`
+
+**Features**:
+
+- 5 tabbed sections:
+    1. Desktop Items Editor (add/edit/delete/reorder)
+    2. Projects Manager (CRUD operations)
+    3. Media Manager (images + videos)
+    4. Theme Customizer (colors, wallpapers, effects)
+    5. Import/Export (backup/restore all data)
+- Visual content editing (no code required)
+- Real-time color preview
+- Export to JSON files
+- Complete backup system
+- Professional cyberpunk UI
+
+**Data Storage**:
+
+- Desktop items: localStorage `desktopItems`
+- Projects: localStorage `projects.json`
+- Media: localStorage `media.json`
+- Theme: localStorage `themeColors`
+
+**Access**: Settings → Content Editor
+
+**Documentation**: See ADMIN_DASHBOARD_GUIDE.md
+
+---
+
+### Phase 3 File Changes Summary
+
+**Files Created (5)**:
+
+1. `js/router.js` - Client-side routing (75 lines)
+2. `js/mobile.js` - Mobile detection (155 lines)
+3. `js/admin.js` - Admin dashboard (965 lines)
+4. `css/admin.css` - Admin styling (465 lines)
+5. `ADMIN_DASHBOARD_GUIDE.md` - Usage guide (30 pages)
+
+**Files Modified (5)**:
+
+1. `js/windows.js` - Close animation, taskbar state (+50 lines)
+2. `css/windows.css` - Window animations (+48 lines)
+3. `js/desktop.js` - Icon context menus (+60 lines)
+4. `css/styles.css` - Dock animations, icon glow (+45 lines)
+5. `js/login.js` - Router/Mobile init (+12 lines)
+6. `index.html` - Admin CSS link (+1 line)
+
+**Total New Code**: ~1,850 lines
+
+**Breaking Changes**: None
+
+---
+
+## Phase 2: Content Features (October 2025)
+
+### Summary
+
+Enhanced content management with photo filters, wallpaper cycling, and video embedding support.
+
+### 2.1 Photo Category Filters
+
+**Files Modified**: `js/desktop.js`
+
+**Features**:
+
+- Photos now support `category` field
+- Auto-generated filter buttons from categories
+- Reuses existing `.app-filters` CSS
+- Lightbox opens with filtered set
+- Keyboard navigation within filtered set
+
+**Usage**:
+
+```javascript
+// js/desktop.js openPhotos()
+const photos = [
+    {
+        url: 'photo.jpg',
+        caption: 'Description',
+        category: 'Nature', // Category tag
+    },
+];
+```
+
+**Categories Auto-Generated**: Buttons created for each unique category value
+
+---
+
+### 2.2 Multiple Cycling Wallpapers
+
+**Files Modified**: `js/desktop.js`
+
+**Features**:
+
+- Configurable `WALLPAPERS` array
+- Context menu options:
+    - "Next Wallpaper" - Cycles through list
+    - "Random Wallpaper" - Random selection
+- Wallpaper choice persists in localStorage
+- Supports both images and gradients
+
+**Wallpaper Array**:
+
+```javascript
+// js/desktop.js:350-360
+WALLPAPERS: [
+    'gradient:dark-ombre',
+    'assets/wallpapers/wallpaper1.jpg',
+    'assets/wallpapers/wallpaper2.jpg',
+    'https://external-url.com/image.jpg'
+],
+```
+
+**Gradient Support**: Use `'gradient:dark-ombre'` token
+
+---
+
+### 2.3 YouTube/Vimeo Embed Support
+
+**Files Modified**: `js/lightbox.js`, `js/desktop.js`, `css/styles.css`
+
+**Features**:
+
+- Auto-detection of video type (YouTube/Vimeo/MP4)
+- YouTube embed support (`youtube.com/watch?v=` and `youtu.be/`)
+- Vimeo embed support (`vimeo.com/VIDEO_ID`)
+- MP4 fallback (backwards compatible)
+- All videos use same lightbox interface
+
+**Detection Methods**:
+
+```javascript
+// js/lightbox.js:50-75
+detectVideoType(url) {
+    if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube';
+    if (url.includes('vimeo.com')) return 'vimeo';
+    return 'mp4';
+}
+```
+
+**Embed Creation**:
+
+- YouTube: Creates iframe with video ID
+- Vimeo: Creates iframe with video ID
+- MP4: Creates native `<video>` element
+
+---
+
+### 2.4 Simplified Login Screen
+
+**Files Modified**: `index.html`, `js/login.js`, `css/styles.css`
+
+**Features**:
+
+- Removed password field (was confusing)
+- Simple "Continue" button
+- Clear messaging ("Welcome" + "View my portfolio")
+- Keyboard accessible (Tab, Enter)
+- All animations preserved
+
+**Customization**:
+
+```html
+<!-- index.html -->
+<h1 class="login-username">Your Name</h1>
+<p class="login-subtitle">Your Tagline</p>
+```
+
+---
+
+### Phase 2 File Changes Summary
+
+**Files Modified (5)**:
+
+1. `js/desktop.js` - Photo filters, wallpapers, videos (+140 lines)
+2. `js/lightbox.js` - Video detection & embeds (+80 lines)
+3. `js/login.js` - Simplified handlers (+20 lines)
+4. `index.html` - Continue button (+15 lines)
+5. `css/styles.css` - Button/iframe styles (+40 lines)
+
+**Total Changes**: ~295 lines
+
+**Breaking Changes**: None (backwards compatible)
+
+---
+
+## Phase 1: Foundation (September 2025)
+
+### Summary
+
+Initial implementation of core desktop OS functionality.
+
+### 1.1 Lock & Login System
+
+**Files**: `js/login.js`, `css/styles.css`, `index.html`
+
+**Features**:
+
+- Lock screen with time/date
+- Login screen with boot sequence
+- Click or Enter to advance
+- Smooth transitions between states
+- Warp tunnel effect on login
+
+---
+
+### 1.2 Desktop Environment
+
+**Files**: `js/desktop.js`, `css/styles.css`
+
+**Features**:
+
+- Desktop icons with click handlers
+- Icon positioning and styling
+- Desktop background system
+- Context menu (right-click)
+    - Toggle theme
+    - Change wallpaper
+
+---
+
+### 1.3 Window System
+
+**Files**: `js/windows.js`, `css/windows.css`, `js/state.js`
+
+**Features**:
+
+- Window creation and management
+- Drag to move (titlebar)
+- Resize from bottom-right corner
+- Minimize/Maximize/Close buttons
+- Z-index management (click to focus)
+- Window state persistence (localStorage)
+- Taskbar integration
+- ESC key to close
+
+---
+
+### 1.4 Start Menu & Taskbar
+
+**Files**: `js/startmenu.js`, `css/styles.css`
+
+**Features**:
+
+- Start menu with sections
+- System tray with clock
+- Theme toggle button
+- Open window indicators
+- Keyboard navigation
+
+---
+
+### 1.5 Content Windows
+
+**Files**: `js/desktop.js`
+
+**Implemented Windows**:
+
+- Photos (grid view + lightbox)
+- Videos (grid view + lightbox)
+- Applications (project showcase with filters)
+- Resume (PDF viewer)
+- About (bio/skills/experience)
+- Contact (form with validation)
+- Settings (theme/wallpaper/effects)
+
+---
+
+### 1.6 Lightbox System
+
+**Files**: `js/lightbox.js`, `css/styles.css`
+
+**Features**:
+
+- Image viewer with arrows/ESC
+- Video player
+- Keyboard navigation
+- Touch gestures (mobile)
+- Smooth transitions
+
+---
+
+### Phase 1 File Changes Summary
+
+**Files Created (~15)**:
+
+- All core JS modules
+- All CSS files
+- HTML structure
+- Data files (projects.json)
+
+**Total Initial Code**: ~3,500 lines
+
+---
+
+## Upgrade Paths
+
+### From Phase 1 to Phase 2:
+
+No breaking changes. Add new features directly.
+
+### From Phase 2 to Phase 3:
+
+1. Add new files: `js/router.js`, `js/mobile.js`, `js/admin.js`, `css/admin.css`
+2. Update imports in `js/login.js`
+3. Test routing by navigating to `/about`
+4. Test mobile by resizing browser
+5. Access admin via Settings → Content Editor
+
+### From Phase 3 to Current:
+
+You're on the latest version!
+
+---
+
+## Migration Guides
+
+### Enable Routing (Phase 3)
+
+```javascript
+// Already integrated in login.js
+// Routes auto-activate after desktop loads
+// Test: Navigate to http://localhost:5173/about
+```
+
+### Enable Mobile (Phase 3)
+
+```javascript
+// Auto-detects on page load
+// Test: Resize browser to <768px
+```
+
+### Enable Admin Dashboard (Phase 3)
+
+```javascript
+// Access: Settings → Content Editor
+// Or: Desktop.openAdminDashboard() in console
+```
+
+---
+
+## Future Roadmap
+
+### Planned Features:
+
+- Blog system (markdown-based)
+- Project detail pages (case studies)
+- Achievement badges
+- PWA support (offline mode)
+- Advanced window features (snapping, multi-desktop)
+- Performance optimizations
+
+### Under Consideration:
+
+- Drag-and-drop file upload
+- Window session restore
+- Keyboard shortcuts (Cmd+K palette)
+- Search functionality
+- Notification system
+
+---
+
+## Version History
+
+| Version | Date     | Phase   | Key Features                                  |
+| ------- | -------- | ------- | --------------------------------------------- |
+| 2.56    | Nov 2025 | Phase 3 | Admin Dashboard, Routing, Mobile, Enhanced UI |
+| 2.45    | Oct 2025 | Phase 2 | Photo filters, Wallpapers, Video embeds       |
+| 2.30    | Sep 2025 | Phase 1 | Core OS, Windows, Desktop, Login              |
+| 1.00    | Aug 2025 | Alpha   | Initial prototype                             |
+
+---
+
+## Breaking Changes Log
+
+**None to date.** All phases maintain backwards compatibility.
+
+---
+
+## Deprecation Notices
+
+**None to date.** All features remain supported.
+
+---
+
+## Contributors
+
+- **Primary Developer**: Developed with Claude Code (Anthropic)
+- **Design Inspiration**: Windows 11, macOS, Cyberpunk aesthetics
+- **Libraries**: Vanilla JavaScript (no dependencies)
+
+---
+
+## Related Documentation
+
+- **Complete Guide**: [DOCUMENTATION.md](DOCUMENTATION.md)
+- **Admin Dashboard**: [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md)
+- **Testing**: [FEATURE_VERIFICATION.md](FEATURE_VERIFICATION.md)
+- **Architecture**: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- **Troubleshooting**: [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
+
+---
+
+**Latest Version**: 2.56 (Phase 3)
+
+**Status**: ✅ Production Ready
+
+**License**: MIT
+
+**Built with ❤️ using vanilla JavaScript** - No frameworks, no dependencies.

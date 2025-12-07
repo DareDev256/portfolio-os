@@ -1,0 +1,91 @@
+/* CSS Custom Properties */
+
+:root {
+    /* Cyberpunk Palette */
+    --neon-cyan: #00f0ff;
+    --neon-magenta: #ff00aa;
+    --neon-green: #00ff88;
+    --neon-amber: #ffaa00;
+    --neon-purple: #aa00ff;
+    --neon-red: #ff0066;
+    --cyber-bg: #0a0a0f;
+    --cyber-bg-dark: #050507;
+    --cyber-panel: rgba(10, 10, 20, 0.8);
+    --cyber-glass: rgba(10, 10, 20, 0.6);
+
+    /* Colors - Dark Theme Default for Cyberpunk */
+    --bg-primary: var(--cyber-bg);
+    --bg-secondary: rgba(10, 10, 20, 0.9);
+    --bg-tertiary: rgba(20, 20, 40, 0.6);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(0, 240, 255, 0.7);
+    --text-inverse: #000000;
+
+    --accent-primary: var(--neon-cyan);
+    --accent-hover: #00c3d1;
+    --accent-active: #009ea8;
+
+    --border-color: rgba(0, 240, 255, 0.3);
+    --shadow-sm: 0 0 10px rgba(0, 240, 255, 0.1);
+    --shadow-md: 0 0 20px rgba(0, 240, 255, 0.15);
+    --shadow-lg: 0 0 60px rgba(0, 240, 255, 0.2);
+
+    --overlay-bg: rgba(0, 0, 0, 0.8);
+    --focus-color: var(--neon-cyan);
+
+    /* Window colors */
+    --window-titlebar: rgba(0, 240, 255, 0.1);
+    --window-titlebar-active: rgba(0, 240, 255, 0.2);
+    --window-border: var(--neon-cyan);
+
+    /* Spacing */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+
+    /* Border radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+
+    /* Z-index layers */
+    --z-desktop: 1;
+    --z-window-base: 100;
+    --z-taskbar: 900;
+    --z-start-menu: 950;
+    --z-context-menu: 980;
+    --z-lightbox: 1000;
+    --z-login: 2000;
+
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-medium: 250ms ease;
+    --transition-slow: 350ms ease;
+
+    /* Typography */
+    --font-family: 'Orbitron', 'Courier New', monospace;
+    --font-mono: 'Courier New', monospace;
+    --font-size-sm: 0.8rem;
+    --font-size-base: 14px;
+    --font-size-lg: 1.2rem;
+    --font-size-xl: 2rem;
+
+    /* Layout */
+    --taskbar-height: 60px;
+    /* Increased for Dock style */
+    --titlebar-height: 35px;
+    --desktop-icon-size: 90px;
+
+    /* Wallpaper */
+    --wallpaper-url: linear-gradient(135deg, #2c3e50 0%, #4a5568 25%, #5a6c7d 50%, #6b7c8d 75%, #7a8a9a 100%);
+}
+
+/* Force Dark Theme override logic to respect new palette */
+[data-theme='light'] {
+    /* We are enforcing dark cyberpunk, so we might just ignore light theme or map it to a "day mode" version */
+    /* For now, let's keep it dark as per user request for "Cyberpunk Passion OS" */
+    --bg-primary: #e0e0e0;
+    /* Fallback if they really toggle it, but default is dark */
+}
