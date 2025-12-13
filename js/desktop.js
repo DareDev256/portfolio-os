@@ -127,7 +127,7 @@ export const Desktop = {
      * Initialize Dock (pinned apps)
      */
     initDock() {
-        const dockContainer = document.querySelector('.dock-icon-container'); // Correct selector from HTML
+        const dockContainer = document.getElementById('dockLaunchers');
         if (!dockContainer) return;
 
         dockContainer.innerHTML = '';
