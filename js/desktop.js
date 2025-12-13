@@ -1301,31 +1301,61 @@ export const Desktop = {
     /**
      * Open Contact window
      */
+    /**
+     * Open Contact window
+     */
     openContact() {
         const content = document.createElement('div');
-        content.style.padding = '20px';
+        content.style.padding = '25px';
+        content.className = 'contact-window-content';
 
-        const form = document.createElement('form');
-        form.className = 'contact-form';
-        form.innerHTML = `
-            <div class="cyber-form-group">
-                <label class="cyber-label" for="contact-name">Name</label>
-                <input type="text" id="contact-name" name="name" class="cyber-input" placeholder="YOUR NAME" required>
+        content.innerHTML = `
+            <div class="contact-header">
+                <div class="contact-title">OFFICIAL COMMUNICATION CHANNEL</div>
+                <div class="contact-subtitle">
+                    ESTABLISHED CONNECTION 
+                    <span class="verified-badge">✓ SYSTEM VERIFIED</span>
+                </div>
             </div>
-            <div class="cyber-form-group">
-                <label class="cyber-label" for="contact-email">Email</label>
-                <input type="email" id="contact-email" name="email" class="cyber-input" placeholder="EMAIL@ADDRESS.COM" required>
+
+            <div class="social-grid">
+                <a href="https://github.com/DareDev256" target="_blank" class="social-btn">
+                    <span style="font-size: 1.2em">💻</span>
+                    <span>GITHUB_REPO</span>
+                </a>
+                <a href="https://www.linkedin.com" target="_blank" class="social-btn">
+                    <span style="font-size: 1.2em">wb</span>
+                    <span>LINKEDIN_PROFILE</span>
+                </a>
             </div>
-            <div class="cyber-form-group">
-                <label class="cyber-label" for="contact-message">Message</label>
-                <textarea id="contact-message" name="message" class="cyber-textarea" placeholder="TRANSMIT YOUR MESSAGE..." required></textarea>
+
+            <div class="window-section-header purple" style="margin: 20px 0 15px;">◈ DIRECT_TRANSMISSION</div>
+
+            <form class="contact-form">
+                <div class="cyber-form-group">
+                    <label class="cyber-label" for="contact-name">IDENTITY</label>
+                    <input type="text" id="contact-name" name="name" class="cyber-input" placeholder="ENTER DESIGNATION" required>
+                </div>
+                <div class="cyber-form-group">
+                    <label class="cyber-label" for="contact-email">FREQUENCY (EMAIL)</label>
+                    <input type="email" id="contact-email" name="email" class="cyber-input" placeholder="USER@NET.COM" required>
+                </div>
+                <div class="cyber-form-group">
+                    <label class="cyber-label" for="contact-message">PACKET DATA</label>
+                    <textarea id="contact-message" name="message" class="cyber-textarea" placeholder="INITIATE MESSAGE SEQUENCE..." required></textarea>
+                </div>
+                <button type="submit" class="cyber-button" style="width: 100%; margin-top: 10px;">
+                    <span>TRANSMIT ENCRYPTED DATA</span>
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </form>
+
+            <div class="contact-footer">
+                🔒 END-TO-END ENCRYPTION ACTIVE // SECURE LINE
             </div>
-            <button type="submit" class="cyber-button">
-                <span>TRANSMIT MESSAGE</span>
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-            </button>
         `;
 
+        const form = content.querySelector('form');
         form.onsubmit = (e) => {
             e.preventDefault();
             const formData = new FormData(form);
@@ -1337,7 +1367,7 @@ export const Desktop = {
             new PixelLoader({
                 container: document.getElementById('window-contact').querySelector('.window-content'),
                 type: 'sending',
-                message: 'TRANSMITTING...',
+                message: 'ENCRYPTING & TRANSMITTING...',
                 onComplete: () => {
                     // Actual mailto after animation
                     const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
@@ -1348,15 +1378,13 @@ export const Desktop = {
             });
         };
 
-        content.appendChild(form);
-
         WindowManager.create({
             id: 'contact',
-            title: 'Contact',
+            title: 'SECURE_CHANNEL // CONNECT',
             icon: this.DESKTOP_ITEMS.find((i) => i.id === 'contact').icon,
             content,
-            width: 550,
-            height: 500,
+            width: 500,
+            height: 650,
         });
     },
 
