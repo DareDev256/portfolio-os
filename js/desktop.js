@@ -1533,45 +1533,6 @@ export const Desktop = {
      * Play Startup Sound (Web Audio API)
      */
     playStartupSound() {
-        try {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            if (!AudioContext) return;
-
-            const ctx = new AudioContext();
-            const now = ctx.currentTime;
-
-            // Oscillator 1: Deep drone
-            const osc1 = ctx.createOscillator();
-            const gain1 = ctx.createGain();
-            osc1.type = 'sawtooth';
-            osc1.frequency.setValueAtTime(50, now);
-            osc1.frequency.exponentialRampToValueAtTime(100, now + 2);
-            gain1.gain.setValueAtTime(0, now);
-            gain1.gain.linearRampToValueAtTime(0.1, now + 0.5);
-            gain1.gain.exponentialRampToValueAtTime(0.001, now + 3);
-
-            osc1.connect(gain1);
-            gain1.connect(ctx.destination);
-            osc1.start(now);
-            osc1.stop(now + 3);
-
-            // Oscillator 2: High sci-fi sweep
-            const osc2 = ctx.createOscillator();
-            const gain2 = ctx.createGain();
-            osc2.type = 'sine';
-            osc2.frequency.setValueAtTime(200, now);
-            osc2.frequency.exponentialRampToValueAtTime(800, now + 1);
-            gain2.gain.setValueAtTime(0, now);
-            gain2.gain.linearRampToValueAtTime(0.05, now + 0.1);
-            gain2.gain.exponentialRampToValueAtTime(0.001, now + 2);
-
-            osc2.connect(gain2);
-            gain2.connect(ctx.destination);
-            osc2.start(now);
-            osc2.stop(now + 2);
-
-        } catch (e) {
-            console.warn('Audio playback failed', e);
-        }
+        // Disabled by user request ("second noise after login")
     }
 };
