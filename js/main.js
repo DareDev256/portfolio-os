@@ -9,7 +9,7 @@ import { Glyphs } from './glyphs.js';
 import { AudioFX } from './audiofx.js';
 import { Boot } from './boot.js';
 import { Login } from './login.js';
-import { Skills } from './skills.js';
+// import { Skills } from './skills.js'; // Removed old reference
 import { WindowManager } from './windows.js'; // Imported for type safety/checking if needed, though logic is in Login
 import { Modal } from './modal.js';
 import { Welcome } from './welcome.js';
@@ -53,7 +53,7 @@ async function init() {
     Modal.init();
 
     // Initialize Skills (Command Palette)
-    if (Skills) Skills.init();
+    // if (Skills) Skills.init();
 
     // Show splash/boot, then continue to login
     if (!safeMode) {

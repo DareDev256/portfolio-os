@@ -64,7 +64,8 @@ body::before {
 .lock-screen {
     position: fixed;
     inset: 0;
-    z-index: var(--z-login);
+    /* Ensure it's above Aurora (79) and Particles */
+    z-index: 999;
     display: flex;
     align-items: center;
     justify-content: center;

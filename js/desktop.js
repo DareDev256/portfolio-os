@@ -3,6 +3,7 @@ import { State } from './state.js';
 import { Lightbox } from './lightbox.js';
 import { Modal } from './modal.js';
 import { PixelLoader } from './loader.js';
+import { SkillsUniverse } from './skills.js';
 
 /**
  * Desktop Manager
@@ -38,6 +39,13 @@ export const Desktop = {
             icon: '⚡',
             color: '#ff00aa',
             action: () => Desktop.openApplicationsShowcase(),
+        },
+        {
+            id: 'skills',
+            label: 'SKILLS_MATRIX',
+            icon: '🕸️',
+            color: '#00f0ff',
+            action: () => Desktop.openSkills(),
         },
         {
             id: 'terminal',
@@ -552,6 +560,36 @@ export const Desktop = {
             width: 820,
             height: 600,
         });
+    },
+
+    /**
+     * Open Skills Universe
+     */
+    openSkills() {
+        const win = WindowManager.create({
+            id: 'skills',
+            title: 'SKILLS_UNIVERSE // PHYSICS_ENGINE_V1',
+            icon: '🕸️',
+            width: 900,
+            height: 600
+        });
+
+        const content = document.createElement('div');
+        content.style.width = '100%';
+        content.style.height = '100%';
+        content.style.background = '#000';
+        content.style.overflow = 'hidden';
+        content.className = 'skills-container';
+
+        // Clear previous content
+        const winContent = win.element.querySelector('.window-content');
+        winContent.innerHTML = '';
+        winContent.appendChild(content);
+
+        // Init Physics Engine
+        setTimeout(() => {
+            SkillsUniverse.init(content);
+        }, 50);
     },
 
     /** Open the featured video directly */

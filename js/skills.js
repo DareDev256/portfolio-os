@@ -1,300 +1,364 @@
-import { Desktop } from './desktop.js';
-import { State } from './state.js';
-import { Admin } from './admin.js';
-import { Login } from './login.js';
-import { AudioFX } from './audiofx.js';
-
 /**
- * Command Palette + Skills Registry
- * Quick actions via Cmd/Ctrl+K (like "Claude Skills" for this UI)
+ * SKILLS UNIVERSE ENGINE
+ * A custom physics-based force-directed graph renderer on HTML5 Canvas.
+ * No external libraries. Pure performance.
  */
 
-export const Skills = {
-    el: null,
-    input: null,
-    list: null,
-    items: [],
-    results: [],
-    selectedIndex: 0,
+export const SkillsUniverse = {
+    canvas: null,
+    ctx: null,
+    nodes: [],
+    springs: [],
+    animationFrame: null,
+    width: 0,
+    height: 0,
+    draggedNode: null,
+    hoveredNode: null,
+    mouse: { x: 0, y: 0 },
+    isRunning: false,
 
-    init() {
-        this.mount();
-        this.registerBuiltins();
-        this.bindHotkeys();
+    // Configuration
+    config: {
+        friction: 0.90,
+        springStiffness: 0.04,
+        springLength: 150,
+        repulsion: 1500,
+        nodeRadius: 25,
+        colors: {
+            frontend: '#00f0ff', // Cyan
+            backend: '#aa00ff',  // Purple
+            db: '#ff00aa',       // Pink
+            tool: '#00ff88',     // Green
+            core: '#ffffff'      // White centre
+        }
     },
 
-    mount() {
-        const overlay = document.createElement('div');
-        overlay.className = 'cmdk-overlay';
-        overlay.innerHTML = `
-      <div class="cmdk" role="dialog" aria-label="Command Palette">
-        <div class="cmdk-header">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-          <input class="cmdk-input" type="text" placeholder="Type a command… (e.g., wallpaper, theme, open)" aria-label="Command" />
-        </div>
-        <div class="cmdk-list" role="listbox"></div>
-      </div>`;
-        document.body.appendChild(overlay);
-        this.el = overlay;
-        this.input = overlay.querySelector('.cmdk-input');
-        this.list = overlay.querySelector('.cmdk-list');
+    // Raw Data
+    skillData: [
+        // CORE
+        { id: 'core', label: 'FULL STACK', type: 'core', x: 0, y: 0, r: 40 },
 
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) this.close();
-        });
-        this.input.addEventListener('input', () => this.search(this.input.value));
-        this.input.addEventListener('keydown', (e) => this.onKeyDown(e));
+        // FRONTEND
+        { id: 'react', label: 'React', type: 'frontend' },
+        { id: 'ts', label: 'TypeScript', type: 'frontend' },
+        { id: 'three', label: 'Three.js', type: 'frontend' },
+        { id: 'html', label: 'HTML5', type: 'frontend' },
+        { id: 'css', label: 'CSS3', type: 'frontend' },
+        { id: 'vite', label: 'Vite', type: 'frontend' },
+
+        // BACKEND
+        { id: 'node', label: 'Node.js', type: 'backend' },
+        { id: 'python', label: 'Python', type: 'backend' },
+        { id: 'api', label: 'REST API', type: 'backend' },
+        { id: 'auth', label: 'Auth', type: 'backend' },
+
+        // DATABASE
+        { id: 'postgres', label: 'PostgreSQL', type: 'db' },
+        { id: 'mongo', label: 'MongoDB', type: 'db' },
+        { id: 'redis', label: 'Redis', type: 'db' },
+
+        // TOOLS
+        { id: 'git', label: 'Git', type: 'tool' },
+        { id: 'docker', label: 'Docker', type: 'tool' },
+        { id: 'aws', label: 'AWS', type: 'tool' },
+        { id: 'linux', label: 'Linux', type: 'tool' }
+    ],
+
+    connections: [
+        // Connect Core to Main Categories
+        ['core', 'react'], ['core', 'node'], ['core', 'postgres'], ['core', 'git'],
+
+        // Frontend Cluster
+        ['react', 'ts'], ['react', 'three'], ['react', 'vite'],
+        ['html', 'css'], ['css', 'three'],
+
+        // Backend Cluster
+        ['node', 'api'], ['node', 'auth'], ['node', 'mongo'],
+        ['python', 'api'],
+
+        // Database Cluster
+        ['postgres', 'node'], ['redis', 'node'],
+
+        // Tools Integration
+        ['git', 'linux'], ['docker', 'aws'], ['docker', 'node'],
+        ['aws', 'node']
+    ],
+
+    /**
+     * initialize the universe inside a DOM container
+     */
+    init(container) {
+        // Cleanup old instance if needed
+        if (this.canvas) this.stop();
+
+        this.canvas = document.createElement('canvas');
+        this.canvas.className = 'skills-canvas';
+        this.ctx = this.canvas.getContext('2d');
+        container.appendChild(this.canvas);
+
+        // Set dimensions
+        this.resize(container.clientWidth, container.clientHeight);
+
+        // Initialize Physics World
+        this.buildGraph();
+
+        // Event Listeners
+        this.canvas.addEventListener('mousedown', (e) => this.inputStart(e));
+        this.canvas.addEventListener('mousemove', (e) => this.inputMove(e));
+        window.addEventListener('mouseup', () => this.inputEnd());
+
+        // Start Loop
+        this.isRunning = true;
+        this.loop();
+
+        // Initial Layout Burst
+        this.burst();
     },
 
-    bindHotkeys() {
-        document.addEventListener('keydown', (e) => {
-            const mod = e.metaKey || e.ctrlKey;
-            if (mod && e.key.toLowerCase() === 'k') {
-                e.preventDefault();
-                this.open();
+    stop() {
+        this.isRunning = false;
+        if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
+        if (this.canvas) this.canvas.remove();
+    },
+
+    resize(w, h) {
+        this.width = w;
+        this.height = h;
+        // Handle high DPI
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        this.canvas.width = w * dpr;
+        this.canvas.height = h * dpr;
+        this.canvas.style.width = w + 'px';
+        this.canvas.style.height = h + 'px';
+        this.ctx.scale(dpr, dpr);
+    },
+
+    buildGraph() {
+        // Create Nodes
+        this.nodes = this.skillData.map(d => ({
+            ...d,
+            x: this.width / 2 + (Math.random() - 0.5) * 50,
+            y: this.height / 2 + (Math.random() - 0.5) * 50,
+            vx: 0,
+            vy: 0,
+            mass: d.type === 'core' ? 5 : 1,
+            radius: d.r || this.config.nodeRadius,
+            color: this.config.colors[d.type]
+        }));
+
+        // Create Springs
+        this.springs = [];
+        this.connections.forEach(([idA, idB]) => {
+            const nodeA = this.nodes.find(n => n.id === idA);
+            const nodeB = this.nodes.find(n => n.id === idB);
+            if (nodeA && nodeB) {
+                this.springs.push({ a: nodeA, b: nodeB });
             }
         });
     },
 
-    register(skill) {
-        this.items.push(skill);
+    burst() {
+        // Initial explosion to spread nodes
+        this.nodes.forEach(node => {
+            if (node.id === 'core') return;
+            const angle = Math.random() * Math.PI * 2;
+            const force = 15;
+            node.vx = Math.cos(angle) * force;
+            node.vy = Math.sin(angle) * force;
+        });
     },
 
-    registerBuiltins() {
-        const open = (fn) => () => {
-            if (typeof fn === 'function') fn();
-        };
-        this.register({
-            id: 'wallpaper-next',
-            title: 'Next Wallpaper',
-            keywords: 'wallpaper background next',
-            run: open(() => Desktop.changeWallpaper()),
-        });
-        this.register({
-            id: 'wallpaper-random',
-            title: 'Random Wallpaper',
-            keywords: 'wallpaper background random',
-            run: open(() => Desktop.randomWallpaper()),
-        });
-        this.register({
-            id: 'wallpaper-reset',
-            title: 'Reset Wallpaper (Default Image)',
-            keywords: 'wallpaper background reset default',
-            run: open(() => State.resetWallpaper()),
-        });
-        this.register({
-            id: 'wallpaper-grey',
-            title: 'Apply Grey Gradient Wallpaper',
-            keywords: 'wallpaper gradient grey',
-            run: open(() => State.setWallpaper('gradient:grey-ombre')),
-        });
+    loop() {
+        if (!this.isRunning) return;
 
-        this.register({
-            id: 'theme-toggle',
-            title: 'Toggle Theme (Light/Dark)',
-            keywords: 'theme dark light',
-            run: open(() => State.toggleTheme()),
-        });
+        // Auto-stop if canvas is removed from DOM
+        if (this.canvas && !this.canvas.isConnected) {
+            this.stop();
+            return;
+        }
 
-        // FX controls
-        this.register({
-            id: 'fx-toggle',
-            title: 'Toggle Futuristic FX',
-            keywords: 'fx effects particles neon',
-            run: open(() => State.toggleFx()),
-        });
-        this.register({
-            id: 'fx-on',
-            title: 'Enable Futuristic FX',
-            keywords: 'fx on enable',
-            run: open(() => State.setFxEnabled(true)),
-        });
-        this.register({
-            id: 'fx-off',
-            title: 'Disable Futuristic FX',
-            keywords: 'fx off disable',
-            run: open(() => State.setFxEnabled(false)),
-        });
+        this.update();
+        this.draw();
+        this.animationFrame = requestAnimationFrame(() => this.loop());
+    },
 
-        // Aurora
-        this.register({
-            id: 'aurora-toggle',
-            title: 'Toggle Aurora Fog',
-            keywords: 'aurora fog overlay',
-            run: open(() => State.toggleAurora()),
-        });
-        // Glyph ring
-        this.register({
-            id: 'glyphs-toggle',
-            title: 'Toggle Glyph Ring',
-            keywords: 'glyphs ring hologram',
-            run: open(() => State.toggleGlyphs()),
-        });
+    update() {
+        // Physics Steps
+        const nodes = this.nodes;
+        const cfg = this.config;
 
-        // Sound
-        this.register({
-            id: 'sound-toggle',
-            title: 'Toggle UI Sounds',
-            keywords: 'audio sound fx',
-            run: open(() => State.toggleSound()),
-        });
-        this.register({
-            id: 'sound-chime',
-            title: 'Play Test Chime',
-            keywords: 'audio sound test chime',
-            run: open(() => AudioFX && AudioFX.bootChime()),
-        });
-        this.register({
-            id: 'open-admin',
-            title: 'Open Content Editor',
-            keywords: 'admin editor content',
-            run: open(() => Admin.open()),
-        });
+        // 1. Repulsion (Nodes push apart)
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const a = nodes[i];
+                const b = nodes[j];
+                const dx = b.x - a.x;
+                const dy = b.y - a.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist === 0) dist = 0.1; // Prevent div by zero
 
-        this.register({
-            id: 'open-media',
-            title: 'Open Media',
-            keywords: 'open app media photos videos',
-            run: open(() => Desktop.openMedia()),
-        });
-        this.register({
-            id: 'open-photos',
-            title: 'Open Photos (Media)',
-            keywords: 'open app photos',
-            run: open(() => Desktop.openMedia('images')),
-        });
-        this.register({
-            id: 'open-videos',
-            title: 'Open Videos (Media)',
-            keywords: 'open app videos',
-            run: open(() => Desktop.openMedia('videos')),
-        });
-        this.register({
-            id: 'open-apps',
-            title: 'Open Applications',
-            keywords: 'open app applications projects',
-            run: open(() => Desktop.openApplications()),
-        });
-        this.register({
-            id: 'open-resume',
-            title: 'Open Resume',
-            keywords: 'open resume',
-            run: open(() => Desktop.openResume()),
-        });
-        this.register({
-            id: 'open-about',
-            title: 'Open About',
-            keywords: 'open about',
-            run: open(() => Desktop.openAbout()),
-        });
-        this.register({
-            id: 'open-contact',
-            title: 'Open Contact',
-            keywords: 'open contact',
-            run: open(() => Desktop.openContact()),
-        });
+                const force = cfg.repulsion / (dist * dist);
+                const fx = (dx / dist) * force;
+                const fy = (dy / dist) * force;
 
-        this.register({
-            id: 'lock',
-            title: 'Lock Screen',
-            keywords: 'lock login',
-            run: open(() => Login.lock()),
-        });
-
-        // Service Worker
-        this.register({
-            id: 'sw-update',
-            title: 'Update Cache (Service Worker)',
-            keywords: 'cache service worker update',
-            run: () => {
-                if ('serviceWorker' in navigator) {
-                    caches
-                        .keys()
-                        .then((keys) => keys.forEach((k) => caches.delete(k)))
-                        .then(() => location.reload());
+                if (a.id !== 'core' && a !== this.draggedNode) {
+                    a.vx -= fx;
+                    a.vy -= fy;
                 }
-            },
+                if (b.id !== 'core' && b !== this.draggedNode) {
+                    b.vx += fx;
+                    b.vy += fy;
+                }
+            }
+        }
+
+        // 2. Springs (Connections pull together)
+        this.springs.forEach(spring => {
+            const a = spring.a;
+            const b = spring.b;
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            const stretch = dist - cfg.springLength;
+            const force = stretch * cfg.springStiffness;
+            const fx = (dx / dist) * force;
+            const fy = (dy / dist) * force;
+
+            if (a.id !== 'core' && a !== this.draggedNode) {
+                a.vx += fx;
+                a.vy += fy;
+            }
+            if (b.id !== 'core' && b !== this.draggedNode) {
+                b.vx -= fx;
+                b.vy -= fy;
+            }
+        });
+
+        // 3. Center Gravity (Keep in view)
+        const cx = this.width / 2;
+        const cy = this.height / 2;
+        nodes.forEach(node => {
+            if (node.id === 'core') {
+                // Core stays center with slight drift
+                node.x += (cx - node.x) * 0.05;
+                node.y += (cy - node.y) * 0.05;
+                return;
+            }
+            if (node === this.draggedNode) return;
+
+            // Pull to center
+            node.vx += (cx - node.x) * 0.0005;
+            node.vy += (cy - node.y) * 0.0005;
+
+            // Apply Velocity & Friction
+            node.x += node.vx;
+            node.y += node.vy;
+            node.vx *= cfg.friction;
+            node.vy *= cfg.friction;
+
+            // Wall Bounce (optional, currently soft bounds via gravity)
         });
     },
 
-    open() {
-        this.el.style.display = 'flex';
-        this.input.value = '';
-        this.search('');
-        setTimeout(() => this.input.focus(), 20);
-    },
+    draw() {
+        const ctx = this.ctx;
+        ctx.clearRect(0, 0, this.width, this.height);
 
-    close() {
-        this.el.style.display = 'none';
-    },
+        // Draw Connections
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        this.springs.forEach(spring => {
+            ctx.moveTo(spring.a.x, spring.a.y);
+            ctx.lineTo(spring.b.x, spring.b.y);
+        });
+        ctx.stroke();
 
-    search(q) {
-        const query = q.trim().toLowerCase();
-        this.results = this.items.filter(
-            (it) =>
-                !query ||
-                it.title.toLowerCase().includes(query) ||
-                (it.keywords || '').includes(query)
-        );
-        this.selectedIndex = 0;
-        this.renderList();
-    },
+        // Draw Nodes
+        this.nodes.forEach(node => {
+            // Draw Glow
+            const isHover = (node === this.hoveredNode || node === this.draggedNode);
+            if (isHover) {
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = node.color;
+            } else {
+                ctx.shadowBlur = 0;
+            }
 
-    renderList() {
-        this.list.innerHTML = '';
-        if (this.results.length === 0) {
-            const empty = document.createElement('div');
-            empty.className = 'cmdk-empty';
-            empty.textContent = 'No commands found';
-            this.list.appendChild(empty);
-            return;
-        }
-        this.results.forEach((item, idx) => {
-            const el = document.createElement('div');
-            el.className = 'cmdk-item';
-            el.setAttribute('role', 'option');
-            el.setAttribute('aria-selected', idx === this.selectedIndex ? 'true' : 'false');
-            el.textContent = item.title;
-            el.addEventListener('mousemove', () => this.setSelected(idx));
-            el.addEventListener('click', () => this.runSelected(idx));
-            this.list.appendChild(el);
+            // Node Circle
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(10, 10, 15, 0.9)'; // Dark center
+            ctx.fill();
+
+            ctx.lineWidth = isHover ? 3 : 2;
+            ctx.strokeStyle = node.color;
+            ctx.stroke();
+
+            // Text Label
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = node.color;
+            ctx.font = isHover ? 'bold 12px "Courier New"' : '11px "Courier New"';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(node.label, node.x, node.y);
         });
     },
 
-    setSelected(idx) {
-        this.selectedIndex = idx;
-        this.renderList();
+    // --- Inputs ---
+
+    getMousePos(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        return {
+            x: (e.clientX - rect.left),
+            y: (e.clientY - rect.top)
+        };
     },
 
-    onKeyDown(e) {
-        if (e.key === 'Escape') {
-            this.close();
-            return;
-        }
-        if (e.key === 'ArrowDown') {
-            this.selectedIndex = Math.min(this.selectedIndex + 1, this.results.length - 1);
-            this.renderList();
-            e.preventDefault();
-            return;
-        }
-        if (e.key === 'ArrowUp') {
-            this.selectedIndex = Math.max(this.selectedIndex - 1, 0);
-            this.renderList();
-            e.preventDefault();
-            return;
-        }
-        if (e.key === 'Enter') {
-            this.runSelected(this.selectedIndex);
+    inputStart(e) {
+        const pos = this.getMousePos(e);
+        // Find clicked node
+        for (let i = this.nodes.length - 1; i >= 0; i--) {
+            const n = this.nodes[i];
+            const dx = pos.x - n.x;
+            const dy = pos.y - n.y;
+            if (dx * dx + dy * dy < n.radius * n.radius) {
+                this.draggedNode = n;
+                // n.vx = 0; n.vy = 0;
+                return;
+            }
         }
     },
 
-    runSelected(idx) {
-        const item = this.results[idx];
-        if (!item) return;
-        try {
-            item.run();
-        } finally {
-            this.close();
+    inputMove(e) {
+        const pos = this.getMousePos(e);
+        this.mouse = pos;
+
+        // Handle Drag
+        if (this.draggedNode) {
+            this.draggedNode.x = pos.x;
+            this.draggedNode.y = pos.y;
+            this.draggedNode.vx = 0;
+            this.draggedNode.vy = 0;
         }
+
+        // Handle Hover
+        this.hoveredNode = null;
+        for (let i = this.nodes.length - 1; i >= 0; i--) {
+            const n = this.nodes[i];
+            const dx = pos.x - n.x;
+            const dy = pos.y - n.y;
+            if (dx * dx + dy * dy < n.radius * n.radius) {
+                this.hoveredNode = n;
+                this.canvas.style.cursor = 'pointer';
+                return;
+            }
+        }
+        this.canvas.style.cursor = 'default';
     },
+
+    inputEnd() {
+        this.draggedNode = null;
+    }
 };
