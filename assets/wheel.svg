@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#B8860B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DAA520;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <g filter="url(#glow)">
+    <!-- Main Ring -->
+    <circle cx="50" cy="50" r="30" stroke="url(#goldGradient)" stroke-width="4" fill="none"/>
+    <circle cx="50" cy="50" r="26" stroke="url(#goldGradient)" stroke-width="1" fill="none"/>
+    
+    <!-- Central Hub -->
+    <circle cx="50" cy="50" r="8" fill="url(#goldGradient)"/>
+    
+    <!-- 8 Spokes -->
+    <g stroke="url(#goldGradient)" stroke-width="3" stroke-linecap="round">
+      <line x1="50" y1="42" x2="50" y2="20" />
+      <line x1="50" y1="58" x2="50" y2="80" />
+      <line x1="42" y1="50" x2="20" y2="50" />
+      <line x1="58" y1="50" x2="80" y2="50" />
+      
+      <line x1="44.3" y1="44.3" x2="28.8" y2="28.8" />
+      <line x1="55.7" y1="55.7" x2="71.2" y2="71.2" />
+      <line x1="44.3" y1="55.7" x2="28.8" y2="71.2" />
+      <line x1="55.7" y1="44.3" x2="71.2" y2="28.8" />
+    </g>
+
+    <!-- 8 Outer "Handles" (Orbs/Dharmachakra style) -->
+    <g fill="url(#goldGradient)">
+        <!-- Top -->
+        <circle cx="50" cy="15" r="5" />
+        <!-- Bottom -->
+        <circle cx="50" cy="85" r="5" />
+        <!-- Left -->
+        <circle cx="15" cy="50" r="5" />
+        <!-- Right -->
+        <circle cx="85" cy="50" r="5" />
+        
+        <!-- Diagonals -->
+        <circle cx="25" cy="25" r="5" />
+        <circle cx="75" cy="75" r="5" />
+        <circle cx="25" cy="75" r="5" />
+        <circle cx="75" cy="25" r="5" />
+    </g>
+  </g>
+</svg>

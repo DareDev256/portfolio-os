@@ -75,6 +75,20 @@ export const Desktop = {
             action: () => Desktop.openFeaturedVideo(),
         },
         {
+            id: 'github',
+            label: 'GITHUB',
+            icon: '💻', // Using a generic computer icon as placeholder if FontAwesome isn't available, but standard unicode works
+            color: '#ffffff',
+            action: () => window.open('https://github.com/DareDev256', '_blank'),
+        },
+        {
+            id: 'linkedin',
+            label: 'LINKEDIN',
+            icon: '👔',
+            color: '#0077b5',
+            action: () => window.open('https://www.linkedin.com', '_blank'), // User can update this link later
+        },
+        {
             id: 'settings',
             label: 'SETTINGS',
             icon: '⚙',
@@ -156,11 +170,22 @@ export const Desktop = {
     /**
      * Render desktop icons
      */
+    /**
+     * Render desktop icons with drag support
+     */
     renderIcons() {
         const container = document.querySelector('.desktop-icons');
         container.innerHTML = '';
 
-        this.DESKTOP_ITEMS.forEach((item) => {
+        // Load saved positions
+        const savedLayout = JSON.parse(localStorage.getItem('desktop_layout') || '{}');
+
+        // Default starting position
+        let defaultTop = 60;
+        const defaultLeft = 30;
+        const gap = 110; // Icon height + spacing
+
+        this.DESKTOP_ITEMS.forEach((item, index) => {
             const icon = document.createElement('button');
             icon.className = 'desktop-icon';
             icon.setAttribute('role', 'button');
@@ -168,6 +193,17 @@ export const Desktop = {
             icon.setAttribute('tabindex', '0');
             icon.style.color = item.color;
             icon.dataset.iconId = item.id;
+
+            // Position Logic
+            if (savedLayout[item.id]) {
+                icon.style.top = `${savedLayout[item.id].y}px`;
+                icon.style.left = `${savedLayout[item.id].x}px`;
+            } else {
+                // Fallback to column layout
+                icon.style.top = `${defaultTop + (index * gap)}px`;
+                icon.style.left = `${defaultLeft}px`;
+            }
+
             icon.innerHTML = `
                 <div class="desktop-icon-box" style="border-color: ${item.color}40; box-shadow: 0 0 20px ${item.color}20;">
                     <span class="desktop-icon-emoji">${item.icon}</span>
@@ -175,8 +211,14 @@ export const Desktop = {
                 <span class="desktop-icon-label" style="color: ${item.color};">${item.label}</span>
             `;
 
-            // Click to open
-            icon.addEventListener('click', item.action);
+            // Initialize Drag
+            this.initDrag(icon, item.id);
+
+            // Click to open (needs check to prevent opening after drag)
+            icon.addEventListener('click', (e) => {
+                if (icon.dataset.isDragging === 'true') return;
+                item.action();
+            });
 
             // Enter key to open
             icon.addEventListener('keydown', (e) => {
@@ -193,6 +235,72 @@ export const Desktop = {
             });
 
             container.appendChild(icon);
+        });
+    },
+
+    /**
+     * Initialize drag functionality for an icon
+     */
+    initDrag(element, id) {
+        let isDragging = false;
+        let startX, startY, initialLeft, initialTop;
+
+        element.addEventListener('mousedown', (e) => {
+            // Only left click triggers drag
+            if (e.button !== 0) return;
+
+            isDragging = false; // Not dragging yet, just clicked
+            element.dataset.isDragging = 'false';
+
+            startX = e.clientX;
+            startY = e.clientY;
+
+            // Get current computed position
+            const style = window.getComputedStyle(element);
+            initialLeft = parseInt(style.left || 0);
+            initialTop = parseInt(style.top || 0);
+
+            const onMouseMove = (e) => {
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+
+                // Threshold to start dragging (prevents accidental micro-moves)
+                if (!isDragging && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
+                    isDragging = true;
+                    element.dataset.isDragging = 'true';
+                    element.style.zIndex = '1000'; // Bring to front while dragging
+                }
+
+                if (isDragging) {
+                    element.style.left = `${initialLeft + dx}px`;
+                    element.style.top = `${initialTop + dy}px`;
+                }
+            };
+
+            const onMouseUp = () => {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+
+                if (isDragging) {
+                    element.style.zIndex = ''; // Reset z-index
+
+                    // Save new position
+                    const currentLayout = JSON.parse(localStorage.getItem('desktop_layout') || '{}');
+                    currentLayout[id] = {
+                        x: parseInt(element.style.left),
+                        y: parseInt(element.style.top)
+                    };
+                    localStorage.setItem('desktop_layout', JSON.stringify(currentLayout));
+
+                    // Small timeout to reset dragging flag so click event doesn't fire immediately
+                    setTimeout(() => {
+                        element.dataset.isDragging = 'false';
+                    }, 50);
+                }
+            };
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
         });
     },
 
@@ -1149,7 +1257,7 @@ export const Desktop = {
             <div class="window-section-header purple">◈ ABOUT_ME.exe</div>
             <div style="line-height: 2; font-size: 12px;">
                 <div><span style="color: #aa00ff;">NAME:</span> DareDev256</div>
-                <div><span style="color: #aa00ff;">ROLE:</span> Developer • Creator • Visionary</div>
+                <div><span style="color: #aa00ff;">ROLE:</span> Developer • Creator • Visionary <span class="verified-badge">✓ SYSTEM VERIFIED</span></div>
                 <div><span style="color: #aa00ff;">LOCATION:</span> Building the future</div>
                 <div><span style="color: #aa00ff;">STATUS:</span> Always shipping</div>
             </div>
