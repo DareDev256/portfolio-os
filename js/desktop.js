@@ -840,7 +840,7 @@ export const Desktop = {
      */
     openApplicationsShowcase() {
         const apps = [
-            { name: 'AUDI_CAR_WASH_TRACKER', desc: 'Dealership vehicle tracking system', status: 'coming-soon', link: null },
+            { name: 'AUDI_CAR_WASH_TRACKER', desc: 'Dealership vehicle tracking system', status: 'live', link: 'https://servicetracker-production-a49a.up.railway.app' },
             { name: 'NIN_WIKI_TOOLS', desc: 'Fandom wiki automation bot', status: 'coming-soon', link: null },
             { name: 'PORTFOLIO_ENGINE', desc: 'This very system', status: 'live', link: '#' },
         ];
