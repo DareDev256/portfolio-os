@@ -289,6 +289,106 @@ body::before {
     letter-spacing: 1px;
 }
 
+/* --- GitHub Ops Center --- */
+.gh-dashboard {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    color: #fff;
+    overflow-y: auto;
+    /* Allow main dashboard to scroll if needed */
+    box-sizing: border-box;
+}
+
+.gh-header {
+    display: flex;
+    align-items: center;
+    /* Center vertically */
+    gap: 20px;
+    background: rgba(0, 240, 255, 0.05);
+    padding: 20px;
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 8px;
+    flex-shrink: 0;
+    /* Don't shrink the header */
+}
+
+.gh-profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.gh-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid var(--neon-cyan);
+    object-fit: cover;
+    /* Prevent squashing */
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+.gh-info h2 {
+    margin: 0 0 8px 0;
+    font-size: 28px;
+    color: var(--neon-cyan);
+    letter-spacing: 1px;
+}
+
+.gh-badges {
+    display: flex;
+    gap: 10px;
+}
+
+.gh-badge {
+    background: rgba(0, 255, 136, 0.1);
+    color: var(--neon-green);
+    font-size: 11px;
+    padding: 4px 8px;
+    border: 1px solid var(--neon-green);
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.gh-stat-grid {
+    display: flex;
+    gap: 40px;
+    margin-left: auto;
+    /* Push to right */
+}
+
+.gh-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.gh-stat .label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.gh-stat .value {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: var(--font-mono);
+}
+
+.gh-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    /* Remove flex:1 to allow content to dictate height, relying on parent scroll */
+    padding-bottom: 20px;
+}
+
 /* Desktop Icons */
 .desktop-icons {
     position: absolute;
@@ -478,6 +578,83 @@ body::before {
     border-color: var(--neon-cyan);
     box-shadow: 0 0 15px var(--neon-cyan);
     animation: dockPulse 2s ease-in-out infinite;
+}
+
+/* --- Terminal (Enterprise Console) --- */
+.terminal-screen {
+    background: rgba(10, 10, 15, 0.95);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #ccc;
+}
+
+.terminal-output {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+}
+
+.term-prompt {
+    color: var(--neon-green);
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.term-input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    flex: 1;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+}
+
+.term-line {
+    margin-bottom: 4px;
+    line-height: 1.4;
+    word-break: break-all;
+}
+
+.term-cyan {
+    color: var(--neon-cyan);
+}
+
+.term-green {
+    color: var(--neon-green);
+}
+
+.term-yellow {
+    color: var(--neon-amber);
+}
+
+.term-error {
+    color: var(--neon-red);
+}
+
+.term-dim {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.term-cmd {
+    color: #fff;
+    font-weight: bold;
+}
+
+.contact-footer span {
+    color: var(--neon-green);
+    text-shadow: 0 0 5px var(--neon-green);
 }
 
 .taskbar-window-btn.minimized {

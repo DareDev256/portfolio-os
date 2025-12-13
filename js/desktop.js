@@ -4,6 +4,8 @@ import { Lightbox } from './lightbox.js';
 import { Modal } from './modal.js';
 import { PixelLoader } from './loader.js';
 import { SkillsUniverse } from './skills.js';
+import { GitHub } from './github.js';
+import { Terminal } from './terminal.js';
 
 /**
  * Desktop Manager
@@ -52,7 +54,7 @@ export const Desktop = {
             label: 'DEV_TERMINAL',
             icon: '▶',
             color: '#00ff88',
-            action: () => Desktop.openShell(),
+            action: () => Desktop.openTerminal(),
         },
         {
             id: 'resume',
@@ -84,10 +86,10 @@ export const Desktop = {
         },
         {
             id: 'github',
-            label: 'GITHUB',
+            label: 'GITHUB_OPS',
             icon: '💻', // Using a generic computer icon as placeholder if FontAwesome isn't available, but standard unicode works
             color: '#ffffff',
-            action: () => window.open('https://github.com/DareDev256', '_blank'),
+            action: () => Desktop.openGitHubCenter(),
         },
         {
             id: 'linkedin',
@@ -125,37 +127,37 @@ export const Desktop = {
      * Initialize Dock (pinned apps)
      */
     initDock() {
-        const dockContainer = document.getElementById('dockLaunchers');
+        const dockContainer = document.querySelector('.dock-icon-container'); // Correct selector from HTML
         if (!dockContainer) return;
 
         dockContainer.innerHTML = '';
 
-        // Items to pin to dock (matching React design - first 4 items)
-        const pinnedIds = ['media', 'applications', 'terminal', 'about'];
+        // User requested Key Apps for the Dock:
+        // Skills Matrix, GitHub Ops, Showcase, About Me
+        // plus Developer Console (Terminal) as a bonus for power users
+        const dockIds = ['about', 'skills', 'github', 'showcase', 'terminal'];
 
-        pinnedIds.forEach((id) => {
-            const item = this.DESKTOP_ITEMS.find((i) => i.id === id);
-            if (!item) return;
+        dockIds.forEach(id => {
+            const item = this.DESKTOP_ITEMS.find(i => i.id === id);
+            if (item) {
+                const btn = document.createElement('button');
+                btn.className = 'dock-icon';
+                btn.setAttribute('aria-label', item.label);
+                btn.title = item.label; // Tooltip
 
-            const btn = document.createElement('button');
-            btn.className = 'taskbar-window-btn dock-icon';
-            btn.setAttribute('aria-label', item.label);
-            btn.onclick = item.action;
-            btn.title = item.label;
+                // Use emoji icon
+                btn.innerHTML = `<span class="dock-icon-emoji">${item.icon}</span>`;
 
-            // Apply color styling
-            btn.style.background = `${item.color}10`;
-            btn.style.borderColor = `${item.color}40`;
-            btn.dataset.color = item.color;
+                // Add click handler
+                btn.onclick = () => {
+                    // Bounce animation
+                    btn.classList.add('bouncing');
+                    setTimeout(() => btn.classList.remove('bouncing'), 1000);
+                    item.action();
+                };
 
-            // Icon (emoji)
-            const iconSpan = document.createElement('span');
-            iconSpan.className = 'dock-icon-emoji';
-            iconSpan.textContent = item.icon;
-            iconSpan.style.fontSize = '20px';
-            btn.appendChild(iconSpan);
-
-            dockContainer.appendChild(btn);
+                dockContainer.appendChild(btn);
+            }
         });
 
         // Add Start Button (Passion OS Logo)
@@ -590,6 +592,54 @@ export const Desktop = {
         setTimeout(() => {
             SkillsUniverse.init(content);
         }, 50);
+    },
+
+    /**
+     * Open GitHub Operations Center
+     */
+    openGitHubCenter() {
+        const win = WindowManager.create({
+            id: 'github-ops',
+            title: 'GITHUB_OPS // MISSION_CONTROL',
+            icon: '📡',
+            width: 1000,
+            height: 700
+        });
+
+        const content = document.createElement('div');
+        content.className = 'github-ops-container';
+        content.style.height = '100%';
+        content.style.overflow = 'auto'; // Let the dashboard handle its own scroll with overflow-y: auto
+
+        win.element.querySelector('.window-content').appendChild(content);
+
+        // Render Dashboard
+        GitHub.render(content);
+    },
+
+    /**
+     * Open Enterprise Console (Terminal)
+     */
+    openTerminal() {
+        const win = WindowManager.create({
+            id: 'terminal',
+            title: 'ENTERPRISE_CONSOLE // ROOT_ACCESS',
+            icon: '▶',
+            width: 800,
+            height: 500,
+            transitionType: 'console'
+        });
+
+        win.element.style.background = 'rgba(5, 5, 10, 0.98)';
+
+        const content = document.createElement('div');
+        content.style.height = '100%';
+        win.element.querySelector('.window-content').appendChild(content);
+
+        // Dynamically load Terminal module if not already (or just use global if available)
+        // Since we didn't import it at top yet, let me fix imports next.
+        // For now I'll assume I import it.
+        Terminal.init(content);
     },
 
     /** Open the featured video directly */
