@@ -68,6 +68,13 @@ export const Desktop = {
             action: () => Desktop.openContact(),
         },
         {
+            id: 'showcase',
+            label: 'SHOWCASE.mp4',
+            icon: '🎬',
+            color: '#FF0000',
+            action: () => Desktop.openFeaturedVideo(),
+        },
+        {
             id: 'settings',
             label: 'SETTINGS',
             icon: '⚙',
@@ -437,6 +444,36 @@ export const Desktop = {
             width: 820,
             height: 600,
         });
+    },
+
+    /** Open the featured video directly */
+    async openFeaturedVideo() {
+        // Load media data
+        let videos = [];
+        try {
+            const override = localStorage.getItem('media.json');
+            if (override) {
+                const media = JSON.parse(override);
+                videos = media.videos || [];
+            } else {
+                const res = await fetch('data/media.json');
+                const media = await res.json();
+                videos = media.videos || [];
+            }
+        } catch (e) {
+            console.warn('Media data missing', e);
+        }
+
+        // Find the featured video (first one with category 'Featured' or just the first one)
+        const featuredIndex = videos.findIndex(v => v.category === 'Featured' || v.title.includes('Showcase'));
+
+        if (featuredIndex !== -1) {
+            Lightbox.open(videos, featuredIndex, 'video');
+        } else if (videos.length > 0) {
+            Lightbox.open(videos, 0, 'video');
+        } else {
+            Modal.alert('Error', 'No featured video found.');
+        }
     },
 
     /** Render folders view */
