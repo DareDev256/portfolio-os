@@ -1073,7 +1073,7 @@ export const Desktop = {
      */
     openApplicationsShowcase() {
         const apps = [
-            { name: 'AUDI_CAR_WASH_TRACKER', desc: 'Dealership vehicle tracking system', status: 'live', link: 'https://servicetracker-production-a49a.up.railway.app' },
+            { name: 'AUDI_CAR_WASH_TRACKER', desc: 'Dealership vehicle tracking system', status: 'live', link: 'https://servicetracker-production-f05b.up.railway.app' },
             { name: 'RAG_WITH_CITATIONS', desc: 'Enterprise-grade RAG system', status: 'live', link: 'https://github.com/DareDev256/rag-system-with-citations' },
             { name: 'VECTOR_SEARCH_ENGINE', desc: 'AI-powered RAG vs Keyword comparison', status: 'live', link: 'https://github.com/DareDev256/vector-vs-keyword-search' },
             { name: 'NIN_WIKI_TOOLS', desc: 'Fandom wiki automation bot', status: 'coming-soon', link: null },
