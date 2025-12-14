@@ -676,7 +676,7 @@ export const Desktop = {
     renderMediaFolders(container, media) {
         container.innerHTML = '';
         const folders = ['Real Estate', 'Cars', 'Music Videos'];
-        const protectedFolders = {};
+        const protectedFolders = { 'Real Estate': '1234', 'Cars': '1234' };
 
         const header = document.createElement('div');
         header.className = 'window-section-header';
