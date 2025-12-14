@@ -1,0 +1,35 @@
+{
+    "images": [],
+    "videos": [
+        {
+            "title": "Best YouTube AI Tool for More Views (Showcase)",
+            "url": "https://www.youtube.com/watch?v=In0edan1CN0",
+            "poster": "https://img.youtube.com/vi/In0edan1CN0/maxresdefault.jpg",
+            "category": "Featured"
+        },
+        {
+            "title": "Casper TNG - Dopeboy (Certified Gold Record)",
+            "url": "https://www.youtube.com/watch?v=E7ZStZMn-ac",
+            "poster": "https://img.youtube.com/vi/E7ZStZMn-ac/maxresdefault.jpg",
+            "category": "Music Videos"
+        },
+        {
+            "title": "King Louie - Made Drill",
+            "url": "https://www.youtube.com/watch?v=8p4i1b5IW2k",
+            "poster": "https://img.youtube.com/vi/8p4i1b5IW2k/hqdefault.jpg",
+            "category": "Music Videos"
+        },
+        {
+            "title": "Masicka - Everything Mi Want",
+            "url": "https://www.youtube.com/watch?v=u3O5PKN9vCQ",
+            "poster": "https://img.youtube.com/vi/u3O5PKN9vCQ/hqdefault.jpg",
+            "category": "Music Videos"
+        },
+        {
+            "title": "Jose Guapo - Where is the Love",
+            "url": "https://www.youtube.com/watch?v=l0kNVJaF5as",
+            "poster": "https://img.youtube.com/vi/l0kNVJaF5as/maxresdefault.jpg",
+            "category": "Music Videos"
+        }
+    ]
+}

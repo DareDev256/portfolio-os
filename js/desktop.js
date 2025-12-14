@@ -18,7 +18,7 @@ export const Desktop = {
 
     // Wallpaper configurations
     WALLPAPERS: [
-        'assets/wallpapers/default.jpg',
+        '/assets/wallpapers/default.jpg',
         'gradient:grey-ombre',
         'https://images.unsplash.com/photo-1557683316-973673baf926',
         'https://images.unsplash.com/photo-1579546929518-9e396f3cc809',
@@ -1073,9 +1073,10 @@ export const Desktop = {
      */
     openApplicationsShowcase() {
         const apps = [
-            { name: 'AUDI_CAR_WASH_TRACKER', desc: 'Dealership vehicle tracking system', status: 'live', link: 'https://servicetracker-production-f05b.up.railway.app' },
+            { name: 'SERVICE_TRACKER_PRO', desc: 'Dealership vehicle tracking system', status: 'live', link: 'https://servicetracker-production-f05b.up.railway.app' },
             { name: 'RAG_WITH_CITATIONS', desc: 'Enterprise-grade RAG system', status: 'live', link: 'https://github.com/DareDev256/rag-system-with-citations' },
             { name: 'VECTOR_SEARCH_ENGINE', desc: 'AI-powered RAG vs Keyword comparison', status: 'live', link: 'https://github.com/DareDev256/vector-vs-keyword-search' },
+            { name: 'LLM_EVAL_HARNESS', desc: 'LLM Evaluation Framework', status: 'live', link: 'https://github.com/DareDev256/llm-evaluation-harness' },
             { name: 'NIN_WIKI_TOOLS', desc: 'Fandom wiki automation bot', status: 'coming-soon', link: null },
             { name: 'PORTFOLIO_ENGINE', desc: 'This very system', status: 'live', link: '#' },
         ];

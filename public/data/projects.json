@@ -1,0 +1,125 @@
+[
+    {
+        "title": "Portfolio OS",
+        "description": "An interactive Windows-like desktop portfolio built with vanilla JavaScript, featuring draggable windows, file management, and responsive design.",
+        "tech": [
+            "JavaScript",
+            "CSS3",
+            "HTML5"
+        ],
+        "tags": [
+            "Web",
+            "Frontend"
+        ],
+        "demo": "#",
+        "repo": "https://github.com/yourusername/portfolio-os"
+    },
+    {
+        "title": "Audi Car Wash Tracker",
+        "description": "Professional vehicle tracking system for Audi dealerships. Features real-time status updates, drag-and-drop interface, and role-based access control.",
+        "tech": [
+            "React",
+            "Node.js",
+            "PostgreSQL",
+            "Tailwind"
+        ],
+        "tags": [
+            "Web",
+            "Fullstack"
+        ],
+        "demo": "https://servicetracker-production-a49a.up.railway.app",
+        "repo": null
+    },
+    {
+        "title": "E-Commerce Platform",
+        "description": "Modern e-commerce solution with shopping cart, payment integration, inventory management, and admin dashboard.",
+        "tech": [
+            "Vue.js",
+            "Express",
+            "PostgreSQL",
+            "Stripe"
+        ],
+        "tags": [
+            "Web",
+            "Fullstack"
+        ],
+        "demo": "https://shop-demo.com",
+        "repo": "https://github.com/yourusername/ecommerce"
+    },
+    {
+        "title": "Weather Dashboard",
+        "description": "Real-time weather application with interactive maps, 7-day forecasts, and location-based alerts using multiple weather APIs.",
+        "tech": [
+            "React",
+            "TypeScript",
+            "OpenWeather API"
+        ],
+        "tags": [
+            "Web",
+            "Frontend"
+        ],
+        "demo": "https://weather-dashboard-demo.com",
+        "repo": "https://github.com/yourusername/weather-dashboard"
+    },
+    {
+        "title": "Chat Application",
+        "description": "Real-time messaging platform with private and group chats, file sharing, emoji support, and typing indicators.",
+        "tech": [
+            "React",
+            "Firebase",
+            "WebRTC"
+        ],
+        "tags": [
+            "Web",
+            "Mobile"
+        ],
+        "demo": "https://chat-demo.com",
+        "repo": "https://github.com/yourusername/chat-app"
+    },
+    {
+        "title": "Code Snippet Manager",
+        "description": "Developer tool for organizing and sharing code snippets with syntax highlighting, tagging, and search functionality.",
+        "tech": [
+            "Next.js",
+            "Prisma",
+            "PostgreSQL",
+            "Tailwind"
+        ],
+        "tags": [
+            "Web",
+            "Frontend"
+        ],
+        "demo": "https://snippets-demo.com",
+        "repo": "https://github.com/yourusername/snippet-manager"
+    },
+    {
+        "title": "Fitness Tracker",
+        "description": "Mobile-first fitness app for tracking workouts, nutrition, and progress with charts and goal setting.",
+        "tech": [
+            "React Native",
+            "Node.js",
+            "MongoDB"
+        ],
+        "tags": [
+            "Mobile",
+            "Fullstack"
+        ],
+        "demo": null,
+        "repo": "https://github.com/yourusername/fitness-tracker"
+    },
+    {
+        "title": "Blog CMS",
+        "description": "Headless content management system for blogs with markdown support, SEO optimization, and analytics.",
+        "tech": [
+            "Next.js",
+            "Sanity.io",
+            "Vercel"
+        ],
+        "tags": [
+            "Web",
+            "Frontend"
+        ],
+        "demo": "https://blog-cms-demo.com",
+        "repo": "https://github.com/yourusername/blog-cms"
+    }
+]

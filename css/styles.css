@@ -855,6 +855,11 @@ body::before {
 }
 
 /* --- Wheel Animation & Styles --- */
+@font-face {
+    font-family: 'Hacked';
+    src: url('/assets/fonts/Hacked-KerX.ttf') format('truetype');
+}
+
 @keyframes spin {
     from {
         transform: rotate(0deg);

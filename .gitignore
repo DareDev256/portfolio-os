@@ -5,7 +5,7 @@ node_modules/
 dist/
 
 # Large Media Files (Excluded from Git)
-assets/media/
+
 
 # OS files
 .DS_Store
