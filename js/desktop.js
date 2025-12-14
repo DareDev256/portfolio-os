@@ -675,8 +675,8 @@ export const Desktop = {
     /** Render folders view */
     renderMediaFolders(container, media) {
         container.innerHTML = '';
-        const folders = ['Real Estate', 'Glamour', 'Cars', 'Music Videos', 'Archive'];
-        const protectedFolders = { Glamour: 'rawmodels' };
+        const folders = ['Real Estate', 'Cars', 'Music Videos'];
+        const protectedFolders = {};
 
         const header = document.createElement('div');
         header.className = 'window-section-header';
