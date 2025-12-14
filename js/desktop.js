@@ -652,7 +652,7 @@ export const Desktop = {
                 const media = JSON.parse(override);
                 videos = media.videos || [];
             } else {
-                const res = await fetch('data/media.json');
+                const res = await fetch('/data/media.json');
                 const media = await res.json();
                 videos = media.videos || [];
             }

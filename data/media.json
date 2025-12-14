@@ -1,21 +1,5 @@
 {
-    "images": [
-        {
-            "url": "assets/media/glamour/457F8804-4616-4D63-92EB-B526ECC7C34F.JPEG",
-            "caption": "Glamour Shot 1",
-            "category": "Glamour"
-        },
-        {
-            "url": "assets/media/glamour/DSC01474-Edit.jpg",
-            "caption": "Glamour Shot 2",
-            "category": "Glamour"
-        },
-        {
-            "url": "assets/media/glamour/DSC01536-Edit.jpg",
-            "caption": "Glamour Shot 3",
-            "category": "Glamour"
-        }
-    ],
+    "images": [],
     "videos": [
         {
             "title": "Best YouTube AI Tool for More Views (Showcase)",
@@ -33,22 +17,7 @@
             "title": "Audi Commercial Midtown",
             "url": "assets/media/cars/Audi Commercial Midtown2.mp4",
             "poster": "",
-            "category": "Cars"
-        },
-        {
-            "title": "B1 Auto",
-            "url": "assets/media/cars/B1AutoWeb.mp4",
-            "poster": "",
-            "category": "Cars"
-        },
-        {
-            "title": "Audi TT Promo",
-            "url": "assets/media/cars/Audi - Mitch (TT Promotional Video).mov",
-            "poster": "",
-            "category": "Cars"
-        },
-        {
-            "title": "Casper TNG - Dopeboy (Certified Gold Record)",
+            "category": "Cars""title": "Casper TNG - Dopeboy (Certified Gold Record)",
             "url": "https://www.youtube.com/watch?v=E7ZStZMn-ac",
             "poster": "https://img.youtube.com/vi/E7ZStZMn-ac/maxresdefault.jpg",
             "category": "Music Videos"
