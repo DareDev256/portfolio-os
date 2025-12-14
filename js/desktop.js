@@ -133,9 +133,9 @@ export const Desktop = {
         dockContainer.innerHTML = '';
 
         // User requested Key Apps for the Dock:
-        // Skills Matrix, GitHub Ops, Showcase, About Me
+        // Skills Matrix, GitHub Ops, Applications, About Me
         // plus Developer Console (Terminal) as a bonus for power users
-        const dockIds = ['about', 'skills', 'github', 'showcase', 'terminal'];
+        const dockIds = ['about', 'skills', 'github', 'applications', 'terminal'];
 
         dockIds.forEach(id => {
             const item = this.DESKTOP_ITEMS.find(i => i.id === id);
@@ -1074,6 +1074,8 @@ export const Desktop = {
     openApplicationsShowcase() {
         const apps = [
             { name: 'AUDI_CAR_WASH_TRACKER', desc: 'Dealership vehicle tracking system', status: 'live', link: 'https://servicetracker-production-a49a.up.railway.app' },
+            { name: 'RAG_WITH_CITATIONS', desc: 'Enterprise-grade RAG system', status: 'live', link: 'https://github.com/DareDev256/rag-system-with-citations' },
+            { name: 'VECTOR_SEARCH_ENGINE', desc: 'AI-powered RAG vs Keyword comparison', status: 'live', link: 'https://github.com/DareDev256/vector-vs-keyword-search' },
             { name: 'NIN_WIKI_TOOLS', desc: 'Fandom wiki automation bot', status: 'coming-soon', link: null },
             { name: 'PORTFOLIO_ENGINE', desc: 'This very system', status: 'live', link: '#' },
         ];
