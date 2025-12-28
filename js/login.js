@@ -169,6 +169,11 @@ export const Login = {
      * Login (accept any password or empty)
      */
     login() {
+        // Play PS1/PS2 boot sound for the login → desktop transition
+        if (window.__InteractionEngine && window.__InteractionEngine.soundManager) {
+            window.__InteractionEngine.soundManager.play('ps1-boot');
+        }
+
         // Warp tunnel: login -> desktop
         Warp.transition(() => {
             this.lockScreen.classList.add('hidden'); // Hide lock/login container

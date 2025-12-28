@@ -289,6 +289,105 @@ body::before {
     letter-spacing: 1px;
 }
 
+/* Control Panel */
+.control-panel-icon {
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    color: var(--neon-cyan);
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.control-panel-icon:hover {
+    background: rgba(0, 240, 255, 0.2);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+}
+
+.control-panel-dropdown {
+    position: fixed;
+    top: 50px;
+    right: 20px;
+    background: rgba(10, 10, 20, 0.95);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 8px;
+    padding: 15px;
+    min-width: 280px;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+    z-index: 10000;
+    display: none;
+}
+
+.control-panel-dropdown.active {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.control-panel-header {
+    font-size: 14px;
+    color: var(--neon-cyan);
+    font-weight: bold;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.control-panel-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.control-panel-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.mini-toggle {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.mini-toggle.active {
+    background: var(--neon-cyan);
+}
+
+.mini-toggle::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+}
+
+.mini-toggle.active::after {
+    transform: translateX(20px);
+}
+
 /* --- GitHub Ops Center --- */
 .gh-dashboard {
     height: 100%;
@@ -387,6 +486,122 @@ body::before {
     gap: 20px;
     /* Remove flex:1 to allow content to dictate height, relying on parent scroll */
     padding-bottom: 20px;
+}
+
+/* Language Rings Visualization */
+.gh-language-viz {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(0, 240, 255, 0.05);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 8px;
+}
+
+.gh-language-viz h3 {
+    color: var(--neon-cyan);
+    font-size: 14px;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.gh-lang-rings {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.gh-lang-ring {
+    position: relative;
+    width: 100px;
+}
+
+.gh-lang-ring svg {
+    width: 100%;
+    transform: rotate(-90deg);
+}
+
+.gh-ring-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 8;
+}
+
+.gh-ring-progress {
+    fill: none;
+    stroke: var(--neon-cyan);
+    stroke-width: 8;
+    stroke-linecap: round;
+    animation: fillRing 1.5s ease-out forwards;
+}
+
+@keyframes fillRing {
+    from { stroke-dasharray: 0, 251.2; }
+}
+
+.gh-ring-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.gh-ring-percent {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--neon-cyan);
+}
+
+.gh-ring-lang {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Commit Timeline */
+.gh-commit-timeline {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(255, 170, 0, 0.05);
+    border: 1px solid rgba(255, 170, 0, 0.2);
+    border-radius: 8px;
+}
+
+.gh-commit-timeline h3 {
+    color: var(--neon-orange);
+    font-size: 14px;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.gh-timeline-bars {
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+    height: 100px;
+    margin-top: 15px;
+}
+
+.gh-timeline-bar {
+    flex: 1;
+    background: linear-gradient(to top, var(--neon-orange), var(--neon-magenta));
+    border-radius: 2px 2px 0 0;
+    min-height: 2px;
+    animation: growBar 0.6s ease-out backwards;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    animation-delay: calc(var(--i) * 0.02s);
+}
+
+.gh-timeline-bar:hover {
+    opacity: 0.7;
+}
+
+@keyframes growBar {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
 }
 
 /* Desktop Icons */

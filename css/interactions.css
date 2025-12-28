@@ -1,0 +1,369 @@
+/**
+ * Interaction Engine CSS
+ * Animations and styles for micro-interactions
+ */
+
+/* ============================================
+   RIPPLE ANIMATIONS
+   ============================================ */
+
+@keyframes ripple-expand {
+    from {
+        width: 0;
+        height: 0;
+        opacity: 0.8;
+    }
+    to {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+    }
+}
+
+.micro-ripple {
+    animation: ripple-expand 0.6s ease-out forwards;
+}
+
+/* ============================================
+   PARTICLE EFFECTS
+   ============================================ */
+
+.micro-particle {
+    will-change: transform, opacity;
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+
+.micro-loader {
+    font-family: 'Orbitron', 'Courier New', monospace;
+    color: var(--neon-cyan, #00f0ff);
+}
+
+.loader-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid transparent;
+    border-top-color: var(--neon-cyan, #00f0ff);
+    border-right-color: var(--neon-magenta, #ff00aa);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loader-text {
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.loader-dots {
+    display: inline-block;
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% {
+        content: '.';
+    }
+    40% {
+        content: '..';
+    }
+    60%, 100% {
+        content: '...';
+    }
+}
+
+/* ============================================
+   GLOW EFFECTS
+   ============================================ */
+
+.interaction-glow {
+    transition: box-shadow 0.2s ease-out;
+}
+
+.interaction-glow:hover {
+    box-shadow:
+        0 0 20px var(--neon-cyan, #00f0ff)40,
+        0 0 40px var(--neon-cyan, #00f0ff)20,
+        inset 0 0 20px var(--neon-cyan, #00f0ff)10;
+}
+
+/* ============================================
+   LIFT & TILT EFFECTS
+   ============================================ */
+
+.interaction-lift {
+    transition: transform 0.25s ease-out;
+    transform-style: preserve-3d;
+}
+
+.interaction-lift:hover {
+    transform: translateY(-4px) rotateX(2deg);
+}
+
+/* ============================================
+   BORDER SHIMMER
+   ============================================ */
+
+.border-shimmer {
+    position: relative;
+    overflow: hidden;
+}
+
+.border-shimmer::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 0deg at 50% 50%,
+        transparent 0deg,
+        var(--neon-cyan, #00f0ff) 60deg,
+        transparent 120deg
+    );
+    animation: shimmer-rotate 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.border-shimmer:hover::before {
+    opacity: 0.3;
+}
+
+@keyframes shimmer-rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   WINDOW ANIMATIONS
+   ============================================ */
+
+.window-materialize {
+    animation: materialize 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes materialize {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+        filter: blur(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0px);
+    }
+}
+
+.window-dematerialize {
+    animation: dematerialize 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+}
+
+@keyframes dematerialize {
+    from {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0px);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+        filter: blur(5px);
+    }
+}
+
+/* ============================================
+   BUTTON PRESS & RELEASE
+   ============================================ */
+
+.button-press {
+    transform: scale(0.95);
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.button-release {
+    animation: button-bounce 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes button-bounce {
+    0% {
+        transform: scale(0.95);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ============================================
+   ICON MORPHING
+   ============================================ */
+
+.icon-morph {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.icon-morph:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.icon-morph:active {
+    transform: scale(0.9) rotate(-5deg);
+}
+
+/* ============================================
+   PULSING ANIMATIONS
+   ============================================ */
+
+.pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 10px var(--neon-cyan, #00f0ff)20;
+    }
+    50% {
+        box-shadow: 0 0 30px var(--neon-cyan, #00f0ff)60;
+    }
+}
+
+/* ============================================
+   SHIMMER TEXT EFFECT
+   ============================================ */
+
+.shimmer-text {
+    background: linear-gradient(
+        90deg,
+        var(--neon-cyan, #00f0ff) 0%,
+        var(--neon-magenta, #ff00aa) 50%,
+        var(--neon-cyan, #00f0ff) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer-slide 3s linear infinite;
+}
+
+@keyframes shimmer-slide {
+    to {
+        background-position: 200% 0;
+    }
+}
+
+/* ============================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+
+/* Enable GPU acceleration for animated elements */
+.micro-ripple,
+.micro-particle,
+.window-materialize,
+.window-dematerialize {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .micro-ripple,
+    .micro-particle,
+    .loader-spinner,
+    .loader-dots,
+    .border-shimmer::before,
+    .shimmer-text {
+        animation: none !important;
+    }
+}
+
+/* ============================================
+   SUCCESS/ERROR ANIMATIONS
+   ============================================ */
+
+.success-checkmark {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: draw-checkmark 0.6s ease-out forwards;
+}
+
+@keyframes draw-checkmark {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.error-shake {
+    animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+.error-glow {
+    animation: error-pulse 0.5s ease-out;
+}
+
+@keyframes error-pulse {
+    0%, 100% {
+        box-shadow: 0 0 10px var(--neon-red, #ff0066)40;
+    }
+    50% {
+        box-shadow: 0 0 30px var(--neon-red, #ff0066)80,
+                    0 0 50px var(--neon-red, #ff0066)40;
+    }
+}
+
+/* ============================================
+   FOCUS STATES (ACCESSIBILITY)
+   ============================================ */
+
+[data-interact]:focus-visible {
+    outline: 2px solid var(--neon-cyan, #00f0ff);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.no-interaction {
+    pointer-events: none !important;
+}
+
+.interaction-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

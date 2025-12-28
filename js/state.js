@@ -2,6 +2,7 @@ import { FX } from './fx.js';
 import { Aurora } from './aurora.js';
 import { Glyphs } from './glyphs.js';
 import { AudioFX } from './audiofx.js';
+import { InteractionEngine } from './interactions/engine.js';
 
 /**
  * State Management
@@ -25,6 +26,15 @@ export const State = {
     auroraEnabled: false,
     glyphsEnabled: true,
     soundEnabled: true,
+
+    // Interaction Engine settings
+    interactionsEnabled: true,
+    microInteractionsEnabled: true,
+    cursorReactiveEnabled: true,
+    cursorTrailEnabled: false, // Disabled by default, can be enabled via Konami code
+    cursorTrailType: 'chakra', // 'playstation' or 'chakra' - chakra is default, PS unlocked via secret
+    easterEggsEnabled: true,
+    interactionIntensity: 100, // 0-100
 
     // Idle lock configuration
     idleTime: 120000, // 2 minutes default
@@ -58,6 +68,22 @@ export const State = {
         if (savedGlyphs !== null) this.glyphsEnabled = savedGlyphs === '1';
         const savedSound = localStorage.getItem('soundEnabled');
         if (savedSound !== null) this.soundEnabled = savedSound === '1';
+
+        // Load interaction engine settings
+        const savedInteractions = localStorage.getItem('interactionsEnabled');
+        if (savedInteractions !== null) this.interactionsEnabled = savedInteractions === '1';
+        const savedMicroInteractions = localStorage.getItem('microInteractionsEnabled');
+        if (savedMicroInteractions !== null) this.microInteractionsEnabled = savedMicroInteractions === '1';
+        const savedCursorReactive = localStorage.getItem('cursorReactiveEnabled');
+        if (savedCursorReactive !== null) this.cursorReactiveEnabled = savedCursorReactive === '1';
+        const savedCursorTrail = localStorage.getItem('cursorTrailEnabled');
+        if (savedCursorTrail !== null) this.cursorTrailEnabled = savedCursorTrail === '1';
+        const savedTrailType = localStorage.getItem('cursorTrailType');
+        if (savedTrailType) this.cursorTrailType = savedTrailType;
+        const savedEasterEggs = localStorage.getItem('easterEggsEnabled');
+        if (savedEasterEggs !== null) this.easterEggsEnabled = savedEasterEggs === '1';
+        const savedIntensity = localStorage.getItem('interactionIntensity');
+        if (savedIntensity !== null) this.interactionIntensity = parseInt(savedIntensity, 10);
 
         // Load window states
         const savedWindows = localStorage.getItem('windowStates');
@@ -164,6 +190,41 @@ export const State = {
     },
     toggleSound() {
         this.setSoundEnabled(!this.soundEnabled);
+    },
+
+    // Interaction Engine controls
+    setInteractionsEnabled(v) {
+        this.interactionsEnabled = !!v;
+        localStorage.setItem('interactionsEnabled', this.interactionsEnabled ? '1' : '0');
+        if (InteractionEngine) InteractionEngine.setEnabled(this.interactionsEnabled);
+    },
+    toggleInteractions() {
+        this.setInteractionsEnabled(!this.interactionsEnabled);
+    },
+
+    setCursorTrailEnabled(v) {
+        this.cursorTrailEnabled = !!v;
+        localStorage.setItem('cursorTrailEnabled', this.cursorTrailEnabled ? '1' : '0');
+        if (InteractionEngine && InteractionEngine.cursorTrail) {
+            InteractionEngine.cursorTrail.setEnabled(this.cursorTrailEnabled);
+        }
+    },
+
+    setCursorTrailType(type) {
+        this.cursorTrailType = type;
+        localStorage.setItem('cursorTrailType', type);
+        if (InteractionEngine && InteractionEngine.cursorTrail) {
+            InteractionEngine.cursorTrail.setType(type);
+        }
+    },
+
+    toggleCursorTrail() {
+        this.setCursorTrailEnabled(!this.cursorTrailEnabled);
+    },
+
+    setInteractionIntensity(intensity) {
+        this.interactionIntensity = Math.max(0, Math.min(100, intensity));
+        localStorage.setItem('interactionIntensity', this.interactionIntensity.toString());
     },
 
     /** Reset wallpaper to default image */

@@ -30,3 +30,18 @@ yarn-error.log*
 # Cache
 .cache/
 .parcel-cache/
+
+# Local transient files
+terminal_snapshot_*.log
+test-*.html
+*.resolved
+public/assets/wallpapers/*.backup
+verify-build.sh
+commit-changes.sh
+cleanup-media.sh
+OPTIMIZATION_COMPLETE.md
+LAZY_LOADING_IMPLEMENTATION.md
+CANVAS_OPTIMIZATION_GUIDE.md
+DEPLOYMENT_GUIDE.md
+GIT_PUSH_INSTRUCTIONS.md
+EASTER_EGGS_GUIDE.md

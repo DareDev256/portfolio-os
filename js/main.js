@@ -14,6 +14,7 @@ import { Login } from './login.js';
 import { WindowManager } from './windows.js'; // Imported for type safety/checking if needed, though logic is in Login
 import { Modal } from './modal.js';
 import { Welcome } from './welcome.js';
+import { Desktop } from './desktop.js';
 
 // Wait for DOM to be ready
 if (document.readyState === 'loading') {
@@ -47,8 +48,16 @@ async function init() {
     Glyphs.setEnabled(safeMode ? false : State.glyphsEnabled);
 
     AudioFX.init();
-    // small boot chime when boot starts (after user gesture it will play)
-    setTimeout(() => AudioFX.bootChime(), 500);
+
+    // Initialize Interaction Engine (lazy-load only if enabled and not in safe mode)
+    if (!safeMode && State.interactionsEnabled) {
+        const { InteractionEngine } = await import('./interactions/engine.js');
+        await InteractionEngine.init();
+        // Store reference for keyboard toggle
+        window.__InteractionEngine = InteractionEngine;
+        // Setup easter egg hooks now that InteractionEngine is ready
+        Desktop.setupEasterEggHooks();
+    }
 
     // Initialize Modal system
     Modal.init();
@@ -108,28 +117,107 @@ async function init() {
         }
     }, 1000);
 
-    // Quick keyboard toggles if palette not handy (Alt+X/A/G/S)
+    // Quick keyboard toggles (Cmd on Mac, Alt on Windows/Linux)
     document.addEventListener('keydown', (e) => {
-        if (e.altKey && !e.shiftKey && !e.metaKey && !e.ctrlKey) {
+        // Detect Mac vs Windows/Linux
+        const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+        const correctModifier = isMac ? e.metaKey : e.altKey;
+        const otherModifiers = !e.shiftKey && !(isMac ? e.altKey : e.metaKey) && !e.ctrlKey;
+
+        if (correctModifier && otherModifiers) {
             const k = e.key.toLowerCase();
-            if (k === 'x') {
-                State.toggleFx();
-                e.preventDefault();
-            }
-            if (k === 'a') {
-                State.toggleAurora();
-                e.preventDefault();
-            }
-            if (k === 'g') {
-                State.toggleGlyphs();
+            if (k === 'c') {
+                State.toggleCursorTrail();
                 e.preventDefault();
             }
             if (k === 's') {
                 State.toggleSound();
                 e.preventDefault();
             }
+            if (k === 'i') {
+                State.toggleInteractions();
+                e.preventDefault();
+            }
+            if (k === 'p') {
+                const controlPanelBtn = document.getElementById('controlPanelBtn');
+                if (controlPanelBtn) controlPanelBtn.click();
+                e.preventDefault();
+            }
         }
     });
+
+    // Control Panel Toggle (waits for desktop to be visible)
+    setTimeout(() => {
+        const controlPanelBtn = document.getElementById('controlPanelBtn');
+        if (!controlPanelBtn) return;
+
+        const controlPanel = document.createElement('div');
+        controlPanel.className = 'control-panel-dropdown';
+        controlPanel.innerHTML = `
+            <div class="control-panel-header">⚙ QUICK SETTINGS</div>
+            <div class="control-panel-item">
+                <span class="control-panel-label">Cursor Trail</span>
+                <div class="mini-toggle" id="toggle-cursor-trail"></div>
+            </div>
+            <div class="control-panel-item">
+                <span class="control-panel-label">Sound</span>
+                <div class="mini-toggle" id="toggle-sound"></div>
+            </div>
+            <div class="control-panel-item">
+                <span class="control-panel-label">Interactions</span>
+                <div class="mini-toggle" id="toggle-interactions"></div>
+            </div>
+        `;
+        document.body.appendChild(controlPanel);
+
+        // Initialize toggle states
+        function updateControlPanel() {
+            const toggleCursorTrail = document.getElementById('toggle-cursor-trail');
+            const toggleSound = document.getElementById('toggle-sound');
+            const toggleInteractions = document.getElementById('toggle-interactions');
+
+            if (toggleCursorTrail) toggleCursorTrail.classList.toggle('active', State.cursorTrailEnabled);
+            if (toggleSound) toggleSound.classList.toggle('active', State.soundEnabled);
+            if (toggleInteractions) toggleInteractions.classList.toggle('active', State.interactionsEnabled);
+        }
+
+        // Toggle visibility
+        controlPanelBtn.addEventListener('click', () => {
+            controlPanel.classList.toggle('active');
+            updateControlPanel();
+        });
+
+        // Close on outside click
+        document.addEventListener('click', (e) => {
+            if (!controlPanel.contains(e.target) && e.target !== controlPanelBtn) {
+                controlPanel.classList.remove('active');
+            }
+        });
+
+        // Wire up toggles
+        const toggleCursorTrail = document.getElementById('toggle-cursor-trail');
+        const toggleSound = document.getElementById('toggle-sound');
+        const toggleInteractions = document.getElementById('toggle-interactions');
+
+        if (toggleCursorTrail) {
+            toggleCursorTrail.addEventListener('click', () => {
+                State.toggleCursorTrail();
+                updateControlPanel();
+            });
+        }
+        if (toggleSound) {
+            toggleSound.addEventListener('click', () => {
+                State.toggleSound();
+                updateControlPanel();
+            });
+        }
+        if (toggleInteractions) {
+            toggleInteractions.addEventListener('click', () => {
+                State.toggleInteractions();
+                updateControlPanel();
+            });
+        }
+    }, 1000);
 
     // Add global error handler
     window.addEventListener('error', (e) => {

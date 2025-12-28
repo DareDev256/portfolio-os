@@ -124,6 +124,44 @@ export const Desktop = {
     },
 
     /**
+     * Setup easter egg hooks (called after InteractionEngine is ready)
+     */
+    setupEasterEggHooks() {
+        if (!window.__InteractionEngine?.easterEggs) {
+            console.warn('[Desktop] InteractionEngine not ready for easter egg hooks');
+            return;
+        }
+
+        // Hook window creation for easter egg tracking
+        const originalCreate = WindowManager.create.bind(WindowManager);
+        WindowManager.create = function(...args) {
+            const result = originalCreate(...args);
+            window.__InteractionEngine.easterEggs.windowsOpened++;
+
+            const count = window.__InteractionEngine.easterEggs.windowsOpened;
+            if (count === 5) {
+                window.__InteractionEngine.easterEggs.showNotification(
+                    '🪟 MULTITASKING PRO',
+                    'Bold of you to assume I have infinite RAM...',
+                    'info',
+                    4000
+                );
+            }
+            if (count === 10) {
+                window.__InteractionEngine.easterEggs.showNotification(
+                    '🤯 WINDOW OVERLOAD',
+                    'You\'re really testing my limits here. Impressive.',
+                    'warning',
+                    4000
+                );
+            }
+            return result;
+        };
+
+        console.log('[Desktop] Easter egg hooks installed');
+    },
+
+    /**
      * Initialize Dock (pinned apps)
      */
     initDock() {
@@ -1298,18 +1336,89 @@ export const Desktop = {
      */
     openResume() {
         const content = document.createElement('div');
-        content.className = 'resume-card-container';
-        content.style.cssText = 'display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 20px; text-align: center;';
+        content.className = 'resume-dashboard';
 
         content.innerHTML = `
-            <div style="font-size: 48px; margin-bottom: 15px;">📄</div>
-            <h3 style="color: var(--neon-orange); margin-bottom: 10px;">DAREDEV256 RESUME</h3>
-            <p style="color: rgba(255,255,255,0.6); font-size: 12px; margin-bottom: 20px;">
-                Full Stack Developer • Creative Technologist
-            </p>
-            <div style="display: flex; gap: 10px;">
-                <button class="cyber-button" id="viewResumeBtn">VIEW FULL RESUME</button>
-                <a href="resume/resume.pdf" download class="cyber-button secondary">DOWNLOAD</a>
+            <!-- Header -->
+            <div class="resume-header">
+                <div class="resume-avatar">DD</div>
+                <div class="resume-title">
+                    <h2>DAREDEV256</h2>
+                    <p>Full Stack Developer • Creative Technologist</p>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="resume-stats-grid">
+                <div class="resume-stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-value" data-target="5">0</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="resume-stat-card">
+                    <div class="stat-icon">💼</div>
+                    <div class="stat-value" data-target="50">0</div>
+                    <div class="stat-label">Projects Completed</div>
+                </div>
+                <div class="resume-stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-value" data-target="15">0</div>
+                    <div class="stat-label">Key Skills</div>
+                </div>
+                <div class="resume-stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-value" data-target="100">0</div>
+                    <div class="stat-label">Commits This Month</div>
+                </div>
+            </div>
+
+            <!-- Skills Breakdown -->
+            <div class="resume-skills">
+                <h3>CORE COMPETENCIES</h3>
+                <div class="skill-bars">
+                    <div class="skill-bar">
+                        <div class="skill-info">
+                            <span>JavaScript / TypeScript</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="skill-fill" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-info">
+                            <span>React / Vue / Svelte</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="skill-fill" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-info">
+                            <span>Node.js / Python</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="skill-fill" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-info">
+                            <span>UI/UX Design</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="skill-fill" style="width: 80%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="resume-actions">
+                <button class="cyber-button" id="viewResumeBtn">📄 VIEW FULL RESUME</button>
+                <a href="resume/resume.pdf" download class="cyber-button secondary">⬇ DOWNLOAD PDF</a>
             </div>
         `;
 
@@ -1318,9 +1427,17 @@ export const Desktop = {
             title: 'Resume',
             icon: '📄',
             content,
-            width: 500,
-            height: 400,
+            width: 700,
+            height: 650,
         });
+
+        // Animate counters on load
+        setTimeout(() => {
+            content.querySelectorAll('.stat-value').forEach(el => {
+                const target = parseInt(el.dataset.target);
+                this.animateCounter(el, target, 1500);
+            });
+        }, 100);
 
         // Handle "View Full" click
         setTimeout(() => {
@@ -1354,6 +1471,23 @@ export const Desktop = {
                 };
             }
         }, 0);
+    },
+
+    /**
+     * Animate counter from 0 to target
+     */
+    animateCounter(element, target, duration = 1500) {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+            start += increment;
+            if (start >= target) {
+                element.textContent = target;
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(start);
+            }
+        }, 16);
     },
 
     /**

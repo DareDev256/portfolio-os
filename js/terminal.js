@@ -137,13 +137,6 @@ export const Terminal = {
                 }
                 break;
 
-            case 'sudo':
-                this.println('[sudo] password for visitor:', 'term-yellow');
-                setTimeout(() => {
-                    this.println('Sorry, try again.', 'term-error');
-                }, 1000);
-                break;
-
             case 'sys':
                 if (args[0] === 'scan') {
                     this.runSystemScan();
@@ -159,7 +152,13 @@ export const Terminal = {
                 break;
 
             default:
-                this.println(`Command not found: ${cmd}`, 'term-error');
+                // Check for easter egg sass responses (use full command for multi-word commands)
+                const sassResponse = window.__InteractionEngine?.easterEggs?.getTerminalSass(cmdRaw);
+                if (sassResponse) {
+                    this.println(sassResponse);
+                } else {
+                    this.println(`Command not found: ${cmd}`, 'term-error');
+                }
         }
     },
 

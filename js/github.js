@@ -12,6 +12,84 @@ export const GitHub = {
     },
 
     /**
+     * Calculate language breakdown from repos
+     */
+    calculateLanguageStats(repos) {
+        const langCount = {};
+        let total = 0;
+
+        repos.forEach(repo => {
+            if (repo.language) {
+                langCount[repo.language] = (langCount[repo.language] || 0) + 1;
+                total++;
+            }
+        });
+
+        const stats = Object.entries(langCount)
+            .map(([name, count]) => ({
+                name,
+                count,
+                percent: Math.round((count / total) * 100)
+            }))
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 3); // Top 3 languages
+
+        return stats;
+    },
+
+    /**
+     * Build commit timeline for last N days
+     */
+    buildCommitTimeline(events, days = 30) {
+        const timeline = [];
+        const now = new Date();
+
+        // Initialize all days with 0 commits
+        for (let i = days - 1; i >= 0; i--) {
+            const date = new Date(now);
+            date.setDate(date.getDate() - i);
+            timeline.push({
+                date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                count: 0
+            });
+        }
+
+        // Count commits per day
+        events
+            .filter(e => e.type === 'PushEvent')
+            .forEach(e => {
+                const eventDate = new Date(e.created_at);
+                const daysDiff = Math.floor((now - eventDate) / (1000 * 60 * 60 * 24));
+
+                if (daysDiff >= 0 && daysDiff < days) {
+                    const index = days - 1 - daysDiff;
+                    if (timeline[index]) {
+                        timeline[index].count += e.payload.commits?.length || 1;
+                    }
+                }
+            });
+
+        return timeline;
+    },
+
+    /**
+     * Animate counter from 0 to target
+     */
+    animateCounter(element, target, duration = 1500) {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+            start += increment;
+            if (start >= target) {
+                element.textContent = target;
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(start);
+            }
+        }, 16);
+    },
+
+    /**
      * Fetch all necessary data: Profile, Repos, Activity
      */
     async getData() {
@@ -60,6 +138,8 @@ export const GitHub = {
             // Calculate simple stats
             const totalStars = repos.reduce((acc, r) => acc + r.stargazers_count, 0);
             const mainLang = 'TypeScript'; // Hardcoded preference or calculated
+            const languageBreakdown = this.calculateLanguageStats(repos);
+            const commitTimeline = this.buildCommitTimeline(events, 30);
 
             const html = `
                 <div class="gh-dashboard">
@@ -88,6 +168,38 @@ export const GitHub = {
                                 <span class="label">STATUS</span>
                                 <span class="value text-green">ONLINE</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Language Breakdown -->
+                    <div class="gh-language-viz">
+                        <h3>CODE DISTRIBUTION</h3>
+                        <div class="gh-lang-rings">
+                            ${languageBreakdown.map(lang => `
+                                <div class="gh-lang-ring">
+                                    <svg viewBox="0 0 100 100">
+                                        <circle class="gh-ring-bg" cx="50" cy="50" r="40"/>
+                                        <circle class="gh-ring-progress" cx="50" cy="50" r="40"
+                                            style="stroke-dasharray: ${lang.percent * 2.51}, 251.2"/>
+                                    </svg>
+                                    <div class="gh-ring-label">
+                                        <div class="gh-ring-percent">${lang.percent}%</div>
+                                        <div class="gh-ring-lang">${lang.name}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Commit Timeline -->
+                    <div class="gh-commit-timeline">
+                        <h3>COMMIT FREQUENCY (30 DAYS)</h3>
+                        <div class="gh-timeline-bars">
+                            ${commitTimeline.map((day, i) => `
+                                <div class="gh-timeline-bar" style="--i: ${i}; height: ${Math.min(day.count * 20, 100)}px"
+                                    title="${day.date}: ${day.count} commits">
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
 
@@ -134,6 +246,15 @@ export const GitHub = {
             `;
 
             container.innerHTML = html;
+
+            // Animate stat counters
+            setTimeout(() => {
+                const reposValue = container.querySelector('.gh-stat:nth-child(1) .value');
+                const starsValue = container.querySelector('.gh-stat:nth-child(2) .value');
+
+                if (reposValue) this.animateCounter(reposValue, user.public_repos);
+                if (starsValue) this.animateCounter(starsValue, totalStars);
+            }, 100);
 
         } catch (err) {
             container.innerHTML = `
