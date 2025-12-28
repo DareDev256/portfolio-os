@@ -243,6 +243,82 @@ export const Lightbox = {
     },
 
     /**
+     * Render current media item
+     */
+    render() {
+        if (this.items.length === 0) return;
+
+        const item = this.items[this.currentIndex];
+        this.mediaContainer.innerHTML = '';
+
+        // Reset transform
+        this.scale = 1;
+        this.pointX = 0;
+        this.pointY = 0;
+
+        // Create image element
+        const img = document.createElement('img');
+        img.src = item.url || item.src || item;
+        img.alt = item.title || item.alt || 'Lightbox image';
+        img.style.maxWidth = '90vw';
+        img.style.maxHeight = '90vh';
+        img.style.objectFit = 'contain';
+        img.style.transformOrigin = 'center center';
+
+        this.mediaContainer.appendChild(img);
+
+        // Update caption
+        if (item.title || item.caption) {
+            this.captionEl.textContent = item.title || item.caption;
+            this.captionEl.style.display = 'block';
+        } else {
+            this.captionEl.style.display = 'none';
+        }
+
+        // Update navigation button visibility
+        this.updateNavigationButtons();
+    },
+
+    /**
+     * Navigate to previous item
+     */
+    prev() {
+        if (this.items.length <= 1) return;
+
+        this.currentIndex--;
+        if (this.currentIndex < 0) {
+            this.currentIndex = this.items.length - 1; // Wrap to end
+        }
+        this.render();
+    },
+
+    /**
+     * Navigate to next item
+     */
+    next() {
+        if (this.items.length <= 1) return;
+
+        this.currentIndex++;
+        if (this.currentIndex >= this.items.length) {
+            this.currentIndex = 0; // Wrap to beginning
+        }
+        this.render();
+    },
+
+    /**
+     * Update navigation button visibility
+     */
+    updateNavigationButtons() {
+        if (this.items.length <= 1) {
+            this.prevBtn.style.display = 'none';
+            this.nextBtn.style.display = 'none';
+        } else {
+            this.prevBtn.style.display = 'block';
+            this.nextBtn.style.display = 'block';
+        }
+    },
+
+    /**
      * Close lightbox
      */
     close() {

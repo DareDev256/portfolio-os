@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="/css/modal.css?v=2.56" />
     <link rel="stylesheet" href="/css/loading.css?v=2.56" />
     <link rel="stylesheet" href="/css/welcome.css?v=2.56" />
+    <link rel="stylesheet" href="/css/accessibility.css?v=2.56" />
 </head>
 
 <body data-theme="dark">
@@ -124,12 +125,12 @@
         <div id="contextMenu" class="context-menu hidden" role="menu"></div>
 
         <!-- Lightbox -->
-        <div id="lightbox" class="lightbox hidden">
+        <div id="lightbox" class="lightbox hidden" role="dialog" aria-label="Image lightbox">
             <div class="lightbox-overlay"></div>
             <div class="lightbox-content">
-                <button class="lightbox-close">×</button>
-                <button class="lightbox-prev">‹</button>
-                <button class="lightbox-next">›</button>
+                <button class="lightbox-close" aria-label="Close lightbox">×</button>
+                <button class="lightbox-prev" aria-label="Previous image">‹</button>
+                <button class="lightbox-next" aria-label="Next image">›</button>
                 <div class="lightbox-media"></div>
                 <div class="lightbox-caption"></div>
             </div>
@@ -137,6 +138,8 @@
     </div>
 
     <!-- Scripts -->
+    <!-- Security: DOMPurify for XSS protection -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
     <!-- System Verified: DareDev256 -->
     <script type="module" src="/js/main.js"></script>
 </body>

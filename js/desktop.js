@@ -732,7 +732,6 @@ export const Desktop = {
 
             // Add click handler
             folderDiv.addEventListener('click', async () => {
-                console.log(`[Media Vault] Folder clicked: ${folderName}`);
                 if (isLocked) {
                     const pass = await Modal.prompt('Restricted Access', `Enter password for ${folderName}:`);
                     if (pass === protectedFolders[folderName]) {
@@ -880,6 +879,26 @@ export const Desktop = {
     },
 
     /**
+     * Get video duration
+     */
+    async getVideoDuration(videoUrl) {
+        return new Promise((resolve) => {
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+
+            video.onloadedmetadata = () => {
+                const duration = Math.floor(video.duration);
+                const minutes = Math.floor(duration / 60);
+                const seconds = duration % 60;
+                resolve(`${minutes}:${seconds.toString().padStart(2, '0')}`);
+            };
+
+            video.onerror = () => resolve('--:--');
+            video.src = videoUrl;
+        });
+    },
+
+    /**
      * Capture video frame for thumbnail
      */
     async captureVideoFrame(videoUrl) {
@@ -983,10 +1002,18 @@ export const Desktop = {
                     <div class="video-thumb" style="${bgStyle}">
                         ${contentHtml}
                         <div class="video-play-icon">▶</div>
-                        <div class="video-duration">0:00</div>
+                        <div class="video-duration">--:--</div>
                     </div>
                     <div class="video-title">${video.title}</div>
                 `;
+
+                // Load actual duration asynchronously
+                if (!video.url.includes('youtube') && !video.url.includes('vimeo')) {
+                    this.getVideoDuration(video.url).then(duration => {
+                        const durationEl = item.querySelector('.video-duration');
+                        if (durationEl) durationEl.textContent = duration;
+                    });
+                }
             }
 
             item.onclick = () => Lightbox.open(videos, i, 'video');
@@ -1000,14 +1027,6 @@ export const Desktop = {
      * Legacy openMedia (kept for compatibility but unused by new flow)
      */
     async openMedia(defaultTab = 'images', category = null) {
-        this.openMediaVault();
-    },
-
-    /**
-     * Legacy openMedia (kept for compatibility but unused by new flow)
-     */
-    async openMedia(defaultTab = 'images', category = null) {
-        // Redirect to new flow
         this.openMediaVault();
     },
 

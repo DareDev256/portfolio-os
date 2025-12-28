@@ -4,6 +4,7 @@
  */
 
 import { State } from './state.js';
+import { Sanitize } from './sanitize.js';
 import { Aurora } from './aurora.js';
 import { Glyphs } from './glyphs.js';
 import { AudioFX } from './audiofx.js';
@@ -164,6 +165,4 @@ async function init() {
             });
         }, 250);
     });
-
-    console.log('Portfolio OS initialized');
 }

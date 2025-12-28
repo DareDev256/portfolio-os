@@ -75,9 +75,6 @@ export const Welcome = {
         import('./desktop.js').then(({ Desktop }) => {
             // Open Media Vault as first step
             Desktop.openMediaVault();
-
-            // Could add more tour steps here
-            console.log('Tour started - Media Vault opened');
         });
     },
 

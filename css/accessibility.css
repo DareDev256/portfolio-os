@@ -1,0 +1,83 @@
+/**
+ * Accessibility Enhancements for Passion OS
+ * Keyboard navigation and screen reader support
+ */
+
+/* Keyboard Focus Indicators */
+*:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 2px;
+    transition: outline-offset 0.1s ease;
+}
+
+/* Enhanced focus for interactive elements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 4px rgba(0, 240, 255, 0.2);
+}
+
+/* Focus for desktop icons */
+.icon:focus-visible {
+    outline: 3px solid var(--neon-cyan);
+    outline-offset: 2px;
+    transform: translateY(-2px);
+}
+
+/* Focus for window controls */
+.window-controls button:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    background: rgba(0, 240, 255, 0.2);
+}
+
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Skip to main content link */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--bg-primary);
+    color: var(--neon-cyan);
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 100000;
+    border: 2px solid var(--neon-cyan);
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    *:focus-visible {
+        outline-width: 3px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -20,7 +20,6 @@ export const GitHub = {
         if (cached) {
             const parsed = JSON.parse(cached);
             if (Date.now() - parsed.timestamp < this.cacheTTL) {
-                console.log('Using cached GitHub data');
                 return parsed.data;
             }
         }

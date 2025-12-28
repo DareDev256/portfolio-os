@@ -21,10 +21,7 @@ export const Mobile = {
      */
     init() {
         if (this.isMobile()) {
-            console.log('Mobile device detected');
             this.applyMobileOptimizations();
-        } else {
-            console.log('Desktop device detected');
         }
     },
 
