@@ -73,6 +73,19 @@ a {
     outline-offset: 2px;
 }
 
+/* GPU acceleration for animated elements */
+.desktop-icon,
+.dock-icon,
+.window,
+.hex-burst,
+.data-stream-particle,
+.micro-particle,
+.micro-ripple {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -82,5 +95,10 @@ a {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+
+    .desktop-icon,
+    .dock-icon {
+        animation: none !important;
     }
 }

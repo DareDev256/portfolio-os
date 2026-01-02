@@ -69,7 +69,11 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0f0a1a 100%);
+    /* Dark industrial background - avoiding generic AI gradients */
+    background:
+        radial-gradient(ellipse at 30% 70%, rgba(20, 40, 60, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 30%, rgba(30, 50, 70, 0.2) 0%, transparent 50%),
+        linear-gradient(180deg, #080a0c 0%, #0d1117 30%, #161b22 60%, #1c2128 100%);
     font-family: var(--font-family);
 }
 
@@ -136,17 +140,28 @@ body::before {
 .os-title {
     font-size: 48px;
     font-weight: 900;
-    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta), var(--neon-cyan));
-    background-size: 200% 100%;
+    /* Gold metallic gradient - matches Mahoraga wheel */
+    background: linear-gradient(
+        135deg,
+        #B8860B 0%,
+        #FFD700 25%,
+        #FFF8DC 50%,
+        #FFD700 75%,
+        #B8860B 100%
+    );
+    background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shimmer 3s linear infinite;
+    background-clip: text;
+    animation: gold-shimmer 4s ease-in-out infinite;
     margin-bottom: 10px;
     letter-spacing: 8px;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
 }
 
 .os-subtitle {
-    color: rgba(0, 240, 255, 0.6);
+    color: rgba(218, 165, 32, 0.7);
     font-size: 12px;
     letter-spacing: 4px;
     margin-bottom: 40px;
@@ -156,13 +171,13 @@ body::before {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #1a1a2e, #2a1a4e);
+    background: linear-gradient(135deg, #1a1a1a, #2a2a20);
     margin: 0 auto 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--neon-cyan);
-    box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+    border: 2px solid var(--neon-amber);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
     position: relative;
 }
 
@@ -171,7 +186,7 @@ body::before {
     inset: -4px;
     border-radius: 50%;
     border: 1px solid transparent;
-    border-top-color: var(--neon-magenta);
+    border-top-color: var(--neon-amber);
     animation: spin 2s linear infinite;
 }
 
@@ -263,10 +278,15 @@ body::before {
 }
 
 .brand {
-    color: var(--neon-cyan);
+    /* Gold metallic to match Mahoraga wheel */
+    background: linear-gradient(90deg, #B8860B, #FFD700, #DAA520);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-weight: 700;
     font-size: 14px;
     letter-spacing: 2px;
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.3));
 }
 
 .version {
@@ -664,6 +684,19 @@ body::before {
     font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
 }
 
+.desktop-icon-svg {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px currentColor);
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.desktop-icon:hover .desktop-icon-svg {
+    filter: drop-shadow(0 0 15px currentColor) drop-shadow(0 0 25px rgba(0, 240, 255, 0.5));
+    transform: scale(1.1);
+}
+
 .desktop-icon:hover .desktop-icon-box {
     transform: scale(1.05);
     box-shadow:
@@ -894,6 +927,19 @@ body::before {
     font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
 }
 
+.dock-icon-svg {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5));
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.dock-icon:hover .dock-icon-svg {
+    filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.8)) drop-shadow(0 0 20px rgba(170, 0, 255, 0.5));
+    transform: scale(1.15);
+}
+
 /* Animations */
 @keyframes shimmer {
     0% {
@@ -902,6 +948,17 @@ body::before {
 
     100% {
         background-position: -200% 0;
+    }
+}
+
+@keyframes gold-shimmer {
+    0%, 100% {
+        background-position: 0% 50%;
+        filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
+    }
+    50% {
+        background-position: 100% 50%;
+        filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
     }
 }
 

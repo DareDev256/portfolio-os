@@ -31,35 +31,35 @@ export const Desktop = {
         {
             id: 'media',
             label: 'MEDIA_VAULT',
-            icon: '📁',
+            icon: 'svg:/assets/media-vault.svg',
             color: '#00f0ff',
             action: () => Desktop.openMediaVault(),
         },
         {
             id: 'applications',
             label: 'APPLICATIONS',
-            icon: '⚡',
+            icon: 'svg:/assets/applications.svg',
             color: '#ff00aa',
             action: () => Desktop.openApplicationsShowcase(),
         },
         {
             id: 'skills',
             label: 'SKILLS_MATRIX',
-            icon: '🕸️',
+            icon: 'svg:/assets/skills-matrix.svg',
             color: '#00f0ff',
             action: () => Desktop.openSkills(),
         },
         {
             id: 'terminal',
             label: 'DEV_TERMINAL',
-            icon: '▶',
+            icon: 'svg:/assets/dev-terminal.svg',
             color: '#00ff88',
             action: () => Desktop.openTerminal(),
         },
         {
             id: 'resume',
             label: 'RESUME',
-            icon: '📄',
+            icon: 'svg:/assets/resume.svg',
             color: '#ffaa00',
             action: () => Desktop.openResume(),
         },
@@ -87,8 +87,8 @@ export const Desktop = {
         {
             id: 'github',
             label: 'GITHUB_OPS',
-            icon: '💻', // Using a generic computer icon as placeholder if FontAwesome isn't available, but standard unicode works
-            color: '#ffffff',
+            icon: 'svg:/assets/github-ops.svg',
+            color: '#00f0ff',
             action: () => Desktop.openGitHubCenter(),
         },
         {
@@ -162,6 +162,53 @@ export const Desktop = {
     },
 
     /**
+     * Create hexagonal burst effect at position
+     */
+    createHexBurst(x, y, color = '#00f0ff') {
+        // Create multiple hex elements for layered effect
+        for (let i = 0; i < 3; i++) {
+            const hex = document.createElement('div');
+            hex.className = 'hex-burst';
+            hex.style.left = `${x}px`;
+            hex.style.top = `${y}px`;
+            hex.style.background = `linear-gradient(135deg, ${color}, var(--neon-magenta, #ff00aa))`;
+            hex.style.animationDelay = `${i * 0.05}s`;
+            hex.style.transform = `translate(-50%, -50%) scale(${1 + i * 0.3})`;
+
+            document.body.appendChild(hex);
+
+            // Clean up after animation
+            setTimeout(() => hex.remove(), 600);
+        }
+
+        // Also spawn some data particles
+        this.createDataParticles(x, y, color);
+    },
+
+    /**
+     * Create falling data stream particles
+     */
+    createDataParticles(x, y, color = '#00f0ff') {
+        const chars = ['0', '1', '⟨', '⟩', '◈', '▲', '●', '⬡'];
+        const count = 5 + Math.floor(Math.random() * 5);
+
+        for (let i = 0; i < count; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'data-stream-particle';
+            particle.textContent = chars[Math.floor(Math.random() * chars.length)];
+            particle.style.left = `${x + (Math.random() - 0.5) * 40}px`;
+            particle.style.top = `${y}px`;
+            particle.style.color = color;
+            particle.style.textShadow = `0 0 5px ${color}`;
+            particle.style.animationDelay = `${Math.random() * 0.2}s`;
+
+            document.body.appendChild(particle);
+
+            setTimeout(() => particle.remove(), 1200);
+        }
+    },
+
+    /**
      * Initialize Dock (pinned apps)
      */
     initDock() {
@@ -175,7 +222,7 @@ export const Desktop = {
         // plus Developer Console (Terminal) as a bonus for power users
         const dockIds = ['about', 'skills', 'github', 'applications', 'terminal'];
 
-        dockIds.forEach(id => {
+        dockIds.forEach((id, index) => {
             const item = this.DESKTOP_ITEMS.find(i => i.id === id);
             if (item) {
                 const btn = document.createElement('button');
@@ -183,14 +230,24 @@ export const Desktop = {
                 btn.setAttribute('aria-label', item.label);
                 btn.title = item.label; // Tooltip
 
-                // Use emoji icon
-                btn.innerHTML = `<span class="dock-icon-emoji">${item.icon}</span>`;
+                // Set dock index for staggered animations
+                btn.style.setProperty('--dock-index', index);
+
+                // Use emoji or SVG icon
+                const isSvgIcon = item.icon.startsWith('svg:');
+                btn.innerHTML = isSvgIcon
+                    ? `<img src="${item.icon.replace('svg:', '')}" alt="${item.label}" class="dock-icon-svg" />`
+                    : `<span class="dock-icon-emoji">${item.icon}</span>`;
 
                 // Add click handler
-                btn.onclick = () => {
+                btn.onclick = (e) => {
                     // Bounce animation
                     btn.classList.add('bouncing');
                     setTimeout(() => btn.classList.remove('bouncing'), 1000);
+
+                    // Create hex burst effect
+                    this.createHexBurst(e.clientX, e.clientY, item.color);
+
                     item.action();
                 };
 
@@ -242,6 +299,9 @@ export const Desktop = {
             icon.style.color = item.color;
             icon.dataset.iconId = item.id;
 
+            // Set icon index for staggered animations
+            icon.style.setProperty('--icon-index', index);
+
             // Position Logic
             if (savedLayout[item.id]) {
                 icon.style.top = `${savedLayout[item.id].y}px`;
@@ -252,9 +312,15 @@ export const Desktop = {
                 icon.style.left = `${defaultLeft}px`;
             }
 
+            // Check if icon is SVG path or emoji
+            const isSvgIcon = item.icon.startsWith('svg:');
+            const iconContent = isSvgIcon
+                ? `<img src="${item.icon.replace('svg:', '')}" alt="${item.label}" class="desktop-icon-svg" />`
+                : `<span class="desktop-icon-emoji">${item.icon}</span>`;
+
             icon.innerHTML = `
                 <div class="desktop-icon-box" style="border-color: ${item.color}40; box-shadow: 0 0 20px ${item.color}20;">
-                    <span class="desktop-icon-emoji">${item.icon}</span>
+                    ${iconContent}
                 </div>
                 <span class="desktop-icon-label" style="color: ${item.color};">${item.label}</span>
             `;
@@ -265,6 +331,10 @@ export const Desktop = {
             // Click to open (needs check to prevent opening after drag)
             icon.addEventListener('click', (e) => {
                 if (icon.dataset.isDragging === 'true') return;
+
+                // Create hex burst effect on click
+                this.createHexBurst(e.clientX, e.clientY, item.color);
+
                 item.action();
             });
 

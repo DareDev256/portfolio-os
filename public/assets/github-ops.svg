@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <!-- Cyberpunk gradient: cyan to magenta -->
+    <linearGradient id="cyberGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00f0ff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#aa00ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff00aa;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Neon glow filter -->
+    <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="blur1"/>
+      <feGaussianBlur stdDeviation="4" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Pulse animation -->
+    <style>
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+      @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .pulse { animation: pulse 2s ease-in-out infinite; }
+      .orbit { animation: rotate 8s linear infinite; transform-origin: 50px 50px; }
+    </style>
+  </defs>
+
+  <g filter="url(#neonGlow)">
+    <!-- Outer hexagonal frame -->
+    <polygon
+      points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5"
+      stroke="url(#cyberGradient)"
+      stroke-width="2"
+      fill="none"
+      class="pulse"
+    />
+
+    <!-- Inner rotating orbit ring -->
+    <circle
+      cx="50" cy="50" r="30"
+      stroke="url(#cyberGradient)"
+      stroke-width="1.5"
+      stroke-dasharray="8 4"
+      fill="none"
+      class="orbit"
+    />
+
+    <!-- Terminal bracket: > -->
+    <g stroke="url(#cyberGradient)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <!-- Left bracket < -->
+      <polyline points="35,35 25,50 35,65" />
+      <!-- Right bracket > -->
+      <polyline points="65,35 75,50 65,65" />
+    </g>
+
+    <!-- Central slash / -->
+    <line
+      x1="55" y1="30"
+      x2="45" y2="70"
+      stroke="url(#cyberGradient)"
+      stroke-width="3"
+      stroke-linecap="round"
+    />
+
+    <!-- Data nodes at corners -->
+    <g fill="url(#cyberGradient)" class="pulse">
+      <circle cx="50" cy="5" r="3" />
+      <circle cx="90" cy="27.5" r="3" />
+      <circle cx="90" cy="72.5" r="3" />
+      <circle cx="50" cy="95" r="3" />
+      <circle cx="10" cy="72.5" r="3" />
+      <circle cx="10" cy="27.5" r="3" />
+    </g>
+
+    <!-- Status indicator dot -->
+    <circle cx="75" cy="25" r="5" fill="#00ff88">
+      <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

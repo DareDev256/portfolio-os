@@ -101,6 +101,10 @@ export const WindowManager = {
         // Make window visible with slight delay for animation
         setTimeout(() => {
             windowEl.classList.add('visible');
+
+            // Add holographic scan effect on open
+            windowEl.classList.add('window-scan-open');
+            setTimeout(() => windowEl.classList.remove('window-scan-open'), 700);
         }, 10);
 
         // Create window object
@@ -461,8 +465,9 @@ export const WindowManager = {
         const windowObj = State.getWindow(id);
         if (!windowObj) return;
 
-        // Add closing animation
+        // Add glitch closing animation
         windowObj.element.classList.add('closing');
+        windowObj.element.classList.add('window-glitch-close');
 
         // Remove after animation completes
         setTimeout(() => {
@@ -478,7 +483,7 @@ export const WindowManager = {
                     this.focus(otherWindows[otherWindows.length - 1].id);
                 }
             }
-        }, 200);
+        }, 350); // Extended for glitch animation
     },
 
     /**
