@@ -230,11 +230,23 @@ export const WindowManager = {
     },
 
     /**
-     * Initialize window dragging
+     * Initialize window dragging with physics (inertia + magnetic snap)
      */
     initDragging(windowObj, titlebar) {
         let isDragging = false;
         let startX, startY, initialX, initialY;
+        let velocityX = 0, velocityY = 0;
+        let lastX = 0, lastY = 0;
+        let lastTime = 0;
+
+        // Magnetic snap settings
+        const SNAP_THRESHOLD = 20; // Pixels to trigger snap
+        const SNAP_MARGIN = 10; // Margin from edge when snapped
+
+        // Physics settings
+        const FRICTION = 0.92; // Velocity decay
+        const MIN_VELOCITY = 0.5; // Stop threshold
+        const BOUNCE_FACTOR = 0.3; // Bounce elasticity
 
         const onPointerDown = (e) => {
             if (e.target.closest('.window-controls')) return;
@@ -245,6 +257,17 @@ export const WindowManager = {
             startY = e.clientY;
             initialX = windowObj.x;
             initialY = windowObj.y;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            lastTime = performance.now();
+            velocityX = 0;
+            velocityY = 0;
+
+            // Stop any ongoing inertia animation
+            if (windowObj.inertiaFrame) {
+                cancelAnimationFrame(windowObj.inertiaFrame);
+                windowObj.inertiaFrame = null;
+            }
 
             this.focus(windowObj.id);
 
@@ -256,6 +279,19 @@ export const WindowManager = {
         const onPointerMove = (e) => {
             if (!isDragging) return;
 
+            const now = performance.now();
+            const dt = now - lastTime;
+
+            // Calculate velocity
+            if (dt > 0) {
+                velocityX = (e.clientX - lastX) / dt * 16; // Normalize to ~60fps
+                velocityY = (e.clientY - lastY) / dt * 16;
+            }
+
+            lastX = e.clientX;
+            lastY = e.clientY;
+            lastTime = now;
+
             const dx = e.clientX - startX;
             const dy = e.clientY - startY;
 
@@ -264,7 +300,7 @@ export const WindowManager = {
 
             // Constrain to viewport
             windowObj.x = Math.max(0, Math.min(windowObj.x, window.innerWidth - 100));
-            windowObj.y = Math.max(0, Math.min(windowObj.y, window.innerHeight - 100));
+            windowObj.y = Math.max(40, Math.min(windowObj.y, window.innerHeight - 100));
 
             windowObj.element.style.left = `${windowObj.x}px`;
             windowObj.element.style.top = `${windowObj.y}px`;
@@ -274,7 +310,104 @@ export const WindowManager = {
             isDragging = false;
             document.removeEventListener('pointermove', onPointerMove);
             document.removeEventListener('pointerup', onPointerUp);
-            State.saveWindowStates();
+
+            // Apply magnetic snapping first
+            const snapped = applyMagneticSnap(windowObj);
+
+            // If not snapped, apply inertia
+            if (!snapped && (Math.abs(velocityX) > MIN_VELOCITY || Math.abs(velocityY) > MIN_VELOCITY)) {
+                applyInertia(windowObj, velocityX, velocityY);
+            } else {
+                State.saveWindowStates();
+            }
+        };
+
+        const applyMagneticSnap = (win) => {
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            let snapped = false;
+
+            // Snap to left edge
+            if (win.x < SNAP_THRESHOLD) {
+                win.x = SNAP_MARGIN;
+                snapped = true;
+            }
+            // Snap to right edge
+            else if (win.x + win.width > vw - SNAP_THRESHOLD) {
+                win.x = vw - win.width - SNAP_MARGIN;
+                snapped = true;
+            }
+
+            // Snap to top edge
+            if (win.y < SNAP_THRESHOLD + 40) { // Account for top bar
+                win.y = 40 + SNAP_MARGIN;
+                snapped = true;
+            }
+            // Snap to bottom edge (above dock)
+            else if (win.y + win.height > vh - SNAP_THRESHOLD - 80) { // Account for dock
+                win.y = vh - win.height - 80 - SNAP_MARGIN;
+                snapped = true;
+            }
+
+            if (snapped) {
+                // Animate to snapped position with a subtle bounce
+                win.element.style.transition = 'left 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                win.element.style.left = `${win.x}px`;
+                win.element.style.top = `${win.y}px`;
+
+                setTimeout(() => {
+                    win.element.style.transition = '';
+                }, 200);
+            }
+
+            return snapped;
+        };
+
+        const applyInertia = (win, vx, vy) => {
+            const animate = () => {
+                // Apply friction
+                vx *= FRICTION;
+                vy *= FRICTION;
+
+                // Update position
+                win.x += vx;
+                win.y += vy;
+
+                // Bounce off edges
+                const vw = window.innerWidth;
+                const vh = window.innerHeight;
+
+                if (win.x <= 0) {
+                    win.x = 0;
+                    vx = -vx * BOUNCE_FACTOR;
+                } else if (win.x + win.width >= vw) {
+                    win.x = vw - win.width;
+                    vx = -vx * BOUNCE_FACTOR;
+                }
+
+                if (win.y <= 40) { // Top bar
+                    win.y = 40;
+                    vy = -vy * BOUNCE_FACTOR;
+                } else if (win.y + win.height >= vh - 80) { // Dock
+                    win.y = vh - win.height - 80;
+                    vy = -vy * BOUNCE_FACTOR;
+                }
+
+                win.element.style.left = `${win.x}px`;
+                win.element.style.top = `${win.y}px`;
+
+                // Continue if still moving
+                if (Math.abs(vx) > MIN_VELOCITY || Math.abs(vy) > MIN_VELOCITY) {
+                    win.inertiaFrame = requestAnimationFrame(animate);
+                } else {
+                    // Settle and save
+                    win.inertiaFrame = null;
+                    applyMagneticSnap(win);
+                    State.saveWindowStates();
+                }
+            };
+
+            win.inertiaFrame = requestAnimationFrame(animate);
         };
 
         titlebar.addEventListener('pointerdown', onPointerDown);

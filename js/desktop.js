@@ -285,10 +285,39 @@ export const Desktop = {
         // Load saved positions
         const savedLayout = JSON.parse(localStorage.getItem('desktop_layout') || '{}');
 
-        // Default starting position
-        let defaultTop = 60;
-        const defaultLeft = 30;
-        const gap = 110; // Icon height + spacing
+        // Default positions for first-time visitors
+        // Center the 3 key icons (About, Resume, Applications) prominently
+        const getDefaultPosition = (item, index) => {
+            const vw = window.innerWidth;
+            const centerX = vw / 2;
+            const topAreaY = 120; // Below top bar
+
+            // Key icons get centered prominently
+            if (item.id === 'about') {
+                return { x: centerX - 200, y: topAreaY + 60 };
+            }
+            if (item.id === 'resume') {
+                return { x: centerX, y: topAreaY + 60 };
+            }
+            if (item.id === 'applications') {
+                return { x: centerX + 200, y: topAreaY + 60 };
+            }
+
+            // Other icons go in a grid on the left side
+            const otherIcons = ['media', 'skills', 'terminal', 'contact', 'showcase', 'github', 'linkedin', 'settings'];
+            const otherIndex = otherIcons.indexOf(item.id);
+            if (otherIndex !== -1) {
+                const col = otherIndex % 2;
+                const row = Math.floor(otherIndex / 2);
+                return {
+                    x: 30 + (col * 100),
+                    y: topAreaY + 200 + (row * 110)
+                };
+            }
+
+            // Fallback
+            return { x: 30, y: 60 + (index * 110) };
+        };
 
         this.DESKTOP_ITEMS.forEach((item, index) => {
             const icon = document.createElement('button');
@@ -307,9 +336,10 @@ export const Desktop = {
                 icon.style.top = `${savedLayout[item.id].y}px`;
                 icon.style.left = `${savedLayout[item.id].x}px`;
             } else {
-                // Fallback to column layout
-                icon.style.top = `${defaultTop + (index * gap)}px`;
-                icon.style.left = `${defaultLeft}px`;
+                // Smart default layout for first-time visitors
+                const defaultPos = getDefaultPosition(item, index);
+                icon.style.top = `${defaultPos.y}px`;
+                icon.style.left = `${defaultPos.x}px`;
             }
 
             // Check if icon is SVG path or emoji

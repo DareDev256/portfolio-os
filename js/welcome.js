@@ -1,3 +1,5 @@
+import { Tour } from './tour.js';
+
 /**
  * Welcome Tutorial Module
  * Shows a friendly introduction when user clicks Start button
@@ -71,11 +73,8 @@ export const Welcome = {
      * Start guided tour
      */
     startTour() {
-        // Import Desktop dynamically to avoid circular dependency
-        import('./desktop.js').then(({ Desktop }) => {
-            // Open Media Vault as first step
-            Desktop.openMediaVault();
-        });
+        // Start the spotlight tour
+        Tour.start();
     },
 
     /**
