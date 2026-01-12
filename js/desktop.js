@@ -105,6 +105,20 @@ export const Desktop = {
             color: '#00BCD4',
             action: () => Desktop.openSettings(),
         },
+        {
+            id: 'image-generator',
+            label: 'IMG_GEN.ai',
+            icon: 'svg:/assets/image-generator.svg',
+            color: '#be185d',
+            action: () => window.open('https://web-ten-vert-46.vercel.app/', '_blank'),
+        },
+        {
+            id: 'typemaster',
+            label: 'TYPEMASTER',
+            icon: 'svg:/assets/typemaster.svg',
+            color: '#00ff88',
+            action: () => window.open('https://typing-game-kappa-seven.vercel.app/', '_blank'),
+        },
     ],
 
     /**

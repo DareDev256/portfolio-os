@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="typemasterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00f0ff"/>
+      <stop offset="50%" style="stop-color:#00ff88"/>
+      <stop offset="100%" style="stop-color:#00f0ff"/>
+    </linearGradient>
+    <linearGradient id="keyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#0f0f1a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Keyboard base -->
+  <rect x="6" y="28" width="52" height="28" rx="4"
+        fill="url(#keyGrad)" stroke="url(#typemasterGrad)" stroke-width="2"/>
+
+  <!-- Key rows -->
+  <!-- Top row -->
+  <rect x="10" y="32" width="6" height="5" rx="1" fill="none" stroke="url(#typemasterGrad)" stroke-width="1" opacity="0.7"/>
+  <rect x="18" y="32" width="6" height="5" rx="1" fill="none" stroke="url(#typemasterGrad)" stroke-width="1" opacity="0.7"/>
+  <rect x="26" y="32" width="6" height="5" rx="1" fill="url(#typemasterGrad)" opacity="0.4"/>
+  <rect x="34" y="32" width="6" height="5" rx="1" fill="none" stroke="url(#typemasterGrad)" stroke-width="1" opacity="0.7"/>
+  <rect x="42" y="32" width="6" height="5" rx="1" fill="none" stroke="url(#typemasterGrad)" stroke-width="1" opacity="0.7"/>
+  <rect x="50" y="32" width="6" height="5" rx="1" fill="none" stroke="url(#typemasterGrad)" stroke-width="1" opacity="0.7"/>
+
+  <!-- Middle row -->
+  <rect x="12" y="39" width="6" height="5" rx="1" fill="none" stroke="url(#typemasterGrad)" stroke-width="1" opacity="0.7"/>
+  <rect x="20" y="39" width="6" height="5" rx="1" fill="none" stroke="url(#typemasterGrad)" stroke-width="1" opacity="0.7"/>
+  <rect x="28" y="39" width="6" height="5" rx="1" fill="none" stroke="url(#typemasterGrad)" stroke-width="1" opacity="0.7"/>
+  <rect x="36" y="39" width="6" height="5" rx="1" fill="url(#typemasterGrad)" opacity="0.4"/>
+  <rect x="44" y="39" width="6" height="5" rx="1" fill="none" stroke="url(#typemasterGrad)" stroke-width="1" opacity="0.7"/>
+
+  <!-- Space bar -->
+  <rect x="16" y="46" width="32" height="5" rx="1" fill="none" stroke="url(#typemasterGrad)" stroke-width="1.5"/>
+
+  <!-- Speed lines / typing effect -->
+  <g stroke="url(#typemasterGrad)" stroke-width="1.5" stroke-linecap="round" opacity="0.8">
+    <line x1="32" y1="24" x2="32" y2="14"/>
+    <line x1="26" y1="22" x2="22" y2="10"/>
+    <line x1="38" y1="22" x2="42" y2="10"/>
+  </g>
+
+  <!-- WPM indicator -->
+  <text x="32" y="10" font-family="monospace" font-size="8" fill="url(#typemasterGrad)" text-anchor="middle" font-weight="bold">WPM</text>
+
+  <!-- Cursor blink -->
+  <rect x="29" y="18" width="2" height="4" fill="#00ff88">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+</svg>

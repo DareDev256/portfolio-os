@@ -1,0 +1,207 @@
+/* Galaxy Effect Styles
+ * JJK/Dark Shonen cosmic aesthetic
+ * Applied via Three.js procedural background
+ */
+
+/* Container for galaxy background effect */
+.galaxy-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.galaxy-container > canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+    border-radius: inherit;
+}
+
+/* Ensure all login panel content sits above the galaxy canvas */
+.login-panel.galaxy-container .os-title,
+.login-panel.galaxy-container .os-subtitle,
+.login-panel.galaxy-container #loginContent,
+.login-panel.galaxy-container #bootSequence {
+    position: relative;
+    z-index: 10;
+}
+
+.login-panel.galaxy-container .corner-accent {
+    z-index: 11;
+}
+
+/* Galaxy text effect - text reveals the galaxy behind it */
+.galaxy-text {
+    position: relative;
+    z-index: 1;
+    /* Fallback for browsers without mix-blend-mode */
+    color: transparent;
+    background: linear-gradient(
+        135deg,
+        #4c1d95 0%,
+        #6b21a8 25%,
+        #be185d 50%,
+        #6b21a8 75%,
+        #4c1d95 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    /* Glow effect */
+    filter: drop-shadow(0 0 20px rgba(107, 33, 168, 0.5))
+            drop-shadow(0 0 40px rgba(190, 24, 93, 0.3));
+}
+
+/* When galaxy canvas is active, use it as the text fill */
+.galaxy-active .galaxy-text {
+    mix-blend-mode: screen;
+}
+
+/* Fallback static gradient for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .galaxy-text {
+        background: linear-gradient(
+            135deg,
+            #4c1d95 0%,
+            #6b21a8 30%,
+            #be185d 60%,
+            #991b1b 100%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: none;
+    }
+}
+
+/* Preserve original gold styling as fallback */
+.gold-metallic {
+    background: linear-gradient(
+        135deg,
+        #B8860B 0%,
+        #FFD700 25%,
+        #FFF8DC 50%,
+        #FFD700 75%,
+        #B8860B 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))
+            drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+}
+
+/* Galaxy wheel treatment */
+.galaxy-wheel {
+    position: relative;
+    /* Override gold border with galaxy purple */
+    border-color: rgba(107, 33, 168, 0.8) !important;
+    box-shadow:
+        0 0 30px rgba(107, 33, 168, 0.4),
+        0 0 60px rgba(190, 24, 93, 0.2),
+        inset 0 0 20px rgba(107, 33, 168, 0.1) !important;
+}
+
+.galaxy-wheel-glow {
+    filter: drop-shadow(0 0 15px rgba(107, 33, 168, 0.6))
+            drop-shadow(0 0 30px rgba(190, 24, 93, 0.4))
+            drop-shadow(0 0 45px rgba(107, 33, 168, 0.3));
+}
+
+/* Galaxy color overlay for SVGs - shift gold to purple/magenta
+   Gold is ~45deg hue, purple is ~280deg, so we need ~235deg rotation */
+.galaxy-wheel svg:not(.galaxy-wheel-animated),
+.galaxy-wheel img:not(.galaxy-wheel-animated) {
+    filter: hue-rotate(235deg) saturate(1.4) brightness(0.9);
+}
+
+/* Pulsing glow animation for wheel - includes hue-rotate */
+@keyframes galaxyPulse {
+    0%, 100% {
+        filter: hue-rotate(235deg) saturate(1.4) brightness(0.9)
+                drop-shadow(0 0 15px rgba(107, 33, 168, 0.7))
+                drop-shadow(0 0 30px rgba(190, 24, 93, 0.5));
+    }
+    50% {
+        filter: hue-rotate(235deg) saturate(1.6) brightness(1.0)
+                drop-shadow(0 0 25px rgba(107, 33, 168, 0.9))
+                drop-shadow(0 0 50px rgba(190, 24, 93, 0.7))
+                drop-shadow(0 0 70px rgba(153, 27, 27, 0.4));
+    }
+}
+
+.galaxy-wheel-animated {
+    /* Initial state before animation kicks in */
+    filter: hue-rotate(235deg) saturate(1.4) brightness(0.9)
+            drop-shadow(0 0 15px rgba(107, 33, 168, 0.7))
+            drop-shadow(0 0 30px rgba(190, 24, 93, 0.5));
+    animation: galaxyPulse 4s ease-in-out infinite;
+}
+
+/* Galaxy ring around wheel */
+.galaxy-wheel .login-avatar-ring {
+    border-top-color: rgba(190, 24, 93, 0.8) !important;
+}
+
+/* Title-specific galaxy styling */
+.os-title.galaxy-text {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+/* Subtle shimmer animation overlay */
+@keyframes galaxyShimmer {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+.galaxy-shimmer {
+    position: relative;
+}
+
+.galaxy-shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: galaxyShimmer 8s linear infinite;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+/* Login panel galaxy background container */
+.login-panel.galaxy-container {
+    background: rgba(8, 8, 12, 0.85);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(107, 33, 168, 0.3);
+    box-shadow:
+        0 20px 80px rgba(0, 0, 0, 0.6),
+        inset 0 0 0 1px rgba(190, 24, 93, 0.1),
+        0 0 40px rgba(107, 33, 168, 0.2);
+}
+
+.login-panel.galaxy-container:hover {
+    border-color: rgba(190, 24, 93, 0.5);
+    box-shadow:
+        0 30px 100px rgba(0, 0, 0, 0.8),
+        inset 0 0 0 1px rgba(190, 24, 93, 0.2),
+        0 0 60px rgba(107, 33, 168, 0.3);
+}
