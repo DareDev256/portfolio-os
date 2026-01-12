@@ -49,24 +49,21 @@ export const Login = {
     },
 
     /**
-     * Initialize galaxy background effect on login panel
+     * Initialize galaxy background effect on document body (persists across login/desktop)
      */
     initGalaxyEffect() {
-        const loginPanel = this.lockScreen?.querySelector('.login-panel');
-        if (!loginPanel) return;
-
-        // Add galaxy container class
-        loginPanel.classList.add('galaxy-container');
+        // Only initialize once
+        if (this.galaxyInstance || document.body.classList.contains('galaxy-active')) return;
 
         // Apply galaxy text styling to title
-        const osTitle = loginPanel.querySelector('.os-title');
+        const osTitle = this.lockScreen?.querySelector('.os-title');
         if (osTitle) {
-            osTitle.classList.add('galaxy-text', 'galaxy-shimmer');
+            osTitle.classList.add('galaxy-text');
         }
 
         // Apply galaxy treatment to wheel and its container
-        const wheelContainer = loginPanel.querySelector('.login-avatar-container');
-        const wheel = loginPanel.querySelector('.login-avatar-icon');
+        const wheelContainer = this.lockScreen?.querySelector('.login-avatar-container');
+        const wheel = this.lockScreen?.querySelector('.login-avatar-icon');
         if (wheelContainer) {
             wheelContainer.classList.add('galaxy-wheel');
         }
@@ -74,19 +71,18 @@ export const Login = {
             wheel.classList.add('galaxy-wheel-animated');
         }
 
-        // Initialize Three.js galaxy background
+        // Initialize Three.js galaxy background on BODY (persists through login)
         try {
-            this.galaxyInstance = initGalaxyBackground(loginPanel, {
-                starCount: 250,
-                nebulaSpeed: 0.0002,
+            this.galaxyInstance = initGalaxyBackground(document.body, {
+                starCount: 500,
+                nebulaSpeed: 0.00025,
                 starDriftSpeed: 0.0001,
                 mouseInfluence: 0.015
             });
-            loginPanel.classList.add('galaxy-active');
-            console.log('[Login] Galaxy background initialized');
+            document.body.classList.add('galaxy-active', 'galaxy-container');
+            console.log('[Login] Full-page galaxy background initialized on body');
         } catch (err) {
             console.warn('[Login] Galaxy background failed to initialize, using CSS fallback:', err);
-            // CSS fallback is already applied via .galaxy-text class
         }
     },
 
@@ -219,10 +215,7 @@ export const Login = {
             window.__InteractionEngine.soundManager.play('ps1-boot');
         }
 
-        // Clean up galaxy effect when leaving login screen
-        if (this.galaxyInstance) {
-            this.galaxyInstance.stop();
-        }
+        // Galaxy stays running - it's now on the body element
 
         // Warp tunnel: login -> desktop
         Warp.transition(() => {
@@ -230,11 +223,7 @@ export const Login = {
             this.desktop.classList.remove('hidden');
             this.desktop.classList.add('fade-in');
 
-            // Destroy galaxy to free GPU resources
-            if (this.galaxyInstance) {
-                destroyGalaxyBackground();
-                this.galaxyInstance = null;
-            }
+            // Galaxy persists through login - don't destroy it!
 
             // Initialize desktop components
             this.initDesktop();

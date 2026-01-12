@@ -3,55 +3,142 @@
  * Applied via Three.js procedural background
  */
 
-/* Container for galaxy background effect */
+/* Container for galaxy background effect - FULL PAGE */
 .galaxy-container {
     position: relative;
     overflow: hidden;
 }
 
 .galaxy-container > canvas {
-    position: absolute !important;
+    position: fixed !important;
     top: 0 !important;
     left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
+    width: 100vw !important;
+    height: 100vh !important;
     pointer-events: none !important;
     z-index: 0 !important;
-    border-radius: inherit;
+}
+
+/* When galaxy is on body, make backgrounds transparent */
+body.galaxy-active {
+    background: transparent !important;
+}
+
+/* Lock screen transparent so galaxy shows through */
+body.galaxy-active .lock-screen {
+    background: transparent !important;
+}
+
+/* Desktop transparent so galaxy shows through */
+body.galaxy-active .desktop {
+    background: transparent !important;
+}
+
+/* Login panel becomes glassy overlay on galaxy */
+body.galaxy-active .login-panel {
+    background: rgba(8, 8, 18, 0.5) !important;
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(107, 33, 168, 0.4);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(190, 24, 93, 0.15),
+        0 0 40px rgba(107, 33, 168, 0.15);
+}
+
+/* Override subtitle gold with purple */
+body.galaxy-active .os-subtitle {
+    color: rgba(190, 24, 93, 0.7) !important;
+}
+
+/* Override avatar container gold with galaxy purple */
+body.galaxy-active .login-avatar-container {
+    border-color: rgba(190, 24, 93, 0.6) !important;
+    box-shadow: 0 0 30px rgba(107, 33, 168, 0.4), 0 0 50px rgba(190, 24, 93, 0.2) !important;
+}
+
+/* Override login button with purple theme */
+body.galaxy-active .cyber-button {
+    border-color: rgba(190, 24, 93, 0.6);
+    color: #ec4899;
+}
+
+body.galaxy-active .cyber-button:hover {
+    background: linear-gradient(135deg, #be185d, #6b21a8);
+    color: #fff;
+    border-color: #be185d;
+    box-shadow: 0 0 30px rgba(190, 24, 93, 0.6), 0 0 50px rgba(107, 33, 168, 0.3);
 }
 
 /* Ensure all login panel content sits above the galaxy canvas */
-.login-panel.galaxy-container .os-title,
-.login-panel.galaxy-container .os-subtitle,
-.login-panel.galaxy-container #loginContent,
-.login-panel.galaxy-container #bootSequence {
+body.galaxy-active .login-panel .os-title,
+body.galaxy-active .login-panel .os-subtitle,
+body.galaxy-active .login-panel #loginContent,
+body.galaxy-active .login-panel #bootSequence,
+body.galaxy-active .login-panel .corner-accent {
     position: relative;
     z-index: 10;
 }
 
-.login-panel.galaxy-container .corner-accent {
-    z-index: 11;
+/* Desktop content above galaxy */
+body.galaxy-active .desktop .desktop-icons,
+body.galaxy-active .desktop .top-bar,
+body.galaxy-active .desktop .taskbar,
+body.galaxy-active .desktop .windows-container {
+    position: relative;
+    z-index: 10;
 }
 
-/* Galaxy text effect - text reveals the galaxy behind it */
+/* Hide old background wheel when galaxy is active */
+body.galaxy-active .bg-wheel-container {
+    display: none !important;
+}
+
+/* Hide the "SOLUTIONS" watermark when galaxy is active */
+body.galaxy-active::before {
+    display: none !important;
+}
+
+/* Galaxy text effect - cosmic purple/magenta gradient */
 .galaxy-text {
     position: relative;
     z-index: 1;
-    /* Fallback for browsers without mix-blend-mode */
-    color: transparent;
+    /* Anime-style font */
+    font-family: 'Black Ops One', 'Orbitron', sans-serif !important;
+    /* Override any gold styling with galaxy purple */
     background: linear-gradient(
         135deg,
-        #4c1d95 0%,
-        #6b21a8 25%,
-        #be185d 50%,
-        #6b21a8 75%,
-        #4c1d95 100%
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    /* Glow effect */
-    filter: drop-shadow(0 0 20px rgba(107, 33, 168, 0.5))
-            drop-shadow(0 0 40px rgba(190, 24, 93, 0.3));
+        #6b21a8 0%,
+        #be185d 30%,
+        #ec4899 50%,
+        #be185d 70%,
+        #6b21a8 100%
+    ) !important;
+    background-size: 200% 200% !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+    /* Remove gold animation, use galaxy shimmer */
+    animation: galaxy-text-shimmer 4s ease-in-out infinite !important;
+    /* Cosmic glow effect */
+    filter: drop-shadow(0 0 15px rgba(190, 24, 93, 0.6))
+            drop-shadow(0 0 30px rgba(107, 33, 168, 0.4))
+            drop-shadow(0 0 45px rgba(236, 72, 153, 0.2)) !important;
+}
+
+@keyframes galaxy-text-shimmer {
+    0%, 100% {
+        background-position: 0% 50%;
+        filter: drop-shadow(0 0 15px rgba(190, 24, 93, 0.6))
+                drop-shadow(0 0 30px rgba(107, 33, 168, 0.4));
+    }
+    50% {
+        background-position: 100% 50%;
+        filter: drop-shadow(0 0 20px rgba(190, 24, 93, 0.8))
+                drop-shadow(0 0 40px rgba(107, 33, 168, 0.5))
+                drop-shadow(0 0 60px rgba(236, 72, 153, 0.3));
+    }
 }
 
 /* When galaxy canvas is active, use it as the text fill */
