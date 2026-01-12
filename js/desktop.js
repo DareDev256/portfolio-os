@@ -43,6 +43,20 @@ export const Desktop = {
             action: () => Desktop.openApplicationsShowcase(),
         },
         {
+            id: 'image-generator',
+            label: 'IMG_GEN.ai',
+            icon: 'svg:/assets/image-generator.svg',
+            color: '#be185d',
+            action: () => window.open('https://web-ten-vert-46.vercel.app/', '_blank'),
+        },
+        {
+            id: 'typemaster',
+            label: 'TYPEMASTER',
+            icon: 'svg:/assets/typemaster.svg',
+            color: '#00ff88',
+            action: () => window.open('https://typing-game-kappa-seven.vercel.app/', '_blank'),
+        },
+        {
             id: 'skills',
             label: 'SKILLS_MATRIX',
             icon: 'svg:/assets/skills-matrix.svg',
@@ -104,20 +118,6 @@ export const Desktop = {
             icon: '⚙',
             color: '#00BCD4',
             action: () => Desktop.openSettings(),
-        },
-        {
-            id: 'image-generator',
-            label: 'IMG_GEN.ai',
-            icon: 'svg:/assets/image-generator.svg',
-            color: '#be185d',
-            action: () => window.open('https://web-ten-vert-46.vercel.app/', '_blank'),
-        },
-        {
-            id: 'typemaster',
-            label: 'TYPEMASTER',
-            icon: 'svg:/assets/typemaster.svg',
-            color: '#00ff88',
-            action: () => window.open('https://typing-game-kappa-seven.vercel.app/', '_blank'),
         },
     ],
 
@@ -1967,8 +1967,12 @@ export const Desktop = {
     },
     /**
      * Animate "SOLUTIONS" watermark typing effect
+     * Disabled when galaxy theme is active
      */
     animateWatermark() {
+        // Skip watermark when galaxy theme is active
+        if (document.body.classList.contains('galaxy-active')) return;
+
         const desktop = document.querySelector('.desktop');
         if (!desktop) return;
 

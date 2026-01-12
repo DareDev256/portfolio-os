@@ -74,19 +74,27 @@ body.galaxy-active .cyber-button:hover {
 body.galaxy-active .login-panel .os-title,
 body.galaxy-active .login-panel .os-subtitle,
 body.galaxy-active .login-panel #loginContent,
-body.galaxy-active .login-panel #bootSequence,
-body.galaxy-active .login-panel .corner-accent {
+body.galaxy-active .login-panel #bootSequence {
     position: relative;
     z-index: 10;
+}
+
+/* Hide corner accents - they clash with cosmic aesthetic */
+.login-panel .corner-accent {
+    display: none !important;
 }
 
 /* Desktop content above galaxy */
 body.galaxy-active .desktop .desktop-icons,
 body.galaxy-active .desktop .top-bar,
-body.galaxy-active .desktop .taskbar,
 body.galaxy-active .desktop .windows-container {
     position: relative;
     z-index: 10;
+}
+
+/* Dock stays absolute positioned but above galaxy */
+body.galaxy-active .desktop .taskbar {
+    z-index: 100;
 }
 
 /* Hide old background wheel when galaxy is active */
@@ -103,8 +111,9 @@ body.galaxy-active::before {
 .galaxy-text {
     position: relative;
     z-index: 1;
-    /* Anime-style font */
-    font-family: 'Black Ops One', 'Orbitron', sans-serif !important;
+    /* JJK/Anime-style font - bold and impactful */
+    font-family: 'Bangers', 'Russo One', 'Black Ops One', sans-serif !important;
+    letter-spacing: 6px !important;
     /* Override any gold styling with galaxy purple */
     background: linear-gradient(
         135deg,
