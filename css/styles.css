@@ -279,14 +279,21 @@ body::before {
 
 .brand {
     /* Gold metallic to match Mahoraga wheel */
-    background: linear-gradient(90deg, #B8860B, #FFD700, #DAA520);
+    background: linear-gradient(90deg, #B8860B, #FFD700, #FFF8DC, #FFD700, #DAA520);
+    background-size: 200% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     font-weight: 700;
     font-size: 14px;
     letter-spacing: 2px;
-    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.3));
+    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.4));
+    animation: brand-shimmer 4s ease-in-out infinite;
+}
+
+@keyframes brand-shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .version {
@@ -698,12 +705,13 @@ body::before {
 }
 
 .desktop-icon:hover .desktop-icon-box {
-    transform: scale(1.05);
+    transform: scale(1.08);
     box-shadow:
-        0 0 30px currentColor,
-        0 0 50px rgba(0, 240, 255, 0.3);
+        0 0 25px currentColor,
+        0 0 40px currentColor,
+        0 0 60px rgba(0, 240, 255, 0.2);
     border-color: currentColor;
-    background: rgba(10, 10, 20, 0.8);
+    background: rgba(10, 10, 20, 0.9);
 }
 
 .desktop-icon:active .desktop-icon-box {
@@ -711,11 +719,13 @@ body::before {
 }
 
 .desktop-icon-label {
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 1px;
     text-align: center;
-    max-width: 80px;
+    max-width: 90px;
     color: var(--neon-cyan);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 240, 255, 0.3);
+    font-weight: 500;
 }
 
 /* Dock (formerly Taskbar) */
