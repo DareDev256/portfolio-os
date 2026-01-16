@@ -57,6 +57,13 @@ export const Desktop = {
             action: () => window.open('https://typing-game-kappa-seven.vercel.app/', '_blank'),
         },
         {
+            id: 'vibe-coder',
+            label: 'Vibe_Coder.exe',
+            icon: 'svg:/assets/vibe-coder.svg',
+            color: '#ff00aa',
+            action: () => window.open('https://daredev256.github.io/vibe-coder/', '_blank'),
+        },
+        {
             id: 'skills',
             label: 'SKILLS_MATRIX',
             icon: 'svg:/assets/skills-matrix.svg',
@@ -300,37 +307,69 @@ export const Desktop = {
         const savedLayout = JSON.parse(localStorage.getItem('desktop_layout') || '{}');
 
         // Default positions for first-time visitors
-        // Center the 3 key icons (About, Resume, Applications) prominently
+        // Clean grid layout with logical groupings
         const getDefaultPosition = (item, index) => {
             const vw = window.innerWidth;
-            const centerX = vw / 2;
-            const topAreaY = 120; // Below top bar
+            const vh = window.innerHeight;
+            const topAreaY = 100; // Below top bar
+            const iconSpacingX = 110;
+            const iconSpacingY = 100;
 
-            // Key icons get centered prominently
-            if (item.id === 'about') {
-                return { x: centerX - 200, y: topAreaY + 60 };
-            }
-            if (item.id === 'resume') {
-                return { x: centerX, y: topAreaY + 60 };
-            }
-            if (item.id === 'applications') {
-                return { x: centerX + 200, y: topAreaY + 60 };
+            // Left column: Personal & Portfolio (column 1)
+            const leftCol = [
+                { id: 'about', row: 0 },
+                { id: 'resume', row: 1 },
+                { id: 'contact', row: 2 },
+                { id: 'linkedin', row: 3 },
+            ];
+
+            // Second column: Core Apps (column 2)
+            const coreApps = [
+                { id: 'applications', row: 0 },
+                { id: 'skills', row: 1 },
+                { id: 'github', row: 2 },
+                { id: 'terminal', row: 3 },
+            ];
+
+            // Third column: Games & Tools (column 3)
+            const gamesTools = [
+                { id: 'vibe-coder', row: 0 },
+                { id: 'typemaster', row: 1 },
+                { id: 'image-generator', row: 2 },
+            ];
+
+            // Fourth column: Media & System (column 4)
+            const mediaSystem = [
+                { id: 'media', row: 0 },
+                { id: 'showcase', row: 1 },
+                { id: 'settings', row: 2 },
+            ];
+
+            // Check each column group
+            const leftMatch = leftCol.find(i => i.id === item.id);
+            if (leftMatch) {
+                return { x: 40, y: topAreaY + (leftMatch.row * iconSpacingY) };
             }
 
-            // Other icons go in a grid on the left side
-            const otherIcons = ['media', 'skills', 'terminal', 'contact', 'showcase', 'github', 'linkedin', 'settings'];
-            const otherIndex = otherIcons.indexOf(item.id);
-            if (otherIndex !== -1) {
-                const col = otherIndex % 2;
-                const row = Math.floor(otherIndex / 2);
-                return {
-                    x: 30 + (col * 100),
-                    y: topAreaY + 200 + (row * 110)
-                };
+            const coreMatch = coreApps.find(i => i.id === item.id);
+            if (coreMatch) {
+                return { x: 40 + iconSpacingX, y: topAreaY + (coreMatch.row * iconSpacingY) };
             }
 
-            // Fallback
-            return { x: 30, y: 60 + (index * 110) };
+            const gamesMatch = gamesTools.find(i => i.id === item.id);
+            if (gamesMatch) {
+                return { x: 40 + (iconSpacingX * 2), y: topAreaY + (gamesMatch.row * iconSpacingY) };
+            }
+
+            const mediaMatch = mediaSystem.find(i => i.id === item.id);
+            if (mediaMatch) {
+                return { x: 40 + (iconSpacingX * 3), y: topAreaY + (mediaMatch.row * iconSpacingY) };
+            }
+
+            // Fallback: grid from top-left
+            const col = index % 4;
+            const row = Math.floor(index / 4);
+            return { x: 40 + (col * iconSpacingX), y: topAreaY + (row * iconSpacingY) };
         };
 
         this.DESKTOP_ITEMS.forEach((item, index) => {

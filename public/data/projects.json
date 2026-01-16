@@ -1,5 +1,21 @@
 [
     {
+        "title": "Vibe Coder",
+        "description": "A vampire survivors-style idle game where your character auto-battles enemies. Features 18 enemy types, 4 epic bosses, 26 weapons, procedural music, and Claude Code integration for real-time XP from coding activity.",
+        "tech": [
+            "Phaser 3",
+            "JavaScript",
+            "Vite",
+            "Web Audio API"
+        ],
+        "tags": [
+            "Games",
+            "Web"
+        ],
+        "demo": "https://daredev256.github.io/vibe-coder/",
+        "repo": "https://github.com/daredev256/vibe-coder"
+    },
+    {
         "title": "Portfolio OS",
         "description": "An interactive Windows-like desktop portfolio built with vanilla JavaScript, featuring draggable windows, file management, and responsive design.",
         "tech": [

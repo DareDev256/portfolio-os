@@ -19,31 +19,43 @@
     z-index: 0 !important;
 }
 
-/* When galaxy is on body, make backgrounds transparent */
+/* Body always has galaxy CSS gradient as fallback until Three.js canvas loads */
 body.galaxy-active {
-    background: transparent !important;
+    background:
+        radial-gradient(ellipse at 20% 80%, rgba(107, 33, 168, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(190, 24, 93, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(76, 29, 149, 0.25) 0%, transparent 70%),
+        linear-gradient(180deg, #0a0412 0%, #1a0a2e 30%, #0d0618 60%, #050208 100%) !important;
 }
 
-/* Lock screen transparent so galaxy shows through */
+/* Lock screen inherits galaxy background */
 body.galaxy-active .lock-screen {
-    background: transparent !important;
+    background:
+        radial-gradient(ellipse at 20% 80%, rgba(107, 33, 168, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(190, 24, 93, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(76, 29, 149, 0.25) 0%, transparent 70%),
+        linear-gradient(180deg, #0a0412 0%, #1a0a2e 30%, #0d0618 60%, #050208 100%) !important;
 }
 
-/* Desktop transparent so galaxy shows through */
+/* Desktop has galaxy background */
 body.galaxy-active .desktop {
-    background: transparent !important;
+    background:
+        radial-gradient(ellipse at 20% 80%, rgba(107, 33, 168, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(190, 24, 93, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(76, 29, 149, 0.25) 0%, transparent 70%),
+        linear-gradient(180deg, #0a0412 0%, #1a0a2e 30%, #0d0618 60%, #050208 100%) !important;
 }
 
-/* Login panel becomes glassy overlay on galaxy */
+/* Login panel - dark glassy overlay on galaxy */
 body.galaxy-active .login-panel {
-    background: rgba(8, 8, 18, 0.5) !important;
+    background: rgba(10, 4, 18, 0.85) !important;
     backdrop-filter: blur(20px) saturate(150%);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
-    border: 1px solid rgba(107, 33, 168, 0.4);
+    border: 1px solid rgba(190, 24, 93, 0.5);
     box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.4),
-        inset 0 0 0 1px rgba(190, 24, 93, 0.15),
-        0 0 40px rgba(107, 33, 168, 0.15);
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        inset 0 0 0 1px rgba(190, 24, 93, 0.2),
+        0 0 60px rgba(107, 33, 168, 0.3);
 }
 
 /* Override subtitle gold with purple */
@@ -51,10 +63,11 @@ body.galaxy-active .os-subtitle {
     color: rgba(190, 24, 93, 0.7) !important;
 }
 
-/* Override avatar container gold with galaxy purple */
+/* Avatar container - clean, no box around wheel */
 body.galaxy-active .login-avatar-container {
-    border-color: rgba(190, 24, 93, 0.6) !important;
-    box-shadow: 0 0 30px rgba(107, 33, 168, 0.4), 0 0 50px rgba(190, 24, 93, 0.2) !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 /* Override login button with purple theme */
@@ -107,52 +120,57 @@ body.galaxy-active::before {
     display: none !important;
 }
 
-/* Galaxy text effect - cosmic purple/magenta gradient */
+/* Galaxy text effect - space/stars pattern inside text */
 .galaxy-text {
     position: relative;
     z-index: 1;
     /* JJK/Anime-style font - bold and impactful */
     font-family: 'Bangers', 'Russo One', 'Black Ops One', sans-serif !important;
     letter-spacing: 6px !important;
-    /* Override any gold styling with galaxy purple */
-    background: linear-gradient(
-        135deg,
-        #6b21a8 0%,
-        #be185d 30%,
-        #ec4899 50%,
-        #be185d 70%,
-        #6b21a8 100%
-    ) !important;
-    background-size: 200% 200% !important;
+    /* Space pattern inside text */
+    background: url('/assets/space-pattern.svg') !important;
+    background-size: 150px 150px !important;
+    background-position: center !important;
     background-clip: text !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     color: transparent !important;
-    /* Remove gold animation, use galaxy shimmer */
-    animation: galaxy-text-shimmer 4s ease-in-out infinite !important;
+    /* Subtle animation - pan through space */
+    animation: space-drift 20s linear infinite !important;
     /* Cosmic glow effect */
-    filter: drop-shadow(0 0 15px rgba(190, 24, 93, 0.6))
-            drop-shadow(0 0 30px rgba(107, 33, 168, 0.4))
-            drop-shadow(0 0 45px rgba(236, 72, 153, 0.2)) !important;
+    filter: drop-shadow(0 0 15px rgba(190, 24, 93, 0.8))
+            drop-shadow(0 0 30px rgba(107, 33, 168, 0.6))
+            drop-shadow(0 0 50px rgba(236, 72, 153, 0.4)) !important;
 }
 
-@keyframes galaxy-text-shimmer {
+/* Drift through space animation */
+@keyframes space-drift {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 300px 300px;
+    }
+}
+
+/* Pulsing glow for text */
+@keyframes galaxy-text-glow {
     0%, 100% {
-        background-position: 0% 50%;
-        filter: drop-shadow(0 0 15px rgba(190, 24, 93, 0.6))
-                drop-shadow(0 0 30px rgba(107, 33, 168, 0.4));
+        filter: drop-shadow(0 0 15px rgba(190, 24, 93, 0.8))
+                drop-shadow(0 0 30px rgba(107, 33, 168, 0.6))
+                drop-shadow(0 0 50px rgba(236, 72, 153, 0.4));
     }
     50% {
-        background-position: 100% 50%;
-        filter: drop-shadow(0 0 20px rgba(190, 24, 93, 0.8))
-                drop-shadow(0 0 40px rgba(107, 33, 168, 0.5))
-                drop-shadow(0 0 60px rgba(236, 72, 153, 0.3));
+        filter: drop-shadow(0 0 25px rgba(190, 24, 93, 1))
+                drop-shadow(0 0 50px rgba(107, 33, 168, 0.8))
+                drop-shadow(0 0 80px rgba(236, 72, 153, 0.6));
     }
 }
 
-/* When galaxy canvas is active, use it as the text fill */
+/* Ensure text pattern is visible over galaxy background */
 .galaxy-active .galaxy-text {
-    mix-blend-mode: screen;
+    position: relative;
+    z-index: 10;
 }
 
 /* Fallback static gradient for reduced motion */
@@ -192,12 +210,10 @@ body.galaxy-active::before {
 /* Galaxy wheel treatment */
 .galaxy-wheel {
     position: relative;
-    /* Override gold border with galaxy purple */
-    border-color: rgba(107, 33, 168, 0.8) !important;
-    box-shadow:
-        0 0 30px rgba(107, 33, 168, 0.4),
-        0 0 60px rgba(190, 24, 93, 0.2),
-        inset 0 0 20px rgba(107, 33, 168, 0.1) !important;
+    /* Clean - no borders or box shadows that create rectangular artifacts */
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
 }
 
 .galaxy-wheel-glow {
@@ -236,9 +252,9 @@ body.galaxy-active::before {
     animation: galaxyPulse 4s ease-in-out infinite;
 }
 
-/* Galaxy ring around wheel */
-.galaxy-wheel .login-avatar-ring {
-    border-top-color: rgba(190, 24, 93, 0.8) !important;
+/* Hide the ring around wheel - let the wheel speak for itself */
+body.galaxy-active .login-avatar-ring {
+    display: none !important;
 }
 
 /* Title-specific galaxy styling */
@@ -247,6 +263,8 @@ body.galaxy-active::before {
     font-weight: 900;
     letter-spacing: 4px;
     text-transform: uppercase;
+    /* Combined animation: drift + glow pulse */
+    animation: space-drift 20s linear infinite, galaxy-text-glow 3s ease-in-out infinite !important;
 }
 
 /* Subtle shimmer animation overlay */
