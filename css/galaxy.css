@@ -250,6 +250,8 @@ body.galaxy-active::before {
             drop-shadow(0 0 15px rgba(107, 33, 168, 0.7))
             drop-shadow(0 0 30px rgba(190, 24, 93, 0.5));
     animation: galaxyPulse 4s ease-in-out infinite;
+    /* 3D tilt preserved during pulse */
+    transform: rotateX(55deg);
 }
 
 /* Hide the ring around wheel - let the wheel speak for itself */

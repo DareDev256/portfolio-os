@@ -169,6 +169,15 @@ body::before {
     border: none;
     box-shadow: none;
     position: relative;
+    perspective: 300px;
+}
+
+.login-avatar-container .logo-wheel {
+    width: 110px;
+    height: 110px;
+    margin: 0;
+    transform: rotateX(55deg);
+    filter: drop-shadow(0 0 8px rgba(200, 200, 220, 0.6));
 }
 
 .login-avatar-ring {
@@ -1156,15 +1165,16 @@ body::before {
     width: 40px;
     height: 40px;
     margin-right: 15px;
-    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+    filter: drop-shadow(0 0 5px rgba(200, 200, 220, 0.6));
     animation: spin 20s linear infinite;
+    transform: perspective(200px) rotateX(55deg);
 }
 
 .bg-wheel-container {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) perspective(600px) rotateX(55deg);
     width: 60vh;
     height: 60vh;
     z-index: 0;
