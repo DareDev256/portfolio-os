@@ -120,6 +120,13 @@ export const Desktop = {
             action: () => window.open('https://www.linkedin.com', '_blank'), // User can update this link later
         },
         {
+            id: 'portfolio-videos',
+            label: 'VIDEOS',
+            icon: 'svg:/assets/portfolio-videos.svg',
+            color: '#ff4444',
+            action: () => window.open('https://tdotssolutionsz-portfolio.vercel.app/', '_blank'),
+        },
+        {
             id: 'settings',
             label: 'SETTINGS',
             icon: '⚙',
