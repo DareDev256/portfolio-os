@@ -39,27 +39,35 @@
         <!-- Grid Background -->
         <div class="grid-background"></div>
 
-        <div class="login-panel">
-            <!-- Corner accents -->
-            <div class="corner-accent tl"></div>
-            <div class="corner-accent tr"></div>
-            <div class="corner-accent bl"></div>
-            <div class="corner-accent br"></div>
+        <!-- Cinematic Intro Stage -->
+        <div class="intro-stage" id="introStage">
+            <!-- Scanline sweep (Act 1) -->
+            <div class="intro-scanline" data-act="1"></div>
 
-            <div class="os-title galaxy-text" data-text="PASSION OS">PASSION OS</div>
-            <div class="os-subtitle">CREATIVE OPERATING SYSTEM v2.56</div>
+            <!-- Watermark wheel (behind text) -->
+            <div class="intro-watermark" data-act="2">
+                <img src="assets/mahoraga-wheel.svg" class="intro-watermark-img galaxy-wheel-animated" alt="">
+            </div>
 
-            <div id="loginContent">
-                <div class="login-avatar-container">
-                    <div class="login-avatar-ring"></div>
-                    <img src="assets/mahoraga-wheel.svg" class="login-avatar-icon logo-wheel galaxy-wheel galaxy-wheel-animated"
-                        style="width: 70px; height: 70px; margin: 0;">
+            <!-- Title block -->
+            <div class="intro-title-block">
+                <div class="os-title galaxy-text" data-text="PASSION OS" data-act="2">PASSION OS</div>
+                <div class="os-subtitle" data-act="2">
+                    <span class="subtitle-text"></span><span class="subtitle-cursor">_</span>
                 </div>
+            </div>
 
+            <!-- Identity block -->
+            <div id="loginContent" class="intro-identity" data-act="3">
                 <div class="login-username">DAREDEV256</div>
                 <div class="login-role">DEVELOPER • CREATOR • VISIONARY</div>
 
-                <button id="loginButton" class="cyber-button">INITIALIZE</button>
+                <button id="loginButton" class="cyber-button">
+                    <svg class="btn-border-svg" viewBox="0 0 200 50" preserveAspectRatio="none">
+                        <rect class="btn-border-rect" x="0.5" y="0.5" width="199" height="49" rx="0" ry="0" />
+                    </svg>
+                    <span class="btn-label">INITIALIZE</span>
+                </button>
             </div>
 
             <!-- Boot Sequence Container (Hidden by default) -->

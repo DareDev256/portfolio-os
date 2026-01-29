@@ -25,6 +25,12 @@ export const Login = {
     idleTimer: null,
     galaxyInstance: null,
 
+    // Cinematic state
+    _cinematicTimeouts: [],
+    _cinematicDone: false,
+    _skipBound: null,
+    _typewriterInterval: null,
+
     /**
      * Initialize login system
      */
@@ -39,10 +45,12 @@ export const Login = {
         this.updateClock();
         this.clockInterval = setInterval(() => this.updateClock(), 1000);
 
-        this.initLockScreen();
         this.initLoginScreen();
         this.initTaskbarClock();
         this.initGalaxyEffect();
+
+        // Start cinematic intro instead of old lock screen click handler
+        this.startCinematic();
 
         // Listen for system lock event (from Start Menu)
         window.addEventListener('system-lock', () => this.lock());
@@ -59,16 +67,6 @@ export const Login = {
         const osTitle = this.lockScreen?.querySelector('.os-title');
         if (osTitle) {
             osTitle.classList.add('galaxy-text');
-        }
-
-        // Apply galaxy treatment to wheel and its container
-        const wheelContainer = this.lockScreen?.querySelector('.login-avatar-container');
-        const wheel = this.lockScreen?.querySelector('.login-avatar-icon');
-        if (wheelContainer) {
-            wheelContainer.classList.add('galaxy-wheel');
-        }
-        if (wheel) {
-            wheel.classList.add('galaxy-wheel-animated');
         }
 
         // Initialize Three.js galaxy background on BODY (persists through login)
@@ -103,45 +101,154 @@ export const Login = {
     },
 
     /**
-     * Initialize lock screen events
+     * Start the 3-act cinematic intro sequence
      */
-    initLockScreen() {
-        // Click anywhere to proceed
-        this.lockScreen.addEventListener('click', () => {
-            this.showLogin();
-        });
+    startCinematic() {
+        const stage = document.getElementById('introStage');
+        if (!stage) return;
 
-        // Press Enter to proceed
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !this.lockScreen.classList.contains('hidden')) {
-                this.showLogin();
-            }
-        });
+        this._cinematicDone = false;
+        this._cinematicTimeouts = [];
+
+        // Skip handler — click or any key jumps to final state
+        this._skipBound = (e) => {
+            // Don't skip if clicking the INITIALIZE button (let it do its thing)
+            if (e.target && e.target.closest('#loginButton')) return;
+            this.skipCinematic();
+        };
+
+        document.addEventListener('click', this._skipBound, { once: false });
+        document.addEventListener('keydown', this._skipBound, { once: false });
+
+        // --- Act 1: Power On (0–0.5s) ---
+        // Galaxy fades in, scanline sweeps
+        this._queueTimeout(() => {
+            stage.classList.add('act-1');
+        }, 50);
+
+        // --- Act 2: Identity (0.5–2s) ---
+        // Title glitch-resolves, subtitle typewriter, watermark fades in
+        this._queueTimeout(() => {
+            stage.classList.add('act-2');
+            this._startTypewriter();
+        }, 550);
+
+        // --- Act 3: Ready (2–3s) ---
+        // Username, roles, INITIALIZE button appear with border-draw
+        this._queueTimeout(() => {
+            stage.classList.add('act-3');
+        }, 2000);
+
+        // Cinematic complete — clean up skip listeners
+        this._queueTimeout(() => {
+            this._finishCinematic();
+        }, 3000);
     },
 
     /**
-     * Initialize login screen events
+     * Skip to final state immediately
+     */
+    skipCinematic() {
+        if (this._cinematicDone) return;
+
+        const stage = document.getElementById('introStage');
+        if (!stage) return;
+
+        // Cancel all pending timeouts
+        this._cinematicTimeouts.forEach(id => clearTimeout(id));
+        this._cinematicTimeouts = [];
+
+        // Cancel typewriter
+        if (this._typewriterInterval) {
+            clearInterval(this._typewriterInterval);
+            this._typewriterInterval = null;
+        }
+
+        // Set subtitle to full text
+        const subtitleText = stage.querySelector('.subtitle-text');
+        if (subtitleText) {
+            subtitleText.textContent = 'CREATIVE OPERATING SYSTEM v2.56';
+        }
+
+        // Jump to revealed state
+        stage.classList.remove('act-1', 'act-2', 'act-3');
+        stage.classList.add('revealed');
+
+        this._finishCinematic();
+    },
+
+    /**
+     * Clean up after cinematic completes (naturally or via skip)
+     */
+    _finishCinematic() {
+        if (this._cinematicDone) return;
+        this._cinematicDone = true;
+
+        // Remove skip listeners
+        if (this._skipBound) {
+            document.removeEventListener('click', this._skipBound);
+            document.removeEventListener('keydown', this._skipBound);
+            this._skipBound = null;
+        }
+
+        // Focus the INITIALIZE button
+        const loginButton = document.getElementById('loginButton');
+        if (loginButton) {
+            setTimeout(() => loginButton.focus(), 100);
+        }
+    },
+
+    /**
+     * Typewriter effect for subtitle
+     */
+    _startTypewriter() {
+        const stage = document.getElementById('introStage');
+        const subtitleText = stage?.querySelector('.subtitle-text');
+        if (!subtitleText) return;
+
+        const fullText = 'CREATIVE OPERATING SYSTEM v2.56';
+        let i = 0;
+        subtitleText.textContent = '';
+
+        this._typewriterInterval = setInterval(() => {
+            if (i >= fullText.length) {
+                clearInterval(this._typewriterInterval);
+                this._typewriterInterval = null;
+                return;
+            }
+            subtitleText.textContent += fullText[i];
+            i++;
+        }, 65);
+    },
+
+    /**
+     * Queue a timeout that can be cancelled on skip
+     */
+    _queueTimeout(fn, delay) {
+        const id = setTimeout(fn, delay);
+        this._cinematicTimeouts.push(id);
+        return id;
+    },
+
+    /**
+     * Initialize login screen events (INITIALIZE button)
      */
     initLoginScreen() {
         const loginButton = document.getElementById('loginButton');
 
         if (loginButton) {
             // Click handler
-            loginButton.addEventListener('click', () => {
+            loginButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Don't trigger skip
                 this.startBootSequence();
             });
 
-            // Enter key handler
+            // Enter key handler (only after cinematic is done)
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && !this.lockScreen.classList.contains('hidden')) {
+                if (e.key === 'Enter' && this._cinematicDone && !this.lockScreen.classList.contains('hidden')) {
                     this.startBootSequence();
                 }
             });
-
-            // Auto-focus button
-            setTimeout(() => {
-                loginButton.focus();
-            }, 400);
         }
     },
 
@@ -149,6 +256,7 @@ export const Login = {
      * Start Cyberpunk Boot Sequence
      */
     startBootSequence() {
+        const stage = document.getElementById('introStage');
         const loginContent = document.getElementById('loginContent');
         const bootSequence = document.getElementById('bootSequence');
 
@@ -157,7 +265,8 @@ export const Login = {
             return;
         }
 
-        // Hide login content
+        // Fade out cinematic elements, show boot text
+        if (stage) stage.classList.add('booting');
         loginContent.style.display = 'none';
         bootSequence.classList.remove('hidden');
 
@@ -199,11 +308,18 @@ export const Login = {
     /**
      * Show login screen (after lock)
      * In this design, Lock Screen IS the Login Screen.
+     * Re-triggers the cinematic intro.
      */
     showLogin() {
-        // Just ensures lock screen is visible and ready
         this.lockScreen.classList.remove('hidden');
         this.lockScreen.classList.remove('fade-out');
+
+        // Reset cinematic state and replay
+        const stage = document.getElementById('introStage');
+        if (stage) {
+            stage.classList.remove('act-1', 'act-2', 'act-3', 'revealed', 'booting');
+        }
+        this.startCinematic();
     },
 
     /**
@@ -321,18 +437,25 @@ export const Login = {
         this.lockScreen.classList.remove('hidden');
         this.lockScreen.classList.remove('fade-out');
 
-        // RESET UI STATE (Fix for "frozen" look)
+        // RESET UI STATE
         const loginContent = document.getElementById('loginContent');
         const bootSequence = document.getElementById('bootSequence');
+        const stage = document.getElementById('introStage');
 
-        if (loginContent) loginContent.style.display = 'block';
+        if (loginContent) loginContent.style.display = '';
         if (bootSequence) {
             bootSequence.classList.add('hidden');
-            bootSequence.innerHTML = ''; // Clear typed lines
+            bootSequence.innerHTML = '';
+        }
+        if (stage) {
+            stage.classList.remove('act-1', 'act-2', 'act-3', 'revealed', 'booting');
         }
 
         // Reinitialize galaxy effect
         this.initGalaxyEffect();
+
+        // Restart cinematic
+        this.startCinematic();
 
         // Update clock
         this.updateClock();
