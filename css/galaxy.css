@@ -56,23 +56,20 @@ body.galaxy-active .subtitle-cursor {
     color: rgba(190, 24, 93, 0.9);
 }
 
-/* Override login button with purple theme */
+/* Override login button with purple/magenta galaxy theme */
 body.galaxy-active .cyber-button {
     color: #ec4899;
-}
-
-body.galaxy-active .btn-border-rect {
-    stroke: rgba(190, 24, 93, 0.6);
+    border-color: rgba(190, 24, 93, 0.2);
 }
 
 body.galaxy-active .cyber-button:hover {
-    background: linear-gradient(135deg, #be185d, #6b21a8);
+    background: rgba(190, 24, 93, 0.2);
+    border-color: rgba(190, 24, 93, 0.4);
     color: #fff;
-    box-shadow: 0 0 30px rgba(190, 24, 93, 0.6), 0 0 50px rgba(107, 33, 168, 0.3);
-}
-
-body.galaxy-active .cyber-button:hover .btn-border-rect {
-    stroke: transparent;
+    box-shadow:
+        0 0 30px rgba(190, 24, 93, 0.25),
+        0 8px 25px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 /* Ensure all intro stage content sits above the galaxy canvas */
@@ -86,10 +83,24 @@ body.galaxy-active .intro-stage #bootSequence {
 
 /* Desktop content above galaxy */
 body.galaxy-active .desktop .desktop-icons,
-body.galaxy-active .desktop .top-bar,
-body.galaxy-active .desktop .windows-container {
+body.galaxy-active .desktop .top-bar {
     position: relative;
     z-index: 10;
+}
+
+/* Windows container overlays full desktop so windows position correctly */
+body.galaxy-active .desktop .windows-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    pointer-events: none;
+}
+
+body.galaxy-active .desktop .windows-container .window {
+    pointer-events: auto;
 }
 
 /* Dock stays absolute positioned but above galaxy */
@@ -255,8 +266,8 @@ body.galaxy-active .intro-watermark-img {
     letter-spacing: 6px;
     text-transform: uppercase;
     line-height: 1.1;
-    /* Combined animation: drift + glow pulse */
-    animation: space-drift 20s linear infinite, galaxy-text-glow 3s ease-in-out infinite !important;
+    /* galaxy-text-glow removed for perf (3 stacked drop-shadows per frame) */
+    animation: space-drift 20s linear infinite !important;
 }
 
 /* Subtle shimmer animation overlay */

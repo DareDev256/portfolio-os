@@ -234,16 +234,21 @@ export const CursorTrail = {
      * Enable/disable trail
      */
     setEnabled(enabled) {
-        // Don't enable on mobile or reduced motion
-        if ((this.isMobile || this.prefersReducedMotion) && enabled) {
-            console.warn('[CursorTrail] Cannot enable on mobile or reduced-motion');
+        // Don't enable on mobile (no cursor) but allow reduced-motion users to opt-in
+        if (this.isMobile && enabled) {
+            console.warn('[CursorTrail] Cannot enable on mobile (no cursor)');
             return;
+        }
+
+        // If pool wasn't created (e.g. reduced-motion skipped init), create now
+        if (enabled && this.particlePool.length === 0) {
+            this.createParticlePool();
+            this.preloadSymbols();
         }
 
         this.enabled = enabled;
 
         if (!enabled) {
-            // Clear all active particles
             this.clearParticles();
         }
 

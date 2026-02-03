@@ -67,8 +67,8 @@ export const MicroInteractions = {
         if (effects.includes('ripple')) {
             this.createRipple(target, e.clientX, e.clientY, config.config.color);
             // Play ripple sound
-            if (window.InteractionEngine?.soundManager) {
-                window.InteractionEngine.soundManager.play('ripple');
+            if (window.__InteractionEngine?.soundManager) {
+                window.__InteractionEngine.soundManager.play('ripple');
             }
         }
 
@@ -88,8 +88,8 @@ export const MicroInteractions = {
         if (effects.includes('particle-burst')) {
             this.createParticleBurst(e.clientX, e.clientY, config.config.color);
             // Play particle burst sound
-            if (window.InteractionEngine?.soundManager) {
-                window.InteractionEngine.soundManager.play('particle-burst');
+            if (window.__InteractionEngine?.soundManager) {
+                window.__InteractionEngine.soundManager.play('particle-burst');
             }
         }
     },

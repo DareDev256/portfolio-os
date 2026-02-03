@@ -72,8 +72,9 @@ async function init() {
         Login.init();
     }
 
-    // Register service worker
-    if ('serviceWorker' in navigator) {
+    // Register service worker (production only — Vite dev server transforms
+    // CSS into JS modules, and SW cache-first strategy poisons the cache)
+    if ('serviceWorker' in navigator && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js').catch(() => { });
         });

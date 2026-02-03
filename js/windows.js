@@ -95,12 +95,23 @@ export const WindowManager = {
         resizeHandle.setAttribute('aria-label', 'Resize window');
         windowEl.appendChild(resizeHandle);
 
+        // HUD corner brackets
+        windowEl.classList.add('hud-brackets');
+        const bracketTR = document.createElement('div');
+        bracketTR.className = 'hud-bracket-tr';
+        const bracketBL = document.createElement('div');
+        bracketBL.className = 'hud-bracket-bl';
+        windowEl.appendChild(bracketTR);
+        windowEl.appendChild(bracketBL);
+
         // Add to container
         this.container.appendChild(windowEl);
 
-        // Make window visible with slight delay for animation
+        // Make window visible with shimmer + scan effect
         setTimeout(() => {
             windowEl.classList.add('visible');
+            windowEl.classList.add('glass-shimmer', 'shimmer-active');
+            setTimeout(() => windowEl.classList.remove('shimmer-active'), 800);
 
             // Add holographic scan effect on open
             windowEl.classList.add('window-scan-open');

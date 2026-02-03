@@ -74,12 +74,23 @@
     --glow-neon-border: 0 0 15px currentColor, inset 0 0 10px rgba(0, 240, 255, 0.05);
 
     /* Typography */
-    --font-family: 'Orbitron', 'Courier New', monospace;
-    --font-mono: 'Courier New', monospace;
+    --font-family: 'Tomorrow', 'Orbitron', sans-serif;
+    --font-display: 'Tomorrow', 'Orbitron', sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
     --font-size-sm: 0.8rem;
     --font-size-base: 14px;
     --font-size-lg: 1.2rem;
     --font-size-xl: 2rem;
+
+    /* Glass Materials */
+    --glass-bg: rgba(15, 10, 30, 0.35);
+    --glass-bg-dense: rgba(15, 10, 30, 0.55);
+    --glass-bg-light: rgba(15, 10, 30, 0.2);
+    --glass-blur: blur(40px) saturate(1.4);
+    --glass-blur-light: blur(20px) saturate(1.2);
+    --glass-radius: 12px;
+    --glass-border: 1px solid rgba(0, 240, 255, 0.08);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
     /* Layout */
     --taskbar-height: 60px;

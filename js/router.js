@@ -11,7 +11,7 @@ export const Router = {
         '/': null,
         '/about': () => Desktop.openAbout(),
         '/work': () => Desktop.openApplications(),
-        '/media': () => Desktop.openMediaVault(),
+        '/media': () => Desktop.openMediaVault(), // kept for backward compat — icon removed from desktop
         '/connect': () => Desktop.openContact(),
         '/contact': () => Desktop.openContact(),
         '/settings': () => Desktop.openSettings(),

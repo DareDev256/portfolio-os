@@ -10,7 +10,7 @@ export class GalaxyBackground {
     constructor(container, options = {}) {
         this.container = container;
         this.options = {
-            starCount: options.starCount || 300,
+            starCount: options.starCount || 150,
             nebulaSpeed: options.nebulaSpeed || 0.0003,
             starDriftSpeed: options.starDriftSpeed || 0.00015,
             mouseInfluence: options.mouseInfluence || 0.02,
@@ -21,6 +21,7 @@ export class GalaxyBackground {
         this.targetMouse = { x: 0, y: 0 };
         this.time = 0;
         this.isRunning = false;
+        this._lastRenderTime = 0;
         this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         this.init();
@@ -34,14 +35,14 @@ export class GalaxyBackground {
         this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
         this.camera.position.z = 1;
 
-        // Renderer with transparency
+        // Renderer — lower resolution for background effect (saves massive GPU)
         this.renderer = new THREE.WebGLRenderer({
-            antialias: true,
+            antialias: false,
             alpha: true,
-            powerPreference: 'high-performance'
+            powerPreference: 'low-power'
         });
         this.renderer.setSize(rect.width, rect.height);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.renderer.setPixelRatio(1); // Background doesn't need retina
         this.renderer.setClearColor(0x000000, 0);
 
         // Insert canvas as first child so it's behind content
@@ -160,13 +161,13 @@ export class GalaxyBackground {
                     return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
                 }
 
-                // Fractal Brownian Motion for layered noise
+                // Fractal Brownian Motion — 3 octaves (reduced from 5 for perf)
                 float fbm(vec3 p) {
                     float value = 0.0;
                     float amplitude = 0.5;
                     float frequency = 1.0;
 
-                    for (int i = 0; i < 5; i++) {
+                    for (int i = 0; i < 3; i++) {
                         value += amplitude * snoise(p * frequency);
                         amplitude *= 0.5;
                         frequency *= 2.0;
@@ -345,16 +346,20 @@ export class GalaxyBackground {
     }
 
     bindEvents() {
-        // Mouse tracking
+        // Cache container rect — refreshed on resize, not every mousemove
+        this._cachedRect = this.container.getBoundingClientRect();
+
+        // Mouse tracking (uses cached rect)
         this.onMouseMove = (e) => {
-            const rect = this.container.getBoundingClientRect();
+            const rect = this._cachedRect;
             this.targetMouse.x = (e.clientX - rect.left) / rect.width;
             this.targetMouse.y = 1 - (e.clientY - rect.top) / rect.height;
         };
 
         // Resize handling
         this.onResize = () => {
-            const rect = this.container.getBoundingClientRect();
+            this._cachedRect = this.container.getBoundingClientRect();
+            const rect = this._cachedRect;
             this.renderer.setSize(rect.width, rect.height);
 
             if (this.nebulaMesh) {
@@ -387,7 +392,12 @@ export class GalaxyBackground {
             return;
         }
 
-        this.time += 0.016; // ~60fps timestep
+        // Throttle to ~24fps — background effect doesn't need 60fps
+        const now = performance.now();
+        if (now - this._lastRenderTime < 42) return;
+        this._lastRenderTime = now;
+
+        this.time += 0.042; // ~24fps timestep
 
         // Smooth mouse follow
         this.mouse.x += (this.targetMouse.x - this.mouse.x) * 0.05;

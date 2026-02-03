@@ -9,6 +9,7 @@ import { Lightbox } from './lightbox.js';
 import { Router } from './router.js';
 import { Mobile } from './mobile.js';
 import { initGalaxyBackground, destroyGalaxyBackground } from './galaxy-background.js';
+import { MahoragaWheel3D } from './mahoraga-wheel-3d.js';
 
 /**
  * Login and Lock Screen
@@ -48,6 +49,7 @@ export const Login = {
         this.initLoginScreen();
         this.initTaskbarClock();
         this.initGalaxyEffect();
+        this.init3DWheel();
 
         // Start cinematic intro instead of old lock screen click handler
         this.startCinematic();
@@ -72,7 +74,7 @@ export const Login = {
         // Initialize Three.js galaxy background on BODY (persists through login)
         try {
             this.galaxyInstance = initGalaxyBackground(document.body, {
-                starCount: 500,
+                starCount: 150,
                 nebulaSpeed: 0.00025,
                 starDriftSpeed: 0.0001,
                 mouseInfluence: 0.015
@@ -81,6 +83,32 @@ export const Login = {
             console.log('[Login] Full-page galaxy background initialized on body');
         } catch (err) {
             console.warn('[Login] Galaxy background failed to initialize, using CSS fallback:', err);
+        }
+
+        // Initialize 3D Mahoraga wheel on the lock screen
+        this.init3DWheel();
+    },
+
+    /**
+     * Initialize 3D Mahoraga wheel (replaces flat SVG on lock screen)
+     */
+    init3DWheel() {
+        if (this.wheel3D) return;
+        const watermark = this.lockScreen?.querySelector('.intro-watermark');
+        if (!watermark) return;
+
+        try {
+            // Hide the flat SVG
+            const flatImg = watermark.querySelector('.intro-watermark-img');
+            if (flatImg) flatImg.style.display = 'none';
+
+            this.wheel3D = new MahoragaWheel3D(watermark, { size: 400 });
+            console.log('[Login] 3D Mahoraga wheel initialized');
+        } catch (err) {
+            console.warn('[Login] 3D wheel failed, keeping flat SVG:', err);
+            // Restore flat SVG on failure
+            const flatImg = watermark.querySelector('.intro-watermark-img');
+            if (flatImg) flatImg.style.display = '';
         }
     },
 
@@ -332,6 +360,9 @@ export const Login = {
         }
 
         // Galaxy stays running - it's now on the body element
+
+        // Stop 3D wheel to save GPU (lock screen hidden)
+        if (this.wheel3D) this.wheel3D.stop();
 
         // Warp tunnel: login -> desktop
         Warp.transition(() => {

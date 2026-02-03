@@ -55,10 +55,9 @@ export const InteractionEngine = {
             }
         }
 
-        // Check hardware capabilities
+        // Check hardware capabilities (warn but don't block — user preference takes priority)
         if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
-            console.log('[InteractionEngine] Low-end device detected, engine disabled');
-            return;
+            console.warn('[InteractionEngine] Low-end device detected (cores:', navigator.hardwareConcurrency, ') — running with reduced effects');
         }
 
         // Lazy-load modules
@@ -116,6 +115,18 @@ export const InteractionEngine = {
         this.lastFrameTime = performance.now();
         this.loop(this.lastFrameTime);
 
+        // Pause when tab is hidden, resume when visible
+        if (!this._visibilityBound) {
+            this._visibilityBound = true;
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    this.stop();
+                } else {
+                    this.start();
+                }
+            });
+        }
+
         console.log('[InteractionEngine] Animation loop started');
     },
 
@@ -141,8 +152,12 @@ export const InteractionEngine = {
     loop(timestamp) {
         if (!this.isRunning) return;
 
-        // Calculate delta time and FPS
+        // Schedule next frame FIRST (ensures loop continues even if we skip work)
+        this.rafId = requestAnimationFrame(this.loop.bind(this));
+
+        // 30fps throttle — skip work if less than 33ms since last frame
         const deltaTime = timestamp - this.lastFrameTime;
+        if (deltaTime < 33) return;
         this.lastFrameTime = timestamp;
 
         const currentFPS = 1000 / deltaTime;
@@ -193,9 +208,6 @@ export const InteractionEngine = {
         if (frameTime > 9) {
             console.warn(`[InteractionEngine] Frame time exceeded budget: ${frameTime.toFixed(2)}ms`);
         }
-
-        // Schedule next frame
-        this.rafId = requestAnimationFrame(this.loop.bind(this));
     },
 
     /**

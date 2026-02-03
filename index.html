@@ -11,23 +11,24 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Black+Ops+One&family=Bangers&family=Russo+One&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Tomorrow:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Black+Ops+One&family=Bangers&family=Russo+One&display=swap" rel="stylesheet" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/reset.css?v=2.56" />
-    <link rel="stylesheet" href="/css/variables.css?v=2.56" />
+    <link rel="stylesheet" href="/css/reset.css?v=3.0" />
+    <link rel="stylesheet" href="/css/variables.css?v=3.0" />
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/windows.css">
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="/css/forms.css">
-    <link rel="stylesheet" href="/css/modal.css?v=2.56" />
-    <link rel="stylesheet" href="/css/loading.css?v=2.56" />
-    <link rel="stylesheet" href="/css/welcome.css?v=2.56" />
-    <link rel="stylesheet" href="/css/tour.css?v=2.56" />
-    <link rel="stylesheet" href="/css/interactions.css?v=2.56" />
-    <link rel="stylesheet" href="/css/mobile.css?v=2.56" />
-    <link rel="stylesheet" href="/css/accessibility.css?v=2.56" />
-    <link rel="stylesheet" href="/css/galaxy.css?v=2.56" />
+    <link rel="stylesheet" href="/css/modal.css?v=3.0" />
+    <link rel="stylesheet" href="/css/loading.css?v=3.0" />
+    <link rel="stylesheet" href="/css/welcome.css?v=3.0" />
+    <link rel="stylesheet" href="/css/tour.css?v=3.0" />
+    <link rel="stylesheet" href="/css/interactions.css?v=3.0" />
+    <link rel="stylesheet" href="/css/mobile.css?v=3.0" />
+    <link rel="stylesheet" href="/css/accessibility.css?v=3.0" />
+    <link rel="stylesheet" href="/css/glass.css?v=3.0" />
+    <link rel="stylesheet" href="/css/galaxy.css?v=3.0" />
 </head>
 
 <body data-theme="dark" class="galaxy-active galaxy-container">
@@ -44,9 +45,12 @@
             <!-- Scanline sweep (Act 1) -->
             <div class="intro-scanline" data-act="1"></div>
 
-            <!-- Watermark wheel (behind text) -->
+            <!-- Watermark wheel (behind text) with orbit rings -->
             <div class="intro-watermark" data-act="2">
                 <img src="assets/mahoraga-wheel.svg" class="intro-watermark-img galaxy-wheel-animated" alt="">
+                <div class="hud-orbit-ring hud-orbit-ring--dashed hud-orbit-ring--cw-slow" style="width: 120%; height: 120%;"></div>
+                <div class="hud-orbit-ring hud-orbit-ring--dotted hud-orbit-ring--ccw-slow" style="width: 140%; height: 140%;"></div>
+                <div class="hud-orbit-ring hud-orbit-ring--ticks hud-orbit-ring--cw-fast" style="width: 160%; height: 160%;"></div>
             </div>
 
             <!-- Title block -->
@@ -94,9 +98,16 @@
             <div class="top-bar-left">
                 <img src="assets/mahoraga-wheel.svg" class="logo-wheel" alt="Passion OS Logo">
                 <span class="brand">PASSION OS</span>
-                <span class="version">v2.56 • DAREDEV256</span>
+                <span class="version">v3.0 • DAREDEV256</span>
             </div>
             <div class="top-bar-right">
+                <div class="hud-mini-bars" aria-hidden="true">
+                    <div class="hud-mini-bar"></div>
+                    <div class="hud-mini-bar"></div>
+                    <div class="hud-mini-bar"></div>
+                    <div class="hud-mini-bar"></div>
+                    <div class="hud-mini-bar"></div>
+                </div>
                 <span class="status-item">▲ 98% CPU</span>
                 <span class="status-item text-green">◉ ONLINE</span>
                 <span class="status-item time-display">12:00:00</span>
@@ -117,7 +128,9 @@
         </div>
 
         <!-- Dock (formerly Taskbar) -->
-        <div class="taskbar dock-style" role="navigation" aria-label="Dock">
+        <div class="taskbar dock-style energy-glow hud-brackets" role="navigation" aria-label="Dock">
+            <div class="hud-bracket-tr"></div>
+            <div class="hud-bracket-bl"></div>
             <div class="dock-section dock-launchers-section">
                 <div class="dock-section-label">APPS</div>
                 <div id="dockLaunchers" class="dock-launchers"></div>

@@ -1,13 +1,12 @@
 /**
  * Hologram Glyph Ring (D)
  * Rotating ring with alien glyphs; subtle and layered.
+ * Now uses CSS animation instead of RAF loop for zero main-thread cost.
  */
 
 export const Glyphs = {
     enabled: true,
     el: null,
-    angle: 0,
-    raf: 0,
     glyphs: '⟟⋉⋔⋇⋏⋎⋒⋙⋛⋌⋋⋈⋐⋱⋰⋣⋠⋵',
 
     init() {
@@ -18,7 +17,7 @@ export const Glyphs = {
         this.el.style.zIndex = '82';
         this.el.style.pointerEvents = 'none';
         this.el.innerHTML = `
-      <svg class="holo-ring" viewBox="0 0 600 600" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(70vw,70vh);height:auto;filter: drop-shadow(0 0 12px rgba(0,231,255,0.45)); opacity:.6">
+      <svg class="holo-ring" viewBox="0 0 600 600" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(70vw,70vh);height:auto;filter: drop-shadow(0 0 12px rgba(0,231,255,0.45)); opacity:.6; animation: holo-ring-spin 7s linear infinite;">
         <defs>
           <linearGradient id="neonGrad" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="var(--neon-cyan)"/>
@@ -31,9 +30,18 @@ export const Glyphs = {
       </svg>
     `;
         document.body.appendChild(this.el);
+
+        // Inject CSS keyframes for the spin
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes holo-ring-spin {
+                to { transform: translate(-50%,-50%) rotate(1turn); }
+            }
+        `;
+        document.head.appendChild(style);
+
         this.populateGlyphs();
-        if (this.enabled) this.loop();
-        else this.el.style.display = 'none';
+        if (!this.enabled) this.el.style.display = 'none';
     },
 
     populateGlyphs() {
@@ -57,24 +65,13 @@ export const Glyphs = {
         }
     },
 
-    loop() {
-        cancelAnimationFrame(this.raf);
-        if (!this.enabled) return;
-        this.angle += 0.0025;
-        const ring = this.el.querySelector('.holo-ring');
-        ring.style.transform = `translate(-50%,-50%) rotate(${this.angle}turn)`;
-        this.raf = requestAnimationFrame(() => this.loop());
-    },
-
     setEnabled(v) {
         this.enabled = !!v;
         localStorage.setItem('glyphsEnabled', this.enabled ? '1' : '0');
         if (this.enabled) {
             this.el.style.display = '';
-            this.loop();
         } else {
             this.el.style.display = 'none';
-            cancelAnimationFrame(this.raf);
         }
     },
 

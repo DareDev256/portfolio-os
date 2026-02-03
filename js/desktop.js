@@ -26,57 +26,10 @@ export const Desktop = {
         'https://images.unsplash.com/photo-1557682260-96773eb01377',
     ],
 
-    // Desktop item configurations
+    // Desktop item configurations — ordered for recruiter flow
+    // Column 1: "Hire Me" | Column 2: "What I Build" | Column 3: "Projects" | Column 4: "Extras"
     DESKTOP_ITEMS: [
-        {
-            id: 'media',
-            label: 'MEDIA_VAULT',
-            icon: 'svg:/assets/media-vault.svg',
-            color: '#00f0ff',
-            action: () => Desktop.openMediaVault(),
-        },
-        {
-            id: 'applications',
-            label: 'APPLICATIONS',
-            icon: 'svg:/assets/applications.svg',
-            color: '#ff00aa',
-            action: () => Desktop.openApplicationsShowcase(),
-        },
-        {
-            id: 'image-generator',
-            label: 'IMG_GEN.ai',
-            icon: 'svg:/assets/image-generator.svg',
-            color: '#be185d',
-            action: () => window.open('https://web-ten-vert-46.vercel.app/', '_blank'),
-        },
-        {
-            id: 'typemaster',
-            label: 'TYPEMASTER',
-            icon: 'svg:/assets/typemaster.svg',
-            color: '#00ff88',
-            action: () => window.open('https://typing-game-kappa-seven.vercel.app/', '_blank'),
-        },
-        {
-            id: 'vibe-coder',
-            label: 'Vibe_Coder.exe',
-            icon: 'svg:/assets/vibe-coder.svg',
-            color: '#ff00aa',
-            action: () => window.open('https://daredev256.github.io/vibe-coder/', '_blank'),
-        },
-        {
-            id: 'skills',
-            label: 'SKILLS_MATRIX',
-            icon: 'svg:/assets/skills-matrix.svg',
-            color: '#00f0ff',
-            action: () => Desktop.openSkills(),
-        },
-        {
-            id: 'terminal',
-            label: 'DEV_TERMINAL',
-            icon: 'svg:/assets/dev-terminal.svg',
-            color: '#00ff88',
-            action: () => Desktop.openTerminal(),
-        },
+        // Column 1 — Hire Me (leftmost)
         {
             id: 'resume',
             label: 'RESUME',
@@ -99,11 +52,19 @@ export const Desktop = {
             action: () => Desktop.openContact(),
         },
         {
-            id: 'showcase',
-            label: 'SHOWCASE.mp4',
-            icon: '🎬',
-            color: '#FF0000',
-            action: () => Desktop.openFeaturedVideo(),
+            id: 'linkedin',
+            label: 'LINKEDIN',
+            icon: '👔',
+            color: '#0077b5',
+            action: () => window.open('https://www.linkedin.com', '_blank'),
+        },
+        // Column 2 — What I Build
+        {
+            id: 'skills',
+            label: 'SKILLS_MATRIX',
+            icon: 'svg:/assets/skills-matrix.svg',
+            color: '#00f0ff',
+            action: () => Desktop.openSkills(),
         },
         {
             id: 'github',
@@ -113,12 +74,49 @@ export const Desktop = {
             action: () => Desktop.openGitHubCenter(),
         },
         {
-            id: 'linkedin',
-            label: 'LINKEDIN',
-            icon: '👔',
-            color: '#0077b5',
-            action: () => window.open('https://www.linkedin.com', '_blank'), // User can update this link later
+            id: 'applications',
+            label: 'APPLICATIONS',
+            icon: 'svg:/assets/applications.svg',
+            color: '#ff00aa',
+            action: () => Desktop.openApplicationsShowcase(),
         },
+        {
+            id: 'terminal',
+            label: 'DEV_TERMINAL',
+            icon: 'svg:/assets/dev-terminal.svg',
+            color: '#00ff88',
+            action: () => Desktop.openTerminal(),
+        },
+        // Column 3 — Projects
+        {
+            id: 'vibe-coder',
+            label: 'Vibe_Coder.exe',
+            icon: 'svg:/assets/vibe-coder.svg',
+            color: '#ff00aa',
+            action: () => window.open('https://daredev256.github.io/vibe-coder/', '_blank'),
+        },
+        {
+            id: 'image-generator',
+            label: 'IMG_GEN.ai',
+            icon: 'svg:/assets/image-generator.svg',
+            color: '#be185d',
+            action: () => window.open('https://web-ten-vert-46.vercel.app/', '_blank'),
+        },
+        {
+            id: 'typemaster',
+            label: 'TYPEMASTER',
+            icon: 'svg:/assets/typemaster.svg',
+            color: '#00ff88',
+            action: () => window.open('https://typing-game-kappa-seven.vercel.app/', '_blank'),
+        },
+        {
+            id: 'showcase',
+            label: 'SHOWCASE.mp4',
+            icon: '🎬',
+            color: '#FF0000',
+            action: () => Desktop.openFeaturedVideo(),
+        },
+        // Column 4 — Extras
         {
             id: 'portfolio-videos',
             label: 'MUSIC_VIDEOS',
@@ -322,55 +320,43 @@ export const Desktop = {
             const iconSpacingX = 110;
             const iconSpacingY = 100;
 
-            // Left column: Personal & Portfolio (column 1)
-            const leftCol = [
-                { id: 'about', row: 0 },
-                { id: 'resume', row: 1 },
+            // Column 1: Hire Me (recruiter-first)
+            const hireMe = [
+                { id: 'resume', row: 0 },
+                { id: 'about', row: 1 },
                 { id: 'contact', row: 2 },
                 { id: 'linkedin', row: 3 },
             ];
 
-            // Second column: Core Apps (column 2)
-            const coreApps = [
-                { id: 'applications', row: 0 },
-                { id: 'skills', row: 1 },
-                { id: 'github', row: 2 },
+            // Column 2: What I Build
+            const whatIBuild = [
+                { id: 'skills', row: 0 },
+                { id: 'github', row: 1 },
+                { id: 'applications', row: 2 },
                 { id: 'terminal', row: 3 },
             ];
 
-            // Third column: Games & Tools (column 3)
-            const gamesTools = [
+            // Column 3: Projects
+            const projects = [
                 { id: 'vibe-coder', row: 0 },
-                { id: 'typemaster', row: 1 },
-                { id: 'image-generator', row: 2 },
+                { id: 'image-generator', row: 1 },
+                { id: 'typemaster', row: 2 },
+                { id: 'showcase', row: 3 },
             ];
 
-            // Fourth column: Media & System (column 4)
-            const mediaSystem = [
-                { id: 'media', row: 0 },
-                { id: 'showcase', row: 1 },
-                { id: 'settings', row: 2 },
+            // Column 4: Extras
+            const extras = [
+                { id: 'portfolio-videos', row: 0 },
+                { id: 'settings', row: 1 },
             ];
 
             // Check each column group
-            const leftMatch = leftCol.find(i => i.id === item.id);
-            if (leftMatch) {
-                return { x: 40, y: topAreaY + (leftMatch.row * iconSpacingY) };
-            }
-
-            const coreMatch = coreApps.find(i => i.id === item.id);
-            if (coreMatch) {
-                return { x: 40 + iconSpacingX, y: topAreaY + (coreMatch.row * iconSpacingY) };
-            }
-
-            const gamesMatch = gamesTools.find(i => i.id === item.id);
-            if (gamesMatch) {
-                return { x: 40 + (iconSpacingX * 2), y: topAreaY + (gamesMatch.row * iconSpacingY) };
-            }
-
-            const mediaMatch = mediaSystem.find(i => i.id === item.id);
-            if (mediaMatch) {
-                return { x: 40 + (iconSpacingX * 3), y: topAreaY + (mediaMatch.row * iconSpacingY) };
+            const columns = [hireMe, whatIBuild, projects, extras];
+            for (let col = 0; col < columns.length; col++) {
+                const match = columns[col].find(i => i.id === item.id);
+                if (match) {
+                    return { x: 40 + (col * iconSpacingX), y: topAreaY + (match.row * iconSpacingY) };
+                }
             }
 
             // Fallback: grid from top-left
@@ -409,8 +395,10 @@ export const Desktop = {
                 : `<span class="desktop-icon-emoji">${item.icon}</span>`;
 
             icon.innerHTML = `
-                <div class="desktop-icon-box" style="border-color: ${item.color}40; box-shadow: 0 0 20px ${item.color}20;">
+                <div class="desktop-icon-box hud-scannable" style="border-color: ${item.color}40; box-shadow: 0 0 20px ${item.color}20;">
                     ${iconContent}
+                    <div class="hud-scan-ring"></div>
+                    <div class="hud-scan-ring"></div>
                 </div>
                 <span class="desktop-icon-label" style="color: ${item.color};">${item.label}</span>
             `;
