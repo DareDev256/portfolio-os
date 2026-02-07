@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.1
+version: 3.1.1
 last_updated: 2026-02-07
 
 ---
@@ -15,6 +15,26 @@ last_updated: 2026-02-07
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## v3.1.1 — Desktop Wheel Quality + Galaxy Boot Background (February 7, 2026)
+
+### Mahoraga Wheel — Adaptive Desktop Rendering
+
+- **Antialias enabled on desktop** — eliminates jagged edges on torus/sphere geometry visible on large displays
+- **Pixel ratio cap raised to 2x on desktop** — crisp rendering on Retina MacBooks (was globally capped at 1.5)
+- **60fps on desktop, 30fps on mobile** — fluid rotation on 60Hz+ monitors, lean on phones
+- **High-performance GPU preference on desktop** — uses discrete GPU when available instead of integrated
+- **Lerp factor tuned per framerate** — snap animation speed feels identical across 30fps and 60fps
+
+### Galaxy Background During Boot
+
+- **Galaxy initializes before Boot.start()** — nebula + stars visible from first frame (was blank during ~1.5s wallpaper preload)
+- **Login reuses existing instance** — no double-init, no duplicate console messages
+- **Fallback preserved** — if main.js init fails, Login.initGalaxyEffect() retries as before
+
+**Files Modified**: `js/mahoraga-wheel-3d.js`, `js/main.js`, `js/login.js`
 
 ---
 
@@ -661,6 +681,7 @@ You're on the latest version!
 
 | Version | Date     | Phase   | Key Features                                     |
 | ------- | -------- | ------- | ------------------------------------------------ |
+| 3.1.1   | Feb 2026 | Patch   | Desktop wheel quality, galaxy boot background     |
 | 3.1     | Feb 2026 | Phase 5 | Security audit, perf, a11y, 27 tests             |
 | 3.0     | Jan 2026 | Phase 4 | Visual overhaul, easter eggs, desktop reorder     |
 | 2.56    | Nov 2025 | Phase 3 | Admin Dashboard, Routing, Mobile, Enhanced UI     |
@@ -700,7 +721,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.1 (Phase 5)
+**Latest Version**: 3.1.1
 
 **Status**: ✅ Production Ready
 

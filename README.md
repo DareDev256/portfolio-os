@@ -1,4 +1,4 @@
-# Passion OS v3.1
+# Passion OS v3.1.1
 
 **A cyberpunk-inspired portfolio operating system built with vanilla JavaScript -- no frameworks, no dependencies.**
 
@@ -162,7 +162,7 @@ Open `http://localhost:5173`.
 - **HTML5** - Semantic markup
 - **CSS3** - Custom properties, animations, glassmorphism
 - **JavaScript (ES6)** - Modules, async/await, Web Animations API
-- **Three.js** - Galaxy background, 3D wheel
+- **Three.js** - Galaxy background, 3D wheel (adaptive rendering: 60fps/antialias on desktop, lean on mobile)
 - **localStorage** - Client-side persistence
 - **History API** - Client-side routing
 - **Vite** - Development server
