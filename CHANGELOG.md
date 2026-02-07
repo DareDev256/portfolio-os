@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.1.2
+version: 3.2.0
 last_updated: 2026-02-07
 
 ---
@@ -15,6 +15,38 @@ last_updated: 2026-02-07
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## v3.2.0 — Portfolio Refresh (February 7, 2026)
+
+### Desktop Icon Reorder — Recruiter F-Pattern
+
+- **Row-first layout** — rewrote `getDefaultPosition()` from column-priority to row-priority reading order
+- **Top row**: About Me, Applications, Music Videos, Resume — strongest first-impression icons
+- **localStorage key bumped** to `desktop_layout_v2` — forces layout reset for existing users
+
+### Applications Showcase Expansion
+
+- **18 real projects** across 4 categorized sections (was 6 flat items)
+- **Categories**: AI & Machine Learning, Full-Stack Applications, Creative & Client Work, Games & Tools
+- **Status badges**: green "DEPLOYED" for live URLs, cyan "SOURCE" for GitHub-only repos
+- **Window enlarged** to 700x650 to fit categorized content
+- **Scrollable app list** with category dividers
+
+### Font Change — Bangers → Orbitron
+
+- **`.galaxy-text` font-family** changed from `'Bangers', 'Black Ops One'` to `'Orbitron', 'Tomorrow'`
+- **Letter-spacing tightened** from 6px to 4px in galaxy.css, 8px to 4px in styles.css base rule
+- **Why**: Orbitron is geometric/digital — matches MMBN cyberspace aesthetic. Bangers was manga-style and clashed.
+
+### projects.json Cleanup
+
+- **Removed 6 filler projects**: Weather Dashboard, Fitness Tracker, Blog CMS, Code Snippet Manager, Chat Application, E-Commerce Platform
+- **Added 19 real projects** with proper GitHub URLs, demo links, tech stacks, and tags
+- **All placeholder `yourusername` URLs eliminated**
+
+**Files Modified**: `js/desktop.js`, `css/galaxy.css`, `css/styles.css`, `public/data/projects.json`
 
 ---
 
@@ -704,6 +736,8 @@ You're on the latest version!
 
 | Version | Date     | Phase   | Key Features                                     |
 | ------- | -------- | ------- | ------------------------------------------------ |
+| 3.2.0   | Feb 2026 | Minor   | Icon reorder, 18-project showcase, Orbitron font  |
+| 3.1.2   | Feb 2026 | Patch   | MMBN cyberspace grid background                   |
 | 3.1.1   | Feb 2026 | Patch   | Desktop wheel quality, galaxy boot background     |
 | 3.1     | Feb 2026 | Phase 5 | Security audit, perf, a11y, 27 tests             |
 | 3.0     | Jan 2026 | Phase 4 | Visual overhaul, easter eggs, desktop reorder     |
@@ -744,7 +778,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.1.1
+**Latest Version**: 3.2.0
 
 **Status**: ✅ Production Ready
 

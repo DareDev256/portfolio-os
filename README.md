@@ -1,8 +1,19 @@
-# Passion OS v3.1.2
+# Passion OS v3.2.0
 
 **A cyberpunk-inspired portfolio operating system built with vanilla JavaScript -- no frameworks, no dependencies.**
 
 Interactive desktop environment featuring draggable windows, GPU-optimized glass effects, recruiter-focused icon layout, easter eggs, and a full visual effects stack.
+
+---
+
+## v3.2.0 -- Portfolio Refresh
+
+Recruiter-priority icon reorder, expanded 18-project Applications showcase, and Orbitron font for MMBN digital aesthetic.
+
+- **Icon layout**: Row-first F-pattern scanning -- top row is About Me, Applications, Music Videos, Resume.
+- **Applications showcase**: 18 real projects across 4 categories (AI & ML, Full-Stack, Creative & Client, Games & Tools) with DEPLOYED/SOURCE status badges.
+- **Font**: PASSION OS title changed from Bangers (manga) to Orbitron (geometric digital) -- matches the MMBN cyberspace background.
+- **projects.json**: Removed 6 filler/placeholder projects, replaced with 19 real repos.
 
 ---
 
@@ -87,12 +98,12 @@ The biggest focus of v3.0: killing lag at the source.
 
 Reorganized the 4-column desktop layout to front-load what recruiters actually look for:
 
-| Column 1: Hire Me | Column 2: What I Build | Column 3: Projects | Column 4: Extras |
-|---|---|---|---|
-| RESUME | SKILLS_MATRIX | Vibe_Coder.exe | MUSIC_VIDEOS |
-| ABOUT_ME.exe | GITHUB_OPS | IMG_GEN.ai | SETTINGS |
-| CONNECT | APPLICATIONS | TYPEMASTER | |
-| LINKEDIN | DEV_TERMINAL | SHOWCASE.mp4 | |
+| Row | Col 1 | Col 2 | Col 3 | Col 4 |
+|-----|-------|-------|-------|-------|
+| 1 (First Impression) | ABOUT_ME | APPLICATIONS | MUSIC_VIDEOS | RESUME |
+| 2 (Technical) | GITHUB_OPS | SKILLS_MATRIX | SHOWCASE | LINKEDIN |
+| 3 (Live Projects) | Vibe_Coder | IMG_GEN.ai | DEV_TERMINAL | CONNECT |
+| 4 (Utilities) | TYPEMASTER | SETTINGS | | |
 
 Removed MEDIA_VAULT (redundant with MUSIC_VIDEOS).
 
