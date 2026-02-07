@@ -20,15 +20,16 @@ export const Sanitize = {
             ALLOWED_TAGS: [
                 'div', 'span', 'p', 'br', 'strong', 'em', 'u', 'a', 'img',
                 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-                'button', 'input', 'label', 'select', 'option', 'textarea',
+                'button', 'label',
                 'table', 'thead', 'tbody', 'tr', 'th', 'td',
-                'video', 'audio', 'source', 'iframe'
+                'svg', 'path', 'circle', 'rect'
             ],
             ALLOWED_ATTR: [
-                'href', 'src', 'alt', 'title', 'class', 'id', 'style',
+                'href', 'src', 'alt', 'title', 'class', 'id',
                 'data-*', 'role', 'aria-*', 'type', 'value', 'placeholder',
-                'width', 'height', 'controls', 'autoplay', 'loop', 'muted',
-                'frameborder', 'allow', 'allowfullscreen'
+                'width', 'height',
+                'viewBox', 'fill', 'd', 'cx', 'cy', 'r', 'x', 'y', 'rx', 'ry',
+                'preserveAspectRatio'
             ],
             ALLOW_DATA_ATTR: true,
             ALLOW_ARIA_ATTR: true,

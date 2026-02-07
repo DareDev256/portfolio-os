@@ -1,6 +1,7 @@
 import { WindowManager } from './windows.js';
 import { Desktop } from './desktop.js';
 import { State } from './state.js';
+import { Sanitize } from './sanitize.js';
 
 /**
  * Admin Dashboard
@@ -200,10 +201,10 @@ export const Admin = {
             <div class="admin-card" data-index="${index}">
                 <div class="admin-card-header">
                     <div class="drag-handle">⋮⋮</div>
-                    <div class="admin-card-preview" style="background: ${item.color}15; border-color: ${item.color}40;">
-                        <span style="font-size: 20px;">${item.icon}</span>
+                    <div class="admin-card-preview" style="background: ${/^#[0-9a-fA-F]{3,8}$/.test(item.color) ? item.color : '#00f0ff'}15; border-color: ${/^#[0-9a-fA-F]{3,8}$/.test(item.color) ? item.color : '#00f0ff'}40;">
+                        <span style="font-size: 20px;">${Sanitize.text(item.icon)}</span>
                     </div>
-                    <div class="admin-card-title">${item.label}</div>
+                    <div class="admin-card-title">${Sanitize.text(item.label)}</div>
                     <button class="admin-btn-icon delete" data-action="delete" data-index="${index}">
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                     </button>
@@ -212,15 +213,15 @@ export const Admin = {
                     <div class="admin-form-grid">
                         <label>
                             ID
-                            <input type="text" class="item-id" value="${item.id}" placeholder="unique-id">
+                            <input type="text" class="item-id" value="${Sanitize.text(item.id)}" placeholder="unique-id">
                         </label>
                         <label>
                             Label
-                            <input type="text" class="item-label" value="${item.label}" placeholder="MY_APP">
+                            <input type="text" class="item-label" value="${Sanitize.text(item.label)}" placeholder="MY_APP">
                         </label>
                         <label>
                             Icon (Emoji)
-                            <input type="text" class="item-icon" value="${item.icon}" placeholder="🚀" maxlength="2">
+                            <input type="text" class="item-icon" value="${Sanitize.text(item.icon)}" placeholder="🚀" maxlength="2">
                         </label>
                         <label>
                             Color
@@ -341,9 +342,9 @@ export const Admin = {
         return `
             <div class="admin-card" data-index="${index}">
                 <div class="admin-card-header">
-                    <div class="admin-card-title">${project.title || 'Untitled Project'}</div>
+                    <div class="admin-card-title">${Sanitize.text(project.title || 'Untitled Project')}</div>
                     <div class="admin-card-tags">
-                        ${(project.tags || []).map((tag) => `<span class="tag">${tag}</span>`).join('')}
+                        ${(project.tags || []).map((tag) => `<span class="tag">${Sanitize.text(tag)}</span>`).join('')}
                     </div>
                     <button class="admin-btn-icon delete" data-action="deleteProject" data-index="${index}">
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
@@ -353,27 +354,27 @@ export const Admin = {
                     <div class="admin-form-grid">
                         <label style="grid-column: span 2;">
                             Title
-                            <input type="text" class="proj-title" value="${project.title || ''}" placeholder="Project Name">
+                            <input type="text" class="proj-title" value="${Sanitize.text(project.title || '')}" placeholder="Project Name">
                         </label>
                         <label style="grid-column: span 2;">
                             Description
-                            <textarea class="proj-desc" rows="3" placeholder="Brief description...">${project.description || ''}</textarea>
+                            <textarea class="proj-desc" rows="3" placeholder="Brief description...">${Sanitize.text(project.description || '')}</textarea>
                         </label>
                         <label>
                             Technologies (comma-separated)
-                            <input type="text" class="proj-tech" value="${(project.tech || []).join(', ')}" placeholder="React, Node.js, MongoDB">
+                            <input type="text" class="proj-tech" value="${Sanitize.text((project.tech || []).join(', '))}" placeholder="React, Node.js, MongoDB">
                         </label>
                         <label>
                             Tags (comma-separated)
-                            <input type="text" class="proj-tags" value="${(project.tags || []).join(', ')}" placeholder="Web, Fullstack">
+                            <input type="text" class="proj-tags" value="${Sanitize.text((project.tags || []).join(', '))}" placeholder="Web, Fullstack">
                         </label>
                         <label>
                             Demo URL
-                            <input type="url" class="proj-demo" value="${project.demo || ''}" placeholder="https://demo.com">
+                            <input type="url" class="proj-demo" value="${Sanitize.text(project.demo || '')}" placeholder="https://demo.com">
                         </label>
                         <label>
                             Repository URL
-                            <input type="url" class="proj-repo" value="${project.repo || ''}" placeholder="https://github.com/...">
+                            <input type="url" class="proj-repo" value="${Sanitize.text(project.repo || '')}" placeholder="https://github.com/...">
                         </label>
                     </div>
                 </div>
@@ -520,7 +521,7 @@ export const Admin = {
                 <div class="admin-card" data-type="image" data-index="${index}">
                     <div class="admin-card-header">
                         <div class="admin-card-preview media-preview">
-                            ${img.url ? `<img src="${img.url}" alt="${img.caption}" style="max-width: 100%; max-height: 60px; object-fit: cover;">` : '📷'}
+                            ${img.url ? `<img src="${Sanitize.attr(img.url)}" alt="${Sanitize.text(img.caption)}" style="max-width: 100%; max-height: 60px; object-fit: cover;">` : '📷'}
                         </div>
                         <div class="admin-card-title">Image</div>
                         <button class="admin-btn-icon delete" data-action="deleteMedia" data-type="image" data-index="${index}">
@@ -531,15 +532,15 @@ export const Admin = {
                         <div class="admin-form-grid">
                             <label style="grid-column: span 2;">
                                 URL/Path
-                                <input type="text" class="media-url" value="${img.url || ''}" placeholder="assets/media/photo.jpg">
+                                <input type="text" class="media-url" value="${Sanitize.text(img.url || '')}" placeholder="assets/media/photo.jpg">
                             </label>
                             <label>
                                 Category
-                                <input type="text" class="media-category" value="${img.category || ''}" placeholder="Nature, Portraits, etc.">
+                                <input type="text" class="media-category" value="${Sanitize.text(img.category || '')}" placeholder="Nature, Portraits, etc.">
                             </label>
                             <label>
                                 Caption
-                                <input type="text" class="media-caption" value="${img.caption || ''}" placeholder="Photo description">
+                                <input type="text" class="media-caption" value="${Sanitize.text(img.caption || '')}" placeholder="Photo description">
                             </label>
                         </div>
                     </div>
@@ -553,9 +554,9 @@ export const Admin = {
                 <div class="admin-card" data-type="video" data-index="${index}">
                     <div class="admin-card-header">
                         <div class="admin-card-preview media-preview">
-                            ${video.poster ? `<img src="${video.poster}" alt="${video.title}" style="max-width: 100%; max-height: 60px; object-fit: cover;">` : '🎬'}
+                            ${video.poster ? `<img src="${Sanitize.attr(video.poster)}" alt="${Sanitize.text(video.title)}" style="max-width: 100%; max-height: 60px; object-fit: cover;">` : '🎬'}
                         </div>
-                        <div class="admin-card-title">Video: ${video.title || 'Untitled'}</div>
+                        <div class="admin-card-title">Video: ${Sanitize.text(video.title || 'Untitled')}</div>
                         <button class="admin-btn-icon delete" data-action="deleteMedia" data-type="video" data-index="${index}">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                         </button>
@@ -564,15 +565,15 @@ export const Admin = {
                         <div class="admin-form-grid">
                             <label style="grid-column: span 2;">
                                 Video URL
-                                <input type="text" class="media-url" value="${video.url || ''}" placeholder="https://youtube.com/watch?v=...">
+                                <input type="text" class="media-url" value="${Sanitize.text(video.url || '')}" placeholder="https://youtube.com/watch?v=...">
                             </label>
                             <label>
                                 Title
-                                <input type="text" class="media-title" value="${video.title || ''}" placeholder="Video Title">
+                                <input type="text" class="media-title" value="${Sanitize.text(video.title || '')}" placeholder="Video Title">
                             </label>
                             <label>
                                 Poster URL
-                                <input type="text" class="media-poster" value="${video.poster || ''}" placeholder="Thumbnail image URL">
+                                <input type="text" class="media-poster" value="${Sanitize.text(video.poster || '')}" placeholder="Thumbnail image URL">
                             </label>
                         </div>
                     </div>
@@ -614,8 +615,8 @@ export const Admin = {
                 const icon = storedIcons[folder] || defaultIcons[folder] || '📁';
                 return `
                     <div class="folder-icon-item" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
-                        <label style="display: block; color: var(--neon-cyan); font-size: 11px; margin-bottom: 5px;">${folder}</label>
-                        <input type="text" class="folder-icon-input" data-folder="${folder}" value="${icon}" style="width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(0,240,255,0.3); color: white; padding: 5px; border-radius: 4px; text-align: center;">
+                        <label style="display: block; color: var(--neon-cyan); font-size: 11px; margin-bottom: 5px;">${Sanitize.text(folder)}</label>
+                        <input type="text" class="folder-icon-input" data-folder="${Sanitize.text(folder)}" value="${Sanitize.text(icon)}" style="width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(0,240,255,0.3); color: white; padding: 5px; border-radius: 4px; text-align: center;">
                     </div>
                 `;
             }).join('');
@@ -1038,20 +1039,42 @@ export const Admin = {
                 try {
                     const backup = JSON.parse(event.target.result);
 
-                    // Restore data
+                    // Validate schema before writing to localStorage
+                    const MAX_STRING = 2000;
+                    const MAX_ITEMS = 200;
+                    const isStr = (v) => typeof v === 'string' && v.length <= MAX_STRING;
+                    const isArr = (v, max) => Array.isArray(v) && v.length <= (max || MAX_ITEMS);
+
                     if (backup.desktopItems) {
+                        if (!isArr(backup.desktopItems, 50)) throw new Error('Invalid desktopItems: must be array (max 50)');
+                        for (const item of backup.desktopItems) {
+                            if (typeof item !== 'object' || !item) throw new Error('Invalid desktop item');
+                            if (item.label && !isStr(item.label)) throw new Error('Desktop item label too long');
+                            if (item.id && !isStr(item.id)) throw new Error('Desktop item id too long');
+                        }
                         localStorage.setItem('desktopItems', JSON.stringify(backup.desktopItems));
                         this.desktopItems = backup.desktopItems;
                     }
                     if (backup.projects) {
+                        if (!isArr(backup.projects, 100)) throw new Error('Invalid projects: must be array (max 100)');
+                        for (const p of backup.projects) {
+                            if (typeof p !== 'object' || !p) throw new Error('Invalid project');
+                            if (p.title && !isStr(p.title)) throw new Error('Project title too long');
+                            if (p.description && !isStr(p.description)) throw new Error('Project description too long');
+                            if (p.tags && !isArr(p.tags, 20)) throw new Error('Too many project tags');
+                            if (p.tech && !isArr(p.tech, 20)) throw new Error('Too many project techs');
+                        }
                         localStorage.setItem('projects.json', JSON.stringify(backup.projects));
                         this.projects = backup.projects;
                     }
                     if (backup.media) {
+                        if (typeof backup.media !== 'object') throw new Error('Invalid media object');
+                        if (backup.media.images && !isArr(backup.media.images, MAX_ITEMS)) throw new Error('Too many media images');
+                        if (backup.media.videos && !isArr(backup.media.videos, MAX_ITEMS)) throw new Error('Too many media videos');
                         localStorage.setItem('media.json', JSON.stringify(backup.media));
                         this.media = backup.media;
                     }
-                    if (backup.theme?.colors) {
+                    if (backup.theme?.colors && isStr(backup.theme.colors)) {
                         localStorage.setItem('themeColors', backup.theme.colors);
                     }
 

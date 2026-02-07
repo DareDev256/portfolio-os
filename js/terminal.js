@@ -3,6 +3,7 @@
  * A fully interactive CLI for the portfolio.
  * "The Sauce" - proves backend/devops competence.
  */
+import { Sanitize } from './sanitize.js';
 
 export const Terminal = {
     history: [],
@@ -81,7 +82,7 @@ export const Terminal = {
     printHTML(html) {
         const line = document.createElement('div');
         line.className = 'term-line';
-        line.innerHTML = html;
+        line.innerHTML = Sanitize.html(html);
         this.output.appendChild(line);
         this.scrollToBottom();
     },
@@ -95,7 +96,7 @@ export const Terminal = {
         this.historyIndex = -1;
 
         // Echo
-        this.printHTML(`<span class="term-prompt">daredev256@passion-os:~$</span> ${cmdRaw}`);
+        this.printHTML(`<span class="term-prompt">daredev256@passion-os:~$</span> ${Sanitize.text(cmdRaw)}`);
 
         const parts = cmdRaw.split(' ');
         const cmd = parts[0].toLowerCase();
@@ -133,7 +134,7 @@ export const Terminal = {
                 } else if (this.fileSystem[args[0]]) {
                     this.println(this.fileSystem[args[0]]);
                 } else {
-                    this.println(`cat: ${args[0]}: No such file or directory`, 'term-error');
+                    this.println(`cat: ${Sanitize.text(args[0])}: No such file or directory`, 'term-error');
                 }
                 break;
 
@@ -157,7 +158,7 @@ export const Terminal = {
                 if (sassResponse) {
                     this.println(sassResponse);
                 } else {
-                    this.println(`Command not found: ${cmd}`, 'term-error');
+                    this.println(`Command not found: ${Sanitize.text(cmd)}`, 'term-error');
                 }
         }
     },

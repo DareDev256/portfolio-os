@@ -1,15 +1,15 @@
-import { FX } from './fx.js';
-import { Aurora } from './aurora.js';
-import { Glyphs } from './glyphs.js';
-import { AudioFX } from './audiofx.js';
-import { InteractionEngine } from './interactions/engine.js';
-
 /**
  * State Management
  * Handles localStorage persistence, z-index management, and global state
+ * Modules register themselves via registerModule() — no static imports here
+ * to avoid defeating lazy loading.
  */
 
 export const State = {
+    /** Dispatch a state change event so visual modules can react without coupling */
+    _emit(name, detail) {
+        document.dispatchEvent(new CustomEvent('state:' + name, { detail }));
+    },
     // Z-index management
     currentZIndex: 100,
     maxZIndex: 100,
@@ -143,6 +143,17 @@ export const State = {
         } else {
             // Determine correct CSS path: prefix '../' for local asset paths
             let url = input;
+
+            // Block dangerous protocols
+            const lower = url.toLowerCase().trim();
+            if (lower.startsWith('javascript:') || lower.startsWith('data:text/html')) {
+                console.warn('[State] Blocked dangerous wallpaper URL:', url);
+                return;
+            }
+
+            // Strip characters that could break out of CSS url('...')
+            url = url.replace(/['"()\\]/g, '');
+
             const isExternal =
                 /^https?:\/\//.test(url) || url.startsWith('/') || url.startsWith('data:');
             if (!isExternal) {
@@ -158,7 +169,7 @@ export const State = {
     setFxEnabled(enabled) {
         this.fxEnabled = !!enabled;
         localStorage.setItem('fxEnabled', this.fxEnabled ? '1' : '0');
-        if (FX) FX.setEnabled(this.fxEnabled);
+        this._emit('fx', { enabled: this.fxEnabled });
     },
 
     toggleFx() {
@@ -168,7 +179,7 @@ export const State = {
     setAuroraEnabled(v) {
         this.auroraEnabled = !!v;
         localStorage.setItem('auroraEnabled', this.auroraEnabled ? '1' : '0');
-        if (Aurora) Aurora.setEnabled(this.auroraEnabled);
+        this._emit('aurora', { enabled: this.auroraEnabled });
     },
     toggleAurora() {
         this.setAuroraEnabled(!this.auroraEnabled);
@@ -177,7 +188,7 @@ export const State = {
     setGlyphsEnabled(v) {
         this.glyphsEnabled = !!v;
         localStorage.setItem('glyphsEnabled', this.glyphsEnabled ? '1' : '0');
-        if (Glyphs) Glyphs.setEnabled(this.glyphsEnabled);
+        this._emit('glyphs', { enabled: this.glyphsEnabled });
     },
     toggleGlyphs() {
         this.setGlyphsEnabled(!this.glyphsEnabled);
@@ -186,7 +197,7 @@ export const State = {
     setSoundEnabled(v) {
         this.soundEnabled = !!v;
         localStorage.setItem('soundEnabled', this.soundEnabled ? '1' : '0');
-        if (AudioFX) AudioFX.setEnabled(this.soundEnabled);
+        this._emit('sound', { enabled: this.soundEnabled });
     },
     toggleSound() {
         this.setSoundEnabled(!this.soundEnabled);
@@ -196,7 +207,7 @@ export const State = {
     setInteractionsEnabled(v) {
         this.interactionsEnabled = !!v;
         localStorage.setItem('interactionsEnabled', this.interactionsEnabled ? '1' : '0');
-        if (InteractionEngine) InteractionEngine.setEnabled(this.interactionsEnabled);
+        this._emit('interactions', { enabled: this.interactionsEnabled });
     },
     toggleInteractions() {
         this.setInteractionsEnabled(!this.interactionsEnabled);
@@ -205,17 +216,13 @@ export const State = {
     setCursorTrailEnabled(v) {
         this.cursorTrailEnabled = !!v;
         localStorage.setItem('cursorTrailEnabled', this.cursorTrailEnabled ? '1' : '0');
-        if (InteractionEngine && InteractionEngine.cursorTrail) {
-            InteractionEngine.cursorTrail.setEnabled(this.cursorTrailEnabled);
-        }
+        this._emit('cursorTrail', { enabled: this.cursorTrailEnabled });
     },
 
     setCursorTrailType(type) {
         this.cursorTrailType = type;
         localStorage.setItem('cursorTrailType', type);
-        if (InteractionEngine && InteractionEngine.cursorTrail) {
-            InteractionEngine.cursorTrail.setType(type);
-        }
+        this._emit('cursorTrailType', { type });
     },
 
     toggleCursorTrail() {

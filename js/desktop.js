@@ -3,9 +3,8 @@ import { State } from './state.js';
 import { Lightbox } from './lightbox.js';
 import { Modal } from './modal.js';
 import { PixelLoader } from './loader.js';
-import { SkillsUniverse } from './skills.js';
-import { GitHub } from './github.js';
-import { Terminal } from './terminal.js';
+// SkillsUniverse, GitHub, Terminal loaded dynamically at point-of-use (P5)
+import { Sanitize } from './sanitize.js';
 
 /**
  * Desktop Manager
@@ -754,12 +753,14 @@ export const Desktop = {
      * Open Skills Universe
      */
     openSkills() {
+        let skillsRef = null;
         const win = WindowManager.create({
             id: 'skills',
             title: 'SKILLS_UNIVERSE // PHYSICS_ENGINE_V1',
             icon: '🕸️',
             width: 900,
-            height: 600
+            height: 600,
+            onClose: () => { if (skillsRef) skillsRef.stop(); }
         });
 
         const content = document.createElement('div');
@@ -774,9 +775,11 @@ export const Desktop = {
         winContent.innerHTML = '';
         winContent.appendChild(content);
 
-        // Init Physics Engine
-        setTimeout(() => {
+        // Init Physics Engine (lazy-loaded)
+        setTimeout(async () => {
+            const { SkillsUniverse } = await import('./skills.js');
             SkillsUniverse.init(content);
+            skillsRef = SkillsUniverse;
         }, 50);
     },
 
@@ -799,8 +802,8 @@ export const Desktop = {
 
         win.element.querySelector('.window-content').appendChild(content);
 
-        // Render Dashboard
-        GitHub.render(content);
+        // Render Dashboard (lazy-loaded)
+        import('./github.js').then(({ GitHub }) => GitHub.render(content));
     },
 
     /**
@@ -822,10 +825,8 @@ export const Desktop = {
         content.style.height = '100%';
         win.element.querySelector('.window-content').appendChild(content);
 
-        // Dynamically load Terminal module if not already (or just use global if available)
-        // Since we didn't import it at top yet, let me fix imports next.
-        // For now I'll assume I import it.
-        Terminal.init(content);
+        // Lazy-load terminal module
+        import('./terminal.js').then(({ Terminal }) => Terminal.init(content));
     },
 
     /** Open the featured video directly */
@@ -897,7 +898,7 @@ export const Desktop = {
 
             // Add thumbnail background if available
             if (thumb && !isLocked) {
-                folderDiv.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${thumb}')`;
+                folderDiv.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${Sanitize.attr(thumb)}')`;
                 folderDiv.style.backgroundSize = 'cover';
                 folderDiv.style.backgroundPosition = 'center';
             } else if (!isLocked) {
@@ -910,7 +911,7 @@ export const Desktop = {
                 }
             }
 
-            html += `<div class="media-folder-label">${folderName}</div>`;
+            html += `<div class="media-folder-label">${Sanitize.text(folderName)}</div>`;
             folderDiv.innerHTML = html;
 
             // Add cursor pointer to make it clear it's clickable
@@ -1171,14 +1172,14 @@ export const Desktop = {
                 poster = video.generatedPoster;
             }
 
-            const bgStyle = poster ? `background-image:url('${poster}')` : 'background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;';
+            const bgStyle = poster ? `background-image:url('${Sanitize.attr(poster)}')` : 'background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;';
             const contentHtml = poster ? '' : '<span style="font-size: 40px; opacity: 0.5;">🎬</span>';
 
             if (mode === 'list') {
                 item.innerHTML = `
                     <div class="video-thumb-small" style="${bgStyle}; width: 80px; height: 45px; background-size: cover;">${contentHtml}</div>
                     <div class="video-info">
-                        <div class="video-title">${video.title}</div>
+                        <div class="video-title">${Sanitize.text(video.title)}</div>
                         <div class="video-meta">Video • ${video.url.includes('youtube') ? 'YouTube' : 'Local'}</div>
                     </div>
                     <div class="video-action">▶</div>
@@ -1190,7 +1191,7 @@ export const Desktop = {
                         <div class="video-play-icon">▶</div>
                         <div class="video-duration">--:--</div>
                     </div>
-                    <div class="video-title">${video.title}</div>
+                    <div class="video-title">${Sanitize.text(video.title)}</div>
                 `;
 
                 // Load actual duration asynchronously
@@ -1249,14 +1250,14 @@ export const Desktop = {
                 item.className = 'video-item';
                 item.innerHTML = `
                     <div class="video-thumbnail">
-                        <img src="${video.poster}" alt="${video.title}">
+                        <img src="${Sanitize.attr(video.poster)}" alt="${Sanitize.text(video.title)}">
                         <div class="video-play-icon">
                             <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                         </div>
                     </div>
-                    <div class="video-title">${video.title}</div>
+                    <div class="video-title">${Sanitize.text(video.title)}</div>
                 `;
                 item.onclick = () => Lightbox.open(videos, index, 'video');
                 content.appendChild(item);
@@ -1400,7 +1401,7 @@ export const Desktop = {
         filters.className = 'app-filters';
         filters.innerHTML = `
             <button class="filter-tag active" data-tag="all">All</button>
-            ${allTags.map((tag) => `<button class="filter-tag" data-tag="${tag}">${tag}</button>`).join('')}
+            ${allTags.map((tag) => `<button class="filter-tag" data-tag="${tag}">${Sanitize.text(tag)}</button>`).join('')}
         `;
 
         // Create projects grid
@@ -1414,14 +1415,14 @@ export const Desktop = {
                 .map(
                     (project) => `
                 <div class="project-card">
-                    <div class="project-title">${project.title}</div>
-                    <div class="project-description">${project.description}</div>
+                    <div class="project-title">${Sanitize.text(project.title)}</div>
+                    <div class="project-description">${Sanitize.text(project.description)}</div>
                     <div class="project-tech">
-                        ${project.tech.map((t) => `<span class="tech-tag">${t}</span>`).join('')}
+                        ${project.tech.map((t) => `<span class="tech-tag">${Sanitize.text(t)}</span>`).join('')}
                     </div>
                     <div class="project-links">
-                        ${project.demo ? `<a href="${project.demo}" target="_blank" class="project-link">View Demo</a>` : ''}
-                        ${project.repo ? `<a href="${project.repo}" target="_blank" class="project-link secondary">GitHub</a>` : ''}
+                        ${project.demo ? `<a href="${Sanitize.attr(project.demo)}" target="_blank" class="project-link">View Demo</a>` : ''}
+                        ${project.repo ? `<a href="${Sanitize.attr(project.repo)}" target="_blank" class="project-link secondary">GitHub</a>` : ''}
                     </div>
                 </div>
             `
@@ -1838,23 +1839,7 @@ export const Desktop = {
                     </div>
                 </div>
 
-                <!-- Content Card -->
-                <div class="settings-card" style="grid-column: span 2;">
-                    <div class="settings-card-header">
-                        <span class="settings-icon">📝</span>
-                        <h3>Content Management</h3>
-                    </div>
-                    <div class="settings-card-body">
-                        <div style="display: flex; gap: 10px;">
-                            <button class="settings-btn primary" id="openAdmin">
-                                <span>✏️</span> Content Editor
-                            </button>
-                            <button class="settings-btn secondary" id="openApps">
-                                <span>⚡</span> Edit Projects
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Content Management: Admin panel accessible via console Admin.open() -->
             </div>
         `;
 
@@ -1882,11 +1867,7 @@ export const Desktop = {
             State.idleTime = m * 60000;
         });
 
-        content.querySelector('#openAdmin').addEventListener('click', async () => {
-            const { Admin } = await import('./admin.js');
-            Admin.open();
-        });
-        content.querySelector('#openApps').addEventListener('click', () => Desktop.openApplications());
+        // Admin panel accessible via console: import('./admin.js').then(m => m.Admin.open())
     },
 
     /**

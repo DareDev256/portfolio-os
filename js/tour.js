@@ -2,6 +2,7 @@
  * Spotlight Tour System
  * Guides users through key areas of the portfolio with spotlight highlights
  */
+import { trapFocus } from './focus-trap.js';
 
 export const Tour = {
     currentStep: 0,
@@ -10,6 +11,7 @@ export const Tour = {
     spotlight: null,
     tooltip: null,
     isActive: false,
+    _focusTrapCleanup: null,
 
     /**
      * Define tour stops
@@ -63,6 +65,7 @@ export const Tour = {
         this.steps = [...this.TOUR_STEPS];
 
         this.createOverlay();
+        this._focusTrapCleanup = trapFocus(this.overlay);
         this.showStep(0);
     },
 
@@ -222,6 +225,12 @@ export const Tour = {
      */
     end() {
         if (!this.overlay) return;
+
+        // Release focus trap
+        if (this._focusTrapCleanup) {
+            this._focusTrapCleanup();
+            this._focusTrapCleanup = null;
+        }
 
         // Remove any highlights
         document.querySelectorAll('.tour-highlight').forEach(el => {

@@ -11,27 +11,28 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Tomorrow:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Black+Ops+One&family=Bangers&family=Russo+One&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Tomorrow:wght@400;500;600;700;900&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&family=Black+Ops+One&family=Bangers&display=swap" rel="stylesheet" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/reset.css?v=3.0" />
-    <link rel="stylesheet" href="/css/variables.css?v=3.0" />
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/windows.css">
-    <link rel="stylesheet" href="/css/admin.css">
-    <link rel="stylesheet" href="/css/forms.css">
-    <link rel="stylesheet" href="/css/modal.css?v=3.0" />
-    <link rel="stylesheet" href="/css/loading.css?v=3.0" />
-    <link rel="stylesheet" href="/css/welcome.css?v=3.0" />
-    <link rel="stylesheet" href="/css/tour.css?v=3.0" />
-    <link rel="stylesheet" href="/css/interactions.css?v=3.0" />
-    <link rel="stylesheet" href="/css/mobile.css?v=3.0" />
-    <link rel="stylesheet" href="/css/accessibility.css?v=3.0" />
-    <link rel="stylesheet" href="/css/glass.css?v=3.0" />
+    <link rel="stylesheet" href="/css/reset.css?v=3.1" />
+    <link rel="stylesheet" href="/css/variables.css?v=3.1" />
+    <link rel="stylesheet" href="/css/styles.css?v=3.1" />
+    <link rel="stylesheet" href="/css/windows.css?v=3.1" />
+    <link rel="stylesheet" href="/css/admin.css?v=3.1" />
+    <link rel="stylesheet" href="/css/forms.css?v=3.1" />
+    <link rel="stylesheet" href="/css/modal.css?v=3.1" />
+    <link rel="stylesheet" href="/css/loading.css?v=3.1" />
+    <link rel="stylesheet" href="/css/welcome.css?v=3.1" />
+    <link rel="stylesheet" href="/css/tour.css?v=3.1" />
+    <link rel="stylesheet" href="/css/interactions.css?v=3.1" />
+    <link rel="stylesheet" href="/css/mobile.css?v=3.1" />
+    <link rel="stylesheet" href="/css/accessibility.css?v=3.1" />
+    <link rel="stylesheet" href="/css/glass.css?v=3.1" />
     <link rel="stylesheet" href="/css/galaxy.css?v=3.0" />
 </head>
 
 <body data-theme="dark" class="galaxy-active galaxy-container">
+    <a href="#desktop" class="skip-link">Skip to desktop</a>
     <!-- Scan lines overlay (global) -->
     <div class="scan-lines"></div>
 
@@ -93,6 +94,7 @@
 
     <!-- Desktop -->
     <div id="desktop" class="desktop hidden">
+        <div id="screenReaderAnnouncer" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
         <!-- Top Status Bar -->
         <div class="top-bar">
             <div class="top-bar-left">
@@ -123,7 +125,7 @@
         </div>
 
         <!-- Windows Container -->
-        <div id="windowsContainer" class="windows-container" role="region" aria-label="Application windows">
+        <div id="windowsContainer" class="windows-container" role="region" aria-label="Application windows" aria-live="polite">
             <!-- Windows created dynamically -->
         </div>
 
@@ -167,7 +169,9 @@
 
     <!-- Scripts -->
     <!-- Security: DOMPurify for XSS protection -->
-    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"
+            integrity="sha384-vdScihEZCfbPnBQf+lc7LgXUdJVYyhC3yWHUW5C5P5GpHRqVnaM6HJELJxT6IqwM"
+            crossorigin="anonymous"></script>
     <!-- System Verified: DareDev256 -->
     <script type="module" src="/js/main.js"></script>
 </body>

@@ -31,6 +31,9 @@ yarn-error.log*
 .cache/
 .parcel-cache/
 
+# Playwright MCP screenshots
+.playwright-mcp/
+
 # Local transient files
 terminal_snapshot_*.log
 test-*.html

@@ -341,7 +341,7 @@
     }
 
     .desktop-icon-label {
-        font-size: 7px;
+        font-size: 10px;
     }
 
     .dock-launchers {
@@ -349,8 +349,14 @@
     }
 
     .taskbar-window-btn {
-        width: 40px;
-        height: 40px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    /* Ensure window control buttons meet 44px touch target */
+    .window-controls button {
+        min-width: 44px;
+        min-height: 44px;
     }
 
     .media-vault-grid,

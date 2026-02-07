@@ -10,6 +10,7 @@ import { Router } from './router.js';
 import { Mobile } from './mobile.js';
 import { initGalaxyBackground, destroyGalaxyBackground } from './galaxy-background.js';
 import { MahoragaWheel3D } from './mahoraga-wheel-3d.js';
+import { trapFocus } from './focus-trap.js';
 
 /**
  * Login and Lock Screen
@@ -31,6 +32,7 @@ export const Login = {
     _cinematicDone: false,
     _skipBound: null,
     _typewriterInterval: null,
+    _focusTrapCleanup: null,
 
     /**
      * Initialize login system
@@ -53,6 +55,9 @@ export const Login = {
 
         // Start cinematic intro instead of old lock screen click handler
         this.startCinematic();
+
+        // Trap focus within the lock screen
+        this._focusTrapCleanup = trapFocus(this.lockScreen);
 
         // Listen for system lock event (from Start Menu)
         window.addEventListener('system-lock', () => this.lock());
@@ -354,6 +359,12 @@ export const Login = {
      * Login (accept any password or empty)
      */
     login() {
+        // Release focus trap on lock screen
+        if (this._focusTrapCleanup) {
+            this._focusTrapCleanup();
+            this._focusTrapCleanup = null;
+        }
+
         // Play PS1/PS2 boot sound for the login → desktop transition
         if (window.__InteractionEngine && window.__InteractionEngine.soundManager) {
             window.__InteractionEngine.soundManager.play('ps1-boot');
@@ -487,6 +498,9 @@ export const Login = {
 
         // Restart cinematic
         this.startCinematic();
+
+        // Re-trap focus within the lock screen
+        this._focusTrapCleanup = trapFocus(this.lockScreen);
 
         // Update clock
         this.updateClock();

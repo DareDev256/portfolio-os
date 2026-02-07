@@ -6,6 +6,9 @@
 
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
 
+let _hidden = false;
+document.addEventListener('visibilitychange', () => { _hidden = document.hidden; });
+
 export class MahoragaWheel3D {
     constructor(container, options = {}) {
         this.container = container;
@@ -238,6 +241,7 @@ export class MahoragaWheel3D {
     animate() {
         if (!this.isRunning) return;
         this.rafId = requestAnimationFrame(() => this.animate());
+        if (_hidden) return;  // skip frame when hidden
 
         // Throttle to ~30fps to save GPU
         const now = performance.now();

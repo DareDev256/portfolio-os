@@ -33,6 +33,7 @@ export const EasterEggs = {
         console.log('[EasterEggs] Initialized');
 
         this.sessionStartTime = Date.now();
+        this.injectNotificationStyles();
 
         // Konami code + numeric buffer listener
         document.addEventListener('keydown', this.handleKeyPress.bind(this));
@@ -387,86 +388,61 @@ export const EasterEggs = {
     },
 
     /**
+     * Inject notification styles once (instead of per-call)
+     */
+    injectNotificationStyles() {
+        if (document.getElementById('easter-egg-notification-styles')) return;
+        const style = document.createElement('style');
+        style.id = 'easter-egg-notification-styles';
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(500px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                to { transform: translateX(500px); opacity: 0; }
+            }
+            .easter-egg-notification .notification-message {
+                font-size: 14px; color: #ccc; line-height: 1.6;
+            }
+        `;
+        document.head.appendChild(style);
+    },
+
+    /**
      * Show notification
      */
     showNotification(title, message, type = 'info', duration = 4000) {
-        // Play notification sound
         if (window.__InteractionEngine?.soundManager) {
             window.__InteractionEngine.soundManager.play('notification');
         }
 
+        const color = type === 'success' ? '#00ff88' : type === 'warning' ? '#ffaa00' : '#00f0ff';
+
         const notification = document.createElement('div');
         notification.className = `easter-egg-notification notification-${type}`;
         notification.innerHTML = `
-            <div class="notification-title">${title}</div>
+            <div class="notification-title" style="font-size:16px;font-weight:bold;margin-bottom:8px;color:${color}">${title}</div>
             <div class="notification-message">${message}</div>
         `;
 
         notification.style.cssText = `
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            min-width: 300px;
-            max-width: 400px;
-            padding: 20px;
+            position: fixed; top: 80px; right: 20px;
+            min-width: 300px; max-width: 400px; padding: 20px;
             background: rgba(0, 0, 0, 0.95);
-            border: 2px solid ${type === 'success' ? '#00ff88' : type === 'warning' ? '#ffaa00' : '#00f0ff'};
-            border-radius: 12px;
-            color: white;
-            font-family: 'Courier New', monospace;
-            box-shadow: 0 0 30px ${type === 'success' ? '#00ff8840' : type === 'warning' ? '#ffaa0040' : '#00f0ff40'};
-            z-index: 10001;
+            border: 2px solid ${color}; border-radius: 12px;
+            color: white; font-family: 'Courier New', monospace;
+            box-shadow: 0 0 30px ${color}40;
+            z-index: 10003;
             animation: slideInRight 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         `;
 
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideInRight {
-                from {
-                    transform: translateX(500px);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-            .notification-title {
-                font-size: 16px;
-                font-weight: bold;
-                margin-bottom: 8px;
-                color: ${type === 'success' ? '#00ff88' : type === 'warning' ? '#ffaa00' : '#00f0ff'};
-            }
-            .notification-message {
-                font-size: 14px;
-                color: #ccc;
-                line-height: 1.6;
-            }
-        `;
-
-        document.head.appendChild(style);
         document.body.appendChild(notification);
 
-        // Auto-dismiss
         setTimeout(() => {
             notification.style.animation = 'slideOutRight 0.3s ease-out forwards';
-            setTimeout(() => {
-                notification.remove();
-                style.remove();
-            }, 300);
+            setTimeout(() => notification.remove(), 300);
         }, duration);
-
-        // Add style for slide out
-        const slideOutStyle = document.createElement('style');
-        slideOutStyle.textContent = `
-            @keyframes slideOutRight {
-                to {
-                    transform: translateX(500px);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(slideOutStyle);
     },
 
     /**

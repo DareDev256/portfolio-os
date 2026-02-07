@@ -2,6 +2,8 @@
  * Custom Modal Dialog System
  * Provides beautiful in-app modals for prompts, confirmations, etc.
  */
+import { Sanitize } from './sanitize.js';
+import { trapFocus } from './focus-trap.js';
 
 export const Modal = {
     container: null,
@@ -26,12 +28,12 @@ export const Modal = {
         return new Promise((resolve) => {
             this.container.innerHTML = `
                 <div class="modal-overlay"></div>
-                <div class="modal-dialog password-modal">
+                <div class="modal-dialog password-modal" role="dialog" aria-modal="true">
                     <div class="modal-header">
-                        <div class="modal-title">${title}</div>
+                        <div class="modal-title">${Sanitize.text(title)}</div>
                     </div>
                     <div class="modal-body">
-                        <p class="modal-message">${message}</p>
+                        <p class="modal-message">${Sanitize.html(message)}</p>
                         <input type="password" class="modal-input" id="modalPasswordInput" placeholder="Enter password..." autocomplete="off">
                     </div>
                     <div class="modal-footer">
@@ -43,6 +45,9 @@ export const Modal = {
 
             this.container.classList.remove('hidden');
 
+            const modalDialog = this.container.querySelector('.modal-dialog');
+            const releaseFocus = trapFocus(modalDialog);
+
             const input = this.container.querySelector('#modalPasswordInput');
             const confirmBtn = this.container.querySelector('.confirm');
             const cancelBtn = this.container.querySelector('.cancel');
@@ -52,6 +57,7 @@ export const Modal = {
             setTimeout(() => input.focus(), 100);
 
             const cleanup = (value) => {
+                releaseFocus();
                 this.container.classList.add('hidden');
                 setTimeout(() => {
                     this.container.innerHTML = '';
@@ -85,12 +91,12 @@ export const Modal = {
         return new Promise((resolve) => {
             this.container.innerHTML = `
                 <div class="modal-overlay"></div>
-                <div class="modal-dialog alert-modal">
+                <div class="modal-dialog alert-modal" role="dialog" aria-modal="true">
                     <div class="modal-header">
-                        <div class="modal-title">${title}</div>
+                        <div class="modal-title">${Sanitize.text(title)}</div>
                     </div>
                     <div class="modal-body">
-                        <p class="modal-message">${message}</p>
+                        <p class="modal-message">${Sanitize.html(message)}</p>
                     </div>
                     <div class="modal-footer">
                         <button class="modal-btn confirm">OK</button>
@@ -100,10 +106,14 @@ export const Modal = {
 
             this.container.classList.remove('hidden');
 
+            const modalDialog = this.container.querySelector('.modal-dialog');
+            const releaseFocus = trapFocus(modalDialog);
+
             const confirmBtn = this.container.querySelector('.confirm');
             const overlay = this.container.querySelector('.modal-overlay');
 
             const cleanup = () => {
+                releaseFocus();
                 this.container.classList.add('hidden');
                 setTimeout(() => {
                     this.container.innerHTML = '';

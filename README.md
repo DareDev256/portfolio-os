@@ -1,8 +1,51 @@
-# Passion OS v3.0
+# Passion OS v3.1
 
 **A cyberpunk-inspired portfolio operating system built with vanilla JavaScript -- no frameworks, no dependencies.**
 
 Interactive desktop environment featuring draggable windows, GPU-optimized glass effects, recruiter-focused icon layout, easter eggs, and a full visual effects stack.
+
+---
+
+## v3.1 Release Notes
+
+### Security Hardening
+
+Full-stack XSS audit -- every `innerHTML` assignment now runs through DOMPurify sanitization.
+
+- **DOMPurify wired to all injection points**: terminal, github dashboard, admin panel, desktop, modal dialogs. Previously imported but never called.
+- **DOMPurify config tightened**: removed dangerous tags (iframe, input, video), added SVG support for icon rendering.
+- **SRI hash** on DOMPurify CDN script tag.
+- **6 security headers** via Vercel: CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy.
+- **CSS injection prevention** in wallpaper URL handler (blocks `javascript:`, `data:text/html`, strips breakout characters).
+- **JSON import validation** with schema checks and size bounds for admin backup/restore.
+- **Admin panel hidden from UI** -- no longer accessible to visitors, console-only for developer.
+- **Service worker** now validates `res.ok` before caching responses.
+
+### Performance
+
+- **State decoupled from visual modules** via CustomEvent observer pattern -- `state.js` has zero knowledge of FX/Aurora/Glyphs/AudioFX/InteractionEngine.
+- **Animation loops pause when tab hidden** (aurora, fx, skills, mahoraga wheel). Aurora throttled to ~24fps, FX to ~30fps.
+- **Lazy loading** for SkillsUniverse, GitHub, Terminal -- only fetched when user opens the window.
+- **Google Fonts trimmed**: 6 families / 18 weights down to 5 families / 12 weights (~200KB saved).
+- **CSS cache busting** on all 14 stylesheet links.
+
+### Accessibility & UX
+
+- **`aria-live` regions** for screen reader window open/close announcements.
+- **Focus trapping** in modal, login, welcome, and tour overlays with shared `trapFocus()` utility.
+- **Skip-link** for keyboard users.
+- **ESC key priority**: modal > lightbox > tour > window (no more closing windows behind open modals).
+- **Mobile touch targets** bumped to 44px minimum (WCAG compliance), icon labels to 10px.
+- **Dock tooltip conflict fixed** -- moved from `::after` to `::before` to coexist with active dot indicator.
+- **Missing CSS variables defined** (`--neon-pink`, `--neon-orange`) -- 7 references were silently producing nothing.
+- **Reduced-motion queries deduplicated** -- single global wildcard in `accessibility.css`, targeted overrides elsewhere.
+
+### Code Quality
+
+- **27 smoke tests** via vitest covering Sanitize and State modules.
+- **Window `onClose` callback** for cleanup (SkillsUniverse RAF cancellation on close).
+- **17 dead files deleted** (test HTML, shell scripts, stale docs, log files).
+- **Dead imports cleaned** from main.js.
 
 ---
 

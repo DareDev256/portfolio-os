@@ -17,9 +17,14 @@ export const WindowManager = {
     init() {
         this.container = document.getElementById('windowsContainer');
 
-        // Add keyboard event listener for ESC to close active window
+        // ESC key: modal > lightbox > tour > window priority
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.activeWindow) {
+            if (e.key !== 'Escape') return;
+            // Higher-priority overlays handle their own ESC first
+            if (document.querySelector('.modal-overlay.active')) return;
+            if (document.querySelector('.lightbox-overlay.active, .lightbox-overlay[style*="display: flex"]')) return;
+            if (document.querySelector('.tour-overlay.active')) return;
+            if (this.activeWindow) {
                 this.close(this.activeWindow.id);
             }
         });
@@ -30,7 +35,7 @@ export const WindowManager = {
      * @param {Object} options - Window configuration
      */
     create(options) {
-        const { id, title, icon, content, width = 600, height = 400, x = null, y = null, transitionType = 'pop' } = options;
+        const { id, title, icon, content, width = 600, height = 400, x = null, y = null, transitionType = 'pop', onClose = null } = options;
 
         // Check if window already exists
         if (State.getWindow(id)) {
@@ -107,6 +112,10 @@ export const WindowManager = {
         // Add to container
         this.container.appendChild(windowEl);
 
+        // Announce to screen readers
+        const announcer = document.getElementById('screenReaderAnnouncer');
+        if (announcer) announcer.textContent = 'Opened window: ' + title;
+
         // Make window visible with shimmer + scan effect
         setTimeout(() => {
             windowEl.classList.add('visible');
@@ -130,6 +139,7 @@ export const WindowManager = {
             height: finalHeight,
             minimized: false,
             maximized: savedState?.maximized || false,
+            onClose,
         };
 
         // Register window
@@ -608,6 +618,15 @@ export const WindowManager = {
     close(id) {
         const windowObj = State.getWindow(id);
         if (!windowObj) return;
+
+        // Announce to screen readers
+        const announcer = document.getElementById('screenReaderAnnouncer');
+        if (announcer) announcer.textContent = 'Closed window: ' + windowObj.title;
+
+        // Run cleanup callback before closing
+        if (typeof windowObj.onClose === 'function') {
+            try { windowObj.onClose(); } catch (e) { console.error('onClose error:', e); }
+        }
 
         // Add glitch closing animation
         windowObj.element.classList.add('closing');

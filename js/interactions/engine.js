@@ -9,6 +9,8 @@ export const InteractionEngine = {
     isRunning: false,
     isEnabled: false,
     rafId: null,
+    _modulesLoaded: false,
+    _initializing: false,
 
     // Performance tracking
     lastFrameTime: 0,
@@ -42,17 +44,22 @@ export const InteractionEngine = {
 
     /**
      * Initialize the interaction engine
+     * @param {Object} options
+     * @param {boolean} options.startLoop - Whether to start the animation loop (default: true)
      */
-    async init() {
+    async init(options = {}) {
+        const { startLoop = true } = options;
+        if (this._initializing || this._modulesLoaded) return;
+        this._initializing = true;
+
         console.log('[InteractionEngine] Initializing...');
 
-        // Check for reduced motion preference
-        if (this.settings.respectReducedMotion) {
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            if (prefersReducedMotion) {
-                console.log('[InteractionEngine] Reduced motion detected, engine disabled');
-                return;
-            }
+        // Check for reduced motion preference — only gates the animation loop,
+        // not event-driven modules like easter eggs
+        const prefersReducedMotion = this.settings.respectReducedMotion &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) {
+            console.log('[InteractionEngine] Reduced motion — loop disabled, event-driven features active');
         }
 
         // Check hardware capabilities (warn but don't block — user preference takes priority)
@@ -60,49 +67,37 @@ export const InteractionEngine = {
             console.warn('[InteractionEngine] Low-end device detected (cores:', navigator.hardwareConcurrency, ') — running with reduced effects');
         }
 
-        // Lazy-load modules
-        try {
-            const [
-                { CursorTracker },
-                { MicroInteractions },
-                { CursorReactive },
-                { CursorTrail },
-                { EasterEggs },
-                { SoundManager }
-            ] = await Promise.all([
-                import('./cursor-tracker.js'),
-                import('./micro-interactions.js'),
-                import('./cursor-reactive.js'),
-                import('./cursor-trail.js'),
-                import('./easter-eggs.js'),
-                import('./sound-manager.js')
-            ]);
+        // Lazy-load modules — allSettled so one failure doesn't kill everything
+        const results = await Promise.allSettled([
+            import('./cursor-tracker.js'),
+            import('./micro-interactions.js'),
+            import('./cursor-reactive.js'),
+            import('./cursor-trail.js'),
+            import('./easter-eggs.js'),
+            import('./sound-manager.js')
+        ]);
 
-            this.cursorTracker = CursorTracker;
-            this.microInteractions = MicroInteractions;
-            this.cursorReactive = CursorReactive;
-            this.cursorTrail = CursorTrail;
-            this.easterEggs = EasterEggs;
-            this.soundManager = SoundManager;
+        const names = ['cursorTracker', 'microInteractions', 'cursorReactive', 'cursorTrail', 'easterEggs', 'soundManager'];
+        const exports = ['CursorTracker', 'MicroInteractions', 'CursorReactive', 'CursorTrail', 'EasterEggs', 'SoundManager'];
 
-            // Initialize all modules
-            this.cursorTracker.init();
-            this.microInteractions.init();
-            this.cursorReactive.init();
-            this.cursorTrail.init();
-            this.easterEggs.init();
-            this.soundManager.init();
+        results.forEach((r, i) => {
+            if (r.status === 'fulfilled') {
+                this[names[i]] = r.value[exports[i]];
+                this[names[i]].init();
+            } else {
+                console.warn(`[InteractionEngine] ${names[i]} failed to load:`, r.reason);
+            }
+        });
 
-            this.isEnabled = true;
-            console.log('[InteractionEngine] All modules loaded successfully');
+        this._modulesLoaded = true;
+        this._initializing = false;
+        this.isEnabled = true;
+        console.log('[InteractionEngine] Module loading complete');
 
-        } catch (error) {
-            console.error('[InteractionEngine] Failed to load modules:', error);
-            return;
+        // Start the animation loop only if requested and motion is allowed
+        if (startLoop && !prefersReducedMotion) {
+            this.start();
         }
-
-        // Start the animation loop
-        this.start();
     },
 
     /**
@@ -319,12 +314,13 @@ export const InteractionEngine = {
     /**
      * Enable/disable the engine
      */
-    setEnabled(enabled) {
-        if (enabled && !this.isRunning) {
-            this.start();
-        } else if (!enabled && this.isRunning) {
-            this.stop();
+    async setEnabled(enabled) {
+        if (enabled && !this._modulesLoaded && !this._initializing) {
+            await this.init({ startLoop: true });
+            return;
         }
+        if (enabled && !this.isRunning) this.start();
+        else if (!enabled && this.isRunning) this.stop();
         this.isEnabled = enabled;
     },
 

@@ -1,4 +1,5 @@
 import { Tour } from './tour.js';
+import { trapFocus } from './focus-trap.js';
 
 /**
  * Welcome Tutorial Module
@@ -51,8 +52,12 @@ export const Welcome = {
         // Animate in
         setTimeout(() => overlay.classList.add('visible'), 10);
 
+        // Trap focus within the welcome overlay
+        const releaseFocus = trapFocus(overlay);
+
         // Event handlers
         const close = () => {
+            releaseFocus();
             overlay.classList.remove('visible');
             setTimeout(() => overlay.remove(), 300);
         };

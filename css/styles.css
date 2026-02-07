@@ -1015,8 +1015,8 @@ body::before {
     -webkit-backdrop-filter: blur(10px);
 }
 
-/* Show labels on hover for better UX */
-.taskbar-window-btn:hover::after {
+/* Show labels on hover for better UX (uses ::before to avoid conflict with active dot ::after) */
+.taskbar-window-btn:hover::before {
     content: attr(title);
     position: absolute;
     bottom: 100%;

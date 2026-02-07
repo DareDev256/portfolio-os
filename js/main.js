@@ -4,16 +4,12 @@
  */
 
 import { State } from './state.js';
-import { Sanitize } from './sanitize.js';
 import { Aurora } from './aurora.js';
 import { Glyphs } from './glyphs.js';
 import { AudioFX } from './audiofx.js';
 import { Boot } from './boot.js';
 import { Login } from './login.js';
-// import { Skills } from './skills.js'; // Removed old reference
-import { WindowManager } from './windows.js'; // Imported for type safety/checking if needed, though logic is in Login
 import { Modal } from './modal.js';
-import { Welcome } from './welcome.js';
 import { Desktop } from './desktop.js';
 
 // Wait for DOM to be ready
@@ -37,33 +33,35 @@ async function init() {
         const { FX } = await import('./fx.js');
         FX.init();
         FX.setEnabled(true);
-        // Store reference for keyboard toggle
         window.__FX = FX;
+        document.addEventListener('state:fx', (e) => FX.setEnabled(e.detail.enabled));
     }
 
     Aurora.init();
     Aurora.setEnabled(safeMode ? false : State.auroraEnabled);
+    document.addEventListener('state:aurora', (e) => Aurora.setEnabled(e.detail.enabled));
 
     Glyphs.init();
     Glyphs.setEnabled(safeMode ? false : State.glyphsEnabled);
+    document.addEventListener('state:glyphs', (e) => Glyphs.setEnabled(e.detail.enabled));
 
     AudioFX.init();
+    document.addEventListener('state:sound', (e) => AudioFX.setEnabled(e.detail.enabled));
 
-    // Initialize Interaction Engine (lazy-load only if enabled and not in safe mode)
-    if (!safeMode && State.interactionsEnabled) {
+    // Initialize Interaction Engine — always load modules so event-driven
+    // features (easter eggs) work even if the animation loop is off
+    if (!safeMode) {
         const { InteractionEngine } = await import('./interactions/engine.js');
-        await InteractionEngine.init();
-        // Store reference for keyboard toggle
+        await InteractionEngine.init({ startLoop: State.interactionsEnabled });
         window.__InteractionEngine = InteractionEngine;
-        // Setup easter egg hooks now that InteractionEngine is ready
+        document.addEventListener('state:interactions', (e) => InteractionEngine.setEnabled(e.detail.enabled));
+        document.addEventListener('state:cursorTrail', (e) => InteractionEngine.cursorTrail?.setEnabled(e.detail.enabled));
+        document.addEventListener('state:cursorTrailType', (e) => InteractionEngine.cursorTrail?.setType(e.detail.type));
         Desktop.setupEasterEggHooks();
     }
 
     // Initialize Modal system
     Modal.init();
-
-    // Initialize Skills (Command Palette)
-    // if (Skills) Skills.init();
 
     // Show splash/boot, then continue to login
     if (!safeMode) {

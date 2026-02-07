@@ -2,6 +2,8 @@
  * GITHUB OPERATIONS CENTER
  * Handles live data fetching from GitHub API and rendering the dashboard.
  */
+import { Sanitize } from './sanitize.js';
+
 export const GitHub = {
     username: 'DareDev256',
     cacheKey: 'github_data_v1',
@@ -146,9 +148,9 @@ export const GitHub = {
                     <!-- Header Stats -->
                     <div class="gh-header">
                         <div class="gh-profile">
-                            <img src="${user.avatar_url}" class="gh-avatar" alt="Avatar">
+                            <img src="${Sanitize.attr(user.avatar_url)}" class="gh-avatar" alt="Avatar">
                             <div class="gh-info">
-                                <h2>${user.login}</h2>
+                                <h2>${Sanitize.text(user.login)}</h2>
                                 <div class="gh-badges">
                                     <span class="gh-badge">PRO</span>
                                     <span class="gh-badge">HIREABLE</span>
@@ -158,7 +160,7 @@ export const GitHub = {
                         <div class="gh-stat-grid">
                             <div class="gh-stat">
                                 <span class="label">REPOSITORIES</span>
-                                <span class="value">${user.public_repos}</span>
+                                <span class="value">${Number(user.public_repos) || 0}</span>
                             </div>
                             <div class="gh-stat">
                                 <span class="label">TOTAL STARS</span>
@@ -180,11 +182,11 @@ export const GitHub = {
                                     <svg viewBox="0 0 100 100">
                                         <circle class="gh-ring-bg" cx="50" cy="50" r="40"/>
                                         <circle class="gh-ring-progress" cx="50" cy="50" r="40"
-                                            style="stroke-dasharray: ${lang.percent * 2.51}, 251.2"/>
+                                            style="stroke-dasharray: ${Number(lang.percent) * 2.51}, 251.2"/>
                                     </svg>
                                     <div class="gh-ring-label">
-                                        <div class="gh-ring-percent">${lang.percent}%</div>
-                                        <div class="gh-ring-lang">${lang.name}</div>
+                                        <div class="gh-ring-percent">${Number(lang.percent)}%</div>
+                                        <div class="gh-ring-lang">${Sanitize.text(lang.name)}</div>
                                     </div>
                                 </div>
                             `).join('')}
@@ -197,7 +199,7 @@ export const GitHub = {
                         <div class="gh-timeline-bars">
                             ${commitTimeline.map((day, i) => `
                                 <div class="gh-timeline-bar" style="--i: ${i}; height: ${Math.min(day.count * 20, 100)}px"
-                                    title="${day.date}: ${day.count} commits">
+                                    title="${Sanitize.text(day.date)}: ${day.count} commits">
                                 </div>
                             `).join('')}
                         </div>
@@ -211,11 +213,11 @@ export const GitHub = {
                                 ${events.filter(e => e.type === 'PushEvent').slice(0, 5).map(e => `
                                     <div class="gh-item">
                                         <div class="gh-item-header">
-                                            <span class="gh-repo">${e.repo.name}</span>
+                                            <span class="gh-repo">${Sanitize.text(e.repo.name)}</span>
                                             <span class="gh-time">${new Date(e.created_at).toLocaleDateString()}</span>
                                         </div>
                                         <div class="gh-commit-msg">
-                                            ${e.payload.commits?.[0]?.message || 'Code update'}
+                                            ${Sanitize.text(e.payload.commits?.[0]?.message || 'Code update')}
                                         </div>
                                     </div>
                                 `).join('')}
@@ -227,15 +229,15 @@ export const GitHub = {
                             <h3>ACTIVE SECTORS</h3>
                             <div class="gh-grid">
                                 ${repos.slice(0, 4).map(r => `
-                                    <div class="gh-card" onclick="window.open('${r.html_url}', '_blank')">
+                                    <div class="gh-card" data-url="${Sanitize.attr(r.html_url)}">
                                         <div class="gh-card-top">
-                                            <h4>${r.name}</h4>
-                                            ${r.language ? `<span class="gh-lang">${r.language}</span>` : ''}
+                                            <h4>${Sanitize.text(r.name)}</h4>
+                                            ${r.language ? `<span class="gh-lang">${Sanitize.text(r.language)}</span>` : ''}
                                         </div>
-                                        <p>${r.description || 'Access restricted.'}</p>
+                                        <p>${Sanitize.text(r.description || 'Access restricted.')}</p>
                                         <div class="gh-card-meta">
-                                            <span>★ ${r.stargazers_count}</span>
-                                            <span>⑂ ${r.forks_count}</span>
+                                            <span>★ ${Number(r.stargazers_count) || 0}</span>
+                                            <span>⑂ ${Number(r.forks_count) || 0}</span>
                                         </div>
                                     </div>
                                 `).join('')}
@@ -246,6 +248,15 @@ export const GitHub = {
             `;
 
             container.innerHTML = html;
+
+            // Delegated click handler for repo cards (replaces inline onclick)
+            container.querySelectorAll('.gh-card[data-url]').forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', () => {
+                    const url = card.dataset.url;
+                    if (url) window.open(url, '_blank', 'noopener');
+                });
+            });
 
             // Animate stat counters
             setTimeout(() => {

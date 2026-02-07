@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 2.56
-last_updated: 2025-11-27
+version: 3.1
+last_updated: 2026-02-07
 
 ---
 
@@ -15,6 +15,83 @@ last_updated: 2025-11-27
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## Phase 5: Full-Stack Audit — v3.1 (February 2026)
+
+### Summary
+
+Comprehensive security hardening, performance optimization, accessibility improvements, and code quality cleanup. Every `innerHTML` now sanitized, animation loops pause when tab hidden, state fully decoupled from visual modules, and 27 smoke tests added.
+
+### 5.1 Security Hardening
+
+- **DOMPurify wired to all injection points**: terminal, GitHub dashboard, admin panel, desktop, modal dialogs — previously imported but never called
+- **DOMPurify config tightened**: removed dangerous tags (iframe, input, video), added SVG support for icon rendering
+- **SRI hash** on DOMPurify CDN script tag
+- **6 security headers** via Vercel: CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
+- **CSS injection prevention** in wallpaper URL handler (blocks `javascript:`, `data:text/html`, strips breakout characters)
+- **JSON import validation** with schema checks and size bounds for admin backup/restore
+- **Admin panel hidden from UI** — no longer accessible to visitors, console-only for developer
+- **Service worker** now validates `res.ok` before caching responses
+
+**Files Modified**: `js/sanitize.js`, `js/terminal.js`, `js/github.js`, `js/admin.js`, `js/desktop.js`, `js/modal.js`, `js/state.js`, `index.html`, `vercel.json`, `sw.js`
+
+### 5.2 Performance
+
+- **State decoupled from visual modules** via CustomEvent observer pattern — `state.js` has zero knowledge of FX/Aurora/Glyphs/AudioFX/InteractionEngine
+- **Animation loops pause when tab hidden** (aurora, fx, skills, mahoraga wheel). Aurora throttled to ~24fps, FX to ~30fps
+- **Lazy loading** for SkillsUniverse, GitHub, Terminal — only fetched when user opens the window
+- **Google Fonts trimmed**: 6 families / 18 weights down to 5 families / 12 weights (~200KB saved)
+- **CSS cache busting** on all 14 stylesheet links
+
+**Files Modified**: `js/state.js`, `js/main.js`, `js/aurora.js`, `js/fx.js`, `js/skills.js`, `js/mahoraga-wheel-3d.js`, `js/desktop.js`, `index.html`, `css/galaxy.css`
+
+### 5.3 Accessibility & UX
+
+- **`aria-live` regions** for screen reader window open/close announcements
+- **Focus trapping** in modal, login, welcome, and tour overlays with shared `trapFocus()` utility
+- **Skip-link** for keyboard users
+- **ESC key priority**: modal > lightbox > tour > window (no more closing windows behind open modals)
+- **Mobile touch targets** bumped to 44px minimum (WCAG compliance), icon labels to 10px
+- **Dock tooltip conflict fixed** — moved from `::after` to `::before` to coexist with active dot indicator
+- **Missing CSS variables defined** (`--neon-pink`, `--neon-orange`) — 7 references were silently producing nothing
+- **Reduced-motion queries deduplicated** — single global wildcard in `accessibility.css`, targeted overrides elsewhere
+
+**Files Created**: `js/focus-trap.js`
+
+**Files Modified**: `js/windows.js`, `js/modal.js`, `js/login.js`, `js/welcome.js`, `js/tour.js`, `index.html`, `css/variables.css`, `css/styles.css`, `css/mobile.css`, `css/reset.css`, `css/interactions.css`
+
+### 5.4 Code Quality
+
+- **27 smoke tests** via vitest covering Sanitize and State modules
+- **Window `onClose` callback** for cleanup (SkillsUniverse RAF cancellation on close)
+- **17 dead files deleted** (test HTML, shell scripts, stale docs, log files)
+- **Dead imports cleaned** from main.js
+
+**Files Created**: `vitest.config.js`, `tests/sanitize.test.js`, `tests/state.test.js`
+
+**Files Modified**: `js/windows.js`, `js/main.js`, `package.json`
+
+**Files Deleted**: `setup-folders.sh`, `CONNECT_DOMAIN.md.resolved`, `FEATURE_VERIFICATION.md`, `NEXT_STEPS.md`
+
+### Phase 5 File Changes Summary
+
+**Files Created (4)**: `js/focus-trap.js`, `vitest.config.js`, `tests/sanitize.test.js`, `tests/state.test.js`
+
+**Files Modified (32)**: See sections above
+
+**Files Deleted (4)**: `setup-folders.sh`, `CONNECT_DOMAIN.md.resolved`, `FEATURE_VERIFICATION.md`, `NEXT_STEPS.md`
+
+**Breaking Changes**: Admin panel removed from Settings UI (still accessible via `Admin.open()` in console)
+
+---
+
+## Phase 4: Visual Overhaul — v3.0 (January 2026)
+
+### Summary
+
+Major visual upgrades, performance overhaul, desktop reorganization, and easter eggs. See README.md v3.0 Release Notes for full details.
 
 ---
 
@@ -582,12 +659,14 @@ You're on the latest version!
 
 ## Version History
 
-| Version | Date     | Phase   | Key Features                                  |
-| ------- | -------- | ------- | --------------------------------------------- |
-| 2.56    | Nov 2025 | Phase 3 | Admin Dashboard, Routing, Mobile, Enhanced UI |
-| 2.45    | Oct 2025 | Phase 2 | Photo filters, Wallpapers, Video embeds       |
-| 2.30    | Sep 2025 | Phase 1 | Core OS, Windows, Desktop, Login              |
-| 1.00    | Aug 2025 | Alpha   | Initial prototype                             |
+| Version | Date     | Phase   | Key Features                                     |
+| ------- | -------- | ------- | ------------------------------------------------ |
+| 3.1     | Feb 2026 | Phase 5 | Security audit, perf, a11y, 27 tests             |
+| 3.0     | Jan 2026 | Phase 4 | Visual overhaul, easter eggs, desktop reorder     |
+| 2.56    | Nov 2025 | Phase 3 | Admin Dashboard, Routing, Mobile, Enhanced UI     |
+| 2.45    | Oct 2025 | Phase 2 | Photo filters, Wallpapers, Video embeds           |
+| 2.30    | Sep 2025 | Phase 1 | Core OS, Windows, Desktop, Login                  |
+| 1.00    | Aug 2025 | Alpha   | Initial prototype                                 |
 
 ---
 
@@ -615,13 +694,13 @@ You're on the latest version!
 
 - **Complete Guide**: [DOCUMENTATION.md](DOCUMENTATION.md)
 - **Admin Dashboard**: [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md)
-- **Testing**: [FEATURE_VERIFICATION.md](FEATURE_VERIFICATION.md)
+- **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 - **Architecture**: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - **Troubleshooting**: [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
 
 ---
 
-**Latest Version**: 2.56 (Phase 3)
+**Latest Version**: 3.1 (Phase 5)
 
 **Status**: ✅ Production Ready
 
