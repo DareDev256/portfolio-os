@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.1.1
+version: 3.1.2
 last_updated: 2026-02-07
 
 ---
@@ -15,6 +15,29 @@ last_updated: 2026-02-07
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## v3.1.2 — MMBN Cyberspace Background (February 7, 2026)
+
+### Background Shader Overhaul
+
+- **Nebula → cyberspace grid** — replaced pink/magenta simplex noise nebula with MMBN-style perspective grid floor using Mode 7 UV math
+- **Cobalt data streams** — animated pulses flow along grid paths toward the viewer
+- **Network nodes** — bright glowing spots at major grid intersections, gently pulsing
+- **Horizon glow** — cobalt line where the grid floor meets the void sky
+- **Blue-purple void** — deep digital sky above the grid (replaces pink nebula)
+
+### Color Palette Migration
+
+- **Full pink/magenta → cobalt/blue-purple** — all galaxy theme colors migrated across galaxy.css, styles.css, variables.css
+- **Stars recolored** — white/pale-blue, cobalt blue, platinum/silver (was warm white/purple/warm)
+- **Buttons, glows, filters** — all updated to new palette
+
+### Title & Layout
+
+- **Title shrunk** — `clamp(48px, 7vw, 80px)` from `clamp(72px, 10vw, 140px)` so 3D Mahoraga wheel is the hero
+- **Star drift speed doubled** — more dynamic floating data particles
 
 ---
 

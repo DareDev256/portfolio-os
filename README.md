@@ -1,8 +1,14 @@
-# Passion OS v3.1.1
+# Passion OS v3.1.2
 
 **A cyberpunk-inspired portfolio operating system built with vanilla JavaScript -- no frameworks, no dependencies.**
 
 Interactive desktop environment featuring draggable windows, GPU-optimized glass effects, recruiter-focused icon layout, easter eggs, and a full visual effects stack.
+
+---
+
+## v3.1.2 -- MMBN Cyberspace Background
+
+Replaced the static pink nebula shader with a Megaman Battle Network-style digital cyberspace background. Perspective grid floor with cobalt blue data streams, platinum grid lines, glowing network nodes, and a deep blue-purple void sky. Title shrunk so the 3D Mahoraga wheel is the hero element.
 
 ---
 
