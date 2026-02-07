@@ -121,7 +121,7 @@ export const Desktop = {
             label: 'MUSIC_VIDEOS',
             icon: 'svg:/assets/portfolio-videos.svg',
             color: '#ff4444',
-            action: () => window.open('https://tdotssolutionsz-portfolio.vercel.app/', '_blank'),
+            action: () => window.open('https://tdotssolutionsz.com/', '_blank'),
         },
         {
             id: 'settings',
