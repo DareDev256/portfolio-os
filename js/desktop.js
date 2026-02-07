@@ -39,21 +39,21 @@ export const Desktop = {
         {
             id: 'about',
             label: 'ABOUT_ME.exe',
-            icon: '◈',
+            icon: 'svg:/assets/about-me.svg',
             color: '#aa00ff',
             action: () => Desktop.openAbout(),
         },
         {
             id: 'contact',
             label: 'CONNECT',
-            icon: '◉',
+            icon: 'svg:/assets/connect.svg',
             color: '#ff0066',
             action: () => Desktop.openContact(),
         },
         {
             id: 'linkedin',
             label: 'LINKEDIN',
-            icon: '👔',
+            icon: 'svg:/assets/linkedin.svg',
             color: '#0077b5',
             action: () => window.open('https://www.linkedin.com', '_blank'),
         },
@@ -111,7 +111,7 @@ export const Desktop = {
         {
             id: 'showcase',
             label: 'SHOWCASE.mp4',
-            icon: '🎬',
+            icon: 'svg:/assets/showcase.svg',
             color: '#FF0000',
             action: () => Desktop.openFeaturedVideo(),
         },
@@ -126,7 +126,7 @@ export const Desktop = {
         {
             id: 'settings',
             label: 'SETTINGS',
-            icon: '⚙',
+            icon: 'svg:/assets/settings.svg',
             color: '#00BCD4',
             action: () => Desktop.openSettings(),
         },
