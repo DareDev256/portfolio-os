@@ -1,141 +1,154 @@
 [
     {
+        "title": "FCPXML MCP Server",
+        "description": "AI-powered MCP server for Final Cut Pro XML editing — automate timeline manipulation with natural language.",
+        "tech": ["Python", "Claude AI", "MCP", "XML"],
+        "tags": ["AI", "Tools"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/fcpxml-mcp-server"
+    },
+    {
+        "title": "RAG with Citations",
+        "description": "Enterprise RAG pipeline with source attribution — retrieve, generate, and cite with confidence scores.",
+        "tech": ["Python", "LangChain", "OpenAI", "FAISS"],
+        "tags": ["AI", "Fullstack"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/rag-system-with-citations"
+    },
+    {
+        "title": "Vector vs Keyword Search",
+        "description": "Semantic vector search vs BM25 keyword search comparison engine with interactive benchmarks.",
+        "tech": ["Python", "Sentence Transformers", "BM25", "Streamlit"],
+        "tags": ["AI", "Tools"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/vector-vs-keyword-search"
+    },
+    {
+        "title": "LLM Evaluation Harness",
+        "description": "LLM evaluation framework with CI/CD integration — benchmark models across accuracy, latency, and cost.",
+        "tech": ["Python", "OpenAI", "CI/CD", "pytest"],
+        "tags": ["AI", "Tools"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/llm-evaluation-harness"
+    },
+    {
+        "title": "Memory Master",
+        "description": "AI spaced repetition learning platform powered by GPT-4 and FSRS algorithm for optimal retention.",
+        "tech": ["React", "Node.js", "GPT-4", "FSRS"],
+        "tags": ["AI", "Fullstack"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/memory-master-mvp"
+    },
+    {
+        "title": "Contract Translator",
+        "description": "AI contract analysis tool — breaks down legal documents into plain-English summaries with risk highlighting.",
+        "tech": ["Next.js", "OpenAI", "Vercel", "TypeScript"],
+        "tags": ["AI", "Web"],
+        "demo": "https://contract-translator.vercel.app",
+        "repo": null
+    },
+    {
+        "title": "Service Tracker Pro",
+        "description": "Dealership vehicle tracking system with real-time status updates, drag-and-drop interface, and role-based access.",
+        "tech": ["React", "Node.js", "PostgreSQL", "Tailwind"],
+        "tags": ["Fullstack", "Web"],
+        "demo": "https://servicetracker-production-f05b.up.railway.app",
+        "repo": null
+    },
+    {
+        "title": "PulseMap",
+        "description": "Real-time global disease surveillance dashboard — track outbreaks with interactive maps and live data feeds.",
+        "tech": ["React", "D3.js", "Vercel", "REST APIs"],
+        "tags": ["Fullstack", "Web"],
+        "demo": "https://pulsemap-three.vercel.app",
+        "repo": null
+    },
+    {
+        "title": "Culture Drop HQ",
+        "description": "Operations dashboard for Toronto hip-hop media — manage content, artists, and releases in one place.",
+        "tech": ["React", "Node.js", "MongoDB", "Tailwind"],
+        "tags": ["Fullstack", "Web"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/culture-drop-hq"
+    },
+    {
+        "title": "Music Time Machine",
+        "description": "Music intelligence dashboard combining Spotify, YouTube, and Billboard data for trend analysis.",
+        "tech": ["Python", "Spotify API", "YouTube API", "Streamlit"],
+        "tags": ["Fullstack", "Tools"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/music-time-machine"
+    },
+    {
+        "title": "Tdots Portfolio",
+        "description": "Synthwave 3D music video portfolio with neon aesthetics and immersive visual experience.",
+        "tech": ["JavaScript", "Three.js", "CSS3", "Vercel"],
+        "tags": ["Web", "Creative"],
+        "demo": "https://tdotssolutionsz-portfolio.vercel.app",
+        "repo": null
+    },
+    {
+        "title": "Casper TNG Website",
+        "description": "Official website for Toronto rapper Casper TNG — music, merch, and media showcase.",
+        "tech": ["React", "CSS3", "Vercel"],
+        "tags": ["Web", "Creative"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/casper-tng-website"
+    },
+    {
+        "title": "IMG Gen Prompts",
+        "description": "AI prompt engineering tool for image and video generation — craft, test, and refine prompts.",
+        "tech": ["React", "OpenAI", "Vercel", "TypeScript"],
+        "tags": ["AI", "Web"],
+        "demo": "https://web-ten-vert-46.vercel.app",
+        "repo": null
+    },
+    {
+        "title": "BuildRight",
+        "description": "Duolingo-style mobile learning app for construction trades — gamified skill building with React Native.",
+        "tech": ["React Native", "Node.js", "Firebase"],
+        "tags": ["Mobile", "Fullstack"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/buildright"
+    },
+    {
         "title": "Vibe Coder",
-        "description": "A vampire survivors-style idle game where your character auto-battles enemies. Features 18 enemy types, 4 epic bosses, 26 weapons, procedural music, and Claude Code integration for real-time XP from coding activity.",
-        "tech": [
-            "Phaser 3",
-            "JavaScript",
-            "Vite",
-            "Web Audio API"
-        ],
-        "tags": [
-            "Games",
-            "Web"
-        ],
+        "description": "Vampire survivors-style idle game powered by coding. 18 enemy types, 4 bosses, 26 weapons, and Claude Code integration.",
+        "tech": ["Phaser 3", "JavaScript", "Vite", "Web Audio API"],
+        "tags": ["Games", "Web"],
         "demo": "https://daredev256.github.io/vibe-coder/",
         "repo": "https://github.com/daredev256/vibe-coder"
     },
     {
-        "title": "Portfolio OS",
-        "description": "An interactive Windows-like desktop portfolio built with vanilla JavaScript, featuring draggable windows, file management, and responsive design.",
-        "tech": [
-            "JavaScript",
-            "CSS3",
-            "HTML5"
-        ],
-        "tags": [
-            "Web",
-            "Frontend"
-        ],
-        "demo": "#",
-        "repo": "https://github.com/yourusername/portfolio-os"
-    },
-    {
-        "title": "Audi Car Wash Tracker",
-        "description": "Professional vehicle tracking system for Audi dealerships. Features real-time status updates, drag-and-drop interface, and role-based access control.",
-        "tech": [
-            "React",
-            "Node.js",
-            "PostgreSQL",
-            "Tailwind"
-        ],
-        "tags": [
-            "Web",
-            "Fullstack"
-        ],
-        "demo": "https://servicetracker-production-a49a.up.railway.app",
-        "repo": null
-    },
-    {
-        "title": "E-Commerce Platform",
-        "description": "Modern e-commerce solution with shopping cart, payment integration, inventory management, and admin dashboard.",
-        "tech": [
-            "Vue.js",
-            "Express",
-            "PostgreSQL",
-            "Stripe"
-        ],
-        "tags": [
-            "Web",
-            "Fullstack"
-        ],
-        "demo": "https://shop-demo.com",
-        "repo": "https://github.com/yourusername/ecommerce"
-    },
-    {
-        "title": "Weather Dashboard",
-        "description": "Real-time weather application with interactive maps, 7-day forecasts, and location-based alerts using multiple weather APIs.",
-        "tech": [
-            "React",
-            "TypeScript",
-            "OpenWeather API"
-        ],
-        "tags": [
-            "Web",
-            "Frontend"
-        ],
-        "demo": "https://weather-dashboard-demo.com",
-        "repo": "https://github.com/yourusername/weather-dashboard"
-    },
-    {
-        "title": "Chat Application",
-        "description": "Real-time messaging platform with private and group chats, file sharing, emoji support, and typing indicators.",
-        "tech": [
-            "React",
-            "Firebase",
-            "WebRTC"
-        ],
-        "tags": [
-            "Web",
-            "Mobile"
-        ],
-        "demo": "https://chat-demo.com",
-        "repo": "https://github.com/yourusername/chat-app"
-    },
-    {
-        "title": "Code Snippet Manager",
-        "description": "Developer tool for organizing and sharing code snippets with syntax highlighting, tagging, and search functionality.",
-        "tech": [
-            "Next.js",
-            "Prisma",
-            "PostgreSQL",
-            "Tailwind"
-        ],
-        "tags": [
-            "Web",
-            "Frontend"
-        ],
-        "demo": "https://snippets-demo.com",
-        "repo": "https://github.com/yourusername/snippet-manager"
-    },
-    {
-        "title": "Fitness Tracker",
-        "description": "Mobile-first fitness app for tracking workouts, nutrition, and progress with charts and goal setting.",
-        "tech": [
-            "React Native",
-            "Node.js",
-            "MongoDB"
-        ],
-        "tags": [
-            "Mobile",
-            "Fullstack"
-        ],
+        "title": "RAW.exe",
+        "description": "Personal NetNavi Desktop Companion powered by Claude AI — your digital assistant with personality.",
+        "tech": ["Electron", "Claude AI", "TypeScript"],
+        "tags": ["AI", "Tools"],
         "demo": null,
-        "repo": "https://github.com/yourusername/fitness-tracker"
+        "repo": "https://github.com/DareDev256/raw-exe"
     },
     {
-        "title": "Blog CMS",
-        "description": "Headless content management system for blogs with markdown support, SEO optimization, and analytics.",
-        "tech": [
-            "Next.js",
-            "Sanity.io",
-            "Vercel"
-        ],
-        "tags": [
-            "Web",
-            "Frontend"
-        ],
-        "demo": "https://blog-cms-demo.com",
-        "repo": "https://github.com/yourusername/blog-cms"
+        "title": "Fandom Wiki Bot",
+        "description": "AI-assisted Fandom wiki bot with approval workflows — automate edits while keeping human oversight.",
+        "tech": ["Python", "MediaWiki API", "OpenAI"],
+        "tags": ["AI", "Tools"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/fandom-wiki-bot-template"
+    },
+    {
+        "title": "Pixel Art LoRA",
+        "description": "LoRA training toolkit for Flux sprite sheets — generate consistent pixel art with fine-tuned diffusion models.",
+        "tech": ["Python", "Flux", "LoRA", "ComfyUI"],
+        "tags": ["AI", "Creative"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/pixel-art-lora-training"
+    },
+    {
+        "title": "Portfolio OS",
+        "description": "This interactive desktop OS portfolio — vanilla JS, Three.js galaxy background, draggable windows, and full terminal.",
+        "tech": ["JavaScript", "CSS3", "Three.js", "HTML5"],
+        "tags": ["Web", "Creative"],
+        "demo": "#",
+        "repo": null
     }
 ]

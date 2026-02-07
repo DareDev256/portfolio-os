@@ -314,7 +314,7 @@ body::before {
     background-clip: text;
     animation: gold-shimmer 4s ease-in-out infinite;
     margin-bottom: 10px;
-    letter-spacing: 8px;
+    letter-spacing: 4px;
     text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
     filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
     line-height: 1.1;

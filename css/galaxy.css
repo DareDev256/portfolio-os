@@ -122,9 +122,9 @@ body.galaxy-active::before {
 .galaxy-text {
     position: relative;
     z-index: 1;
-    /* JJK/Anime-style font - bold and impactful */
-    font-family: 'Bangers', 'Black Ops One', sans-serif !important;
-    letter-spacing: 6px !important;
+    /* MMBN digital aesthetic - geometric and cyber */
+    font-family: 'Orbitron', 'Tomorrow', sans-serif !important;
+    letter-spacing: 4px !important;
     /* Space pattern inside text */
     background: url('/assets/space-pattern.svg') !important;
     background-size: 150px 150px !important;
@@ -263,7 +263,7 @@ body.galaxy-active .intro-watermark-img {
 .os-title.galaxy-text {
     font-size: clamp(48px, 7vw, 80px);
     font-weight: 900;
-    letter-spacing: 6px;
+    letter-spacing: 4px;
     text-transform: uppercase;
     line-height: 1.1;
     /* galaxy-text-glow removed for perf (3 stacked drop-shadows per frame) */

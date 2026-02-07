@@ -307,54 +307,31 @@ export const Desktop = {
         const container = document.querySelector('.desktop-icons');
         container.innerHTML = '';
 
-        // Load saved positions
-        const savedLayout = JSON.parse(localStorage.getItem('desktop_layout') || '{}');
+        // Load saved positions (v2 key forces layout reset for existing users)
+        const savedLayout = JSON.parse(localStorage.getItem('desktop_layout_v2') || '{}');
 
         // Default positions for first-time visitors
-        // Clean grid layout with logical groupings
+        // Row-priority layout — recruiters read top-left first
         const getDefaultPosition = (item, index) => {
-            const vw = window.innerWidth;
-            const vh = window.innerHeight;
-            const topAreaY = 100; // Below top bar
             const iconSpacingX = 110;
             const iconSpacingY = 100;
+            const topAreaY = 100; // Below top bar
 
-            // Column 1: Hire Me (recruiter-first)
-            const hireMe = [
-                { id: 'resume', row: 0 },
-                { id: 'about', row: 1 },
-                { id: 'contact', row: 2 },
-                { id: 'linkedin', row: 3 },
-            ];
+            // Row 1: First impression — About Me, Applications, Music Videos, Resume
+            const row1 = ['about', 'applications', 'portfolio-videos', 'resume'];
+            // Row 2: Technical depth
+            const row2 = ['github', 'skills', 'showcase', 'linkedin'];
+            // Row 3: Live projects
+            const row3 = ['vibe-coder', 'image-generator', 'terminal', 'contact'];
+            // Row 4: Utilities
+            const row4 = ['typemaster', 'settings'];
 
-            // Column 2: What I Build
-            const whatIBuild = [
-                { id: 'skills', row: 0 },
-                { id: 'github', row: 1 },
-                { id: 'applications', row: 2 },
-                { id: 'terminal', row: 3 },
-            ];
-
-            // Column 3: Projects
-            const projects = [
-                { id: 'vibe-coder', row: 0 },
-                { id: 'image-generator', row: 1 },
-                { id: 'typemaster', row: 2 },
-                { id: 'showcase', row: 3 },
-            ];
-
-            // Column 4: Extras
-            const extras = [
-                { id: 'portfolio-videos', row: 0 },
-                { id: 'settings', row: 1 },
-            ];
-
-            // Check each column group
-            const columns = [hireMe, whatIBuild, projects, extras];
-            for (let col = 0; col < columns.length; col++) {
-                const match = columns[col].find(i => i.id === item.id);
-                if (match) {
-                    return { x: 40 + (col * iconSpacingX), y: topAreaY + (match.row * iconSpacingY) };
+            const allRows = [row1, row2, row3, row4];
+            for (let row = 0; row < allRows.length; row++) {
+                for (let col = 0; col < allRows[row].length; col++) {
+                    if (allRows[row][col] === item.id) {
+                        return { x: 40 + col * iconSpacingX, y: topAreaY + row * iconSpacingY };
+                    }
                 }
             }
 
@@ -480,12 +457,12 @@ export const Desktop = {
                     element.style.zIndex = ''; // Reset z-index
 
                     // Save new position
-                    const currentLayout = JSON.parse(localStorage.getItem('desktop_layout') || '{}');
+                    const currentLayout = JSON.parse(localStorage.getItem('desktop_layout_v2') || '{}');
                     currentLayout[id] = {
                         x: parseInt(element.style.left),
                         y: parseInt(element.style.top)
                     };
-                    localStorage.setItem('desktop_layout', JSON.stringify(currentLayout));
+                    localStorage.setItem('desktop_layout_v2', JSON.stringify(currentLayout));
 
                     // Small timeout to reset dragging flag so click event doesn't fire immediately
                     setTimeout(() => {
@@ -1278,74 +1255,111 @@ export const Desktop = {
      * Open Applications window (React-style showcase)
      */
     openApplicationsShowcase() {
-        const apps = [
-            { name: 'SERVICE_TRACKER_PRO', desc: 'Dealership vehicle tracking system', status: 'live', link: 'https://servicetracker-production-f05b.up.railway.app' },
-            { name: 'RAG_WITH_CITATIONS', desc: 'Enterprise-grade RAG system', status: 'live', link: 'https://github.com/DareDev256/rag-system-with-citations' },
-            { name: 'VECTOR_SEARCH_ENGINE', desc: 'AI-powered RAG vs Keyword comparison', status: 'live', link: 'https://github.com/DareDev256/vector-vs-keyword-search' },
-            { name: 'LLM_EVAL_HARNESS', desc: 'LLM Evaluation Framework', status: 'live', link: 'https://github.com/DareDev256/llm-evaluation-harness' },
-            { name: 'NIN_WIKI_TOOLS', desc: 'Fandom wiki automation bot', status: 'coming-soon', link: null },
-            { name: 'PORTFOLIO_ENGINE', desc: 'This very system', status: 'live', link: '#' },
+        const categories = [
+            {
+                name: 'AI & Machine Learning',
+                color: '#00f0ff',
+                apps: [
+                    { name: 'FCPXML_MCP_SERVER', desc: 'AI-powered MCP server for Final Cut Pro XML editing', status: 'deployed', link: 'https://github.com/DareDev256/fcpxml-mcp-server' },
+                    { name: 'RAG_WITH_CITATIONS', desc: 'Enterprise RAG pipeline with source attribution', status: 'deployed', link: 'https://github.com/DareDev256/rag-system-with-citations' },
+                    { name: 'VECTOR_SEARCH_ENGINE', desc: 'Semantic vector vs BM25 keyword search comparison', status: 'deployed', link: 'https://github.com/DareDev256/vector-vs-keyword-search' },
+                    { name: 'LLM_EVAL_HARNESS', desc: 'LLM evaluation framework with CI/CD integration', status: 'deployed', link: 'https://github.com/DareDev256/llm-evaluation-harness' },
+                    { name: 'MEMORY_MASTER', desc: 'AI spaced repetition learning platform (GPT-4 + FSRS)', status: 'deployed', link: 'https://github.com/DareDev256/memory-master-mvp' },
+                    { name: 'CONTRACT_TRANSLATOR', desc: 'AI contract analysis \u2014 plain-English legal breakdown', status: 'live', link: 'https://contract-translator.vercel.app' },
+                ],
+            },
+            {
+                name: 'Full-Stack Applications',
+                color: '#ff00aa',
+                apps: [
+                    { name: 'SERVICE_TRACKER_PRO', desc: 'Dealership vehicle tracking system', status: 'live', link: 'https://servicetracker-production-f05b.up.railway.app' },
+                    { name: 'PULSEMAP', desc: 'Real-time global disease surveillance dashboard', status: 'live', link: 'https://pulsemap-three.vercel.app' },
+                    { name: 'CULTURE_DROP_HQ', desc: 'Operations dashboard for Toronto hip-hop media', status: 'deployed', link: 'https://github.com/DareDev256/culture-drop-hq' },
+                    { name: 'MUSIC_TIME_MACHINE', desc: 'Music intelligence dashboard (Spotify, YouTube, Billboard)', status: 'deployed', link: 'https://github.com/DareDev256/music-time-machine' },
+                ],
+            },
+            {
+                name: 'Creative & Client Work',
+                color: '#ffaa00',
+                apps: [
+                    { name: 'TDOTS_PORTFOLIO', desc: 'Synthwave 3D music video portfolio', status: 'live', link: 'https://tdotssolutionsz-portfolio.vercel.app' },
+                    { name: 'CASPER_TNG_SITE', desc: 'Official website for Toronto rapper Casper TNG', status: 'deployed', link: 'https://github.com/DareDev256/casper-tng-website' },
+                    { name: 'IMG_GEN_PROMPTS', desc: 'AI prompt engineering tool for image/video generation', status: 'live', link: 'https://web-ten-vert-46.vercel.app' },
+                    { name: 'BUILDRIGHT', desc: 'Duolingo-style mobile learning app (React Native)', status: 'deployed', link: 'https://github.com/DareDev256/buildright' },
+                ],
+            },
+            {
+                name: 'Games & Tools',
+                color: '#00ff88',
+                apps: [
+                    { name: 'VIBE_CODER', desc: 'Vampire survivors-style idle game powered by coding', status: 'live', link: 'https://daredev256.github.io/vibe-coder' },
+                    { name: 'RAW_EXE', desc: 'Personal NetNavi Desktop Companion (Claude AI)', status: 'deployed', link: 'https://github.com/DareDev256/raw-exe' },
+                    { name: 'NIN_WIKI_TOOLS', desc: 'AI-assisted Fandom wiki bot with approval workflows', status: 'deployed', link: 'https://github.com/DareDev256/fandom-wiki-bot-template' },
+                    { name: 'PIXEL_ART_LORA', desc: 'LoRA training toolkit for Flux sprite sheets', status: 'deployed', link: 'https://github.com/DareDev256/pixel-art-lora-training' },
+                ],
+            },
         ];
 
+        const totalApps = categories.reduce((sum, cat) => sum + cat.apps.length, 0);
         const content = document.createElement('div');
+        content.style.padding = '20px';
 
-        // Header
+        // Header with count
         const header = document.createElement('div');
         header.className = 'window-section-header magenta';
-        header.textContent = '⚡ APPLICATIONS';
+        header.innerHTML = `\u26A1 APPLICATIONS <span style="font-size:11px; opacity:0.7; margin-left:10px;">${totalApps} Projects</span>`;
         content.appendChild(header);
 
-        // App list container
+        // Scrollable app list
         const appList = document.createElement('div');
         appList.className = 'app-list-container';
+        appList.style.maxHeight = '500px';
+        appList.style.overflowY = 'auto';
+        appList.style.paddingRight = '5px';
 
-        apps.forEach((app) => {
-            const appItem = document.createElement('div');
-            appItem.className = 'app-item';
-            if (app.status === 'coming-soon') {
-                appItem.classList.add('coming-soon');
-            }
+        categories.forEach((category) => {
+            // Category header
+            const catHeader = document.createElement('div');
+            catHeader.style.cssText = `color:${category.color}; font-size:12px; letter-spacing:2px; font-weight:700; margin:20px 0 10px; padding-bottom:6px; border-bottom:1px solid ${category.color}33; text-transform:uppercase;`;
+            catHeader.textContent = `\u25B8 ${category.name}`;
+            appList.appendChild(catHeader);
 
-            const appInfo = document.createElement('div');
-            appInfo.className = 'app-item-info';
-            appInfo.innerHTML = `
-                <div class="app-item-name">${app.name}</div>
-                <div class="app-item-desc">${app.desc}</div>
-                ${app.status === 'coming-soon' ? '<span class="app-status-badge">COMING SOON</span>' : ''}
-            `;
+            category.apps.forEach((app) => {
+                const appItem = document.createElement('div');
+                appItem.className = 'app-item';
 
-            const launchBtn = document.createElement('button');
+                const isLive = app.status === 'live';
+                const badgeColor = isLive ? '#00ff88' : '#00f0ff';
+                const badgeText = isLive ? 'DEPLOYED' : 'SOURCE';
 
-            if (app.status === 'coming-soon') {
-                launchBtn.textContent = 'SOON';
-                launchBtn.disabled = true;
-                launchBtn.style.opacity = '0.5';
-                launchBtn.style.cursor = 'not-allowed';
-            } else if (app.name === 'PORTFOLIO_ENGINE') {
-                launchBtn.textContent = 'ACTIVE';
-                launchBtn.style.background = 'rgba(0,255,136,0.2)';
-                launchBtn.style.borderColor = '#00ff88';
-                launchBtn.style.color = '#00ff88';
+                const appInfo = document.createElement('div');
+                appInfo.className = 'app-item-info';
+                appInfo.innerHTML = `
+                    <div class="app-item-name">${Sanitize.text(app.name)}</div>
+                    <div class="app-item-desc">${Sanitize.text(app.desc)}</div>
+                    <span style="display:inline-block; font-size:9px; letter-spacing:1px; padding:2px 6px; border:1px solid ${badgeColor}; color:${badgeColor}; background:${badgeColor}15; border-radius:3px; margin-top:4px;">${badgeText}</span>
+                `;
+
+                const launchBtn = document.createElement('button');
+                launchBtn.textContent = isLive ? 'LAUNCH' : 'VIEW';
+                if (isLive) {
+                    launchBtn.style.background = 'rgba(0,255,136,0.1)';
+                    launchBtn.style.borderColor = '#00ff8844';
+                    launchBtn.style.color = '#00ff88';
+                }
                 launchBtn.addEventListener('click', () => {
-                    Modal.alert('Portfolio Engine', 'You\'re already running it! This is the system you\'re looking at right now. 🚀');
+                    if (app.link) window.open(app.link, '_blank');
                 });
-            } else {
-                launchBtn.textContent = 'LAUNCH';
-                launchBtn.addEventListener('click', () => {
-                    if (app.link) {
-                        window.open(app.link, '_blank');
-                    }
-                });
-            }
 
-            appItem.appendChild(appInfo);
-            appItem.appendChild(launchBtn);
-            appList.appendChild(appItem);
+                appItem.appendChild(appInfo);
+                appItem.appendChild(launchBtn);
+                appList.appendChild(appItem);
+            });
         });
 
         content.appendChild(appList);
 
-        // Divider and portfolio button
+        // Footer — link to full portfolio
         const footer = document.createElement('div');
         footer.style.marginTop = '20px';
         footer.style.paddingTop = '20px';
@@ -1353,7 +1367,7 @@ export const Desktop = {
 
         const portfolioBtn = document.createElement('button');
         portfolioBtn.className = 'project-link';
-        portfolioBtn.textContent = 'View Full Project Portfolio →';
+        portfolioBtn.textContent = 'View Full Project Portfolio \u2192';
         portfolioBtn.addEventListener('click', () => {
             WindowManager.close('applications');
             setTimeout(() => this.openApplications(), 300);
@@ -1365,10 +1379,10 @@ export const Desktop = {
         WindowManager.create({
             id: 'applications',
             title: 'APPLICATIONS',
-            icon: '⚡',
+            icon: '\u26A1',
             content,
-            width: 600,
-            height: 400,
+            width: 700,
+            height: 650,
         });
     },
 
