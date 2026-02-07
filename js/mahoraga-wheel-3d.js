@@ -19,6 +19,7 @@ export class MahoragaWheel3D {
         this.adaptationTimer = 0;
         this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this._lastRenderTime = 0;
+        this._isMobile = ('ontouchstart' in window || navigator.maxTouchPoints > 0) && window.innerWidth <= 768;
 
         this.init();
     }
@@ -32,14 +33,14 @@ export class MahoragaWheel3D {
         this.camera.position.set(0, 1.8, 5.5);
         this.camera.lookAt(0, -0.2, 0);
 
-        // Renderer
+        // Renderer — desktop gets antialias + high-perf GPU; mobile stays lean
         this.renderer = new THREE.WebGLRenderer({
-            antialias: false,
+            antialias: !this._isMobile,
             alpha: true,
-            powerPreference: 'low-power'
+            powerPreference: this._isMobile ? 'low-power' : 'high-performance'
         });
         this.renderer.setSize(this.size, this.size);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, this._isMobile ? 1.5 : 2));
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.4;
         this.renderer.setClearColor(0x000000, 0);
@@ -243,12 +244,13 @@ export class MahoragaWheel3D {
         this.rafId = requestAnimationFrame(() => this.animate());
         if (_hidden) return;  // skip frame when hidden
 
-        // Throttle to ~30fps to save GPU
+        // 60fps on desktop (16ms), 30fps on mobile (32ms)
         const now = performance.now();
-        if (now - this._lastRenderTime < 32) return;
+        const frameMs = this._isMobile ? 32 : 16;
+        if (now - this._lastRenderTime < frameMs) return;
         this._lastRenderTime = now;
 
-        const dt = 0.033; // ~30fps
+        const dt = this._isMobile ? 0.033 : 0.016;
         this.adaptationTimer += dt;
 
         // Mahoraga adaptation: click 45 degrees every 2 seconds
@@ -260,7 +262,7 @@ export class MahoragaWheel3D {
         // Smooth interpolation toward target angle (spring-like snap)
         const diff = this.targetAngle - this.adaptationAngle;
         if (Math.abs(diff) > 0.001) {
-            this.adaptationAngle += diff * 0.15; // snappy ease (slightly faster for 30fps)
+            this.adaptationAngle += diff * (this._isMobile ? 0.15 : 0.08);
         } else {
             this.adaptationAngle = this.targetAngle;
         }

@@ -67,8 +67,15 @@ export const Login = {
      * Initialize galaxy background effect on document body (persists across login/desktop)
      */
     initGalaxyEffect() {
-        // Only initialize once
-        if (this.galaxyInstance || document.body.classList.contains('galaxy-active')) return;
+        // Already initialized by main.js during boot
+        if (this.galaxyInstance || document.body.classList.contains('galaxy-active')) {
+            this.galaxyInstance = window.__galaxyInstance || null;
+            // Still apply galaxy text styling
+            const osTitle = this.lockScreen?.querySelector('.os-title');
+            if (osTitle) osTitle.classList.add('galaxy-text');
+            this.init3DWheel();
+            return;
+        }
 
         // Apply galaxy text styling to title
         const osTitle = this.lockScreen?.querySelector('.os-title');

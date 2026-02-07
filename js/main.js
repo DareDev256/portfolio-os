@@ -63,6 +63,24 @@ async function init() {
     // Initialize Modal system
     Modal.init();
 
+    // Start galaxy background immediately (visible during boot)
+    if (!safeMode) {
+        try {
+            const { initGalaxyBackground } = await import('./galaxy-background.js');
+            const galaxyInstance = initGalaxyBackground(document.body, {
+                starCount: 150,
+                nebulaSpeed: 0.00025,
+                starDriftSpeed: 0.0001,
+                mouseInfluence: 0.015
+            });
+            document.body.classList.add('galaxy-active', 'galaxy-container');
+            // Store reference for Login to reuse (not re-init)
+            window.__galaxyInstance = galaxyInstance;
+        } catch (err) {
+            console.warn('[Main] Galaxy background failed, Login will retry:', err);
+        }
+    }
+
     // Show splash/boot, then continue to login
     if (!safeMode) {
         Boot.start(() => Login.init());
