@@ -70,7 +70,7 @@ async function init() {
             const galaxyInstance = initGalaxyBackground(document.body, {
                 starCount: 150,
                 nebulaSpeed: 0.00025,
-                starDriftSpeed: 0.0001,
+                starDriftSpeed: 0.0003,
                 mouseInfluence: 0.015
             });
             document.body.classList.add('galaxy-active', 'galaxy-container');

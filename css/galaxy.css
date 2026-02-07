@@ -1,5 +1,5 @@
 /* Galaxy Effect Styles
- * JJK/Dark Shonen cosmic aesthetic
+ * MMBN Cyberspace aesthetic - cobalt blue, platinum grid, blue-purple void
  * Applied via Three.js procedural background
  */
 
@@ -22,52 +22,52 @@
 /* Body always has galaxy CSS gradient as fallback until Three.js canvas loads */
 body.galaxy-active {
     background:
-        radial-gradient(ellipse at 20% 80%, rgba(107, 33, 168, 0.4) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(190, 24, 93, 0.3) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(76, 29, 149, 0.25) 0%, transparent 70%),
-        linear-gradient(180deg, #0a0412 0%, #1a0a2e 30%, #0d0618 60%, #050208 100%) !important;
+        radial-gradient(ellipse at 20% 80%, rgba(15, 25, 80, 0.5) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(12, 35, 85, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(20, 30, 70, 0.3) 0%, transparent 70%),
+        linear-gradient(180deg, #020106 0%, #050a1e 30%, #010318 60%, #010108 100%) !important;
 }
 
 /* Lock screen inherits galaxy background */
 body.galaxy-active .lock-screen {
     background:
-        radial-gradient(ellipse at 20% 80%, rgba(107, 33, 168, 0.4) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(190, 24, 93, 0.3) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(76, 29, 149, 0.25) 0%, transparent 70%),
-        linear-gradient(180deg, #0a0412 0%, #1a0a2e 30%, #0d0618 60%, #050208 100%) !important;
+        radial-gradient(ellipse at 20% 80%, rgba(15, 25, 80, 0.5) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(12, 35, 85, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(20, 30, 70, 0.3) 0%, transparent 70%),
+        linear-gradient(180deg, #020106 0%, #050a1e 30%, #010318 60%, #010108 100%) !important;
 }
 
 /* Desktop has galaxy background */
 body.galaxy-active .desktop {
     background:
-        radial-gradient(ellipse at 20% 80%, rgba(107, 33, 168, 0.4) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(190, 24, 93, 0.3) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(76, 29, 149, 0.25) 0%, transparent 70%),
-        linear-gradient(180deg, #0a0412 0%, #1a0a2e 30%, #0d0618 60%, #050208 100%) !important;
+        radial-gradient(ellipse at 20% 80%, rgba(15, 25, 80, 0.5) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(12, 35, 85, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(20, 30, 70, 0.3) 0%, transparent 70%),
+        linear-gradient(180deg, #020106 0%, #050a1e 30%, #010318 60%, #010108 100%) !important;
 }
 
 /* Cinematic intro stage - no panel, elements float on galaxy */
 /* Override subtitle with purple for galaxy theme */
 body.galaxy-active .os-subtitle {
-    color: rgba(190, 24, 93, 0.7) !important;
+    color: rgba(80, 130, 200, 0.7) !important;
 }
 
 body.galaxy-active .subtitle-cursor {
-    color: rgba(190, 24, 93, 0.9);
+    color: rgba(80, 130, 200, 0.9);
 }
 
 /* Override login button with purple/magenta galaxy theme */
 body.galaxy-active .cyber-button {
-    color: #ec4899;
-    border-color: rgba(190, 24, 93, 0.2);
+    color: #5b8fd9;
+    border-color: rgba(40, 80, 170, 0.2);
 }
 
 body.galaxy-active .cyber-button:hover {
-    background: rgba(190, 24, 93, 0.2);
-    border-color: rgba(190, 24, 93, 0.4);
+    background: rgba(40, 80, 170, 0.2);
+    border-color: rgba(40, 80, 170, 0.4);
     color: #fff;
     box-shadow:
-        0 0 30px rgba(190, 24, 93, 0.25),
+        0 0 30px rgba(40, 80, 170, 0.25),
         0 8px 25px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
@@ -136,9 +136,9 @@ body.galaxy-active::before {
     /* Subtle animation - pan through space */
     animation: space-drift 20s linear infinite !important;
     /* Cosmic glow effect */
-    filter: drop-shadow(0 0 15px rgba(190, 24, 93, 0.8))
-            drop-shadow(0 0 30px rgba(107, 33, 168, 0.6))
-            drop-shadow(0 0 50px rgba(236, 72, 153, 0.4)) !important;
+    filter: drop-shadow(0 0 15px rgba(30, 70, 160, 0.8))
+            drop-shadow(0 0 30px rgba(50, 90, 180, 0.6))
+            drop-shadow(0 0 50px rgba(15, 40, 120, 0.4)) !important;
 }
 
 /* Drift through space animation */
@@ -154,14 +154,14 @@ body.galaxy-active::before {
 /* Pulsing glow for text */
 @keyframes galaxy-text-glow {
     0%, 100% {
-        filter: drop-shadow(0 0 15px rgba(190, 24, 93, 0.8))
-                drop-shadow(0 0 30px rgba(107, 33, 168, 0.6))
-                drop-shadow(0 0 50px rgba(236, 72, 153, 0.4));
+        filter: drop-shadow(0 0 15px rgba(30, 70, 160, 0.8))
+                drop-shadow(0 0 30px rgba(50, 90, 180, 0.6))
+                drop-shadow(0 0 50px rgba(15, 40, 120, 0.4));
     }
     50% {
-        filter: drop-shadow(0 0 25px rgba(190, 24, 93, 1))
-                drop-shadow(0 0 50px rgba(107, 33, 168, 0.8))
-                drop-shadow(0 0 80px rgba(236, 72, 153, 0.6));
+        filter: drop-shadow(0 0 25px rgba(30, 70, 160, 1))
+                drop-shadow(0 0 50px rgba(50, 90, 180, 0.8))
+                drop-shadow(0 0 80px rgba(15, 40, 120, 0.6));
     }
 }
 
@@ -176,10 +176,10 @@ body.galaxy-active::before {
     .galaxy-text {
         background: linear-gradient(
             135deg,
-            #4c1d95 0%,
-            #6b21a8 30%,
-            #be185d 60%,
-            #991b1b 100%
+            #0a0e2e 0%,
+            #142050 30%,
+            #1e3a7a 60%,
+            #301a60 100%
         );
         background-clip: text;
         -webkit-background-clip: text;
@@ -215,9 +215,9 @@ body.galaxy-active::before {
 }
 
 .galaxy-wheel-glow {
-    filter: drop-shadow(0 0 15px rgba(107, 33, 168, 0.6))
-            drop-shadow(0 0 30px rgba(190, 24, 93, 0.4))
-            drop-shadow(0 0 45px rgba(107, 33, 168, 0.3));
+    filter: drop-shadow(0 0 15px rgba(30, 70, 160, 0.6))
+            drop-shadow(0 0 30px rgba(50, 90, 180, 0.4))
+            drop-shadow(0 0 45px rgba(30, 70, 160, 0.3));
 }
 
 /* Galaxy color overlay for SVGs - shift gold to purple/magenta
@@ -231,22 +231,22 @@ body.galaxy-active::before {
 @keyframes galaxyPulse {
     0%, 100% {
         filter: hue-rotate(235deg) saturate(1.4) brightness(0.9)
-                drop-shadow(0 0 15px rgba(107, 33, 168, 0.7))
-                drop-shadow(0 0 30px rgba(190, 24, 93, 0.5));
+                drop-shadow(0 0 15px rgba(30, 70, 160, 0.7))
+                drop-shadow(0 0 30px rgba(50, 90, 180, 0.5));
     }
     50% {
         filter: hue-rotate(235deg) saturate(1.6) brightness(1.0)
-                drop-shadow(0 0 25px rgba(107, 33, 168, 0.9))
-                drop-shadow(0 0 50px rgba(190, 24, 93, 0.7))
-                drop-shadow(0 0 70px rgba(153, 27, 27, 0.4));
+                drop-shadow(0 0 25px rgba(30, 70, 160, 0.9))
+                drop-shadow(0 0 50px rgba(50, 90, 180, 0.7))
+                drop-shadow(0 0 70px rgba(15, 40, 120, 0.4));
     }
 }
 
 .galaxy-wheel-animated {
     /* Initial state before animation kicks in */
     filter: hue-rotate(235deg) saturate(1.4) brightness(0.9)
-            drop-shadow(0 0 15px rgba(107, 33, 168, 0.7))
-            drop-shadow(0 0 30px rgba(190, 24, 93, 0.5));
+            drop-shadow(0 0 15px rgba(30, 70, 160, 0.7))
+            drop-shadow(0 0 30px rgba(50, 90, 180, 0.5));
     animation: galaxyPulse 4s ease-in-out infinite;
     /* 3D tilt preserved during pulse */
     transform: rotateX(55deg);
@@ -255,13 +255,13 @@ body.galaxy-active::before {
 /* Watermark wheel in cinematic intro */
 body.galaxy-active .intro-watermark-img {
     filter: hue-rotate(235deg) saturate(1.4) brightness(0.9)
-            drop-shadow(0 0 15px rgba(107, 33, 168, 0.7))
-            drop-shadow(0 0 30px rgba(190, 24, 93, 0.5));
+            drop-shadow(0 0 15px rgba(30, 70, 160, 0.7))
+            drop-shadow(0 0 30px rgba(50, 90, 180, 0.5));
 }
 
 /* Title-specific galaxy styling — cinematic size */
 .os-title.galaxy-text {
-    font-size: clamp(72px, 10vw, 140px);
+    font-size: clamp(48px, 7vw, 80px);
     font-weight: 900;
     letter-spacing: 6px;
     text-transform: uppercase;

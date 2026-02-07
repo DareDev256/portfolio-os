@@ -1,7 +1,7 @@
 /**
  * Galaxy Background Effect
- * Procedural nebula + particle starfield using Three.js
- * JJK/Dark Shonen aesthetic - deep purples, magentas, cursed energy vibes
+ * MMBN-style cyberspace grid + particle starfield using Three.js
+ * Digital network aesthetic - cobalt blue data streams, platinum grid, blue-purple void
  */
 
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
@@ -12,7 +12,7 @@ export class GalaxyBackground {
         this.options = {
             starCount: options.starCount || 150,
             nebulaSpeed: options.nebulaSpeed || 0.0003,
-            starDriftSpeed: options.starDriftSpeed || 0.00015,
+            starDriftSpeed: options.starDriftSpeed || 0.0003,
             mouseInfluence: options.mouseInfluence || 0.02,
             ...options
         };
@@ -95,139 +95,115 @@ export class GalaxyBackground {
                 uniform vec2 uResolution;
                 varying vec2 vUv;
 
-                // Simplex noise functions
-                vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-                vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-                vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
-                vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+                // Grid perspective mapping — maps 2D UV to a fake 3D floor
+                vec2 cyberGrid(vec2 uv, float t) {
+                    // Shift origin to bottom-center for ground-plane perspective
+                    vec2 p = uv - vec2(0.5, 0.0);
 
-                float snoise(vec3 v) {
-                    const vec2 C = vec2(1.0/6.0, 1.0/3.0);
-                    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+                    // Perspective divide — y maps to depth
+                    float depth = max(p.y, 0.01);
+                    float perspX = p.x / (depth * 2.0);
+                    float perspY = 1.0 / depth;
 
-                    vec3 i  = floor(v + dot(v, C.yyy));
-                    vec3 x0 = v - i + dot(i, C.xxx);
+                    // Scroll the grid forward (data flowing toward viewer)
+                    perspY -= t * 0.8;
 
-                    vec3 g = step(x0.yzx, x0.xyz);
-                    vec3 l = 1.0 - g;
-                    vec3 i1 = min(g.xyz, l.zxy);
-                    vec3 i2 = max(g.xyz, l.zxy);
-
-                    vec3 x1 = x0 - i1 + C.xxx;
-                    vec3 x2 = x0 - i2 + C.yyy;
-                    vec3 x3 = x0 - D.yyy;
-
-                    i = mod289(i);
-                    vec4 p = permute(permute(permute(
-                        i.z + vec4(0.0, i1.z, i2.z, 1.0))
-                        + i.y + vec4(0.0, i1.y, i2.y, 1.0))
-                        + i.x + vec4(0.0, i1.x, i2.x, 1.0));
-
-                    float n_ = 0.142857142857;
-                    vec3 ns = n_ * D.wyz - D.xzx;
-
-                    vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
-
-                    vec4 x_ = floor(j * ns.z);
-                    vec4 y_ = floor(j - 7.0 * x_);
-
-                    vec4 x = x_ *ns.x + ns.yyyy;
-                    vec4 y = y_ *ns.x + ns.yyyy;
-                    vec4 h = 1.0 - abs(x) - abs(y);
-
-                    vec4 b0 = vec4(x.xy, y.xy);
-                    vec4 b1 = vec4(x.zw, y.zw);
-
-                    vec4 s0 = floor(b0)*2.0 + 1.0;
-                    vec4 s1 = floor(b1)*2.0 + 1.0;
-                    vec4 sh = -step(h, vec4(0.0));
-
-                    vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
-                    vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
-
-                    vec3 p0 = vec3(a0.xy, h.x);
-                    vec3 p1 = vec3(a0.zw, h.y);
-                    vec3 p2 = vec3(a1.xy, h.z);
-                    vec3 p3 = vec3(a1.zw, h.w);
-
-                    vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
-                    p0 *= norm.x;
-                    p1 *= norm.y;
-                    p2 *= norm.z;
-                    p3 *= norm.w;
-
-                    vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
-                    m = m * m;
-                    return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
-                }
-
-                // Fractal Brownian Motion — 3 octaves (reduced from 5 for perf)
-                float fbm(vec3 p) {
-                    float value = 0.0;
-                    float amplitude = 0.5;
-                    float frequency = 1.0;
-
-                    for (int i = 0; i < 3; i++) {
-                        value += amplitude * snoise(p * frequency);
-                        amplitude *= 0.5;
-                        frequency *= 2.0;
-                    }
-                    return value;
+                    return vec2(perspX, perspY);
                 }
 
                 void main() {
                     vec2 uv = vUv;
 
-                    // Add subtle mouse influence
-                    vec2 mouseOffset = (uMouse - 0.5) * 0.05;
+                    // Mouse parallax offset
+                    vec2 mouseOffset = (uMouse - 0.5) * 0.02;
                     uv += mouseOffset;
 
-                    // Create flowing nebula clouds
                     float t = uTime * 0.3;
 
-                    // Multiple noise layers for depth
-                    vec3 pos1 = vec3(uv * 2.0, t * 0.5);
-                    vec3 pos2 = vec3(uv * 3.0 + 1.0, t * 0.3);
-                    vec3 pos3 = vec3(uv * 1.5 - 2.0, t * 0.7);
+                    // === VOID BACKGROUND ===
+                    // Deep blue-purple gradient (the "sky" of cyberspace)
+                    vec3 voidTop = vec3(0.02, 0.01, 0.06);     // near black purple
+                    vec3 voidMid = vec3(0.03, 0.02, 0.10);     // dark blue-purple
+                    vec3 voidBot = vec3(0.01, 0.03, 0.08);     // deep blue
 
-                    float noise1 = fbm(pos1);
-                    float noise2 = fbm(pos2);
-                    float noise3 = fbm(pos3);
+                    vec3 color = mix(voidTop, voidMid, smoothstep(0.8, 0.4, uv.y));
+                    color = mix(color, voidBot, smoothstep(0.4, 0.0, uv.y));
 
-                    // JJK Color palette - deep purples, magentas, cursed energy reds
-                    vec3 deepSpace = vec3(0.039, 0.016, 0.071);      // #0a0412 - near black purple
-                    vec3 darkPurple = vec3(0.102, 0.039, 0.180);     // #1a0a2e
-                    vec3 midPurple = vec3(0.298, 0.129, 0.408);      // #4c2168 - violet
-                    vec3 magenta = vec3(0.745, 0.094, 0.365);        // #be185d
-                    vec3 cursedRed = vec3(0.600, 0.106, 0.106);      // #991b1b - red energy
+                    // === PERSPECTIVE GRID (bottom 65% of screen) ===
+                    if (uv.y < 0.65) {
+                        vec2 grid = cyberGrid(uv, t);
 
-                    // Mix colors based on noise
-                    vec3 color = deepSpace;
+                        // Grid line calculation
+                        float gridSize = 3.0;
+                        vec2 gridLines = abs(fract(grid * gridSize) - 0.5);
+                        float lineX = smoothstep(0.0, 0.04, gridLines.x);
+                        float lineY = smoothstep(0.0, 0.04, gridLines.y);
+                        float gridLine = 1.0 - min(lineX, lineY);
 
-                    // Layer 1: Purple nebula clouds
-                    float cloud1 = smoothstep(-0.2, 0.6, noise1);
-                    color = mix(color, darkPurple, cloud1 * 0.8);
+                        // Distance fade (deeper = more faded)
+                        float depth = max(uv.y, 0.01);
+                        float depthFade = smoothstep(0.0, 0.5, depth);
 
-                    // Layer 2: Mid-purple swirls
-                    float cloud2 = smoothstep(0.0, 0.5, noise2);
-                    color = mix(color, midPurple, cloud2 * 0.4);
+                        // Platinum grey grid with subtle blue tint
+                        vec3 gridColor = vec3(0.45, 0.48, 0.55);  // platinum grey
+                        color += gridColor * gridLine * depthFade * 0.35;
 
-                    // Layer 3: Magenta highlights
-                    float highlight = smoothstep(0.3, 0.7, noise1 * noise2);
-                    color = mix(color, magenta, highlight * 0.25);
+                        // === MAJOR GRID LINES (every 4th line = brighter) ===
+                        vec2 majorGrid = abs(fract(grid * gridSize * 0.25) - 0.5);
+                        float majorX = smoothstep(0.0, 0.06, majorGrid.x);
+                        float majorY = smoothstep(0.0, 0.06, majorGrid.y);
+                        float majorLine = 1.0 - min(majorX, majorY);
 
-                    // Layer 4: Cursed energy red wisps
-                    float redWisp = smoothstep(0.4, 0.8, noise3);
-                    color = mix(color, cursedRed, redWisp * 0.15);
+                        vec3 majorColor = vec3(0.15, 0.25, 0.65);  // cobalt blue
+                        color += majorColor * majorLine * depthFade * 0.5;
 
-                    // Add subtle glow around center
-                    float centerGlow = 1.0 - length(vUv - 0.5) * 1.5;
-                    centerGlow = max(0.0, centerGlow);
-                    color += magenta * centerGlow * 0.1;
+                        // === DATA STREAMS (flowing cobalt lines along Y-axis paths) ===
+                        float streamX1 = smoothstep(0.0, 0.015, abs(fract(grid.x * gridSize) - 0.5));
+                        float stream1 = (1.0 - streamX1) * depthFade;
 
-                    // Vignette for depth
-                    float vignette = 1.0 - length(vUv - 0.5) * 0.8;
-                    color *= vignette;
+                        // Animated pulse traveling along the stream
+                        float pulse1 = sin(grid.y * 6.0 + t * 4.0) * 0.5 + 0.5;
+                        pulse1 = pow(pulse1, 4.0);  // sharpen into distinct pulses
+
+                        vec3 streamColor = vec3(0.12, 0.35, 0.85);  // cobalt blue
+                        color += streamColor * stream1 * pulse1 * 0.6;
+
+                        // Second stream layer (offset, dimmer)
+                        float streamX2 = smoothstep(0.0, 0.01, abs(fract(grid.x * gridSize + 0.5) - 0.5));
+                        float stream2 = (1.0 - streamX2) * depthFade;
+                        float pulse2 = sin(grid.y * 8.0 + t * 3.0 + 1.5) * 0.5 + 0.5;
+                        pulse2 = pow(pulse2, 5.0);
+
+                        color += streamColor * stream2 * pulse2 * 0.3;
+
+                        // === NODE GLOWS (bright spots at grid intersections) ===
+                        vec2 nodePos = fract(grid * gridSize);
+                        float nodeDist = length(nodePos - 0.5);
+                        float nodeGlow = smoothstep(0.25, 0.0, nodeDist);
+
+                        // Only show nodes at major intersections
+                        vec2 majorNodePos = fract(grid * gridSize * 0.25);
+                        float majorNodeDist = length(majorNodePos - 0.5);
+                        float majorNodeGlow = smoothstep(0.3, 0.0, majorNodeDist);
+
+                        // Pulse nodes
+                        float nodePulse = sin(t * 2.0 + grid.x * 3.0 + grid.y * 2.0) * 0.3 + 0.7;
+
+                        vec3 nodeColor = vec3(0.3, 0.55, 1.0);  // bright cobalt
+                        color += nodeColor * nodeGlow * depthFade * 0.15 * nodePulse;
+                        color += nodeColor * majorNodeGlow * depthFade * 0.4 * nodePulse;
+                    }
+
+                    // === HORIZON GLOW ===
+                    // Bright line where grid meets void
+                    float horizonDist = abs(uv.y - 0.65);
+                    float horizonGlow = smoothstep(0.08, 0.0, horizonDist);
+                    vec3 horizonColor = vec3(0.15, 0.3, 0.7);  // cobalt
+                    color += horizonColor * horizonGlow * 0.4;
+
+                    // === VIGNETTE ===
+                    float vignette = 1.0 - length(uv - 0.5) * 0.7;
+                    color *= max(vignette, 0.3);
 
                     gl_FragColor = vec4(color, 1.0);
                 }
@@ -262,21 +238,21 @@ export class GalaxyBackground {
 
             // Star colors - mostly white/blue, occasional warm
             const colorChoice = Math.random();
-            if (colorChoice < 0.7) {
-                // White/pale blue
-                colors[i * 3] = 0.9 + Math.random() * 0.1;
-                colors[i * 3 + 1] = 0.9 + Math.random() * 0.1;
+            if (colorChoice < 0.5) {
+                // White/pale blue (data points)
+                colors[i * 3] = 0.8 + Math.random() * 0.2;
+                colors[i * 3 + 1] = 0.85 + Math.random() * 0.15;
                 colors[i * 3 + 2] = 1.0;
-            } else if (colorChoice < 0.9) {
-                // Pale purple
-                colors[i * 3] = 0.8;
-                colors[i * 3 + 1] = 0.7;
-                colors[i * 3 + 2] = 1.0;
+            } else if (colorChoice < 0.8) {
+                // Cobalt blue
+                colors[i * 3] = 0.15 + Math.random() * 0.15;
+                colors[i * 3 + 1] = 0.35 + Math.random() * 0.2;
+                colors[i * 3 + 2] = 0.85 + Math.random() * 0.15;
             } else {
-                // Warm accent
-                colors[i * 3] = 1.0;
-                colors[i * 3 + 1] = 0.8;
-                colors[i * 3 + 2] = 0.7;
+                // Platinum/silver
+                colors[i * 3] = 0.65 + Math.random() * 0.15;
+                colors[i * 3 + 1] = 0.68 + Math.random() * 0.12;
+                colors[i * 3 + 2] = 0.75 + Math.random() * 0.1;
             }
         }
 

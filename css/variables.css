@@ -100,12 +100,12 @@
     --titlebar-height: 35px;
     --desktop-icon-size: 90px;
 
-    /* Wallpaper - Galaxy cosmic nebula aesthetic */
+    /* Wallpaper - MMBN cyberspace aesthetic */
     --wallpaper-url:
-        radial-gradient(ellipse at 20% 80%, rgba(107, 33, 168, 0.4) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(190, 24, 93, 0.3) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(76, 29, 149, 0.25) 0%, transparent 70%),
-        linear-gradient(180deg, #0a0412 0%, #1a0a2e 30%, #0d0618 60%, #050208 100%);
+        radial-gradient(ellipse at 20% 80%, rgba(15, 25, 80, 0.5) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(12, 35, 85, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(20, 30, 70, 0.3) 0%, transparent 70%),
+        linear-gradient(180deg, #020106 0%, #050a1e 30%, #010318 60%, #010108 100%);
 }
 
 /* Force Dark Theme override logic to respect new palette */
