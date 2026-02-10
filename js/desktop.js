@@ -701,6 +701,7 @@ export const Desktop = {
                 media = JSON.parse(override);
             } else {
                 const res = await fetch('data/media.json');
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 media = await res.json();
             }
         } catch (e) {
@@ -817,6 +818,7 @@ export const Desktop = {
                 videos = media.videos || [];
             } else {
                 const res = await fetch('/data/media.json');
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const media = await res.json();
                 videos = media.videos || [];
             }
@@ -867,7 +869,7 @@ export const Desktop = {
             try {
                 const storedIcons = JSON.parse(localStorage.getItem('folderIcons') || '{}');
                 if (storedIcons[folderName]) customIcon = storedIcons[folderName];
-            } catch (e) { }
+            } catch { /* ignored */ }
 
             const icon = isLocked ? '🔒' : customIcon;
 
@@ -1207,6 +1209,7 @@ export const Desktop = {
                 videos = media.videos || [];
             } else {
                 const res = await fetch('data/media.json');
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const media = await res.json();
                 videos = media.videos || [];
             }
@@ -1398,6 +1401,7 @@ export const Desktop = {
                 projects = JSON.parse(override);
             } else {
                 const response = await fetch('data/projects.json');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 projects = await response.json();
             }
         } catch (e) {

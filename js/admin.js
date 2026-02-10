@@ -116,6 +116,7 @@ export const Admin = {
                 this.projects = JSON.parse(stored);
             } else {
                 const response = await fetch('data/projects.json');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 this.projects = await response.json();
             }
         } catch (e) {
@@ -129,6 +130,7 @@ export const Admin = {
                 this.media = JSON.parse(stored);
             } else {
                 const response = await fetch('data/media.json');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 this.media = await response.json();
             }
         } catch (e) {
@@ -601,7 +603,7 @@ export const Admin = {
             let storedIcons = {};
             try {
                 storedIcons = JSON.parse(localStorage.getItem('folderIcons') || '{}');
-            } catch (e) { }
+            } catch { /* ignored */ }
 
             const defaultIcons = {
                 'Real Estate': '🏠',
@@ -667,7 +669,7 @@ export const Admin = {
                     const posterInput = card.querySelector('.media-poster');
 
                     // Simple YouTube ID extraction
-                    const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/);
+                    const match = url.match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/);
 
                     if (match && match[1] && posterInput && !posterInput.value) {
                         posterInput.value = `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;

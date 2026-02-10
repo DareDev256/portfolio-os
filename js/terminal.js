@@ -152,7 +152,7 @@ export const Terminal = {
                 this.runDeployment();
                 break;
 
-            default:
+            default: {
                 // Check for easter egg sass responses (use full command for multi-word commands)
                 const sassResponse = window.__InteractionEngine?.easterEggs?.getTerminalSass(cmdRaw);
                 if (sassResponse) {
@@ -160,6 +160,7 @@ export const Terminal = {
                 } else {
                     this.println(`Command not found: ${Sanitize.text(cmd)}`, 'term-error');
                 }
+            }
         }
     },
 

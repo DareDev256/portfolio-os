@@ -105,11 +105,16 @@ export const GitHub = {
         }
 
         try {
+            const safeFetch = async (url) => {
+                const r = await fetch(url);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return r.json();
+            };
             // Parallel fetch
             const [user, repos, events] = await Promise.all([
-                fetch(`https://api.github.com/users/${this.username}`).then(r => r.json()),
-                fetch(`https://api.github.com/users/${this.username}/repos?sort=updated&per_page=6`).then(r => r.json()),
-                fetch(`https://api.github.com/users/${this.username}/events/public?per_page=10`).then(r => r.json())
+                safeFetch(`https://api.github.com/users/${this.username}`),
+                safeFetch(`https://api.github.com/users/${this.username}/repos?sort=updated&per_page=6`),
+                safeFetch(`https://api.github.com/users/${this.username}/events/public?per_page=10`),
             ]);
 
             const data = { user, repos, events };
