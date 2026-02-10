@@ -321,5 +321,7 @@ export const State = {
     },
 };
 
-// Initialize state on load
-State.init();
+// Initialize state on load (guarded for test environments)
+if (typeof window !== 'undefined' && typeof localStorage?.getItem === 'function') {
+    State.init();
+}
