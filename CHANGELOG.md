@@ -18,6 +18,16 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [3.4.1] — 2026-02-11
+
+### Changed
+- **README.md rewritten** as portfolio-grade documentation — restructured from changelog-dump to recruiter-scannable reference with centered hero, Quick Start in the first 25 lines, architecture tree, tech stack table, and categorized feature sections (was 256 lines of version history before features)
+- Moved all version-specific release notes out of README into CHANGELOG where they belong
+
+**Files Modified**: `README.md`
+
+---
+
 ## [3.4.0] — 2026-02-11
 
 ### Added
@@ -854,7 +864,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.2.0
+**Latest Version**: 3.4.1
 
 **Status**: ✅ Production Ready
 
