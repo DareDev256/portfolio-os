@@ -18,6 +18,16 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [3.3.1] — 2026-02-10
+
+### Security
+- Wrapped unprotected `JSON.parse` calls in `github.js` and `desktop.js` with try/catch to prevent crashes from corrupted localStorage data
+- Added allowlist-based path validation to `Router.navigate()` — blocks `javascript:`, `data:`, and non-path strings
+- Hardened wallpaper URL validation in `state.js` — allowlists only safe raster `data:` image types (png, jpeg, gif, webp), blocking `data:image/svg+xml` which can contain scripts
+- Added `;`, `<`, `>` to CSS URL breakout character strip in wallpaper handler
+
+---
+
 ## v3.3.0 — Content & Visual Overhaul (February 11, 2026)
 
 ### About Me Rewrite

@@ -45,6 +45,10 @@ export const Router = {
      * Navigate to a route
      */
     navigate(path) {
+        if (!path || typeof path !== 'string' || !/^\/[\w/-]*$/.test(path)) {
+            console.warn('[Router] Blocked invalid path:', path);
+            return;
+        }
         window.history.pushState({}, '', path);
         this.handleRoute(path);
     },

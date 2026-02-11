@@ -144,15 +144,22 @@ export const State = {
             // Determine correct CSS path: prefix '../' for local asset paths
             let url = input;
 
-            // Block dangerous protocols
+            // Block dangerous protocols — allowlist safe data: subtypes only
             const lower = url.toLowerCase().trim();
-            if (lower.startsWith('javascript:') || lower.startsWith('data:text/html')) {
+            if (
+                lower.startsWith('javascript:') ||
+                (lower.startsWith('data:') &&
+                    !lower.startsWith('data:image/png') &&
+                    !lower.startsWith('data:image/jpeg') &&
+                    !lower.startsWith('data:image/gif') &&
+                    !lower.startsWith('data:image/webp'))
+            ) {
                 console.warn('[State] Blocked dangerous wallpaper URL:', url);
                 return;
             }
 
             // Strip characters that could break out of CSS url('...')
-            url = url.replace(/['"()\\]/g, '');
+            url = url.replace(/['"()\\;<>]/g, '');
 
             const isExternal =
                 /^https?:\/\//.test(url) || url.startsWith('/') || url.startsWith('data:');

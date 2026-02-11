@@ -1,8 +1,17 @@
-# Passion OS v3.3.0
+# Passion OS v3.3.1
 
 **A cyberpunk-inspired portfolio operating system built with vanilla JavaScript -- no frameworks, no dependencies.**
 
 Interactive desktop environment featuring draggable windows, GPU-optimized glass effects, MMBN cyberspace galaxy theme, recruiter-focused content, and a full visual effects stack.
+
+---
+
+## v3.3.1 -- Security Hardening (localStorage & URL Validation)
+
+- **localStorage JSON.parse hardened**: All unprotected `JSON.parse` calls on cached data (GitHub API cache, desktop icon layout) now wrapped in try/catch with graceful fallbacks.
+- **Router path validation**: `Router.navigate()` uses allowlist regex — only permits `/` paths with word characters, blocking `javascript:`, `data:`, and protocol injection.
+- **Wallpaper URL allowlist**: `data:` URIs restricted to raster image types only (png, jpeg, gif, webp) — blocks `data:image/svg+xml` which can embed scripts.
+- **CSS injection prevention**: Additional breakout characters (`;`, `<`, `>`) stripped from wallpaper URL handler.
 
 ---
 

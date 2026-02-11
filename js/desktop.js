@@ -308,7 +308,12 @@ export const Desktop = {
         container.innerHTML = '';
 
         // Load saved positions (v2 key forces layout reset for existing users)
-        const savedLayout = JSON.parse(localStorage.getItem('desktop_layout_v2') || '{}');
+        let savedLayout = {};
+        try {
+            savedLayout = JSON.parse(localStorage.getItem('desktop_layout_v2') || '{}');
+        } catch {
+            localStorage.removeItem('desktop_layout_v2');
+        }
 
         // Default positions for first-time visitors
         // Row-priority layout — recruiters read top-left first
@@ -457,7 +462,12 @@ export const Desktop = {
                     element.style.zIndex = ''; // Reset z-index
 
                     // Save new position
-                    const currentLayout = JSON.parse(localStorage.getItem('desktop_layout_v2') || '{}');
+                    let currentLayout = {};
+                    try {
+                        currentLayout = JSON.parse(localStorage.getItem('desktop_layout_v2') || '{}');
+                    } catch {
+                        currentLayout = {};
+                    }
                     currentLayout[id] = {
                         x: parseInt(element.style.left),
                         y: parseInt(element.style.top)

@@ -98,9 +98,13 @@ export const GitHub = {
         // Check cache
         const cached = localStorage.getItem(this.cacheKey);
         if (cached) {
-            const parsed = JSON.parse(cached);
-            if (Date.now() - parsed.timestamp < this.cacheTTL) {
-                return parsed.data;
+            try {
+                const parsed = JSON.parse(cached);
+                if (Date.now() - parsed.timestamp < this.cacheTTL) {
+                    return parsed.data;
+                }
+            } catch {
+                localStorage.removeItem(this.cacheKey);
             }
         }
 
