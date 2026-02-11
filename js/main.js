@@ -11,6 +11,7 @@ import { Boot } from './boot.js';
 import { Login } from './login.js';
 import { Modal } from './modal.js';
 import { Desktop } from './desktop.js';
+import { CommandPalette } from './command-palette.js';
 
 // Wait for DOM to be ready
 if (document.readyState === 'loading') {
@@ -62,6 +63,9 @@ async function init() {
 
     // Initialize Modal system
     Modal.init();
+
+    // Initialize Command Palette (Cmd+K / Ctrl+K)
+    CommandPalette.init();
 
     // Start galaxy background immediately (visible during boot)
     if (!safeMode) {

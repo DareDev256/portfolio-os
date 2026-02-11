@@ -18,6 +18,20 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [3.4.0] — 2026-02-11
+
+### Added
+- **Command Palette** (`Cmd+K` / `Ctrl+K`): Spotlight-style fuzzy-search launcher that provides instant keyboard access to all 14 desktop apps and 4 system toggles (theme, cursor trail, sound, interactions)
+- Full keyboard navigation — arrow keys, Enter to execute, Escape to dismiss, click-outside to close
+- Cyberpunk glass UI with frosted overlay, color-coded dot indicators, and monospace input styling
+- Auto-syncs with `DESKTOP_ITEMS` — new desktop icons are automatically available in the palette
+
+**Files Created**: `js/command-palette.js`, `css/command-palette.css`
+
+**Files Modified**: `js/main.js`, `index.html`
+
+---
+
 ## [3.3.2] — 2026-02-11
 
 ### Security

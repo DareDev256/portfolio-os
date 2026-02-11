@@ -1,10 +1,17 @@
-# Passion OS v3.3.2
+# Passion OS v3.4.0
 
 **A cyberpunk-inspired portfolio operating system built with vanilla JavaScript -- no frameworks, no dependencies.**
 
 Interactive desktop environment featuring draggable windows, GPU-optimized glass effects, MMBN cyberspace galaxy theme, recruiter-focused content, and a full visual effects stack.
 
 ---
+
+## v3.4.0 -- Command Palette (Cmd+K)
+
+- **Spotlight-style quick launcher**: Press `Cmd+K` (Mac) or `Ctrl+K` (Windows/Linux) to open a fuzzy-search command palette. Type to filter, arrow keys to navigate, Enter to execute.
+- **Auto-synced actions**: Pulls all 14 desktop icons + 4 system commands (theme, cursor trail, sound, interactions) into a searchable list.
+- **Cyberpunk glass UI**: Frosted overlay, neon dot indicators, monospace input with `>` prefix — matches Passion OS design language.
+- **Keyboard-first UX**: Full keyboard navigation (arrows, Enter, Escape). Click-outside to dismiss.
 
 ## v3.3.2 -- Security Hardening (XSS & CSP)
 
