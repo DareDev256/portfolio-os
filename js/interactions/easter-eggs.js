@@ -421,10 +421,15 @@ export const EasterEggs = {
 
         const notification = document.createElement('div');
         notification.className = `easter-egg-notification notification-${type}`;
-        notification.innerHTML = `
-            <div class="notification-title" style="font-size:16px;font-weight:bold;margin-bottom:8px;color:${color}">${title}</div>
-            <div class="notification-message">${message}</div>
-        `;
+        const titleEl = document.createElement('div');
+        titleEl.className = 'notification-title';
+        titleEl.style.cssText = `font-size:16px;font-weight:bold;margin-bottom:8px;color:${color}`;
+        titleEl.textContent = title;
+        const msgEl = document.createElement('div');
+        msgEl.className = 'notification-message';
+        msgEl.textContent = message;
+        notification.appendChild(titleEl);
+        notification.appendChild(msgEl);
 
         notification.style.cssText = `
             position: fixed; top: 80px; right: 20px;

@@ -603,12 +603,19 @@ export const WindowManager = {
         // Update breadcrumbs
         const breadcrumbs = navContainer.querySelector('.breadcrumbs');
         if (breadcrumbs && stack.length > 0) {
-            breadcrumbs.innerHTML = stack
-                .map(
-                    (item, idx) =>
-                        `<span class="breadcrumb-item ${idx === stack.length - 1 ? 'active' : ''}">${item.label}</span>`
-                )
-                .join('<span class="breadcrumb-separator">›</span>');
+            breadcrumbs.innerHTML = '';
+            stack.forEach((item, idx) => {
+                if (idx > 0) {
+                    const sep = document.createElement('span');
+                    sep.className = 'breadcrumb-separator';
+                    sep.textContent = '›';
+                    breadcrumbs.appendChild(sep);
+                }
+                const span = document.createElement('span');
+                span.className = `breadcrumb-item ${idx === stack.length - 1 ? 'active' : ''}`;
+                span.textContent = item.label;
+                breadcrumbs.appendChild(span);
+            });
         }
     },
 

@@ -101,16 +101,22 @@ export const CursorTrail = {
      */
     async preloadSymbols() {
         try {
+            // Sanitize SVG to strip embedded scripts/event handlers
+            const cleanSvg = (raw) =>
+                typeof DOMPurify !== 'undefined'
+                    ? DOMPurify.sanitize(raw, { USE_PROFILES: { svg: true } })
+                    : raw;
+
             // Preload PlayStation symbols
             for (const symbol of this.psSymbols) {
                 const response = await fetch(symbol.path);
                 const svgText = await response.text();
-                symbol.svg = svgText;
+                symbol.svg = cleanSvg(svgText);
             }
 
             // Preload chakra wheel
             const chakraResponse = await fetch('/assets/cursor/chakra-wheel.svg');
-            this.chakraSvg = await chakraResponse.text();
+            this.chakraSvg = cleanSvg(await chakraResponse.text());
 
             console.log('[CursorTrail] Symbols preloaded');
         } catch (error) {

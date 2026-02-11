@@ -94,11 +94,14 @@ export class PixelLoader {
             <div class="pixel-creature">
                 <div class="pixel-grid"></div>
             </div>
-            <div class="pixel-message">${this.message}</div>
+            <div class="pixel-message"></div>
             <div class="pixel-bar">
                 <div class="pixel-bar-fill"></div>
             </div>
         `;
+
+        // Set message text safely (no innerHTML interpolation)
+        this.element.querySelector('.pixel-message').textContent = this.message;
 
         // Add styles if not exists
         if (!document.getElementById('pixel-loader-style')) {

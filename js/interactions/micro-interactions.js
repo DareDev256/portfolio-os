@@ -366,10 +366,17 @@ export const MicroInteractions = {
     createLoadingState(container, message = 'PROCESSING') {
         const loader = document.createElement('div');
         loader.className = 'micro-loader';
-        loader.innerHTML = `
-            <div class="loader-spinner"></div>
-            <div class="loader-text">${message}<span class="loader-dots">...</span></div>
-        `;
+        const spinner = document.createElement('div');
+        spinner.className = 'loader-spinner';
+        const textEl = document.createElement('div');
+        textEl.className = 'loader-text';
+        textEl.textContent = message;
+        const dots = document.createElement('span');
+        dots.className = 'loader-dots';
+        dots.textContent = '...';
+        textEl.appendChild(dots);
+        loader.appendChild(spinner);
+        loader.appendChild(textEl);
 
         loader.style.cssText = `
             display: flex;

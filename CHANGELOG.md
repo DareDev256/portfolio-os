@@ -18,6 +18,16 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [3.3.2] — 2026-02-11
+
+### Security
+- Replaced innerHTML interpolation with DOM API (textContent/createElement) in `loader.js`, `windows.js` breadcrumbs, `easter-eggs.js` notifications, and `micro-interactions.js` loading states — eliminates XSS vectors from interpolated strings
+- Sanitize fetched SVG content through DOMPurify in `cursor-trail.js` before innerHTML insertion — blocks embedded `<script>`, `onload`, and event-handler payloads in SVG files
+- Tightened CSP `img-src` from wildcard `https:` to explicit GitHub asset domains (`avatars.githubusercontent.com`, `raw.githubusercontent.com`) — prevents image-based data exfiltration via tracking pixels
+- Added `X-Permitted-Cross-Domain-Policies: none` security header to block Flash/PDF cross-domain policy file abuse
+
+---
+
 ## [3.3.1] — 2026-02-10
 
 ### Security

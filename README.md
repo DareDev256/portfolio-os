@@ -1,10 +1,17 @@
-# Passion OS v3.3.1
+# Passion OS v3.3.2
 
 **A cyberpunk-inspired portfolio operating system built with vanilla JavaScript -- no frameworks, no dependencies.**
 
 Interactive desktop environment featuring draggable windows, GPU-optimized glass effects, MMBN cyberspace galaxy theme, recruiter-focused content, and a full visual effects stack.
 
 ---
+
+## v3.3.2 -- Security Hardening (XSS & CSP)
+
+- **innerHTML elimination**: Replaced unsafe innerHTML interpolation with DOM API (`textContent`, `createElement`) in loader, breadcrumbs, notifications, and micro-interaction loading states.
+- **SVG sanitization**: Fetched SVG assets (cursor trail symbols) now sanitized through DOMPurify before innerHTML insertion, blocking embedded script/event-handler payloads.
+- **CSP img-src tightened**: Restricted from wildcard `https:` to explicit GitHub asset domains, preventing image-based data exfiltration.
+- **X-Permitted-Cross-Domain-Policies header**: Added `none` to block Flash/PDF cross-domain policy file abuse.
 
 ## v3.3.1 -- Security Hardening (localStorage & URL Validation)
 
