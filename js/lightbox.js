@@ -328,6 +328,13 @@ export const Lightbox = {
         this.container.classList.add('hidden');
         this.mediaContainer.innerHTML = '';
 
+        // Reset zoom/pan state to prevent stale transform on next open
+        this.scale = 1;
+        this.pointX = 0;
+        this.pointY = 0;
+        this.panning = false;
+        this.mediaContainer.style.cursor = '';
+
         // Restore focus
         if (this.focusedElementBeforeOpen) {
             this.focusedElementBeforeOpen.focus();

@@ -630,6 +630,12 @@ export const WindowManager = {
         const announcer = document.getElementById('screenReaderAnnouncer');
         if (announcer) announcer.textContent = 'Closed window: ' + windowObj.title;
 
+        // Cancel any running inertia animation to prevent RAF leak
+        if (windowObj.inertiaFrame) {
+            cancelAnimationFrame(windowObj.inertiaFrame);
+            windowObj.inertiaFrame = null;
+        }
+
         // Run cleanup callback before closing
         if (typeof windowObj.onClose === 'function') {
             try { windowObj.onClose(); } catch (e) { console.error('onClose error:', e); }
@@ -644,6 +650,7 @@ export const WindowManager = {
             windowObj.element.remove();
             State.unregisterWindow(id);
             this.removeFromTaskbar(id);
+            this.navigationStack.delete(id);
 
             if (this.activeWindow?.id === id) {
                 this.activeWindow = null;

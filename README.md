@@ -83,6 +83,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - Lazy-loaded modules (terminal, GitHub, skills — only fetched on window open)
 - InteractionEngine throttled to 30fps; Aurora to ~24fps
 - Zero `backdrop-filter` on desktop icons (pure GPU cost, zero visual payoff on dark backgrounds)
+- Clean timer/RAF lifecycle — clock intervals, drag-inertia frames, and lightbox pan state properly cleared on teardown
 
 ## Architecture
 

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.5.0
+version: 3.5.1
 last_updated: 2026-02-11
 
 ---
@@ -15,6 +15,18 @@ last_updated: 2026-02-11
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.5.1] — 2026-02-11
+
+### Fixed
+- **Clock interval memory leak** — `Login.lock()` never cleared the clock `setInterval`, causing intervals to stack on every lock/unlock cycle; now clears before recreating
+- **Window inertia RAF leak** — `WindowManager.close()` didn't cancel in-flight `requestAnimationFrame` from drag-inertia physics, causing RAF loops to reference detached DOM elements; now cancels on close
+- **Lightbox pan state bleed** — closing the lightbox mid-pan (ESC while dragging a zoomed image) left `panning: true`, causing the next lightbox to drift on mouse move; now resets all zoom/pan state on close
+- **Navigation stack leak** — closed windows left orphaned entries in `WindowManager.navigationStack` Map; now cleaned up on close
+
+**Files Modified**: `js/login.js`, `js/windows.js`, `js/lightbox.js`, `package.json`
 
 ---
 
@@ -877,7 +889,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.4.1
+**Latest Version**: 3.5.1
 
 **Status**: ✅ Production Ready
 

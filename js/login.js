@@ -46,6 +46,7 @@ export const Login = {
         this.dateEl = this.lockScreen.querySelector('.lock-date');
 
         this.updateClock();
+        if (this.clockInterval) clearInterval(this.clockInterval);
         this.clockInterval = setInterval(() => this.updateClock(), 1000);
 
         this.initLoginScreen();
@@ -509,8 +510,10 @@ export const Login = {
         // Re-trap focus within the lock screen
         this._focusTrapCleanup = trapFocus(this.lockScreen);
 
-        // Update clock
+        // Restart clock interval cleanly (prevent stacking intervals)
         this.updateClock();
+        if (this.clockInterval) clearInterval(this.clockInterval);
+        this.clockInterval = setInterval(() => this.updateClock(), 1000);
 
         // Clear idle timer
         if (this.idleTimer) {
