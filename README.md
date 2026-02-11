@@ -1,8 +1,22 @@
-# Passion OS v3.2.0
+# Passion OS v3.3.0
 
 **A cyberpunk-inspired portfolio operating system built with vanilla JavaScript -- no frameworks, no dependencies.**
 
-Interactive desktop environment featuring draggable windows, GPU-optimized glass effects, recruiter-focused icon layout, easter eggs, and a full visual effects stack.
+Interactive desktop environment featuring draggable windows, GPU-optimized glass effects, MMBN cyberspace galaxy theme, recruiter-focused content, and a full visual effects stack.
+
+---
+
+## v3.3.0 -- Content & Visual Overhaul
+
+Complete content rewrite for recruiter readiness, galaxy theme unification, SEO improvements, and project data integrity.
+
+- **About Me rewritten**: Real bio (AI Solutions Engineer, Passion Agent, autonomous systems), Toronto location, color-coded skills grid.
+- **Galaxy theme unified**: Top bar brand text shifted from gold to cobalt blue gradient, dock deepened with galaxy tint, HUD elements recolored.
+- **SEO**: Open Graph tags, Twitter cards, canonical URL, author meta, keyword meta added.
+- **Projects data fixed**: Cross-referenced with GitHub API -- only public repos get repo links, added missing links for Contract Translator, PulseMap, Tdots Portfolio, IMG Gen.
+- **Contact window fixed**: LinkedIn now links to actual profile, email goes to real address.
+- **Version sync**: All v3.2.1 references updated to v3.3.0 across title, top bar, boot sequence.
+- **CSS cache busting**: All stylesheet links bumped to ?v=3.4.
 
 ---
 

@@ -55,7 +55,7 @@ export const Desktop = {
             label: 'LINKEDIN',
             icon: 'svg:/assets/linkedin.svg',
             color: '#0077b5',
-            action: () => window.open('https://www.linkedin.com', '_blank'),
+            action: () => window.open('https://linkedin.com/in/james-olusoga', '_blank'),
         },
         // Column 2 — What I Build
         {
@@ -1667,34 +1667,39 @@ export const Desktop = {
         content.innerHTML = `
             <div class="window-section-header purple">◈ ABOUT_ME.exe</div>
             <div style="line-height: 2; font-size: 12px;">
-                <div><span style="color: #aa00ff;">NAME:</span> DareDev256</div>
-                <div><span style="color: #aa00ff;">ROLE:</span> Developer • Creator • Visionary <span class="verified-badge">✓ SYSTEM VERIFIED</span></div>
-                <div><span style="color: #aa00ff;">LOCATION:</span> Building the future</div>
+                <div><span style="color: #aa00ff;">NAME:</span> James Olusoga <span style="color: rgba(255,255,255,0.4);">(DareDev256)</span></div>
+                <div><span style="color: #aa00ff;">ROLE:</span> AI Solutions Engineer &bull; Creative Technologist <span class="verified-badge">✓ SYSTEM VERIFIED</span></div>
+                <div><span style="color: #aa00ff;">LOCATION:</span> Toronto, Canada</div>
                 <div><span style="color: #aa00ff;">STATUS:</span> Always shipping</div>
             </div>
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(170,0,255,0.2);">
                 <p style="line-height: 1.8; color: rgba(255,255,255,0.7); font-size: 12px;">
-                    Hello! I'm a developer passionate about creating interactive,
-                    accessible, and performant web experiences. This portfolio showcases
-                    my work in a unique desktop OS-inspired interface.
+                    I build autonomous AI systems that work while I sleep. My flagship project,
+                    <span style="color: #00f0ff;">Passion Agent</span>, is a 24/7 autonomous code improvement system
+                    that analyzes repositories, generates improvements via Claude Code, and submits PRs &mdash;
+                    learning from what I merge vs reject to get smarter over time.
                 </p>
                 <p style="line-height: 1.8; color: rgba(255,255,255,0.7); font-size: 12px;">
-                    I specialize in modern web technologies and love building interfaces
-                    that are both beautiful and functional.
+                    I specialize in <span style="color: #00f0ff;">agentic AI workflows</span>, RAG systems with citations,
+                    MCP server development, and full-stack engineering. This portfolio itself is a cyberpunk OS
+                    built with zero frameworks &mdash; pure vanilla JS, Three.js for 3D, and hand-crafted CSS.
                 </p>
             </div>
             <div style="margin-top: 20px;">
                 <h3 style="color: #aa00ff; font-size: 13px; margin-bottom: 15px; letter-spacing: 1px;">SKILLS & TECHNOLOGIES</h3>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">JavaScript</div>
-                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">TypeScript</div>
-                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">React</div>
-                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">Vue.js</div>
-                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">Node.js</div>
-                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">CSS/SCSS</div>
-                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">HTML5</div>
-                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">Git</div>
-                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">UI/UX</div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                    <div style="background: rgba(0,240,255,0.08); border: 1px solid rgba(0,240,255,0.25); padding: 8px; text-align: center; font-size: 11px; color: #00f0ff;">Python</div>
+                    <div style="background: rgba(0,240,255,0.08); border: 1px solid rgba(0,240,255,0.25); padding: 8px; text-align: center; font-size: 11px; color: #00f0ff;">TypeScript</div>
+                    <div style="background: rgba(0,240,255,0.08); border: 1px solid rgba(0,240,255,0.25); padding: 8px; text-align: center; font-size: 11px; color: #00f0ff;">JavaScript</div>
+                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">LLM / RAG</div>
+                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">AI Agents</div>
+                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">MCP Protocol</div>
+                    <div style="background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.25); padding: 8px; text-align: center; font-size: 11px; color: #00ff88;">React / Next.js</div>
+                    <div style="background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.25); padding: 8px; text-align: center; font-size: 11px; color: #00ff88;">Node.js</div>
+                    <div style="background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.25); padding: 8px; text-align: center; font-size: 11px; color: #00ff88;">Three.js / WebGL</div>
+                    <div style="background: rgba(255,170,0,0.08); border: 1px solid rgba(255,170,0,0.25); padding: 8px; text-align: center; font-size: 11px; color: #ffaa00;">Supabase / SQL</div>
+                    <div style="background: rgba(255,170,0,0.08); border: 1px solid rgba(255,170,0,0.25); padding: 8px; text-align: center; font-size: 11px; color: #ffaa00;">Git / CI-CD</div>
+                    <div style="background: rgba(255,170,0,0.08); border: 1px solid rgba(255,170,0,0.25); padding: 8px; text-align: center; font-size: 11px; color: #ffaa00;">Vercel / Cloud</div>
                 </div>
             </div>
         `;
@@ -1734,8 +1739,8 @@ export const Desktop = {
                     <span style="font-size: 1.2em">💻</span>
                     <span>GITHUB_REPO</span>
                 </a>
-                <a href="https://www.linkedin.com" target="_blank" class="social-btn">
-                    <span style="font-size: 1.2em">wb</span>
+                <a href="https://linkedin.com/in/james-olusoga" target="_blank" class="social-btn">
+                    <span style="font-size: 1.2em">🔗</span>
                     <span>LINKEDIN_PROFILE</span>
                 </a>
             </div>
@@ -1783,7 +1788,7 @@ export const Desktop = {
                     // Actual mailto after animation
                     const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
                     const body = encodeURIComponent(`From: ${name}\nEmail: ${email}\n\n${message}`);
-                    window.location.href = `mailto:your-email@example.com?subject=${subject}&body=${body}`;
+                    window.location.href = `mailto:tdotssolutionsz@gmail.com?subject=${subject}&body=${body}`;
                     form.reset();
                 }
             });

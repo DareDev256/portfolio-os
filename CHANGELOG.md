@@ -18,6 +18,48 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## v3.3.0 — Content & Visual Overhaul (February 11, 2026)
+
+### About Me Rewrite
+- **NAME**: Changed from "DareDev256" to "James Olusoga (DareDev256)"
+- **ROLE**: Changed from "Developer • Creator • Visionary" to "AI Solutions Engineer • Creative Technologist"
+- **LOCATION**: Added "Toronto, Canada" (was "Building the future")
+- **Bio**: Complete rewrite — mentions Passion Agent, Claude Code, autonomous systems, RAG, MCP
+- **Skills grid**: Color-coded by category (cyan: languages, purple: AI/ML, green: frameworks, amber: infra)
+
+### Galaxy Theme Unification
+- **Top bar brand text**: Shifted from gold metallic gradient to cobalt/platinum blue gradient
+- **Logo wheel**: Added galaxy hue-rotate filter
+- **Dock**: Deeper background (0.55 opacity), gradient top-edge glow line, galaxy-tinted separator
+- **HUD mini bars**: Galaxy blue with subtle pulse animation
+- **All HUD brackets**: Recolored to galaxy cobalt blue
+
+### SEO & Meta Tags
+- **Open Graph tags**: og:type, og:title, og:description, og:url, og:site_name
+- **Twitter card**: summary_large_image with title and description
+- **Canonical URL**: https://jamesdare.com
+- **Author meta**: James Olusoga
+- **Keywords meta**: AI Solutions Engineer, Machine Learning, MCP Server, etc.
+- **Meta description**: Rewritten to highlight AI/ML, MCP servers, autonomous agents
+
+### Project Data Integrity
+- **Cross-referenced** all repos against GitHub API (only 16 public repos)
+- **Removed dead repo links**: Passion Agent, Culture Drop HQ, Casper TNG, RAW.exe, Pixel Art LoRA, Portfolio OS
+- **Added missing repo links**: Contract Translator, PulseMap, Tdots Portfolio, IMG Gen Prompts
+- **Removed non-public projects**: Casper TNG Website, RAW.exe, Pixel Art LoRA (repos not public)
+- **17 verified projects** (down from 19 — removed 3 with non-public repos and no demo, added accuracy)
+
+### Bug Fixes
+- **LinkedIn URL**: Desktop icon and Contact window now link to actual profile (was just linkedin.com)
+- **Contact form email**: Now sends to real email address (was your-email@example.com)
+- **Lock screen role text**: Updated to match About Me ("AI SOLUTIONS ENGINEER • CREATIVE TECHNOLOGIST")
+- **Version sync**: All instances updated from v3.2.1 → v3.3.0
+
+### Maintenance
+- **CSS cache busting**: All 15 stylesheet links bumped from ?v=3.3 to ?v=3.4 for galaxy.css
+
+---
+
 ## v3.2.0 — Portfolio Refresh (February 7, 2026)
 
 ### Desktop Icon Reorder — Recruiter F-Pattern

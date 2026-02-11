@@ -108,6 +108,140 @@ body.galaxy-active .desktop .taskbar {
     z-index: 100;
 }
 
+/* === GALAXY THEME: TOP BAR OVERRIDES === */
+
+/* Brand text — shift from gold metallic to cobalt/platinum */
+body.galaxy-active .brand {
+    background: linear-gradient(90deg, #3a6cc9, #5b8fd9, #e0e8f0, #5b8fd9, #2a5cb9) !important;
+    background-size: 200% 100% !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    filter: drop-shadow(0 0 6px rgba(30, 70, 160, 0.5)) !important;
+    text-shadow: none !important;
+    animation: brand-shimmer 8s ease-in-out infinite !important;
+}
+
+/* Logo wheel — apply galaxy hue-rotate */
+body.galaxy-active .logo-wheel {
+    filter: hue-rotate(235deg) saturate(1.4) brightness(0.9)
+            drop-shadow(0 0 8px rgba(30, 70, 160, 0.6));
+}
+
+/* Top bar — stronger glass with galaxy tint */
+body.galaxy-active .top-bar {
+    background: rgba(5, 10, 35, 0.6);
+    border-bottom: none;
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.4),
+        inset 0 -1px 0 rgba(30, 70, 160, 0.1);
+}
+
+/* Version text — slightly brighter for readability */
+body.galaxy-active .version {
+    color: rgba(80, 130, 200, 0.5);
+}
+
+/* HUD mini bars — galaxy-colored with subtle pulse */
+body.galaxy-active .hud-mini-bar {
+    background: rgba(50, 100, 200, 0.5);
+    animation: miniBarPulse 3s ease-in-out infinite;
+}
+
+body.galaxy-active .hud-mini-bar:nth-child(2) { animation-delay: 0.3s; }
+body.galaxy-active .hud-mini-bar:nth-child(3) { animation-delay: 0.6s; }
+body.galaxy-active .hud-mini-bar:nth-child(4) { animation-delay: 0.9s; }
+body.galaxy-active .hud-mini-bar:nth-child(5) { animation-delay: 1.2s; }
+
+@keyframes miniBarPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+/* === GALAXY THEME: DOCK OVERRIDES === */
+
+/* Dock — stronger backdrop with galaxy tint */
+body.galaxy-active .taskbar.dock-style {
+    background: rgba(5, 10, 40, 0.55);
+    border: 1px solid rgba(30, 70, 160, 0.15);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(20, 50, 140, 0.1),
+        inset 0 1px 0 rgba(80, 130, 200, 0.08);
+}
+
+/* Dock top edge glow line */
+body.galaxy-active .taskbar.dock-style::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(50, 100, 200, 0.4) 30%,
+        rgba(80, 130, 220, 0.6) 50%,
+        rgba(50, 100, 200, 0.4) 70%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Dock separator — galaxy-tinted */
+body.galaxy-active .dock-separator {
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(50, 100, 200, 0.4) 30%,
+        rgba(80, 130, 220, 0.3) 70%,
+        transparent 100%
+    );
+}
+
+/* Dock section labels — galaxy-tinted */
+body.galaxy-active .dock-section-label {
+    color: rgba(80, 130, 200, 0.5);
+}
+
+/* Dock icon buttons — galaxy-tinted borders */
+body.galaxy-active .taskbar-window-btn {
+    border-color: rgba(30, 70, 160, 0.15);
+}
+
+body.galaxy-active .taskbar-window-btn:hover {
+    border-color: rgba(50, 100, 200, 0.35);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(30, 70, 160, 0.2);
+}
+
+body.galaxy-active .taskbar-window-btn.active {
+    background: rgba(30, 70, 160, 0.2);
+    border-color: rgba(50, 100, 200, 0.35);
+    box-shadow: 0 0 20px rgba(30, 70, 160, 0.25), inset 0 0 10px rgba(30, 70, 160, 0.08);
+}
+
+/* Active indicator dot — galaxy blue */
+body.galaxy-active .taskbar-window-btn.active::after {
+    background: rgba(80, 140, 220, 1);
+    box-shadow: 0 0 8px rgba(50, 100, 200, 0.8);
+}
+
+/* Dock icon hover tooltip — galaxy-styled */
+body.galaxy-active .taskbar-window-btn:hover::before {
+    background: rgba(50, 100, 200, 0.9);
+}
+
+/* HUD brackets — galaxy-tinted */
+body.galaxy-active .hud-brackets::before,
+body.galaxy-active .hud-brackets::after,
+body.galaxy-active .hud-bracket-tr,
+body.galaxy-active .hud-bracket-bl {
+    border-color: rgba(50, 100, 200, 0.5);
+    box-shadow: 0 0 4px rgba(30, 70, 160, 0.3);
+}
+
 /* Hide old background wheel when galaxy is active */
 body.galaxy-active .bg-wheel-container {
     display: none !important;
@@ -301,6 +435,46 @@ body.galaxy-active .intro-watermark-img {
     animation: galaxyShimmer 8s linear infinite;
     pointer-events: none;
     mix-blend-mode: overlay;
+}
+
+/* Ambient data streams — vertical lines of light flowing upward */
+@keyframes dataStreamRise {
+    0% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-20vh);
+        opacity: 0;
+    }
+}
+
+body.galaxy-active .desktop .desktop-icons::before,
+body.galaxy-active .desktop .desktop-icons::after {
+    content: '';
+    position: fixed;
+    width: 1px;
+    height: 80px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.galaxy-active .desktop .desktop-icons::before {
+    left: 15%;
+    background: linear-gradient(to top, transparent, rgba(0, 240, 255, 0.15), transparent);
+    animation: dataStreamRise 12s linear infinite;
+}
+
+body.galaxy-active .desktop .desktop-icons::after {
+    right: 25%;
+    background: linear-gradient(to top, transparent, rgba(80, 130, 200, 0.12), transparent);
+    animation: dataStreamRise 18s linear infinite 4s;
 }
 
 /* Legacy .login-panel.galaxy-container removed — cinematic layout has no panel */

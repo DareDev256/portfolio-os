@@ -1,5 +1,13 @@
 [
     {
+        "title": "Passion Agent",
+        "description": "24/7 autonomous AI code improvement system — analyzes repos, spawns Claude Code for fixes, submits PRs, and learns from merge/reject patterns.",
+        "tech": ["Node.js", "Claude Code", "MCP", "SQLite"],
+        "tags": ["AI", "Tools"],
+        "demo": null,
+        "repo": null
+    },
+    {
         "title": "FCPXML MCP Server",
         "description": "AI-powered MCP server for Final Cut Pro XML editing — automate timeline manipulation with natural language.",
         "tech": ["Python", "Claude AI", "MCP", "XML"],
@@ -45,7 +53,7 @@
         "tech": ["Next.js", "OpenAI", "Vercel", "TypeScript"],
         "tags": ["AI", "Web"],
         "demo": "https://contract-translator.vercel.app",
-        "repo": null
+        "repo": "https://github.com/DareDev256/contract-translator"
     },
     {
         "title": "Service Tracker Pro",
@@ -61,7 +69,7 @@
         "tech": ["React", "D3.js", "Vercel", "REST APIs"],
         "tags": ["Fullstack", "Web"],
         "demo": "https://pulsemap-three.vercel.app",
-        "repo": null
+        "repo": "https://github.com/DareDev256/pulsemap"
     },
     {
         "title": "Culture Drop HQ",
@@ -69,12 +77,12 @@
         "tech": ["React", "Node.js", "MongoDB", "Tailwind"],
         "tags": ["Fullstack", "Web"],
         "demo": null,
-        "repo": "https://github.com/DareDev256/culture-drop-hq"
+        "repo": null
     },
     {
         "title": "Music Time Machine",
         "description": "Music intelligence dashboard combining Spotify, YouTube, and Billboard data for trend analysis.",
-        "tech": ["Python", "Spotify API", "YouTube API", "Streamlit"],
+        "tech": ["TypeScript", "Spotify API", "YouTube API", "Next.js"],
         "tags": ["Fullstack", "Tools"],
         "demo": null,
         "repo": "https://github.com/DareDev256/music-time-machine"
@@ -85,15 +93,7 @@
         "tech": ["JavaScript", "Three.js", "CSS3", "Vercel"],
         "tags": ["Web", "Creative"],
         "demo": "https://tdotssolutionsz-portfolio.vercel.app",
-        "repo": null
-    },
-    {
-        "title": "Casper TNG Website",
-        "description": "Official website for Toronto rapper Casper TNG — music, merch, and media showcase.",
-        "tech": ["React", "CSS3", "Vercel"],
-        "tags": ["Web", "Creative"],
-        "demo": null,
-        "repo": "https://github.com/DareDev256/casper-tng-website"
+        "repo": "https://github.com/DareDev256/tdotssolutionsz-portfolio"
     },
     {
         "title": "IMG Gen Prompts",
@@ -101,7 +101,7 @@
         "tech": ["React", "OpenAI", "Vercel", "TypeScript"],
         "tags": ["AI", "Web"],
         "demo": "https://web-ten-vert-46.vercel.app",
-        "repo": null
+        "repo": "https://github.com/DareDev256/Ultimate-Image-Video-Prompt-Generator"
     },
     {
         "title": "BuildRight",
@@ -117,15 +117,7 @@
         "tech": ["Phaser 3", "JavaScript", "Vite", "Web Audio API"],
         "tags": ["Games", "Web"],
         "demo": "https://daredev256.github.io/vibe-coder/",
-        "repo": "https://github.com/daredev256/vibe-coder"
-    },
-    {
-        "title": "RAW.exe",
-        "description": "Personal NetNavi Desktop Companion powered by Claude AI — your digital assistant with personality.",
-        "tech": ["Electron", "Claude AI", "TypeScript"],
-        "tags": ["AI", "Tools"],
-        "demo": null,
-        "repo": "https://github.com/DareDev256/raw-exe"
+        "repo": "https://github.com/DareDev256/vibe-coder"
     },
     {
         "title": "Fandom Wiki Bot",
@@ -136,19 +128,11 @@
         "repo": "https://github.com/DareDev256/fandom-wiki-bot-template"
     },
     {
-        "title": "Pixel Art LoRA",
-        "description": "LoRA training toolkit for Flux sprite sheets — generate consistent pixel art with fine-tuned diffusion models.",
-        "tech": ["Python", "Flux", "LoRA", "ComfyUI"],
-        "tags": ["AI", "Creative"],
-        "demo": null,
-        "repo": "https://github.com/DareDev256/pixel-art-lora-training"
-    },
-    {
         "title": "Portfolio OS",
         "description": "This interactive desktop OS portfolio — vanilla JS, Three.js galaxy background, draggable windows, and full terminal.",
         "tech": ["JavaScript", "CSS3", "Three.js", "HTML5"],
         "tags": ["Web", "Creative"],
-        "demo": "#",
+        "demo": "https://jamesdare.com",
         "repo": null
     }
 ]
