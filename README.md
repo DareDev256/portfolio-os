@@ -10,7 +10,7 @@
 
 ---
 
-An interactive desktop environment that runs in the browser. Draggable windows, GPU-optimized glass effects, a Three.js cyberspace background, command palette, and 34 vanilla JavaScript modules — no React, no Vue, no dependencies beyond the web platform.
+An interactive desktop environment that runs in the browser. Draggable windows, GPU-optimized glass effects, a Three.js cyberspace background, command palette, and 35 vanilla JavaScript modules — no React, no Vue, no dependencies beyond the web platform.
 
 Built by **James Olusoga** — AI Solutions Engineer & Creative Technologist, Toronto.
 
@@ -94,6 +94,7 @@ js/
 ├── desktop.js               # Icon grid, context menus, app launchers
 ├── windows.js               # Window manager
 ├── state.js                 # localStorage persistence + CustomEvent bus
+├── data-loader.js           # Centralized JSON fetcher with caching
 ├── router.js                # History API routing
 ├── sanitize.js              # DOMPurify wrapper
 ├── command-palette.js       # Cmd+K launcher
@@ -104,7 +105,7 @@ js/
 │   ├── cursor-trail.js      # Particle cursor effects
 │   ├── easter-eggs.js       # Konami, 418, glitch pulse
 │   └── micro-interactions.js
-└── ... (34 modules total)
+└── ... (35 modules total)
 
 css/                         # 16 modular stylesheets
 ├── variables.css            # Design tokens

@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.2.0
-last_updated: 2026-02-07
+version: 3.5.0
+last_updated: 2026-02-11
 
 ---
 
@@ -15,6 +15,19 @@ last_updated: 2026-02-07
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.5.0] — 2026-02-11
+
+### Changed
+- **Extracted centralized data-loader module** (`js/data-loader.js`) — replaces 4 copy-pasted fetch-or-localStorage blocks across `desktop.js` (3x) and `admin.js` (1x) with shared `loadMedia()` and `loadProjects()` functions
+- **In-memory caching** — multiple callers requesting the same data share a single fetch promise, eliminating redundant network requests
+- **Cache invalidation** — admin save/import operations now call `invalidateData()` so subsequent loads reflect changes
+- **Fixed inconsistent fetch path** — `openFeaturedVideo()` used `/data/media.json` (absolute) while all other callers used `data/media.json` (relative); unified to relative path via data-loader
+
+**Files Created**: `js/data-loader.js`
+**Files Modified**: `js/desktop.js`, `js/admin.js`, `package.json`
 
 ---
 

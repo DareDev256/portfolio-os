@@ -2,6 +2,7 @@ import { WindowManager } from './windows.js';
 import { Desktop } from './desktop.js';
 import { State } from './state.js';
 import { Sanitize } from './sanitize.js';
+import { loadMedia, loadProjects, invalidateData } from './data-loader.js';
 
 /**
  * Admin Dashboard
@@ -109,33 +110,9 @@ export const Admin = {
             this.desktopItems = [...Desktop.DESKTOP_ITEMS];
         }
 
-        // Load projects
-        try {
-            const stored = localStorage.getItem('projects.json');
-            if (stored) {
-                this.projects = JSON.parse(stored);
-            } else {
-                const response = await fetch('data/projects.json');
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                this.projects = await response.json();
-            }
-        } catch (e) {
-            this.projects = [];
-        }
-
-        // Load media
-        try {
-            const stored = localStorage.getItem('media.json');
-            if (stored) {
-                this.media = JSON.parse(stored);
-            } else {
-                const response = await fetch('data/media.json');
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                this.media = await response.json();
-            }
-        } catch (e) {
-            this.media = { images: [], videos: [] };
-        }
+        // Load projects and media via centralized data-loader
+        this.projects = await loadProjects() || [];
+        this.media = await loadMedia();
     },
 
     /**
@@ -447,6 +424,7 @@ export const Admin = {
         });
 
         localStorage.setItem('projects.json', JSON.stringify(projects, null, 2));
+        invalidateData('projects.json');
         this.projects = projects;
         alert('Projects saved! Open Applications window to preview.');
     },
@@ -777,6 +755,7 @@ export const Admin = {
 
         this.media = { images, videos };
         localStorage.setItem('media.json', JSON.stringify(this.media, null, 2));
+        invalidateData('media.json');
         alert('Media & Folder Icons saved! Open Media Vault to preview.');
     },
 
@@ -1067,6 +1046,7 @@ export const Admin = {
                             if (p.tech && !isArr(p.tech, 20)) throw new Error('Too many project techs');
                         }
                         localStorage.setItem('projects.json', JSON.stringify(backup.projects));
+                        invalidateData('projects.json');
                         this.projects = backup.projects;
                     }
                     if (backup.media) {
@@ -1074,6 +1054,7 @@ export const Admin = {
                         if (backup.media.images && !isArr(backup.media.images, MAX_ITEMS)) throw new Error('Too many media images');
                         if (backup.media.videos && !isArr(backup.media.videos, MAX_ITEMS)) throw new Error('Too many media videos');
                         localStorage.setItem('media.json', JSON.stringify(backup.media));
+                        invalidateData('media.json');
                         this.media = backup.media;
                     }
                     if (backup.theme?.colors && isStr(backup.theme.colors)) {

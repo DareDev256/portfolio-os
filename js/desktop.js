@@ -5,6 +5,7 @@ import { Modal } from './modal.js';
 import { PixelLoader } from './loader.js';
 // SkillsUniverse, GitHub, Terminal loaded dynamically at point-of-use (P5)
 import { Sanitize } from './sanitize.js';
+import { loadMedia, loadProjects } from './data-loader.js';
 
 /**
  * Desktop Manager
@@ -703,20 +704,7 @@ export const Desktop = {
 
     /** Show Media Vault folder view */
     async openMediaVault() {
-        // Load media data
-        let media = { images: [], videos: [] };
-        try {
-            const override = localStorage.getItem('media.json');
-            if (override) {
-                media = JSON.parse(override);
-            } else {
-                const res = await fetch('data/media.json');
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                media = await res.json();
-            }
-        } catch (e) {
-            console.warn('Media JSON missing', e);
-        }
+        const media = await loadMedia();
 
         // Create content container
         const content = document.createElement('div');
@@ -819,22 +807,8 @@ export const Desktop = {
 
     /** Open the featured video directly */
     async openFeaturedVideo() {
-        // Load media data
-        let videos = [];
-        try {
-            const override = localStorage.getItem('media.json');
-            if (override) {
-                const media = JSON.parse(override);
-                videos = media.videos || [];
-            } else {
-                const res = await fetch('/data/media.json');
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const media = await res.json();
-                videos = media.videos || [];
-            }
-        } catch (e) {
-            console.warn('Media data missing', e);
-        }
+        const media = await loadMedia();
+        const videos = media.videos || [];
 
         // Find the featured video (first one with category 'Featured' or just the first one)
         const featuredIndex = videos.findIndex(v => v.category === 'Featured' || v.title.includes('Showcase'));
@@ -1210,23 +1184,8 @@ export const Desktop = {
      * Open Videos window
      */
     async openVideos() {
-        // Load videos from media.json
-        let videos = [];
-        try {
-            const override = localStorage.getItem('media.json');
-            if (override) {
-                const media = JSON.parse(override);
-                videos = media.videos || [];
-            } else {
-                const res = await fetch('data/media.json');
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const media = await res.json();
-                videos = media.videos || [];
-            }
-        } catch (e) {
-            console.warn('Videos data missing, using empty array', e);
-            videos = [];
-        }
+        const media = await loadMedia();
+        const videos = media.videos || [];
 
         const content = document.createElement('div');
 
@@ -1403,19 +1362,8 @@ export const Desktop = {
      * Open Applications window (Full portfolio)
      */
     async openApplications() {
-        // Fetch projects data
-        let projects = [];
-        try {
-            const override = localStorage.getItem('projects.json');
-            if (override) {
-                projects = JSON.parse(override);
-            } else {
-                const response = await fetch('data/projects.json');
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                projects = await response.json();
-            }
-        } catch (e) {
-            console.error('Failed to load projects:', e);
+        let projects = await loadProjects();
+        if (!projects || projects.length === 0) {
             projects = this.getDefaultProjects();
         }
 
