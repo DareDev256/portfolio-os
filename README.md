@@ -4,13 +4,15 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-**[jamesdare.com](https://jamesdare.com)**
+**[jamesdare.com](https://jamesdare.com)** · **[View Changelog](CHANGELOG.md)**
+
+`37 modules` · `17 stylesheets` · `55 tests` · `0 framework deps`
 
 </div>
 
 ---
 
-An interactive desktop environment that runs in the browser. Draggable windows, GPU-optimized glass effects, a Three.js cyberspace background, command palette, and 37 vanilla JavaScript modules — no React, no Vue, no dependencies beyond the web platform.
+An interactive desktop environment that runs entirely in the browser. Draggable windows, GPU-optimized glass effects, a Three.js cyberspace background, Spotlight-style command palette, and 37 vanilla JavaScript modules — no React, no Vue, no dependencies beyond the web platform.
 
 Built by **James Olusoga** — AI Solutions Engineer & Creative Technologist, Toronto.
 
@@ -86,43 +88,67 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - Zero `backdrop-filter` on desktop icons (pure GPU cost, zero visual payoff on dark backgrounds)
 - Clean timer/RAF lifecycle — clock intervals, drag-inertia frames, and lightbox pan state properly cleared on teardown
 
+### Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Cmd+K` / `Ctrl+K` | Open command palette |
+| `ESC` | Close active overlay (priority: modal > lightbox > tour > window) |
+| `←` `→` | Navigate lightbox images |
+| `Tab` / `Shift+Tab` | Cycle focus within trapped overlays |
+| `↑↓` `Enter` | Navigate and select in command palette |
+| `Ctrl+Shift+V` | System info easter egg |
+| `↑↑↓↓←→←→BA` | Konami code easter egg |
+| Triple-click desktop | Glitch pulse effect |
+| Type `418` | I'm a teapot |
+
 ## Architecture
 
 ```
-js/
-├── main.js                  # Entry point, lazy-loads FX
-├── boot.js                  # Cinematic boot sequence
-├── login.js                 # Lock screen
-├── desktop.js               # Icon grid, context menus, app launchers
-├── windows.js               # Window manager
-├── state.js                 # localStorage persistence + CustomEvent bus
-├── data-loader.js           # Centralized JSON fetcher with caching
-├── dom-helpers.js           # Shared utilities (openExternal, animateCounter)
-├── router.js                # History API routing
-├── sanitize.js              # DOMPurify wrapper
-├── command-palette.js       # Cmd+K launcher
-├── galaxy-background.js     # Three.js MMBN cyberspace
-├── mahoraga-wheel-3d.js     # Three.js 3D wheel
+js/                              # 37 ES modules, zero framework imports
+├── main.js                      # Entry point, lazy-loads FX
+├── boot.js                      # Cinematic boot sequence
+├── login.js                     # Lock screen + 3D wheel init
+├── desktop.js                   # Icon grid, context menus, app launchers
+├── windows.js                   # Window manager (drag, resize, z-index)
+├── state.js                     # localStorage persistence + CustomEvent bus
+├── data-loader.js               # Centralized JSON fetcher with caching
+├── dom-helpers.js               # Shared utilities (openExternal, animateCounter)
+├── router.js                    # History API deep-linkable routing
+├── sanitize.js                  # DOMPurify wrapper
+├── command-palette.js           # Cmd+K fuzzy-search launcher
+├── system-monitor.js            # Live FPS, heap, DOM count dashboard
+├── galaxy-background.js         # Three.js MMBN cyberspace grid
+├── mahoraga-wheel-3d.js         # Three.js 3D wheel (60fps desktop, 30fps mobile)
+├── terminal.js                  # Dev terminal with 18 commands
+├── github.js                    # Live GitHub API integration
+├── lightbox.js                  # Image/video viewer (YouTube, Vimeo, MP4)
+├── focus-trap.js                # WCAG focus trapping utility
 ├── interactions/
-│   ├── engine.js            # Orchestrator (30fps throttled)
-│   ├── cursor-trail.js      # Particle cursor effects
-│   ├── easter-eggs.js       # Konami, 418, glitch pulse
-│   └── micro-interactions.js
-└── ... (37 modules total)
+│   ├── engine.js                # Orchestrator (30fps throttled)
+│   ├── cursor-trail.js          # Particle cursor effects
+│   ├── cursor-tracker.js        # Mouse position tracking
+│   ├── cursor-reactive.js       # Reactive cursor animations
+│   ├── sound-manager.js         # UI sound effects
+│   ├── easter-eggs.js           # Konami, 418, glitch pulse
+│   └── micro-interactions.js    # Hover/click micro-animations
+└── ... (+ admin, modal, mobile, loader, skills, fx, aurora, etc.)
 
-css/                         # 16 modular stylesheets
-├── variables.css            # Design tokens
-├── glass.css                # Glassmorphism
-├── galaxy.css               # MMBN cyberspace theme
-├── accessibility.css        # WCAG, reduced-motion
-└── command-palette.css      # Cmd+K styles
+css/                             # 17 modular stylesheets
+├── variables.css                # Design tokens
+├── glass.css                    # Glassmorphism + backdrop-filter
+├── galaxy.css                   # MMBN cyberspace theme
+├── accessibility.css            # WCAG, reduced-motion
+├── system-monitor.css           # Performance dashboard
+├── command-palette.css          # Cmd+K styles
+└── ... (+ windows, modal, forms, mobile, tour, welcome, etc.)
 
-tests/                       # 55 vitest tests
-├── sanitize.test.js
-├── state.test.js
-├── data-loader.test.js
-├── router.test.js
-└── focus-trap.test.js
+tests/                           # 55 vitest tests
+├── sanitize.test.js             # XSS sanitization (12 tests)
+├── state.test.js                # State management (19 tests)
+├── data-loader.test.js          # JSON fetch + cache (13 tests)
+├── router.test.js               # Path validation + routing (4 tests)
+└── focus-trap.test.js           # Tab cycling + cleanup (7 tests)
 ```
 
 ## Tech Stack
@@ -167,12 +193,14 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 
 ## License
 
-MIT
+MIT — **v3.6.1**
 
 ---
 
 <div align="center">
 
 **Built with vanilla JavaScript. No frameworks. No dependencies. Just web standards.**
+
+[Live Demo](https://jamesdare.com) · [Changelog](CHANGELOG.md) · [Architecture](docs/ARCHITECTURE.md)
 
 </div>

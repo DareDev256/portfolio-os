@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.6.0
-last_updated: 2026-02-11
+version: 3.6.1
+last_updated: 2026-02-12
 
 ---
 
@@ -15,6 +15,15 @@ last_updated: 2026-02-11
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.6.1] — 2026-02-12
+
+### Changed
+- **README overhauled for portfolio-grade presentation** — added project stat badges (37 modules, 17 stylesheets, 55 tests, 0 framework deps), Keyboard Shortcuts reference table with all 9 shortcuts/easter eggs, expanded architecture tree showing all 7 interaction modules with descriptions, fixed stale CSS count (16→17), added per-test-file counts, and added footer navigation links to live demo, changelog, and architecture docs
+
+**Files Modified**: `README.md`
 
 ---
 
