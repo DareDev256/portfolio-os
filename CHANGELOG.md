@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.7.0
+version: 3.7.1
 last_updated: 2026-02-12
 
 ---
@@ -15,6 +15,16 @@ last_updated: 2026-02-12
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.7.1] — 2026-02-12
+
+### Changed
+- **README elevated to portfolio-grade v2** — added prominent "Try the Live Demo" CTA above the fold, expanded Desktop Icons table from 10-row feature summary to accurate 15-icon reference with Type column (Window/External/Lightbox), added prerequisites to Quick Start (Node 18+, npm 9+), consolidated duplicate Scripts section into a unified Development section with tooling context, improved Documentation table descriptions, added source repo link to footer
+- **Fixed stale version strings** — `index.html` title and top-bar version were stuck at `v3.3.0` since the content overhaul in Phase 3; updated both to `v3.7.1`
+
+**Files Modified**: `README.md`, `CHANGELOG.md`, `package.json`, `index.html`
 
 ---
 
@@ -997,7 +1007,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.7.0
+**Latest Version**: 3.7.1
 
 **Status**: ✅ Production Ready
 

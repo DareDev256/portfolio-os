@@ -4,13 +4,13 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-**[jamesdare.com](https://jamesdare.com)** · **[View Changelog](CHANGELOG.md)**
-
-![Version](https://img.shields.io/badge/version-3.7.0-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.7.1-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-97_passing-00e676?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-38-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-888?style=flat-square)
+
+### [Try the Live Demo &rarr;](https://jamesdare.com)
 
 </div>
 
@@ -21,6 +21,8 @@ An interactive desktop environment that runs entirely in the browser. Draggable 
 Built by **James Olusoga** — AI Solutions Engineer & Creative Technologist, Toronto.
 
 ## Quick Start
+
+**Prerequisites:** Node.js 18+ and npm 9+.
 
 ```bash
 git clone https://github.com/DareDev256/portfolio-os.git
@@ -36,7 +38,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 ### Desktop Environment
 
 - **Window Manager** — Drag, resize, minimize, maximize, z-index focus management. Animated open/close with glass shimmer effects.
-- **15 Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column F-pattern grid. Right-click context menus on each.
+- **15 Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column grid. Right-click context menus on each. Includes 3 external deployed-project links (Vibe Coder, IMG_GEN.ai, TypeMaster).
 - **Command Palette** — `Cmd+K` / `Ctrl+K` opens a Spotlight-style fuzzy-search launcher across all apps and system toggles.
 - **Dock** — Active window indicators, minimize-to-dock animation, hover tooltips.
 - **Client-Side Routing** — Deep-linkable URLs (`/about`, `/work`, `/resume`, `/terminal`) via History API.
@@ -50,20 +52,25 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Cursor Trails** — Particle effects with PlayStation/chakra symbols. Lazy-initialized, throttled to 30fps.
 - **Easter Eggs** — Konami code, triple-click glitch pulse, type "418" for teapot, `Ctrl+Shift+V` for system info, 18 terminal sass commands.
 
-### Content Windows
+### Desktop Icons (15)
 
-| Window | What It Does |
-|--------|-------------|
-| **About Me** | Bio, role, location, color-coded skills grid |
-| **Applications** | 17 real projects across 4 categories with DEPLOYED/SOURCE badges |
-| **GitHub Ops** | Live GitHub API integration |
-| **Skills Matrix** | Interactive skills visualization |
-| **Music Videos** | Lightbox with YouTube/Vimeo embed support |
-| **Resume** | PDF viewer |
-| **Dev Terminal** | Fake terminal with 18 sass commands (`neofetch`, `cowsay`, `matrix`...) |
-| **Contact** | Form with validation |
-| **Settings** | Theme, wallpaper, sound, cursor trail toggles |
-| **System Monitor** | Live FPS graph, heap usage, DOM count, network info, uptime |
+| Icon | Type | What It Does |
+|------|------|-------------|
+| **ABOUT_ME.exe** | Window | Bio, role, location, color-coded skills grid |
+| **RESUME** | Window | PDF viewer |
+| **CONNECT** | Window | Contact form with validation |
+| **LINKEDIN** | External | Opens LinkedIn profile |
+| **SKILLS_MATRIX** | Window | Interactive skills visualization |
+| **GITHUB_OPS** | Window | Live GitHub API integration |
+| **APPLICATIONS** | Window | 17 real projects across 4 categories with DEPLOYED/SOURCE badges |
+| **DEV_TERMINAL** | Window | Fake terminal with 18 sass commands (`neofetch`, `cowsay`, `matrix`...) |
+| **Vibe_Coder.exe** | External | Browser-based game — deployed project link |
+| **IMG_GEN.ai** | External | AI image generation tool — deployed project link |
+| **TYPEMASTER** | External | Typing speed game — deployed project link |
+| **SHOWCASE.mp4** | Lightbox | Featured video showcase |
+| **MUSIC_VIDEOS** | External | Music video portfolio |
+| **SETTINGS** | Window | Theme, wallpaper, sound, cursor trail toggles |
+| **SYS_MONITOR** | Window | Live FPS graph, heap usage, DOM count, network info, uptime |
 
 ### Security (Hardened Across v3.1–v3.6.2)
 
@@ -205,7 +212,11 @@ tests/                              # 97 vitest tests across 8 suites
 
 **Zero framework dependencies.** Vanilla JavaScript core — Three.js for 3D, DOMPurify for XSS protection.
 
-## Scripts
+## Browser Support
+
+Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
+
+## Development
 
 ```bash
 npm run dev       # Vite dev server (localhost:5173)
@@ -216,23 +227,21 @@ npm run lint      # ESLint
 npm run format    # Prettier
 ```
 
-## Browser Support
-
-Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
+The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and **ESLint** + **Prettier** for code quality. There are no runtime dependencies — only dev tooling.
 
 ## Documentation
 
-| Document | Purpose |
-|----------|---------|
-| [DOCUMENTATION.md](DOCUMENTATION.md) | Complete user guide |
-| [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) | No-code content editor |
-| [CHANGELOG.md](CHANGELOG.md) | Full version history |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture |
-| [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Common issues |
+| Document | Description |
+|----------|-------------|
+| [DOCUMENTATION.md](DOCUMENTATION.md) | Complete user guide — every feature explained |
+| [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) | No-code content editor (console-only) |
+| [CHANGELOG.md](CHANGELOG.md) | Full version history from v1.0 to present |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture and module relationships |
+| [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Common issues and solutions |
 
 ## License
 
-MIT — **v3.7.0**
+MIT — **v3.7.1**
 
 ---
 
@@ -240,6 +249,6 @@ MIT — **v3.7.0**
 
 **Built with vanilla JavaScript. No frameworks. No dependencies. Just web standards.**
 
-[Live Demo](https://jamesdare.com) · [Changelog](CHANGELOG.md) · [Architecture](docs/ARCHITECTURE.md)
+[Live Demo](https://jamesdare.com) · [Source](https://github.com/DareDev256/portfolio-os) · [Changelog](CHANGELOG.md)
 
 </div>
