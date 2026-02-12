@@ -3,17 +3,18 @@
 ---
 
 title: Passion OS Architecture
-version: 2.56
-last_updated: 2025-11-27
+version: 3.8.2
+last_updated: 2026-02-12
 type: technical_reference
 audience: developers, AI
 
 ---
 
-<!-- AI Context: System architecture documentation for Passion OS.
+<!-- AI Context: System architecture documentation for Passion OS v3.8.2.
      Purpose: Understand module dependencies, data flow, and file organization
      Related: DOCUMENTATION.md (user guide), CHANGELOG.md (history)
-     Entry point: js/main.js -->
+     Entry point: js/main.js
+     Module count: 38 JS modules, 18 CSS files, 8 test suites (97 tests) -->
 
 ## Table of Contents
 
@@ -30,32 +31,42 @@ audience: developers, AI
 
 ## System Overview
 
-Passion OS is a **vanilla JavaScript** portfolio operating system with no external dependencies. It follows a **modular architecture** with clear separation of concerns.
+Passion OS is a **vanilla JavaScript** portfolio operating system — Three.js for 3D, DOMPurify for XSS protection, zero framework dependencies. It follows a **modular architecture** with clear separation of concerns.
 
 ### Core Principles
 
-- **No frameworks** - Pure JavaScript (ES6 modules)
-- **No build step required** - Runs directly in browser (Vite dev server optional)
-- **localStorage-first** - Client-side state persistence
-- **Progressive enhancement** - Works without JavaScript effects
-- **Mobile-responsive** - Auto-detects and adapts to mobile devices
+- **No frameworks** — Pure JavaScript (ES6 modules), 38 hand-written modules
+- **Security-first** — All `innerHTML` routed through DOMPurify, CSP headers, input sanitization
+- **localStorage-first** — Client-side state persistence via centralized helpers
+- **CustomEvent observer pattern** — State decoupled from visual modules
+- **Lazy loading** — Terminal, GitHub, Skills only fetched on window open
+- **Mobile-responsive** — Auto-detects and adapts to mobile devices
 
 ### Architecture Pattern
 
 ```
 ┌─────────────────────────────────────────┐
 │           User Interface Layer          │
-│  (HTML + CSS + Visual Effects)          │
+│  (HTML + 18 CSS modules + Visual FX)   │
 └──────────────┬──────────────────────────┘
                │
 ┌──────────────▼──────────────────────────┐
 │         Application Layer               │
 │  Desktop │ Windows │ Router │ Admin     │
+│  Command Palette │ Terminal │ GitHub    │
+│  Portfolio │ System Monitor │ Tour      │
+└──────────────┬──────────────────────────┘
+               │
+┌──────────────▼──────────────────────────┐
+│         Shared Utilities Layer          │
+│  sanitize.js │ dom-helpers.js           │
+│  data-loader.js │ focus-trap.js         │
+│  modal.js │ loader.js                   │
 └──────────────┬──────────────────────────┘
                │
 ┌──────────────▼──────────────────────────┐
 │           State Layer                   │
-│  (State.js + localStorage)              │
+│  State.js + CustomEvent bus             │
 └──────────────┬──────────────────────────┘
                │
 ┌──────────────▼──────────────────────────┐
@@ -70,56 +81,103 @@ Passion OS is a **vanilla JavaScript** portfolio operating system with no extern
 
 ### Module Categories
 
-Passion OS consists of **17 JavaScript modules** organized into 6 functional categories:
+Passion OS consists of **38 JavaScript modules** organized into 9 functional categories:
 
 #### 1. Core System (4 modules)
 
-| Module | File          | Purpose                                  | Lines |
-| ------ | ------------- | ---------------------------------------- | ----- |
-| Main   | `js/main.js`  | Entry point, initialization orchestrator | 111   |
-| State  | `js/state.js` | Global state + localStorage persistence  | 231   |
-| Login  | `js/login.js` | Authentication flow, desktop loader      | ~300  |
-| Boot   | `js/boot.js`  | Boot sequence animation                  | ~150  |
+| Module | File          | Purpose                                  |
+| ------ | ------------- | ---------------------------------------- |
+| Main   | `js/main.js`  | Entry point, orchestrates boot, lazy-loads FX |
+| State  | `js/state.js` | localStorage persistence + CustomEvent bus |
+| Login  | `js/login.js` | Lock screen + 3D wheel init              |
+| Boot   | `js/boot.js`  | Cinematic boot sequence                  |
 
 #### 2. Desktop Environment (3 modules)
 
-| Module  | File            | Purpose                                | Lines |
-| ------- | --------------- | -------------------------------------- | ----- |
-| Desktop | `js/desktop.js` | Icon management, content windows       | ~800  |
-| Windows | `js/windows.js` | Window manager (drag, resize, z-index) | ~600  |
-| Router  | `js/router.js`  | Client-side routing (History API)      | 75    |
+| Module  | File            | Purpose                                |
+| ------- | --------------- | -------------------------------------- |
+| Desktop | `js/desktop.js` | Icon grid, context menus, app launchers |
+| Windows | `js/windows.js` | Window manager (drag, resize, z-index) |
+| Router  | `js/router.js`  | History API deep-linkable routing      |
 
-#### 3. UI Components (3 modules)
+#### 3. Shared Utilities (6 modules) — *added v3.1–v3.7*
 
-| Module     | File              | Purpose                   | Lines |
-| ---------- | ----------------- | ------------------------- | ----- |
-| Lightbox   | `js/lightbox.js`  | Photo/video viewer        | ~200  |
-| Start Menu | `js/startmenu.js` | Application launcher menu | ~250  |
-| Skills     | `js/skills.js`    | Command palette (Cmd+K)   | ~400  |
+| Module      | File                 | Purpose                                          |
+| ----------- | -------------------- | ------------------------------------------------ |
+| Sanitize    | `js/sanitize.js`     | DOMPurify wrapper for all innerHTML              |
+| DOM Helpers | `js/dom-helpers.js`  | `openExternal`, `animateCounter`, `loadJSON`, `saveJSON` |
+| Data Loader | `js/data-loader.js`  | Centralized JSON fetcher with in-memory caching  |
+| Focus Trap  | `js/focus-trap.js`   | WCAG focus trapping (Tab/Shift+Tab cycling)      |
+| Modal       | `js/modal.js`        | Prompt/alert dialogs with focus trapping         |
+| Loader      | `js/loader.js`       | DOM-safe loading states                          |
 
-#### 4. Visual Effects (4 modules)
+#### 4. UI Components (6 modules)
 
-| Module | File           | Purpose                    | Lines |
-| ------ | -------------- | -------------------------- | ----- |
-| FX     | `js/fx.js`     | Particle effects layer     | ~300  |
-| Aurora | `js/aurora.js` | Aurora borealis background | ~250  |
-| Glyphs | `js/glyphs.js` | Floating glyph animations  | ~200  |
-| Warp   | `js/warp.js`   | Login warp tunnel effect   | ~150  |
+| Module          | File                     | Purpose                                      |
+| --------------- | ------------------------ | -------------------------------------------- |
+| Command Palette | `js/command-palette.js`  | Cmd+K fuzzy-search launcher                  |
+| Lightbox        | `js/lightbox.js`         | Image/video viewer (YouTube, Vimeo, MP4)     |
+| Start Menu      | `js/startmenu.js`        | Start menu + system tray                     |
+| Skills          | `js/skills.js`           | Interactive skills force-graph visualization |
+| Welcome         | `js/welcome.js`          | First-visit welcome overlay                  |
+| Tour            | `js/tour.js`             | Interactive guided tour                      |
 
-#### 5. Enhanced Features (2 modules)
+#### 5. Application Windows (3 modules) — *added v3.3–v3.6*
 
-| Module | File           | Purpose                           | Lines |
-| ------ | -------------- | --------------------------------- | ----- |
-| Admin  | `js/admin.js`  | Content management dashboard      | 965   |
-| Mobile | `js/mobile.js` | Mobile detection + responsive CSS | 155   |
+| Module         | File                     | Purpose                                     |
+| -------------- | ------------------------ | ------------------------------------------- |
+| Terminal       | `js/terminal.js`         | Dev terminal with 18 sass commands           |
+| GitHub         | `js/github.js`           | Live GitHub API integration                  |
+| System Monitor | `js/system-monitor.js`   | Live FPS graph, heap, DOM count dashboard    |
 
-#### 6. Audio (1 module)
+#### 6. 3D / Visual Effects (6 modules)
 
-| Module  | File            | Purpose              | Lines |
-| ------- | --------------- | -------------------- | ----- |
-| AudioFX | `js/audiofx.js` | Sound effects system | ~200  |
+| Module          | File                       | Purpose                                          |
+| --------------- | -------------------------- | ------------------------------------------------ |
+| Galaxy BG       | `js/galaxy-background.js`  | Three.js MMBN cyberspace grid                    |
+| Mahoraga Wheel  | `js/mahoraga-wheel-3d.js`  | Three.js 3D wheel (60fps desktop / 30fps mobile) |
+| Aurora          | `js/aurora.js`             | Aurora visual effects (~24fps throttled)         |
+| FX              | `js/fx.js`                 | Visual FX layer (~30fps throttled)               |
+| Glyphs          | `js/glyphs.js`             | Glyph rendering system                           |
+| Warp            | `js/warp.js`               | Warp tunnel transition effect                    |
 
-**Total Code**: ~5,500 lines of JavaScript
+#### 7. Interactions Subsystem (7 modules)
+
+| Module            | File                               | Purpose                        |
+| ----------------- | ---------------------------------- | ------------------------------ |
+| Engine            | `js/interactions/engine.js`        | Orchestrator (30fps throttled) |
+| Cursor Trail      | `js/interactions/cursor-trail.js`  | Particle cursor effects        |
+| Cursor Tracker    | `js/interactions/cursor-tracker.js`| Mouse position tracking        |
+| Cursor Reactive   | `js/interactions/cursor-reactive.js`| Reactive cursor animations    |
+| Sound Manager     | `js/interactions/sound-manager.js` | UI sound effects               |
+| Easter Eggs       | `js/interactions/easter-eggs.js`   | Konami, 418, glitch pulse      |
+| Micro-Interactions| `js/interactions/micro-interactions.js` | Hover/click micro-animations |
+
+#### 8. Enhanced Features (2 modules)
+
+| Module | File           | Purpose                           |
+| ------ | -------------- | --------------------------------- |
+| Admin  | `js/admin.js`  | No-code content editor (console-only) |
+| Mobile | `js/mobile.js` | Touch detection + responsive injection |
+
+#### 9. Audio (1 module)
+
+| Module  | File            | Purpose              |
+| ------- | --------------- | -------------------- |
+| AudioFX | `js/audiofx.js` | Audio effects system |
+
+#### Test Suites (8 files, 97 tests)
+
+| Suite           | File                         | Tests | Covers                              |
+| --------------- | ---------------------------- | ----- | ----------------------------------- |
+| Sanitize        | `tests/sanitize.test.js`     | 12    | XSS sanitization                    |
+| State           | `tests/state.test.js`        | 15    | State persistence + events          |
+| Data Loader     | `tests/data-loader.test.js`  | 9     | JSON fetch + cache                  |
+| Router          | `tests/router.test.js`       | 12    | Path validation + routing           |
+| Focus Trap      | `tests/focus-trap.test.js`   | 7     | Tab cycling + cleanup               |
+| Lightbox        | `tests/lightbox.test.js`     | 14    | Video ID validation + sandbox       |
+| DOM Helpers     | `tests/dom-helpers.test.js`  | 13    | openExternal, animateCounter, JSON  |
+| Modal           | `tests/modal.test.js`        | 15    | Dialog init, dismiss, prompt, alert |
 
 ---
 
@@ -221,69 +279,22 @@ Lightbox.close()
 
 ### Project Structure
 
-```
-/Users/t./Documents/Website/
-│
-├── index.html              # Main HTML entry point
-├── sw.js                   # Service worker (PWA support)
-│
-├── js/                     # JavaScript modules (17 files)
-│   ├── main.js            # Entry point
-│   ├── state.js           # State management
-│   ├── login.js           # Login flow
-│   ├── boot.js            # Boot sequence
-│   ├── desktop.js         # Desktop manager
-│   ├── windows.js         # Window manager
-│   ├── router.js          # Client-side routing
-│   ├── mobile.js          # Mobile detection
-│   ├── admin.js           # Admin dashboard
-│   ├── lightbox.js        # Media viewer
-│   ├── startmenu.js       # Start menu
-│   ├── skills.js          # Command palette
-│   ├── fx.js              # Particle FX
-│   ├── aurora.js          # Aurora effect
-│   ├── glyphs.js          # Floating glyphs
-│   ├── warp.js            # Warp tunnel
-│   └── audiofx.js         # Sound effects
-│
-├── css/                    # Stylesheets (5 files)
-│   ├── reset.css          # CSS reset
-│   ├── variables.css      # CSS custom properties
-│   ├── styles.css         # Main styles
-│   ├── windows.css        # Window-specific styles
-│   └── admin.css          # Admin dashboard styles
-│
-├── data/                   # JSON data files
-│   ├── projects.json      # Portfolio projects (optional)
-│   └── media.json         # Photos/videos (optional)
-│
-├── assets/                 # Static assets
-│   ├── wallpapers/        # Background images
-│   ├── sounds/            # Audio files
-│   └── resume/            # PDF resume
-│
-└── docs/                   # Documentation
-    ├── ARCHITECTURE.md    # This file
-    ├── GLOSSARY.md        # Terminology
-    ├── TROUBLESHOOTING.md # Common issues
-    ├── README.md          # Documentation index
-    └── archive/           # Old documentation
-```
+See README.md for the complete annotated architecture tree with all 38 JS modules, 18 CSS files, and 8 test suites.
 
 ### Key Files Reference
 
-| File Path            | Purpose            | Primary Exports         |
-| -------------------- | ------------------ | ----------------------- |
-| `js/main.js`         | Entry point        | `init()` function       |
-| `js/state.js`        | State manager      | `State` object          |
-| `js/desktop.js`      | Desktop controller | `Desktop` object        |
-| `js/windows.js`      | Window manager     | `WindowManager` object  |
-| `js/router.js`       | Router             | `Router` object         |
-| `js/admin.js`        | Admin dashboard    | `AdminDashboard` object |
-| `index.html`         | HTML structure     | N/A (loaded by browser) |
-| `css/variables.css`  | Theme colors       | CSS custom properties   |
-| `data/projects.json` | Projects data      | JSON array              |
-| `data/media.json`    | Media data         | JSON array              |
+| File Path                 | Purpose                     | Primary Exports         |
+| ------------------------- | --------------------------- | ----------------------- |
+| `js/main.js`              | Entry point                 | `init()` function       |
+| `js/state.js`             | State + CustomEvent bus     | `State` object          |
+| `js/desktop.js`           | Desktop controller          | `Desktop` object        |
+| `js/windows.js`           | Window manager              | `WindowManager` object  |
+| `js/sanitize.js`          | DOMPurify wrapper           | `sanitizeHTML()`        |
+| `js/dom-helpers.js`       | Shared DOM utilities        | `openExternal`, `loadJSON`, `saveJSON` |
+| `js/data-loader.js`       | Centralized JSON fetch+cache| `loadData`, `loadMedia`, `loadProjects` |
+| `js/focus-trap.js`        | WCAG focus trapping         | `trapFocus(container)`  |
+| `js/command-palette.js`   | Cmd+K launcher              | `CommandPalette` object |
+| `js/interactions/engine.js`| Interaction orchestrator   | `InteractionEngine` object |
 
 ---
 
@@ -291,122 +302,44 @@ Lightbox.close()
 
 ### Startup Flow
 
-The application initializes in this exact order:
-
 ```
 1. Browser loads index.html
         │
         ▼
-2. HTML loads CSS files (reset → variables → styles → windows → admin)
+2. HTML loads 18 CSS files (reset → variables → styles → ... → admin)
         │
         ▼
-3. HTML loads <script type="module" src="/js/main.js">
+3. <script type="module" src="/js/main.js">
+        │
+        ├─► State.init() — loads theme, wallpaper, FX from localStorage
+        ├─► Galaxy background initializes (Three.js cyberspace grid)
         │
         ▼
-4. main.js imports all modules
+4. DOMContentLoaded → main.js init()
         │
-        ├─► State.js executes (calls State.init() automatically)
-        │   └─► Loads theme, wallpaper, FX settings from localStorage
-        │
-        ├─► Other modules imported (but not initialized yet)
-        │
-        ▼
-5. DOMContentLoaded fires → main.js init() called
-        │
-        ├─► Check for ?safe=1 parameter (disables effects)
-        │
-        ├─► Initialize visual effects modules
-        │   ├─► FX.init()
-        │   ├─► Aurora.init()
-        │   ├─► Glyphs.init()
-        │   └─► AudioFX.init()
-        │
-        ├─► Initialize Skills (command palette)
-        │
-        ├─► Start boot sequence
-        │   └─► Boot.start() → callback to Login.init()
+        ├─► Check ?safe=1 (disables all effects)
+        ├─► FX.init(), Aurora.init(), Glyphs.init(), AudioFX.init()
+        ├─► InteractionEngine.init() (lazy-loads cursor trail, easter eggs, etc.)
+        ├─► CommandPalette.init()
+        ├─► Boot.start() → Login.init()
         │
         ▼
-6. Boot sequence completes → Login.init() called
-        │
-        ├─► Setup login button handler
+5. Lock screen — Mahoraga 3D wheel renders (60fps desktop / 30fps mobile)
         │
         ▼
-7. User clicks "INITIALIZE" button
+6. User clicks → Desktop.init() + WindowManager.init() + Router.init() + Mobile.init()
         │
-        ├─► Play boot animation
-        │
-        ├─► Initialize Desktop
-        │   ├─► Desktop.init()
-        │   ├─► WindowManager.init()
-        │   ├─► Router.init()
-        │   └─► Mobile.init()
-        │
-        ├─► Hide login screen
-        │
-        ├─► Show desktop with fade-in
+        ├─► Router checks URL → opens matching window
+        ├─► Welcome overlay (first visit only)
+        ├─► Service worker registers
         │
         ▼
-8. Desktop ready
-        │
-        ├─► Router checks URL (e.g., /about)
-        │   └─► Opens matching window if route found
-        │
-        ├─► User can now interact with desktop icons
-        │
-        └─► Service worker registers (PWA support)
-```
-
-### Code Reference: main.js Initialization
-
-```javascript
-// File: js/main.js lines 26-54
-
-function init() {
-    // State already initialized on import
-
-    const params = new URLSearchParams(location.search);
-    const safeMode = params.get('safe') === '1';
-
-    // Initialize FX layer
-    FX.init();
-    FX.setEnabled(safeMode ? false : State.fxEnabled);
-
-    Aurora.init();
-    Aurora.setEnabled(safeMode ? false : State.auroraEnabled);
-
-    Glyphs.init();
-    Glyphs.setEnabled(safeMode ? false : State.glyphsEnabled);
-
-    AudioFX.init();
-    setTimeout(() => AudioFX.bootChime(), 500);
-
-    // Initialize Skills (Command Palette)
-    if (Skills) Skills.init();
-
-    // Show splash/boot, then continue to login
-    if (!safeMode) {
-        Boot.start(() => Login.init());
-    } else {
-        Login.init();
-    }
-
-    // Register service worker
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js').catch(() => {});
-        });
-    }
-}
+7. Desktop ready — apps lazy-load on open (terminal, github, skills, sys-monitor)
 ```
 
 ### Safe Mode
 
-Access `http://localhost:5173/?safe=1` to disable all visual effects. Useful for:
-
-- Debugging performance issues
-- Low-powered devices
-- Testing without distractions
+Access `http://localhost:5173/?safe=1` to disable all visual effects. Useful for debugging, low-powered devices, and testing without distractions.
 
 ---
 
@@ -541,38 +474,53 @@ getNextZIndex() {
 
 ```
 main.js
-  ├─► state.js (no dependencies)
+  ├─► state.js (foundation — no dependencies)
+  ├─► galaxy-background.js → THREE
   ├─► fx.js → state.js
   ├─► aurora.js → state.js
   ├─► glyphs.js → state.js
   ├─► audiofx.js → state.js
+  ├─► interactions/engine.js (lazy-loads 6 sub-modules)
+  │     ├─► cursor-trail.js, cursor-tracker.js, cursor-reactive.js
+  │     ├─► sound-manager.js, easter-eggs.js, micro-interactions.js
+  │     └─► state.js
+  ├─► command-palette.js → desktop.js
   ├─► boot.js (no dependencies)
-  ├─► skills.js (no dependencies)
   └─► login.js
         ├─► state.js
+        ├─► mahoraga-wheel-3d.js → THREE
         ├─► desktop.js
-        │     ├─► state.js
-        │     ├─► windows.js
-        │     │     └─► state.js
-        │     ├─► lightbox.js
-        │     └─► admin.js
-        ├─► windows.js
-        ├─► router.js
-        │     └─► desktop.js
-        └─► mobile.js
+        │     ├─► state.js, windows.js, sanitize.js
+        │     ├─► dom-helpers.js, data-loader.js
+        │     ├─► lightbox.js → focus-trap.js
+        │     ├─► modal.js → focus-trap.js
+        │     └─► admin.js → data-loader.js
+        ├─► windows.js → state.js
+        ├─► router.js → desktop.js
+        ├─► mobile.js
+        ├─► welcome.js → focus-trap.js
+        └─► tour.js → focus-trap.js
 ```
+
+Lazy-loaded on window open (not imported at boot):
+- `terminal.js` — loaded when DEV_TERMINAL opened
+- `github.js` — loaded when GITHUB_OPS opened
+- `skills.js` — loaded when SKILLS_MATRIX opened
+- `system-monitor.js` — loaded when SYS_MONITOR opened
 
 ### Dependency Rules
 
-1. **State.js has no dependencies** - It's the foundation
-2. **Visual FX modules only depend on State** - Self-contained
-3. **Desktop depends on Windows** - Desktop creates windows
-4. **Router depends on Desktop** - Router opens desktop windows
-5. **Admin depends on Desktop** - Admin modifies desktop data
+1. **State.js has no dependencies** — It's the foundation
+2. **Shared utilities have no app dependencies** — sanitize, dom-helpers, data-loader, focus-trap
+3. **Visual FX modules only depend on State** — Self-contained, auto-pause when tab hidden
+4. **Desktop depends on Windows** — Desktop creates windows
+5. **Router depends on Desktop** — Router opens desktop windows
+6. **All innerHTML goes through sanitize.js** — Security invariant
 
 ### Circular Dependency Prevention
 
 - **Router** imports `Desktop`, but Desktop doesn't import Router
+- **State** emits `CustomEvent` — FX modules listen; no import coupling
 - **Windows** registers itself with `State`, but State doesn't import Windows
 - **Lightbox** is opened by Desktop, but doesn't import Desktop
 
@@ -728,25 +676,24 @@ const myData = saved ? JSON.parse(saved) : defaultData;
 - **User Guide**: [DOCUMENTATION.md](../DOCUMENTATION.md)
 - **Development History**: [CHANGELOG.md](../CHANGELOG.md)
 - **Admin Dashboard**: [ADMIN_DASHBOARD_GUIDE.md](../ADMIN_DASHBOARD_GUIDE.md)
-- **Testing Guide**: [FEATURE_VERIFICATION.md](../FEATURE_VERIFICATION.md)
 - **Terminology**: [GLOSSARY.md](GLOSSARY.md)
 - **Troubleshooting**: [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 
 ---
 
-**Architecture Version**: 2.56
+**Architecture Version**: 3.8.2
 
-**Last Updated**: November 2025
-
-**Maintained By**: Passion OS Development Team
+**Last Updated**: February 2026
 
 ---
 
 <!-- AI Parsing Notes:
-- Module count: 17 JavaScript files
-- Total code: ~5,500 lines
-- Initialization: main.js → state.js → boot.js → login.js → desktop.js
-- State pattern: Centralized singleton with localStorage persistence
-- Data flow: localStorage → State → Modules → UI → localStorage
+- Module count: 38 JavaScript files (31 root + 7 interactions/)
+- CSS count: 18 stylesheets
+- Test count: 8 suites, 97 tests (vitest + jsdom)
+- Initialization: main.js → state.js → galaxy → boot → login → desktop
+- State pattern: Centralized singleton with CustomEvent bus + localStorage
+- Security: All innerHTML via DOMPurify, CSP headers, input sanitization
+- Data flow: localStorage → data-loader.js → State → Modules → UI → localStorage
 - Extension points: Desktop icons, Routes, Effects, Admin sections
 -->

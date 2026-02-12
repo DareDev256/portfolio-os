@@ -3,8 +3,8 @@
 ---
 
 title: Documentation Index
-version: 2.56
-last_updated: 2025-11-27
+version: 3.8.2
+last_updated: 2026-02-12
 
 ---
 
@@ -14,7 +14,7 @@ last_updated: 2025-11-27
 
 ## Welcome to Passion OS Documentation
 
-Complete documentation for **Passion OS v2.56** - a vanilla JavaScript portfolio operating system with cyberpunk aesthetics.
+Complete documentation for **Passion OS v3.8.2** - a vanilla JavaScript portfolio operating system with cyberpunk aesthetics.
 
 ---
 
@@ -30,7 +30,7 @@ Complete documentation for **Passion OS v2.56** - a vanilla JavaScript portfolio
 
 1. 🏗️ **[Architecture](ARCHITECTURE.md)** - System design and module structure
 2. 📝 **[Changelog](../CHANGELOG.md)** - Development history
-3. ✅ **[Feature Verification](../FEATURE_VERIFICATION.md)** - Testing guide
+3. ✅ **[Troubleshooting](TROUBLESHOOTING.md)** - Common issues and debugging
 
 ---
 
@@ -44,7 +44,6 @@ Complete documentation for **Passion OS v2.56** - a vanilla JavaScript portfolio
 | [DOCUMENTATION.md](../DOCUMENTATION.md)                 | Complete user guide, customization | Users, Developers | ~600 lines |
 | [CHANGELOG.md](../CHANGELOG.md)                         | Development history, version notes | Developers, AI    | ~400 lines |
 | [ADMIN_DASHBOARD_GUIDE.md](../ADMIN_DASHBOARD_GUIDE.md) | Admin dashboard usage              | Users             | ~800 lines |
-| [FEATURE_VERIFICATION.md](../FEATURE_VERIFICATION.md)   | Testing procedures                 | Developers, QA    | ~400 lines |
 
 ### Technical Documentation (docs/)
 
@@ -94,7 +93,7 @@ Old documentation preserved for reference. Not actively maintained.
 
 **Working with the code:**
 
-- [ARCHITECTURE.md](ARCHITECTURE.md) § Module Architecture - Understand 17 modules
+- [ARCHITECTURE.md](ARCHITECTURE.md) § Module Architecture - Understand 38 modules
 - [ARCHITECTURE.md](ARCHITECTURE.md) § Data Flow - localStorage → State → UI
 - [ARCHITECTURE.md](ARCHITECTURE.md) § Extension Points - How to add features
 - [GLOSSARY.md](GLOSSARY.md) - Standardized terminology
@@ -102,7 +101,7 @@ Old documentation preserved for reference. Not actively maintained.
 
 **Testing & debugging:**
 
-- [FEATURE_VERIFICATION.md](../FEATURE_VERIFICATION.md) - Testing procedures
+- Run `npm run test` — 97 vitest tests across 8 suites
 - [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Debugging guide
 - [TROUBLESHOOTING.md](TROUBLESHOOTING.md) § Debugging Tools - Console commands
 
@@ -132,7 +131,7 @@ All documentation follows AI-friendly standards:
 | ---------------------------------------- | ------------------------------------- | -------------------------------- |
 | [ARCHITECTURE.md](ARCHITECTURE.md)       | System design, module map, data flow  | Understand codebase structure    |
 | [DOCUMENTATION.md](../DOCUMENTATION.md)  | Usage patterns, customization points  | Help users customize             |
-| [CHANGELOG.md](../CHANGELOG.md)          | Implementation history, code snippets | See what exists and how it works |
+| [CHANGELOG.md](../CHANGELOG.md)          | Implementation history, code changes  | See what exists and how it works |
 | [GLOSSARY.md](GLOSSARY.md)               | Term definitions, file references     | Standardize vocabulary           |
 | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Common errors, solutions              | Debug issues                     |
 
@@ -218,9 +217,9 @@ All documentation follows AI-friendly standards:
 
 → [CHANGELOG.md](../CHANGELOG.md) (reverse chronological)
 
-#### ...test features?
+#### ...run the tests?
 
-→ [FEATURE_VERIFICATION.md](../FEATURE_VERIFICATION.md)
+→ `npm run test` — 97 vitest tests across 8 suites
 
 ---
 
@@ -246,21 +245,24 @@ All documentation follows AI-friendly standards:
 │
 ├── index.html                     # Main HTML entry point
 │
-├── js/                            # JavaScript modules (17 files)
+├── js/                            # JavaScript modules (38 files)
 │   ├── main.js                   # Entry point
-│   ├── state.js                  # State management
+│   ├── state.js                  # State management + CustomEvent bus
 │   ├── desktop.js                # Desktop manager
 │   ├── windows.js                # Window manager
-│   ├── router.js                 # Client-side routing
-│   ├── admin.js                  # Admin dashboard
-│   └── ...                       # (See ARCHITECTURE.md)
+│   ├── sanitize.js               # DOMPurify wrapper
+│   ├── dom-helpers.js            # Shared DOM utilities
+│   ├── interactions/             # 7 interaction sub-modules
+│   └── ...                       # (See ARCHITECTURE.md for all 38)
 │
-├── css/                           # Stylesheets (5 files)
-│   ├── variables.css             # CSS custom properties
-│   ├── styles.css                # Main styles
-│   ├── windows.css               # Window styles
-│   ├── admin.css                 # Admin styles
-│   └── reset.css                 # CSS reset
+├── css/                           # Stylesheets (18 files)
+│   ├── variables.css             # Design tokens
+│   ├── styles.css                # Core layout
+│   ├── glass.css                 # Glassmorphism
+│   └── ...                       # (See README.md for full tree)
+│
+├── tests/                         # 8 test suites, 97 tests
+│   └── *.test.js                 # vitest + jsdom
 │
 ├── data/                          # JSON data files
 │   ├── projects.json             # Portfolio projects (optional)
@@ -315,11 +317,10 @@ All documentation follows AI-friendly standards:
 
 ## Version Information
 
-| Component     | Version              | Last Updated |
-| ------------- | -------------------- | ------------ |
-| Passion OS    | 2.56                 | Nov 2025     |
-| Documentation | 2.56                 | Nov 2025     |
-| Phase         | 3 (Core OS Features) | Nov 2025     |
+| Component     | Version | Last Updated |
+| ------------- | ------- | ------------ |
+| Passion OS    | 3.8.2   | Feb 2026     |
+| Documentation | 3.8.2   | Feb 2026     |
 
 ---
 
@@ -332,8 +333,8 @@ All Passion OS documentation follows these standards:
 ```yaml
 ---
 title: Document Title
-version: 2.56
-last_updated: 2025-11-27
+version: 3.8.2
+last_updated: 2026-02-12
 type: guide | reference | technical
 ---
 ```
@@ -412,11 +413,11 @@ Old documentation is preserved in `docs/archive/`:
 
 ---
 
-**Documentation Index Version**: 2.56
+**Documentation Index Version**: 3.8.2
 
-**Last Updated**: November 2025
+**Last Updated**: February 2026
 
-**Total Documentation Files**: 8 core + 3 technical + 5 archived
+**Total Documentation Files**: 7 core + 3 technical + 5 archived
 
 ---
 

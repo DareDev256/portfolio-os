@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.8.1
+version: 3.8.2
 last_updated: 2026-02-12
 
 ---
@@ -15,6 +15,16 @@ last_updated: 2026-02-12
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.8.2] — 2026-02-12
+
+### Changed
+- **Architecture docs modernized to v3.8.2** — `docs/ARCHITECTURE.md` was stuck at v2.56 (November 2025, 17 modules) while the codebase had grown to 38 modules, 18 CSS files, and 8 test suites. Updated module categories from 6 → 9 with complete tables for all 38 modules including the interactions subsystem, shared utilities layer (sanitize, dom-helpers, data-loader, focus-trap, modal, loader), application windows (terminal, github, system-monitor), and 3D/VFX modules (galaxy-background, mahoraga-wheel). Rewrote architecture diagram to show the new Shared Utilities Layer. Updated dependency graph with lazy-loading annotations, init sequence with current boot flow, and key files reference table.
+- **Documentation index updated** (`docs/README.md`) — fixed 4 dead links to deleted `FEATURE_VERIFICATION.md`, updated file tree from 17 JS / 5 CSS to 38 JS / 18 CSS / 8 test suites, bumped version references from v2.56 to v3.8.2.
+
+**Files Modified**: `docs/ARCHITECTURE.md`, `docs/README.md`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 
@@ -1033,7 +1043,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.8.1
+**Latest Version**: 3.8.2
 
 **Status**: ✅ Production Ready
 

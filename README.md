@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.8.1-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.8.2-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-97_passing-00e676?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-38-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
@@ -238,12 +238,12 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 | [DOCUMENTATION.md](DOCUMENTATION.md) | Complete user guide — every feature explained |
 | [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) | No-code content editor (console-only) |
 | [CHANGELOG.md](CHANGELOG.md) | Full version history from v1.0 to present |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture and module relationships |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture — all 38 modules, dependency graph, init sequence |
 | [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Common issues and solutions |
 
 ## License
 
-MIT — **v3.8.1**
+MIT — **v3.8.2**
 
 ---
 
