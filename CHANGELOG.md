@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.8.2
+version: 3.8.3
 last_updated: 2026-02-12
 
 ---
@@ -15,6 +15,20 @@ last_updated: 2026-02-12
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.8.3] — 2026-02-12
+
+### Added
+- **Command Palette test suite** (`tests/command-palette.test.js`) — 22 tests covering init/buildCommands (DOM creation, label sanitization), open/close lifecycle, fuzzy search filtering (case-insensitive substring, empty query, no matches), filterAndRender (empty state, role=option items, default selection), keyboard navigation (ArrowDown/ArrowUp wrap-around, empty list safety), executeSelected (action invocation, palette close, system toggle dispatch), and ARIA attribute verification (role=dialog, role=listbox, aria-label)
+- **Mobile detection test suite** (`tests/mobile.test.js`) — 11 tests covering `isMobile()` detection matrix (iPhone/Android/iPad user agents, desktop rejection, touch+small screen combo, touch+large screen laptop rejection), `ensureViewportMeta()` (creation when missing, no-duplicate guard), and `applyMobileOptimizations()` (body class, hover-disable stylesheet injection, mobile layout stylesheet injection)
+
+**Test count**: 97 → 130 (33 new tests across 2 files)
+
+**Files Created**: `tests/command-palette.test.js`, `tests/mobile.test.js`
+
+**Files Modified**: `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -1043,7 +1057,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.8.2
+**Latest Version**: 3.8.3
 
 **Status**: ✅ Production Ready
 
