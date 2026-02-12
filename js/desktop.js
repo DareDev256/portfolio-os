@@ -75,6 +75,13 @@ export const Desktop = {
             action: () => Desktop.openGitHubCenter(),
         },
         {
+            id: 'portfolio',
+            label: 'PORTFOLIO',
+            icon: 'svg:/assets/portfolio.svg',
+            color: '#00f0ff',
+            action: () => Desktop.openPortfolio(),
+        },
+        {
             id: 'applications',
             label: 'APPLICATIONS',
             icon: 'svg:/assets/applications.svg',
@@ -254,7 +261,7 @@ export const Desktop = {
         // User requested Key Apps for the Dock:
         // Skills Matrix, GitHub Ops, Applications, About Me
         // plus Developer Console (Terminal) as a bonus for power users
-        const dockIds = ['about', 'skills', 'github', 'applications', 'terminal'];
+        const dockIds = ['about', 'portfolio', 'skills', 'github', 'applications', 'terminal'];
 
         dockIds.forEach((id, index) => {
             const item = this.DESKTOP_ITEMS.find(i => i.id === id);
@@ -317,7 +324,7 @@ export const Desktop = {
         container.innerHTML = '';
 
         // Load saved positions (v2 key forces layout reset for existing users)
-        const savedLayout = loadJSON('desktop_layout_v2', {});
+        const savedLayout = loadJSON('desktop_layout_v3', {});
 
         // Default positions for first-time visitors
         // Row-priority layout — recruiters read top-left first
@@ -326,14 +333,14 @@ export const Desktop = {
             const iconSpacingY = 100;
             const topAreaY = 100; // Below top bar
 
-            // Row 1: First impression — About Me, Applications, Music Videos, Resume
-            const row1 = ['about', 'applications', 'portfolio-videos', 'resume'];
+            // Row 1: First impression — About Me, Portfolio, Applications, Resume
+            const row1 = ['about', 'portfolio', 'applications', 'resume'];
             // Row 2: Technical depth
             const row2 = ['github', 'skills', 'showcase', 'linkedin'];
             // Row 3: Live projects
             const row3 = ['vibe-coder', 'image-generator', 'terminal', 'contact'];
-            // Row 4: Utilities
-            const row4 = ['typemaster', 'settings', 'sysmon'];
+            // Row 4: Extras/Utilities
+            const row4 = ['typemaster', 'portfolio-videos', 'settings', 'sysmon'];
 
             const allRows = [row1, row2, row3, row4];
             for (let row = 0; row < allRows.length; row++) {
@@ -466,12 +473,12 @@ export const Desktop = {
                     element.style.zIndex = ''; // Reset z-index
 
                     // Save new position
-                    const currentLayout = loadJSON('desktop_layout_v2', {});
+                    const currentLayout = loadJSON('desktop_layout_v3', {});
                     currentLayout[id] = {
                         x: parseInt(element.style.left),
                         y: parseInt(element.style.top)
                     };
-                    saveJSON('desktop_layout_v2', currentLayout);
+                    saveJSON('desktop_layout_v3', currentLayout);
 
                     // Small timeout to reset dragging flag so click event doesn't fire immediately
                     setTimeout(() => {
@@ -1215,6 +1222,136 @@ export const Desktop = {
             content,
             width: 800,
             height: 600,
+        });
+    },
+
+    /**
+     * Open Portfolio — curated featured project showcase
+     */
+    openPortfolio() {
+        const featured = [
+            {
+                name: 'PASSION_AGENT',
+                desc: '24/7 autonomous AI code improvement system. Analyzes repos, spawns Claude Code sessions, submits PRs, and learns from merge/reject patterns.',
+                tech: ['Node.js', 'Claude Code', 'MCP', 'SQLite'],
+                color: '#00f0ff',
+                demo: null,
+                repo: null,
+                featured: true,
+            },
+            {
+                name: 'VIBE_CODER',
+                desc: 'Vampire survivors-style idle game — 18 enemy types, 4 bosses, 26 weapons, Claude Code integration.',
+                tech: ['Phaser 3', 'JavaScript', 'Vite', 'Web Audio'],
+                color: '#ff00aa',
+                demo: 'https://daredev256.github.io/vibe-coder/',
+                repo: 'https://github.com/DareDev256/vibe-coder',
+            },
+            {
+                name: 'PORTFOLIO_OS',
+                desc: 'This cyberpunk desktop OS — 38 vanilla JS modules, Three.js galaxy, draggable windows, zero frameworks.',
+                tech: ['JavaScript', 'Three.js', 'CSS3', 'Vite'],
+                color: '#aa00ff',
+                demo: 'https://jamesdare.com',
+                repo: null,
+            },
+            {
+                name: 'CULTURE_DROP_HQ',
+                desc: 'Operations dashboard for Toronto hip-hop media — manage content, artists, and releases.',
+                tech: ['React', 'Node.js', 'MongoDB', 'Tailwind'],
+                color: '#ffaa00',
+                demo: null,
+                repo: null,
+            },
+            {
+                name: 'FCPXML_MCP_SERVER',
+                desc: 'AI-powered MCP server for Final Cut Pro XML — automate timeline editing with natural language.',
+                tech: ['Python', 'Claude AI', 'MCP', 'XML'],
+                color: '#00ff88',
+                demo: null,
+                repo: 'https://github.com/DareDev256/fcpxml-mcp-server',
+            },
+        ];
+
+        const content = document.createElement('div');
+        content.style.padding = '20px';
+
+        const header = document.createElement('div');
+        header.className = 'window-section-header';
+        header.style.color = '#00f0ff';
+        header.innerHTML = `◈ FEATURED PROJECTS <span style="font-size:11px; opacity:0.6; margin-left:8px;">${featured.length} Highlights</span>`;
+        content.appendChild(header);
+
+        const grid = document.createElement('div');
+        grid.className = 'portfolio-grid';
+
+        featured.forEach(project => {
+            const card = document.createElement('div');
+            card.className = `portfolio-card${project.featured ? ' portfolio-card--featured' : ''}`;
+            card.style.setProperty('--card-accent', project.color);
+            card.style.setProperty('--card-glow', `${project.color}12`);
+
+            const title = document.createElement('div');
+            title.className = 'portfolio-card__title';
+            title.textContent = project.name;
+
+            const desc = document.createElement('div');
+            desc.className = 'portfolio-card__desc';
+            desc.textContent = project.desc;
+
+            const techRow = document.createElement('div');
+            techRow.className = 'portfolio-card__tech';
+            project.tech.forEach(t => {
+                const badge = document.createElement('span');
+                badge.className = 'portfolio-badge';
+                badge.textContent = t;
+                techRow.appendChild(badge);
+            });
+
+            const links = document.createElement('div');
+            links.className = 'portfolio-card__links';
+
+            if (project.demo) {
+                const demoBtn = document.createElement('button');
+                demoBtn.className = 'portfolio-link portfolio-link--live';
+                demoBtn.textContent = 'LIVE DEMO';
+                demoBtn.addEventListener('click', () => openExternal(project.demo));
+                links.appendChild(demoBtn);
+            }
+            if (project.repo) {
+                const repoBtn = document.createElement('button');
+                repoBtn.className = 'portfolio-link';
+                repoBtn.textContent = 'SOURCE';
+                repoBtn.addEventListener('click', () => openExternal(project.repo));
+                links.appendChild(repoBtn);
+            }
+
+            card.append(title, desc, techRow, links);
+            grid.appendChild(card);
+        });
+
+        content.appendChild(grid);
+
+        // Footer link to full applications list
+        const footer = document.createElement('div');
+        footer.style.cssText = 'margin-top:16px; padding-top:14px; border-top:1px solid rgba(0,240,255,0.12); text-align:center;';
+        const allBtn = document.createElement('button');
+        allBtn.className = 'portfolio-link';
+        allBtn.textContent = 'VIEW ALL 18 PROJECTS →';
+        allBtn.addEventListener('click', () => {
+            WindowManager.close('portfolio');
+            setTimeout(() => this.openApplicationsShowcase(), 250);
+        });
+        footer.appendChild(allBtn);
+        content.appendChild(footer);
+
+        WindowManager.create({
+            id: 'portfolio',
+            title: 'PORTFOLIO // FEATURED_PROJECTS',
+            icon: '◈',
+            content,
+            width: 680,
+            height: 620,
         });
     },
 

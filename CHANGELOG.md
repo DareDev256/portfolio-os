@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.7.1
+version: 3.8.0
 last_updated: 2026-02-12
 
 ---
@@ -15,6 +15,20 @@ last_updated: 2026-02-12
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.8.0] — 2026-02-12
+
+### Added
+- **Portfolio featured projects window** (`PORTFOLIO` desktop icon) — curated showcase of 5 hero projects (Passion Agent, Vibe Coder, Portfolio OS, Culture Drop HQ, FCPXML MCP Server) with rich cards, color-coded tech stack badges, live demo buttons, and source links. Includes "VIEW ALL 18 PROJECTS" bridge to the full Applications catalog.
+- **Portfolio CSS** (`css/portfolio.css`) — responsive 2-column grid cards with hover glow effects, accent color custom properties, featured card spanning full width, and cyberpunk-styled badge/link components.
+- **Portfolio SVG icon** (`assets/portfolio.svg`) — 4-panel grid icon matching the project showcase concept.
+- **Desktop icon grid updated** — 16 icons (was 15), PORTFOLIO added to Row 1 second position. localStorage key bumped to `desktop_layout_v3` to force layout reset for existing users. PORTFOLIO added to dock launchers.
+
+**Files Created**: `css/portfolio.css`, `public/assets/portfolio.svg`
+
+**Files Modified**: `js/desktop.js`, `index.html`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -1007,7 +1021,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.7.1
+**Latest Version**: 3.8.0
 
 **Status**: ✅ Production Ready
 

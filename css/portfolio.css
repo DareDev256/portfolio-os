@@ -1,0 +1,98 @@
+/* Portfolio Projects — Featured project showcase cards */
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding: 0 4px 10px;
+}
+
+.portfolio-card {
+    background: rgba(15, 10, 30, 0.5);
+    border: 1px solid rgba(0, 240, 255, 0.12);
+    border-radius: 6px;
+    padding: 16px;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.portfolio-card:hover {
+    border-color: var(--card-accent, rgba(0, 240, 255, 0.35));
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 12px var(--card-glow, rgba(0, 240, 255, 0.08));
+    transform: translateY(-2px);
+}
+
+.portfolio-card--featured {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.06), rgba(170, 0, 255, 0.04));
+    border-color: rgba(0, 240, 255, 0.2);
+}
+
+.portfolio-card__title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--card-accent, #00f0ff);
+}
+
+.portfolio-card__desc {
+    font-size: 11px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.portfolio-card__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 2px;
+}
+
+.portfolio-badge {
+    font-size: 9px;
+    letter-spacing: 0.8px;
+    padding: 2px 7px;
+    border: 1px solid var(--card-accent, rgba(0, 240, 255, 0.3));
+    color: var(--card-accent, #00f0ff);
+    background: var(--card-glow, rgba(0, 240, 255, 0.06));
+    border-radius: 3px;
+    white-space: nowrap;
+}
+
+.portfolio-card__links {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 6px;
+}
+
+.portfolio-link {
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 5px 12px;
+    border: 1px solid var(--card-accent, rgba(0, 240, 255, 0.3));
+    color: var(--card-accent, #00f0ff);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.portfolio-link:hover {
+    background: var(--card-accent, #00f0ff);
+    color: #0a0a0f;
+}
+
+.portfolio-link--live {
+    background: rgba(0, 255, 136, 0.08);
+    border-color: rgba(0, 255, 136, 0.4);
+    color: #00ff88;
+}
+
+.portfolio-link--live:hover {
+    background: #00ff88;
+    color: #0a0a0f;
+}

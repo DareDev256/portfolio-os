@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.7.1-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.8.0-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-97_passing-00e676?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-38-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
@@ -38,7 +38,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 ### Desktop Environment
 
 - **Window Manager** — Drag, resize, minimize, maximize, z-index focus management. Animated open/close with glass shimmer effects.
-- **15 Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column grid. Right-click context menus on each. Includes 3 external deployed-project links (Vibe Coder, IMG_GEN.ai, TypeMaster).
+- **16 Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column grid. Right-click context menus on each. Includes 3 external deployed-project links (Vibe Coder, IMG_GEN.ai, TypeMaster) and a curated Portfolio showcase.
 - **Command Palette** — `Cmd+K` / `Ctrl+K` opens a Spotlight-style fuzzy-search launcher across all apps and system toggles.
 - **Dock** — Active window indicators, minimize-to-dock animation, hover tooltips.
 - **Client-Side Routing** — Deep-linkable URLs (`/about`, `/work`, `/resume`, `/terminal`) via History API.
@@ -52,7 +52,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Cursor Trails** — Particle effects with PlayStation/chakra symbols. Lazy-initialized, throttled to 30fps.
 - **Easter Eggs** — Konami code, triple-click glitch pulse, type "418" for teapot, `Ctrl+Shift+V` for system info, 18 terminal sass commands.
 
-### Desktop Icons (15)
+### Desktop Icons (16)
 
 | Icon | Type | What It Does |
 |------|------|-------------|
@@ -62,6 +62,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | **LINKEDIN** | External | Opens LinkedIn profile |
 | **SKILLS_MATRIX** | Window | Interactive skills visualization |
 | **GITHUB_OPS** | Window | Live GitHub API integration |
+| **PORTFOLIO** | Window | Curated 5-project featured showcase with tech badges, live demo links, and rich cards |
 | **APPLICATIONS** | Window | 17 real projects across 4 categories with DEPLOYED/SOURCE badges |
 | **DEV_TERMINAL** | Window | Fake terminal with 18 sass commands (`neofetch`, `cowsay`, `matrix`...) |
 | **Vibe_Coder.exe** | External | Browser-based game — deployed project link |
@@ -167,7 +168,7 @@ js/                                 # 38 ES modules, zero framework imports
 │   ├── easter-eggs.js              # Konami, 418, glitch pulse
 │   └── micro-interactions.js       # Hover/click micro-animations
 │
-css/                                # 17 modular stylesheets
+css/                                # 18 modular stylesheets
 ├── variables.css                   # Design tokens (colors, spacing, fonts)
 ├── reset.css                       # Normalize + base resets
 ├── styles.css                      # Core layout, dock, desktop, icons
@@ -181,6 +182,7 @@ css/                                # 17 modular stylesheets
 ├── interactions.css                # Cursor, hover, micro-animation styles
 ├── command-palette.css             # Cmd+K launcher
 ├── system-monitor.css              # Performance dashboard gauges
+├── portfolio.css                   # Featured project showcase cards
 ├── welcome.css                     # First-visit overlay
 ├── tour.css                        # Guided tour steps
 ├── loading.css                     # Boot sequence, spinners
@@ -241,7 +243,7 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 
 ## License
 
-MIT — **v3.7.1**
+MIT — **v3.8.0**
 
 ---
 
