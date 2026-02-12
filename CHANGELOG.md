@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.5.1
+version: 3.5.2
 last_updated: 2026-02-11
 
 ---
@@ -15,6 +15,19 @@ last_updated: 2026-02-11
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.5.2] — 2026-02-11
+
+### Added
+- **Data-loader test suite** (`tests/data-loader.test.js`) — 9 tests covering localStorage overrides, fetch fallbacks, in-memory caching, cache invalidation, and malformed JSON resilience
+- **Router test suite** (`tests/router.test.js`) — 12 tests covering path validation security (blocks `javascript:`, `data:`, null, non-slash paths), route dispatching, custom route registration, and unknown-route handling
+- **Focus-trap test suite** (`tests/focus-trap.test.js`) — 7 tests covering Tab wrap-around, Shift+Tab reverse cycling, disabled element exclusion, cleanup function, and empty-container safety
+
+**Test count**: 27 → 55 (28 new tests across 3 files)
+
+**Files Created**: `tests/data-loader.test.js`, `tests/router.test.js`, `tests/focus-trap.test.js`
 
 ---
 
@@ -889,7 +902,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.5.1
+**Latest Version**: 3.5.2
 
 **Status**: ✅ Production Ready
 

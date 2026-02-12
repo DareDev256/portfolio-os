@@ -115,9 +115,12 @@ css/                         # 16 modular stylesheets
 ├── accessibility.css        # WCAG, reduced-motion
 └── command-palette.css      # Cmd+K styles
 
-tests/                       # 27 vitest smoke tests
+tests/                       # 55 vitest tests
 ├── sanitize.test.js
-└── state.test.js
+├── state.test.js
+├── data-loader.test.js
+├── router.test.js
+└── focus-trap.test.js
 ```
 
 ## Tech Stack
@@ -141,7 +144,7 @@ tests/                       # 27 vitest smoke tests
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run 27 vitest smoke tests
+npm run test      # Run 55 vitest tests
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
