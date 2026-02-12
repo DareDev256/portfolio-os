@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.6.4
+version: 3.6.5
 last_updated: 2026-02-12
 
 ---
@@ -15,6 +15,15 @@ last_updated: 2026-02-12
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.6.5] — 2026-02-12
+
+### Changed
+- **README elevated to portfolio-grade** — added shields.io stat badges (version, tests, modules, frameworks, license), fixed stale module count (37→38 reflecting all JS files including warp.js, glyphs.js, audiofx.js), expanded architecture tree from partial (18 modules + ellipsis) to complete (all 38 modules + all 17 stylesheets with descriptions), and added "Why No Frameworks?" section articulating the vanilla JS constraint as a deliberate architectural demonstration
+
+**Files Modified**: `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 
@@ -973,7 +982,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.6.4
+**Latest Version**: 3.6.5
 
 **Status**: ✅ Production Ready
 

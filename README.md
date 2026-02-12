@@ -6,13 +6,17 @@
 
 **[jamesdare.com](https://jamesdare.com)** · **[View Changelog](CHANGELOG.md)**
 
-`37 modules` · `17 stylesheets` · `91 tests` · `0 framework deps`
+![Version](https://img.shields.io/badge/version-3.6.5-00f0ff?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-91_passing-00e676?style=flat-square)
+![Modules](https://img.shields.io/badge/modules-38-b388ff?style=flat-square)
+![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-888?style=flat-square)
 
 </div>
 
 ---
 
-An interactive desktop environment that runs entirely in the browser. Draggable windows, GPU-optimized glass effects, a Three.js cyberspace background, Spotlight-style command palette, and 37 vanilla JavaScript modules — no React, no Vue, no dependencies beyond the web platform.
+An interactive desktop environment that runs entirely in the browser. Draggable windows, GPU-optimized glass effects, a Three.js cyberspace background, Spotlight-style command palette, and 38 vanilla JavaScript modules — no React, no Vue, no dependencies beyond the web platform.
 
 Built by **James Olusoga** — AI Solutions Engineer & Creative Technologist, Toronto.
 
@@ -104,56 +108,86 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | Triple-click desktop | Glitch pulse effect |
 | Type `418` | I'm a teapot |
 
+## Why No Frameworks?
+
+This isn't anti-framework ideology — it's a deliberate architectural choice to demonstrate depth.
+
+Every feature recruiters expect from a React/Next.js portfolio is here (routing, state management, component lifecycle, lazy loading, accessibility) — built from scratch against the raw DOM API. The result is a 38-module codebase that proves understanding of **what frameworks abstract away**, not just how to use them.
+
+**The constraint is the point.** Anyone can `npx create-next-app`. Not everyone can build a desktop OS with draggable windows, GPU-composited glass effects, and a 3D WebGL background in 38 hand-written modules with zero runtime dependencies.
+
 ## Architecture
 
 ```
-js/                              # 37 ES modules, zero framework imports
-├── main.js                      # Entry point, lazy-loads FX
-├── boot.js                      # Cinematic boot sequence
-├── login.js                     # Lock screen + 3D wheel init
-├── desktop.js                   # Icon grid, context menus, app launchers
-├── windows.js                   # Window manager (drag, resize, z-index)
-├── state.js                     # localStorage persistence + CustomEvent bus
-├── data-loader.js               # Centralized JSON fetcher with caching
-├── dom-helpers.js               # Shared utilities (openExternal, animateCounter)
-├── router.js                    # History API deep-linkable routing
-├── sanitize.js                  # DOMPurify wrapper
-├── command-palette.js           # Cmd+K fuzzy-search launcher
-├── system-monitor.js            # Live FPS, heap, DOM count dashboard
-├── galaxy-background.js         # Three.js MMBN cyberspace grid
-├── mahoraga-wheel-3d.js         # Three.js 3D wheel (60fps desktop, 30fps mobile)
-├── terminal.js                  # Dev terminal with 18 commands
-├── github.js                    # Live GitHub API integration
-├── lightbox.js                  # Image/video viewer (YouTube, Vimeo, MP4)
-├── focus-trap.js                # WCAG focus trapping utility
+js/                                 # 38 ES modules, zero framework imports
+├── main.js                         # Entry — orchestrates boot, lazy-loads FX
+├── boot.js                         # Cinematic boot sequence
+├── login.js                        # Lock screen + 3D wheel init
+├── desktop.js                      # Icon grid, context menus, app launchers
+├── windows.js                      # Window manager (drag, resize, z-index)
+├── state.js                        # localStorage persistence + CustomEvent bus
+├── router.js                       # History API deep-linkable routing
+├── command-palette.js              # Cmd+K fuzzy-search launcher
+├── data-loader.js                  # Centralized JSON fetcher with caching
+├── dom-helpers.js                  # Shared utilities (openExternal, animateCounter)
+├── sanitize.js                     # DOMPurify wrapper
+├── modal.js                        # Prompt/alert dialogs with focus trapping
+├── focus-trap.js                   # WCAG focus trapping utility
+├── lightbox.js                     # Image/video viewer (YouTube, Vimeo, MP4)
+├── terminal.js                     # Dev terminal with 18 sass commands
+├── github.js                       # Live GitHub API integration
+├── skills.js                       # Interactive skills visualization
+├── system-monitor.js               # Live FPS, heap, DOM count dashboard
+├── galaxy-background.js            # Three.js MMBN cyberspace grid
+├── mahoraga-wheel-3d.js            # Three.js 3D wheel (60fps/30fps adaptive)
+├── aurora.js                       # Aurora visual effects (~24fps throttled)
+├── fx.js                           # Visual FX layer (~30fps throttled)
+├── glyphs.js                       # Glyph rendering system
+├── warp.js                         # Warp tunnel transition effect
+├── loader.js                       # DOM-safe loading states
+├── welcome.js                      # First-visit welcome overlay
+├── tour.js                         # Interactive guided tour
+├── mobile.js                       # Touch detection + responsive injection
+├── startmenu.js                    # Start menu + system tray
+├── admin.js                        # No-code content editor (console-only)
+├── audiofx.js                      # Audio effects system
 ├── interactions/
-│   ├── engine.js                # Orchestrator (30fps throttled)
-│   ├── cursor-trail.js          # Particle cursor effects
-│   ├── cursor-tracker.js        # Mouse position tracking
-│   ├── cursor-reactive.js       # Reactive cursor animations
-│   ├── sound-manager.js         # UI sound effects
-│   ├── easter-eggs.js           # Konami, 418, glitch pulse
-│   └── micro-interactions.js    # Hover/click micro-animations
-└── ... (+ admin, modal, mobile, loader, skills, fx, aurora, etc.)
-
-css/                             # 17 modular stylesheets
-├── variables.css                # Design tokens
-├── glass.css                    # Glassmorphism + backdrop-filter
-├── galaxy.css                   # MMBN cyberspace theme
-├── accessibility.css            # WCAG, reduced-motion
-├── system-monitor.css           # Performance dashboard
-├── command-palette.css          # Cmd+K styles
-└── ... (+ windows, modal, forms, mobile, tour, welcome, etc.)
-
-tests/                           # 91 vitest tests
-├── sanitize.test.js             # XSS sanitization (12 tests)
-├── state.test.js                # State management (15 tests)
-├── data-loader.test.js          # JSON fetch + cache (9 tests)
-├── router.test.js               # Path validation + routing (12 tests)
-├── focus-trap.test.js           # Tab cycling + cleanup (7 tests)
-├── lightbox.test.js             # Video ID validation + sandbox (14 tests)
-├── dom-helpers.test.js          # openExternal + animateCounter (7 tests)
-└── modal.test.js                # Dialog init, dismiss, prompt, alert (15 tests)
+│   ├── engine.js                   # Orchestrator (30fps throttled)
+│   ├── cursor-trail.js             # Particle cursor effects
+│   ├── cursor-tracker.js           # Mouse position tracking
+│   ├── cursor-reactive.js          # Reactive cursor animations
+│   ├── sound-manager.js            # UI sound effects
+│   ├── easter-eggs.js              # Konami, 418, glitch pulse
+│   └── micro-interactions.js       # Hover/click micro-animations
+│
+css/                                # 17 modular stylesheets
+├── variables.css                   # Design tokens (colors, spacing, fonts)
+├── reset.css                       # Normalize + base resets
+├── styles.css                      # Core layout, dock, desktop, icons
+├── glass.css                       # Glassmorphism + backdrop-filter
+├── windows.css                     # Window chrome, animations, states
+├── galaxy.css                      # MMBN cyberspace theme
+├── modal.css                       # Dialog overlays
+├── forms.css                       # Input, button, validation styles
+├── accessibility.css               # WCAG, reduced-motion, skip-link
+├── mobile.css                      # Responsive breakpoints, touch targets
+├── interactions.css                # Cursor, hover, micro-animation styles
+├── command-palette.css             # Cmd+K launcher
+├── system-monitor.css              # Performance dashboard gauges
+├── welcome.css                     # First-visit overlay
+├── tour.css                        # Guided tour steps
+├── loading.css                     # Boot sequence, spinners
+└── admin.css                       # Content editor panel
+│
+tests/                              # 91 vitest tests across 8 suites
+├── sanitize.test.js                # XSS sanitization (12 tests)
+├── state.test.js                   # State persistence + events (15 tests)
+├── data-loader.test.js             # JSON fetch + cache (9 tests)
+├── router.test.js                  # Path validation + routing (12 tests)
+├── focus-trap.test.js              # Tab cycling + cleanup (7 tests)
+├── lightbox.test.js                # Video ID validation + sandbox (14 tests)
+├── dom-helpers.test.js             # openExternal + animateCounter (7 tests)
+└── modal.test.js                   # Dialog init, dismiss, prompt, alert (15 tests)
 ```
 
 ## Tech Stack
@@ -198,7 +232,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 
 ## License
 
-MIT — **v3.6.4**
+MIT — **v3.6.5**
 
 ---
 
