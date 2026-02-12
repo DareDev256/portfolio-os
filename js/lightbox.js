@@ -4,6 +4,7 @@
  */
 
 import { WindowManager } from './windows.js';
+import { trapFocus } from './focus-trap.js';
 
 export const Lightbox = {
     container: null,
@@ -18,6 +19,7 @@ export const Lightbox = {
     type: 'image', // 'image' or 'video'
     isOpen: false,
     focusedElementBeforeOpen: null,
+    releaseFocusTrap: null,
 
     /**
      * Initialize lightbox
@@ -80,9 +82,6 @@ export const Lightbox = {
                 case '-':
                     this.zoom(-0.1);
                     break;
-                case 'Tab':
-                    this.handleTabFocus(e);
-                    break;
             }
         });
 
@@ -115,32 +114,6 @@ export const Lightbox = {
             this.panning = false;
             this.mediaContainer.style.cursor = '';
         });
-    },
-
-    /**
-     * Handle Tab key for focus trapping
-     */
-    handleTabFocus(e) {
-        const focusableElements = this.container.querySelectorAll(
-            'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-
-        if (focusableElements.length === 0) return;
-
-        const firstFocusable = focusableElements[0];
-        const lastFocusable = focusableElements[focusableElements.length - 1];
-
-        if (e.shiftKey) {
-            if (document.activeElement === firstFocusable) {
-                e.preventDefault();
-                lastFocusable.focus();
-            }
-        } else {
-            if (document.activeElement === lastFocusable) {
-                e.preventDefault();
-                firstFocusable.focus();
-            }
-        }
     },
 
     /**
@@ -194,10 +167,8 @@ export const Lightbox = {
         this.container.classList.remove('hidden');
         this.render();
 
-        // Focus close button
-        setTimeout(() => {
-            if (this.closeBtn) this.closeBtn.focus();
-        }, 100);
+        // Trap focus within the lightbox overlay
+        this.releaseFocusTrap = trapFocus(this.container);
     },
 
     /**
@@ -335,7 +306,11 @@ export const Lightbox = {
         this.panning = false;
         this.mediaContainer.style.cursor = '';
 
-        // Restore focus
+        // Release focus trap and restore focus
+        if (this.releaseFocusTrap) {
+            this.releaseFocusTrap();
+            this.releaseFocusTrap = null;
+        }
         if (this.focusedElementBeforeOpen) {
             this.focusedElementBeforeOpen.focus();
         }

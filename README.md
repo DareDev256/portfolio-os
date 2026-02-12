@@ -75,7 +75,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 ### Accessibility (WCAG)
 
 - `aria-live` regions for screen reader announcements
-- Focus trapping in modals, login, welcome, and tour overlays
+- Focus trapping in modals, lightbox, login, welcome, and tour overlays
 - Skip-link for keyboard users
 - 44px minimum touch targets on mobile
 - `prefers-reduced-motion` respected globally
@@ -196,7 +196,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 
 ## License
 
-MIT — **v3.6.2**
+MIT — **v3.6.3**
 
 ---
 

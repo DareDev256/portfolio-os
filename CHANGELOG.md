@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.6.2
+version: 3.6.3
 last_updated: 2026-02-12
 
 ---
@@ -15,6 +15,15 @@ last_updated: 2026-02-12
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.6.3] — 2026-02-12
+
+### Changed
+- **Lightbox focus trap unified with shared utility** — replaced 25-line inline `handleTabFocus()` method with the same `trapFocus()` from `focus-trap.js` already used by modal, login, welcome, and tour modules. Eliminates DRY violation, fixes inconsistent focusable selector (`[href]` → `a[href]`), and properly cleans up the keydown listener on close.
+
+**Files Modified**: `js/lightbox.js`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -950,7 +959,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.5.2
+**Latest Version**: 3.6.3
 
 **Status**: ✅ Production Ready
 
