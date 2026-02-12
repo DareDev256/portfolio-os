@@ -1,0 +1,125 @@
+/* System Monitor — Cyberpunk diagnostic dashboard */
+
+.sysmon {
+    padding: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.sysmon-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--neon-cyan);
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,240,255,0.15);
+}
+
+.sysmon-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00ff88;
+    box-shadow: 0 0 6px #00ff88;
+    animation: sysmon-blink 1.2s ease-in-out infinite;
+}
+
+@keyframes sysmon-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Gauge bars */
+.sysmon-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sysmon-gauge {
+    display: grid;
+    grid-template-columns: 70px 1fr 60px;
+    align-items: center;
+    gap: 10px;
+}
+
+.sysmon-gauge-label {
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+}
+
+.sysmon-gauge-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.sysmon-gauge-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.6s ease;
+}
+
+.sysmon-gauge-value {
+    text-align: right;
+    font-weight: 700;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* FPS graph */
+.sysmon-graph-section {
+    border: 1px solid rgba(0,240,255,0.1);
+    border-radius: 6px;
+    padding: 10px;
+    background: rgba(0,0,0,0.3);
+}
+
+.sysmon-graph-label {
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: rgba(0,255,136,0.6);
+    margin-bottom: 6px;
+}
+
+.sysmon-canvas {
+    width: 100%;
+    height: 80px;
+    display: block;
+}
+
+/* Info rows */
+.sysmon-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sysmon-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.sysmon-row span:first-child {
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    font-size: 10px;
+}
+
+.sysmon-row span:last-child {
+    font-variant-numeric: tabular-nums;
+}

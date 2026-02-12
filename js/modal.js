@@ -22,6 +22,21 @@ export const Modal = {
     },
 
     /**
+     * Create a dismiss handler that releases focus, hides the modal, and resolves the promise.
+     * Shared between prompt() and alert() to eliminate duplicated cleanup logic.
+     */
+    _createDismiss(releaseFocus, resolve) {
+        return (value = true) => {
+            releaseFocus();
+            this.container.classList.add('hidden');
+            setTimeout(() => {
+                this.container.innerHTML = '';
+            }, 300);
+            resolve(value);
+        };
+    },
+
+    /**
      * Show a password prompt modal
      */
     async prompt(title, message) {
@@ -47,6 +62,7 @@ export const Modal = {
 
             const modalDialog = this.container.querySelector('.modal-dialog');
             const releaseFocus = trapFocus(modalDialog);
+            const dismiss = this._createDismiss(releaseFocus, resolve);
 
             const input = this.container.querySelector('#modalPasswordInput');
             const confirmBtn = this.container.querySelector('.confirm');
@@ -56,29 +72,20 @@ export const Modal = {
             // Focus input
             setTimeout(() => input.focus(), 100);
 
-            const cleanup = (value) => {
-                releaseFocus();
-                this.container.classList.add('hidden');
-                setTimeout(() => {
-                    this.container.innerHTML = '';
-                }, 300);
-                resolve(value);
-            };
-
             // Handle confirm
-            confirmBtn.onclick = () => cleanup(input.value);
+            confirmBtn.onclick = () => dismiss(input.value);
 
             // Handle cancel
-            cancelBtn.onclick = () => cleanup(null);
-            overlay.onclick = () => cleanup(null);
+            cancelBtn.onclick = () => dismiss(null);
+            overlay.onclick = () => dismiss(null);
 
             // Handle Enter key
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
-                    cleanup(input.value);
+                    dismiss(input.value);
                 }
                 if (e.key === 'Escape') {
-                    cleanup(null);
+                    dismiss(null);
                 }
             });
         });
@@ -108,21 +115,13 @@ export const Modal = {
 
             const modalDialog = this.container.querySelector('.modal-dialog');
             const releaseFocus = trapFocus(modalDialog);
+            const dismiss = this._createDismiss(releaseFocus, resolve);
 
             const confirmBtn = this.container.querySelector('.confirm');
             const overlay = this.container.querySelector('.modal-overlay');
 
-            const cleanup = () => {
-                releaseFocus();
-                this.container.classList.add('hidden');
-                setTimeout(() => {
-                    this.container.innerHTML = '';
-                }, 300);
-                resolve(true);
-            };
-
-            confirmBtn.onclick = cleanup;
-            overlay.onclick = cleanup;
+            confirmBtn.onclick = dismiss;
+            overlay.onclick = dismiss;
         });
     }
 };

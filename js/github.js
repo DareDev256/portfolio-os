@@ -3,6 +3,7 @@
  * Handles live data fetching from GitHub API and rendering the dashboard.
  */
 import { Sanitize } from './sanitize.js';
+import { openExternal, animateCounter } from './dom-helpers.js';
 
 export const GitHub = {
     username: 'DareDev256',
@@ -75,21 +76,9 @@ export const GitHub = {
     },
 
     /**
-     * Animate counter from 0 to target
+     * Animate counter from 0 to target (delegates to shared dom-helpers)
      */
-    animateCounter(element, target, duration = 1500) {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-            start += increment;
-            if (start >= target) {
-                element.textContent = target;
-                clearInterval(timer);
-            } else {
-                element.textContent = Math.floor(start);
-            }
-        }, 16);
-    },
+    animateCounter: animateCounter,
 
     /**
      * Fetch all necessary data: Profile, Repos, Activity
@@ -263,7 +252,7 @@ export const GitHub = {
                 card.style.cursor = 'pointer';
                 card.addEventListener('click', () => {
                     const url = card.dataset.url;
-                    if (url) window.open(url, '_blank', 'noopener');
+                    if (url) openExternal(url);
                 });
             });
 

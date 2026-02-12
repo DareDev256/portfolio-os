@@ -10,7 +10,7 @@
 
 ---
 
-An interactive desktop environment that runs in the browser. Draggable windows, GPU-optimized glass effects, a Three.js cyberspace background, command palette, and 35 vanilla JavaScript modules — no React, no Vue, no dependencies beyond the web platform.
+An interactive desktop environment that runs in the browser. Draggable windows, GPU-optimized glass effects, a Three.js cyberspace background, command palette, and 37 vanilla JavaScript modules — no React, no Vue, no dependencies beyond the web platform.
 
 Built by **James Olusoga** — AI Solutions Engineer & Creative Technologist, Toronto.
 
@@ -30,7 +30,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 ### Desktop Environment
 
 - **Window Manager** — Drag, resize, minimize, maximize, z-index focus management. Animated open/close with glass shimmer effects.
-- **14 Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column F-pattern grid. Right-click context menus on each.
+- **15 Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column F-pattern grid. Right-click context menus on each.
 - **Command Palette** — `Cmd+K` / `Ctrl+K` opens a Spotlight-style fuzzy-search launcher across all apps and system toggles.
 - **Dock** — Active window indicators, minimize-to-dock animation, hover tooltips.
 - **Client-Side Routing** — Deep-linkable URLs (`/about`, `/work`, `/resume`, `/terminal`) via History API.
@@ -57,6 +57,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | **Dev Terminal** | Fake terminal with 18 sass commands (`neofetch`, `cowsay`, `matrix`...) |
 | **Contact** | Form with validation |
 | **Settings** | Theme, wallpaper, sound, cursor trail toggles |
+| **System Monitor** | Live FPS graph, heap usage, DOM count, network info, uptime |
 
 ### Security (Hardened Across v3.1–v3.3.2)
 
@@ -96,6 +97,7 @@ js/
 ├── windows.js               # Window manager
 ├── state.js                 # localStorage persistence + CustomEvent bus
 ├── data-loader.js           # Centralized JSON fetcher with caching
+├── dom-helpers.js           # Shared utilities (openExternal, animateCounter)
 ├── router.js                # History API routing
 ├── sanitize.js              # DOMPurify wrapper
 ├── command-palette.js       # Cmd+K launcher
@@ -106,7 +108,7 @@ js/
 │   ├── cursor-trail.js      # Particle cursor effects
 │   ├── easter-eggs.js       # Konami, 418, glitch pulse
 │   └── micro-interactions.js
-└── ... (35 modules total)
+└── ... (37 modules total)
 
 css/                         # 16 modular stylesheets
 ├── variables.css            # Design tokens

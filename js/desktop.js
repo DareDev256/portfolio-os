@@ -6,6 +6,7 @@ import { PixelLoader } from './loader.js';
 // SkillsUniverse, GitHub, Terminal loaded dynamically at point-of-use (P5)
 import { Sanitize } from './sanitize.js';
 import { loadMedia, loadProjects } from './data-loader.js';
+import { openExternal, animateCounter } from './dom-helpers.js';
 
 /**
  * Desktop Manager
@@ -56,7 +57,7 @@ export const Desktop = {
             label: 'LINKEDIN',
             icon: 'svg:/assets/linkedin.svg',
             color: '#0077b5',
-            action: () => window.open('https://linkedin.com/in/james-olusoga', '_blank'),
+            action: () => openExternal('https://linkedin.com/in/james-olusoga'),
         },
         // Column 2 — What I Build
         {
@@ -93,21 +94,21 @@ export const Desktop = {
             label: 'Vibe_Coder.exe',
             icon: 'svg:/assets/vibe-coder.svg',
             color: '#ff00aa',
-            action: () => window.open('https://daredev256.github.io/vibe-coder/', '_blank'),
+            action: () => openExternal('https://daredev256.github.io/vibe-coder/'),
         },
         {
             id: 'image-generator',
             label: 'IMG_GEN.ai',
             icon: 'svg:/assets/image-generator.svg',
             color: '#be185d',
-            action: () => window.open('https://web-ten-vert-46.vercel.app/', '_blank'),
+            action: () => openExternal('https://web-ten-vert-46.vercel.app/'),
         },
         {
             id: 'typemaster',
             label: 'TYPEMASTER',
             icon: 'svg:/assets/typemaster.svg',
             color: '#00ff88',
-            action: () => window.open('https://typing-game-kappa-seven.vercel.app/', '_blank'),
+            action: () => openExternal('https://typing-game-kappa-seven.vercel.app/'),
         },
         {
             id: 'showcase',
@@ -122,7 +123,7 @@ export const Desktop = {
             label: 'MUSIC_VIDEOS',
             icon: 'svg:/assets/portfolio-videos.svg',
             color: '#ff4444',
-            action: () => window.open('https://tdotssolutionsz.com/', '_blank'),
+            action: () => openExternal('https://tdotssolutionsz.com/'),
         },
         {
             id: 'settings',
@@ -130,6 +131,13 @@ export const Desktop = {
             icon: 'svg:/assets/settings.svg',
             color: '#00BCD4',
             action: () => Desktop.openSettings(),
+        },
+        {
+            id: 'sysmon',
+            label: 'SYS_MONITOR',
+            icon: 'svg:/assets/system-monitor.svg',
+            color: '#00ff88',
+            action: () => Desktop.openSystemMonitor(),
         },
     ],
 
@@ -330,7 +338,7 @@ export const Desktop = {
             // Row 3: Live projects
             const row3 = ['vibe-coder', 'image-generator', 'terminal', 'contact'];
             // Row 4: Utilities
-            const row4 = ['typemaster', 'settings'];
+            const row4 = ['typemaster', 'settings', 'sysmon'];
 
             const allRows = [row1, row2, row3, row4];
             for (let row = 0; row < allRows.length; row++) {
@@ -1320,7 +1328,7 @@ export const Desktop = {
                     launchBtn.style.color = '#00ff88';
                 }
                 launchBtn.addEventListener('click', () => {
-                    if (app.link) window.open(app.link, '_blank');
+                    if (app.link) openExternal(app.link);
                 });
 
                 appItem.appendChild(appInfo);
@@ -1599,21 +1607,9 @@ export const Desktop = {
     },
 
     /**
-     * Animate counter from 0 to target
+     * Animate counter from 0 to target (delegates to shared dom-helpers)
      */
-    animateCounter(element, target, duration = 1500) {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-            start += increment;
-            if (start >= target) {
-                element.textContent = target;
-                clearInterval(timer);
-            } else {
-                element.textContent = Math.floor(start);
-            }
-        }, 16);
-    },
+    animateCounter: animateCounter,
 
     /**
      * Open About window
@@ -1849,6 +1845,31 @@ export const Desktop = {
         });
 
         // Admin panel accessible via console: import('./admin.js').then(m => m.Admin.open())
+    },
+
+    /**
+     * Open System Monitor — real-time performance dashboard
+     */
+    openSystemMonitor() {
+        let cleanup = null;
+
+        const content = document.createElement('div');
+        content.style.height = '100%';
+
+        const win = WindowManager.create({
+            id: 'sysmon',
+            title: 'SYS_MONITOR // DIAGNOSTICS',
+            icon: '📊',
+            content,
+            width: 480,
+            height: 520,
+            onClose: () => { if (cleanup) cleanup(); },
+        });
+
+        // Lazy-load the monitor module
+        import('./system-monitor.js').then(({ renderSystemMonitor }) => {
+            cleanup = renderSystemMonitor(content);
+        });
     },
 
     /**

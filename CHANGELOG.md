@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.5.2
+version: 3.6.0
 last_updated: 2026-02-11
 
 ---
@@ -15,6 +15,27 @@ last_updated: 2026-02-11
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.6.0] — 2026-02-11
+
+### Added
+- **System Monitor app** (`SYS_MONITOR`) — real-time performance dashboard showing live FPS graph, JS heap usage, DOM node count, active window count, session uptime, page load time, CPU cores, network type, and platform info. Uses `performance.memory`, `performance.getEntriesByType`, `navigator.connection`, and RAF-based FPS measurement with a 70-sample rolling graph.
+- **System Monitor icon** — new SVG desktop icon (`assets/system-monitor.svg`) in the Utilities row
+- **System Monitor CSS** — dedicated `css/system-monitor.css` with gauge bars, canvas graph, and cyberpunk diagnostic styling
+
+**Files Created**: `js/system-monitor.js`, `css/system-monitor.css`, `assets/system-monitor.svg`
+
+### Changed
+- **Extracted `dom-helpers.js` shared utility module** — centralizes `openExternal()` and `animateCounter()` that were duplicated across `desktop.js` and `github.js`
+- **Hardened all external link opens** — 6 bare `window.open(url, '_blank')` calls in `desktop.js` replaced with `openExternal()` which adds `noopener,noreferrer` to prevent tabnapping; `github.js` also unified through the same helper
+- **DRYed modal cleanup logic** — extracted `_createDismiss()` in `modal.js` to eliminate identical 6-line cleanup closures duplicated between `prompt()` and `alert()`
+- **Removed duplicated `animateCounter`** — identical 12-line function was copy-pasted in both `desktop.js` and `github.js`; now delegates to single shared implementation
+
+**Files Created**: `js/dom-helpers.js`
+
+**Files Modified**: `js/desktop.js`, `js/github.js`, `js/modal.js`
 
 ---
 
