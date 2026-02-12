@@ -6,7 +6,7 @@
 
 **[jamesdare.com](https://jamesdare.com)** · **[View Changelog](CHANGELOG.md)**
 
-`37 modules` · `17 stylesheets` · `55 tests` · `0 framework deps`
+`37 modules` · `17 stylesheets` · `69 tests` · `0 framework deps`
 
 </div>
 
@@ -61,7 +61,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | **Settings** | Theme, wallpaper, sound, cursor trail toggles |
 | **System Monitor** | Live FPS graph, heap usage, DOM count, network info, uptime |
 
-### Security (Hardened Across v3.1–v3.3.2)
+### Security (Hardened Across v3.1–v3.6.2)
 
 - All `innerHTML` routed through DOMPurify (SRI hash on CDN)
 - 8 HTTP security headers via Vercel (CSP, HSTS, X-Frame-Options, CORP, Permissions-Policy)
@@ -69,6 +69,8 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - localStorage `JSON.parse` wrapped in try/catch with fallbacks
 - SVG content sanitized before DOM insertion
 - CSP `img-src` locked to explicit GitHub asset domains
+- YouTube/Vimeo video ID regex validation — blocks injection via crafted embed URLs
+- Iframe `sandbox` on all video embeds — prevents top-navigation and popup abuse
 
 ### Accessibility (WCAG)
 
@@ -143,12 +145,13 @@ css/                             # 17 modular stylesheets
 ├── command-palette.css          # Cmd+K styles
 └── ... (+ windows, modal, forms, mobile, tour, welcome, etc.)
 
-tests/                           # 55 vitest tests
+tests/                           # 69 vitest tests
 ├── sanitize.test.js             # XSS sanitization (12 tests)
-├── state.test.js                # State management (19 tests)
-├── data-loader.test.js          # JSON fetch + cache (13 tests)
-├── router.test.js               # Path validation + routing (4 tests)
-└── focus-trap.test.js           # Tab cycling + cleanup (7 tests)
+├── state.test.js                # State management (15 tests)
+├── data-loader.test.js          # JSON fetch + cache (9 tests)
+├── router.test.js               # Path validation + routing (12 tests)
+├── focus-trap.test.js           # Tab cycling + cleanup (7 tests)
+└── lightbox.test.js             # Video ID validation + sandbox (14 tests)
 ```
 
 ## Tech Stack
@@ -172,7 +175,7 @@ tests/                           # 55 vitest tests
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run 55 vitest tests
+npm run test      # Run 69 vitest tests
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
@@ -193,7 +196,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 
 ## License
 
-MIT — **v3.6.1**
+MIT — **v3.6.2**
 
 ---
 

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.6.1
+version: 3.6.2
 last_updated: 2026-02-12
 
 ---
@@ -15,6 +15,24 @@ last_updated: 2026-02-12
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.6.2] — 2026-02-12
+
+### Security
+- **Hardened video embed IDs** — YouTube IDs now validated against `/^[a-zA-Z0-9_-]{11}$/` and Vimeo IDs against `/^[0-9]{6,11}$/` before interpolation into iframe `src` URLs; invalid IDs are blocked with a visible error placeholder instead of creating a potentially malicious iframe
+- **Sandboxed video iframes** — all YouTube and Vimeo embeds now carry `sandbox="allow-scripts allow-same-origin allow-presentation"`, preventing top-navigation hijacking, popup abuse, and form submission from embedded content
+- **Null-guard on embed creation** — `createYouTubeEmbed()` and `createVimeoEmbed()` return a safe placeholder element when passed a null ID (fail-closed)
+
+### Added
+- **Lightbox security test suite** (`tests/lightbox.test.js`) — 14 tests covering YouTube ID validation (valid formats, path traversal, XSS payloads, oversized IDs), Vimeo ID validation (numeric-only, path traversal), MP4 fallback, and iframe sandbox token verification
+
+**Test count**: 55 → 69 (14 new tests)
+
+**Files Created**: `tests/lightbox.test.js`
+
+**Files Modified**: `js/lightbox.js`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 

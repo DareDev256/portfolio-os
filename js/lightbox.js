@@ -341,8 +341,14 @@ export const Lightbox = {
         }
     },
 
+    // YouTube IDs: exactly 11 alphanumeric, hyphen, or underscore characters
+    YOUTUBE_ID_RE: /^[a-zA-Z0-9_-]{11}$/,
+    // Vimeo IDs: 6–11 digit numeric strings
+    VIMEO_ID_RE: /^[0-9]{6,11}$/,
+
     /**
-     * Detect video type from URL
+     * Detect video type from URL and validate the extracted ID
+     * Returns { type, id } — id is null if validation fails
      */
     detectVideoType(url) {
         if (url.includes('youtube.com') || url.includes('youtu.be')) {
@@ -352,20 +358,30 @@ export const Lightbox = {
             } else if (url.includes('youtu.be/')) {
                 id = url.split('youtu.be/')[1].split('?')[0];
             }
+            if (!this.YOUTUBE_ID_RE.test(id)) {
+                console.warn('[Lightbox] Blocked invalid YouTube ID:', id);
+                return { type: 'youtube', id: null };
+            }
             return { type: 'youtube', id };
         } else if (url.includes('vimeo.com')) {
-            const id = url.split('vimeo.com/')[1];
+            const id = url.split('vimeo.com/')[1]?.split('?')[0]?.split('/')[0] || '';
+            if (!this.VIMEO_ID_RE.test(id)) {
+                console.warn('[Lightbox] Blocked invalid Vimeo ID:', id);
+                return { type: 'vimeo', id: null };
+            }
             return { type: 'vimeo', id };
         }
         return { type: 'video', id: null };
     },
 
     /**
-     * Create YouTube Embed
+     * Create YouTube Embed (sandboxed, validated ID required)
      */
     createYouTubeEmbed(id) {
+        if (!id) return this._blockedEmbedPlaceholder('YouTube');
         const iframe = document.createElement('iframe');
         iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+        iframe.sandbox = 'allow-scripts allow-same-origin allow-presentation';
         iframe.frameBorder = '0';
         iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
         iframe.allowFullscreen = true;
@@ -375,16 +391,28 @@ export const Lightbox = {
     },
 
     /**
-     * Create Vimeo Embed
+     * Create Vimeo Embed (sandboxed, validated ID required)
      */
     createVimeoEmbed(id) {
+        if (!id) return this._blockedEmbedPlaceholder('Vimeo');
         const iframe = document.createElement('iframe');
         iframe.src = `https://player.vimeo.com/video/${id}?autoplay=1`;
+        iframe.sandbox = 'allow-scripts allow-same-origin allow-presentation';
         iframe.frameBorder = '0';
         iframe.allow = 'autoplay; fullscreen; picture-in-picture';
         iframe.allowFullscreen = true;
         iframe.style.width = '100%';
         iframe.style.height = '100%';
         return iframe;
+    },
+
+    /**
+     * Placeholder shown when a video ID fails validation
+     */
+    _blockedEmbedPlaceholder(provider) {
+        const el = document.createElement('div');
+        el.textContent = `Invalid ${provider} video URL`;
+        el.style.cssText = 'color:#ff4444;display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:monospace;';
+        return el;
     }
 };
