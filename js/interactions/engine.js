@@ -10,7 +10,7 @@ export const InteractionEngine = {
     isEnabled: false,
     rafId: null,
     _modulesLoaded: false,
-    _initializing: false,
+    _initPromise: null,
 
     // Performance tracking
     lastFrameTime: 0,
@@ -49,8 +49,13 @@ export const InteractionEngine = {
      */
     async init(options = {}) {
         const { startLoop = true } = options;
-        if (this._initializing || this._modulesLoaded) return;
-        this._initializing = true;
+        if (this._modulesLoaded) return;
+        if (this._initPromise) return this._initPromise;
+        this._initPromise = this._doInit(startLoop);
+        return this._initPromise;
+    },
+
+    async _doInit(startLoop) {
 
         console.log('[InteractionEngine] Initializing...');
 
@@ -90,7 +95,7 @@ export const InteractionEngine = {
         });
 
         this._modulesLoaded = true;
-        this._initializing = false;
+        this._initPromise = null;
         this.isEnabled = true;
         console.log('[InteractionEngine] Module loading complete');
 

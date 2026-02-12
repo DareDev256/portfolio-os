@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.8.0-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.8.1-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-97_passing-00e676?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-38-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
@@ -243,7 +243,7 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 
 ## License
 
-MIT — **v3.8.0**
+MIT — **v3.8.1**
 
 ---
 

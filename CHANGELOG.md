@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.8.0
+version: 3.8.1
 last_updated: 2026-02-12
 
 ---
@@ -15,6 +15,18 @@ last_updated: 2026-02-12
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.8.1] — 2026-02-12
+
+### Fixed
+- **Skills Universe event listener leak** — `mousedown` and `mousemove` listeners on the canvas were registered with anonymous functions in `init()` but never removed in `stop()`, causing listeners to accumulate each time the Skills window was opened and closed. Now stores bound references for all four listeners (mousedown, mousemove, mouseup, resize) and removes them all on teardown.
+- **Skills Universe spring physics NaN crash** — spring force calculation divided by `dist` without a zero-guard, unlike the repulsion code. Two connected nodes at identical coordinates produced `NaN` forces that propagated to all nodes, collapsing the entire graph. Added `dist === 0` guard matching the existing repulsion pattern.
+- **Skills Universe missing resize handler** — canvas dimensions were set once at init and never updated. Resizing the browser or Skills window left nodes rendering outside the visible area or clipped. Added `window.resize` listener that reflows the canvas to its parent container dimensions.
+- **InteractionEngine double-init race condition** — concurrent `init()` calls (e.g. from rapid window open/close) could bypass the `_initializing` boolean guard and trigger duplicate module loading. Replaced boolean flag with a stored Promise so concurrent callers await the same initialization.
+
+**Files Modified**: `js/skills.js`, `js/interactions/engine.js`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -1021,7 +1033,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.8.0
+**Latest Version**: 3.8.1
 
 **Status**: ✅ Production Ready
 

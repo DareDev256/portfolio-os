@@ -105,11 +105,19 @@ export const SkillsUniverse = {
         // Initialize Physics World
         this.buildGraph();
 
-        // Event Listeners — store bound refs so stop() can remove them
+        // Event Listeners — store bound refs so stop() can remove them all
+        this._onMouseDown = (e) => this.inputStart(e);
+        this._onMouseMove = (e) => this.inputMove(e);
         this._onMouseUp = () => this.inputEnd();
-        this.canvas.addEventListener('mousedown', (e) => this.inputStart(e));
-        this.canvas.addEventListener('mousemove', (e) => this.inputMove(e));
+        this._onResize = () => {
+            if (this.canvas && this.canvas.parentElement) {
+                this.resize(this.canvas.parentElement.clientWidth, this.canvas.parentElement.clientHeight);
+            }
+        };
+        this.canvas.addEventListener('mousedown', this._onMouseDown);
+        this.canvas.addEventListener('mousemove', this._onMouseMove);
         window.addEventListener('mouseup', this._onMouseUp);
+        window.addEventListener('resize', this._onResize);
 
         // Start Loop
         this.isRunning = true;
@@ -122,8 +130,17 @@ export const SkillsUniverse = {
     stop() {
         this.isRunning = false;
         if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
+        if (this.canvas) {
+            this.canvas.removeEventListener('mousedown', this._onMouseDown);
+            this.canvas.removeEventListener('mousemove', this._onMouseMove);
+        }
         if (this._onMouseUp) window.removeEventListener('mouseup', this._onMouseUp);
+        if (this._onResize) window.removeEventListener('resize', this._onResize);
         if (this.canvas) this.canvas.remove();
+        this._onMouseDown = null;
+        this._onMouseMove = null;
+        this._onMouseUp = null;
+        this._onResize = null;
     },
 
     resize(w, h) {
@@ -224,7 +241,8 @@ export const SkillsUniverse = {
             const b = spring.b;
             const dx = b.x - a.x;
             const dy = b.y - a.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
+            let dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist === 0) dist = 0.1; // Prevent NaN from division by zero
 
             const stretch = dist - cfg.springLength;
             const force = stretch * cfg.springStiffness;
