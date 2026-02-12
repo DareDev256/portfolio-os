@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.6.3
+version: 3.6.4
 last_updated: 2026-02-12
 
 ---
@@ -15,6 +15,20 @@ last_updated: 2026-02-12
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.6.4] — 2026-02-12
+
+### Added
+- **DOM helpers test suite** (`tests/dom-helpers.test.js`) — 7 tests covering `openExternal()` (noopener/noreferrer enforcement, URL passthrough) and `animateCounter()` (completion, intermediate values, edge cases, cancellation)
+- **Modal dialog test suite** (`tests/modal.test.js`) — 15 tests covering `init()` (container creation, idempotency), `_createDismiss()` (focus release, resolve values), `prompt()` (title/message rendering, focus trapping, confirm/cancel/overlay clicks, Enter/Escape keys), and `alert()` (OK-only rendering, dismiss lifecycle, focus trap cleanup)
+
+**Test count**: 69 → 91 (22 new tests across 2 files)
+
+**Files Created**: `tests/dom-helpers.test.js`, `tests/modal.test.js`
+
+**Files Modified**: `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -959,7 +973,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.6.3
+**Latest Version**: 3.6.4
 
 **Status**: ✅ Production Ready
 

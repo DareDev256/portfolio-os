@@ -6,7 +6,7 @@
 
 **[jamesdare.com](https://jamesdare.com)** · **[View Changelog](CHANGELOG.md)**
 
-`37 modules` · `17 stylesheets` · `69 tests` · `0 framework deps`
+`37 modules` · `17 stylesheets` · `91 tests` · `0 framework deps`
 
 </div>
 
@@ -145,13 +145,15 @@ css/                             # 17 modular stylesheets
 ├── command-palette.css          # Cmd+K styles
 └── ... (+ windows, modal, forms, mobile, tour, welcome, etc.)
 
-tests/                           # 69 vitest tests
+tests/                           # 91 vitest tests
 ├── sanitize.test.js             # XSS sanitization (12 tests)
 ├── state.test.js                # State management (15 tests)
 ├── data-loader.test.js          # JSON fetch + cache (9 tests)
 ├── router.test.js               # Path validation + routing (12 tests)
 ├── focus-trap.test.js           # Tab cycling + cleanup (7 tests)
-└── lightbox.test.js             # Video ID validation + sandbox (14 tests)
+├── lightbox.test.js             # Video ID validation + sandbox (14 tests)
+├── dom-helpers.test.js          # openExternal + animateCounter (7 tests)
+└── modal.test.js                # Dialog init, dismiss, prompt, alert (15 tests)
 ```
 
 ## Tech Stack
@@ -175,7 +177,7 @@ tests/                           # 69 vitest tests
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run 69 vitest tests
+npm run test      # Run 91 vitest tests
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
@@ -196,7 +198,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 
 ## License
 
-MIT — **v3.6.3**
+MIT — **v3.6.4**
 
 ---
 
