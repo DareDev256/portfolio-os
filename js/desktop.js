@@ -6,7 +6,7 @@ import { PixelLoader } from './loader.js';
 // SkillsUniverse, GitHub, Terminal loaded dynamically at point-of-use (P5)
 import { Sanitize } from './sanitize.js';
 import { loadMedia, loadProjects } from './data-loader.js';
-import { openExternal, animateCounter } from './dom-helpers.js';
+import { openExternal, animateCounter, loadJSON, saveJSON } from './dom-helpers.js';
 
 /**
  * Desktop Manager
@@ -317,12 +317,7 @@ export const Desktop = {
         container.innerHTML = '';
 
         // Load saved positions (v2 key forces layout reset for existing users)
-        let savedLayout = {};
-        try {
-            savedLayout = JSON.parse(localStorage.getItem('desktop_layout_v2') || '{}');
-        } catch {
-            localStorage.removeItem('desktop_layout_v2');
-        }
+        const savedLayout = loadJSON('desktop_layout_v2', {});
 
         // Default positions for first-time visitors
         // Row-priority layout — recruiters read top-left first
@@ -471,17 +466,12 @@ export const Desktop = {
                     element.style.zIndex = ''; // Reset z-index
 
                     // Save new position
-                    let currentLayout = {};
-                    try {
-                        currentLayout = JSON.parse(localStorage.getItem('desktop_layout_v2') || '{}');
-                    } catch {
-                        currentLayout = {};
-                    }
+                    const currentLayout = loadJSON('desktop_layout_v2', {});
                     currentLayout[id] = {
                         x: parseInt(element.style.left),
                         y: parseInt(element.style.top)
                     };
-                    localStorage.setItem('desktop_layout_v2', JSON.stringify(currentLayout));
+                    saveJSON('desktop_layout_v2', currentLayout);
 
                     // Small timeout to reset dragging flag so click event doesn't fire immediately
                     setTimeout(() => {
@@ -857,11 +847,8 @@ export const Desktop = {
             const isLocked = !!protectedFolders[folderName];
 
             // Get custom icon
-            let customIcon = '📁';
-            try {
-                const storedIcons = JSON.parse(localStorage.getItem('folderIcons') || '{}');
-                if (storedIcons[folderName]) customIcon = storedIcons[folderName];
-            } catch { /* ignored */ }
+            const storedIcons = loadJSON('folderIcons', {});
+            const customIcon = storedIcons[folderName] || '📁';
 
             const icon = isLocked ? '🔒' : customIcon;
 

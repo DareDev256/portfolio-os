@@ -3,6 +3,7 @@ import { Desktop } from './desktop.js';
 import { State } from './state.js';
 import { Sanitize } from './sanitize.js';
 import { loadMedia, loadProjects, invalidateData } from './data-loader.js';
+import { loadJSON } from './dom-helpers.js';
 
 /**
  * Admin Dashboard
@@ -578,10 +579,7 @@ export const Admin = {
         const folderList = content.querySelector('#folderIconsList');
         if (folderList) {
             const folders = ['Real Estate', 'Glamour', 'Cars', 'Music Videos', 'Archive'];
-            let storedIcons = {};
-            try {
-                storedIcons = JSON.parse(localStorage.getItem('folderIcons') || '{}');
-            } catch { /* ignored */ }
+            const storedIcons = loadJSON('folderIcons', {});
 
             const defaultIcons = {
                 'Real Estate': '🏠',

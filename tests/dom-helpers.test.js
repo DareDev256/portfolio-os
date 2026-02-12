@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { openExternal, animateCounter } from '../js/dom-helpers.js';
+import { openExternal, animateCounter, loadJSON, saveJSON } from '../js/dom-helpers.js';
 
 describe('openExternal()', () => {
     let openSpy;
@@ -79,5 +79,46 @@ describe('animateCounter()', () => {
         vi.advanceTimersByTime(5000);
         // Value should stay frozen after cancellation
         expect(element.textContent).toBe(frozen);
+    });
+});
+
+describe('loadJSON()', () => {
+    beforeEach(() => {
+        localStorage.clear();
+    });
+
+    it('returns parsed object from localStorage', () => {
+        localStorage.setItem('test_key', JSON.stringify({ a: 1 }));
+        expect(loadJSON('test_key')).toEqual({ a: 1 });
+    });
+
+    it('returns fallback when key is missing', () => {
+        expect(loadJSON('missing', {})).toEqual({});
+    });
+
+    it('returns fallback on corrupted JSON', () => {
+        localStorage.setItem('bad', '{not json');
+        expect(loadJSON('bad', [])).toEqual([]);
+    });
+
+    it('returns null as default fallback', () => {
+        expect(loadJSON('nope')).toBeNull();
+    });
+});
+
+describe('saveJSON()', () => {
+    beforeEach(() => {
+        localStorage.clear();
+    });
+
+    it('serializes and persists value', () => {
+        saveJSON('key', { x: 42 });
+        expect(JSON.parse(localStorage.getItem('key'))).toEqual({ x: 42 });
+    });
+
+    it('overwrites existing key', () => {
+        saveJSON('key', 'old');
+        saveJSON('key', 'new');
+        expect(JSON.parse(localStorage.getItem('key'))).toBe('new');
     });
 });

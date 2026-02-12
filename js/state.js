@@ -4,6 +4,7 @@
  * Modules register themselves via registerModule() — no static imports here
  * to avoid defeating lazy loading.
  */
+import { loadJSON } from './dom-helpers.js';
 
 export const State = {
     /** Dispatch a state change event so visual modules can react without coupling */
@@ -86,15 +87,8 @@ export const State = {
         if (savedIntensity !== null) this.interactionIntensity = parseInt(savedIntensity, 10);
 
         // Load window states
-        const savedWindows = localStorage.getItem('windowStates');
-        if (savedWindows) {
-            try {
-                const windowStates = JSON.parse(savedWindows);
-                this.windowStates = windowStates;
-            } catch (e) {
-                console.error('Failed to parse window states:', e);
-            }
-        }
+        const windowStates = loadJSON('windowStates');
+        if (windowStates) this.windowStates = windowStates;
     },
 
     /**

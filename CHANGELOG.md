@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.6.5
+version: 3.7.0
 last_updated: 2026-02-12
 
 ---
@@ -15,6 +15,21 @@ last_updated: 2026-02-12
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.7.0] — 2026-02-12
+
+### Changed
+- **Extracted `loadJSON`/`saveJSON` storage helpers** into `dom-helpers.js` — replaces 6 inconsistent `try/catch` + `JSON.parse(localStorage.getItem(...))` patterns across `desktop.js` (3 sites), `github.js` (2 sites), `admin.js` (1 site), and `state.js` (1 site) with a single, tested utility. Error handling is now uniform: parse failures silently return the fallback value instead of varying between removing the key, logging an error, or swallowing silently.
+- **Fixed `window` event listener memory leak in `skills.js`** — `window.addEventListener('mouseup', ...)` was registered with a new anonymous function on every `init()` call but never removed in `stop()`, causing listeners to stack each time the Skills window was opened and closed. Now stores a bound reference and removes it on teardown.
+
+### Added
+- **6 new tests** for `loadJSON()` and `saveJSON()` in `tests/dom-helpers.test.js` — covers valid JSON, missing keys, corrupted data fallback, default null, overwrite, and serialization
+
+**Test count**: 91 → 97 (6 new tests)
+
+**Files Modified**: `js/dom-helpers.js`, `js/desktop.js`, `js/github.js`, `js/admin.js`, `js/state.js`, `js/skills.js`, `tests/dom-helpers.test.js`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -982,7 +997,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.6.5
+**Latest Version**: 3.7.0
 
 **Status**: ✅ Production Ready
 

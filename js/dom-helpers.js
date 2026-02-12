@@ -4,6 +4,32 @@
  */
 
 /**
+ * Safely parse a JSON value from localStorage.
+ * Replaces 6 inconsistent try/catch patterns scattered across the codebase.
+ * @param {string} key - localStorage key
+ * @param {*} fallback - Value returned on missing key or parse failure
+ * @returns {*} Parsed value or fallback
+ */
+export function loadJSON(key, fallback = null) {
+    try {
+        const raw = localStorage.getItem(key);
+        if (raw === null) return fallback;
+        return JSON.parse(raw);
+    } catch {
+        return fallback;
+    }
+}
+
+/**
+ * Serialize a value to JSON and persist it in localStorage.
+ * @param {string} key - localStorage key
+ * @param {*} value - Value to serialize
+ */
+export function saveJSON(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+}
+
+/**
  * Safely open an external link with noopener/noreferrer to prevent tabnapping.
  * Replaces bare window.open(url, '_blank') calls throughout the codebase.
  */

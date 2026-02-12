@@ -105,10 +105,11 @@ export const SkillsUniverse = {
         // Initialize Physics World
         this.buildGraph();
 
-        // Event Listeners
+        // Event Listeners — store bound refs so stop() can remove them
+        this._onMouseUp = () => this.inputEnd();
         this.canvas.addEventListener('mousedown', (e) => this.inputStart(e));
         this.canvas.addEventListener('mousemove', (e) => this.inputMove(e));
-        window.addEventListener('mouseup', () => this.inputEnd());
+        window.addEventListener('mouseup', this._onMouseUp);
 
         // Start Loop
         this.isRunning = true;
@@ -121,6 +122,7 @@ export const SkillsUniverse = {
     stop() {
         this.isRunning = false;
         if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
+        if (this._onMouseUp) window.removeEventListener('mouseup', this._onMouseUp);
         if (this.canvas) this.canvas.remove();
     },
 

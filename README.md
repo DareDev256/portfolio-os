@@ -6,8 +6,8 @@
 
 **[jamesdare.com](https://jamesdare.com)** · **[View Changelog](CHANGELOG.md)**
 
-![Version](https://img.shields.io/badge/version-3.6.5-00f0ff?style=flat-square)
-![Tests](https://img.shields.io/badge/tests-91_passing-00e676?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.7.0-00f0ff?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-97_passing-00e676?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-38-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-888?style=flat-square)
@@ -129,7 +129,7 @@ js/                                 # 38 ES modules, zero framework imports
 ├── router.js                       # History API deep-linkable routing
 ├── command-palette.js              # Cmd+K fuzzy-search launcher
 ├── data-loader.js                  # Centralized JSON fetcher with caching
-├── dom-helpers.js                  # Shared utilities (openExternal, animateCounter)
+├── dom-helpers.js                  # Shared utilities (openExternal, animateCounter, loadJSON, saveJSON)
 ├── sanitize.js                     # DOMPurify wrapper
 ├── modal.js                        # Prompt/alert dialogs with focus trapping
 ├── focus-trap.js                   # WCAG focus trapping utility
@@ -179,14 +179,14 @@ css/                                # 17 modular stylesheets
 ├── loading.css                     # Boot sequence, spinners
 └── admin.css                       # Content editor panel
 │
-tests/                              # 91 vitest tests across 8 suites
+tests/                              # 97 vitest tests across 8 suites
 ├── sanitize.test.js                # XSS sanitization (12 tests)
 ├── state.test.js                   # State persistence + events (15 tests)
 ├── data-loader.test.js             # JSON fetch + cache (9 tests)
 ├── router.test.js                  # Path validation + routing (12 tests)
 ├── focus-trap.test.js              # Tab cycling + cleanup (7 tests)
 ├── lightbox.test.js                # Video ID validation + sandbox (14 tests)
-├── dom-helpers.test.js             # openExternal + animateCounter (7 tests)
+├── dom-helpers.test.js             # openExternal, animateCounter, loadJSON, saveJSON (13 tests)
 └── modal.test.js                   # Dialog init, dismiss, prompt, alert (15 tests)
 ```
 
@@ -211,7 +211,7 @@ tests/                              # 91 vitest tests across 8 suites
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run 91 vitest tests
+npm run test      # Run 97 vitest tests
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
@@ -232,7 +232,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 
 ## License
 
-MIT — **v3.6.5**
+MIT — **v3.7.0**
 
 ---
 

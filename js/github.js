@@ -3,7 +3,7 @@
  * Handles live data fetching from GitHub API and rendering the dashboard.
  */
 import { Sanitize } from './sanitize.js';
-import { openExternal, animateCounter } from './dom-helpers.js';
+import { openExternal, animateCounter, loadJSON, saveJSON } from './dom-helpers.js';
 
 export const GitHub = {
     username: 'DareDev256',
@@ -85,16 +85,9 @@ export const GitHub = {
      */
     async getData() {
         // Check cache
-        const cached = localStorage.getItem(this.cacheKey);
-        if (cached) {
-            try {
-                const parsed = JSON.parse(cached);
-                if (Date.now() - parsed.timestamp < this.cacheTTL) {
-                    return parsed.data;
-                }
-            } catch {
-                localStorage.removeItem(this.cacheKey);
-            }
+        const parsed = loadJSON(this.cacheKey);
+        if (parsed && Date.now() - parsed.timestamp < this.cacheTTL) {
+            return parsed.data;
         }
 
         try {
@@ -113,10 +106,7 @@ export const GitHub = {
             const data = { user, repos, events };
 
             // Save Cache
-            localStorage.setItem(this.cacheKey, JSON.stringify({
-                timestamp: Date.now(),
-                data
-            }));
+            saveJSON(this.cacheKey, { timestamp: Date.now(), data });
 
             return data;
         } catch (e) {
