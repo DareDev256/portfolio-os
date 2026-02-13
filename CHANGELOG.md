@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.9.0
+version: 3.9.1
 last_updated: 2026-02-13
 
 ---
@@ -15,6 +15,19 @@ last_updated: 2026-02-13
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.9.1] — 2026-02-13
+
+### Added
+- **Smoke test suite** (`tests/smoke.test.js`) — 27 integration tests covering the 4 critical user flows most likely to break during refactors: homepage DOM structure (7 tests verifying lock screen, desktop, dock, top bar, ARIA landmarks), router navigation dispatch (8 tests verifying all 5 route→opener mappings plus XSS/null path blocking), contact form lifecycle (5 tests covering required fields, FormData capture, mailto URI construction, reset, and preventDefault), and responsive breakpoints (7 tests covering mobile detection, body class injection, 768px stylesheet, viewport meta creation/dedup, and hover-disable rules).
+
+**Test count**: 130 → 157 (27 new tests)
+
+**Files Created**: `tests/smoke.test.js`
+
+**Files Modified**: `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 

@@ -4,8 +4,8 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.9.0-00f0ff?style=flat-square)
-![Tests](https://img.shields.io/badge/tests-130_passing-00e676?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.9.1-00f0ff?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-157_passing-00e676?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-39-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-888?style=flat-square)
@@ -191,7 +191,7 @@ css/                                # 19 modular stylesheets
 ├── loading.css                     # Boot sequence, spinners
 └── admin.css                       # Content editor panel
 │
-tests/                              # 130 vitest tests across 10 suites
+tests/                              # 157 vitest tests across 11 suites
 ├── sanitize.test.js                # XSS sanitization (12 tests)
 ├── state.test.js                   # State persistence + events (15 tests)
 ├── data-loader.test.js             # JSON fetch + cache (9 tests)
@@ -201,7 +201,8 @@ tests/                              # 130 vitest tests across 10 suites
 ├── dom-helpers.test.js             # openExternal, animateCounter, loadJSON, saveJSON (13 tests)
 ├── modal.test.js                   # Dialog init, dismiss, prompt, alert (15 tests)
 ├── command-palette.test.js         # Fuzzy search, keyboard nav, ARIA, execute (22 tests)
-└── mobile.test.js                  # Device detection, viewport meta, mobile styles (11 tests)
+├── mobile.test.js                  # Device detection, viewport meta, mobile styles (11 tests)
+└── smoke.test.js                   # Critical path integration: DOM, routing, contact form, responsive (27 tests)
 ```
 
 ## Tech Stack
@@ -229,7 +230,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run 130 vitest tests
+npm run test      # Run 157 vitest tests
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
@@ -248,7 +249,7 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 
 ## License
 
-MIT — **v3.9.0**
+MIT — **v3.9.1**
 
 ---
 
