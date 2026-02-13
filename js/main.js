@@ -111,7 +111,7 @@ async function init() {
                     sheet.href.includes('styles.css') ||
                     sheet.href.includes('windows.css')
                 );
-            } catch (e) { return false; }
+            } catch (_e) { return false; }
         });
 
         if (ourStyles.length === 0) {

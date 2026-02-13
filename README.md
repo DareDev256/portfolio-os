@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.9.1-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.9.2-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-157_passing-00e676?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-39-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
@@ -98,7 +98,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 - Animation loops auto-pause when tab is hidden (`visibilitychange` API)
 - State decoupled from FX via `CustomEvent` observer pattern
-- Lazy-loaded modules (terminal, GitHub, skills — only fetched on window open)
+- Lazy-loaded modules (terminal, GitHub, skills, galaxy background — only fetched when needed)
 - InteractionEngine throttled to 30fps; Aurora to ~24fps
 - Zero `backdrop-filter` on desktop icons (pure GPU cost, zero visual payoff on dark backgrounds)
 - Clean timer/RAF lifecycle — clock intervals, drag-inertia frames, and lightbox pan state properly cleared on teardown
@@ -249,7 +249,7 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 
 ## License
 
-MIT — **v3.9.1**
+MIT — **v3.9.2**
 
 ---
 

@@ -1178,7 +1178,7 @@ export const Desktop = {
     /**
      * Legacy openMedia (kept for compatibility but unused by new flow)
      */
-    async openMedia(defaultTab = 'images', category = null) {
+    async openMedia() {
         this.openMediaVault();
     },
 
@@ -1980,7 +1980,7 @@ export const Desktop = {
         const content = document.createElement('div');
         content.style.height = '100%';
 
-        const win = WindowManager.create({
+        WindowManager.create({
             id: 'sysmon',
             title: 'SYS_MONITOR // DIAGNOSTICS',
             icon: '📊',

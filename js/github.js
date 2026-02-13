@@ -127,7 +127,6 @@ export const GitHub = {
 
             // Calculate simple stats
             const totalStars = repos.reduce((acc, r) => acc + r.stargazers_count, 0);
-            const mainLang = 'TypeScript'; // Hardcoded preference or calculated
             const languageBreakdown = this.calculateLanguageStats(repos);
             const commitTimeline = this.buildCommitTimeline(events, 30);
 
@@ -255,14 +254,20 @@ export const GitHub = {
                 if (starsValue) this.animateCounter(starsValue, totalStars);
             }, 100);
 
-        } catch (err) {
-            container.innerHTML = `
-                <div class="error-state">
-                    <h3>CONNECTION FAILED</h3>
-                    <p>UPLINK OFFLINE. RETRYING PROXY...</p>
-                    <button class="cyber-button" onclick="Desktop.openGitHubCenter()">RETRY</button>
-                </div>
-            `;
+        } catch (_err) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-state';
+            errorDiv.innerHTML = '<h3>CONNECTION FAILED</h3><p>UPLINK OFFLINE. RETRYING PROXY...</p>';
+            const retryBtn = document.createElement('button');
+            retryBtn.className = 'cyber-button';
+            retryBtn.textContent = 'RETRY';
+            retryBtn.addEventListener('click', async () => {
+                const { Desktop } = await import('./desktop.js');
+                Desktop.openGitHubCenter();
+            });
+            errorDiv.appendChild(retryBtn);
+            container.textContent = '';
+            container.appendChild(errorDiv);
         }
     }
 };

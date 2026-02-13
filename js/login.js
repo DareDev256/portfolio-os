@@ -4,11 +4,9 @@ import { Desktop } from './desktop.js';
 import { StartMenu } from './startmenu.js';
 import { WindowManager } from './windows.js';
 import { Glyphs } from './glyphs.js';
-import { AudioFX } from './audiofx.js';
 import { Lightbox } from './lightbox.js';
 import { Router } from './router.js';
 import { Mobile } from './mobile.js';
-import { initGalaxyBackground, destroyGalaxyBackground } from './galaxy-background.js';
 import { MahoragaWheel3D } from './mahoraga-wheel-3d.js';
 import { trapFocus } from './focus-trap.js';
 
@@ -67,7 +65,7 @@ export const Login = {
     /**
      * Initialize galaxy background effect on document body (persists across login/desktop)
      */
-    initGalaxyEffect() {
+    async initGalaxyEffect() {
         // Already initialized by main.js during boot
         if (this.galaxyInstance || document.body.classList.contains('galaxy-active')) {
             this.galaxyInstance = window.__galaxyInstance || null;
@@ -85,7 +83,9 @@ export const Login = {
         }
 
         // Initialize Three.js galaxy background on BODY (persists through login)
+        // Dynamic import preserves Vite code-splitting (main.js also imports dynamically)
         try {
+            const { initGalaxyBackground } = await import('./galaxy-background.js');
             this.galaxyInstance = initGalaxyBackground(document.body, {
                 starCount: 150,
                 nebulaSpeed: 0.00025,

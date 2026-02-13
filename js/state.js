@@ -232,7 +232,6 @@ export const State = {
         this.windows.forEach((win, id) => {
             if (!win.element) return;
 
-            const rect = win.element.getBoundingClientRect();
             states[id] = {
                 x: win.x,
                 y: win.y,

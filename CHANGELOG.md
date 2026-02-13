@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.9.1
+version: 3.9.2
 last_updated: 2026-02-13
 
 ---
@@ -15,6 +15,21 @@ last_updated: 2026-02-13
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.9.2] — 2026-02-13
+
+### Fixed
+- **Dead imports in `login.js`** — removed unused `AudioFX` and `destroyGalaxyBackground` imports left over from earlier refactors. The static `galaxy-background.js` import was defeating Vite's code-splitting; converted to dynamic `import()` so the 12.8 kB galaxy shader now loads on-demand instead of blocking initial page load.
+- **Dead code in `desktop.js`** — removed unused `defaultTab`/`category` params from legacy `openMedia()` and unused `win` capture in `openSystemMonitor()`.
+- **Dead code in `github.js`** — removed unused `mainLang` variable; replaced inline `onclick` handler (bypasses CSP, fails in bundled builds) with DOM `addEventListener` using dynamic `import()` to avoid circular dependency.
+- **Dead code in `state.js`** — removed unused `getBoundingClientRect()` call in `saveWindowStates()` (state was already read from `win.x/y/width/height`).
+- **ESLint config** — added `argsIgnorePattern: '^_'` and `caughtErrorsIgnorePattern: '^_'` to `no-unused-vars` rule, following the widespread JS convention for intentionally unused parameters. Reduced lint warnings from 27 to 18.
+
+**Bundle impact**: Main chunk reduced from 148.4 kB to 135.8 kB (−12.6 kB) by enabling galaxy-background code-splitting.
+
+**Files Modified**: `js/login.js`, `js/desktop.js`, `js/github.js`, `js/state.js`, `js/main.js`, `eslint.config.js`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -1094,7 +1109,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.9.0
+**Latest Version**: 3.9.2
 
 **Status**: ✅ Production Ready
 
