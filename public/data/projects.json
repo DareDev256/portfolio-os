@@ -89,9 +89,9 @@
     },
     {
         "title": "Viral Clone",
-        "description": "AI-powered social media clone with viral content algorithms — engagement scoring, trend detection, and feed optimization.",
-        "tech": ["React", "Node.js", "PostgreSQL", "Redis"],
-        "tags": ["Fullstack", "AI"],
+        "description": "Telegram bot that clones viral TikTok content and auto-publishes across platforms — AI-powered content curation with queue management.",
+        "tech": ["TypeScript", "grammY", "SQLite", "BullMQ"],
+        "tags": ["AI", "Tools"],
         "demo": null,
         "repo": "https://github.com/DareDev256/Viral-Clone"
     },
