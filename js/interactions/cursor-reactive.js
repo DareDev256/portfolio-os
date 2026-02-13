@@ -35,7 +35,7 @@ export const CursorReactive = {
     /**
      * Main update loop (called from engine)
      */
-    update(timestamp, deltaTime, cursorData, allElements) {
+    update(timestamp, deltaTime, cursorData, _allElements) {
         this.frameCounter++;
 
         // Throttle updates if needed
@@ -214,8 +214,6 @@ export const CursorReactive = {
         // Apply magnetic pull
         if (pullX !== 0 || pullY !== 0) {
             const currentTransform = element.style.transform || '';
-            const translateMatch = currentTransform.match(/translate\(([^)]+)\)/);
-
             element.style.transform = currentTransform.replace(/translate\([^)]+\)/, '') +
                 ` translate(${pullX}px, ${pullY}px)`;
         }
@@ -229,12 +227,6 @@ export const CursorReactive = {
             element.style.boxShadow = '';
             return;
         }
-
-        const bounds = data.bounds;
-
-        // Calculate cursor position relative to element
-        const relX = ((cursorData.x - bounds.left) / bounds.width) * 100;
-        const relY = ((cursorData.y - bounds.top) / bounds.height) * 100;
 
         const color = data.config.color || '#00f0ff';
 
@@ -270,7 +262,7 @@ export const CursorReactive = {
     /**
      * Apply magnetic attraction (element shifts toward cursor)
      */
-    applyMagneticAttraction(element, dx, dy, proximity, data) {
+    applyMagneticAttraction(element, dx, dy, proximity, _data) {
         if (proximity <= 0) {
             element.style.transform = '';
             return;

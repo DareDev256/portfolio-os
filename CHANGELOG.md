@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.9.2
+version: 3.9.3
 last_updated: 2026-02-13
 
 ---
@@ -15,6 +15,18 @@ last_updated: 2026-02-13
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.9.3] — 2026-02-13
+
+### Fixed
+- **Vite dual-import warning eliminated** — `warp.js` statically imported `fx.js` while `main.js` dynamically imported it, preventing Vite from code-splitting `fx.js` into its own chunk. Replaced static import with `window.__FX` reference (already set by `main.js` during boot). FX now loads on-demand as its own 3.44 kB chunk.
+- **18 → 0 ESLint warnings** — cleaned all remaining lint issues across 11 files: 3 catch variables prefixed with `_`, 6 unused callback parameters prefixed with `_`, 5 dead variables removed (`translateMatch`, `relX`/`relY`, `velocity`, `t0` ×2), and 1 orphaned `bounds` assignment cleaned up.
+
+**Bundle impact**: Main chunk reduced from 135.8 kB → 132.3 kB (−3.5 kB); `fx.js` now a separate 3.44 kB lazy chunk.
+
+**Files Modified**: `js/warp.js`, `js/admin.js`, `js/audiofx.js`, `js/boot.js`, `js/router.js`, `js/interactions/cursor-reactive.js`, `js/interactions/cursor-tracker.js`, `js/interactions/easter-eggs.js`, `js/interactions/micro-interactions.js`, `js/interactions/sound-manager.js`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -1109,7 +1121,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.9.2
+**Latest Version**: 3.9.3
 
 **Status**: ✅ Production Ready
 

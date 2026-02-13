@@ -27,8 +27,6 @@ export const SoundManager = {
         AudioFX.ensureContext();
         if (!AudioFX.ctx) return;
 
-        const t0 = AudioFX.ctx.currentTime;
-
         // Deep orchestral hit (bass)
         this.tone(55, 1.2, 'triangle', 0, 0.4);      // A1 - Deep foundation
         this.tone(82.41, 1.2, 'triangle', 0, 0.35);  // E2 - Perfect 5th
@@ -250,8 +248,6 @@ export const SoundManager = {
         if (!this.enabled) return;
         AudioFX.ensureContext();
         if (!AudioFX.ctx) return;
-
-        const t0 = AudioFX.ctx.currentTime;
 
         // High frequency burst with noise
         for (let i = 0; i < 5; i++) {

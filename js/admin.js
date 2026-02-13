@@ -107,7 +107,7 @@ export const Admin = {
             } else {
                 this.desktopItems = [...Desktop.DESKTOP_ITEMS];
             }
-        } catch (e) {
+        } catch (_e) {
             this.desktopItems = [...Desktop.DESKTOP_ITEMS];
         }
 

@@ -1,4 +1,3 @@
-import { FX } from './fx.js';
 import { AudioFX } from './audiofx.js';
 
 /**
@@ -33,10 +32,11 @@ export const Warp = {
         if (AudioFX && AudioFX.whoosh) {
             AudioFX.whoosh();
         }
-        if (FX && FX.triggerSuction) {
+        const fx = window.__FX;
+        if (fx && fx.triggerSuction) {
             const px = this.last.x * window.innerWidth || window.innerWidth / 2;
             const py = this.last.y * window.innerHeight || window.innerHeight / 2;
-            FX.triggerSuction(px, py, 650);
+            fx.triggerSuction(px, py, 650);
         }
         // Clean up after finish
         setTimeout(() => el.classList.remove('warp-out'), 560);

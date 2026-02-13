@@ -291,7 +291,7 @@ export const EasterEggs = {
     /**
      * Handle clicks for rapid click detection
      */
-    handleClick(e) {
+    handleClick(_e) {
         if (!this.enabled) return;
 
         const now = Date.now();
@@ -415,7 +415,7 @@ export const EasterEggs = {
     /**
      * Update (called from engine loop)
      */
-    update(timestamp, deltaTime) {
+    update(_timestamp, _deltaTime) {
         // Easter eggs are mostly event-driven, but we could add periodic checks here
     },
 

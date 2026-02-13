@@ -37,7 +37,7 @@ export const Boot = {
             this.meta.textContent = s.label + '…';
             try {
                 await s.task();
-            } catch (e) {
+            } catch (_e) {
                 /* ignore */
             }
             this.setProgress(((i + 1) / steps.length) * 100);

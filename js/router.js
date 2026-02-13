@@ -24,7 +24,7 @@ export const Router = {
      */
     init() {
         // Handle browser back/forward buttons
-        window.addEventListener('popstate', (e) => {
+        window.addEventListener('popstate', (_e) => {
             this.handleRoute(window.location.pathname);
         });
 

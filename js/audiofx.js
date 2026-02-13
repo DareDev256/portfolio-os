@@ -20,7 +20,7 @@ export const AudioFX = {
             this.master = this.ctx.createGain();
             this.master.gain.value = this.enabled ? 0.15 : 0.0;
             this.master.connect(this.ctx.destination);
-        } catch (e) {
+        } catch (_e) {
             /* ignore */
         }
     },

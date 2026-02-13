@@ -60,11 +60,16 @@ export const SkillsUniverse = {
         { id: 'mongo', label: 'MongoDB', type: 'db' },
         { id: 'redis', label: 'Redis', type: 'db' },
 
+        // AI / AGENTS
+        { id: 'claude', label: 'Claude Code', type: 'backend' },
+        { id: 'mcp', label: 'MCP Protocol', type: 'backend' },
+
         // TOOLS
         { id: 'git', label: 'Git', type: 'tool' },
         { id: 'docker', label: 'Docker', type: 'tool' },
         { id: 'aws', label: 'AWS', type: 'tool' },
-        { id: 'linux', label: 'Linux', type: 'tool' }
+        { id: 'linux', label: 'Linux', type: 'tool' },
+        { id: 'playwright', label: 'Playwright', type: 'tool' }
     ],
 
     connections: [
@@ -82,9 +87,13 @@ export const SkillsUniverse = {
         // Database Cluster
         ['postgres', 'node'], ['redis', 'node'],
 
+        // AI / Agents Cluster
+        ['claude', 'node'], ['claude', 'python'], ['claude', 'mcp'],
+        ['mcp', 'api'],
+
         // Tools Integration
         ['git', 'linux'], ['docker', 'aws'], ['docker', 'node'],
-        ['aws', 'node']
+        ['aws', 'node'], ['playwright', 'node'], ['playwright', 'docker']
     ],
 
     /**

@@ -187,7 +187,6 @@ export const MicroInteractions = {
 
             particle.inUse = true;
             const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.5;
-            const velocity = 2 + Math.random() * 3;
             const distance = 30 + Math.random() * 40;
 
             const endX = x + Math.cos(angle) * distance;
@@ -284,7 +283,7 @@ export const MicroInteractions = {
     /**
      * Update active animations (called from engine loop)
      */
-    update(timestamp, deltaTime) {
+    update(_timestamp, _deltaTime) {
         // Clean up finished animations
         this.activeAnimations.forEach(anim => {
             if (anim.playState === 'finished') {

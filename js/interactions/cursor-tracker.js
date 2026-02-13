@@ -113,7 +113,7 @@ export const CursorTracker = {
     /**
      * Calculate velocity based on position change
      */
-    calculateVelocity(deltaTime) {
+    calculateVelocity(_deltaTime) {
         // Calculate displacement
         const dx = this.x - this.prevX;
         const dy = this.y - this.prevY;

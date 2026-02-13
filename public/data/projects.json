@@ -88,6 +88,14 @@
         "repo": "https://github.com/DareDev256/music-time-machine"
     },
     {
+        "title": "Viral Clone",
+        "description": "AI-powered social media clone with viral content algorithms — engagement scoring, trend detection, and feed optimization.",
+        "tech": ["React", "Node.js", "PostgreSQL", "Redis"],
+        "tags": ["Fullstack", "AI"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/Viral-Clone"
+    },
+    {
         "title": "Tdots Portfolio",
         "description": "Synthwave 3D music video portfolio with neon aesthetics and immersive visual experience.",
         "tech": ["JavaScript", "Three.js", "CSS3", "Vercel"],
