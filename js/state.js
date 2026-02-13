@@ -6,11 +6,45 @@
  */
 import { loadJSON } from './dom-helpers.js';
 
+/**
+ * Registry of boolean toggle properties.
+ * Each entry defines the property name (also the localStorage key),
+ * default value, and event name emitted on change.
+ * Setters, toggles, and init() loading are all driven from this table.
+ */
+const BOOLEAN_TOGGLES = [
+    // FX layer
+    { prop: 'fxEnabled',              defaultVal: false, event: 'fx' },
+    { prop: 'auroraEnabled',          defaultVal: false, event: 'aurora' },
+    { prop: 'glyphsEnabled',          defaultVal: true,  event: 'glyphs' },
+    { prop: 'soundEnabled',           defaultVal: true,  event: 'sound' },
+    // Interaction engine
+    { prop: 'interactionsEnabled',    defaultVal: true,  event: 'interactions' },
+    { prop: 'microInteractionsEnabled', defaultVal: true, event: null },
+    { prop: 'cursorReactiveEnabled',  defaultVal: true,  event: null },
+    { prop: 'cursorTrailEnabled',     defaultVal: false, event: 'cursorTrail' },
+    { prop: 'easterEggsEnabled',      defaultVal: true,  event: null },
+];
+
 export const State = {
     /** Dispatch a state change event so visual modules can react without coupling */
     _emit(name, detail) {
         document.dispatchEvent(new CustomEvent('state:' + name, { detail }));
     },
+
+    /** Load a boolean from localStorage ('1'/'0'), falling back to current value */
+    _loadBoolean(key) {
+        const saved = localStorage.getItem(key);
+        if (saved !== null) this[key] = saved === '1';
+    },
+
+    /** Generic boolean setter: persist, emit, return new value */
+    _setBoolean(prop, enabled, event) {
+        this[prop] = !!enabled;
+        localStorage.setItem(prop, this[prop] ? '1' : '0');
+        if (event) this._emit(event, { enabled: this[prop] });
+    },
+
     // Z-index management
     currentZIndex: 100,
     maxZIndex: 100,
@@ -20,24 +54,9 @@ export const State = {
 
     // Theme and wallpaper
     theme: 'light',
-    // Default wallpaper: gradient (matches CSS default)
     wallpaper: null, // null means use CSS default gradient
-    // Futuristic FX toggle
-    fxEnabled: false,
-    auroraEnabled: false,
-    glyphsEnabled: true,
-    soundEnabled: true,
-
-    // Interaction Engine settings
-    interactionsEnabled: true,
-    microInteractionsEnabled: true,
-    cursorReactiveEnabled: true,
-    cursorTrailEnabled: false, // Disabled by default, can be enabled via Konami code
-    cursorTrailType: 'chakra', // 'playstation' or 'chakra' - chakra is default, PS unlocked via secret
-    easterEggsEnabled: true,
+    cursorTrailType: 'chakra', // 'playstation' or 'chakra'
     interactionIntensity: 100, // 0-100
-
-    // Idle lock configuration
     idleTime: 120000, // 2 minutes default
 
     /**
@@ -57,32 +76,15 @@ export const State = {
             this.wallpaper = savedWallpaper;
             this.applyWallpaper(savedWallpaper);
         }
-        // Otherwise, use CSS default gradient (no need to apply)
 
-        const savedFx = localStorage.getItem('fxEnabled');
-        if (savedFx !== null) {
-            this.fxEnabled = savedFx === '1';
+        // Load all boolean toggles from localStorage
+        for (const { prop } of BOOLEAN_TOGGLES) {
+            this._loadBoolean(prop);
         }
-        const savedAurora = localStorage.getItem('auroraEnabled');
-        if (savedAurora !== null) this.auroraEnabled = savedAurora === '1';
-        const savedGlyphs = localStorage.getItem('glyphsEnabled');
-        if (savedGlyphs !== null) this.glyphsEnabled = savedGlyphs === '1';
-        const savedSound = localStorage.getItem('soundEnabled');
-        if (savedSound !== null) this.soundEnabled = savedSound === '1';
 
-        // Load interaction engine settings
-        const savedInteractions = localStorage.getItem('interactionsEnabled');
-        if (savedInteractions !== null) this.interactionsEnabled = savedInteractions === '1';
-        const savedMicroInteractions = localStorage.getItem('microInteractionsEnabled');
-        if (savedMicroInteractions !== null) this.microInteractionsEnabled = savedMicroInteractions === '1';
-        const savedCursorReactive = localStorage.getItem('cursorReactiveEnabled');
-        if (savedCursorReactive !== null) this.cursorReactiveEnabled = savedCursorReactive === '1';
-        const savedCursorTrail = localStorage.getItem('cursorTrailEnabled');
-        if (savedCursorTrail !== null) this.cursorTrailEnabled = savedCursorTrail === '1';
+        // Non-boolean persisted settings
         const savedTrailType = localStorage.getItem('cursorTrailType');
         if (savedTrailType) this.cursorTrailType = savedTrailType;
-        const savedEasterEggs = localStorage.getItem('easterEggsEnabled');
-        if (savedEasterEggs !== null) this.easterEggsEnabled = savedEasterEggs === '1';
         const savedIntensity = localStorage.getItem('interactionIntensity');
         if (savedIntensity !== null) this.interactionIntensity = parseInt(savedIntensity, 10);
 
@@ -166,68 +168,10 @@ export const State = {
         document.documentElement.style.setProperty('--wallpaper-url', cssValue);
     },
 
-    // FX controls
-    setFxEnabled(enabled) {
-        this.fxEnabled = !!enabled;
-        localStorage.setItem('fxEnabled', this.fxEnabled ? '1' : '0');
-        this._emit('fx', { enabled: this.fxEnabled });
-    },
-
-    toggleFx() {
-        this.setFxEnabled(!this.fxEnabled);
-    },
-
-    setAuroraEnabled(v) {
-        this.auroraEnabled = !!v;
-        localStorage.setItem('auroraEnabled', this.auroraEnabled ? '1' : '0');
-        this._emit('aurora', { enabled: this.auroraEnabled });
-    },
-    toggleAurora() {
-        this.setAuroraEnabled(!this.auroraEnabled);
-    },
-
-    setGlyphsEnabled(v) {
-        this.glyphsEnabled = !!v;
-        localStorage.setItem('glyphsEnabled', this.glyphsEnabled ? '1' : '0');
-        this._emit('glyphs', { enabled: this.glyphsEnabled });
-    },
-    toggleGlyphs() {
-        this.setGlyphsEnabled(!this.glyphsEnabled);
-    },
-
-    setSoundEnabled(v) {
-        this.soundEnabled = !!v;
-        localStorage.setItem('soundEnabled', this.soundEnabled ? '1' : '0');
-        this._emit('sound', { enabled: this.soundEnabled });
-    },
-    toggleSound() {
-        this.setSoundEnabled(!this.soundEnabled);
-    },
-
-    // Interaction Engine controls
-    setInteractionsEnabled(v) {
-        this.interactionsEnabled = !!v;
-        localStorage.setItem('interactionsEnabled', this.interactionsEnabled ? '1' : '0');
-        this._emit('interactions', { enabled: this.interactionsEnabled });
-    },
-    toggleInteractions() {
-        this.setInteractionsEnabled(!this.interactionsEnabled);
-    },
-
-    setCursorTrailEnabled(v) {
-        this.cursorTrailEnabled = !!v;
-        localStorage.setItem('cursorTrailEnabled', this.cursorTrailEnabled ? '1' : '0');
-        this._emit('cursorTrail', { enabled: this.cursorTrailEnabled });
-    },
-
     setCursorTrailType(type) {
         this.cursorTrailType = type;
         localStorage.setItem('cursorTrailType', type);
         this._emit('cursorTrailType', { type });
-    },
-
-    toggleCursorTrail() {
-        this.setCursorTrailEnabled(!this.cursorTrailEnabled);
     },
 
     setInteractionIntensity(intensity) {
@@ -321,6 +265,28 @@ export const State = {
         this.windowStates = {};
     },
 };
+
+// Generate default properties, setters, and toggles from the BOOLEAN_TOGGLES registry.
+// This replaces ~70 lines of copy-pasted set/toggle methods with data-driven generation.
+// Public API is identical: State.setFxEnabled(v), State.toggleFx(), State.fxEnabled, etc.
+for (const { prop, defaultVal, event } of BOOLEAN_TOGGLES) {
+    // Set default value as a direct property
+    State[prop] = defaultVal;
+
+    // Derive method names: 'fxEnabled' → 'setFxEnabled' / 'toggleFx'
+    const upperProp = prop[0].toUpperCase() + prop.slice(1);
+    const setterName = 'set' + upperProp;
+    // Toggle name strips 'Enabled' suffix: 'FxEnabled' → 'toggleFx'
+    const toggleBase = upperProp.replace(/Enabled$/, '');
+    const toggleName = 'toggle' + toggleBase;
+
+    State[setterName] = function (v) {
+        this._setBoolean(prop, v, event);
+    };
+    State[toggleName] = function () {
+        this[setterName](!this[prop]);
+    };
+}
 
 // Initialize state on load (guarded for test environments)
 if (typeof window !== 'undefined' && typeof localStorage?.getItem === 'function') {

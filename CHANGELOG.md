@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.8.3
+version: 3.8.4
 last_updated: 2026-02-12
 
 ---
@@ -15,6 +15,15 @@ last_updated: 2026-02-12
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.8.4] — 2026-02-12
+
+### Changed
+- **Refactored `state.js` boolean toggle system** — replaced 9 hand-written setter/toggle method pairs and 10 repetitive `localStorage.getItem` blocks with a data-driven `BOOLEAN_TOGGLES` registry. A single loop now generates `setXEnabled()`, `toggleX()`, and `init()` loading for all boolean properties. Reduces ~96 lines of copy-pasted code to ~62 lines of declarative configuration. Public API is unchanged — all existing callers (`State.toggleFx()`, `State.fxEnabled`, etc.) work identically. Adding a new boolean toggle now requires 1 line in the registry instead of 8+ lines of methods.
+
+**Files Modified**: `js/state.js`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -1057,7 +1066,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.8.3
+**Latest Version**: 3.8.4
 
 **Status**: ✅ Production Ready
 
