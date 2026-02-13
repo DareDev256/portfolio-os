@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.8.4
-last_updated: 2026-02-12
+version: 3.9.0
+last_updated: 2026-02-13
 
 ---
 
@@ -15,6 +15,21 @@ last_updated: 2026-02-12
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.9.0] — 2026-02-13
+
+### Added
+- **Toast notification system** (`js/notifications.js`, `css/notifications.css`) — non-blocking notification queue with 4 types (success, error, warning, info), auto-dismiss progress bar, hover-to-pause, click-to-dismiss, max 4 visible with oldest eviction, `aria-live` polite region for screen reader support, `prefers-reduced-motion` respect, and mobile-responsive bottom positioning.
+- **Settings toggle feedback** — keyboard shortcuts (`Cmd+C`, `Cmd+S`, `Cmd+I` on Mac / `Alt+` on Windows) now show a toast confirming the toggle state (e.g. "Cursor trail ON").
+
+### Changed
+- **Easter eggs unified with toast system** — replaced 50+ lines of inline `showNotification()` with hardcoded CSS and DOM construction in `easter-eggs.js` with the shared `Notify` module. All 7 easter egg notifications (418 teapot, 404, system info, Konami code, rapid clicks, idle warning, PlayStation mode) now use the polished toast UI with progress bars and consistent styling.
+
+**Files Created**: `js/notifications.js`, `css/notifications.css`
+
+**Files Modified**: `js/interactions/easter-eggs.js`, `js/main.js`, `index.html`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -1066,7 +1081,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.8.4
+**Latest Version**: 3.9.0
 
 **Status**: ✅ Production Ready
 

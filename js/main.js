@@ -12,6 +12,7 @@ import { Login } from './login.js';
 import { Modal } from './modal.js';
 import { Desktop } from './desktop.js';
 import { CommandPalette } from './command-palette.js';
+import { Notify } from './notifications.js';
 
 // Wait for DOM to be ready
 if (document.readyState === 'loading') {
@@ -149,14 +150,17 @@ async function init() {
             const k = e.key.toLowerCase();
             if (k === 'c') {
                 State.toggleCursorTrail();
+                Notify.info(`Cursor trail ${State.cursorTrailEnabled ? 'ON' : 'OFF'}`);
                 e.preventDefault();
             }
             if (k === 's') {
                 State.toggleSound();
+                Notify.info(`Sound ${State.soundEnabled ? 'ON' : 'OFF'}`);
                 e.preventDefault();
             }
             if (k === 'i') {
                 State.toggleInteractions();
+                Notify.info(`Interactions ${State.interactionsEnabled ? 'ON' : 'OFF'}`);
                 e.preventDefault();
             }
             if (k === 'p') {

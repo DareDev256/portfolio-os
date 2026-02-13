@@ -3,6 +3,7 @@
  * Konami code, terminal sass, self-aware messages
  * Playful surprises that reward curiosity
  */
+import { Notify } from '../notifications.js';
 
 export const EasterEggs = {
     enabled: true,
@@ -33,7 +34,6 @@ export const EasterEggs = {
         console.log('[EasterEggs] Initialized');
 
         this.sessionStartTime = Date.now();
-        this.injectNotificationStyles();
 
         // Konami code + numeric buffer listener
         document.addEventListener('keydown', this.handleKeyPress.bind(this));
@@ -67,20 +67,10 @@ export const EasterEggs = {
 
             if (this.numBuffer.endsWith('418')) {
                 this.numBuffer = '';
-                this.showNotification(
-                    '🫖 HTTP 418',
-                    'I\'M A TEAPOT. Short and stout. Here is my handle, here is my spout.',
-                    'warning',
-                    4000
-                );
+                Notify.warning('I\'M A TEAPOT. Short and stout. Here is my handle, here is my spout.', 4000);
             } else if (this.numBuffer.endsWith('404')) {
                 this.numBuffer = '';
-                this.showNotification(
-                    '🔍 HTTP 404',
-                    'NOT FOUND... or is it? Maybe the real page was the friends we made along the way.',
-                    'info',
-                    4000
-                );
+                Notify.info('NOT FOUND... or is it? Maybe the real page was the friends we made along the way.', 4000);
             }
         }
 
@@ -171,16 +161,7 @@ export const EasterEggs = {
                 const secs = uptime % 60;
                 const windowCount = document.querySelectorAll('.window').length;
 
-                this.showNotification(
-                    '💻 SYSTEM_INFO.dat',
-                    `OS: Passion-OS v4.2.0<br>` +
-                    `Uptime: ${mins}m ${secs}s<br>` +
-                    `Windows: ${windowCount} active<br>` +
-                    `CPU: Vibes only<br>` +
-                    `Vibe Level: MAXIMUM`,
-                    'success',
-                    5000
-                );
+                Notify.success(`OS: Passion-OS v4.2.0 | Uptime: ${mins}m ${secs}s | Windows: ${windowCount} active | CPU: Vibes only`, 5000);
             }
         });
     },
@@ -227,11 +208,7 @@ export const EasterEggs = {
      */
     unlockKonamiCode() {
         if (this.konamiUnlocked) {
-            this.showNotification(
-                '🎮 ALREADY UNLOCKED',
-                'PlayStation mode is still active!',
-                'info'
-            );
+            Notify.info('PlayStation mode is still active!');
             return;
         }
 
@@ -261,12 +238,7 @@ export const EasterEggs = {
         }
 
         // Show epic notification
-        this.showNotification(
-            '🎮 CHEAT CODE ACTIVATED',
-            'PlayStation cursor trail unlocked! ✕◯△□<br>The nostalgia is real.',
-            'success',
-            5000
-        );
+        Notify.success('CHEAT CODE ACTIVATED — PlayStation cursor trail unlocked! ✕◯△□', 5000);
 
         console.log('🎮 KONAMI CODE ACTIVATED! PlayStation mode unlocked!');
     },
@@ -329,12 +301,7 @@ export const EasterEggs = {
             this.rapidClicks++;
 
             if (this.rapidClicks >= 10) {
-                this.showNotification(
-                    '☕ CAFFEINATED MUCH?',
-                    'Wow, someone\'s got energy! Maybe try decaf?',
-                    'warning',
-                    3000
-                );
+                Notify.warning('Wow, someone\'s got energy! Maybe try decaf?', 3000);
                 this.rapidClicks = 0;
             }
         } else {
@@ -376,79 +343,12 @@ export const EasterEggs = {
 
             // 5 minutes idle
             if (idleTime > 300000 && !this.idleWarningShown) {
-                this.showNotification(
-                    '😴 STILL THERE?',
-                    'You\'ve been idle for 5 minutes. Taking a break, or just admiring the UI?',
-                    'info',
-                    4000
-                );
+                Notify.info('You\'ve been idle for 5 minutes. Taking a break, or just admiring the UI?', 4000);
                 this.idleWarningShown = true;
             }
         }, 30000);
     },
 
-    /**
-     * Inject notification styles once (instead of per-call)
-     */
-    injectNotificationStyles() {
-        if (document.getElementById('easter-egg-notification-styles')) return;
-        const style = document.createElement('style');
-        style.id = 'easter-egg-notification-styles';
-        style.textContent = `
-            @keyframes slideInRight {
-                from { transform: translateX(500px); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOutRight {
-                to { transform: translateX(500px); opacity: 0; }
-            }
-            .easter-egg-notification .notification-message {
-                font-size: 14px; color: #ccc; line-height: 1.6;
-            }
-        `;
-        document.head.appendChild(style);
-    },
-
-    /**
-     * Show notification
-     */
-    showNotification(title, message, type = 'info', duration = 4000) {
-        if (window.__InteractionEngine?.soundManager) {
-            window.__InteractionEngine.soundManager.play('notification');
-        }
-
-        const color = type === 'success' ? '#00ff88' : type === 'warning' ? '#ffaa00' : '#00f0ff';
-
-        const notification = document.createElement('div');
-        notification.className = `easter-egg-notification notification-${type}`;
-        const titleEl = document.createElement('div');
-        titleEl.className = 'notification-title';
-        titleEl.style.cssText = `font-size:16px;font-weight:bold;margin-bottom:8px;color:${color}`;
-        titleEl.textContent = title;
-        const msgEl = document.createElement('div');
-        msgEl.className = 'notification-message';
-        msgEl.textContent = message;
-        notification.appendChild(titleEl);
-        notification.appendChild(msgEl);
-
-        notification.style.cssText = `
-            position: fixed; top: 80px; right: 20px;
-            min-width: 300px; max-width: 400px; padding: 20px;
-            background: rgba(0, 0, 0, 0.95);
-            border: 2px solid ${color}; border-radius: 12px;
-            color: white; font-family: 'Courier New', monospace;
-            box-shadow: 0 0 30px ${color}40;
-            z-index: 10003;
-            animation: slideInRight 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        `;
-
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.style.animation = 'slideOutRight 0.3s ease-out forwards';
-            setTimeout(() => notification.remove(), 300);
-        }, duration);
-    },
 
     /**
      * Get terminal sass response
