@@ -4,9 +4,9 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.9.3-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.10.0-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-157_passing-00e676?style=flat-square)
-![Modules](https://img.shields.io/badge/modules-39-b388ff?style=flat-square)
+![Modules](https://img.shields.io/badge/modules-40-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-888?style=flat-square)
 
@@ -16,7 +16,7 @@
 
 ---
 
-An interactive desktop environment that runs entirely in the browser. Draggable windows, GPU-optimized glass effects, a Three.js cyberspace background, Spotlight-style command palette, and 39 vanilla JavaScript modules — no React, no Vue, no dependencies beyond the web platform.
+An interactive desktop environment that runs entirely in the browser. Draggable windows, GPU-optimized glass effects, a Three.js cyberspace background, Spotlight-style command palette, and 40 vanilla JavaScript modules — no React, no Vue, no dependencies beyond the web platform.
 
 Built by **James Olusoga** — AI Solutions Engineer & Creative Technologist, Toronto.
 
@@ -107,6 +107,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 | Shortcut | Action |
 |----------|--------|
+| `?` | Show keyboard shortcuts overlay |
 | `Cmd+K` / `Ctrl+K` | Open command palette |
 | `ESC` | Close active overlay (priority: modal > lightbox > tour > window) |
 | `←` `→` | Navigate lightbox images |
@@ -121,14 +122,14 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 This isn't anti-framework ideology — it's a deliberate architectural choice to demonstrate depth.
 
-Every feature recruiters expect from a React/Next.js portfolio is here (routing, state management, component lifecycle, lazy loading, accessibility) — built from scratch against the raw DOM API. The result is a 39-module codebase that proves understanding of **what frameworks abstract away**, not just how to use them.
+Every feature recruiters expect from a React/Next.js portfolio is here (routing, state management, component lifecycle, lazy loading, accessibility) — built from scratch against the raw DOM API. The result is a 40-module codebase that proves understanding of **what frameworks abstract away**, not just how to use them.
 
-**The constraint is the point.** Anyone can `npx create-next-app`. Not everyone can build a desktop OS with draggable windows, GPU-composited glass effects, and a 3D WebGL background in 38 hand-written modules with zero runtime dependencies.
+**The constraint is the point.** Anyone can `npx create-next-app`. Not everyone can build a desktop OS with draggable windows, GPU-composited glass effects, and a 3D WebGL background in 40 hand-written modules with zero runtime dependencies.
 
 ## Architecture
 
 ```
-js/                                 # 39 ES modules, zero framework imports
+js/                                 # 40 ES modules, zero framework imports
 ├── main.js                         # Entry — orchestrates boot, lazy-loads FX
 ├── boot.js                         # Cinematic boot sequence
 ├── login.js                        # Lock screen + 3D wheel init
@@ -141,6 +142,7 @@ js/                                 # 39 ES modules, zero framework imports
 ├── dom-helpers.js                  # Shared utilities (openExternal, animateCounter, loadJSON, saveJSON)
 ├── sanitize.js                     # DOMPurify wrapper
 ├── notifications.js                # Toast notification queue system
+├── shortcuts-overlay.js            # Press ? to show all keyboard shortcuts
 ├── modal.js                        # Prompt/alert dialogs with focus trapping
 ├── focus-trap.js                   # WCAG focus trapping utility
 ├── lightbox.js                     # Image/video viewer (YouTube, Vimeo, MP4)
@@ -170,7 +172,7 @@ js/                                 # 39 ES modules, zero framework imports
 │   ├── easter-eggs.js              # Konami, 418, glitch pulse
 │   └── micro-interactions.js       # Hover/click micro-animations
 │
-css/                                # 19 modular stylesheets
+css/                                # 20 modular stylesheets
 ├── variables.css                   # Design tokens (colors, spacing, fonts)
 ├── reset.css                       # Normalize + base resets
 ├── styles.css                      # Core layout, dock, desktop, icons
@@ -185,6 +187,7 @@ css/                                # 19 modular stylesheets
 ├── command-palette.css             # Cmd+K launcher
 ├── system-monitor.css              # Performance dashboard gauges
 ├── notifications.css               # Toast notification queue
+├── shortcuts-overlay.css           # Keyboard shortcuts overlay
 ├── portfolio.css                   # Featured project showcase cards
 ├── welcome.css                     # First-visit overlay
 ├── tour.css                        # Guided tour steps
@@ -249,7 +252,7 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 
 ## License
 
-MIT — **v3.9.3**
+MIT — **v3.10.0**
 
 ---
 

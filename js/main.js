@@ -12,6 +12,7 @@ import { Login } from './login.js';
 import { Modal } from './modal.js';
 import { Desktop } from './desktop.js';
 import { CommandPalette } from './command-palette.js';
+import { ShortcutsOverlay } from './shortcuts-overlay.js';
 import { Notify } from './notifications.js';
 
 // Wait for DOM to be ready
@@ -67,6 +68,9 @@ async function init() {
 
     // Initialize Command Palette (Cmd+K / Ctrl+K)
     CommandPalette.init();
+
+    // Initialize Shortcuts Overlay (press ?)
+    ShortcutsOverlay.init();
 
     // Start galaxy background immediately (visible during boot)
     if (!safeMode) {

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.9.3
+version: 3.10.0
 last_updated: 2026-02-13
 
 ---
@@ -15,6 +15,17 @@ last_updated: 2026-02-13
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.10.0] — 2026-02-13
+
+### Added
+- **Keyboard shortcuts overlay** (`js/shortcuts-overlay.js`, `css/shortcuts-overlay.css`) — press `?` to toggle a glassmorphism panel showing all keyboard shortcuts and hidden easter eggs, organized into 3 categories: Navigation (6 shortcuts), System Toggles (4 shortcuts), and Easter Eggs (6 secrets). Platform-aware key labels (⌘ on Mac, Alt on Windows). Dismisses via Escape, `?` again, or backdrop click. Skips activation when typing in inputs/textareas. Mobile-responsive single-column layout at ≤600px.
+
+**Files Created**: `js/shortcuts-overlay.js`, `css/shortcuts-overlay.css`
+
+**Files Modified**: `js/main.js`, `index.html`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -1121,7 +1132,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.9.3
+**Latest Version**: 3.10.0
 
 **Status**: ✅ Production Ready
 
