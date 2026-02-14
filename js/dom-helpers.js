@@ -30,6 +30,23 @@ export function saveJSON(key, value) {
 }
 
 /**
+ * Trigger a JSON file download in the browser.
+ * Replaces 6 identical stringify→Blob→anchor→click→revoke sequences in admin.js.
+ * @param {*} data - Value to serialize as JSON
+ * @param {string} filename - Download filename (e.g. 'projects.json')
+ */
+export function downloadJSON(data, filename) {
+    const payload = JSON.stringify(data, null, 2);
+    const blob = new Blob([payload], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+/**
  * Safely open an external link with noopener/noreferrer to prevent tabnapping.
  * Replaces bare window.open(url, '_blank') calls throughout the codebase.
  */

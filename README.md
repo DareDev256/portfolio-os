@@ -4,8 +4,8 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.11.0-00f0ff?style=flat-square)
-![Tests](https://img.shields.io/badge/tests-157_passing-00e676?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.12.0-00f0ff?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-159_passing-00e676?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-41-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-888?style=flat-square)
@@ -140,7 +140,7 @@ js/                                 # 41 ES modules, zero framework imports
 ├── router.js                       # History API deep-linkable routing
 ├── command-palette.js              # Cmd+K fuzzy-search launcher
 ├── data-loader.js                  # Centralized JSON fetcher with caching
-├── dom-helpers.js                  # Shared utilities (openExternal, animateCounter, loadJSON, saveJSON)
+├── dom-helpers.js                  # Shared utilities (openExternal, animateCounter, loadJSON, saveJSON, downloadJSON)
 ├── sanitize.js                     # DOMPurify wrapper
 ├── notifications.js                # Toast notification queue system
 ├── shortcuts-overlay.js            # Press ? to show all keyboard shortcuts
@@ -197,14 +197,14 @@ css/                                # 21 modular stylesheets
 ├── loading.css                     # Boot sequence, spinners
 └── admin.css                       # Content editor panel
 │
-tests/                              # 157 vitest tests across 11 suites
+tests/                              # 159 vitest tests across 11 suites
 ├── sanitize.test.js                # XSS sanitization (12 tests)
 ├── state.test.js                   # State persistence + events (15 tests)
 ├── data-loader.test.js             # JSON fetch + cache (9 tests)
 ├── router.test.js                  # Path validation + routing (12 tests)
 ├── focus-trap.test.js              # Tab cycling + cleanup (7 tests)
 ├── lightbox.test.js                # Video ID validation + sandbox (14 tests)
-├── dom-helpers.test.js             # openExternal, animateCounter, loadJSON, saveJSON (13 tests)
+├── dom-helpers.test.js             # openExternal, animateCounter, loadJSON, saveJSON, downloadJSON (15 tests)
 ├── modal.test.js                   # Dialog init, dismiss, prompt, alert (15 tests)
 ├── command-palette.test.js         # Fuzzy search, keyboard nav, ARIA, execute (22 tests)
 ├── mobile.test.js                  # Device detection, viewport meta, mobile styles (11 tests)
@@ -255,7 +255,7 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 
 ## License
 
-MIT — **v3.11.0**
+MIT — **v3.12.0**
 
 ---
 

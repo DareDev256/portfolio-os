@@ -3,7 +3,7 @@ import { Desktop } from './desktop.js';
 import { State } from './state.js';
 import { Sanitize } from './sanitize.js';
 import { loadMedia, loadProjects, invalidateData } from './data-loader.js';
-import { loadJSON } from './dom-helpers.js';
+import { loadJSON, downloadJSON } from './dom-helpers.js';
 
 /**
  * Admin Dashboard
@@ -100,16 +100,7 @@ export const Admin = {
      */
     async loadAllData() {
         // Load desktop items
-        try {
-            const stored = localStorage.getItem('desktopItems');
-            if (stored) {
-                this.desktopItems = JSON.parse(stored);
-            } else {
-                this.desktopItems = [...Desktop.DESKTOP_ITEMS];
-            }
-        } catch (_e) {
-            this.desktopItems = [...Desktop.DESKTOP_ITEMS];
-        }
+        this.desktopItems = loadJSON('desktopItems', null) || [...Desktop.DESKTOP_ITEMS];
 
         // Load projects and media via centralized data-loader
         this.projects = await loadProjects() || [];
@@ -435,13 +426,7 @@ export const Admin = {
      */
     exportProjects(content) {
         this.saveProjects(content);
-        const payload = JSON.stringify(this.projects, null, 2);
-        const blob = new Blob([payload], { type: 'application/json' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'projects.json';
-        a.click();
-        URL.revokeObjectURL(a.href);
+        downloadJSON(this.projects, 'projects.json');
         alert('projects.json downloaded! Replace data/projects.json with this file.');
     },
 
@@ -762,13 +747,7 @@ export const Admin = {
      */
     exportMedia(content) {
         this.saveMedia(content);
-        const payload = JSON.stringify(this.media, null, 2);
-        const blob = new Blob([payload], { type: 'application/json' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'media.json';
-        a.click();
-        URL.revokeObjectURL(a.href);
+        downloadJSON(this.media, 'media.json');
         alert('media.json downloaded! Replace data/media.json with this file.');
     },
 
@@ -993,13 +972,7 @@ export const Admin = {
                 },
             };
 
-            const payload = JSON.stringify(backup, null, 2);
-            const blob = new Blob([payload], { type: 'application/json' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `passion-os-backup-${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            URL.revokeObjectURL(a.href);
+            downloadJSON(backup, `passion-os-backup-${new Date().toISOString().split('T')[0]}.json`);
             alert('Complete backup exported!');
         });
 
@@ -1070,33 +1043,15 @@ export const Admin = {
 
         // Export individual files
         content.querySelector('#exportDesktopOnly')?.addEventListener('click', () => {
-            const payload = JSON.stringify(this.desktopItems, null, 2);
-            const blob = new Blob([payload], { type: 'application/json' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'desktop-items.json';
-            a.click();
-            URL.revokeObjectURL(a.href);
+            downloadJSON(this.desktopItems, 'desktop-items.json');
         });
 
         content.querySelector('#exportProjectsOnly')?.addEventListener('click', () => {
-            const payload = JSON.stringify(this.projects, null, 2);
-            const blob = new Blob([payload], { type: 'application/json' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'projects.json';
-            a.click();
-            URL.revokeObjectURL(a.href);
+            downloadJSON(this.projects, 'projects.json');
         });
 
         content.querySelector('#exportMediaOnly')?.addEventListener('click', () => {
-            const payload = JSON.stringify(this.media, null, 2);
-            const blob = new Blob([payload], { type: 'application/json' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'media.json';
-            a.click();
-            URL.revokeObjectURL(a.href);
+            downloadJSON(this.media, 'media.json');
         });
 
         // Clear all data

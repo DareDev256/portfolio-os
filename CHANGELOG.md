@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.11.0
+version: 3.12.0
 last_updated: 2026-02-14
 
 ---
@@ -15,6 +15,21 @@ last_updated: 2026-02-14
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.12.0] — 2026-02-14
+
+### Changed
+- **Extracted `downloadJSON()` helper into `dom-helpers.js`** — replaces 6 identical stringify→Blob→anchor→click→revoke sequences in `admin.js` (exportProjects, exportMedia, exportAll, exportDesktopOnly, exportProjectsOnly, exportMediaOnly) with a single reusable utility. Each 7-line block reduced to a 1-line call.
+- **Replaced manual localStorage try/catch in `admin.js` `loadAllData()`** — the 8-line try/catch + JSON.parse block for loading desktop items now uses the existing `loadJSON()` helper (created in v3.7.0 for exactly this purpose, but this callsite was missed).
+
+### Added
+- **2 new tests** for `downloadJSON()` in `tests/dom-helpers.test.js` — covers anchor creation + click trigger, filename assignment, and objectURL cleanup.
+
+**Test count**: 157 → 159 (2 new tests)
+
+**Files Modified**: `js/dom-helpers.js`, `js/admin.js`, `tests/dom-helpers.test.js`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -1158,7 +1173,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.11.0
+**Latest Version**: 3.12.0
 
 **Status**: ✅ Production Ready
 

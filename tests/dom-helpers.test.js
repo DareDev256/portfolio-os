@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { openExternal, animateCounter, loadJSON, saveJSON } from '../js/dom-helpers.js';
+import { openExternal, animateCounter, loadJSON, saveJSON, downloadJSON } from '../js/dom-helpers.js';
 
 describe('openExternal()', () => {
     let openSpy;
@@ -103,6 +103,40 @@ describe('loadJSON()', () => {
 
     it('returns null as default fallback', () => {
         expect(loadJSON('nope')).toBeNull();
+    });
+});
+
+describe('downloadJSON()', () => {
+    afterEach(() => {
+        vi.restoreAllMocks();
+    });
+
+    it('creates a blob anchor and triggers download', () => {
+        const clickSpy = vi.fn();
+        const createSpy = vi.spyOn(document, 'createElement').mockReturnValue({
+            set href(v) { this._href = v; },
+            get href() { return this._href; },
+            download: '',
+            click: clickSpy,
+        });
+        const revokeSpy = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+        vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock');
+
+        downloadJSON({ a: 1 }, 'test.json');
+
+        expect(createSpy).toHaveBeenCalledWith('a');
+        expect(clickSpy).toHaveBeenCalled();
+        expect(revokeSpy).toHaveBeenCalledWith('blob:mock');
+    });
+
+    it('sets the correct download filename', () => {
+        const anchor = { href: '', download: '', click: vi.fn() };
+        vi.spyOn(document, 'createElement').mockReturnValue(anchor);
+        vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock');
+        vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+
+        downloadJSON([1, 2], 'my-data.json');
+        expect(anchor.download).toBe('my-data.json');
     });
 });
 
