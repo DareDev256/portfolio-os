@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.10.1
+version: 3.11.0
 last_updated: 2026-02-14
 
 ---
@@ -15,6 +15,19 @@ last_updated: 2026-02-14
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.11.0] — 2026-02-14
+
+### Added
+- **Sticky Notes app** (`js/sticky-notes.js`, `css/sticky-notes.css`) — persistent note-taking utility with localStorage auto-save. Create, edit, and delete notes in a responsive card grid. 5 cyberpunk color themes (cyber, neon, pink, gold, purple) cycle per note via color dot button. Notes persist across sessions with debounced save (400ms). Delete animation, empty state, contenteditable body with placeholder text, and timestamp display. Lazy-loaded module with cleanup function.
+- **Sticky Notes SVG icon** (`assets/sticky-notes.svg`) — layered note cards with pencil accent, matching existing cyberpunk icon style
+- **Desktop icon grid updated** — 17 icons (was 16), NOTES added to Column 4 (Extras). localStorage key bumped to `desktop_layout_v4` to force layout reset for existing users.
+
+**Files Created**: `js/sticky-notes.js`, `css/sticky-notes.css`, `assets/sticky-notes.svg`
+
+**Files Modified**: `js/desktop.js`, `index.html`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -1145,7 +1158,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.10.1
+**Latest Version**: 3.11.0
 
 **Status**: ✅ Production Ready
 

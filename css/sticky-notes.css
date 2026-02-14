@@ -1,0 +1,147 @@
+/* Sticky Notes — Cyberpunk note-taking utility */
+
+.sticky-notes-app {
+    padding: 16px;
+    font-family: var(--font-mono);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+}
+
+.sticky-notes-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+}
+
+.sticky-notes-add {
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    color: var(--neon-cyan);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sticky-notes-add:hover {
+    background: rgba(0, 240, 255, 0.2);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+}
+
+.sticky-notes-count {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 1px;
+}
+
+.sticky-notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 4px;
+}
+
+.sticky-notes-empty {
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 12px;
+    text-align: center;
+    padding: 48px 20px;
+    letter-spacing: 0.5px;
+}
+
+/* Individual note card */
+.sticky-note {
+    border: 1px solid;
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 120px;
+    transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.sticky-note:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.sticky-note-removing {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+.sticky-note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sticky-note-color-btn {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.sticky-note-color-btn:hover {
+    transform: scale(1.3);
+    box-shadow: 0 0 8px currentColor;
+}
+
+.sticky-note-del-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 2px;
+    transition: color 0.15s;
+}
+
+.sticky-note-del-btn:hover {
+    color: #ff0066;
+}
+
+.sticky-note-body {
+    flex: 1;
+    font-size: 12px;
+    line-height: 1.5;
+    outline: none;
+    word-break: break-word;
+    min-height: 60px;
+    border-radius: 3px;
+    padding: 4px;
+    transition: background 0.2s;
+}
+
+.sticky-note-body:focus {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.sticky-note-body:empty::before {
+    content: 'Type here...';
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.sticky-note-time {
+    font-size: 9px;
+    opacity: 0.5;
+    letter-spacing: 0.5px;
+    text-align: right;
+}

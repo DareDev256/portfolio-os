@@ -126,6 +126,13 @@ export const Desktop = {
         },
         // Column 4 — Extras
         {
+            id: 'sticky-notes',
+            label: 'NOTES',
+            icon: 'svg:/assets/sticky-notes.svg',
+            color: '#ffaa00',
+            action: () => Desktop.openStickyNotes(),
+        },
+        {
             id: 'portfolio-videos',
             label: 'MUSIC_VIDEOS',
             icon: 'svg:/assets/portfolio-videos.svg',
@@ -324,7 +331,7 @@ export const Desktop = {
         container.innerHTML = '';
 
         // Load saved positions (v2 key forces layout reset for existing users)
-        const savedLayout = loadJSON('desktop_layout_v3', {});
+        const savedLayout = loadJSON('desktop_layout_v4', {});
 
         // Default positions for first-time visitors
         // Row-priority layout — recruiters read top-left first
@@ -473,12 +480,12 @@ export const Desktop = {
                     element.style.zIndex = ''; // Reset z-index
 
                     // Save new position
-                    const currentLayout = loadJSON('desktop_layout_v3', {});
+                    const currentLayout = loadJSON('desktop_layout_v4', {});
                     currentLayout[id] = {
                         x: parseInt(element.style.left),
                         y: parseInt(element.style.top)
                     };
-                    saveJSON('desktop_layout_v3', currentLayout);
+                    saveJSON('desktop_layout_v4', currentLayout);
 
                     // Small timeout to reset dragging flag so click event doesn't fire immediately
                     setTimeout(() => {
@@ -1993,6 +2000,30 @@ export const Desktop = {
         // Lazy-load the monitor module
         import('./system-monitor.js').then(({ renderSystemMonitor }) => {
             cleanup = renderSystemMonitor(content);
+        });
+    },
+
+    /**
+     * Open Sticky Notes — persistent note-taking utility
+     */
+    openStickyNotes() {
+        let cleanup = null;
+
+        const content = document.createElement('div');
+        content.style.height = '100%';
+
+        WindowManager.create({
+            id: 'sticky-notes',
+            title: 'NOTES // STICKY',
+            icon: '📝',
+            content,
+            width: 520,
+            height: 440,
+            onClose: () => { if (cleanup) cleanup(); },
+        });
+
+        import('./sticky-notes.js').then(({ renderStickyNotes }) => {
+            cleanup = renderStickyNotes(content);
         });
     },
 
