@@ -1,6 +1,7 @@
 import { Desktop } from './desktop.js';
 import { AudioFX } from './audiofx.js';
 import { Welcome } from './welcome.js';
+import { Sanitize } from './sanitize.js';
 
 /**
  * Start Menu
@@ -46,10 +47,12 @@ export const StartMenu = {
             menuItem.setAttribute('role', 'menuitem');
             menuItem.setAttribute('tabindex', this.isOpen ? '0' : '-1');
 
-            menuItem.innerHTML = `
-                ${item.icon}
-                <span>${item.label}</span>
-            `;
+            const iconSpan = document.createElement('span');
+            Sanitize.setHTML(iconSpan, item.icon);
+            menuItem.appendChild(iconSpan);
+            const labelSpan = document.createElement('span');
+            labelSpan.textContent = item.label;
+            menuItem.appendChild(labelSpan);
 
             menuItem.onclick = () => {
                 if (AudioFX) AudioFX.click();
@@ -104,7 +107,10 @@ export const StartMenu = {
         systemOptions.forEach(opt => {
             const item = document.createElement('button');
             item.className = 'start-menu-item';
-            item.innerHTML = `${opt.icon} <span>${opt.label}</span>`;
+            item.textContent = opt.icon + ' ';
+            const optLabel = document.createElement('span');
+            optLabel.textContent = opt.label;
+            item.appendChild(optLabel);
             item.onclick = () => opt.action();
             container.appendChild(item);
         });

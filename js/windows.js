@@ -1,4 +1,5 @@
 import { State } from './state.js';
+import { Sanitize } from './sanitize.js';
 
 /**
  * Window Manager
@@ -88,7 +89,7 @@ export const WindowManager = {
         const contentEl = document.createElement('div');
         contentEl.className = 'window-content';
         if (typeof content === 'string') {
-            contentEl.innerHTML = content;
+            Sanitize.setHTML(contentEl, content);
         } else if (content instanceof HTMLElement) {
             contentEl.appendChild(content);
         }
@@ -174,7 +175,7 @@ export const WindowManager = {
         if (icon) {
             const iconEl = document.createElement('div');
             iconEl.className = 'window-icon';
-            iconEl.innerHTML = icon;
+            Sanitize.setHTML(iconEl, icon);
             titlebar.appendChild(iconEl);
         }
 
@@ -677,7 +678,7 @@ export const WindowManager = {
 
         if (windowObj.icon) {
             const iconEl = document.createElement('div');
-            iconEl.innerHTML = windowObj.icon;
+            Sanitize.setHTML(iconEl, windowObj.icon);
             btn.appendChild(iconEl);
         }
 

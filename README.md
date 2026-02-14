@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.10.0-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.10.1-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-157_passing-00e676?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-40-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
@@ -74,10 +74,10 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | **SETTINGS** | Window | Theme, wallpaper, sound, cursor trail toggles |
 | **SYS_MONITOR** | Window | Live FPS graph, heap usage, DOM count, network info, uptime |
 
-### Security (Hardened Across v3.1–v3.6.2)
+### Security (Hardened Across v3.1–v3.10.1)
 
-- All `innerHTML` routed through DOMPurify (SRI hash on CDN)
-- 8 HTTP security headers via Vercel (CSP, HSTS, X-Frame-Options, CORP, Permissions-Policy)
+- All `innerHTML` routed through DOMPurify (SRI hash on CDN) — including window content, titlebar icons, taskbar icons, and start menu items
+- 10 HTTP security headers via Vercel (CSP, HSTS, X-Frame-Options, COOP, COEP, CORP, Permissions-Policy)
 - URL injection prevention — allowlist-based router, CSS breakout stripping
 - localStorage `JSON.parse` wrapped in try/catch with fallbacks
 - SVG content sanitized before DOM insertion

@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.10.0
-last_updated: 2026-02-13
+version: 3.10.1
+last_updated: 2026-02-14
 
 ---
 
@@ -15,6 +15,19 @@ last_updated: 2026-02-13
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.10.1] — 2026-02-14
+
+### Security
+- **Sanitized window content innerHTML** — `WindowManager.create()` now routes all string `content` through `Sanitize.setHTML()` instead of raw `innerHTML`, closing a defense-in-depth XSS gap where future callers could pass tainted HTML into window bodies
+- **Sanitized window icon innerHTML** — titlebar and taskbar icon rendering in `windows.js` now uses `Sanitize.setHTML()` to filter SVG/HTML icon strings that could originate from localStorage-overridden desktop items
+- **Sanitized start menu item rendering** — replaced `innerHTML` interpolation of `item.icon` and `item.label` in `startmenu.js` with DOM API (`textContent` + `Sanitize.setHTML`), preventing XSS from localStorage-poisoned desktop item configs
+- **Added Cross-Origin-Embedder-Policy header** — `credentialless` mode enables cross-origin isolation (Spectre mitigation) while preserving Google Fonts, YouTube embeds, and Unsplash wallpaper loading
+- **Added Cross-Origin-Resource-Policy header** — `same-origin` prevents cross-origin reads of site resources, hardening against side-channel data exfiltration
+
+**Files Modified**: `js/windows.js`, `js/startmenu.js`, `vercel.json`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
@@ -1132,7 +1145,7 @@ You're on the latest version!
 
 ---
 
-**Latest Version**: 3.10.0
+**Latest Version**: 3.10.1
 
 **Status**: ✅ Production Ready
 
