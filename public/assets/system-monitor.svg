@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="sysGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f0ff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="sysGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g filter="url(#sysGlow)">
+    <!-- Monitor frame -->
+    <rect x="10" y="10" width="80" height="56" rx="5"
+          stroke="url(#sysGrad)" stroke-width="2" fill="rgba(0, 255, 136, 0.05)"/>
+
+    <!-- Screen bezel line -->
+    <rect x="14" y="14" width="72" height="48" rx="3"
+          stroke="url(#sysGrad)" stroke-width="1" fill="none" opacity="0.3"/>
+
+    <!-- Monitor stand -->
+    <rect x="38" y="66" width="24" height="6" rx="2"
+          stroke="url(#sysGrad)" stroke-width="1.5" fill="rgba(0, 255, 136, 0.1)"/>
+    <rect x="30" y="72" width="40" height="3" rx="1.5"
+          stroke="url(#sysGrad)" stroke-width="1.5" fill="rgba(0, 255, 136, 0.1)"/>
+
+    <!-- Bar chart -->
+    <rect x="20" y="46" width="6" height="12" rx="1" fill="url(#sysGrad)" opacity="0.5"/>
+    <rect x="29" y="38" width="6" height="20" rx="1" fill="url(#sysGrad)" opacity="0.6"/>
+    <rect x="38" y="30" width="6" height="28" rx="1" fill="url(#sysGrad)" opacity="0.7"/>
+    <rect x="47" y="36" width="6" height="22" rx="1" fill="url(#sysGrad)" opacity="0.6"/>
+    <rect x="56" y="26" width="6" height="32" rx="1" fill="url(#sysGrad)" opacity="0.8"/>
+    <rect x="65" y="22" width="6" height="36" rx="1" fill="url(#sysGrad)" opacity="0.9"/>
+    <rect x="74" y="28" width="6" height="30" rx="1" fill="url(#sysGrad)" opacity="0.7"/>
+
+    <!-- Pulse line overlay -->
+    <polyline points="23,40 32,32 41,24 50,30 59,20 68,16 77,22"
+              stroke="url(#sysGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+</svg>

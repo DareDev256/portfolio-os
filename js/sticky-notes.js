@@ -63,6 +63,9 @@ function renderNote(note, grid, save, onDelete) {
         clearTimeout(timer);
         timer = setTimeout(() => { note.text = body.textContent; note.updated = Date.now(); save(); }, 400);
     });
+    body.addEventListener('blur', () => {
+        if (timer) { clearTimeout(timer); note.text = body.textContent; note.updated = Date.now(); save(); timer = null; }
+    });
 
     const time = el('div', 'sticky-note-time');
     time.style.color = color.border;
@@ -115,5 +118,14 @@ export function renderStickyNotes(container) {
     });
 
     refresh();
-    return () => {};
+    return () => {
+        // Flush any pending edits from contentEditable bodies into notes array
+        grid.querySelectorAll('.sticky-note-body').forEach((body, i) => {
+            if (notes[i] && body.textContent !== notes[i].text) {
+                notes[i].text = body.textContent;
+                notes[i].updated = Date.now();
+            }
+        });
+        save();
+    };
 }

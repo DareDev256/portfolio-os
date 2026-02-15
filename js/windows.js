@@ -71,8 +71,16 @@ export const WindowManager = {
             // Center window with slight offset for each new window
             const offset = (State.windows.size * 30) % 100;
             finalX = Math.max(50, (window.innerWidth - finalWidth) / 2 + offset);
-            finalY = Math.max(80, (window.innerHeight - finalHeight) / 2 + offset - 24); // Account for taskbar, ensure minimum top position
+            finalY = Math.max(80, (window.innerHeight - finalHeight) / 2 + offset - 24);
         }
+
+        // Clamp position so window stays within viewport (top bar=40, dock=80)
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        finalWidth = Math.min(finalWidth, vw - 20);
+        finalHeight = Math.min(finalHeight, vh - 130); // 40 top bar + 80 dock + 10 margin
+        finalX = Math.max(10, Math.min(finalX, vw - finalWidth - 10));
+        finalY = Math.max(44, Math.min(finalY, vh - finalHeight - 90));
 
         // Set initial position and size
         windowEl.style.left = `${finalX}px`;
