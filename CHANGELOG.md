@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.12.1
-last_updated: 2026-02-14
+version: 3.12.2
+last_updated: 2026-02-15
 
 ---
 
@@ -15,6 +15,15 @@ last_updated: 2026-02-14
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.12.2] — 2026-02-15
+
+### Changed
+- **README elevated to portfolio-grade v3** — added stylesheets badge, quick stats blockquote (41 modules · 21 stylesheets · 168 tests · 17 apps · 10 headers · 0 deps), Project Health table with test/security/a11y/perf/lint/bundle metrics, linked author name to GitHub profile, added missing docs to Documentation table (EASTER_EGGS_GUIDE.md, docs/GLOSSARY.md), fixed 5 stale values (test count 157→168, architecture tree 159→168, docs module count 38→41, license version v3.12.0→v3.12.1, test command count)
+
+**Files Modified**: `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

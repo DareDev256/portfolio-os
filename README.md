@@ -4,8 +4,9 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.12.1-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.12.2-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-168_passing-00e676?style=flat-square)
+![CSS](https://img.shields.io/badge/stylesheets-21-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-41-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-888?style=flat-square)
@@ -18,7 +19,9 @@
 
 An interactive desktop environment that runs entirely in the browser. Draggable windows, GPU-optimized glass effects, a Three.js cyberspace background, Spotlight-style command palette, and 41 vanilla JavaScript modules — no React, no Vue, no dependencies beyond the web platform.
 
-Built by **James Olusoga** — AI Solutions Engineer & Creative Technologist, Toronto.
+Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
+
+> **41 ES modules** · **21 stylesheets** · **168 tests across 11 suites** · **17 desktop apps** · **10 security headers** · **0 runtime dependencies**
 
 ## Quick Start
 
@@ -119,6 +122,17 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | Triple-click desktop | Glitch pulse effect |
 | Type `418` | I'm a teapot |
 
+## Project Health
+
+| Metric | Value |
+|--------|-------|
+| **Test Coverage** | 168 tests across 11 suites (vitest + jsdom) |
+| **Security** | DOMPurify on all innerHTML, 10 HTTP headers, CSP, SRI |
+| **Accessibility** | WCAG focus trapping, aria-live, skip-link, reduced-motion |
+| **Performance** | Lazy-loaded modules, RAF pausing, 30fps-throttled FX |
+| **Lint** | 0 ESLint warnings, Prettier-formatted |
+| **Bundle** | 132 kB main chunk, code-split lazy modules |
+
 ## Why No Frameworks?
 
 This isn't anti-framework ideology — it's a deliberate architectural choice to demonstrate depth.
@@ -197,7 +211,7 @@ css/                                # 21 modular stylesheets
 ├── loading.css                     # Boot sequence, spinners
 └── admin.css                       # Content editor panel
 │
-tests/                              # 159 vitest tests across 11 suites
+tests/                              # 168 vitest tests across 11 suites
 ├── sanitize.test.js                # XSS sanitization (12 tests)
 ├── state.test.js                   # State persistence + events (15 tests)
 ├── data-loader.test.js             # JSON fetch + cache (9 tests)
@@ -236,7 +250,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run 157 vitest tests
+npm run test      # Run 168 vitest tests
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
@@ -249,13 +263,15 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 |----------|-------------|
 | [DOCUMENTATION.md](DOCUMENTATION.md) | Complete user guide — every feature explained |
 | [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) | No-code content editor (console-only) |
+| [EASTER_EGGS_GUIDE.md](EASTER_EGGS_GUIDE.md) | All hidden easter eggs and secret interactions |
 | [CHANGELOG.md](CHANGELOG.md) | Full version history from v1.0 to present |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture — all 38 modules, dependency graph, init sequence |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture — all 41 modules, dependency graph, init sequence |
+| [docs/GLOSSARY.md](docs/GLOSSARY.md) | Terminology and codebase glossary |
 | [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Common issues and solutions |
 
 ## License
 
-MIT — **v3.12.0**
+MIT — **v3.12.1**
 
 ---
 
