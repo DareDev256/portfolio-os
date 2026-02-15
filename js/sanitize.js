@@ -61,20 +61,31 @@ export const Sanitize = {
     },
 
     /**
-     * Sanitize attributes (prevent javascript: URLs, etc.)
+     * Sanitize attributes (prevent dangerous URI schemes and protocol obfuscation).
+     * Blocks javascript:, vbscript:, data:text/html, and whitespace-obfuscated variants.
      * @param {string} value - Attribute value
      * @returns {string} Safe attribute value
      */
     attr(value) {
         if (!value) return '';
 
-        // Remove javascript: protocol
-        if (value.toLowerCase().includes('javascript:')) {
+        // Strip ASCII control chars that browsers ignore inside URIs
+        // (tabs, newlines, null bytes) — prevents "java\tscript:" obfuscation
+        // eslint-disable-next-line no-control-regex
+        const stripped = value.replace(/[\x00-\x1f\x7f]/g, '');
+        const lower = stripped.toLowerCase().trim();
+
+        // Block dangerous URI schemes
+        if (
+            lower.includes('javascript:') ||
+            lower.includes('vbscript:') ||
+            lower.startsWith('data:text/html')
+        ) {
             return '';
         }
 
-        // Remove data: URLs with script content
-        if (value.toLowerCase().startsWith('data:') && value.toLowerCase().includes('script')) {
+        // Block data: URLs with embedded script content
+        if (lower.startsWith('data:') && lower.includes('script')) {
             return '';
         }
 

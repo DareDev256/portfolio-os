@@ -48,10 +48,17 @@ export function downloadJSON(data, filename) {
 
 /**
  * Safely open an external link with noopener/noreferrer to prevent tabnapping.
+ * Only allows http: and https: URLs — blocks javascript:, data:, vbscript:, etc.
  * Replaces bare window.open(url, '_blank') calls throughout the codebase.
  */
 export function openExternal(url) {
-    window.open(url, '_blank', 'noopener,noreferrer');
+    if (!url || typeof url !== 'string') return;
+    // Strip control characters that could obfuscate the protocol
+    // eslint-disable-next-line no-control-regex
+    const cleaned = url.replace(/[\x00-\x1f\x7f]/g, '').trim();
+    // Allowlist: only http(s) protocols
+    if (!/^https?:\/\//i.test(cleaned)) return;
+    window.open(cleaned, '_blank', 'noopener,noreferrer');
 }
 
 /**

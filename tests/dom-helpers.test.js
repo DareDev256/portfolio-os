@@ -29,6 +29,42 @@ describe('openExternal()', () => {
             'noopener,noreferrer'
         );
     });
+
+    it('blocks javascript: URLs', () => {
+        openExternal('javascript:alert(1)');
+        expect(openSpy).not.toHaveBeenCalled();
+    });
+
+    it('blocks data: URLs', () => {
+        openExternal('data:text/html,<script>alert(1)</script>');
+        expect(openSpy).not.toHaveBeenCalled();
+    });
+
+    it('blocks vbscript: URLs', () => {
+        openExternal('vbscript:MsgBox("XSS")');
+        expect(openSpy).not.toHaveBeenCalled();
+    });
+
+    it('blocks null/undefined/empty inputs', () => {
+        openExternal(null);
+        openExternal(undefined);
+        openExternal('');
+        expect(openSpy).not.toHaveBeenCalled();
+    });
+
+    it('blocks tab-obfuscated protocols', () => {
+        openExternal('\tjavascript:alert(1)');
+        expect(openSpy).not.toHaveBeenCalled();
+    });
+
+    it('allows http:// URLs', () => {
+        openExternal('http://example.com');
+        expect(openSpy).toHaveBeenCalledWith(
+            'http://example.com',
+            '_blank',
+            'noopener,noreferrer'
+        );
+    });
 });
 
 describe('animateCounter()', () => {

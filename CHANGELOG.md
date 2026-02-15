@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.12.0
+version: 3.12.1
 last_updated: 2026-02-14
 
 ---
@@ -15,6 +15,20 @@ last_updated: 2026-02-14
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.12.1] — 2026-02-14
+
+### Security
+- **Hardened `Sanitize.attr()` against protocol obfuscation** — now strips ASCII control characters (tabs, newlines, null bytes) before checking URI schemes, blocking bypass vectors like `java\tscript:`. Also blocks `vbscript:` and `data:text/html` payloads.
+- **Added URL allowlist to `openExternal()`** — only `http://` and `https://` URLs are now permitted. Blocks `javascript:`, `data:`, `vbscript:`, and any non-HTTP protocol from being opened via `window.open()`. Prevents open-redirect and XSS-via-navigation from attacker-controlled data (e.g. GitHub API responses).
+- **Added `upgrade-insecure-requests` to CSP** — forces all HTTP subresource requests to HTTPS, closing mixed-content downgrade vectors.
+
+### Added
+- **9 new security tests** — 6 for `openExternal()` URL validation (javascript:, data:, vbscript:, null/empty, tab-obfuscated, http:// allowlist) and 3 for `Sanitize.attr()` (vbscript:, data:text/html, control-char obfuscation).
+
+**Test count**: 159 → 168 (9 new tests)
 
 ---
 

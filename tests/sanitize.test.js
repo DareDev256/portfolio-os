@@ -59,4 +59,19 @@ describe('Sanitize.attr()', () => {
         expect(Sanitize.attr(null)).toBe('');
         expect(Sanitize.attr(undefined)).toBe('');
     });
+
+    it('blocks vbscript: URLs', () => {
+        expect(Sanitize.attr('vbscript:MsgBox("XSS")')).toBe('');
+    });
+
+    it('blocks data:text/html URLs', () => {
+        expect(Sanitize.attr('data:text/html,<h1>XSS</h1>')).toBe('');
+        expect(Sanitize.attr('data:text/html;base64,PHNjcmlwdD4=')).toBe('');
+    });
+
+    it('blocks tab-obfuscated javascript: (\\t, \\n, \\x00)', () => {
+        expect(Sanitize.attr('java\tscript:alert(1)')).toBe('');
+        expect(Sanitize.attr('java\nscript:alert(1)')).toBe('');
+        expect(Sanitize.attr('\x00javascript:alert(1)')).toBe('');
+    });
 });
