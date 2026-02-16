@@ -18,6 +18,15 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [3.16.1] — 2026-02-16
+
+### Fixed
+- **Calculator keyboard listener stealing keystrokes globally** — the `keydown` handler on `document` fired regardless of which window was focused or whether the user was typing in a text field (command palette, sticky notes, terminal, contact form). Now checks: (1) event target is not an input/textarea/contenteditable, and (2) the calculator window has the `.active` class. Keyboard shortcuts only fire when the calculator is the foreground window and no text field is focused.
+
+**Files Modified**: `js/calculator.js`, `package.json`, `README.md`, `CHANGELOG.md`
+
+---
+
 ## [3.16.0] — 2026-02-16
 
 ### Added

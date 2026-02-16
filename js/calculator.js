@@ -143,8 +143,15 @@ export function renderCalculator(container) {
     wrap.append(screen, pad);
     container.appendChild(wrap);
 
-    // Keyboard support
+    // Keyboard support — scoped to only fire when the calculator window is
+    // active AND focus isn't inside another editable element (e.g. terminal,
+    // sticky notes, command palette search).
     function onKeyDown(e) {
+        const tag = e.target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable) return;
+        const calcWindow = wrap.closest('.window');
+        if (calcWindow && !calcWindow.classList.contains('active')) return;
+
         const k = e.key;
         if ((k >= '0' && k <= '9') || k === '.') handleKey(k);
         else if (k === '+' || k === '-' || k === '*' || k === '/') handleKey(k);
