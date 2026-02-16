@@ -178,6 +178,13 @@ export const Desktop = {
             action: () => Desktop.openCalculator(),
         },
         {
+            id: 'weather',
+            label: 'WEATHER',
+            icon: 'svg:/assets/weather.svg',
+            color: '#aa00ff',
+            action: () => Desktop.openWeather(),
+        },
+        {
             id: 'portfolio-videos',
             label: 'MUSIC_VIDEOS',
             icon: 'svg:/assets/portfolio-videos.svg',
@@ -2055,6 +2062,15 @@ export const Desktop = {
             id: 'calculator', title: 'CALC.exe // CALCULATOR', icon: '🧮',
             width: 280, height: 400,
             load: () => import('./calculator.js'), exportName: 'renderCalculator',
+        });
+    },
+
+    /** Open Weather — live weather widget with geolocation */
+    openWeather() {
+        createLazyWindow({
+            id: 'weather', title: 'WEATHER // LIVE', icon: '🌤',
+            width: 340, height: 420,
+            load: () => import('./weather.js'), exportName: 'renderWeather',
         });
     },
 

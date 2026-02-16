@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.15.0
+version: 3.16.0
 last_updated: 2026-02-16
 
 ---
@@ -15,6 +15,18 @@ last_updated: 2026-02-16
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.16.0] — 2026-02-16
+
+### Added
+- **WEATHER desktop app** — Live weather widget using browser geolocation and Open-Meteo API (free, no API key). Displays current temperature, feels-like, humidity, wind speed, weather condition with WMO code emoji mapping, and 3-day forecast cards. Graceful error handling for denied/unavailable geolocation with user-friendly messages. Cyberpunk glass UI with cyan temperature glow, magenta forecast accents, and green stat highlights. Lazy-loaded via `createLazyWindow` pattern — zero bytes until opened
+- New desktop icon `WEATHER` with custom sun/cloud/rain gradient SVG icon in Column 4 (Extras)
+- New files: `js/weather.js`, `css/weather.css`, `public/assets/weather.svg`
+
+**Files Modified**: `js/desktop.js`, `index.html`, `README.md`, `CHANGELOG.md`, `package.json`
+**Files Created**: `js/weather.js`, `css/weather.css`, `public/assets/weather.svg`
 
 ---
 

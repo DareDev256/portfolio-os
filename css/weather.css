@@ -1,0 +1,30 @@
+/* Weather Widget — Cyberpunk glass weather display */
+.weather-app { display: flex; flex-direction: column; height: 100%; padding: var(--space-md); gap: var(--space-md); font-family: var(--font-mono); user-select: none; }
+
+.weather-status { display: flex; align-items: center; justify-content: center; flex: 1; font-size: var(--font-size-sm); color: var(--text-secondary); animation: weather-pulse 1.5s ease-in-out infinite; }
+@keyframes weather-pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+.weather-error { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: var(--space-sm); text-align: center; }
+.weather-error-icon { font-size: 2.5rem; }
+.weather-error-title { font-size: var(--font-size-lg); color: var(--neon-red); font-weight: 700; }
+.weather-error-msg { font-size: var(--font-size-sm); color: var(--text-secondary); max-width: 260px; line-height: 1.5; }
+
+.weather-current { display: flex; align-items: center; gap: var(--space-lg); padding: var(--space-md); background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 240, 255, 0.1); border-radius: var(--radius-md); }
+.weather-big-icon { font-size: 3.5rem; line-height: 1; }
+.weather-temp { font-size: 2.2rem; font-weight: 700; color: var(--neon-cyan); text-shadow: 0 0 16px rgba(0, 240, 255, 0.5); line-height: 1.1; }
+.weather-desc { font-size: var(--font-size-sm); color: var(--text-primary); margin-top: 2px; }
+.weather-loc { font-size: var(--font-size-sm); color: var(--text-secondary); opacity: 0.7; margin-top: 2px; }
+
+.weather-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.weather-stat { background: var(--glass-bg); border: 1px solid rgba(0, 240, 255, 0.06); border-radius: var(--radius-sm); padding: var(--space-sm); text-align: center; }
+.weather-stat-val { font-size: 1rem; font-weight: 600; color: var(--neon-green); text-shadow: 0 0 8px rgba(0, 255, 136, 0.3); }
+.weather-stat-label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+.weather-forecast { flex: 1; display: flex; flex-direction: column; gap: var(--space-sm); }
+.weather-fc-title { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; }
+.weather-fc-days { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; flex: 1; }
+.weather-fc-card { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 0, 170, 0.08); border-radius: var(--radius-sm); padding: var(--space-sm); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: border-color var(--transition-fast); }
+.weather-fc-card:hover { border-color: rgba(255, 0, 170, 0.25); }
+.weather-fc-day { font-size: 0.7rem; color: var(--neon-magenta); text-transform: uppercase; letter-spacing: 0.5px; }
+.weather-fc-icon { font-size: 1.5rem; }
+.weather-fc-range { font-size: var(--font-size-sm); color: var(--text-primary); font-weight: 600; }
