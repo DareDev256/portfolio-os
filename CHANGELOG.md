@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.14.0
+version: 3.15.0
 last_updated: 2026-02-16
 
 ---
@@ -15,6 +15,18 @@ last_updated: 2026-02-16
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.15.0] — 2026-02-16
+
+### Added
+- **CALC.exe desktop app** — Cyberpunk glass calculator with full arithmetic (add, subtract, multiply, divide), percentage, sign toggle, backspace, and expression chaining. Keyboard input support (0-9, operators, Enter, Backspace, Escape). Magenta-accented operator keys, green action keys, cyan display with neon glow. Lazy-loaded via `createLazyWindow` pattern — zero bytes until opened
+- New desktop icon `CALC.exe` with custom gradient SVG icon in Column 4 (Extras)
+- New files: `js/calculator.js`, `css/calculator.css`, `public/assets/calculator.svg`
+
+**Files Modified**: `js/desktop.js`, `index.html`, `README.md`, `CHANGELOG.md`, `package.json`
+**Files Created**: `js/calculator.js`, `css/calculator.css`, `public/assets/calculator.svg`
 
 ---
 

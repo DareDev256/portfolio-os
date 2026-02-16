@@ -171,6 +171,13 @@ export const Desktop = {
             action: () => Desktop.openPomodoroTimer(),
         },
         {
+            id: 'calculator',
+            label: 'CALC.exe',
+            icon: 'svg:/assets/calculator.svg',
+            color: '#aa00ff',
+            action: () => Desktop.openCalculator(),
+        },
+        {
             id: 'portfolio-videos',
             label: 'MUSIC_VIDEOS',
             icon: 'svg:/assets/portfolio-videos.svg',
@@ -2040,6 +2047,14 @@ export const Desktop = {
             id: 'pomodoro', title: 'FOCUS_TIMER // POMODORO', icon: '⏱',
             width: 320, height: 440,
             load: () => import('./pomodoro-timer.js'), exportName: 'renderPomodoroTimer',
+        });
+    },
+
+    openCalculator() {
+        createLazyWindow({
+            id: 'calculator', title: 'CALC.exe // CALCULATOR', icon: '🧮',
+            width: 280, height: 400,
+            load: () => import('./calculator.js'), exportName: 'renderCalculator',
         });
     },
 
