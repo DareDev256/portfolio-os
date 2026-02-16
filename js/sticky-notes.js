@@ -1,4 +1,4 @@
-import { loadJSON, saveJSON } from './dom-helpers.js';
+import { loadJSON, saveJSON, el } from './dom-helpers.js';
 
 /**
  * Sticky Notes — localStorage-persisted notes with color themes.
@@ -13,13 +13,6 @@ const COLORS = [
     { name: 'gold', bg: 'rgba(255,170,0,0.08)', border: '#ffaa00' },
     { name: 'purple', bg: 'rgba(170,0,255,0.08)', border: '#aa00ff' },
 ];
-
-function el(tag, cls, text) {
-    const e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text) e.textContent = text;
-    return e;
-}
 
 function renderNote(note, grid, save, onDelete) {
     const color = COLORS.find((c) => c.name === note.color) || COLORS[0];

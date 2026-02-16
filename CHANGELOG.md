@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.13.0
-last_updated: 2026-02-15
+version: 3.14.0
+last_updated: 2026-02-16
 
 ---
 
@@ -15,6 +15,17 @@ last_updated: 2026-02-15
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.14.0] — 2026-02-16
+
+### Changed
+- **Extracted `el()` DOM helper** to `dom-helpers.js` — removes identical 5-line function duplicated in `sticky-notes.js` and `pomodoro-timer.js`, consolidating it alongside existing shared utilities (`loadJSON`, `saveJSON`, `downloadJSON`, `animateCounter`)
+- **Introduced `createLazyWindow()` helper** in `desktop.js` — replaces 3 copy-pasted lazy-load window patterns (System Monitor, Sticky Notes, Pomodoro Timer) with a single config-driven function. Each method shrinks from 18 lines to 6 lines
+- Future lazy-loaded window apps now require only a 6-line config call instead of duplicating the full pattern
+
+**Files Modified**: `js/dom-helpers.js`, `js/desktop.js`, `js/sticky-notes.js`, `js/pomodoro-timer.js`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

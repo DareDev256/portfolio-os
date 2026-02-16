@@ -9,6 +9,37 @@ import { loadMedia, loadProjects } from './data-loader.js';
 import { openExternal, animateCounter, loadJSON, saveJSON } from './dom-helpers.js';
 
 /**
+ * Open a lazy-loaded window app.
+ * Creates a container, opens the window, then dynamically imports the module.
+ * The module's render function receives the container and may return a cleanup fn.
+ * @param {Object} opts - Window + module config
+ * @param {string} opts.id - Window ID
+ * @param {string} opts.title - Title bar text
+ * @param {string} opts.icon - Emoji or SVG icon
+ * @param {number} opts.width - Window width
+ * @param {number} opts.height - Window height
+ * @param {() => Promise<{default?: Function} & Record<string, Function>>} opts.load - Dynamic import thunk
+ * @param {string} opts.exportName - Named export to call from the imported module
+ */
+function createLazyWindow({ id, title, icon, width, height, load, exportName }) {
+    let cleanup = null;
+    const content = document.createElement('div');
+    content.style.height = '100%';
+
+    WindowManager.create({
+        id,
+        title,
+        icon,
+        content,
+        width,
+        height,
+        onClose: () => { if (cleanup) cleanup(); },
+    });
+
+    load().then((mod) => { cleanup = mod[exportName](content); });
+}
+
+/**
  * Desktop Manager
  * Handles desktop icons, context menu, wallpaper, and theme
  * HOW TO EXTEND: Add new icons to the DESKTOP_ITEMS array
@@ -1985,76 +2016,30 @@ export const Desktop = {
         // Admin panel accessible via console: import('./admin.js').then(m => m.Admin.open())
     },
 
-    /**
-     * Open System Monitor — real-time performance dashboard
-     */
+    /** Open System Monitor — real-time performance dashboard */
     openSystemMonitor() {
-        let cleanup = null;
-
-        const content = document.createElement('div');
-        content.style.height = '100%';
-
-        WindowManager.create({
-            id: 'sysmon',
-            title: 'SYS_MONITOR // DIAGNOSTICS',
-            icon: '📊',
-            content,
-            width: 480,
-            height: 520,
-            onClose: () => { if (cleanup) cleanup(); },
-        });
-
-        // Lazy-load the monitor module
-        import('./system-monitor.js').then(({ renderSystemMonitor }) => {
-            cleanup = renderSystemMonitor(content);
+        createLazyWindow({
+            id: 'sysmon', title: 'SYS_MONITOR // DIAGNOSTICS', icon: '📊',
+            width: 480, height: 520,
+            load: () => import('./system-monitor.js'), exportName: 'renderSystemMonitor',
         });
     },
 
-    /**
-     * Open Sticky Notes — persistent note-taking utility
-     */
+    /** Open Sticky Notes — persistent note-taking utility */
     openStickyNotes() {
-        let cleanup = null;
-
-        const content = document.createElement('div');
-        content.style.height = '100%';
-
-        WindowManager.create({
-            id: 'sticky-notes',
-            title: 'NOTES // STICKY',
-            icon: '📝',
-            content,
-            width: 520,
-            height: 440,
-            onClose: () => { if (cleanup) cleanup(); },
-        });
-
-        import('./sticky-notes.js').then(({ renderStickyNotes }) => {
-            cleanup = renderStickyNotes(content);
+        createLazyWindow({
+            id: 'sticky-notes', title: 'NOTES // STICKY', icon: '📝',
+            width: 520, height: 440,
+            load: () => import('./sticky-notes.js'), exportName: 'renderStickyNotes',
         });
     },
 
-    /**
-     * Open Pomodoro Timer — focus session utility with work/break cycles
-     */
+    /** Open Pomodoro Timer — focus session utility with work/break cycles */
     openPomodoroTimer() {
-        let cleanup = null;
-
-        const content = document.createElement('div');
-        content.style.height = '100%';
-
-        WindowManager.create({
-            id: 'pomodoro',
-            title: 'FOCUS_TIMER // POMODORO',
-            icon: '⏱',
-            content,
-            width: 320,
-            height: 440,
-            onClose: () => { if (cleanup) cleanup(); },
-        });
-
-        import('./pomodoro-timer.js').then(({ renderPomodoroTimer }) => {
-            cleanup = renderPomodoroTimer(content);
+        createLazyWindow({
+            id: 'pomodoro', title: 'FOCUS_TIMER // POMODORO', icon: '⏱',
+            width: 320, height: 440,
+            load: () => import('./pomodoro-timer.js'), exportName: 'renderPomodoroTimer',
         });
     },
 

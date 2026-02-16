@@ -1,4 +1,4 @@
-import { loadJSON, saveJSON } from './dom-helpers.js';
+import { loadJSON, saveJSON, el } from './dom-helpers.js';
 
 /**
  * Pomodoro Timer — Focus session timer with work/break cycles.
@@ -12,13 +12,6 @@ const PRESETS = [
     { label: '90 / 20', work: 90, brk: 20 },
 ];
 const TWO_PI = Math.PI * 2;
-
-function el(tag, cls, text) {
-    const e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text) e.textContent = text;
-    return e;
-}
 
 function fmt(seconds) {
     const m = Math.floor(seconds / 60);

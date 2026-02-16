@@ -66,6 +66,21 @@ export function openExternal(url) {
  * Previously duplicated identically in desktop.js and github.js.
  * Returns the interval ID so callers can cancel if needed.
  */
+/**
+ * Create a DOM element with optional class and text content.
+ * Replaces identical helpers duplicated in sticky-notes.js and pomodoro-timer.js.
+ * @param {string} tag - HTML tag name
+ * @param {string} [cls] - CSS class name(s)
+ * @param {string} [text] - Text content
+ * @returns {HTMLElement}
+ */
+export function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text) e.textContent = text;
+    return e;
+}
+
 export function animateCounter(element, target, duration = 1500) {
     let start = 0;
     const increment = target / (duration / 16);
