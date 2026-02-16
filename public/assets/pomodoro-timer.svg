@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="pomoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff0066;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff00aa;stop-opacity:1" />
+    </linearGradient>
+    <filter id="pomoGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g filter="url(#pomoGlow)">
+    <!-- Outer ring (progress track) -->
+    <circle cx="50" cy="50" r="40" stroke="url(#pomoGrad)" stroke-width="3"
+            fill="rgba(255, 0, 102, 0.05)" stroke-dasharray="200 52"/>
+
+    <!-- Inner ring -->
+    <circle cx="50" cy="50" r="32" stroke="url(#pomoGrad)" stroke-width="1"
+            fill="none" opacity="0.25"/>
+
+    <!-- Clock hands -->
+    <line x1="50" y1="50" x2="50" y2="24" stroke="url(#pomoGrad)" stroke-width="2.5"
+          stroke-linecap="round"/>
+    <line x1="50" y1="50" x2="66" y2="42" stroke="url(#pomoGrad)" stroke-width="2"
+          stroke-linecap="round" opacity="0.7"/>
+
+    <!-- Center dot -->
+    <circle cx="50" cy="50" r="3" fill="url(#pomoGrad)"/>
+
+    <!-- Tomato leaf/stem accent -->
+    <path d="M50 12 Q46 6 50 2 Q54 6 50 12" stroke="url(#pomoGrad)" stroke-width="1.5"
+          fill="rgba(255,0,102,0.15)"/>
+
+    <!-- Tick marks at 12, 3, 6, 9 -->
+    <line x1="50" y1="13" x2="50" y2="17" stroke="url(#pomoGrad)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="87" y1="50" x2="83" y2="50" stroke="url(#pomoGrad)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="50" y1="87" x2="50" y2="83" stroke="url(#pomoGrad)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="13" y1="50" x2="17" y2="50" stroke="url(#pomoGrad)" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+</svg>

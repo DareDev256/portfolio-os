@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.12.2
+version: 3.13.0
 last_updated: 2026-02-15
 
 ---
@@ -15,6 +15,18 @@ last_updated: 2026-02-15
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.13.0] — 2026-02-15
+
+### Added
+- **FOCUS_TIMER desktop app** — Pomodoro timer with canvas-rendered neon ring, start/pause/reset controls, 3 duration presets (25/5, 50/10, 90/20 min), session counter, total focus time stats, and localStorage persistence. Lazy-loaded module following sticky-notes architecture pattern. Toast notifications on session complete via existing Notify system
+- New desktop icon `FOCUS_TIMER` with custom cyberpunk SVG icon in Column 4 (Extras)
+- New files: `js/pomodoro-timer.js`, `css/pomodoro-timer.css`, `public/assets/pomodoro-timer.svg`
+
+**Files Modified**: `js/desktop.js`, `index.html`, `README.md`, `CHANGELOG.md`, `package.json`
+**Files Created**: `js/pomodoro-timer.js`, `css/pomodoro-timer.css`, `public/assets/pomodoro-timer.svg`
 
 ---
 

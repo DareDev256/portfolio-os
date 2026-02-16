@@ -133,6 +133,13 @@ export const Desktop = {
             action: () => Desktop.openStickyNotes(),
         },
         {
+            id: 'pomodoro',
+            label: 'FOCUS_TIMER',
+            icon: 'svg:/assets/pomodoro-timer.svg',
+            color: '#ff0066',
+            action: () => Desktop.openPomodoroTimer(),
+        },
+        {
             id: 'portfolio-videos',
             label: 'MUSIC_VIDEOS',
             icon: 'svg:/assets/portfolio-videos.svg',
@@ -2024,6 +2031,30 @@ export const Desktop = {
 
         import('./sticky-notes.js').then(({ renderStickyNotes }) => {
             cleanup = renderStickyNotes(content);
+        });
+    },
+
+    /**
+     * Open Pomodoro Timer — focus session utility with work/break cycles
+     */
+    openPomodoroTimer() {
+        let cleanup = null;
+
+        const content = document.createElement('div');
+        content.style.height = '100%';
+
+        WindowManager.create({
+            id: 'pomodoro',
+            title: 'FOCUS_TIMER // POMODORO',
+            icon: '⏱',
+            content,
+            width: 320,
+            height: 440,
+            onClose: () => { if (cleanup) cleanup(); },
+        });
+
+        import('./pomodoro-timer.js').then(({ renderPomodoroTimer }) => {
+            cleanup = renderPomodoroTimer(content);
         });
     },
 
