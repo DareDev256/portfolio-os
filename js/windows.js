@@ -158,6 +158,11 @@ export const WindowManager = {
         this.initDragging(windowObj, titlebar);
         this.initResizing(windowObj, resizeHandle);
 
+        // Click anywhere on window to focus/bring to front
+        windowEl.addEventListener('pointerdown', () => {
+            this.focus(id);
+        });
+
         // Focus the window
         this.focus(id);
 
