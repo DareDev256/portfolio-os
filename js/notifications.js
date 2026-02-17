@@ -4,7 +4,7 @@
  */
 import { Sanitize } from './sanitize.js';
 
-/** @type {{ type: string, message: string, duration: number, el: HTMLElement }[]} */
+/** @type {{ type: string, message: string, duration: number, el: HTMLElement, dismissed: boolean, timerId: number|null }[]} */
 const queue = [];
 let container = null;
 const MAX_VISIBLE = 4;
@@ -27,13 +27,14 @@ function ensureContainer() {
 }
 
 function dismissToast(entry) {
+    if (entry.dismissed) return;
+    entry.dismissed = true;
+    if (entry.timerId) clearTimeout(entry.timerId);
+    const idx = queue.indexOf(entry);
+    if (idx !== -1) queue.splice(idx, 1);
     if (!entry.el || !entry.el.parentNode) return;
     entry.el.classList.add('toast-exit');
-    entry.el.addEventListener('animationend', () => {
-        entry.el.remove();
-        const idx = queue.indexOf(entry);
-        if (idx !== -1) queue.splice(idx, 1);
-    }, { once: true });
+    entry.el.addEventListener('animationend', () => entry.el.remove(), { once: true });
 }
 
 function showToast(type, message, duration = 4000) {
@@ -76,9 +77,9 @@ function showToast(type, message, duration = 4000) {
     el.appendChild(closeBtn);
     el.appendChild(progress);
 
-    const entry = { type, message, duration, el };
+    const entry = { type, message, duration, el, dismissed: false, timerId: null };
 
-    // Evict oldest if at capacity
+    // Evict oldest if at capacity — synchronous splice prevents infinite loop
     while (queue.length >= MAX_VISIBLE) {
         dismissToast(queue[0]);
     }
@@ -92,16 +93,15 @@ function showToast(type, message, duration = 4000) {
 
     closeBtn.addEventListener('click', () => dismissToast(entry));
 
-    const timer = setTimeout(() => dismissToast(entry), duration);
-    // Pause timer on hover
+    entry.timerId = setTimeout(() => dismissToast(entry), duration);
+    // Pause/resume timer on hover
     el.addEventListener('mouseenter', () => {
-        clearTimeout(timer);
+        if (entry.timerId) { clearTimeout(entry.timerId); entry.timerId = null; }
         progress.style.animationPlayState = 'paused';
     });
     el.addEventListener('mouseleave', () => {
         progress.style.animationPlayState = 'running';
-        // Restart with remaining time approximation (just use half)
-        setTimeout(() => dismissToast(entry), duration / 2);
+        entry.timerId = setTimeout(() => dismissToast(entry), duration / 2);
     });
 
     return entry;

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.16.4
+version: 3.16.5
 last_updated: 2026-02-17
 
 ---
@@ -15,6 +15,17 @@ last_updated: 2026-02-17
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.16.5] — 2026-02-17
+
+### Fixed
+- **Toast notification infinite loop on eviction** — `dismissToast()` removed entries from the queue asynchronously (inside `animationend` callback), but the `while (queue.length >= MAX_VISIBLE)` eviction loop checked synchronously. When 4+ toasts were queued rapidly (e.g. toggling settings), the loop spun forever, freezing the browser. Fixed by splicing the queue synchronously before starting the exit animation
+- **Toast hover timer leak** — clearing the auto-dismiss timer on `mouseenter` worked, but the replacement timer created on `mouseleave` was never stored. Subsequent hovers couldn't cancel it, causing toasts to dismiss while the user was still reading them. Timer ID now tracked on the entry object and cleared consistently
+- **Toast double-dismiss race condition** — the close button, auto-timer, and hover-leave timer could all call `dismissToast()` on the same entry, causing double-splice and orphaned DOM nodes. Added `dismissed` idempotency guard
+
+**Files Modified**: `js/notifications.js`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
