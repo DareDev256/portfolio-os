@@ -1588,8 +1588,8 @@ export const Desktop = {
                         ${project.tech.map((t) => `<span class="tech-tag">${Sanitize.text(t)}</span>`).join('')}
                     </div>
                     <div class="project-links">
-                        ${project.demo ? `<a href="${Sanitize.attr(project.demo)}" target="_blank" class="project-link">View Demo</a>` : ''}
-                        ${project.repo ? `<a href="${Sanitize.attr(project.repo)}" target="_blank" class="project-link secondary">GitHub</a>` : ''}
+                        ${project.demo ? `<a href="${Sanitize.attr(project.demo)}" target="_blank" rel="noopener noreferrer" class="project-link">View Demo</a>` : ''}
+                        ${project.repo ? `<a href="${Sanitize.attr(project.repo)}" target="_blank" rel="noopener noreferrer" class="project-link secondary">GitHub</a>` : ''}
                     </div>
                 </div>
             `
@@ -1872,11 +1872,11 @@ export const Desktop = {
             </div>
 
             <div class="social-grid">
-                <a href="https://github.com/DareDev256" target="_blank" class="social-btn">
+                <a href="https://github.com/DareDev256" target="_blank" rel="noopener noreferrer" class="social-btn">
                     <span style="font-size: 1.2em">💻</span>
                     <span>GITHUB_REPO</span>
                 </a>
-                <a href="https://linkedin.com/in/james-olusoga" target="_blank" class="social-btn">
+                <a href="https://linkedin.com/in/james-olusoga" target="_blank" rel="noopener noreferrer" class="social-btn">
                     <span style="font-size: 1.2em">🔗</span>
                     <span>LINKEDIN_PROFILE</span>
                 </a>
@@ -1887,15 +1887,15 @@ export const Desktop = {
             <form class="contact-form">
                 <div class="cyber-form-group">
                     <label class="cyber-label" for="contact-name">IDENTITY</label>
-                    <input type="text" id="contact-name" name="name" class="cyber-input" placeholder="ENTER DESIGNATION" required>
+                    <input type="text" id="contact-name" name="name" class="cyber-input" placeholder="ENTER DESIGNATION" required maxlength="100">
                 </div>
                 <div class="cyber-form-group">
                     <label class="cyber-label" for="contact-email">FREQUENCY (EMAIL)</label>
-                    <input type="email" id="contact-email" name="email" class="cyber-input" placeholder="USER@NET.COM" required>
+                    <input type="email" id="contact-email" name="email" class="cyber-input" placeholder="USER@NET.COM" required maxlength="254">
                 </div>
                 <div class="cyber-form-group">
                     <label class="cyber-label" for="contact-message">PACKET DATA</label>
-                    <textarea id="contact-message" name="message" class="cyber-textarea" placeholder="INITIATE MESSAGE SEQUENCE..." required></textarea>
+                    <textarea id="contact-message" name="message" class="cyber-textarea" placeholder="INITIATE MESSAGE SEQUENCE..." required maxlength="2000"></textarea>
                 </div>
                 <button type="submit" class="cyber-button" style="width: 100%; margin-top: 10px;">
                     <span>TRANSMIT ENCRYPTED DATA</span>

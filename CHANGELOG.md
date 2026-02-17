@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.16.3
-last_updated: 2026-02-16
+version: 3.16.4
+last_updated: 2026-02-17
 
 ---
 
@@ -15,6 +15,22 @@ last_updated: 2026-02-16
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.16.4] — 2026-02-17
+
+### Security
+- **Tabnapping prevention on `target="_blank"` links** — 4 anchor tags in `desktop.js` (contact social links, project demo/repo links) were missing `rel="noopener noreferrer"`, allowing opened pages to access `window.opener` and potentially redirect the portfolio. Fixed by adding the attribute to all 4 instances. The `openExternal()` helper already handles this for programmatic opens, but these HTML-interpolated links were missed
+- **GitHub API response shape validation** — `github.js` now validates that API responses have expected `user.login` (string), `repos` (array of objects with `name`), and `events` (array) before rendering or caching. Corrupted localStorage cache is auto-purged on validation failure. Mirrors the weather widget validation pattern from v3.16.2
+- **Contact form input length limits** — Added `maxlength` attributes to name (100), email (254 per RFC 5321), and message (2000) fields to prevent excessively long `mailto:` URI construction that could crash browsers or be used for abuse
+
+### Added
+- **GitHub validation test suite** (`tests/github.test.js`) — 7 tests covering `validateResponse()`: valid shape acceptance, missing/null user, non-string login, non-array repos, non-array events, invalid repo entries, and null repo entries
+
+**Test count**: 201 across 13 suites (up from 194 across 12)
+
+**Files Modified**: `js/desktop.js`, `js/github.js`, `tests/github.test.js`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 

@@ -15,6 +15,28 @@ export const GitHub = {
     },
 
     /**
+     * Validate GitHub API response shape before rendering.
+     * Prevents crashes from malformed cache or unexpected API changes.
+     */
+    validateResponse({ user, repos, events }) {
+        if (!user || typeof user !== 'object' || typeof user.login !== 'string') {
+            throw new Error('Invalid user data');
+        }
+        if (!Array.isArray(repos)) {
+            throw new Error('Invalid repos data');
+        }
+        if (!Array.isArray(events)) {
+            throw new Error('Invalid events data');
+        }
+        // Validate individual repo objects have required fields
+        for (const r of repos) {
+            if (!r || typeof r !== 'object' || typeof r.name !== 'string') {
+                throw new Error('Invalid repo entry');
+            }
+        }
+    },
+
+    /**
      * Calculate language breakdown from repos
      */
     calculateLanguageStats(repos) {
@@ -84,10 +106,16 @@ export const GitHub = {
      * Fetch all necessary data: Profile, Repos, Activity
      */
     async getData() {
-        // Check cache
+        // Check cache — validate shape before trusting localStorage data
         const parsed = loadJSON(this.cacheKey);
         if (parsed && Date.now() - parsed.timestamp < this.cacheTTL) {
-            return parsed.data;
+            try {
+                this.validateResponse(parsed.data);
+                return parsed.data;
+            } catch {
+                // Corrupted cache — purge and re-fetch
+                localStorage.removeItem(this.cacheKey);
+            }
         }
 
         try {
@@ -104,6 +132,9 @@ export const GitHub = {
             ]);
 
             const data = { user, repos, events };
+
+            // Validate shape before caching — reject malformed API responses
+            this.validateResponse(data);
 
             // Save Cache
             saveJSON(this.cacheKey, { timestamp: Date.now(), data });

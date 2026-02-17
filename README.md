@@ -4,8 +4,8 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.16.3-00f0ff?style=flat-square)
-![Tests](https://img.shields.io/badge/tests-194_passing-00e676?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.16.4-00f0ff?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-201_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-24-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-44-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
@@ -21,7 +21,7 @@ An interactive desktop environment that runs entirely in the browser. Draggable 
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> **44 ES modules** · **24 stylesheets** · **194 tests across 12 suites** · **20 desktop apps** · **10 security headers** · **0 runtime dependencies**
+> **44 ES modules** · **24 stylesheets** · **201 tests across 13 suites** · **20 desktop apps** · **10 security headers** · **0 runtime dependencies**
 
 ## Quick Start
 
@@ -94,6 +94,9 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - YouTube/Vimeo video ID regex validation — blocks injection via crafted embed URLs
 - Iframe `sandbox` on all video embeds — prevents top-navigation and popup abuse
 - Weather widget validates API response shape and coordinate inputs
+- GitHub API response shape validation — rejects malformed cache/API data before rendering
+- `rel="noopener noreferrer"` on all `target="_blank"` links — prevents tabnapping
+- Contact form input length limits (name 100, email 254, message 2000) — prevents mailto URI abuse
 
 ### Accessibility (WCAG)
 
@@ -132,7 +135,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 | Metric | Value |
 |--------|-------|
-| **Test Coverage** | 171 tests across 11 suites (vitest + jsdom) |
+| **Test Coverage** | 201 tests across 13 suites (vitest + jsdom) |
 | **Security** | DOMPurify on all innerHTML, 10 HTTP headers, CSP, SRI |
 | **Accessibility** | WCAG focus trapping, aria-live, skip-link, reduced-motion |
 | **Performance** | Lazy-loaded modules, RAF pausing, 30fps-throttled FX |
@@ -221,7 +224,7 @@ css/                                # 21 modular stylesheets
 ├── loading.css                     # Boot sequence, spinners
 └── admin.css                       # Content editor panel
 │
-tests/                              # 168 vitest tests across 11 suites
+tests/                              # 201 vitest tests across 13 suites
 ├── sanitize.test.js                # XSS sanitization (12 tests)
 ├── state.test.js                   # State persistence + events (15 tests)
 ├── data-loader.test.js             # JSON fetch + cache (9 tests)
@@ -232,6 +235,7 @@ tests/                              # 168 vitest tests across 11 suites
 ├── modal.test.js                   # Dialog init, dismiss, prompt, alert (15 tests)
 ├── command-palette.test.js         # Fuzzy search, keyboard nav, ARIA, execute (22 tests)
 ├── mobile.test.js                  # Device detection, viewport meta, mobile styles (11 tests)
+├── github.test.js                  # API response validation (7 tests)
 └── smoke.test.js                   # Critical path integration: DOM, routing, contact form, responsive (27 tests)
 ```
 
@@ -260,7 +264,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run 168 vitest tests
+npm run test      # Run 201 vitest tests
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
@@ -281,7 +285,7 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 
 ## License
 
-MIT — **v3.12.1**
+MIT — **v3.16.4**
 
 ---
 
