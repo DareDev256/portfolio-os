@@ -92,6 +92,28 @@ export const Sanitize = {
         }
 
         return value;
+    },
+
+    /**
+     * Validate and sanitize a URL string.
+     * Only allows http(s) and relative paths. Blocks javascript:, data:, vbscript:,
+     * and protocol-obfuscated variants. Returns empty string for dangerous URLs.
+     * Use this for user-supplied URLs (project links, media src, imported backups).
+     * @param {string} url - URL to validate
+     * @returns {string} Safe URL or empty string
+     */
+    url(url) {
+        if (!url || typeof url !== 'string') return '';
+        // Strip control chars that hide protocol (tab, newline, null)
+        // eslint-disable-next-line no-control-regex
+        const stripped = url.replace(/[\x00-\x1f\x7f]/g, '').trim();
+        if (!stripped) return '';
+        // Allow relative paths (start with / or alphanumeric)
+        if (/^\/[\w./-]*$/.test(stripped) || /^[\w][\w./-]*$/.test(stripped)) return stripped;
+        // Allow only http(s) absolute URLs
+        if (/^https?:\/\//i.test(stripped)) return stripped;
+        // Block everything else (javascript:, data:, vbscript:, blob:, etc.)
+        return '';
     }
 };
 

@@ -88,3 +88,56 @@ describe('Sanitize.attr()', () => {
         expect(Sanitize.attr('data:image/png;base64,iVBOR=')).toBe('data:image/png;base64,iVBOR=');
     });
 });
+
+describe('Sanitize.url()', () => {
+    it('allows https URLs', () => {
+        expect(Sanitize.url('https://example.com')).toBe('https://example.com');
+        expect(Sanitize.url('https://github.com/user/repo')).toBe('https://github.com/user/repo');
+    });
+
+    it('allows http URLs', () => {
+        expect(Sanitize.url('http://localhost:3000')).toBe('http://localhost:3000');
+    });
+
+    it('allows relative paths starting with /', () => {
+        expect(Sanitize.url('/assets/image.png')).toBe('/assets/image.png');
+        expect(Sanitize.url('/data/projects.json')).toBe('/data/projects.json');
+    });
+
+    it('allows relative paths without leading slash', () => {
+        expect(Sanitize.url('assets/photo.jpg')).toBe('assets/photo.jpg');
+    });
+
+    it('blocks javascript: protocol', () => {
+        expect(Sanitize.url('javascript:alert(1)')).toBe('');
+    });
+
+    it('blocks javascript: with control char obfuscation', () => {
+        expect(Sanitize.url('java\tscript:alert(1)')).toBe('');
+        expect(Sanitize.url('\x00javascript:alert(1)')).toBe('');
+    });
+
+    it('blocks data: URIs', () => {
+        expect(Sanitize.url('data:text/html,<script>alert(1)</script>')).toBe('');
+        expect(Sanitize.url('data:image/svg+xml,<svg onload=alert(1)>')).toBe('');
+    });
+
+    it('blocks vbscript: protocol', () => {
+        expect(Sanitize.url('vbscript:MsgBox("XSS")')).toBe('');
+    });
+
+    it('blocks blob: URLs', () => {
+        expect(Sanitize.url('blob:https://evil.com/uuid')).toBe('');
+    });
+
+    it('returns empty string for falsy input', () => {
+        expect(Sanitize.url('')).toBe('');
+        expect(Sanitize.url(null)).toBe('');
+        expect(Sanitize.url(undefined)).toBe('');
+        expect(Sanitize.url(0)).toBe('');
+    });
+
+    it('strips leading/trailing whitespace', () => {
+        expect(Sanitize.url('  https://example.com  ')).toBe('https://example.com');
+    });
+});

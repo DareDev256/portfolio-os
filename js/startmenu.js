@@ -92,14 +92,20 @@ export const StartMenu = {
             { label: 'Restart System', icon: '↻', action: () => window.location.reload() },
             {
                 label: 'Shut Down', icon: '⏻', action: () => {
-                    document.body.innerHTML = '';
+                    // Clear DOM safely without innerHTML to prevent XSS patterns
+                    while (document.body.firstChild) document.body.firstChild.remove();
                     document.body.style.background = 'black';
                     document.body.style.display = 'flex';
                     document.body.style.alignItems = 'center';
                     document.body.style.justifyContent = 'center';
                     document.body.style.color = '#00f0ff';
                     document.body.style.fontFamily = 'monospace';
-                    document.body.innerHTML = '<h1>SYSTEM HALTED</h1><p>It is now safe to turn off your computer.</p>';
+                    document.body.style.flexDirection = 'column';
+                    const h1 = document.createElement('h1');
+                    h1.textContent = 'SYSTEM HALTED';
+                    const p = document.createElement('p');
+                    p.textContent = 'It is now safe to turn off your computer.';
+                    document.body.append(h1, p);
                 }
             }
         ];

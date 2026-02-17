@@ -4,8 +4,8 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.16.6-00f0ff?style=flat-square)
-![Tests](https://img.shields.io/badge/tests-201_passing-00e676?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.16.7-00f0ff?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-212_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-24-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-44-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
@@ -21,7 +21,7 @@ An interactive desktop environment that runs entirely in the browser. Draggable 
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> **44 ES modules** · **24 stylesheets** · **201 tests across 13 suites** · **20 desktop apps** · **10 security headers** · **0 runtime dependencies**
+> **44 ES modules** · **24 stylesheets** · **212 tests across 13 suites** · **20 desktop apps** · **10 security headers** · **0 runtime dependencies**
 
 ## Quick Start
 
@@ -81,12 +81,14 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | **WEATHER** | Window | Live weather with geolocation, current conditions, 3-day forecast via Open-Meteo |
 | **SYS_MONITOR** | Window | Live FPS graph, heap usage, DOM count, network info, uptime |
 
-### Security (Hardened Across v3.1–v3.16.2)
+### Security (Hardened Across v3.1–v3.16.7)
 
 - All `innerHTML` routed through DOMPurify (SRI hash on CDN) — including window content, titlebar icons, taskbar icons, and start menu items
 - 10 HTTP security headers via Vercel (CSP, HSTS, X-Frame-Options, COOP, COEP, CORP, Permissions-Policy)
 - URL injection prevention — allowlist-based router, CSS breakout stripping
 - `Sanitize.attr()` blocks `data:image/svg+xml` XSS vectors alongside `javascript:`, `vbscript:`, and `data:text/html`
+- `Sanitize.url()` allowlist-validates imported URLs (http(s) and relative paths only) — blocks stored XSS via crafted backup JSON
+- Admin Dashboard renders all tab content through `Sanitize.setHTML()` (defense-in-depth against future template injection)
 - CSP `connect-src` allowlists only known API origins (GitHub, Open-Meteo)
 - localStorage `JSON.parse` wrapped in try/catch with fallbacks
 - SVG content sanitized before DOM insertion
@@ -135,7 +137,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 | Metric | Value |
 |--------|-------|
-| **Test Coverage** | 201 tests across 13 suites (vitest + jsdom) |
+| **Test Coverage** | 212 tests across 13 suites (vitest + jsdom) |
 | **Security** | DOMPurify on all innerHTML, 10 HTTP headers, CSP, SRI |
 | **Accessibility** | WCAG focus trapping, aria-live, skip-link, reduced-motion |
 | **Performance** | Lazy-loaded modules, RAF pausing, 30fps-throttled FX |
@@ -225,7 +227,7 @@ css/                                # 21 modular stylesheets
 └── admin.css                       # Content editor panel
 │
 tests/                              # 201 vitest tests across 13 suites
-├── sanitize.test.js                # XSS sanitization (12 tests)
+├── sanitize.test.js                # XSS sanitization (29 tests)
 ├── state.test.js                   # State persistence + events (15 tests)
 ├── data-loader.test.js             # JSON fetch + cache (9 tests)
 ├── router.test.js                  # Path validation + routing (12 tests)

@@ -27,7 +27,7 @@ export const Admin = {
     open() {
         const container = document.createElement('div');
         container.className = 'admin-dashboard';
-        container.innerHTML = this.getHTML();
+        Sanitize.setHTML(container, this.getHTML());
 
         WindowManager.create({
             id: 'admin',
@@ -113,26 +113,33 @@ export const Admin = {
     renderCurrentTab(container) {
         const content = container.querySelector('#adminContent');
 
+        // Use Sanitize.setHTML to ensure all rendered HTML passes DOMPurify
+        // even though templates use Sanitize.text() for interpolation.
+        // Defense-in-depth: if a template is later modified to include
+        // user-controlled data, the sanitizer catches it.
+        const renderTab = (html, handler) => {
+            Sanitize.setHTML(content, html, {
+                ADD_TAGS: ['input', 'textarea', 'select', 'option', 'form', 'style'],
+                ADD_ATTR: ['for', 'name', 'maxlength', 'rows', 'accept', 'multiple', 'checked', 'selected', 'data-tab', 'data-index', 'data-action', 'data-type', 'data-folder', 'style']
+            });
+            handler(content);
+        };
+
         switch (this.currentTab) {
             case 'desktop':
-                content.innerHTML = this.getDesktopItemsHTML();
-                this.initDesktopItemsHandlers(content);
+                renderTab(this.getDesktopItemsHTML(), (c) => this.initDesktopItemsHandlers(c));
                 break;
             case 'projects':
-                content.innerHTML = this.getProjectsHTML();
-                this.initProjectsHandlers(content);
+                renderTab(this.getProjectsHTML(), (c) => this.initProjectsHandlers(c));
                 break;
             case 'media':
-                content.innerHTML = this.getMediaHTML();
-                this.initMediaHandlers(content);
+                renderTab(this.getMediaHTML(), (c) => this.initMediaHandlers(c));
                 break;
             case 'theme':
-                content.innerHTML = this.getThemeHTML();
-                this.initThemeHandlers(content);
+                renderTab(this.getThemeHTML(), (c) => this.initThemeHandlers(c));
                 break;
             case 'data':
-                content.innerHTML = this.getDataHTML();
-                this.initDataHandlers(content);
+                renderTab(this.getDataHTML(), (c) => this.initDataHandlers(c));
                 break;
         }
     },
@@ -574,7 +581,7 @@ export const Admin = {
                 'Archive': '📦'
             };
 
-            folderList.innerHTML = folders.map(folder => {
+            Sanitize.setHTML(folderList, folders.map(folder => {
                 const icon = storedIcons[folder] || defaultIcons[folder] || '📁';
                 return `
                     <div class="folder-icon-item" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
@@ -582,7 +589,10 @@ export const Admin = {
                         <input type="text" class="folder-icon-input" data-folder="${Sanitize.text(folder)}" value="${Sanitize.text(icon)}" style="width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(0,240,255,0.3); color: white; padding: 5px; border-radius: 4px; text-align: center;">
                     </div>
                 `;
-            }).join('');
+            }).join(''), {
+                ADD_TAGS: ['input'],
+                ADD_ATTR: ['data-folder', 'style']
+            });
         }
 
         // Add image
@@ -1015,6 +1025,9 @@ export const Admin = {
                             if (p.description && !isStr(p.description)) throw new Error('Project description too long');
                             if (p.tags && !isArr(p.tags, 20)) throw new Error('Too many project tags');
                             if (p.tech && !isArr(p.tech, 20)) throw new Error('Too many project techs');
+                            // Sanitize URLs to block javascript:/data: injection via imported JSON
+                            if (p.demo) p.demo = Sanitize.url(p.demo);
+                            if (p.repo) p.repo = Sanitize.url(p.repo);
                         }
                         localStorage.setItem('projects.json', JSON.stringify(backup.projects));
                         invalidateData('projects.json');
@@ -1024,6 +1037,14 @@ export const Admin = {
                         if (typeof backup.media !== 'object') throw new Error('Invalid media object');
                         if (backup.media.images && !isArr(backup.media.images, MAX_ITEMS)) throw new Error('Too many media images');
                         if (backup.media.videos && !isArr(backup.media.videos, MAX_ITEMS)) throw new Error('Too many media videos');
+                        // Sanitize all media URLs to block stored XSS via crafted backup files
+                        for (const img of (backup.media.images || [])) {
+                            if (img.url) img.url = Sanitize.url(img.url);
+                        }
+                        for (const vid of (backup.media.videos || [])) {
+                            if (vid.url) vid.url = Sanitize.url(vid.url);
+                            if (vid.poster) vid.poster = Sanitize.url(vid.poster);
+                        }
                         localStorage.setItem('media.json', JSON.stringify(backup.media));
                         invalidateData('media.json');
                         this.media = backup.media;

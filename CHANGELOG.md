@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.16.6
+version: 3.16.7
 last_updated: 2026-02-17
 
 ---
@@ -15,6 +15,21 @@ last_updated: 2026-02-17
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.16.7] — 2026-02-17
+
+### Security
+- **Added `Sanitize.url()` method** — allowlist-based URL validator that permits only `http(s)` and relative paths. Blocks `javascript:`, `data:`, `vbscript:`, `blob:`, and control-char-obfuscated protocol variants. Used during backup import to prevent stored XSS via crafted URLs in project/media JSON
+- **Admin Dashboard import hardens URL fields** — all `demo`, `repo`, media `url`, and `poster` fields in imported backup JSON are now validated through `Sanitize.url()` before being written to localStorage. Previously, a malicious backup file could inject `javascript:` URIs that would execute when rendered in the admin panel or media vault
+- **Admin tab renders routed through `Sanitize.setHTML()`** — all 5 admin tabs (desktop, projects, media, theme, data) and folder icon list now use DOMPurify-backed `Sanitize.setHTML()` instead of bare `innerHTML`. Defense-in-depth: catches any future template injection if dynamic data is interpolated without escaping
+- **Startmenu shutdown uses safe DOM API** — replaced `document.body.innerHTML = ''` and `innerHTML = '<h1>...'` with `while(firstChild) remove()` + `createElement`/`textContent`. Eliminates the innerHTML pattern on `document.body` entirely
+
+### Added
+- 11 new security tests for `Sanitize.url()` — covers https/http allow, relative paths, javascript: block, control-char obfuscation, data:/vbscript:/blob: block, falsy input, whitespace trim (212 total tests)
+
+**Files Modified**: `js/sanitize.js`, `js/admin.js`, `js/startmenu.js`, `tests/sanitize.test.js`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 
