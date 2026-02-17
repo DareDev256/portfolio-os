@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.16.7
+version: 3.17.0
 last_updated: 2026-02-17
 
 ---
@@ -15,6 +15,16 @@ last_updated: 2026-02-17
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.17.0] — 2026-02-17
+
+### Changed
+- **Unified lazy-window pattern for Skills, GitHub, and Terminal** — `openSkills()` (30 lines → 13), `openGitHubCenter()` (18 lines → 13), and `openTerminal()` (18 lines → 11) now use the shared `createLazyWindow()` helper instead of manually creating containers, querying `.window-content`, and wiring dynamic imports. Eliminates 3 copies of the same lazy-load boilerplate
+- **Extended `createLazyWindow()` API** — added `onLoad` callback for object-API modules (`.init()/.render()/.stop()` pattern), `containerClass` for CSS class assignment, and `windowOptions` spread for pass-through window config (e.g. `transitionType`). The existing `exportName` convention used by 5 other windows is unchanged
+
+**Files Modified**: `js/desktop.js`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

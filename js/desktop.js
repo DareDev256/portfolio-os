@@ -11,20 +11,28 @@ import { openExternal, animateCounter, loadJSON, saveJSON } from './dom-helpers.
 /**
  * Open a lazy-loaded window app.
  * Creates a container, opens the window, then dynamically imports the module.
- * The module's render function receives the container and may return a cleanup fn.
- * @param {Object} opts - Window + module config
+ *
+ * Two calling conventions:
+ *  1) `exportName` — calls `mod[exportName](container)`, expects optional cleanup return
+ *  2) `onLoad(mod, container)` — caller controls init, must return a cleanup fn or undefined
+ *
+ * @param {Object} opts
  * @param {string} opts.id - Window ID
  * @param {string} opts.title - Title bar text
  * @param {string} opts.icon - Emoji or SVG icon
  * @param {number} opts.width - Window width
  * @param {number} opts.height - Window height
- * @param {() => Promise<{default?: Function} & Record<string, Function>>} opts.load - Dynamic import thunk
- * @param {string} opts.exportName - Named export to call from the imported module
+ * @param {() => Promise} opts.load - Dynamic import thunk
+ * @param {string} [opts.exportName] - Named export to call (simple mode)
+ * @param {(mod: Object, container: HTMLElement) => Function|void} [opts.onLoad] - Custom init (advanced mode)
+ * @param {string} [opts.containerClass] - CSS class for the content container
+ * @param {Object} [opts.windowOptions] - Extra options merged into WindowManager.create call
  */
-function createLazyWindow({ id, title, icon, width, height, load, exportName }) {
+function createLazyWindow({ id, title, icon, width, height, load, exportName, onLoad, containerClass, windowOptions }) {
     let cleanup = null;
     const content = document.createElement('div');
     content.style.height = '100%';
+    if (containerClass) content.className = containerClass;
 
     WindowManager.create({
         id,
@@ -34,9 +42,12 @@ function createLazyWindow({ id, title, icon, width, height, load, exportName }) 
         width,
         height,
         onClose: () => { if (cleanup) cleanup(); },
+        ...windowOptions,
     });
 
-    load().then((mod) => { cleanup = mod[exportName](content); });
+    load().then((mod) => {
+        cleanup = onLoad ? onLoad(mod, content) : mod[exportName](content);
+    });
 }
 
 /**
@@ -793,80 +804,56 @@ export const Desktop = {
      * Open Skills Universe
      */
     openSkills() {
-        let skillsRef = null;
-        const win = WindowManager.create({
+        createLazyWindow({
             id: 'skills',
             title: 'SKILLS_UNIVERSE // PHYSICS_ENGINE_V1',
             icon: '🕸️',
             width: 900,
             height: 600,
-            onClose: () => { if (skillsRef) skillsRef.stop(); }
+            containerClass: 'skills-container',
+            load: () => import('./skills.js'),
+            onLoad: ({ SkillsUniverse }, container) => {
+                container.style.background = '#000';
+                container.style.overflow = 'hidden';
+                SkillsUniverse.init(container);
+                return () => SkillsUniverse.stop();
+            },
         });
-
-        const content = document.createElement('div');
-        content.style.width = '100%';
-        content.style.height = '100%';
-        content.style.background = '#000';
-        content.style.overflow = 'hidden';
-        content.className = 'skills-container';
-
-        // Clear previous content
-        const winContent = win.element.querySelector('.window-content');
-        winContent.innerHTML = '';
-        winContent.appendChild(content);
-
-        // Init Physics Engine (lazy-loaded)
-        setTimeout(async () => {
-            const { SkillsUniverse } = await import('./skills.js');
-            SkillsUniverse.init(content);
-            skillsRef = SkillsUniverse;
-        }, 50);
     },
 
     /**
      * Open GitHub Operations Center
      */
     openGitHubCenter() {
-        const win = WindowManager.create({
+        createLazyWindow({
             id: 'github-ops',
             title: 'GITHUB_OPS // MISSION_CONTROL',
             icon: '📡',
             width: 1000,
-            height: 700
+            height: 700,
+            containerClass: 'github-ops-container',
+            load: () => import('./github.js'),
+            onLoad: ({ GitHub }, container) => {
+                container.style.overflow = 'auto';
+                GitHub.render(container);
+            },
         });
-
-        const content = document.createElement('div');
-        content.className = 'github-ops-container';
-        content.style.height = '100%';
-        content.style.overflow = 'auto'; // Let the dashboard handle its own scroll with overflow-y: auto
-
-        win.element.querySelector('.window-content').appendChild(content);
-
-        // Render Dashboard (lazy-loaded)
-        import('./github.js').then(({ GitHub }) => GitHub.render(content));
     },
 
     /**
      * Open Enterprise Console (Terminal)
      */
     openTerminal() {
-        const win = WindowManager.create({
+        createLazyWindow({
             id: 'terminal',
             title: 'ENTERPRISE_CONSOLE // ROOT_ACCESS',
             icon: '▶',
             width: 800,
             height: 500,
-            transitionType: 'console'
+            windowOptions: { transitionType: 'console' },
+            load: () => import('./terminal.js'),
+            onLoad: ({ Terminal }, container) => { Terminal.init(container); },
         });
-
-        win.element.style.background = 'rgba(5, 5, 10, 0.98)';
-
-        const content = document.createElement('div');
-        content.style.height = '100%';
-        win.element.querySelector('.window-content').appendChild(content);
-
-        // Lazy-load terminal module
-        import('./terminal.js').then(({ Terminal }) => Terminal.init(content));
     },
 
     /** Open the featured video directly */
