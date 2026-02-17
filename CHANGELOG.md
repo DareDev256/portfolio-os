@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.16.5
+version: 3.16.6
 last_updated: 2026-02-17
 
 ---
@@ -15,6 +15,15 @@ last_updated: 2026-02-17
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.16.6] — 2026-02-17
+
+### Changed
+- **DOCUMENTATION.md modernized from v2.56 to v3.16.6** — the main user guide was frozen at November 2025 (Phase 3 era) while the codebase grew from 10 modules to 44. Updated Quick Start from "open index.html" to Vite-based `npm run dev` workflow. Added complete Desktop Apps reference table covering all 20 apps. Added Keyboard Shortcuts & Easter Eggs section with command palette, toast notifications, and all hidden triggers. Replaced stale 10-file structure with current 44-module architecture summary. Fixed Deployment section to include `npm run build` and Vite output. Updated Admin Dashboard access instructions (now console-only via `Admin.open()`). Removed dead link to deleted `FEATURE_VERIFICATION.md`. Updated Related Documentation table with current doc set including EASTER_EGGS_GUIDE.md. Added Development Commands reference
+
+**Files Modified**: `DOCUMENTATION.md`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

@@ -3,52 +3,66 @@
 ---
 
 title: Passion OS Documentation
-version: 2.56
-last_updated: 2025-11-27
-modules: [desktop, windows, admin, routing, mobile]
+version: 3.16.6
+last_updated: 2026-02-17
+modules: 44 ES modules, 24 stylesheets, 13 test suites
 
 ---
 
-<!-- AI Context: Complete customization and setup guide for Passion OS.
+<!-- AI Context: Complete customization and setup guide for Passion OS v3.16.6.
      Related files: js/desktop.js, data/projects.json, data/media.json
-     Dependencies: Admin Dashboard (ADMIN_DASHBOARD_GUIDE.md) -->
+     Entry point: js/main.js
+     Dependencies: Admin Dashboard (ADMIN_DASHBOARD_GUIDE.md)
+     Architecture: docs/ARCHITECTURE.md -->
 
 ## Table of Contents
 
 1. [Quick Start](#quick-start)
-2. [Customization Methods](#customization-methods)
-3. [Desktop Items](#desktop-items)
-4. [Projects & Applications](#projects--applications)
-5. [Media Library](#media-library)
-6. [Themes & Wallpapers](#themes--wallpapers)
-7. [Resume Setup](#resume-setup)
-8. [Contact Form](#contact-form)
-9. [Manual Code Editing (Advanced)](#manual-code-editing-advanced)
-10. [Deployment](#deployment)
-11. [Troubleshooting](#troubleshooting)
+2. [Desktop Apps](#desktop-apps)
+3. [Keyboard Shortcuts & Easter Eggs](#keyboard-shortcuts--easter-eggs)
+4. [Customization Methods](#customization-methods)
+5. [Desktop Items](#desktop-items)
+6. [Projects & Applications](#projects--applications)
+7. [Media Library](#media-library)
+8. [Themes & Wallpapers](#themes--wallpapers)
+9. [Resume Setup](#resume-setup)
+10. [Contact Form](#contact-form)
+11. [Manual Code Editing (Advanced)](#manual-code-editing-advanced)
+12. [Deployment](#deployment)
+13. [Troubleshooting](#troubleshooting)
 
 ---
 
 ## Quick Start
 
+### Prerequisites
+
+Node.js 18+ and npm 9+.
+
 ### Installation
 
-1. **Clone or download** this repository
-2. **Open `index.html`** in a modern web browser
-3. That's it! No build tools or installation required.
+```bash
+git clone https://github.com/DareDev256/portfolio-os.git
+cd portfolio-os
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173`. Click the lock screen to enter.
 
 ### Two Ways to Customize
 
-#### Option A: Admin Dashboard (Recommended)
+#### Option A: Admin Dashboard (Console-Only)
 
-Visual interface for non-technical users:
+The admin dashboard is hidden from the UI for security. Access it from the browser console:
 
-1. Open Passion OS
-2. Click **Settings** → **Content Editor**
-3. Edit desktop items, projects, media, themes
-4. Click **Save** and refresh page
+```javascript
+Admin.open()
+```
 
-👉 **See**: [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) for complete guide
+This opens a visual editor for desktop items, projects, media, and themes.
+
+See [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) for the complete guide.
 
 #### Option B: Manual Editing (Advanced)
 
@@ -56,8 +70,91 @@ Direct code editing for developers:
 
 - Edit `data/projects.json` for projects
 - Edit `data/media.json` for images/videos
-- Edit `js/desktop.js` for desktop items
+- Edit `js/desktop.js` for desktop items and app launchers
 - Edit `css/variables.css` for theme colors
+
+---
+
+## Desktop Apps
+
+Passion OS ships with **20 desktop applications**, each launched from the icon grid. Apps are lazy-loaded — zero bytes until opened.
+
+| App | Description |
+|-----|-------------|
+| **ABOUT_ME.exe** | Bio, role, location, color-coded skills grid |
+| **RESUME** | PDF viewer with download button |
+| **CONNECT** | Contact form with validation and input length limits |
+| **LINKEDIN** | Opens LinkedIn profile (external) |
+| **SKILLS_MATRIX** | Interactive force-directed skills graph (spring physics, drag nodes) |
+| **GITHUB_OPS** | Live GitHub API integration with response validation |
+| **PORTFOLIO** | Curated 5-project showcase with tech badges and live demo links |
+| **APPLICATIONS** | 17 real projects across 4 categories with DEPLOYED/SOURCE badges |
+| **DEV_TERMINAL** | Fake terminal with 18 commands (`neofetch`, `cowsay`, `matrix`, etc.) |
+| **Vibe_Coder.exe** | Browser-based game (external deployed project) |
+| **IMG_GEN.ai** | AI image generation tool (external deployed project) |
+| **TYPEMASTER** | Typing speed game (external deployed project) |
+| **SHOWCASE.mp4** | Featured video in lightbox viewer |
+| **MUSIC_VIDEOS** | Music video portfolio (external) |
+| **SETTINGS** | Theme, wallpaper, sound, cursor trail toggles |
+| **NOTES** | Sticky notes with 5 color themes, localStorage persistence, auto-save |
+| **FOCUS_TIMER** | Pomodoro timer with canvas ring, 3 presets (25/50/90 min), session stats |
+| **CALC.exe** | Calculator with keyboard input, expression chaining, glass UI |
+| **WEATHER** | Live weather via Open-Meteo API with geolocation and 3-day forecast |
+| **SYS_MONITOR** | Live FPS graph, heap usage, DOM count, network info, uptime |
+
+### Adding a New Desktop App
+
+The fastest way to add an app is with `createLazyWindow()`:
+
+```javascript
+// In js/desktop.js — add to DESKTOP_ITEMS array:
+{ id: 'my-app', label: 'MY_APP', icon: myAppSvg, color: '#00f0ff', action: () => this.openMyApp() }
+
+// Then create the launcher using the lazy-load helper:
+openMyApp: createLazyWindow({
+    id: 'my-app',
+    title: 'My App',
+    icon: myAppSvg,
+    width: 600,
+    height: 400,
+    module: () => import('./my-app.js'),
+    init: (mod, el) => mod.init(el),
+    cleanup: (mod) => mod.destroy(),
+})
+```
+
+This pattern handles import, cleanup lifecycle, and pre-load close safety automatically.
+
+---
+
+## Keyboard Shortcuts & Easter Eggs
+
+| Shortcut | Action |
+|----------|--------|
+| `?` | Show keyboard shortcuts overlay |
+| `Cmd+K` / `Ctrl+K` | Open command palette (fuzzy-search across all apps) |
+| `ESC` | Close active overlay (priority: modal > lightbox > tour > window) |
+| `Arrow Left` / `Arrow Right` | Navigate lightbox images |
+| `Tab` / `Shift+Tab` | Cycle focus within trapped overlays |
+| `Arrow Up` / `Arrow Down` + `Enter` | Navigate and select in command palette |
+| `Ctrl+Shift+V` | System info easter egg |
+| `Up Up Down Down Left Right Left Right B A` | Konami code |
+| Triple-click desktop | Glitch pulse effect |
+| Type `418` | I'm a teapot |
+
+### Toast Notifications
+
+The system uses a non-blocking notification queue. All user-facing feedback (settings toggles, easter eggs, session completions) routes through it:
+
+- **4 types**: success, error, warning, info
+- **Auto-dismiss** with progress bar, **hover-to-pause**
+- **Max 4 visible**, oldest evicted when full
+- **`aria-live` polite** region for screen readers
+- **`prefers-reduced-motion`** respected
+
+### Command Palette
+
+Press `Cmd+K` / `Ctrl+K` to open the Spotlight-style launcher. It fuzzy-searches across all 20 desktop apps and 4 system toggles (theme, cursor trail, sound, interactions). Full keyboard navigation with arrow keys and Enter.
 
 ---
 
@@ -518,34 +615,28 @@ For developers who want full control.
 
 ### File Structure
 
+See the full architecture tree in [README.md](README.md#architecture) or [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Key directories:
+
 ```
-/Users/t./Documents/Website/
-├── index.html                 # Main HTML file
-├── css/
-│   ├── reset.css             # CSS reset
-│   ├── variables.css         # CSS custom properties (theme colors)
-│   ├── styles.css            # Main styles
-│   ├── windows.css           # Window system styles
-│   └── admin.css             # Admin dashboard styles
-├── js/
-│   ├── main.js               # Entry point
-│   ├── state.js              # State management & localStorage
-│   ├── windows.js            # Window manager
-│   ├── desktop.js            # Desktop items & context menu
-│   ├── admin.js              # Admin dashboard
-│   ├── router.js             # Client-side routing
-│   ├── mobile.js             # Mobile detection
-│   ├── startmenu.js          # Start menu
-│   ├── lightbox.js           # Photo/video lightbox
-│   └── login.js              # Lock/login screens
-├── data/
-│   ├── projects.json         # Projects data
-│   └── media.json            # Media library data
-├── assets/
-│   ├── wallpapers/           # Wallpaper images
-│   └── media/                # Local images/videos
-└── resume/
-    └── resume.pdf            # Your resume
+├── index.html                 # Single-page entry
+├── js/                        # 44 ES modules (zero framework imports)
+│   ├── main.js                # Boot orchestrator
+│   ├── desktop.js             # Icon grid, app launchers, createLazyWindow
+│   ├── windows.js             # Window manager (drag, resize, z-index)
+│   ├── state.js               # localStorage + CustomEvent bus
+│   ├── sanitize.js            # DOMPurify wrapper (XSS protection)
+│   ├── notifications.js       # Toast notification queue
+│   ├── command-palette.js     # Cmd+K fuzzy-search launcher
+│   ├── dom-helpers.js         # Shared utilities (el, openExternal, loadJSON, saveJSON)
+│   ├── interactions/          # Cursor trails, easter eggs, micro-animations
+│   └── ...                    # 35 more modules (see Architecture docs)
+├── css/                       # 24 modular stylesheets
+│   ├── variables.css          # Design tokens (colors, spacing, fonts)
+│   └── ...                    # Component-scoped styles
+├── tests/                     # 201 vitest tests across 13 suites
+├── data/                      # JSON data files (projects, media)
+├── public/assets/             # SVG icons, wallpapers
+└── resume/                    # PDF resume
 ```
 
 ### Key Files Reference
@@ -627,33 +718,37 @@ State.updateWindow('about', { x: 100, y: 100 });
 
 ## Deployment
 
-### GitHub Pages
+The project uses **Vite** for builds. Always run `npm run build` first — it outputs to `dist/`.
 
-1. Push to GitHub repository
-2. Go to Settings → Pages
-3. Select branch (usually `main`) and save
-4. Site live at `https://username.github.io/repo-name`
+### Vercel (Recommended)
+
+Passion OS deploys to Vercel with security headers configured in `vercel.json` (CSP, HSTS, COOP, COEP, CORP, X-Frame-Options, Permissions-Policy, and more).
+
+```bash
+npm i -g vercel
+vercel
+```
+
+Or connect your GitHub repo at [vercel.com](https://vercel.com/) for automatic deploys on push.
 
 ### Netlify
 
 1. Sign up at [netlify.com](https://www.netlify.com/)
 2. Connect your GitHub repository
 3. Deploy settings:
-    - **Build command:** (leave empty)
-    - **Publish directory:** (leave empty or `.`)
+    - **Build command:** `npm run build`
+    - **Publish directory:** `dist`
 4. Click "Deploy"
 
-### Vercel
+**Note:** You'll need to replicate the security headers from `vercel.json` into a Netlify `_headers` file.
 
-1. Sign up at [vercel.com](https://vercel.com/)
-2. Import repository
-3. Deploy (no configuration needed)
+### GitHub Pages
 
-### Traditional Hosting
+1. Run `npm run build`
+2. Deploy the `dist/` folder to your `gh-pages` branch
+3. Site live at `https://username.github.io/repo-name`
 
-Upload all files to your web server via FTP/SFTP.
-
-**Important**: Ensure `index.html` is at the root.
+**Note:** SPA routing requires a 404 fallback. Add `dist/404.html` as a copy of `dist/index.html`.
 
 ---
 
@@ -785,32 +880,32 @@ location.reload();
 
 ### Related Documentation
 
-- 🎛️ [Admin Dashboard Guide](ADMIN_DASHBOARD_GUIDE.md) - Visual content editor
-- ✅ [Feature Verification](FEATURE_VERIFICATION.md) - Testing checklist
-- 📜 [Changelog](CHANGELOG.md) - Development history
-- 🏗️ [Architecture](docs/ARCHITECTURE.md) - System design
-- 📖 [Glossary](docs/GLOSSARY.md) - Terminology reference
-- 🔧 [Troubleshooting](docs/TROUBLESHOOTING.md) - Common issues
-
-### Keyboard Shortcuts
-
-- **Enter**: Activate focused element / Continue from lock screen
-- **ESC**: Close active window, lightbox, or start menu
-- **Arrow Keys**: Navigate in lightbox or start menu
-- **Tab**: Navigate between interactive elements
-- **Right-click**: Open context menu
+| Document | Description |
+|----------|-------------|
+| [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) | No-code content editor (console-only) |
+| [EASTER_EGGS_GUIDE.md](EASTER_EGGS_GUIDE.md) | All hidden easter eggs and secret interactions |
+| [CHANGELOG.md](CHANGELOG.md) | Full version history from v1.0 to present |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture — all 44 modules, dependency graph, init sequence |
+| [docs/GLOSSARY.md](docs/GLOSSARY.md) | Terminology and codebase glossary |
+| [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | 50+ common issues and solutions |
 
 ### Browser Support
 
-- **Chrome** 90+
-- **Firefox** 88+
-- **Safari** 14+
-- **Edge** 90+
+Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 
-Modern browsers with ES6+ support required.
+### Development Commands
+
+```bash
+npm run dev       # Vite dev server (localhost:5173)
+npm run build     # Production build to dist/
+npm run preview   # Preview production build
+npm run test      # Run 201 vitest tests
+npm run lint      # ESLint
+npm run format    # Prettier
+```
 
 ---
 
-**Need more help?** Check the [Admin Dashboard Guide](ADMIN_DASHBOARD_GUIDE.md) or [Troubleshooting](docs/TROUBLESHOOTING.md).
+**Need more help?** Check the [Troubleshooting](docs/TROUBLESHOOTING.md) guide or open a browser console and run `Admin.open()` for the visual editor.
 
 **For development history**, see [CHANGELOG.md](CHANGELOG.md).

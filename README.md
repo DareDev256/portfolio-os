@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.16.5-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.16.6-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-201_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-24-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-44-b388ff?style=flat-square)
@@ -275,7 +275,7 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 
 | Document | Description |
 |----------|-------------|
-| [DOCUMENTATION.md](DOCUMENTATION.md) | Complete user guide — every feature explained |
+| [DOCUMENTATION.md](DOCUMENTATION.md) | Complete user guide — 20 desktop apps, keyboard shortcuts, customization, deployment |
 | [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) | No-code content editor (console-only) |
 | [EASTER_EGGS_GUIDE.md](EASTER_EGGS_GUIDE.md) | All hidden easter eggs and secret interactions |
 | [CHANGELOG.md](CHANGELOG.md) | Full version history from v1.0 to present |
@@ -285,7 +285,7 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 
 ## License
 
-MIT — **v3.16.4**
+MIT — **v3.16.6**
 
 ---
 
