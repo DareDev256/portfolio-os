@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.16.2
+version: 3.16.3
 last_updated: 2026-02-16
 
 ---
@@ -15,6 +15,16 @@ last_updated: 2026-02-16
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.16.3] — 2026-02-16
+
+### Added
+- **Desktop utilities test suite** (`tests/desktop-utils.test.js`) — 23 new tests covering `el()` DOM factory, `Sanitize.html()` DOMPurify-absent fallback, `Sanitize.setHTML()` null safety and content replacement, advanced `Sanitize.attr()` XSS vectors (carriage return obfuscation, mid-string javascript:, data: with script keyword), and `createLazyWindow` closure pattern (cleanup lifecycle, pre-load close safety)
+- Total test count: 194 across 12 suites (up from 171 across 11)
+
+**Files Modified**: `tests/desktop-utils.test.js`, `package.json`, `README.md`, `CHANGELOG.md`
 
 ---
 
