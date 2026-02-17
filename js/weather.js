@@ -20,13 +20,34 @@ function describeWMO(code) {
     return WMO_CODES[code] || ['Unknown', '🌡'];
 }
 
+/**
+ * Validate that the API response has the expected shape.
+ * Prevents crashes from malformed/unexpected data.
+ */
+function validateWeatherData(data) {
+    if (!data || typeof data !== 'object') return false;
+    const c = data.current;
+    if (!c || typeof c.temperature_2m !== 'number' || typeof c.weather_code !== 'number') return false;
+    const d = data.daily;
+    if (!d || !Array.isArray(d.time) || d.time.length < 3) return false;
+    if (!Array.isArray(d.temperature_2m_max) || !Array.isArray(d.temperature_2m_min)) return false;
+    if (!Array.isArray(d.weather_code)) return false;
+    return true;
+}
+
 async function fetchWeather(lat, lon) {
+    // Validate coordinates are finite numbers to prevent injection via crafted Position objects
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+        throw new Error('Invalid coordinates');
+    }
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
         '&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m' +
         '&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto&forecast_days=3';
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Weather API: ${res.status}`);
-    return res.json();
+    const data = await res.json();
+    if (!validateWeatherData(data)) throw new Error('Unexpected API response shape');
+    return data;
 }
 
 function getPosition() {

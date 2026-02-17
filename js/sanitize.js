@@ -84,9 +84,11 @@ export const Sanitize = {
             return '';
         }
 
-        // Block data: URLs with embedded script content
-        if (lower.startsWith('data:') && lower.includes('script')) {
-            return '';
+        // Block data: URIs that can execute scripts:
+        // - data:image/svg+xml can contain <script> and onload handlers
+        // - data: with any script-capable MIME (text/html already caught above)
+        if (lower.startsWith('data:')) {
+            if (lower.includes('script') || lower.includes('svg')) return '';
         }
 
         return value;

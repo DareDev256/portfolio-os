@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.16.0
+version: 3.16.2
 last_updated: 2026-02-16
 
 ---
@@ -15,6 +15,22 @@ last_updated: 2026-02-16
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.16.2] — 2026-02-16
+
+### Security
+- **CSP `connect-src` updated** — Added `https://api.open-meteo.com` to Content-Security-Policy. Weather widget fetches were being silently blocked in production by the restrictive CSP that only allowed `'self'` and `api.github.com`
+- **Permissions-Policy `geolocation` unlocked for same-origin** — Changed from `geolocation=()` (deny all) to `geolocation=(self)`. The weather widget's `navigator.geolocation.getCurrentPosition()` was being denied by the site's own security headers
+- **`Sanitize.attr()` blocks `data:image/svg+xml` XSS** — SVG data URIs can embed `<script>` and `onload` handlers for script execution. Now blocks any `data:` URI containing `svg` alongside existing `javascript:`, `vbscript:`, and `data:text/html` blocks
+- **Weather API response shape validation** — `fetchWeather()` now validates the response has expected `current` and `daily` fields with correct types before rendering, preventing crashes from malformed API data (mirrors the GitHub cache validation pattern)
+- **Coordinate input validation** — `fetchWeather()` rejects `NaN`, `Infinity`, or non-finite coordinates via `Number.isFinite()`, preventing malformed API URLs from crafted Position objects
+- 3 new security tests for SVG data URI blocking (171 total, up from 168)
+
+**Files Modified**: `vercel.json`, `js/sanitize.js`, `js/weather.js`, `tests/sanitize.test.js`, `package.json`, `README.md`, `CHANGELOG.md`
+
+> *"The art of war teaches us not to rely on the likelihood of the enemy not coming, but on our own readiness to receive him."* — Sun Tzu
 
 ---
 

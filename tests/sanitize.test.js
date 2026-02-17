@@ -74,4 +74,17 @@ describe('Sanitize.attr()', () => {
         expect(Sanitize.attr('java\nscript:alert(1)')).toBe('');
         expect(Sanitize.attr('\x00javascript:alert(1)')).toBe('');
     });
+
+    it('blocks data:image/svg+xml XSS vectors', () => {
+        expect(Sanitize.attr('data:image/svg+xml,<svg onload=alert(1)>')).toBe('');
+        expect(Sanitize.attr('data:image/svg+xml;base64,PHN2ZyBvbmxvYWQ9YWxlcnQoMSk+')).toBe('');
+    });
+
+    it('blocks data:image/svg+xml with mixed case', () => {
+        expect(Sanitize.attr('Data:Image/SVG+xml,<svg onload=alert(1)>')).toBe('');
+    });
+
+    it('allows safe data: images (non-SVG)', () => {
+        expect(Sanitize.attr('data:image/png;base64,iVBOR=')).toBe('data:image/png;base64,iVBOR=');
+    });
 });
