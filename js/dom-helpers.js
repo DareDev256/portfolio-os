@@ -22,11 +22,19 @@ export function loadJSON(key, fallback = null) {
 
 /**
  * Serialize a value to JSON and persist it in localStorage.
+ * Handles QuotaExceededError gracefully instead of throwing.
  * @param {string} key - localStorage key
  * @param {*} value - Value to serialize
+ * @returns {boolean} True if write succeeded, false on quota/error
  */
 export function saveJSON(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+    } catch (e) {
+        console.error(`[saveJSON] Failed to write "${key}":`, e.name, e.message);
+        return false;
+    }
 }
 
 /**

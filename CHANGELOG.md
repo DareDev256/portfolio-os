@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.17.0
-last_updated: 2026-02-17
+version: 3.17.1
+last_updated: 2026-02-18
 
 ---
 
@@ -15,6 +15,23 @@ last_updated: 2026-02-17
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.17.1] — 2026-02-18
+
+### Security
+- **Admin save paths now sanitize URLs** — `saveProjects()` and `saveMedia()` write user-supplied `demo`, `repo`, media `url`, and `poster` fields through `Sanitize.url()` before persisting to localStorage. Previously, only the backup import path sanitized URLs; the manual save path wrote raw form input, allowing `javascript:` or `data:` URI injection via the admin panel that would execute when rendered in project cards or media vault
+- **Theme color import validates hex format** — imported `themeColors` from backup JSON are now parsed and each value validated through `Sanitize.hexColor()` (strict `#RGB`/`#RRGGBB`/`#RRGGBBAA` regex). Previously accepted any string, enabling CSS injection payloads like `url(javascript:...)` or `expression()` when applied to CSS custom properties via `setProperty()`
+- **Added `Sanitize.hexColor()` validator** — allowlist-based hex color validator that accepts only `#` + 3/4/6/8 hex digits. Returns a safe fallback for any non-matching input. Used by admin theme import to sanitize color values before they reach `document.documentElement.style.setProperty()`
+- **`saveJSON()` handles QuotaExceededError** — `localStorage.setItem` throws when storage is full; the shared helper now catches the error, logs it, and returns `false` instead of crashing the caller. Prevents silent data loss when quota is exhausted
+
+### Added
+- 7 new tests for `Sanitize.hexColor()` — covers 6-digit, 3-digit, 8-digit hex acceptance, CSS injection payloads (`url()`, `expression()`, property breakout), named colors/rgb/hsl rejection, falsy input with custom fallback, and missing `#` prefix
+
+**Test count**: 219 across 13 suites (up from 212)
+
+**Files Modified**: `js/sanitize.js`, `js/admin.js`, `js/dom-helpers.js`, `tests/sanitize.test.js`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

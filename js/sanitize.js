@@ -114,6 +114,23 @@ export const Sanitize = {
         if (/^https?:\/\//i.test(stripped)) return stripped;
         // Block everything else (javascript:, data:, vbscript:, blob:, etc.)
         return '';
+    },
+
+    /**
+     * Validate a CSS hex color string.
+     * Only allows #RGB, #RRGGBB, #RGBA, #RRGGBBAA formats.
+     * Blocks CSS injection payloads disguised as color values.
+     * @param {string} value - Color string to validate
+     * @param {string} fallback - Fallback color if invalid
+     * @returns {string} Valid hex color or fallback
+     */
+    hexColor(value, fallback = '#000000') {
+        if (!value || typeof value !== 'string') return fallback;
+        const trimmed = value.trim();
+        if (/^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(trimmed)) {
+            return trimmed;
+        }
+        return fallback;
     }
 };
 

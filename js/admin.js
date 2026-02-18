@@ -416,8 +416,8 @@ export const Admin = {
                     .value.split(',')
                     .map((s) => s.trim())
                     .filter(Boolean),
-                demo: card.querySelector('.proj-demo').value.trim() || null,
-                repo: card.querySelector('.proj-repo').value.trim() || null,
+                demo: Sanitize.url(card.querySelector('.proj-demo').value.trim()) || null,
+                repo: Sanitize.url(card.querySelector('.proj-repo').value.trim()) || null,
             };
             if (project.title) projects.push(project);
         });
@@ -730,7 +730,7 @@ export const Admin = {
 
         content.querySelectorAll('[data-type="image"]').forEach((card) => {
             const img = {
-                url: card.querySelector('.media-url').value.trim(),
+                url: Sanitize.url(card.querySelector('.media-url').value.trim()),
                 caption: card.querySelector('.media-caption').value.trim(),
                 category: card.querySelector('.media-category').value.trim(),
             };
@@ -739,9 +739,9 @@ export const Admin = {
 
         content.querySelectorAll('[data-type="video"]').forEach((card) => {
             const video = {
-                url: card.querySelector('.media-url').value.trim(),
+                url: Sanitize.url(card.querySelector('.media-url').value.trim()),
                 title: card.querySelector('.media-title').value.trim(),
-                poster: card.querySelector('.media-poster').value.trim(),
+                poster: Sanitize.url(card.querySelector('.media-poster').value.trim()),
             };
             if (video.url) videos.push(video);
         });
@@ -1050,7 +1050,20 @@ export const Admin = {
                         this.media = backup.media;
                     }
                     if (backup.theme?.colors && isStr(backup.theme.colors)) {
-                        localStorage.setItem('themeColors', backup.theme.colors);
+                        // Validate themeColors is a JSON object with hex color values only
+                        // Prevents CSS injection via crafted backup payloads
+                        try {
+                            const parsed = JSON.parse(backup.theme.colors);
+                            if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) {
+                                const safe = {};
+                                for (const [k, v] of Object.entries(parsed)) {
+                                    safe[k] = Sanitize.hexColor(v);
+                                }
+                                localStorage.setItem('themeColors', JSON.stringify(safe));
+                            }
+                        } catch (_e) {
+                            console.warn('[Admin] Skipped invalid themeColors in backup');
+                        }
                     }
 
                     alert('Backup imported successfully! Refresh the page to see changes.');

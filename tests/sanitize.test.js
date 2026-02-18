@@ -141,3 +141,42 @@ describe('Sanitize.url()', () => {
         expect(Sanitize.url('  https://example.com  ')).toBe('https://example.com');
     });
 });
+
+describe('Sanitize.hexColor()', () => {
+    it('accepts valid 6-digit hex colors', () => {
+        expect(Sanitize.hexColor('#00f0ff')).toBe('#00f0ff');
+        expect(Sanitize.hexColor('#FFFFFF')).toBe('#FFFFFF');
+        expect(Sanitize.hexColor('#000000')).toBe('#000000');
+    });
+
+    it('accepts valid 3-digit hex colors', () => {
+        expect(Sanitize.hexColor('#fff')).toBe('#fff');
+        expect(Sanitize.hexColor('#0af')).toBe('#0af');
+    });
+
+    it('accepts valid 8-digit hex colors (with alpha)', () => {
+        expect(Sanitize.hexColor('#00f0ffcc')).toBe('#00f0ffcc');
+    });
+
+    it('rejects CSS injection payloads', () => {
+        expect(Sanitize.hexColor('url(javascript:alert(1))')).toBe('#000000');
+        expect(Sanitize.hexColor('expression(alert(1))')).toBe('#000000');
+        expect(Sanitize.hexColor('#000; background: url(evil)')).toBe('#000000');
+    });
+
+    it('rejects non-hex strings', () => {
+        expect(Sanitize.hexColor('red')).toBe('#000000');
+        expect(Sanitize.hexColor('rgb(0,0,0)')).toBe('#000000');
+        expect(Sanitize.hexColor('hsl(0,0%,0%)')).toBe('#000000');
+    });
+
+    it('returns fallback for falsy input', () => {
+        expect(Sanitize.hexColor('')).toBe('#000000');
+        expect(Sanitize.hexColor(null)).toBe('#000000');
+        expect(Sanitize.hexColor(undefined, '#ff0000')).toBe('#ff0000');
+    });
+
+    it('rejects hex without # prefix', () => {
+        expect(Sanitize.hexColor('00f0ff')).toBe('#000000');
+    });
+});
