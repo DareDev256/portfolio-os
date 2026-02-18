@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.17.1
+version: 3.18.0
 last_updated: 2026-02-18
 
 ---
@@ -15,6 +15,20 @@ last_updated: 2026-02-18
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.18.0] — 2026-02-18
+
+### Added
+- **Purple Reign cinematic project showcase** — Featured projects now display as full-height scroll-snap chapters inside the Portfolio window instead of a 2-column card grid. Each project is a "chapter" with staggered scroll-triggered reveal animations (via `IntersectionObserver`), a purple/gold accent system, and dot navigation on the right edge for quick jumping between projects. The design evokes a luxury lookbook — Prince's Purple Rain meets Tony Stark's lab
+- **Scroll-snap chapter navigation** — Dot indicators on the right edge track the active chapter and allow click-to-jump navigation
+- **Staggered entrance animations** — Chapter index, title, description, tech badges, and links animate in sequentially as each chapter scrolls into view
+
+### Changed
+- Portfolio window title updated from `FEATURED_PROJECTS` to `PURPLE REIGN // FEATURED`
+- Project accent colors shifted from cyberpunk neons to a purple/violet/gold palette (`#8b5cf6`, `#c084fc`, `#a78bfa`, `#d4af37`, `#7c3aed`) to match the cinematic theme
+- Portfolio window dimensions adjusted from 680×620 to 640×560 to emphasize vertical scroll immersion
 
 ---
 

@@ -96,3 +96,177 @@
     background: #00ff88;
     color: #0a0a0f;
 }
+
+
+/* ─── Purple Reign: Cinematic Scroll Showcase ─── */
+
+.reign-scroll {
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    height: 100%;
+    scroll-behavior: smooth;
+}
+
+.reign-chapter {
+    scroll-snap-align: start;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 36px;
+    position: relative;
+    border-bottom: 1px solid rgba(170, 0, 255, 0.08);
+}
+
+/* Subtle side accent line per chapter */
+.reign-chapter::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 15%;
+    height: 70%;
+    width: 2px;
+    background: var(--reign-accent, #8b5cf6);
+    opacity: 0.4;
+    transition: opacity 0.6s ease-out, height 0.6s ease-out;
+}
+
+.reign-chapter:hover::before {
+    opacity: 0.8;
+}
+
+.reign-chapter__index {
+    font-family: var(--font-mono, monospace);
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--reign-accent, #8b5cf6);
+    opacity: 0.5;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.reign-chapter__title {
+    font-family: var(--font-display, 'Tomorrow', sans-serif);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+    margin-bottom: 14px;
+    text-shadow: 0 0 24px var(--reign-glow, rgba(139, 92, 246, 0.3));
+}
+
+.reign-chapter__desc {
+    font-size: 12px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 520px;
+    margin-bottom: 20px;
+}
+
+.reign-chapter__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.reign-badge {
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border: 1px solid var(--reign-accent, rgba(139, 92, 246, 0.35));
+    color: var(--reign-accent, #8b5cf6);
+    background: rgba(139, 92, 246, 0.06);
+    text-transform: uppercase;
+}
+
+.reign-chapter__links {
+    display: flex;
+    gap: 10px;
+}
+
+.reign-link {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    padding: 7px 18px;
+    border: 1px solid var(--reign-accent, rgba(139, 92, 246, 0.4));
+    color: var(--reign-accent, #8b5cf6);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.3s ease-out, color 0.3s ease-out, box-shadow 0.3s ease-out;
+    text-transform: uppercase;
+}
+
+.reign-link:hover {
+    background: var(--reign-accent, #8b5cf6);
+    color: #0a0a0f;
+    box-shadow: 0 0 20px var(--reign-glow, rgba(139, 92, 246, 0.3));
+}
+
+.reign-link--live {
+    border-color: rgba(212, 175, 55, 0.5);
+    color: #d4af37;
+}
+
+.reign-link--live:hover {
+    background: #d4af37;
+    color: #0a0a0f;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+/* Scroll-triggered reveal animation */
+.reign-reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.reign-reveal--visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered delays for child elements */
+.reign-reveal[data-delay="1"] { transition-delay: 0.08s; }
+.reign-reveal[data-delay="2"] { transition-delay: 0.16s; }
+.reign-reveal[data-delay="3"] { transition-delay: 0.24s; }
+.reign-reveal[data-delay="4"] { transition-delay: 0.32s; }
+
+/* Progress dots on the right edge */
+.reign-nav {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 2;
+}
+
+.reign-nav__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(139, 92, 246, 0.25);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    cursor: pointer;
+    transition: background 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    padding: 0;
+}
+
+.reign-nav__dot--active {
+    background: #8b5cf6;
+    transform: scale(1.4);
+    box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+}
+
+/* Footer chapter for "View All" */
+.reign-footer {
+    scroll-snap-align: start;
+    min-height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}

@@ -1280,124 +1280,162 @@ export const Desktop = {
                 name: 'PASSION_AGENT',
                 desc: '24/7 autonomous AI code improvement system. Analyzes repos, spawns Claude Code sessions, submits PRs, and learns from merge/reject patterns.',
                 tech: ['Node.js', 'Claude Code', 'MCP', 'SQLite'],
-                color: '#00f0ff',
-                demo: null,
-                repo: null,
-                featured: true,
+                accent: '#8b5cf6',
             },
             {
                 name: 'VIBE_CODER',
                 desc: 'Vampire survivors-style idle game — 18 enemy types, 4 bosses, 26 weapons, Claude Code integration.',
                 tech: ['Phaser 3', 'JavaScript', 'Vite', 'Web Audio'],
-                color: '#ff00aa',
+                accent: '#c084fc',
                 demo: 'https://daredev256.github.io/vibe-coder/',
                 repo: 'https://github.com/DareDev256/vibe-coder',
             },
             {
                 name: 'PORTFOLIO_OS',
-                desc: 'This cyberpunk desktop OS — 38 vanilla JS modules, Three.js galaxy, draggable windows, zero frameworks.',
+                desc: 'This cyberpunk desktop OS — 44 vanilla JS modules, Three.js galaxy, draggable windows, zero frameworks.',
                 tech: ['JavaScript', 'Three.js', 'CSS3', 'Vite'],
-                color: '#aa00ff',
+                accent: '#a78bfa',
                 demo: 'https://jamesdare.com',
-                repo: null,
             },
             {
                 name: 'CULTURE_DROP_HQ',
                 desc: 'Operations dashboard for Toronto hip-hop media — manage content, artists, and releases.',
                 tech: ['React', 'Node.js', 'MongoDB', 'Tailwind'],
-                color: '#ffaa00',
-                demo: null,
-                repo: null,
+                accent: '#d4af37',
             },
             {
                 name: 'FCPXML_MCP_SERVER',
                 desc: 'AI-powered MCP server for Final Cut Pro XML — automate timeline editing with natural language.',
                 tech: ['Python', 'Claude AI', 'MCP', 'XML'],
-                color: '#00ff88',
-                demo: null,
+                accent: '#7c3aed',
                 repo: 'https://github.com/DareDev256/fcpxml-mcp-server',
             },
         ];
 
-        const content = document.createElement('div');
-        content.style.padding = '20px';
+        const wrapper = document.createElement('div');
+        wrapper.style.cssText = 'height:100%; position:relative;';
 
-        const header = document.createElement('div');
-        header.className = 'window-section-header';
-        header.style.color = '#00f0ff';
-        header.innerHTML = `◈ FEATURED PROJECTS <span style="font-size:11px; opacity:0.6; margin-left:8px;">${featured.length} Highlights</span>`;
-        content.appendChild(header);
+        // Cinematic scroll container
+        const scroll = document.createElement('div');
+        scroll.className = 'reign-scroll';
 
-        const grid = document.createElement('div');
-        grid.className = 'portfolio-grid';
+        // Dot navigation
+        const nav = document.createElement('div');
+        nav.className = 'reign-nav';
+        const dots = [];
 
-        featured.forEach(project => {
-            const card = document.createElement('div');
-            card.className = `portfolio-card${project.featured ? ' portfolio-card--featured' : ''}`;
-            card.style.setProperty('--card-accent', project.color);
-            card.style.setProperty('--card-glow', `${project.color}12`);
+        featured.forEach((project, i) => {
+            const chapter = document.createElement('div');
+            chapter.className = 'reign-chapter';
+            chapter.style.setProperty('--reign-accent', project.accent);
+            chapter.style.setProperty('--reign-glow', `${project.accent}4d`);
+
+            const idx = document.createElement('div');
+            idx.className = 'reign-chapter__index reign-reveal';
+            idx.dataset.delay = '0';
+            idx.textContent = `chapter ${String(i + 1).padStart(2, '0')} / ${String(featured.length).padStart(2, '0')}`;
 
             const title = document.createElement('div');
-            title.className = 'portfolio-card__title';
+            title.className = 'reign-chapter__title reign-reveal';
+            title.dataset.delay = '1';
             title.textContent = project.name;
 
             const desc = document.createElement('div');
-            desc.className = 'portfolio-card__desc';
+            desc.className = 'reign-chapter__desc reign-reveal';
+            desc.dataset.delay = '2';
             desc.textContent = project.desc;
 
             const techRow = document.createElement('div');
-            techRow.className = 'portfolio-card__tech';
+            techRow.className = 'reign-chapter__tech reign-reveal';
+            techRow.dataset.delay = '3';
             project.tech.forEach(t => {
                 const badge = document.createElement('span');
-                badge.className = 'portfolio-badge';
+                badge.className = 'reign-badge';
                 badge.textContent = t;
                 techRow.appendChild(badge);
             });
 
             const links = document.createElement('div');
-            links.className = 'portfolio-card__links';
+            links.className = 'reign-chapter__links reign-reveal';
+            links.dataset.delay = '4';
 
             if (project.demo) {
                 const demoBtn = document.createElement('button');
-                demoBtn.className = 'portfolio-link portfolio-link--live';
+                demoBtn.className = 'reign-link reign-link--live';
                 demoBtn.textContent = 'LIVE DEMO';
                 demoBtn.addEventListener('click', () => openExternal(project.demo));
                 links.appendChild(demoBtn);
             }
             if (project.repo) {
                 const repoBtn = document.createElement('button');
-                repoBtn.className = 'portfolio-link';
+                repoBtn.className = 'reign-link';
                 repoBtn.textContent = 'SOURCE';
                 repoBtn.addEventListener('click', () => openExternal(project.repo));
                 links.appendChild(repoBtn);
             }
 
-            card.append(title, desc, techRow, links);
-            grid.appendChild(card);
+            chapter.append(idx, title, desc, techRow, links);
+            scroll.appendChild(chapter);
+
+            // Nav dot
+            const dot = document.createElement('button');
+            dot.className = 'reign-nav__dot';
+            dot.addEventListener('click', () => chapter.scrollIntoView({ behavior: 'smooth' }));
+            nav.appendChild(dot);
+            dots.push(dot);
         });
 
-        content.appendChild(grid);
-
-        // Footer link to full applications list
-        const footer = document.createElement('div');
-        footer.style.cssText = 'margin-top:16px; padding-top:14px; border-top:1px solid rgba(0,240,255,0.12); text-align:center;';
+        // Footer chapter — link to full list
+        const footerChapter = document.createElement('div');
+        footerChapter.className = 'reign-footer';
         const allBtn = document.createElement('button');
-        allBtn.className = 'portfolio-link';
+        allBtn.className = 'reign-link';
+        allBtn.style.setProperty('--reign-accent', '#8b5cf6');
         allBtn.textContent = 'VIEW ALL 18 PROJECTS →';
         allBtn.addEventListener('click', () => {
             WindowManager.close('portfolio');
             setTimeout(() => this.openApplicationsShowcase(), 250);
         });
-        footer.appendChild(allBtn);
-        content.appendChild(footer);
+        footerChapter.appendChild(allBtn);
+        scroll.appendChild(footerChapter);
+
+        wrapper.append(scroll, nav);
+
+        // IntersectionObserver for scroll-triggered reveals + active dot
+        const revealObserver = new IntersectionObserver(
+            entries => entries.forEach(e => {
+                if (e.isIntersecting) e.target.classList.add('reign-reveal--visible');
+            }),
+            { root: scroll, threshold: 0.2 },
+        );
+
+        const chapterObserver = new IntersectionObserver(
+            entries => entries.forEach(e => {
+                if (e.isIntersecting) {
+                    const idx = [...scroll.querySelectorAll('.reign-chapter')].indexOf(e.target);
+                    dots.forEach((d, j) => d.classList.toggle('reign-nav__dot--active', j === idx));
+                }
+            }),
+            { root: scroll, threshold: 0.5 },
+        );
+
+        // Defer observer setup to after DOM attachment
+        requestAnimationFrame(() => {
+            scroll.querySelectorAll('.reign-reveal').forEach(el => revealObserver.observe(el));
+            scroll.querySelectorAll('.reign-chapter').forEach(ch => chapterObserver.observe(ch));
+        });
 
         WindowManager.create({
             id: 'portfolio',
-            title: 'PORTFOLIO // FEATURED_PROJECTS',
+            title: 'PURPLE REIGN // FEATURED',
             icon: '◈',
-            content,
-            width: 680,
-            height: 620,
+            content: wrapper,
+            width: 640,
+            height: 560,
+            onClose: () => {
+                revealObserver.disconnect();
+                chapterObserver.disconnect();
+            },
         });
     },
 
