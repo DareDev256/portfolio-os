@@ -905,7 +905,8 @@ export const Desktop = {
 
             const icon = isLocked ? '🔒' : customIcon;
 
-            let html = `<div class="media-folder-icon">${icon}</div>`;
+            // Sanitize icon text — folderIcons stored from admin input could contain HTML
+            let html = `<div class="media-folder-icon">${Sanitize.text(icon)}</div>`;
 
             // Add thumbnail background if available
             if (thumb && !isLocked) {
@@ -1593,7 +1594,7 @@ export const Desktop = {
         filters.className = 'app-filters';
         filters.innerHTML = `
             <button class="filter-tag active" data-tag="all">All</button>
-            ${allTags.map((tag) => `<button class="filter-tag" data-tag="${tag}">${Sanitize.text(tag)}</button>`).join('')}
+            ${allTags.map((tag) => `<button class="filter-tag" data-tag="${Sanitize.attr(tag)}">${Sanitize.text(tag)}</button>`).join('')}
         `;
 
         // Create projects grid

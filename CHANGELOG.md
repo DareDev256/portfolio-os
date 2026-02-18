@@ -26,6 +26,9 @@ This changelog documents the evolutionary development of Passion OS from initial
 - **Data loader path traversal blocked** — `data-loader.js` now validates fetch keys through `Sanitize.safeKey()` before constructing `data/${key}` URLs. Blocks `../../etc/passwd`, `.env`, and protocol-prefixed strings that could escape the `data/` directory
 - **Added `Sanitize.allowlist()` validator** — generic allowlist checker for any localStorage-sourced value that maps to a fixed set of options. Used by State for themes and cursor trail types
 - **Added `Sanitize.safeKey()` validator** — identifier-safe string validator that allows only alphanumeric characters, hyphens, underscores, and dots. Blocks path traversal sequences (`..`), leading dots/slashes, and special characters
+- **Closed stored XSS via folderIcons** — Media Vault folder icons from admin panel were stored raw and inserted via `innerHTML` without sanitization. A crafted icon string like `<img src=x onerror=alert(1)>` would execute when the Media Vault opened. Now routed through `Sanitize.text()`
+- **Fixed attribute-context XSS in project tag filters** — `data-tag="${tag}"` was interpolated without attribute encoding, allowing tag values containing `"` to break out of the attribute and inject event handlers. Now uses `Sanitize.attr(tag)` for the attribute context
+- **GitHub dashboard defense-in-depth** — `container.innerHTML = html` replaced with `Sanitize.setHTML(container, html)` to run the full assembled HTML through DOMPurify as a safety net, rather than relying solely on per-field escaping
 
 ### Added
 - 10 new tests for `Sanitize.allowlist()` — covers valid values, invalid values, non-string input, and case sensitivity
@@ -33,7 +36,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 **Test count**: 229 across 13 suites (up from 219)
 
-**Files Modified**: `js/sanitize.js`, `js/state.js`, `js/data-loader.js`, `tests/sanitize.test.js`, `README.md`, `CHANGELOG.md`, `package.json`
+**Files Modified**: `js/sanitize.js`, `js/state.js`, `js/data-loader.js`, `js/desktop.js`, `js/github.js`, `tests/sanitize.test.js`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

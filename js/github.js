@@ -265,7 +265,9 @@ export const GitHub = {
                 </div>
             `;
 
-            container.innerHTML = html;
+            // Route through DOMPurify as defense-in-depth — individual fields are
+            // already escaped, but a single missed interpolation could open XSS.
+            Sanitize.setHTML(container, html);
 
             // Delegated click handler for repo cards (replaces inline onclick)
             container.querySelectorAll('.gh-card[data-url]').forEach(card => {
