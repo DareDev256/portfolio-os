@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.18.0
+version: 3.18.1
 last_updated: 2026-02-18
 
 ---
@@ -15,6 +15,25 @@ last_updated: 2026-02-18
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.18.1] — 2026-02-18
+
+### Security
+- **localStorage poisoning hardened across State module** — `setTheme()` and `setCursorTrailType()` now validate values against explicit allowlists before writing to `data-theme` attributes or emitting to CSS. Previously, a poisoned localStorage entry (e.g. from a temporary XSS) could inject arbitrary values into DOM attributes that persist across page loads. Both `init()` loaders also validate on read
+- **`interactionIntensity` bounds-checked on load** — `parseInt()` result is now verified with `Number.isFinite()` and clamped to 0–100, preventing NaN propagation from corrupted localStorage
+- **Data loader path traversal blocked** — `data-loader.js` now validates fetch keys through `Sanitize.safeKey()` before constructing `data/${key}` URLs. Blocks `../../etc/passwd`, `.env`, and protocol-prefixed strings that could escape the `data/` directory
+- **Added `Sanitize.allowlist()` validator** — generic allowlist checker for any localStorage-sourced value that maps to a fixed set of options. Used by State for themes and cursor trail types
+- **Added `Sanitize.safeKey()` validator** — identifier-safe string validator that allows only alphanumeric characters, hyphens, underscores, and dots. Blocks path traversal sequences (`..`), leading dots/slashes, and special characters
+
+### Added
+- 10 new tests for `Sanitize.allowlist()` — covers valid values, invalid values, non-string input, and case sensitivity
+- 7 new tests for `Sanitize.safeKey()` — covers valid filenames, path traversal, protocol handlers, special characters, and falsy input
+
+**Test count**: 229 across 13 suites (up from 219)
+
+**Files Modified**: `js/sanitize.js`, `js/state.js`, `js/data-loader.js`, `tests/sanitize.test.js`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

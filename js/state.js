@@ -5,6 +5,7 @@
  * to avoid defeating lazy loading.
  */
 import { loadJSON } from './dom-helpers.js';
+import { Sanitize } from './sanitize.js';
 
 /**
  * Registry of boolean toggle properties.
@@ -54,8 +55,10 @@ export const State = {
 
     // Theme and wallpaper
     theme: 'light',
+    VALID_THEMES: ['light', 'dark'],
     wallpaper: null, // null means use CSS default gradient
     cursorTrailType: 'chakra', // 'playstation' or 'chakra'
+    VALID_TRAIL_TYPES: ['chakra', 'playstation'],
     interactionIntensity: 100, // 0-100
     idleTime: 120000, // 2 minutes default
 
@@ -63,11 +66,12 @@ export const State = {
      * Initialize state from localStorage
      */
     init() {
-        // Load theme
+        // Load theme — allowlist-validated to prevent localStorage poisoning
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
-            this.theme = savedTheme;
-            document.body.setAttribute('data-theme', savedTheme);
+            const safe = Sanitize.allowlist(savedTheme, this.VALID_THEMES, 'light');
+            this.theme = safe;
+            document.body.setAttribute('data-theme', safe);
         }
 
         // Load wallpaper (only if user has set a custom one)
@@ -82,11 +86,16 @@ export const State = {
             this._loadBoolean(prop);
         }
 
-        // Non-boolean persisted settings
+        // Non-boolean persisted settings — validated against allowlists
         const savedTrailType = localStorage.getItem('cursorTrailType');
-        if (savedTrailType) this.cursorTrailType = savedTrailType;
+        if (savedTrailType) {
+            this.cursorTrailType = Sanitize.allowlist(savedTrailType, this.VALID_TRAIL_TYPES, 'chakra');
+        }
         const savedIntensity = localStorage.getItem('interactionIntensity');
-        if (savedIntensity !== null) this.interactionIntensity = parseInt(savedIntensity, 10);
+        if (savedIntensity !== null) {
+            const parsed = parseInt(savedIntensity, 10);
+            this.interactionIntensity = Number.isFinite(parsed) ? Math.max(0, Math.min(100, parsed)) : 100;
+        }
 
         // Load window states
         const windowStates = loadJSON('windowStates');
@@ -94,12 +103,13 @@ export const State = {
     },
 
     /**
-     * Set and persist theme
+     * Set and persist theme — allowlist-validated to prevent attribute injection
      */
     setTheme(theme) {
-        this.theme = theme;
-        document.body.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
+        const safe = Sanitize.allowlist(theme, this.VALID_THEMES, 'light');
+        this.theme = safe;
+        document.body.setAttribute('data-theme', safe);
+        localStorage.setItem('theme', safe);
     },
 
     /**
@@ -169,9 +179,10 @@ export const State = {
     },
 
     setCursorTrailType(type) {
-        this.cursorTrailType = type;
-        localStorage.setItem('cursorTrailType', type);
-        this._emit('cursorTrailType', { type });
+        const safe = Sanitize.allowlist(type, this.VALID_TRAIL_TYPES, 'chakra');
+        this.cursorTrailType = safe;
+        localStorage.setItem('cursorTrailType', safe);
+        this._emit('cursorTrailType', { type: safe });
     },
 
     setInteractionIntensity(intensity) {

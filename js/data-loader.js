@@ -3,6 +3,7 @@
  * Fetches JSON data with localStorage override support and in-memory caching.
  * Eliminates duplicated fetch-or-override logic scattered across desktop.js and admin.js.
  */
+import { Sanitize } from './sanitize.js';
 
 /** @type {Map<string, Promise<any>>} */
 const cache = new Map();
@@ -25,15 +26,22 @@ export async function loadData(key, fallback = null) {
 
 /** @private */
 async function _fetchData(key, fallback) {
+    // Validate key to prevent path traversal — only allow safe filenames
+    const safeKey = Sanitize.safeKey(key);
+    if (!safeKey) {
+        console.warn(`[DataLoader] Blocked unsafe key: ${key}`);
+        return fallback;
+    }
+
     try {
-        const override = localStorage.getItem(key);
+        const override = localStorage.getItem(safeKey);
         if (override) return JSON.parse(override);
 
-        const res = await fetch(`data/${key}`);
+        const res = await fetch(`data/${safeKey}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return await res.json();
     } catch (e) {
-        console.warn(`[DataLoader] Failed to load ${key}:`, e);
+        console.warn(`[DataLoader] Failed to load ${safeKey}:`, e);
         return fallback;
     }
 }

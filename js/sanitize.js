@@ -131,6 +131,39 @@ export const Sanitize = {
             return trimmed;
         }
         return fallback;
+    },
+
+    /**
+     * Validate a value against an explicit allowlist.
+     * Use for any localStorage-sourced value that maps to a fixed set of options
+     * (themes, cursor trail types, view modes, etc.). Prevents localStorage
+     * poisoning from injecting unexpected values into DOM attributes or CSS.
+     * @param {string} value - Value to validate
+     * @param {string[]} allowed - Array of allowed values
+     * @param {string} fallback - Fallback if value is not in the allowlist
+     * @returns {string} Validated value or fallback
+     */
+    allowlist(value, allowed, fallback) {
+        if (!value || typeof value !== 'string') return fallback;
+        return allowed.includes(value) ? value : fallback;
+    },
+
+    /**
+     * Validate an identifier-safe string (alphanumeric, hyphens, underscores, dots).
+     * Use for localStorage keys used as fetch paths, CSS class names, or data attributes
+     * to prevent path traversal (../../etc/passwd) and injection.
+     * @param {string} value - String to validate
+     * @returns {string} Safe identifier or empty string
+     */
+    safeKey(value) {
+        if (!value || typeof value !== 'string') return '';
+        const trimmed = value.trim();
+        // Only allow: letters, digits, hyphens, underscores, dots, and single forward slashes
+        // Block: .., //, \, control chars, and anything that could escape the data/ directory
+        if (/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(trimmed) && !trimmed.includes('..')) {
+            return trimmed;
+        }
+        return '';
     }
 };
 
