@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.20.0
+version: 3.21.0
 last_updated: 2026-02-19
 
 ---
@@ -15,6 +15,17 @@ last_updated: 2026-02-19
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.21.0] — 2026-02-19
+
+### Added
+- **Amethyst Code hero reveal** — Full-screen cinematic intro for the Purple Reign portfolio showcase. A metallic purple glitch effect (CSS `clip-path` + chromatic split pseudo-elements in gold and purple) fractures on scroll entry, then resolves to reveal the "PURPLE REIGN" title with a breathing glow. Tagline types in with a blinking caret. Scroll hint fades in after the sequence completes
+- **GPU-friendly glitch animation** — Uses `clip-path: inset()` with `steps(1)` timing for hard-cut glitch frames, keeping all animations compositor-friendly (transforms, opacity, clip-path)
+- **Three-state reveal machine** — Hero transitions through idle → entered (glitch plays) → resolved (breathing glow), managed via IntersectionObserver + class toggling
+
+**Files Modified**: `css/portfolio.css`, `js/desktop.js`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

@@ -98,6 +98,148 @@
 }
 
 
+/* ─── Amethyst Code: Hero Reveal ─── */
+/* Glitch-to-clarity intro for the Purple Reign showcase */
+
+@keyframes amethyst-glitch {
+    0%   { clip-path: inset(40% 0 60% 0); transform: translate(-2px, 1px); }
+    10%  { clip-path: inset(10% 0 80% 0); transform: translate(1px, -1px); }
+    20%  { clip-path: inset(70% 0 5% 0);  transform: translate(-1px, 2px); }
+    30%  { clip-path: inset(25% 0 50% 0);  transform: translate(2px, 0); }
+    40%  { clip-path: inset(55% 0 20% 0);  transform: translate(0, -2px); }
+    50%  { clip-path: inset(5% 0 70% 0);   transform: translate(-1px, 1px); }
+    60%  { clip-path: inset(80% 0 10% 0);  transform: translate(1px, 0); }
+    70%  { clip-path: inset(15% 0 60% 0);  transform: translate(0, 1px); }
+    80%  { clip-path: inset(45% 0 30% 0);  transform: translate(-1px, -1px); }
+    90%  { clip-path: inset(0 0 0 0);       transform: translate(0); }
+    100% { clip-path: inset(0 0 0 0);       transform: translate(0); }
+}
+
+@keyframes amethyst-resolve {
+    from { opacity: 0; filter: blur(6px); transform: scale(1.04); }
+    to   { opacity: 1; filter: blur(0);   transform: scale(1); }
+}
+
+@keyframes amethyst-glow-pulse {
+    0%, 100% { text-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 60px rgba(139, 92, 246, 0.15); }
+    50%      { text-shadow: 0 0 30px rgba(139, 92, 246, 0.6), 0 0 80px rgba(139, 92, 246, 0.25); }
+}
+
+@keyframes amethyst-caret {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0; }
+}
+
+.reign-hero {
+    scroll-snap-align: start;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 60%, rgba(88, 28, 135, 0.12) 0%, transparent 60%);
+    overflow: hidden;
+}
+
+.reign-hero__title {
+    font-family: var(--font-display, 'Tomorrow', sans-serif);
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #e2d6ff;
+    text-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 60px rgba(139, 92, 246, 0.15);
+    position: relative;
+    opacity: 0;
+}
+
+/* Glitch duplicate layers via pseudo-elements */
+.reign-hero__title::before,
+.reign-hero__title::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}
+
+.reign-hero__title::before {
+    color: #d4af37;
+    z-index: -1;
+}
+
+.reign-hero__title::after {
+    color: #8b5cf6;
+    z-index: -1;
+}
+
+/* Activate glitch on scroll entry */
+.reign-hero--entered .reign-hero__title {
+    animation: amethyst-resolve 0.9s ease-out 0.1s forwards;
+}
+
+.reign-hero--entered .reign-hero__title::before {
+    opacity: 0.6;
+    animation: amethyst-glitch 0.6s steps(1) 0.1s 2;
+}
+
+.reign-hero--entered .reign-hero__title::after {
+    opacity: 0.4;
+    animation: amethyst-glitch 0.5s steps(1) 0.2s 2 reverse;
+}
+
+/* Post-glitch: subtle glow breathing */
+.reign-hero--resolved .reign-hero__title {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+    animation: amethyst-glow-pulse 4s ease-in-out infinite;
+}
+
+.reign-hero--resolved .reign-hero__title::before,
+.reign-hero--resolved .reign-hero__title::after {
+    opacity: 0;
+    animation: none;
+}
+
+.reign-hero__tagline {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: rgba(139, 92, 246, 0.6);
+    margin-top: 18px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.6s ease-out 1.2s, transform 0.6s ease-out 1.2s;
+}
+
+.reign-hero--entered .reign-hero__tagline {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reign-hero__tagline::after {
+    content: '█';
+    animation: amethyst-caret 1s step-end infinite;
+    color: #d4af37;
+    margin-left: 2px;
+}
+
+.reign-hero__scroll-hint {
+    position: absolute;
+    bottom: 24px;
+    font-family: var(--font-mono, monospace);
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(139, 92, 246, 0.3);
+    opacity: 0;
+    transition: opacity 0.8s ease-out 1.8s;
+}
+
+.reign-hero--entered .reign-hero__scroll-hint {
+    opacity: 1;
+}
+
 /* ─── Purple Reign: Cinematic Scroll Showcase ─── */
 
 .reign-scroll {

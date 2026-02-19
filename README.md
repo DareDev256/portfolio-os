@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.20.0-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.21.0-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-229_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-24-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-44-b388ff?style=flat-square)
@@ -42,7 +42,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 - **Window Manager** — Drag, resize, minimize, maximize, z-index focus management. Animated open/close with glass shimmer effects.
 - **20 Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column grid. Right-click context menus on each. Includes 3 external deployed-project links (Vibe Coder, IMG_GEN.ai, TypeMaster) and a curated Portfolio showcase.
-- **Purple Reign Showcase** — Featured projects display as cinematic scroll-snap chapters with forcefield reveal (blur + purple veil dissipation), gilded gold shimmer sweep on titles, staggered element animations, and dot navigation. Each project is a full-height "chapter" — scroll to discover.
+- **Purple Reign Showcase** — Opens with the "Amethyst Code" hero reveal — a metallic purple glitch effect that fractures and resolves to unveil the section title. Featured projects display as cinematic scroll-snap chapters with forcefield reveal, gilded gold shimmer on titles, staggered animations, and dot navigation.
 - **Command Palette** — `Cmd+K` / `Ctrl+K` opens a Spotlight-style fuzzy-search launcher across all apps and system toggles.
 - **Dock** — Active window indicators, minimize-to-dock animation, hover tooltips.
 - **Client-Side Routing** — Deep-linkable URLs (`/about`, `/work`, `/resume`, `/terminal`) via History API.

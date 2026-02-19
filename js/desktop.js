@@ -1328,6 +1328,26 @@ export const Desktop = {
         nav.className = 'reign-nav';
         const dots = [];
 
+        // ── Amethyst Code: Hero Reveal ──
+        const hero = document.createElement('div');
+        hero.className = 'reign-hero';
+
+        const heroTitle = document.createElement('div');
+        heroTitle.className = 'reign-hero__title';
+        heroTitle.dataset.text = 'PURPLE REIGN';
+        heroTitle.textContent = 'PURPLE REIGN';
+
+        const heroTag = document.createElement('div');
+        heroTag.className = 'reign-hero__tagline';
+        heroTag.textContent = 'FEATURED // PROJECTS';
+
+        const scrollHint = document.createElement('div');
+        scrollHint.className = 'reign-hero__scroll-hint';
+        scrollHint.textContent = '↓ SCROLL';
+
+        hero.append(heroTitle, heroTag, scrollHint);
+        scroll.appendChild(hero);
+
         featured.forEach((project, i) => {
             const chapter = document.createElement('div');
             chapter.className = 'reign-chapter';
@@ -1424,11 +1444,25 @@ export const Desktop = {
             { root: scroll, threshold: 0.5 },
         );
 
+        // Hero reveal observer — glitch resolves on entry
+        const heroObserver = new IntersectionObserver(
+            entries => entries.forEach(e => {
+                if (e.isIntersecting) {
+                    hero.classList.add('reign-hero--entered');
+                    // Swap to resolved state after glitch finishes
+                    setTimeout(() => hero.classList.add('reign-hero--resolved'), 1400);
+                    heroObserver.disconnect();
+                }
+            }),
+            { root: scroll, threshold: 0.5 },
+        );
+
         let closed = false;
 
         // Defer observer setup to after DOM attachment
         requestAnimationFrame(() => {
             if (closed) return; // window closed before rAF fired — skip to avoid re-activating disconnected observers
+            heroObserver.observe(hero);
             scroll.querySelectorAll('.reign-reveal').forEach(el => revealObserver.observe(el));
             scroll.querySelectorAll('.reign-chapter').forEach(ch => chapterObserver.observe(ch));
         });
@@ -1442,6 +1476,7 @@ export const Desktop = {
             height: 560,
             onClose: () => {
                 closed = true;
+                heroObserver.disconnect();
                 revealObserver.disconnect();
                 chapterObserver.disconnect();
             },
