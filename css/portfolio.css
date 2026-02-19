@@ -214,6 +214,70 @@
     box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
+/* ─── Forcefield Reveal ─── */
+/* Purple veil that dissipates when chapter enters viewport */
+
+.reign-chapter {
+    filter: blur(3px);
+    transition: filter 0.8s ease-out;
+}
+
+.reign-chapter::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(88, 28, 135, 0.18);
+    opacity: 1;
+    transition: opacity 0.9s ease-out;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.reign-chapter--entered {
+    filter: blur(0);
+}
+
+.reign-chapter--entered::after {
+    opacity: 0;
+}
+
+/* Side accent animates taller on enter */
+.reign-chapter--entered::before {
+    opacity: 0.9;
+    height: 80%;
+    box-shadow: 0 0 6px var(--reign-accent, #8b5cf6);
+}
+
+/* ─── Gilded Typography ─── */
+/* Gold shimmer sweep on chapter titles, activated by scroll */
+
+@keyframes reign-shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+.reign-chapter__title {
+    background-image: linear-gradient(
+        105deg,
+        #fff 0%,
+        #fff 40%,
+        #d4af37 48%,
+        #f5d76e 50%,
+        #d4af37 52%,
+        #fff 60%,
+        #fff 100%
+    );
+    background-size: 200% 100%;
+    background-position: -200% center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.reign-chapter--entered .reign-chapter__title {
+    animation: reign-shimmer 1.6s ease-out 0.3s forwards;
+}
+
 /* Scroll-triggered reveal animation */
 .reign-reveal {
     opacity: 0;

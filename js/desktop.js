@@ -1416,6 +1416,7 @@ export const Desktop = {
         const chapterObserver = new IntersectionObserver(
             entries => entries.forEach(e => {
                 if (e.isIntersecting) {
+                    e.target.classList.add('reign-chapter--entered');
                     const idx = [...scroll.querySelectorAll('.reign-chapter')].indexOf(e.target);
                     dots.forEach((d, j) => d.classList.toggle('reign-nav__dot--active', j === idx));
                 }

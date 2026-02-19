@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.19.1
+version: 3.20.0
 last_updated: 2026-02-19
 
 ---
@@ -15,6 +15,17 @@ last_updated: 2026-02-19
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.20.0] — 2026-02-19
+
+### Added
+- **Forcefield reveal on portfolio chapters** — Chapters start blurred with a translucent purple veil (`::after` pseudo-element) that dissipates when the chapter scrolls into view via IntersectionObserver, evoking a Stark-lab forcefield powering down
+- **Gilded title shimmer** — Chapter titles use `background-clip: text` with a gold gradient band that sweeps across once on reveal, creating a brief cinematic gold flash before settling back to white
+- **Enhanced side accent animation** — The left-edge accent line expands and gains a colored glow when its chapter enters the viewport
+
+**Files Modified**: `css/portfolio.css`, `js/desktop.js`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 
