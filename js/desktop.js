@@ -49,7 +49,7 @@ function createLazyWindow({ id, title, icon, width, height, load, exportName, on
         cleanup = onLoad ? onLoad(mod, content) : mod[exportName](content);
     }).catch((err) => {
         console.error(`[LazyWindow] Failed to load module for "${id}":`, err);
-        content.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ff4444;font-family:monospace;font-size:13px;padding:20px;text-align:center;">Failed to load module.<br><span style="opacity:0.5;font-size:11px;">${Sanitize.text(err.message || String(err))}</span></div>`;
+        Sanitize.setHTML(content, `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ff4444;font-family:monospace;font-size:13px;padding:20px;text-align:center;">Failed to load module.<br><span style="opacity:0.5;font-size:11px;">${Sanitize.text(err.message || String(err))}</span></div>`);
     });
 }
 
@@ -1423,8 +1423,11 @@ export const Desktop = {
             { root: scroll, threshold: 0.5 },
         );
 
+        let closed = false;
+
         // Defer observer setup to after DOM attachment
         requestAnimationFrame(() => {
+            if (closed) return; // window closed before rAF fired — skip to avoid re-activating disconnected observers
             scroll.querySelectorAll('.reign-reveal').forEach(el => revealObserver.observe(el));
             scroll.querySelectorAll('.reign-chapter').forEach(ch => chapterObserver.observe(ch));
         });
@@ -1437,6 +1440,7 @@ export const Desktop = {
             width: 640,
             height: 560,
             onClose: () => {
+                closed = true;
                 revealObserver.disconnect();
                 chapterObserver.disconnect();
             },

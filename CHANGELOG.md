@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.19.0
-last_updated: 2026-02-18
+version: 3.19.1
+last_updated: 2026-02-19
 
 ---
 
@@ -15,6 +15,16 @@ last_updated: 2026-02-18
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.19.1] — 2026-02-19
+
+### Fixed
+- **Portfolio observer leak on rapid close** — `openPortfolio()` defers IntersectionObserver setup via `requestAnimationFrame`, but if the window was closed before the rAF callback fired, `onClose` disconnected the observers first, then the rAF re-activated them by calling `.observe()` on disconnected instances. These zombie observers would persist with no way to disconnect. Added a `closed` guard flag checked before observer setup
+- **`createLazyWindow` error path now uses `Sanitize.setHTML()`** — The error handler previously set structural HTML via raw `innerHTML`, bypassing the DOMPurify defense-in-depth layer added in v3.18.1. Error message content was already escaped via `Sanitize.text()`, but the surrounding HTML template was not routed through `Sanitize.setHTML()` like all other DOM injection paths
+
+**Files Modified**: `js/desktop.js`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 
