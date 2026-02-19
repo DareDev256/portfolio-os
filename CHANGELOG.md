@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.18.1
+version: 3.19.0
 last_updated: 2026-02-18
 
 ---
@@ -15,6 +15,17 @@ last_updated: 2026-02-18
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.19.0] — 2026-02-18
+
+### Changed
+- **Lightbox listener lifecycle refactored** — Document-level `keydown`, `mousemove`, and `mouseup` listeners are now attached only while the lightbox is open and detached on close. Previously these three listeners persisted for the entire page session, running handler checks on every keypress and mouse movement even when the lightbox was closed. Uses stable bound method references (`_boundKeydown`, `_boundMousemove`, `_boundMouseup`) created once during `initEvents()` for clean `addEventListener`/`removeEventListener` pairing
+- **`createLazyWindow` error handling** — Dynamic `import()` failures now display a styled error message inside the window content area instead of silently leaving the window empty. Error text is sanitized through `Sanitize.text()` to prevent injection from crafted error messages
+- **Removed duplicate `initEvents` JSDoc comment** in `lightbox.js` — zoom/pan state declarations now have their own descriptive comment block
+
+**Files Modified**: `js/lightbox.js`, `js/desktop.js`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

@@ -35,9 +35,7 @@ export const Lightbox = {
         this.initEvents();
     },
 
-    /**
-     * Initialize events
-     */
+    // Zoom & pan state
     scale: 1,
     panning: false,
     pointX: 0,
@@ -45,8 +43,16 @@ export const Lightbox = {
     startX: 0,
     startY: 0,
 
+    // Bound handlers — created once, reused for add/removeEventListener
+    _boundKeydown: null,
+    _boundMousemove: null,
+    _boundMouseup: null,
+
     /**
      * Initialize events
+     * Static listeners live on the lightbox DOM itself.
+     * Document-level listeners (keyboard, pan tracking) are attached
+     * only while the lightbox is open — see _attachDocListeners / _detachDocListeners.
      */
     initEvents() {
         // Close button
@@ -61,31 +67,7 @@ export const Lightbox = {
             .querySelector('.lightbox-overlay')
             .addEventListener('click', () => this.close());
 
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (!this.isOpen) return;
-
-            switch (e.key) {
-                case 'Escape':
-                    this.close();
-                    break;
-                case 'ArrowLeft':
-                    this.prev();
-                    break;
-                case 'ArrowRight':
-                    this.next();
-                    break;
-                case '+':
-                case '=':
-                    this.zoom(0.1);
-                    break;
-                case '-':
-                    this.zoom(-0.1);
-                    break;
-            }
-        });
-
-        // Zoom & Pan Events
+        // Zoom via wheel (scoped to media container — no document leak)
         this.mediaContainer.addEventListener('wheel', (e) => {
             if (this.type !== 'image') return;
             e.preventDefault();
@@ -93,6 +75,7 @@ export const Lightbox = {
             this.zoom(delta);
         });
 
+        // Pan start (scoped to media container)
         this.mediaContainer.addEventListener('mousedown', (e) => {
             if (this.type !== 'image' || this.scale <= 1) return;
             e.preventDefault();
@@ -102,18 +85,50 @@ export const Lightbox = {
             this.mediaContainer.style.cursor = 'grabbing';
         });
 
-        document.addEventListener('mousemove', (e) => {
-            if (!this.panning) return;
-            e.preventDefault();
-            this.pointX = e.clientX - this.startX;
-            this.pointY = e.clientY - this.startY;
-            this.updateTransform();
-        });
+        // Create stable bound references for document-level handlers
+        this._boundKeydown = this._handleKeydown.bind(this);
+        this._boundMousemove = this._handleMousemove.bind(this);
+        this._boundMouseup = this._handleMouseup.bind(this);
+    },
 
-        document.addEventListener('mouseup', () => {
-            this.panning = false;
-            this.mediaContainer.style.cursor = '';
-        });
+    /** Keyboard handler — only active while lightbox is open */
+    _handleKeydown(e) {
+        switch (e.key) {
+            case 'Escape':    this.close();    break;
+            case 'ArrowLeft': this.prev();     break;
+            case 'ArrowRight': this.next();    break;
+            case '+': case '=': this.zoom(0.1);  break;
+            case '-':           this.zoom(-0.1); break;
+        }
+    },
+
+    /** Pan tracking — only active while lightbox is open */
+    _handleMousemove(e) {
+        if (!this.panning) return;
+        e.preventDefault();
+        this.pointX = e.clientX - this.startX;
+        this.pointY = e.clientY - this.startY;
+        this.updateTransform();
+    },
+
+    /** Pan end — only active while lightbox is open */
+    _handleMouseup() {
+        this.panning = false;
+        this.mediaContainer.style.cursor = '';
+    },
+
+    /** Attach document-level listeners when lightbox opens */
+    _attachDocListeners() {
+        document.addEventListener('keydown', this._boundKeydown);
+        document.addEventListener('mousemove', this._boundMousemove);
+        document.addEventListener('mouseup', this._boundMouseup);
+    },
+
+    /** Detach document-level listeners when lightbox closes */
+    _detachDocListeners() {
+        document.removeEventListener('keydown', this._boundKeydown);
+        document.removeEventListener('mousemove', this._boundMousemove);
+        document.removeEventListener('mouseup', this._boundMouseup);
     },
 
     /**
@@ -166,6 +181,9 @@ export const Lightbox = {
 
         this.container.classList.remove('hidden');
         this.render();
+
+        // Attach document-level keyboard & pan listeners
+        this._attachDocListeners();
 
         // Trap focus within the lightbox overlay
         this.releaseFocusTrap = trapFocus(this.container);
@@ -305,6 +323,9 @@ export const Lightbox = {
         this.pointY = 0;
         this.panning = false;
         this.mediaContainer.style.cursor = '';
+
+        // Detach document-level listeners to prevent leaks
+        this._detachDocListeners();
 
         // Release focus trap and restore focus
         if (this.releaseFocusTrap) {

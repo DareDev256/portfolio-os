@@ -47,6 +47,9 @@ function createLazyWindow({ id, title, icon, width, height, load, exportName, on
 
     load().then((mod) => {
         cleanup = onLoad ? onLoad(mod, content) : mod[exportName](content);
+    }).catch((err) => {
+        console.error(`[LazyWindow] Failed to load module for "${id}":`, err);
+        content.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ff4444;font-family:monospace;font-size:13px;padding:20px;text-align:center;">Failed to load module.<br><span style="opacity:0.5;font-size:11px;">${Sanitize.text(err.message || String(err))}</span></div>`;
     });
 }
 
