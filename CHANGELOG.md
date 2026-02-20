@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.21.0
-last_updated: 2026-02-19
+version: 3.21.1
+last_updated: 2026-02-20
 
 ---
 
@@ -15,6 +15,18 @@ last_updated: 2026-02-19
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.21.1] — 2026-02-20
+
+### Fixed
+- **Shell command crashes** — `photos` and `videos` terminal commands called non-existent `Desktop.openPhotos()` and crashed on `openVideos()` accessing `.icon` on undefined `DESKTOP_ITEMS` entry. Both now route to `openMediaVault()` correctly
+- **Toast hover timer desync** — Hovering a notification then mousing away used a hardcoded `duration / 2` timeout instead of tracking actual remaining time, allowing toasts to be kept alive indefinitely by repeated hovering and desyncing the progress bar from the dismiss timer
+- **Loader progress interval leak** — `PixelLoader.simulateProgress()` stored its `setInterval` in a local variable that `destroy()` couldn't reach. Early destroy left an orphaned timer calling methods on removed DOM elements
+- **Alert modal keyboard accessibility** — Alert modals had no keyboard handler (unlike prompt modals), trapping keyboard-only users. Added Enter/Escape dismiss with auto-focus on the OK button
+
+**Files Modified**: `js/desktop.js`, `js/notifications.js`, `js/loader.js`, `js/modal.js`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

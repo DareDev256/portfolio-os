@@ -1268,7 +1268,7 @@ export const Desktop = {
         WindowManager.create({
             id: 'videos',
             title: 'Videos',
-            icon: this.DESKTOP_ITEMS.find((i) => i.id === 'videos').icon,
+            icon: '▶',
             content,
             width: 800,
             height: 600,
@@ -2204,13 +2204,12 @@ export const Desktop = {
                     break;
                 case 'photos':
                 case 'open photos':
-                    Desktop.openPhotos();
-                    append('Opening Photos...');
-                    break;
                 case 'videos':
                 case 'open videos':
-                    Desktop.openVideos();
-                    append('Opening Videos...');
+                case 'media':
+                case 'open media':
+                    Desktop.openMediaVault();
+                    append('Opening Media Vault...');
                     break;
                 case 'resume':
                 case 'open resume':

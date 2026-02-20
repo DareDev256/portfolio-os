@@ -203,13 +203,14 @@ export class PixelLoader {
         const bar = this.element.querySelector('.pixel-bar-fill');
         let width = 0;
 
-        const progress = setInterval(() => {
+        this.progressInterval = setInterval(() => {
             width += Math.random() * 15;
             if (width > 100) width = 100;
             bar.style.width = `${width}%`;
 
             if (width === 100) {
-                clearInterval(progress);
+                clearInterval(this.progressInterval);
+                this.progressInterval = null;
                 setTimeout(() => {
                     this.updateState('success', 'MESSAGE SENT!');
                     setTimeout(() => {
@@ -230,6 +231,7 @@ export class PixelLoader {
 
     destroy() {
         if (this.interval) clearInterval(this.interval);
+        if (this.progressInterval) clearInterval(this.progressInterval);
         if (this.element && this.element.parentNode) {
             this.element.style.opacity = '0';
             setTimeout(() => {

@@ -78,6 +78,8 @@ function showToast(type, message, duration = 4000) {
     el.appendChild(progress);
 
     const entry = { type, message, duration, el, dismissed: false, timerId: null };
+    let remaining = duration;
+    let timerStart = Date.now();
 
     // Evict oldest if at capacity — synchronous splice prevents infinite loop
     while (queue.length >= MAX_VISIBLE) {
@@ -93,15 +95,27 @@ function showToast(type, message, duration = 4000) {
 
     closeBtn.addEventListener('click', () => dismissToast(entry));
 
-    entry.timerId = setTimeout(() => dismissToast(entry), duration);
-    // Pause/resume timer on hover
+    const startTimer = (ms) => {
+        remaining = ms;
+        timerStart = Date.now();
+        entry.timerId = setTimeout(() => dismissToast(entry), ms);
+    };
+    startTimer(duration);
+
+    // Pause/resume timer on hover — track actual remaining time
     el.addEventListener('mouseenter', () => {
-        if (entry.timerId) { clearTimeout(entry.timerId); entry.timerId = null; }
+        if (entry.timerId) {
+            clearTimeout(entry.timerId);
+            entry.timerId = null;
+            remaining -= (Date.now() - timerStart);
+            if (remaining < 0) remaining = 0;
+        }
         progress.style.animationPlayState = 'paused';
     });
     el.addEventListener('mouseleave', () => {
         progress.style.animationPlayState = 'running';
-        entry.timerId = setTimeout(() => dismissToast(entry), duration / 2);
+        if (remaining > 0) startTimer(remaining);
+        else dismissToast(entry);
     });
 
     return entry;

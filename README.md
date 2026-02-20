@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.21.0-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.21.1-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-229_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-24-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-44-b388ff?style=flat-square)

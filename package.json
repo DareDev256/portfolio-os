@@ -1,6 +1,6 @@
 {
     "name": "website",
-    "version": "3.21.0",
+    "version": "3.21.1",
     "description": "A unique, interactive portfolio website designed as a Windows-like desktop operating system. Built with vanilla HTML, CSS, and JavaScript—no frameworks, no build tools, just pure web technologies.",
     "main": "sw.js",
     "scripts": {

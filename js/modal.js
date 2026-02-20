@@ -122,6 +122,17 @@ export const Modal = {
 
             confirmBtn.onclick = dismiss;
             overlay.onclick = dismiss;
+
+            // Keyboard: Enter or Escape dismisses alert
+            const onKey = (e) => {
+                if (e.key === 'Enter' || e.key === 'Escape') {
+                    document.removeEventListener('keydown', onKey);
+                    dismiss();
+                }
+            };
+            document.addEventListener('keydown', onKey);
+
+            setTimeout(() => confirmBtn.focus(), 100);
         });
     }
 };
