@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.21.1
+version: 3.22.0
 last_updated: 2026-02-20
 
 ---
@@ -15,6 +15,16 @@ last_updated: 2026-02-20
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.22.0] — 2026-02-20
+
+### Added
+- **CodeViewer component** — Zero-dependency syntax-highlighted code panel with regex-based JS tokenizer, copy-to-clipboard with gold visual feedback, and scroll-triggered reveal animation. Uses a curated dark-luxury palette (purple keywords, gold strings, cyan function names) matching the Purple Reign aesthetic
+- **Code snippets in Purple Reign showcase** — Each of the 5 featured projects now displays a representative code snippet within the cinematic scroll chapters, giving technical visitors an immediate feel for the codebase
+
+**Files Modified**: `js/code-viewer.js` (new), `css/code-viewer.css` (new), `js/desktop.js`, `index.html`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

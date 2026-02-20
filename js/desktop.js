@@ -7,6 +7,7 @@ import { PixelLoader } from './loader.js';
 import { Sanitize } from './sanitize.js';
 import { loadMedia, loadProjects } from './data-loader.js';
 import { openExternal, animateCounter, loadJSON, saveJSON } from './dom-helpers.js';
+import { createCodeViewer } from './code-viewer.js';
 
 /**
  * Open a lazy-loaded window app.
@@ -1285,6 +1286,7 @@ export const Desktop = {
                 desc: '24/7 autonomous AI code improvement system. Analyzes repos, spawns Claude Code sessions, submits PRs, and learns from merge/reject patterns.',
                 tech: ['Node.js', 'Claude Code', 'MCP', 'SQLite'],
                 accent: '#8b5cf6',
+                snippet: { lang: 'js', code: `const cycle = async () => {\n  const repos = await scanRepos();\n  for (const repo of repos) {\n    const session = await claude.spawn(repo);\n    const pr = await session.submit();\n    await feedback.record(pr.outcome);\n  }\n};` },
             },
             {
                 name: 'VIBE_CODER',
@@ -1293,6 +1295,7 @@ export const Desktop = {
                 accent: '#c084fc',
                 demo: 'https://daredev256.github.io/vibe-coder/',
                 repo: 'https://github.com/DareDev256/vibe-coder',
+                snippet: { lang: 'js', code: `class Weapon extends Phaser.GameObjects.Sprite {\n  fire(target) {\n    const bullet = this.pool.get();\n    bullet.launch(this.x, this.y, target);\n    this.scene.sound.play('fire');\n  }\n}` },
             },
             {
                 name: 'PORTFOLIO_OS',
@@ -1300,12 +1303,14 @@ export const Desktop = {
                 tech: ['JavaScript', 'Three.js', 'CSS3', 'Vite'],
                 accent: '#a78bfa',
                 demo: 'https://jamesdare.com',
+                snippet: { lang: 'js', code: `WindowManager.create({\n  id: 'terminal',\n  title: 'TERMINAL',\n  icon: '▸',\n  content: container,\n  width: 640,\n  height: 400,\n});` },
             },
             {
                 name: 'CULTURE_DROP_HQ',
                 desc: 'Operations dashboard for Toronto hip-hop media — manage content, artists, and releases.',
                 tech: ['React', 'Node.js', 'MongoDB', 'Tailwind'],
                 accent: '#d4af37',
+                snippet: { lang: 'jsx', code: `const Dashboard = () => (\n  <Layout sidebar={<ArtistNav />}>\n    <ContentGrid filter={useFilter()} />\n    <ReleaseTimeline data={releases} />\n  </Layout>\n);` },
             },
             {
                 name: 'FCPXML_MCP_SERVER',
@@ -1313,6 +1318,7 @@ export const Desktop = {
                 tech: ['Python', 'Claude AI', 'MCP', 'XML'],
                 accent: '#7c3aed',
                 repo: 'https://github.com/DareDev256/fcpxml-mcp-server',
+                snippet: { lang: 'python', code: `@server.tool("cut_clip")\nasync def cut_clip(timeline, tc_in, tc_out):\n    clip = timeline.find_clip_at(tc_in)\n    return clip.split(tc_in, tc_out)` },
             },
         ];
 
@@ -1398,7 +1404,15 @@ export const Desktop = {
                 links.appendChild(repoBtn);
             }
 
-            chapter.append(idx, title, desc, techRow, links);
+            if (project.snippet) {
+                const viewer = createCodeViewer({ code: project.snippet.code, lang: project.snippet.lang, accent: project.accent });
+                viewer.classList.add('reign-reveal');
+                viewer.dataset.delay = '4';
+                links.dataset.delay = '5';
+                chapter.append(idx, title, desc, techRow, viewer, links);
+            } else {
+                chapter.append(idx, title, desc, techRow, links);
+            }
             scroll.appendChild(chapter);
 
             // Nav dot

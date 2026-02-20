@@ -1,0 +1,91 @@
+/* CodeViewer — "Code is Art" dark luxury panel */
+
+.cv-panel {
+    --cv-accent: #8b5cf6;
+    --cv-bg: #0d0818;
+    --cv-header-bg: rgba(139, 92, 246, 0.06);
+    --cv-border: rgba(139, 92, 246, 0.18);
+    border: 1px solid var(--cv-border);
+    border-left: 2px solid var(--cv-accent);
+    background: var(--cv-bg);
+    margin-top: 18px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.5s ease-out 0.6s, transform 0.5s ease-out 0.6s;
+}
+
+.reign-chapter--entered .cv-panel {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Header bar */
+.cv-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    background: var(--cv-header-bg);
+    border-bottom: 1px solid var(--cv-border);
+}
+
+.cv-lang {
+    font-family: var(--font-mono, monospace);
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--cv-accent);
+    opacity: 0.7;
+}
+
+/* Copy button */
+.cv-copy {
+    font-family: var(--font-mono, monospace);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    padding: 3px 10px;
+    border: 1px solid var(--cv-border);
+    color: rgba(255, 255, 255, 0.45);
+    background: transparent;
+    cursor: pointer;
+    transition: color 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+.cv-copy:hover {
+    color: #d4af37;
+    border-color: rgba(212, 175, 55, 0.4);
+}
+
+.cv-copy--done {
+    color: #d4af37;
+    border-color: rgba(212, 175, 55, 0.5);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+}
+
+/* Code area */
+.cv-pre {
+    margin: 0;
+    padding: 14px 16px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 92, 246, 0.2) transparent;
+}
+
+.cv-code {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.55);
+    white-space: pre;
+    tab-size: 2;
+}
+
+/* Token palette — deep purple + luminous gold */
+.cv-tok--keyword  { color: #c084fc; font-weight: 600; }
+.cv-tok--builtin  { color: #a78bfa; }
+.cv-tok--string   { color: #d4af37; }
+.cv-tok--number   { color: #f0e68c; }
+.cv-tok--comment  { color: rgba(255, 255, 255, 0.25); font-style: italic; }
+.cv-tok--operator { color: rgba(255, 255, 255, 0.4); }
+.cv-tok--punct    { color: rgba(255, 255, 255, 0.3); }
+.cv-tok--fn       { color: #7dd3fc; }
