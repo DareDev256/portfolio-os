@@ -1,7 +1,7 @@
 /* Windows CSS - Cyberpunk Edition */
 
 .window {
-    position: absolute;
+    position: absolute !important;
     background: rgba(15, 10, 30, 0.4);
     backdrop-filter: blur(20px) saturate(1.4);
     -webkit-backdrop-filter: blur(20px) saturate(1.4);
@@ -24,7 +24,7 @@
 
 .window.visible {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: none;
 }
 
 .window.minimized {

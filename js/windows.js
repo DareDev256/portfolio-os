@@ -68,10 +68,12 @@ export const WindowManager = {
             finalWidth = savedState.width;
             finalHeight = savedState.height;
         } else if (finalX === null || finalY === null) {
-            // Center window with slight offset for each new window
-            const offset = (State.windows.size * 30) % 100;
-            finalX = Math.max(50, (window.innerWidth - finalWidth) / 2 + offset);
-            finalY = Math.max(80, (window.innerHeight - finalHeight) / 2 + offset - 24);
+            // Cascade windows with visible offset so title bars are always reachable
+            const cascade = State.windows.size % 6; // Reset after 6 windows
+            const offsetX = cascade * 50;
+            const offsetY = cascade * 40;
+            finalX = Math.max(50, 80 + offsetX);
+            finalY = Math.max(80, 60 + offsetY);
         }
 
         // Clamp position so window stays within viewport (top bar=40, dock=80)
