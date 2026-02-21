@@ -1,0 +1,408 @@
+/* ══════════════════════════════════════════════════════════════════════
+   Passion Live — Avatar, Speech Bubble, Status Indicator, Chat Window, Ambient Toasts
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Welcome Modal: Passion Avatar ──────────────────────────────────── */
+
+.passion-avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.passion-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--neon-cyan);
+    box-shadow:
+        0 0 20px rgba(0, 240, 255, 0.4),
+        0 0 40px rgba(0, 240, 255, 0.2);
+    object-fit: cover;
+    animation: passionAvatarPulse 3s ease-in-out infinite;
+}
+
+.passion-avatar-sm {
+    width: 36px;
+    height: 36px;
+    border-width: 2px;
+    animation: none;
+}
+
+@keyframes passionAvatarPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), 0 0 40px rgba(0, 240, 255, 0.2); }
+    50% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.6), 0 0 60px rgba(0, 240, 255, 0.3); }
+}
+
+/* ── Speech Bubble with Typing Effect ───────────────────────────────── */
+
+.passion-speech {
+    background: rgba(0, 240, 255, 0.08);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    position: relative;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.passion-speech::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid rgba(0, 240, 255, 0.3);
+}
+
+.passion-speech-text {
+    min-height: 1.6em;
+}
+
+.passion-typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: var(--neon-cyan);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: passionBlink 0.7s step-end infinite;
+}
+
+@keyframes passionBlink {
+    50% { opacity: 0; }
+}
+
+/* ── Live Status Indicator (bottom-right corner) ────────────────────── */
+
+.passion-status-indicator {
+    position: fixed;
+    bottom: 70px; /* above taskbar */
+    right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: rgba(0, 10, 20, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 20px;
+    cursor: pointer;
+    z-index: 800;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-family: 'JetBrains Mono', monospace;
+    user-select: none;
+}
+
+.passion-status-indicator:hover {
+    background: rgba(0, 20, 40, 0.95);
+    border-color: rgba(0, 240, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 240, 255, 0.2);
+}
+
+.passion-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.passion-status-dot.green {
+    background: #00ff88;
+    box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+    animation: passionDotPulse 2s ease-in-out infinite;
+}
+
+.passion-status-dot.amber {
+    background: #ffaa00;
+    box-shadow: 0 0 8px rgba(255, 170, 0, 0.6);
+    animation: passionDotPulse 2s ease-in-out infinite;
+}
+
+.passion-status-dot.grey {
+    background: #888;
+    box-shadow: none;
+}
+
+@keyframes passionDotPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.passion-status-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+}
+
+/* ── Tour: Passion Narration Row ────────────────────────────────────── */
+
+.tour-passion-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 20px 0;
+}
+
+.tour-passion-row .passion-avatar {
+    width: 28px;
+    height: 28px;
+    border-width: 2px;
+    flex-shrink: 0;
+    animation: none;
+}
+
+.tour-passion-quip {
+    font-size: 12px;
+    color: var(--neon-cyan);
+    font-style: italic;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+/* ── Passion Chat Window ────────────────────────────────────────────── */
+
+.passion-chat {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 10, 25, 0.95), rgba(5, 5, 20, 0.98));
+    color: white;
+    font-family: 'Tomorrow', sans-serif;
+    overflow-y: auto;
+}
+
+.passion-chat-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+    background: rgba(0, 240, 255, 0.05);
+}
+
+.passion-chat-header-info {
+    flex: 1;
+}
+
+.passion-chat-header-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+}
+
+.passion-chat-header-status {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 2px;
+}
+
+.passion-chat-header-status .passion-status-dot {
+    width: 6px;
+    height: 6px;
+}
+
+.passion-chat-section {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.passion-chat-section-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--neon-cyan);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.passion-chat-mood {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.passion-chat-mood-emoji {
+    font-size: 28px;
+}
+
+.passion-chat-mood-text {
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.5;
+}
+
+.passion-chat-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.passion-chat-stat {
+    background: rgba(0, 240, 255, 0.05);
+    border: 1px solid rgba(0, 240, 255, 0.12);
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+
+.passion-chat-stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--neon-cyan);
+    font-family: 'Orbitron', monospace;
+}
+
+.passion-chat-stat-label {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+.passion-chat-fact {
+    background: rgba(170, 0, 255, 0.08);
+    border: 1px solid rgba(170, 0, 255, 0.2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.passion-chat-footer {
+    padding: 12px 20px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.35);
+    text-align: center;
+    margin-top: auto;
+}
+
+.passion-chat-refresh {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 6px 14px;
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: 6px;
+    color: var(--neon-cyan);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.passion-chat-refresh:hover {
+    background: rgba(0, 240, 255, 0.2);
+    border-color: var(--neon-cyan);
+}
+
+/* ── Ambient Presence Toast ─────────────────────────────────────────── */
+
+.passion-toast {
+    position: fixed;
+    bottom: 110px;
+    right: 16px;
+    max-width: 300px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    background: rgba(0, 10, 25, 0.92);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: 12px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(0, 240, 255, 0.15);
+    z-index: 850;
+    animation: passionToastIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.passion-toast.dismissing {
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+@keyframes passionToastIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.passion-toast-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--neon-cyan);
+    flex-shrink: 0;
+}
+
+.passion-toast-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.passion-toast-close {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 2px;
+    line-height: 1;
+}
+
+.passion-toast-close:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+    .passion-status-indicator {
+        bottom: 65px;
+        right: 8px;
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+
+    .passion-toast {
+        right: 8px;
+        left: 8px;
+        max-width: none;
+        bottom: 100px;
+    }
+
+    .passion-avatar {
+        width: 60px;
+        height: 60px;
+    }
+
+    .passion-chat-stats {
+        grid-template-columns: 1fr;
+    }
+}

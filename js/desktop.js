@@ -8,6 +8,8 @@ import { Sanitize } from './sanitize.js';
 import { loadMedia, loadProjects } from './data-loader.js';
 import { openExternal, animateCounter, loadJSON, saveJSON } from './dom-helpers.js';
 import { createCodeViewer } from './code-viewer.js';
+import { PassionLive } from './passion-live.js';
+import { initAmbientPresence } from './passion-ambient.js';
 
 /**
  * Open a lazy-loaded window app.
@@ -172,6 +174,13 @@ export const Desktop = {
         },
         // Column 4 — Extras
         {
+            id: 'passion',
+            label: 'PASSION.ai',
+            icon: '🤖',
+            color: '#00f0ff',
+            action: () => Desktop.openPassionChat(),
+        },
+        {
             id: 'sticky-notes',
             label: 'NOTES',
             icon: 'svg:/assets/sticky-notes.svg',
@@ -231,11 +240,66 @@ export const Desktop = {
         this.initContextMenu();
         this.initDesktopEvents();
 
+        // Reset Icons button
+        const resetBtn = document.getElementById('resetIconsBtn');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                saveJSON('desktop_layout_v4', {});
+                this.renderIcons();
+            });
+        }
+
         // Visual Juice
         setTimeout(() => {
             this.animateWatermark();
             if (State.soundEnabled) this.playStartupSound();
         }, 1000);
+
+        // Passion Live: initialize, show status indicator, start ambient presence
+        PassionLive.init();
+        this.initPassionStatusIndicator();
+        initAmbientPresence();
+    },
+
+    /**
+     * Status indicator — pulsing dot + state label, bottom-right
+     */
+    initPassionStatusIndicator() {
+        const indicator = document.createElement('div');
+        indicator.className = 'passion-status-indicator';
+        indicator.setAttribute('aria-label', 'Passion status');
+        indicator.title = 'Click to open Passion Chat';
+
+        const updateIndicator = () => {
+            const label = PassionLive.getStateLabel();
+            const color = PassionLive.getStateColor();
+            indicator.innerHTML = `
+                <span class="passion-status-dot ${color}"></span>
+                <span class="passion-status-label">Passion is ${Sanitize.text(label)}</span>
+            `;
+        };
+
+        updateIndicator();
+        PassionLive.onChange(updateIndicator);
+
+        indicator.addEventListener('click', () => this.openPassionChat());
+
+        document.getElementById('desktop')?.appendChild(indicator);
+    },
+
+    /**
+     * Open Passion Chat as a WindowManager app
+     */
+    openPassionChat() {
+        createLazyWindow({
+            id: 'passion',
+            title: 'PASSION.ai',
+            icon: '🤖',
+            width: 380,
+            height: 520,
+            load: () => import('./passion-chat.js'),
+            exportName: 'render',
+        });
     },
 
     /**
@@ -251,19 +315,21 @@ export const Desktop = {
         const originalCreate = WindowManager.create.bind(WindowManager);
         WindowManager.create = function(...args) {
             const result = originalCreate(...args);
-            window.__InteractionEngine.easterEggs.windowsOpened++;
+            const eggs = window.__InteractionEngine?.easterEggs;
+            if (!eggs) return result;
 
-            const count = window.__InteractionEngine.easterEggs.windowsOpened;
-            if (count === 5) {
-                window.__InteractionEngine.easterEggs.showNotification(
+            eggs.windowsOpened = (eggs.windowsOpened || 0) + 1;
+
+            if (eggs.windowsOpened === 5 && typeof eggs.showNotification === 'function') {
+                eggs.showNotification(
                     '🪟 MULTITASKING PRO',
                     'Bold of you to assume I have infinite RAM...',
                     'info',
                     4000
                 );
             }
-            if (count === 10) {
-                window.__InteractionEngine.easterEggs.showNotification(
+            if (eggs.windowsOpened === 10 && typeof eggs.showNotification === 'function') {
+                eggs.showNotification(
                     '🤯 WINDOW OVERLOAD',
                     'You\'re really testing my limits here. Impressive.',
                     'warning',
@@ -414,9 +480,11 @@ export const Desktop = {
             // Row 3: Live projects
             const row3 = ['vibe-coder', 'image-generator', 'terminal', 'contact'];
             // Row 4: Extras/Utilities
-            const row4 = ['typemaster', 'portfolio-videos', 'settings', 'sysmon'];
+            const row4 = ['passion', 'typemaster', 'portfolio-videos', 'settings'];
+            // Row 5: More extras
+            const row5 = ['sysmon', 'sticky-notes', 'pomodoro', 'calculator', 'weather'];
 
-            const allRows = [row1, row2, row3, row4];
+            const allRows = [row1, row2, row3, row4, row5];
             for (let row = 0; row < allRows.length; row++) {
                 for (let col = 0; col < allRows[row].length; col++) {
                     if (allRows[row][col] === item.id) {

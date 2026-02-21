@@ -1,8 +1,10 @@
 /**
  * Spotlight Tour System
- * Guides users through key areas of the portfolio with spotlight highlights
+ * Guides users through key areas of the portfolio with spotlight highlights.
+ * Passion narrates each step with live commentary or offline fallback quips.
  */
 import { trapFocus } from './focus-trap.js';
+import { PassionLive } from './passion-live.js';
 
 export const Tour = {
     currentStep: 0,
@@ -21,7 +23,7 @@ export const Tour = {
             id: 'welcome',
             title: 'Welcome to My Portfolio',
             description: 'This is an interactive desktop experience. Let me show you around!',
-            target: null, // No specific target, just intro
+            target: null,
             position: 'center'
         },
         {
@@ -60,6 +62,9 @@ export const Tour = {
     start() {
         if (this.isActive) return;
 
+        // Ensure PassionLive is initialized
+        if (!PassionLive.state) PassionLive.init();
+
         this.isActive = true;
         this.currentStep = 0;
         this.steps = [...this.TOUR_STEPS];
@@ -73,7 +78,6 @@ export const Tour = {
      * Create the tour overlay elements
      */
     createOverlay() {
-        // Main overlay
         this.overlay = document.createElement('div');
         this.overlay.className = 'tour-overlay';
         this.overlay.innerHTML = `
@@ -86,6 +90,11 @@ export const Tour = {
                 </div>
                 <h3 class="tour-title"></h3>
                 <p class="tour-description"></p>
+                <div class="tour-passion-row">
+                    <img src="${PassionLive.getPortraitImage()}" alt="Passion" class="passion-avatar"
+                         onerror="this.style.display='none';" />
+                    <span class="tour-passion-quip"></span>
+                </div>
                 <div class="tour-actions">
                     <button class="tour-btn tour-skip">Skip Tour</button>
                     <button class="tour-btn tour-next primary">Next</button>
@@ -126,6 +135,10 @@ export const Tour = {
         this.tooltip.querySelector('.tour-step-indicator').textContent = `${index + 1} of ${this.steps.length}`;
         this.tooltip.querySelector('.tour-title').textContent = step.title;
         this.tooltip.querySelector('.tour-description').textContent = step.description;
+
+        // Update Passion quip for this step
+        const quipEl = this.tooltip.querySelector('.tour-passion-quip');
+        quipEl.textContent = PassionLive.getTourQuip(step.id);
 
         // Update button text for last step
         const nextBtn = this.tooltip.querySelector('.tour-next');
