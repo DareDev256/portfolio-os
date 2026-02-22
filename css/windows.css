@@ -507,6 +507,128 @@
     transform: translateY(-2px);
 }
 
+/* ─── Lab Notes: Hidden Depth Panel ─── */
+/* Click-to-reveal diagnostic overlay — Stark's blueprint aesthetic */
+
+@keyframes lab-scan {
+    0%   { transform: translateY(-100%); }
+    100% { transform: translateY(400%); }
+}
+
+@keyframes lab-border-draw {
+    0%   { clip-path: inset(0 100% 100% 0); }
+    50%  { clip-path: inset(0 0 100% 0); }
+    100% { clip-path: inset(0 0 0 0); }
+}
+
+.project-card--expandable {
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card--expandable::before {
+    content: '[ INSPECT ]';
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-family: var(--font-mono, monospace);
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    color: var(--gold-dim, rgba(212, 175, 55, 0.4));
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+    pointer-events: none;
+}
+
+.project-card--expandable:hover::before {
+    opacity: 1;
+}
+
+.lab-notes {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease-out;
+    opacity: 0;
+    position: relative;
+    border-top: 1px solid transparent;
+}
+
+.lab-notes--open {
+    max-height: 120px;
+    opacity: 1;
+    border-top-color: rgba(212, 175, 55, 0.15);
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+/* Scan line sweeps on reveal */
+.lab-notes--open::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold, #d4af37), transparent);
+    opacity: 0.6;
+    animation: lab-scan 1.2s ease-out forwards;
+    pointer-events: none;
+}
+
+/* Gold border draw on expanded card */
+.project-card--expanded {
+    border-color: var(--gold-dim, rgba(212, 175, 55, 0.4)) !important;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3), var(--glow-gold-sm, 0 0 10px rgba(212, 175, 55, 0.3));
+}
+
+.project-card--expanded::before {
+    content: '[ CLOSE ]';
+    opacity: 1;
+    color: var(--gold, #d4af37);
+}
+
+.lab-notes__row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono, monospace);
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.45);
+    margin-bottom: 6px;
+}
+
+.lab-notes__label {
+    color: var(--gold-dim, rgba(212, 175, 55, 0.5));
+    min-width: 55px;
+    text-transform: uppercase;
+}
+
+.lab-notes__value {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.lab-notes__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.lab-notes__status::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--neon-green, #00ff88);
+    box-shadow: 0 0 6px rgba(0, 255, 136, 0.5);
+}
+
+.lab-notes__status--archived::before {
+    background: var(--neon-amber, #ffaa00);
+    box-shadow: 0 0 6px rgba(255, 170, 0, 0.5);
+}
+
 .project-title {
     color: var(--neon-magenta);
     font-family: var(--font-display);

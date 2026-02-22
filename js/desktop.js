@@ -1731,24 +1731,59 @@ export const Desktop = {
                 filterTag === 'all' ? projects : projects.filter((p) => p.tags.includes(filterTag));
             grid.innerHTML = filtered
                 .map(
-                    (project) => `
-                <div class="project-card">
+                    (project) => {
+                        const status = project.demo ? 'LIVE' : 'ARCHIVED';
+                        const statusClass = project.demo ? '' : 'lab-notes__status--archived';
+                        const tagList = (project.tags || []).map(t => Sanitize.text(t)).join(' · ');
+                        const techCount = project.tech ? project.tech.length : 0;
+                        return `
+                <div class="project-card project-card--expandable">
                     <div class="project-title">${Sanitize.text(project.title)}</div>
                     <div class="project-description">${Sanitize.text(project.description)}</div>
                     <div class="project-tech">
                         ${project.tech.map((t) => `<span class="tech-tag">${Sanitize.text(t)}</span>`).join('')}
+                    </div>
+                    <div class="lab-notes">
+                        <div class="lab-notes__row">
+                            <span class="lab-notes__label">Status</span>
+                            <span class="lab-notes__value"><span class="lab-notes__status ${statusClass}">${status}</span></span>
+                        </div>
+                        <div class="lab-notes__row">
+                            <span class="lab-notes__label">Stack</span>
+                            <span class="lab-notes__value">${techCount} technologies</span>
+                        </div>
+                        ${tagList ? `<div class="lab-notes__row"><span class="lab-notes__label">Class</span><span class="lab-notes__value">${tagList}</span></div>` : ''}
                     </div>
                     <div class="project-links">
                         ${project.demo ? `<a href="${Sanitize.attr(project.demo)}" target="_blank" rel="noopener noreferrer" class="project-link">View Demo</a>` : ''}
                         ${project.repo ? `<a href="${Sanitize.attr(project.repo)}" target="_blank" rel="noopener noreferrer" class="project-link secondary">GitHub</a>` : ''}
                     </div>
                 </div>
-            `
+            `;
+                    }
                 )
                 .join('');
         };
 
         renderProjects();
+
+        // Lab Notes: click-to-expand delegation (skip clicks on links)
+        grid.addEventListener('click', (e) => {
+            if (e.target.closest('.project-links')) return;
+            const card = e.target.closest('.project-card--expandable');
+            if (!card) return;
+            const notes = card.querySelector('.lab-notes');
+            const isOpen = notes.classList.contains('lab-notes--open');
+            // Close any other open panels first
+            grid.querySelectorAll('.lab-notes--open').forEach(n => {
+                n.classList.remove('lab-notes--open');
+                n.closest('.project-card')?.classList.remove('project-card--expanded');
+            });
+            if (!isOpen) {
+                notes.classList.add('lab-notes--open');
+                card.classList.add('project-card--expanded');
+            }
+        });
 
         // Filter click handlers
         filters.addEventListener('click', (e) => {

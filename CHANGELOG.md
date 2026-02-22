@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.24.0
+version: 3.25.0
 last_updated: 2026-02-22
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-02-22
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.25.0] — 2026-02-22
+
+### Added
+- **Lab Notes: click-to-reveal project diagnostics** — Each project card in the Applications window now has a hidden "Lab Notes" panel. Click any card to expand a diagnostic overlay showing project status (live/archived indicator), tech stack count, and classification tags. Features a gold scan-line animation on reveal, gold accent border draw, and accordion behavior (one panel open at a time). Inspired by Stark's lab blueprint aesthetic — makes browsing projects feel like inspecting classified tech specs.
 
 ---
 

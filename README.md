@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.24.0-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.25.0-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-229_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-45-b388ff?style=flat-square)
@@ -68,7 +68,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | **SKILLS_MATRIX** | Window | Interactive skills visualization |
 | **GITHUB_OPS** | Window | Live GitHub API integration |
 | **PORTFOLIO** | Window | Curated 5-project featured showcase with tech badges, live demo links, and rich cards |
-| **APPLICATIONS** | Window | 17 real projects across 4 categories with DEPLOYED/SOURCE badges |
+| **APPLICATIONS** | Window | 17 real projects across 4 categories with DEPLOYED/SOURCE badges and Lab Notes click-to-reveal diagnostics |
 | **DEV_TERMINAL** | Window | Fake terminal with 18 sass commands (`neofetch`, `cowsay`, `matrix`...) |
 | **Vibe_Coder.exe** | External | Browser-based game — deployed project link |
 | **IMG_GEN.ai** | External | AI image generation tool — deployed project link |
