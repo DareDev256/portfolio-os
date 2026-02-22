@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.22.0
-last_updated: 2026-02-20
+version: 3.22.1
+last_updated: 2026-02-21
 
 ---
 
@@ -15,6 +15,15 @@ last_updated: 2026-02-20
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.22.1] — 2026-02-21
+
+### Added
+- **Research doc: Anthropic Claude Code Marketing Ops** — Case study documenting how Anthropic's growth marketing team (Austin Lau, single non-technical operator) built four production systems with Claude Code: Google Ads copy generator with sub-agent architecture, Figma batch creative plugin (10× output), Meta Ads MCP server, and self-improving A/B test memory system. Includes metrics, architecture patterns, and relevance to Passion Agent's own automation design
+
+**Files Modified**: `docs/anthropic-claude-code-marketing-ops.md` (new), `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

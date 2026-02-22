@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.22.0-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.22.1-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-229_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-45-b388ff?style=flat-square)
@@ -285,6 +285,7 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture — all 41 modules, dependency graph, init sequence |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | Terminology and codebase glossary |
 | [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Common issues and solutions |
+| [docs/anthropic-claude-code-marketing-ops.md](docs/anthropic-claude-code-marketing-ops.md) | Case study: Anthropic's marketing team using Claude Code for ad ops |
 
 ## License
 
