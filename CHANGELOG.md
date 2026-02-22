@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.25.0
+version: 3.25.1
 last_updated: 2026-02-22
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-02-22
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.25.1] — 2026-02-22
+
+### Added
+- **Research: Bloomberg Terminal analogy** — New analysis document (`docs/research-bloomberg-terminal-analogy.md`) framing Claude Code, Cursor, and Windsurf as the Bloomberg Terminals of software engineering. Maps the finance paradigm shift (information access → speed of interpretation) onto the developer tooling shift (knowing the codebase → knowing what to build). Cross-references the existing Anthropic marketing case study. Updated docs index with new Research & Analysis section.
 
 ---
 

@@ -53,6 +53,13 @@ Complete documentation for **Passion OS v3.8.2** - a vanilla JavaScript portfoli
 | [GLOSSARY.md](GLOSSARY.md)               | Terminology reference              | Everyone          | ~150 lines |
 | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Common issues & solutions          | Users, Developers | ~500 lines |
 
+### Research & Analysis (docs/)
+
+| Document                                                                           | Purpose                                   | Audience       | Size       |
+| ---------------------------------------------------------------------------------- | ----------------------------------------- | -------------- | ---------- |
+| [research-bloomberg-terminal-analogy.md](research-bloomberg-terminal-analogy.md)    | Bloomberg Terminal ↔ AI coding tools thesis | Everyone       | ~120 lines |
+| [anthropic-claude-code-marketing-ops.md](anthropic-claude-code-marketing-ops.md)    | Anthropic marketing team case study        | Everyone       | ~80 lines  |
+
 ### Archive (docs/archive/)
 
 Old documentation preserved for reference. Not actively maintained.
