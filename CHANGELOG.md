@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.22.1
-last_updated: 2026-02-21
+version: 3.23.0
+last_updated: 2026-02-22
 
 ---
 
@@ -15,6 +15,19 @@ last_updated: 2026-02-21
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.23.0] — 2026-02-22
+
+### Changed
+- **Design token elevation** — Centralized gold (`--gold`, `--gold-light`, `--gold-dim`) and amethyst (`--amethyst`, `--amethyst-dim`) accent colors into `variables.css` design tokens, replacing 8 hardcoded hex values across `portfolio.css`
+- **Gold glow system** — Added `--glow-gold-sm/md` and `--glow-amethyst-sm/md` to the shared glow token set for consistent luxury accent effects
+- **Holographic border refinement** — Introduced warm gold stop into the `conic-gradient` rotation on `.holo-border`, `.holo-border-bright`, and `.holo-line-bottom`, shifting the signature visual from pure cyberpunk to luxury tech
+- **Portfolio card hover** — Cards now reveal gold-tinted borders and title text on hover, with a subtle gold text-shadow glow, matching the Purple Reign gilded typography system
+- **Token consistency** — Reign hero glitch layers, caret color, live link accents, and gilded shimmer gradient all reference centralized tokens instead of raw hex values
+
+**Files Modified**: `css/variables.css`, `css/glass.css`, `css/portfolio.css`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

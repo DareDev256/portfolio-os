@@ -55,8 +55,9 @@
     background: conic-gradient(
         from var(--holo-angle),
         rgba(0, 240, 255, 0.6),
+        rgba(139, 92, 246, 0.4),
+        rgba(212, 175, 55, 0.35),
         rgba(170, 0, 255, 0.4),
-        rgba(255, 0, 170, 0.5),
         rgba(0, 240, 255, 0.6)
     );
     animation: holo-rotate 20s linear infinite;
@@ -77,8 +78,9 @@
     background: conic-gradient(
         from var(--holo-angle),
         rgba(0, 240, 255, 0.9),
+        rgba(139, 92, 246, 0.7),
+        rgba(212, 175, 55, 0.6),
         rgba(170, 0, 255, 0.7),
-        rgba(255, 0, 170, 0.8),
         rgba(0, 240, 255, 0.9)
     );
     filter: blur(0.5px);
@@ -99,9 +101,11 @@
     background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(0, 240, 255, 0.5) 20%,
-        rgba(170, 0, 255, 0.4) 50%,
-        rgba(255, 0, 170, 0.5) 80%,
+        rgba(0, 240, 255, 0.5) 15%,
+        rgba(139, 92, 246, 0.4) 35%,
+        rgba(212, 175, 55, 0.35) 50%,
+        rgba(170, 0, 255, 0.4) 65%,
+        rgba(0, 240, 255, 0.5) 85%,
         transparent 100%
     );
     background-size: 200% 100%;

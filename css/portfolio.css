@@ -19,8 +19,9 @@
 }
 
 .portfolio-card:hover {
-    border-color: var(--card-accent, rgba(0, 240, 255, 0.35));
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 12px var(--card-glow, rgba(0, 240, 255, 0.08));
+    border-color: var(--card-accent, var(--gold-dim, rgba(212, 175, 55, 0.5)));
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                0 0 12px var(--card-glow, rgba(212, 175, 55, 0.08));
     transform: translateY(-2px);
 }
 
@@ -35,6 +36,12 @@
     font-weight: 700;
     letter-spacing: 1.5px;
     color: var(--card-accent, #00f0ff);
+    transition: color 0.3s ease-out, text-shadow 0.3s ease-out;
+}
+
+.portfolio-card:hover .portfolio-card__title {
+    color: var(--gold, #d4af37);
+    text-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
 }
 
 .portfolio-card__desc {
@@ -164,12 +171,12 @@
 }
 
 .reign-hero__title::before {
-    color: #d4af37;
+    color: var(--gold, #d4af37);
     z-index: -1;
 }
 
 .reign-hero__title::after {
-    color: #8b5cf6;
+    color: var(--amethyst, #8b5cf6);
     z-index: -1;
 }
 
@@ -206,7 +213,7 @@
     font-family: var(--font-mono, monospace);
     font-size: 11px;
     letter-spacing: 3px;
-    color: rgba(139, 92, 246, 0.6);
+    color: var(--amethyst-dim, rgba(139, 92, 246, 0.6));
     margin-top: 18px;
     opacity: 0;
     transform: translateY(10px);
@@ -221,7 +228,7 @@
 .reign-hero__tagline::after {
     content: '█';
     animation: amethyst-caret 1s step-end infinite;
-    color: #d4af37;
+    color: var(--gold, #d4af37);
     margin-left: 2px;
 }
 
@@ -346,14 +353,14 @@
 }
 
 .reign-link--live {
-    border-color: rgba(212, 175, 55, 0.5);
-    color: #d4af37;
+    border-color: var(--gold-dim, rgba(212, 175, 55, 0.5));
+    color: var(--gold, #d4af37);
 }
 
 .reign-link--live:hover {
-    background: #d4af37;
-    color: #0a0a0f;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    background: var(--gold, #d4af37);
+    color: var(--cyber-bg, #0a0a0f);
+    box-shadow: var(--glow-gold-md, 0 0 20px rgba(212, 175, 55, 0.3));
 }
 
 /* ─── Forcefield Reveal ─── */
@@ -403,9 +410,9 @@
         105deg,
         #fff 0%,
         #fff 40%,
-        #d4af37 48%,
-        #f5d76e 50%,
-        #d4af37 52%,
+        var(--gold, #d4af37) 48%,
+        var(--gold-light, #f5d76e) 50%,
+        var(--gold, #d4af37) 52%,
         #fff 60%,
         #fff 100%
     );

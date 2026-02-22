@@ -10,6 +10,14 @@
     --neon-red: #ff0066;
     --neon-pink: #ff2d78;
     --neon-orange: #ff8800;
+
+    /* Luxury Accents — Gold & Deep Purple */
+    --gold: #d4af37;
+    --gold-light: #f5d76e;
+    --gold-dim: rgba(212, 175, 55, 0.5);
+    --amethyst: #8b5cf6;
+    --amethyst-dim: rgba(139, 92, 246, 0.35);
+
     --cyber-bg: #0a0a0f;
     --cyber-bg-dark: #050507;
     --cyber-panel: rgba(10, 10, 20, 0.8);
@@ -73,6 +81,10 @@
     --glow-cyan-lg: 0 0 40px rgba(0, 240, 255, 0.5);
     --glow-magenta-sm: 0 0 10px rgba(255, 0, 170, 0.3);
     --glow-magenta-md: 0 0 20px rgba(255, 0, 170, 0.4);
+    --glow-gold-sm: 0 0 10px rgba(212, 175, 55, 0.3);
+    --glow-gold-md: 0 0 20px rgba(212, 175, 55, 0.4);
+    --glow-amethyst-sm: 0 0 10px rgba(139, 92, 246, 0.3);
+    --glow-amethyst-md: 0 0 20px rgba(139, 92, 246, 0.4);
     --glow-neon-border: 0 0 15px currentColor, inset 0 0 10px rgba(0, 240, 255, 0.05);
 
     /* Typography */
