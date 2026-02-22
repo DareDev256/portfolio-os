@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.23.0
+version: 3.24.0
 last_updated: 2026-02-22
 
 ---
@@ -15,6 +15,20 @@ last_updated: 2026-02-22
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.24.0] — 2026-02-22
+
+### Changed
+- **Glass material token alignment** — Corrected `--glass-bg`, `--glass-bg-dense`, `--glass-bg-light`, and `--glass-blur` tokens in `variables.css` to match the actual rendered values in `glass.css`, closing a drift where the tokens and implementations had diverged
+- **Glass classes use token references** — `.glass`, `.glass-dense`, `.glass-light` now reference `var(--glass-*)` tokens instead of hardcoded rgba/blur values, making the entire glass system configurable from one file
+- **Added `--glass-blur-dense` token** — New intermediate blur tier for `.glass-dense` panels, previously only available as a hardcoded value
+- **HUD accent token system** — Introduced `--hud-cyan-50/40/30/15/12` and `--hud-purple-15` opacity-variant tokens for the 20+ hardcoded `rgba(0, 240, 255, ...)` values used across HUD brackets, markers, orbit rings, scan rings, and mini bars
+- **HUD bracket tokenization** — All `.hud-brackets`, `.hud-bracket-tr`, `.hud-bracket-bl`, `.hud-marker`, `.hud-scan-ring`, `.hud-orbit-ring`, `.hud-mini-bar`, and `.hud-readout` classes now reference centralized tokens instead of raw rgba values
+- **Font token consistency** — `.hud-readout` font-family now references `var(--font-mono)` instead of a hardcoded font stack
+
+**Files Modified**: `css/variables.css`, `css/glass.css`, `README.md`, `CHANGELOG.md`, `package.json`
 
 ---
 

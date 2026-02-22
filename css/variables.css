@@ -96,15 +96,24 @@
     --font-size-lg: 1.2rem;
     --font-size-xl: 2rem;
 
-    /* Glass Materials */
-    --glass-bg: rgba(15, 10, 30, 0.35);
-    --glass-bg-dense: rgba(15, 10, 30, 0.55);
-    --glass-bg-light: rgba(15, 10, 30, 0.2);
-    --glass-blur: blur(40px) saturate(1.4);
-    --glass-blur-light: blur(20px) saturate(1.2);
+    /* Glass Materials — values match rendered .glass classes */
+    --glass-bg: rgba(15, 10, 30, 0.45);
+    --glass-bg-dense: rgba(15, 10, 30, 0.6);
+    --glass-bg-light: rgba(15, 10, 30, 0.25);
+    --glass-blur: blur(16px) saturate(1.3);
+    --glass-blur-dense: blur(12px) saturate(1.2);
+    --glass-blur-light: blur(8px) saturate(1.1);
     --glass-radius: 12px;
     --glass-border: 1px solid rgba(0, 240, 255, 0.08);
     --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    /* HUD Accent Colors — opacity variants of neon-cyan for brackets/markers/rings */
+    --hud-cyan-50: rgba(0, 240, 255, 0.5);
+    --hud-cyan-40: rgba(0, 240, 255, 0.4);
+    --hud-cyan-30: rgba(0, 240, 255, 0.3);
+    --hud-cyan-15: rgba(0, 240, 255, 0.15);
+    --hud-cyan-12: rgba(0, 240, 255, 0.12);
+    --hud-purple-15: rgba(170, 0, 255, 0.15);
 
     /* Layout */
     --taskbar-height: 60px;
