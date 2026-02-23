@@ -14,6 +14,7 @@ import { Desktop } from './desktop.js';
 import { CommandPalette } from './command-palette.js';
 import { ShortcutsOverlay } from './shortcuts-overlay.js';
 import { Notify } from './notifications.js';
+import { Parallax } from './parallax.js';
 
 // Wait for DOM to be ready
 if (document.readyState === 'loading') {
@@ -88,6 +89,11 @@ async function init() {
         } catch (err) {
             console.warn('[Main] Galaxy background failed, Login will retry:', err);
         }
+    }
+
+    // Initialize parallax depth layers (lock screen + desktop)
+    if (!safeMode) {
+        Parallax.init();
     }
 
     // Show splash/boot, then continue to login

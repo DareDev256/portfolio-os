@@ -4,10 +4,10 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.26.0-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.27.0-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-231_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
-![Modules](https://img.shields.io/badge/modules-45-b388ff?style=flat-square)
+![Modules](https://img.shields.io/badge/modules-46-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-888?style=flat-square)
 
@@ -21,7 +21,7 @@ An interactive desktop environment that runs entirely in the browser. Draggable 
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> **45 ES modules** · **25 stylesheets** · **231 tests across 13 suites** · **20 desktop apps** · **10 security headers** · **0 runtime dependencies**
+> **46 ES modules** · **25 stylesheets** · **231 tests across 13 suites** · **20 desktop apps** · **10 security headers** · **0 runtime dependencies**
 
 ## Quick Start
 
@@ -53,6 +53,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **MMBN Cyberspace Background** — Three.js perspective grid with cobalt data streams, glowing network nodes, and a deep blue-purple void sky.
 - **3D Mahoraga Wheel** — Three.js lock screen centerpiece. 60fps + antialiasing on desktop, 30fps lean mode on mobile.
 - **Glass UI** — `backdrop-filter` frosted panels on windows, top bar, and dock — GPU-optimized with reduced blur radii.
+- **Parallax Depth Engine** — Mouse-driven lock screen layers + scroll-driven desktop background shifts. 4-layer depth with lerp smoothing, MutationObserver for dynamic windows, `will-change` GPU compositing. Respects `prefers-reduced-motion`.
 - **Cursor Trails** — Particle effects with PlayStation/chakra symbols. Lazy-initialized, throttled to 30fps.
 - **Toast Notifications** — Non-blocking notification queue with success/error/warning/info types, auto-dismiss progress bar, hover-to-pause, and `aria-live` screen reader support.
 - **Easter Eggs** — Konami code, triple-click glitch pulse, type "418" for teapot, `Ctrl+Shift+V` for system info, 18 terminal sass commands.

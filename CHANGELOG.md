@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.26.0
+version: 3.27.0
 last_updated: 2026-02-23
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-02-23
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.27.0] — 2026-02-23
+
+### Added
+- **Parallax depth engine** (`js/parallax.js`) — New cinematic depth system with two interaction modes. Lock screen responds to mouse position across 4 depth layers (grid background, watermark wheel, title block, identity block) with independent parallax factors. Desktop mode shifts the background wheel based on scroll position within any open window, using MutationObserver to auto-attach to dynamically-created windows. Engine uses rAF with lerp smoothing (factor 0.08) for silky 60fps interpolation, `will-change: translate` GPU hints on all parallax elements, and fully respects `prefers-reduced-motion`. Includes cleanup/destroy method.
 
 ---
 

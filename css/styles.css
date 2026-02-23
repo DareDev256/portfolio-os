@@ -47,6 +47,14 @@ body::before {
     transform-origin: center top;
     opacity: 0.5;
     pointer-events: none;
+    will-change: translate;
+}
+
+/* Parallax GPU hints for depth-layer elements */
+.intro-watermark,
+.intro-title-block,
+.intro-identity {
+    will-change: translate;
 }
 
 /* Lock Screen / Login Panel */
@@ -1449,6 +1457,7 @@ body::before {
     pointer-events: none;
     opacity: 0.03;
     animation: spin 60s linear infinite;
+    will-change: translate;
 }
 
 .bg-wheel {
