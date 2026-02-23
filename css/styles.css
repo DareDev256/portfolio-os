@@ -417,7 +417,7 @@ body::before {
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
-    z-index: 100;
+    z-index: 900; /* Above window ceiling (899), below modals (10000+) */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -975,7 +975,7 @@ body::before {
     padding: 12px 25px;
     display: flex;
     gap: 15px;
-    z-index: 100;
+    z-index: 900; /* Above window ceiling (899), below modals (10000+) */
     align-items: center;
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.4),

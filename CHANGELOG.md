@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.25.1
-last_updated: 2026-02-22
+version: 3.25.2
+last_updated: 2026-02-23
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-02-22
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.25.2] — 2026-02-23
+
+### Fixed
+- **Window z-index stacking overflow** — Windows no longer breach reserved UI tiers (top bar, dock, modals) during prolonged use. Added ceiling-bounded z-index management (`WINDOW_Z_CEILING = 899`) with automatic normalization that compacts all window z-indices back to base range while preserving relative stacking order. Raised top bar and dock to `z-index: 900` so they always render above windows. Added 2 tests for ceiling enforcement and order-preserving normalization.
 
 ---
 

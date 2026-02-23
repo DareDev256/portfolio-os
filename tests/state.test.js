@@ -20,6 +20,43 @@ describe('State.getNextZIndex()', () => {
         State.getNextZIndex();
         expect(State.maxZIndex).toBe(103);
     });
+
+    it('never exceeds WINDOW_Z_CEILING', () => {
+        // Push z-index right up to ceiling
+        State.currentZIndex = State.WINDOW_Z_CEILING - 1;
+        State.windows.clear();
+        const el = document.createElement('div');
+        el.style.zIndex = String(State.WINDOW_Z_CEILING - 1);
+        State.registerWindow('ceil-test', { id: 'ceil-test', element: el });
+
+        const z = State.getNextZIndex();
+        expect(z).toBeLessThanOrEqual(State.WINDOW_Z_CEILING);
+        State.unregisterWindow('ceil-test');
+    });
+
+    it('normalizes z-indices preserving stacking order', () => {
+        State.windows.clear();
+        const elA = document.createElement('div');
+        const elB = document.createElement('div');
+        elA.style.zIndex = '850';
+        elB.style.zIndex = '898';
+        State.registerWindow('a', { id: 'a', element: elA });
+        State.registerWindow('b', { id: 'b', element: elB });
+
+        // Force normalization by pushing past ceiling
+        State.currentZIndex = State.WINDOW_Z_CEILING;
+        State.getNextZIndex();
+
+        const zA = parseInt(elA.style.zIndex, 10);
+        const zB = parseInt(elB.style.zIndex, 10);
+        // A was lower → should still be lower after normalization
+        expect(zA).toBeLessThan(zB);
+        // Both should be back within range
+        expect(zA).toBeGreaterThanOrEqual(State.WINDOW_Z_FLOOR);
+        expect(zB).toBeLessThanOrEqual(State.WINDOW_Z_CEILING);
+        State.unregisterWindow('a');
+        State.unregisterWindow('b');
+    });
 });
 
 describe('State.setTheme()', () => {

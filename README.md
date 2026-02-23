@@ -4,8 +4,8 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.25.1-00f0ff?style=flat-square)
-![Tests](https://img.shields.io/badge/tests-229_passing-00e676?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.25.2-00f0ff?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-231_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-45-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
@@ -21,7 +21,7 @@ An interactive desktop environment that runs entirely in the browser. Draggable 
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> **45 ES modules** · **25 stylesheets** · **229 tests across 13 suites** · **20 desktop apps** · **10 security headers** · **0 runtime dependencies**
+> **45 ES modules** · **25 stylesheets** · **231 tests across 13 suites** · **20 desktop apps** · **10 security headers** · **0 runtime dependencies**
 
 ## Quick Start
 
@@ -40,7 +40,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 ### Desktop Environment
 
-- **Window Manager** — Drag, resize, minimize, maximize, z-index focus management. Animated open/close with glass shimmer effects.
+- **Window Manager** — Drag, resize, minimize, maximize, z-index focus management with ceiling-bounded normalization. Animated open/close with glass shimmer effects.
 - **20 Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column grid. Right-click context menus on each. Includes 3 external deployed-project links (Vibe Coder, IMG_GEN.ai, TypeMaster) and a curated Portfolio showcase.
 - **Purple Reign Showcase** — Opens with the "Amethyst Code" hero reveal — a metallic purple glitch effect that fractures and resolves to unveil the section title. Featured projects display as cinematic scroll-snap chapters with forcefield reveal, gilded gold shimmer on titles, staggered animations, dot navigation, and syntax-highlighted code snippets with copy-to-clipboard.
 - **Command Palette** — `Cmd+K` / `Ctrl+K` opens a Spotlight-style fuzzy-search launcher across all apps and system toggles.

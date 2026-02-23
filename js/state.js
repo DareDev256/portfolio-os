@@ -46,7 +46,10 @@ export const State = {
         if (event) this._emit(event, { enabled: this[prop] });
     },
 
-    // Z-index management
+    // Z-index management — windows live in [100, 899] to avoid breaching
+    // reserved UI tiers (top bar 900, Passion 900+, modals 10000+)
+    WINDOW_Z_FLOOR: 100,
+    WINDOW_Z_CEILING: 899,
     currentZIndex: 100,
     maxZIndex: 100,
 
@@ -196,14 +199,41 @@ export const State = {
     },
 
     /**
-     * Get next z-index
+     * Get next z-index for a window.
+     * Windows are capped at WINDOW_Z_CEILING (899) so they never overlap
+     * the top bar, dock (900), Passion widget, or modal layers (10000+).
+     * When the ceiling is hit, all window z-indices are compacted back down.
      */
     getNextZIndex() {
         this.currentZIndex++;
+        if (this.currentZIndex > this.WINDOW_Z_CEILING) {
+            this._normalizeZIndices();
+        }
         if (this.currentZIndex > this.maxZIndex) {
             this.maxZIndex = this.currentZIndex;
         }
         return this.currentZIndex;
+    },
+
+    /**
+     * Compact all window z-indices back to base range.
+     * Preserves relative stacking order so the topmost window stays on top.
+     */
+    _normalizeZIndices() {
+        const wins = Array.from(this.windows.values())
+            .filter(w => w.element)
+            .sort((a, b) => {
+                const za = parseInt(a.element.style.zIndex, 10) || 0;
+                const zb = parseInt(b.element.style.zIndex, 10) || 0;
+                return za - zb;
+            });
+        let z = this.WINDOW_Z_FLOOR;
+        for (const win of wins) {
+            z++;
+            win.element.style.zIndex = z;
+        }
+        this.currentZIndex = z;
+        this.maxZIndex = z;
     },
 
     /**
