@@ -508,7 +508,7 @@
 
 /* --- Dock Magnification (applied via JS) --- */
 .dock-magnify {
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.2s var(--ease-spring);
 }
 
 .dock-magnify:hover {

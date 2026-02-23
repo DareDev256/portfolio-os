@@ -903,7 +903,7 @@ body::before {
     box-shadow:
         0 4px 20px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s var(--ease-spring);
     margin-bottom: 8px;
     position: relative;
 }
@@ -1044,7 +1044,7 @@ body::before {
     justify-content: center;
     background: rgba(15, 10, 30, 0.3);
     border: 1px solid rgba(0, 240, 255, 0.1);
-    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all var(--duration-normal) var(--ease-spring);
     min-width: unset;
     max-width: unset;
     position: relative;

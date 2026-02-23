@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.25.2-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.26.0-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-231_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-45-b388ff?style=flat-square)
@@ -203,7 +203,7 @@ js/                                 # 41 ES modules, zero framework imports
 │   └── micro-interactions.js       # Hover/click micro-animations
 │
 css/                                # 21 modular stylesheets
-├── variables.css                   # Design tokens (colors, spacing, fonts)
+├── variables.css                   # Design tokens (colors, spacing, fonts, motion easing)
 ├── reset.css                       # Normalize + base resets
 ├── styles.css                      # Core layout, dock, desktop, icons
 ├── glass.css                       # Glassmorphism + backdrop-filter

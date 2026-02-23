@@ -150,7 +150,7 @@
    ============================================ */
 
 .window-materialize {
-    animation: materialize 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation: materialize 0.4s var(--ease-spring) forwards;
 }
 
 @keyframes materialize {
@@ -167,7 +167,7 @@
 }
 
 .window-dematerialize {
-    animation: dematerialize 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+    animation: dematerialize 0.3s var(--ease-snap) forwards;
 }
 
 @keyframes dematerialize {
@@ -189,11 +189,11 @@
 
 .button-press {
     transform: scale(0.95);
-    transition: transform 0.1s cubic-bezier(0.4, 0, 0.6, 1);
+    transition: transform var(--duration-instant) var(--ease-press);
 }
 
 .button-release {
-    animation: button-bounce 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: button-bounce 0.3s var(--ease-spring);
 }
 
 @keyframes button-bounce {
@@ -213,7 +213,7 @@
    ============================================ */
 
 .icon-morph {
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.3s var(--ease-spring);
 }
 
 .icon-morph:hover {
@@ -308,7 +308,7 @@
 }
 
 .error-shake {
-    animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+    animation: shake 0.4s var(--ease-elastic);
 }
 
 @keyframes shake {
@@ -391,7 +391,7 @@
     background: rgba(0, 240, 255, 0.1);
     border: 1px solid rgba(0, 240, 255, 0.3);
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.2s var(--ease-spring);
     /* dock-idle-bounce removed for perf — dock already has hover magnify */
 }
 
@@ -418,7 +418,7 @@
 
 /* Dock icon click bounce */
 .dock-icon.bouncing {
-    animation: dock-click-bounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: dock-click-bounce var(--duration-dramatic) var(--ease-spring);
 }
 
 @keyframes dock-click-bounce {
@@ -506,7 +506,7 @@
 
 /* Window maximize animation */
 .window-maximize {
-    animation: window-expand 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation: window-expand var(--duration-slow) var(--ease-spring) forwards;
 }
 
 @keyframes window-expand {

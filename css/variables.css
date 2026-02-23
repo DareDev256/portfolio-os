@@ -69,11 +69,26 @@
     --z-lightbox: 1000;
     --z-login: 2000;
 
-    /* Transitions */
-    --transition-fast: 150ms ease;
-    --transition-medium: 250ms ease;
-    --transition-slow: 350ms ease;
-    --transition-bounce: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Motion Easing Functions — standalone curves, combinable with any duration */
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);   /* Bouncy overshoot — entrances, emphasis */
+    --ease-decel: cubic-bezier(0, 0, 0.2, 1);            /* Smooth arrival — elements entering view */
+    --ease-accel: cubic-bezier(0.4, 0, 1, 1);            /* Clean exit — elements leaving view */
+    --ease-snap: cubic-bezier(0.55, 0.085, 0.68, 0.53);  /* Quick mechanical snap — dismissals */
+    --ease-elastic: cubic-bezier(0.36, 0.07, 0.19, 0.97);/* Organic wobble — error shakes, alerts */
+    --ease-press: cubic-bezier(0.4, 0, 0.6, 1);          /* Tactile press — button down states */
+
+    /* Motion Durations */
+    --duration-instant: 100ms;
+    --duration-fast: 150ms;
+    --duration-normal: 250ms;
+    --duration-slow: 350ms;
+    --duration-dramatic: 600ms;
+
+    /* Transitions — shorthand combos (legacy-compatible) */
+    --transition-fast: var(--duration-fast) ease;
+    --transition-medium: var(--duration-normal) ease;
+    --transition-slow: var(--duration-slow) ease;
+    --transition-bounce: 0.3s var(--ease-spring);
 
     /* Common Glow Effects */
     --glow-cyan-sm: 0 0 10px rgba(0, 240, 255, 0.3);

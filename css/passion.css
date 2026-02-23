@@ -328,7 +328,7 @@
         0 8px 32px rgba(0, 0, 0, 0.4),
         0 0 20px rgba(0, 240, 255, 0.15);
     z-index: 850;
-    animation: passionToastIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: passionToastIn 0.4s var(--ease-spring);
     cursor: pointer;
     transition: opacity 0.3s ease, transform 0.3s ease;
 }

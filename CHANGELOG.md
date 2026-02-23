@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.25.2
+version: 3.26.0
 last_updated: 2026-02-23
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-02-23
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.26.0] — 2026-02-23
+
+### Changed
+- **Motion easing design tokens** — Extracted 6 semantic easing function tokens (`--ease-spring`, `--ease-decel`, `--ease-accel`, `--ease-snap`, `--ease-elastic`, `--ease-press`) and 5 duration tokens (`--duration-instant` through `--duration-dramatic`) into `variables.css`. Replaced 14 hardcoded `cubic-bezier()` values across 8 CSS files (`styles.css`, `interactions.css`, `glass.css`, `passion.css`, `welcome.css`, `command-palette.css`, `shortcuts-overlay.css`, `variables.css`) with token references. Existing `--transition-*` shorthands now compose from the new tokens for backward compatibility. Enables site-wide motion tuning from a single location.
 
 ---
 
