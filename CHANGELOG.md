@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.27.0
+version: 3.28.0
 last_updated: 2026-02-23
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-02-23
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.28.0] — 2026-02-23
+
+### Changed
+- **Data-driven init architecture** (`js/main.js`) — Refactored the 260-line monolithic `init()` function into a declarative, table-driven architecture. Visual module initialization (Aurora, Glyphs, AudioFX) now loops over a `VISUAL_MODULES` registry instead of 3 copy-pasted init/setEnabled/addEventListener blocks. Keyboard shortcuts use a `SHORTCUT_MAP` lookup table replacing 4 chained `if` statements. Control panel toggle wiring uses a `CONTROL_TOGGLES` config array that drives both DOM generation and event binding, eliminating 6 repeated `getElementById` calls. Extracted `recoverStyles()`, `initShortcuts()`, and `initControlPanel()` as focused single-responsibility functions. Adding a new visual module, shortcut, or settings toggle is now a one-line table entry — zero structural code changes required.
 
 ---
 
