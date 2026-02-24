@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.28.2
+version: 3.29.0
 last_updated: 2026-02-24
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-02-24
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.29.0] — 2026-02-24
+
+### Added
+- **Glimmer sweep hover effect** — Diagonal gold-to-amethyst light sweep triggered on hover for portfolio cards, project cards, portfolio links, and dock icons. Uses a `::after` pseudo-element with `skewX(-15deg)` diagonal gradient, GPU-composited `translateX` animation, and `ease-decel` fade-out on mouse-leave. Expanded project cards suppress the sweep to avoid visual conflict with lab notes. Reduced-motion users get a static soft overlay instead of animation.
 
 ---
 

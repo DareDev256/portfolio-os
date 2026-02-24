@@ -266,6 +266,71 @@
 }
 
 /* ============================================
+   GLIMMER SWEEP — Luxury Hover Effect
+   Diagonal gold-to-amethyst light sweep on
+   interactive elements. Triggered on hover,
+   fades out on mouse-leave.
+   ============================================ */
+
+@keyframes glimmer-sweep {
+    0% {
+        transform: translateX(-100%) skewX(-15deg);
+    }
+    100% {
+        transform: translateX(200%) skewX(-15deg);
+    }
+}
+
+/* Structural setup — position context + clip for sweep */
+.glimmer,
+.portfolio-card,
+.portfolio-link,
+.dock-icon {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Sweep pseudo-element — invisible at rest */
+.glimmer::after,
+.portfolio-card::after,
+.project-card::after,
+.portfolio-link::after,
+.dock-icon::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        105deg,
+        transparent 20%,
+        rgba(212, 175, 55, 0.06) 36%,
+        rgba(139, 92, 246, 0.09) 44%,
+        rgba(212, 175, 55, 0.12) 50%,
+        rgba(139, 92, 246, 0.06) 56%,
+        transparent 70%
+    );
+    transform: translateX(-100%) skewX(-15deg);
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity var(--duration-slow, 350ms) var(--ease-decel, cubic-bezier(0, 0, 0.2, 1));
+}
+
+/* Activate sweep on hover */
+.glimmer:hover::after,
+.portfolio-card:hover::after,
+.project-card:hover::after,
+.portfolio-link:hover::after,
+.dock-icon:hover::after {
+    opacity: 1;
+    animation: glimmer-sweep 0.8s var(--ease-decel, cubic-bezier(0, 0, 0.2, 1)) forwards;
+}
+
+/* Expanded project cards suppress the sweep to avoid visual conflict */
+.project-card--expanded::after {
+    display: none;
+}
+
+/* ============================================
    PERFORMANCE OPTIMIZATIONS
    ============================================ */
 
@@ -288,6 +353,16 @@
     .border-shimmer::before,
     .shimmer-text {
         animation: none !important;
+    }
+
+    .glimmer:hover::after,
+    .portfolio-card:hover::after,
+    .project-card:hover::after,
+    .portfolio-link:hover::after,
+    .dock-icon:hover::after {
+        animation: none !important;
+        opacity: 0.5;
+        transform: translateX(0) skewX(0deg);
     }
 }
 
