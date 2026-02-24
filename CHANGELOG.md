@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.28.0
-last_updated: 2026-02-23
+version: 3.28.1
+last_updated: 2026-02-24
 
 ---
 
@@ -15,6 +15,14 @@ last_updated: 2026-02-23
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.28.1] — 2026-02-24
+
+### Added
+- **Research doc: The Two-Week Boomerang** (`docs/research-cursor-poach-boomerang.md`) — Competitive intelligence analysis documenting how Cursor (Anysphere) poached Claude Code's lead engineer Boris Cherny and product manager Cat Wu, only for Anthropic to hire both back within fourteen days. Covers the "wrapper vs. platform" tension in AI tooling, the "80% of Anthropic's code is written by Claude" datapoint, and what the boomerang reveals about Claude Code's strategic weight. Includes sourced timeline table, market context, and implications for anyone building on top of model providers.
+- **README docs table** — Added entries for the Bloomberg Terminal analogy and the Cursor poach boomerang research documents.
 
 ---
 
