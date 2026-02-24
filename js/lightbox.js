@@ -376,8 +376,10 @@ export const Lightbox = {
     createYouTubeEmbed(id) {
         if (!id) return this._blockedEmbedPlaceholder('YouTube');
         const iframe = document.createElement('iframe');
-        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+        iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
         iframe.sandbox = 'allow-scripts allow-same-origin allow-presentation';
+        iframe.referrerPolicy = 'no-referrer';
+        iframe.loading = 'lazy';
         iframe.frameBorder = '0';
         iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
         iframe.allowFullscreen = true;
@@ -394,6 +396,8 @@ export const Lightbox = {
         const iframe = document.createElement('iframe');
         iframe.src = `https://player.vimeo.com/video/${id}?autoplay=1`;
         iframe.sandbox = 'allow-scripts allow-same-origin allow-presentation';
+        iframe.referrerPolicy = 'no-referrer';
+        iframe.loading = 'lazy';
         iframe.frameBorder = '0';
         iframe.allow = 'autoplay; fullscreen; picture-in-picture';
         iframe.allowFullscreen = true;

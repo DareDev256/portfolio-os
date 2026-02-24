@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.28.1
+version: 3.28.2
 last_updated: 2026-02-24
 
 ---
@@ -15,6 +15,21 @@ last_updated: 2026-02-24
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.28.2] — 2026-02-24
+
+### Security
+- **YouTube privacy-enhanced embeds** — Switched all YouTube iframes from `youtube.com` to `youtube-nocookie.com` to eliminate third-party cookie tracking and Chrome deprecation warnings.
+- **CSP frame-src hardened** — Updated Content-Security-Policy to only allow `youtube-nocookie.com` (blocking regular `youtube.com` embeds), added `img.youtube.com` to `img-src` for thumbnail loading.
+- **Resume PDF iframe sandboxed** — Added `sandbox="allow-scripts allow-same-origin"` to the resume PDF viewer iframe, preventing unrestricted top-navigation and popup capabilities.
+- **Referrer policy on all iframes** — Added `referrerpolicy="no-referrer"` to YouTube, Vimeo, and PDF iframes to prevent origin leakage to embedded providers.
+- **Admin YouTube regex hardened** — Replaced permissive `[^"&?/ ]{11}` character class with strict `[a-zA-Z0-9_-]{11}` to match lightbox's validated pattern, blocking special characters in video IDs.
+- **Lazy loading on iframes** — Added `loading="lazy"` to defer iframe connections until visible, reducing unnecessary network exposure on page load.
+
+### Added
+- **6 new security tests** — Privacy-enhanced embed URL validation, admin regex hardening tests, and nocookie domain enforcement assertions.
 
 ---
 

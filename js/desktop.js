@@ -1963,7 +1963,7 @@ export const Desktop = {
                     viewer.className = 'resume-viewer';
                     viewer.style.height = '100%';
                     viewer.innerHTML = `
-                        <iframe src="resume/resume.pdf" type="application/pdf" style="width:100%;height:100%;border:0"></iframe>
+                        <iframe src="resume/resume.pdf" type="application/pdf" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer" loading="lazy" style="width:100%;height:100%;border:0"></iframe>
                     `;
 
                     // Clear and append

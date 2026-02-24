@@ -639,8 +639,8 @@ export const Admin = {
                     const url = e.target.value;
                     const posterInput = card.querySelector('.media-poster');
 
-                    // Simple YouTube ID extraction
-                    const match = url.match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/);
+                    // YouTube ID extraction with strict 11-char alphanumeric validation
+                    const match = url.match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[&?/]|$)/);
 
                     if (match && match[1] && posterInput && !posterInput.value) {
                         posterInput.value = `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;

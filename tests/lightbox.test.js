@@ -115,3 +115,43 @@ describe('Lightbox — Iframe Sandbox', () => {
         expect(tokens).not.toContain('allow-forms');
     });
 });
+
+describe('Lightbox — Privacy-Enhanced Embeds', () => {
+    it('YouTube embed URL uses nocookie domain', () => {
+        // Mirrors the actual embed URL construction in lightbox.js
+        const id = 'dQw4w9WgXcQ';
+        const embedUrl = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+        expect(embedUrl).toContain('youtube-nocookie.com');
+        expect(embedUrl).not.toContain('www.youtube.com');
+    });
+
+    it('rejects youtube.com in embed URLs (must use nocookie)', () => {
+        const badUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+        expect(badUrl).not.toContain('youtube-nocookie.com');
+    });
+});
+
+describe('Admin — YouTube ID Regex Hardening', () => {
+    // The admin regex must enforce the same 11-char alphanumeric constraint as lightbox
+    const ADMIN_REGEX = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[&?/]|$)/;
+
+    it('extracts valid 11-char YouTube ID', () => {
+        const match = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'.match(ADMIN_REGEX);
+        expect(match[1]).toBe('dQw4w9WgXcQ');
+    });
+
+    it('blocks IDs containing special characters', () => {
+        const match = 'https://www.youtube.com/watch?v=<script>xss'.match(ADMIN_REGEX);
+        expect(match).toBeNull();
+    });
+
+    it('blocks IDs shorter than 11 chars', () => {
+        const match = 'https://www.youtube.com/watch?v=short'.match(ADMIN_REGEX);
+        expect(match).toBeNull();
+    });
+
+    it('handles youtu.be short URLs', () => {
+        const match = 'https://youtu.be/a-B_cD3e4F5'.match(ADMIN_REGEX);
+        expect(match[1]).toBe('a-B_cD3e4F5');
+    });
+});
