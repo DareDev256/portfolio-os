@@ -4,7 +4,7 @@
  * All other Passion UI components consume this module.
  */
 
-const API_URL = 'https://rather-surplus-environment-fcc.trycloudflare.com/api/public';
+const API_URL = 'https://passion-api.jamesdare.com/api/public';
 const CACHE_KEY = 'passion_live_cache';
 const POLL_INTERVAL = 30_000; // 30 seconds
 const FETCH_TIMEOUT = 5_000;  // 5 second abort
