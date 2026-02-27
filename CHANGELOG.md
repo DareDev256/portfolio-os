@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.29.0
-last_updated: 2026-02-24
+version: 3.30.0
+last_updated: 2026-02-27
 
 ---
 
@@ -15,6 +15,16 @@ last_updated: 2026-02-24
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.30.0] — 2026-02-27
+
+### Changed
+- **Data-driven DOM generation** — Extracted `openAbout()` skill badges (12 items), `openResume()` stat cards (4 items) and skill bars (4 items) from copy-pasted HTML blocks into declarative data arrays with `.map()` loops. Adding or removing entries is now a one-line table change.
+- **CSS custom property badges** — Replaced 12 inline-style skill badge divs in About with a single `.about-skill-badge` class using `--badge-color` custom property and `color-mix()` for dynamic background/border tinting.
+- **Application showcase semantic CSS** — Replaced inline `style.cssText` category headers with `.app-category-header` class using `--cat-color` custom property. Replaced inline badge/button styles with `.app-status-badge--live`, `.app-status-badge--source`, and `.app-launch-btn--live` classes.
+- **About window structure** — Extracted inline styles into semantic CSS classes (`.about-identity`, `.about-bio`, `.about-skills-grid`, `.about-skill-badge`, `.about-label`, `.text-cyan`).
 
 ---
 

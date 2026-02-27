@@ -476,14 +476,40 @@
 
 .app-status-badge {
     display: inline-block;
-    background: rgba(255, 170, 0, 0.2);
-    border: 1px solid rgba(255, 170, 0, 0.5);
-    color: #ffaa00;
     padding: 2px 6px;
-    font-size: 8px;
+    font-size: 9px;
     letter-spacing: 1px;
-    margin-top: 6px;
-    border-radius: 2px;
+    margin-top: 4px;
+    border-radius: 3px;
+}
+.app-status-badge--live {
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    background: rgba(0, 255, 136, 0.06);
+}
+.app-status-badge--source {
+    border: 1px solid #00f0ff;
+    color: #00f0ff;
+    background: rgba(0, 240, 255, 0.06);
+}
+
+/* Application showcase — category header */
+.app-category-header {
+    color: var(--cat-color, #00f0ff);
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin: 20px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid color-mix(in srgb, var(--cat-color, #00f0ff) 20%, transparent);
+    text-transform: uppercase;
+}
+
+/* Live-deploy variant for launch buttons */
+.app-launch-btn--live {
+    background: rgba(0, 255, 136, 0.1) !important;
+    border-color: rgba(0, 255, 136, 0.27) !important;
+    color: #00ff88 !important;
 }
 
 .project-card {
@@ -709,8 +735,51 @@
     font-size: 12px;
 }
 
-.about-content span.label {
+.about-content span.label,
+.about-label {
     color: var(--neon-purple);
+}
+.about-alias {
+    color: rgba(255, 255, 255, 0.4);
+}
+.about-identity {
+    line-height: 2;
+    font-size: 12px;
+}
+.about-bio {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(170, 0, 255, 0.2);
+}
+.about-bio p {
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+}
+.text-cyan {
+    color: var(--neon-cyan);
+}
+.about-skills-section {
+    margin-top: 20px;
+}
+.about-skills-heading {
+    color: var(--neon-purple);
+    font-size: 13px;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+.about-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+.about-skill-badge {
+    background: color-mix(in srgb, var(--badge-color) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--badge-color) 25%, transparent);
+    padding: 8px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--badge-color);
 }
 
 /* View Mode Controls */

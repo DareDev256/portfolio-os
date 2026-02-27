@@ -1634,7 +1634,8 @@ export const Desktop = {
         categories.forEach((category) => {
             // Category header
             const catHeader = document.createElement('div');
-            catHeader.style.cssText = `color:${category.color}; font-size:12px; letter-spacing:2px; font-weight:700; margin:20px 0 10px; padding-bottom:6px; border-bottom:1px solid ${category.color}33; text-transform:uppercase;`;
+            catHeader.className = 'app-category-header';
+            catHeader.style.setProperty('--cat-color', category.color);
             catHeader.textContent = `\u25B8 ${category.name}`;
             appList.appendChild(catHeader);
 
@@ -1643,24 +1644,19 @@ export const Desktop = {
                 appItem.className = 'app-item';
 
                 const isLive = app.status === 'live';
-                const badgeColor = isLive ? '#00ff88' : '#00f0ff';
-                const badgeText = isLive ? 'DEPLOYED' : 'SOURCE';
+                const badgeClass = isLive ? 'app-status-badge--live' : 'app-status-badge--source';
 
                 const appInfo = document.createElement('div');
                 appInfo.className = 'app-item-info';
                 appInfo.innerHTML = `
                     <div class="app-item-name">${Sanitize.text(app.name)}</div>
                     <div class="app-item-desc">${Sanitize.text(app.desc)}</div>
-                    <span style="display:inline-block; font-size:9px; letter-spacing:1px; padding:2px 6px; border:1px solid ${badgeColor}; color:${badgeColor}; background:${badgeColor}15; border-radius:3px; margin-top:4px;">${badgeText}</span>
+                    <span class="app-status-badge ${badgeClass}">${isLive ? 'DEPLOYED' : 'SOURCE'}</span>
                 `;
 
                 const launchBtn = document.createElement('button');
+                launchBtn.className = isLive ? 'app-launch-btn--live' : '';
                 launchBtn.textContent = isLive ? 'LAUNCH' : 'VIEW';
-                if (isLive) {
-                    launchBtn.style.background = 'rgba(0,255,136,0.1)';
-                    launchBtn.style.borderColor = '#00ff8844';
-                    launchBtn.style.color = '#00ff88';
-                }
                 launchBtn.addEventListener('click', () => {
                     if (app.link) openExternal(app.link);
                 });
@@ -1837,11 +1833,23 @@ export const Desktop = {
      * Open Resume window (Small Card View)
      */
     openResume() {
+        const RESUME_STATS = [
+            { icon: '📅', target: 5,   label: 'Years Experience' },
+            { icon: '💼', target: 50,  label: 'Projects Completed' },
+            { icon: '⭐', target: 15,  label: 'Key Skills' },
+            { icon: '🏆', target: 100, label: 'Commits This Month' },
+        ];
+        const CORE_SKILLS = [
+            { name: 'JavaScript / TypeScript', pct: 95 },
+            { name: 'React / Vue / Svelte',    pct: 90 },
+            { name: 'Node.js / Python',         pct: 85 },
+            { name: 'UI/UX Design',             pct: 80 },
+        ];
+
         const content = document.createElement('div');
         content.className = 'resume-dashboard';
 
         content.innerHTML = `
-            <!-- Header -->
             <div class="resume-header">
                 <div class="resume-avatar">DD</div>
                 <div class="resume-title">
@@ -1849,75 +1857,26 @@ export const Desktop = {
                     <p>Full Stack Developer • Creative Technologist</p>
                 </div>
             </div>
-
-            <!-- Stats Grid -->
             <div class="resume-stats-grid">
-                <div class="resume-stat-card">
-                    <div class="stat-icon">📅</div>
-                    <div class="stat-value" data-target="5">0</div>
-                    <div class="stat-label">Years Experience</div>
-                </div>
-                <div class="resume-stat-card">
-                    <div class="stat-icon">💼</div>
-                    <div class="stat-value" data-target="50">0</div>
-                    <div class="stat-label">Projects Completed</div>
-                </div>
-                <div class="resume-stat-card">
-                    <div class="stat-icon">⭐</div>
-                    <div class="stat-value" data-target="15">0</div>
-                    <div class="stat-label">Key Skills</div>
-                </div>
-                <div class="resume-stat-card">
-                    <div class="stat-icon">🏆</div>
-                    <div class="stat-value" data-target="100">0</div>
-                    <div class="stat-label">Commits This Month</div>
-                </div>
+                ${RESUME_STATS.map(s => `
+                    <div class="resume-stat-card">
+                        <div class="stat-icon">${s.icon}</div>
+                        <div class="stat-value" data-target="${s.target}">0</div>
+                        <div class="stat-label">${Sanitize.text(s.label)}</div>
+                    </div>
+                `).join('')}
             </div>
-
-            <!-- Skills Breakdown -->
             <div class="resume-skills">
                 <h3>CORE COMPETENCIES</h3>
                 <div class="skill-bars">
-                    <div class="skill-bar">
-                        <div class="skill-info">
-                            <span>JavaScript / TypeScript</span>
-                            <span>95%</span>
+                    ${CORE_SKILLS.map(s => `
+                        <div class="skill-bar">
+                            <div class="skill-info"><span>${Sanitize.text(s.name)}</span><span>${s.pct}%</span></div>
+                            <div class="skill-progress"><div class="skill-fill" style="width:${s.pct}%"></div></div>
                         </div>
-                        <div class="skill-progress">
-                            <div class="skill-fill" style="width: 95%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-info">
-                            <span>React / Vue / Svelte</span>
-                            <span>90%</span>
-                        </div>
-                        <div class="skill-progress">
-                            <div class="skill-fill" style="width: 90%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-info">
-                            <span>Node.js / Python</span>
-                            <span>85%</span>
-                        </div>
-                        <div class="skill-progress">
-                            <div class="skill-fill" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-info">
-                            <span>UI/UX Design</span>
-                            <span>80%</span>
-                        </div>
-                        <div class="skill-progress">
-                            <div class="skill-fill" style="width: 80%"></div>
-                        </div>
-                    </div>
+                    `).join('')}
                 </div>
             </div>
-
-            <!-- Actions -->
             <div class="resume-actions">
                 <button class="cyber-button" id="viewResumeBtn">📄 VIEW FULL RESUME</button>
                 <a href="resume/resume.pdf" download class="cyber-button secondary">⬇ DOWNLOAD PDF</a>
@@ -1984,45 +1943,49 @@ export const Desktop = {
      * Open About window
      */
     openAbout() {
+        const ABOUT_SKILLS = [
+            { name: 'Python',          color: '#00f0ff' },
+            { name: 'TypeScript',      color: '#00f0ff' },
+            { name: 'JavaScript',      color: '#00f0ff' },
+            { name: 'LLM / RAG',      color: '#aa00ff' },
+            { name: 'AI Agents',       color: '#aa00ff' },
+            { name: 'MCP Protocol',    color: '#aa00ff' },
+            { name: 'React / Next.js', color: '#00ff88' },
+            { name: 'Node.js',         color: '#00ff88' },
+            { name: 'Three.js / WebGL', color: '#00ff88' },
+            { name: 'Supabase / SQL',  color: '#ffaa00' },
+            { name: 'Git / CI-CD',     color: '#ffaa00' },
+            { name: 'Vercel / Cloud',  color: '#ffaa00' },
+        ];
+
         const content = document.createElement('div');
         content.className = 'about-content';
 
         content.innerHTML = `
             <div class="window-section-header purple">◈ ABOUT_ME.exe</div>
-            <div style="line-height: 2; font-size: 12px;">
-                <div><span style="color: #aa00ff;">NAME:</span> James Olusoga <span style="color: rgba(255,255,255,0.4);">(DareDev256)</span></div>
-                <div><span style="color: #aa00ff;">ROLE:</span> AI Solutions Engineer &bull; Creative Technologist <span class="verified-badge">✓ SYSTEM VERIFIED</span></div>
-                <div><span style="color: #aa00ff;">LOCATION:</span> Toronto, Canada</div>
-                <div><span style="color: #aa00ff;">STATUS:</span> Always shipping</div>
+            <div class="about-identity">
+                <div><span class="about-label">NAME:</span> James Olusoga <span class="about-alias">(DareDev256)</span></div>
+                <div><span class="about-label">ROLE:</span> AI Solutions Engineer &bull; Creative Technologist <span class="verified-badge">✓ SYSTEM VERIFIED</span></div>
+                <div><span class="about-label">LOCATION:</span> Toronto, Canada</div>
+                <div><span class="about-label">STATUS:</span> Always shipping</div>
             </div>
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(170,0,255,0.2);">
-                <p style="line-height: 1.8; color: rgba(255,255,255,0.7); font-size: 12px;">
+            <div class="about-bio">
+                <p>
                     I build autonomous AI systems that work while I sleep. My flagship project,
-                    <span style="color: #00f0ff;">Passion Agent</span>, is a 24/7 autonomous code improvement system
+                    <span class="text-cyan">Passion Agent</span>, is a 24/7 autonomous code improvement system
                     that analyzes repositories, generates improvements via Claude Code, and submits PRs &mdash;
                     learning from what I merge vs reject to get smarter over time.
                 </p>
-                <p style="line-height: 1.8; color: rgba(255,255,255,0.7); font-size: 12px;">
-                    I specialize in <span style="color: #00f0ff;">agentic AI workflows</span>, RAG systems with citations,
+                <p>
+                    I specialize in <span class="text-cyan">agentic AI workflows</span>, RAG systems with citations,
                     MCP server development, and full-stack engineering. This portfolio itself is a cyberpunk OS
                     built with zero frameworks &mdash; pure vanilla JS, Three.js for 3D, and hand-crafted CSS.
                 </p>
             </div>
-            <div style="margin-top: 20px;">
-                <h3 style="color: #aa00ff; font-size: 13px; margin-bottom: 15px; letter-spacing: 1px;">SKILLS & TECHNOLOGIES</h3>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                    <div style="background: rgba(0,240,255,0.08); border: 1px solid rgba(0,240,255,0.25); padding: 8px; text-align: center; font-size: 11px; color: #00f0ff;">Python</div>
-                    <div style="background: rgba(0,240,255,0.08); border: 1px solid rgba(0,240,255,0.25); padding: 8px; text-align: center; font-size: 11px; color: #00f0ff;">TypeScript</div>
-                    <div style="background: rgba(0,240,255,0.08); border: 1px solid rgba(0,240,255,0.25); padding: 8px; text-align: center; font-size: 11px; color: #00f0ff;">JavaScript</div>
-                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">LLM / RAG</div>
-                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">AI Agents</div>
-                    <div style="background: rgba(170,0,255,0.1); border: 1px solid rgba(170,0,255,0.3); padding: 8px; text-align: center; font-size: 11px; color: #aa00ff;">MCP Protocol</div>
-                    <div style="background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.25); padding: 8px; text-align: center; font-size: 11px; color: #00ff88;">React / Next.js</div>
-                    <div style="background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.25); padding: 8px; text-align: center; font-size: 11px; color: #00ff88;">Node.js</div>
-                    <div style="background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.25); padding: 8px; text-align: center; font-size: 11px; color: #00ff88;">Three.js / WebGL</div>
-                    <div style="background: rgba(255,170,0,0.08); border: 1px solid rgba(255,170,0,0.25); padding: 8px; text-align: center; font-size: 11px; color: #ffaa00;">Supabase / SQL</div>
-                    <div style="background: rgba(255,170,0,0.08); border: 1px solid rgba(255,170,0,0.25); padding: 8px; text-align: center; font-size: 11px; color: #ffaa00;">Git / CI-CD</div>
-                    <div style="background: rgba(255,170,0,0.08); border: 1px solid rgba(255,170,0,0.25); padding: 8px; text-align: center; font-size: 11px; color: #ffaa00;">Vercel / Cloud</div>
+            <div class="about-skills-section">
+                <h3 class="about-skills-heading">SKILLS & TECHNOLOGIES</h3>
+                <div class="about-skills-grid">
+                    ${ABOUT_SKILLS.map(s => `<div class="about-skill-badge" style="--badge-color:${s.color}">${Sanitize.text(s.name)}</div>`).join('')}
                 </div>
             </div>
         `;
