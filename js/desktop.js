@@ -2545,15 +2545,14 @@ export const Desktop = {
 
             <div class="services-cta">
                 <div class="services-cta-text">Ready to build something?</div>
-                <button class="cyber-button services-cta-btn" onclick="document.dispatchEvent(new CustomEvent('open-contact'))">
+                <a href="mailto:tdotssolutionsz@gmail.com?subject=Service%20Inquiry%20from%20jamesdare.com" class="cyber-button services-cta-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
                     <span>GET IN TOUCH</span>
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                </button>
+                </a>
             </div>
         `;
 
-        // Wire up CTA button to open contact window
-        document.addEventListener('open-contact', () => Desktop.openContact(), { once: true });
+        // CTA links directly to mailto — no extra window needed
 
         // Direct visits (/services) get a large, centered window
         const isDirectVisit = window.location.pathname === '/services';
