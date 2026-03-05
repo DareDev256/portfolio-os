@@ -2395,6 +2395,175 @@ export const Desktop = {
     },
 
     /**
+     * Open Services window (hidden route — no desktop icon)
+     * Accessed via jamesdare.com/services
+     */
+    openServices() {
+        const SERVICES = [
+            {
+                title: 'WEBSITE DESIGN & DEVELOPMENT',
+                icon: '◈',
+                color: '#00f0ff',
+                description: 'Custom-built websites tailored to your brand. From single-page landing sites to full multi-page experiences — designed for speed, mobile responsiveness, and conversion.',
+                features: [
+                    'Custom design from scratch (no templates)',
+                    'Mobile-first responsive development',
+                    'SEO-optimized structure & metadata',
+                    'Performance-tuned (90+ Lighthouse scores)',
+                    'Hosted & deployed on Vercel',
+                ],
+                price: '$500 – $1,500',
+                priceNote: 'one-time',
+            },
+            {
+                title: 'E-COMMERCE & ONLINE STORES',
+                icon: '⬡',
+                color: '#ff00aa',
+                description: 'Full online store setup with product pages, shopping cart, checkout, and payment processing. Built on modern frameworks for speed and reliability.',
+                features: [
+                    'Product catalog & inventory management',
+                    'Stripe / payment gateway integration',
+                    'Order management & notifications',
+                    'Mobile-optimized shopping experience',
+                    'Analytics & conversion tracking',
+                ],
+                price: '$1,500 – $3,000',
+                priceNote: 'one-time',
+            },
+            {
+                title: 'BRANDING & VISUAL IDENTITY',
+                icon: '◉',
+                color: '#aa00ff',
+                description: 'Logo design, color palettes, typography, and brand guidelines. Everything you need to look professional and consistent across all platforms.',
+                features: [
+                    'Logo design (3 concepts, unlimited revisions)',
+                    'Color palette & typography selection',
+                    'Brand style guide document',
+                    'Social media assets & templates',
+                    'Business card & letterhead design',
+                ],
+                price: '$300 – $800',
+                priceNote: 'one-time',
+            },
+            {
+                title: 'AI & AUTOMATION SOLUTIONS',
+                icon: '⟁',
+                color: '#00ff88',
+                description: 'Custom AI integrations, chatbots, workflow automation, and intelligent systems. Leverage cutting-edge AI to streamline your business operations.',
+                features: [
+                    'AI chatbots & customer support agents',
+                    'Workflow automation (Zapier, custom scripts)',
+                    'Content generation pipelines',
+                    'Data processing & analysis tools',
+                    'API integrations & custom tooling',
+                ],
+                price: 'Custom quote',
+                priceNote: 'project-based',
+            },
+        ];
+
+        const RETAINERS = [
+            {
+                tier: 'ESSENTIALS',
+                color: '#00f0ff',
+                price: '$50',
+                period: '/mo',
+                features: [
+                    'Hosting & domain management',
+                    'SSL & security monitoring',
+                    'Professional email setup',
+                    '2 content updates per month',
+                    'Uptime monitoring & backups',
+                ],
+            },
+            {
+                tier: 'GROWTH',
+                color: '#d4af37',
+                price: '$150',
+                period: '/mo',
+                features: [
+                    'Everything in Essentials',
+                    'SEO optimization & reporting',
+                    'Analytics dashboard access',
+                    'Unlimited content updates',
+                    'Priority support (24h response)',
+                    'Monthly performance report',
+                ],
+            },
+        ];
+
+        const content = document.createElement('div');
+        content.className = 'services-content';
+
+        content.innerHTML = `
+            <div class="services-hero">
+                <div class="services-hero-label">TDOT SOLUTIONS</div>
+                <h1 class="services-hero-title">WEB DESIGN &<br>DIGITAL SERVICES</h1>
+                <p class="services-hero-sub">Custom websites, e-commerce, branding, and AI solutions.<br>Built by an engineer, designed for results.</p>
+            </div>
+
+            <div class="window-section-header purple" style="margin-top: 30px;">◈ SERVICES</div>
+
+            <div class="services-grid">
+                ${SERVICES.map(s => `
+                    <div class="service-card" style="--card-color: ${s.color}">
+                        <div class="service-card-header">
+                            <span class="service-card-icon" style="color: ${s.color}">${s.icon}</span>
+                            <h3 class="service-card-title">${Sanitize.text(s.title)}</h3>
+                        </div>
+                        <p class="service-card-desc">${Sanitize.text(s.description)}</p>
+                        <ul class="service-card-features">
+                            ${s.features.map(f => `<li>${Sanitize.text(f)}</li>`).join('')}
+                        </ul>
+                        <div class="service-card-price">
+                            <span class="service-price-amount">${Sanitize.text(s.price)}</span>
+                            <span class="service-price-note">${Sanitize.text(s.priceNote)}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="window-section-header green" style="margin-top: 35px;">◈ MONTHLY RETAINERS</div>
+            <p class="services-retainer-intro">Keep your site running, updated, and growing — without the hassle.</p>
+
+            <div class="retainer-grid">
+                ${RETAINERS.map(r => `
+                    <div class="retainer-card" style="--card-color: ${r.color}">
+                        <div class="retainer-tier">${Sanitize.text(r.tier)}</div>
+                        <div class="retainer-price">
+                            <span class="retainer-price-amount">${Sanitize.text(r.price)}</span>
+                            <span class="retainer-price-period">${Sanitize.text(r.period)}</span>
+                        </div>
+                        <ul class="retainer-features">
+                            ${r.features.map(f => `<li>${Sanitize.text(f)}</li>`).join('')}
+                        </ul>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="services-cta">
+                <div class="services-cta-text">Ready to build something?</div>
+                <button class="cyber-button services-cta-btn" onclick="document.dispatchEvent(new CustomEvent('open-contact'))">
+                    <span>GET IN TOUCH</span>
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </div>
+        `;
+
+        // Wire up CTA button to open contact window
+        document.addEventListener('open-contact', () => Desktop.openContact(), { once: true });
+
+        WindowManager.create({
+            id: 'services',
+            title: 'SERVICES.exe — TDot Solutions',
+            icon: '◈',
+            content,
+            width: 750,
+            height: 700,
+        });
+    },
+
+    /**
      * Play Startup Sound (Web Audio API)
      */
     playStartupSound() {

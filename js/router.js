@@ -17,6 +17,7 @@ export const Router = {
         '/settings': () => Desktop.openSettings(),
         '/resume': () => Desktop.openResume(),
         '/terminal': () => Desktop.openShell(),
+        '/services': () => Desktop.openServices(),
     },
 
     /**
