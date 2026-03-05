@@ -1,5 +1,5 @@
 // Service Worker (F) – simple pre-cache + runtime cache for images
-const CACHE_NAME = 'portfolio-os-v2';
+const CACHE_NAME = 'portfolio-os-v3';
 const PRECACHE = [
     '/',
     '/index.html',
