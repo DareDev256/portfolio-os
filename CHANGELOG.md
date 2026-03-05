@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.31.1
+version: 3.32.0
 last_updated: 2026-03-05
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-05
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.32.0] — 2026-03-05
+
+### Added
+- **Opulent Interface micro-interactions** — Elevated `.reign-link` and `.portfolio-link` CTA buttons with luxury hover treatment: embossed inset shadows for tactile depth, animated gold border trace via `clip-path` transition on `.reign-link::before`, letter-spacing breathe effect (1.2px → 2.5px) using a refined `cubic-bezier(0.645, 0.045, 0.355, 1)` timing curve, and coordinated text-shadow/box-shadow glow on hover. Active state adds a pressed-in feel with deeper inset shadows and subtle downward translate. All effects respect `prefers-reduced-motion`.
 
 ---
 

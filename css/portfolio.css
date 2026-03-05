@@ -83,14 +83,26 @@
     color: var(--card-accent, #00f0ff);
     background: transparent;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    transition:
+        background 0.35s cubic-bezier(0.645, 0.045, 0.355, 1),
+        color 0.35s cubic-bezier(0.645, 0.045, 0.355, 1),
+        letter-spacing 0.4s cubic-bezier(0.645, 0.045, 0.355, 1),
+        box-shadow 0.35s cubic-bezier(0.645, 0.045, 0.355, 1),
+        text-shadow 0.35s ease-out;
     text-decoration: none;
     text-transform: uppercase;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
 .portfolio-link:hover {
     background: var(--card-accent, #00f0ff);
     color: #0a0a0f;
+    letter-spacing: 2px;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+        0 0 18px var(--card-glow, rgba(0, 240, 255, 0.25));
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .portfolio-link--live {
@@ -102,6 +114,10 @@
 .portfolio-link--live:hover {
     background: #00ff88;
     color: #0a0a0f;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+        0 0 18px rgba(0, 255, 136, 0.25);
 }
 
 
@@ -342,14 +358,56 @@
     color: var(--reign-accent, #8b5cf6);
     background: transparent;
     cursor: pointer;
-    transition: background 0.3s ease-out, color 0.3s ease-out, box-shadow 0.3s ease-out;
+    transition:
+        background 0.35s cubic-bezier(0.645, 0.045, 0.355, 1),
+        color 0.35s cubic-bezier(0.645, 0.045, 0.355, 1),
+        letter-spacing 0.4s cubic-bezier(0.645, 0.045, 0.355, 1),
+        box-shadow 0.35s cubic-bezier(0.645, 0.045, 0.355, 1),
+        border-color 0.35s cubic-bezier(0.645, 0.045, 0.355, 1),
+        text-shadow 0.35s ease-out;
     text-transform: uppercase;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+/* Gold border trace — draws itself on hover */
+.reign-link::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border: 1px solid var(--gold, #d4af37);
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    transition:
+        clip-path 0.5s cubic-bezier(0.645, 0.045, 0.355, 1),
+        opacity 0.3s ease-out;
+    pointer-events: none;
+}
+
+.reign-link:hover::before {
+    opacity: 0.6;
+    clip-path: inset(0 0 0 0);
 }
 
 .reign-link:hover {
     background: var(--reign-accent, #8b5cf6);
     color: #0a0a0f;
-    box-shadow: 0 0 20px var(--reign-glow, rgba(139, 92, 246, 0.3));
+    letter-spacing: 2.5px;
+    border-color: transparent;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+        0 0 22px var(--reign-glow, rgba(139, 92, 246, 0.35)),
+        0 0 6px rgba(212, 175, 55, 0.12);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.reign-link:active {
+    box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.4),
+        0 0 12px var(--reign-glow, rgba(139, 92, 246, 0.2));
+    transform: translateY(1px);
+    transition-duration: 0.08s;
 }
 
 .reign-link--live {
@@ -357,10 +415,18 @@
     color: var(--gold, #d4af37);
 }
 
+.reign-link--live::before {
+    border-color: var(--amethyst, #8b5cf6);
+}
+
 .reign-link--live:hover {
     background: var(--gold, #d4af37);
     color: var(--cyber-bg, #0a0a0f);
-    box-shadow: var(--glow-gold-md, 0 0 20px rgba(212, 175, 55, 0.3));
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+        0 0 22px rgba(212, 175, 55, 0.35),
+        0 0 6px rgba(139, 92, 246, 0.12);
 }
 
 /* ─── Forcefield Reveal ─── */
@@ -482,4 +548,21 @@
     align-items: center;
     justify-content: center;
     padding: 30px;
+}
+
+/* ─── Opulent Interface: Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+    .portfolio-link,
+    .reign-link {
+        transition-duration: 0s !important;
+    }
+    .reign-link::before {
+        transition: none !important;
+    }
+    .reign-link:hover {
+        letter-spacing: 1.2px;
+    }
+    .portfolio-link:hover {
+        letter-spacing: 1px;
+    }
 }
