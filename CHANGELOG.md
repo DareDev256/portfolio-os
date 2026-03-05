@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.31.0
-last_updated: 2026-03-04
+version: 3.31.1
+last_updated: 2026-03-05
 
 ---
 
@@ -15,6 +15,15 @@ last_updated: 2026-03-04
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.31.1] — 2026-03-05
+
+### Security
+- **Fetch timeout hardening** — Added `fetchWithTimeout` utility (AbortController-based, 8s default) to `dom-helpers.js`. Applied to GitHub API (3 parallel requests), Weather API, and DataLoader fetches. Prevents indefinitely frozen interfaces when external APIs are slow or unreachable.
+- **CSP tightening** — Removed stale `https://*.trycloudflare.com` wildcard from `connect-src` directive in `vercel.json`. This wildcard allowed any trycloudflare subdomain as a valid connect target — a potential data exfiltration vector. Only `passion-api.jamesdare.com` is now permitted.
+- **Consistent sanitization** — Replaced raw `innerHTML` in GitHub error render path with `Sanitize.setHTML()` for defense-in-depth consistency.
 
 ---
 

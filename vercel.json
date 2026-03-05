@@ -11,7 +11,7 @@
             "headers": [
                 {
                     "key": "Content-Security-Policy",
-                    "value": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://avatars.githubusercontent.com https://raw.githubusercontent.com https://fonts.gstatic.com https://img.youtube.com data:; connect-src 'self' https://api.github.com https://api.open-meteo.com https://passion-api.jamesdare.com https://*.trycloudflare.com; frame-src 'self' https://www.youtube-nocookie.com https://player.vimeo.com; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+                    "value": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://avatars.githubusercontent.com https://raw.githubusercontent.com https://fonts.gstatic.com https://img.youtube.com data:; connect-src 'self' https://api.github.com https://api.open-meteo.com https://passion-api.jamesdare.com; frame-src 'self' https://www.youtube-nocookie.com https://player.vimeo.com; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
                 },
                 {
                     "key": "X-Frame-Options",

@@ -1,4 +1,4 @@
-import { el } from './dom-helpers.js';
+import { el, fetchWithTimeout } from './dom-helpers.js';
 
 /**
  * Weather Widget — Live weather display for Passion OS.
@@ -43,7 +43,7 @@ async function fetchWeather(lat, lon) {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
         '&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m' +
         '&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto&forecast_days=3';
-    const res = await fetch(url);
+    const res = await fetchWithTimeout(url, { timeout: 8000 });
     if (!res.ok) throw new Error(`Weather API: ${res.status}`);
     const data = await res.json();
     if (!validateWeatherData(data)) throw new Error('Unexpected API response shape');

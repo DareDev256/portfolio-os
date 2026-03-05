@@ -3,6 +3,30 @@
  * Centralizes duplicated patterns across desktop.js, github.js, and others.
  */
 
+/** Default fetch timeout — prevents indefinitely hanging requests from freezing the UI */
+const DEFAULT_FETCH_TIMEOUT = 8_000; // 8 seconds
+
+/**
+ * Fetch with automatic AbortController timeout.
+ * Prevents frozen interfaces when APIs are slow or unreachable.
+ * Wraps native fetch — drop-in replacement with timeout protection.
+ * @param {string|Request} input - URL or Request
+ * @param {RequestInit & { timeout?: number }} init - fetch options + optional timeout (ms)
+ * @returns {Promise<Response>}
+ */
+export function fetchWithTimeout(input, init = {}) {
+    const { timeout = DEFAULT_FETCH_TIMEOUT, signal: externalSignal, ...rest } = init;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeout);
+
+    // If caller also passes an AbortSignal, respect it
+    if (externalSignal) {
+        externalSignal.addEventListener('abort', () => controller.abort(), { once: true });
+    }
+
+    return fetch(input, { ...rest, signal: controller.signal }).finally(() => clearTimeout(timer));
+}
+
 /**
  * Safely parse a JSON value from localStorage.
  * Replaces 6 inconsistent try/catch patterns scattered across the codebase.

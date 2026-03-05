@@ -3,7 +3,7 @@
  * Handles live data fetching from GitHub API and rendering the dashboard.
  */
 import { Sanitize } from './sanitize.js';
-import { openExternal, animateCounter, loadJSON, saveJSON } from './dom-helpers.js';
+import { openExternal, animateCounter, loadJSON, saveJSON, fetchWithTimeout } from './dom-helpers.js';
 
 export const GitHub = {
     username: 'DareDev256',
@@ -120,7 +120,7 @@ export const GitHub = {
 
         try {
             const safeFetch = async (url) => {
-                const r = await fetch(url);
+                const r = await fetchWithTimeout(url, { timeout: 8000 });
                 if (!r.ok) throw new Error(`HTTP ${r.status}`);
                 return r.json();
             };
@@ -290,7 +290,7 @@ export const GitHub = {
         } catch (_err) {
             const errorDiv = document.createElement('div');
             errorDiv.className = 'error-state';
-            errorDiv.innerHTML = '<h3>CONNECTION FAILED</h3><p>UPLINK OFFLINE. RETRYING PROXY...</p>';
+            Sanitize.setHTML(errorDiv, '<h3>CONNECTION FAILED</h3><p>UPLINK OFFLINE. RETRYING PROXY...</p>');
             const retryBtn = document.createElement('button');
             retryBtn.className = 'cyber-button';
             retryBtn.textContent = 'RETRY';

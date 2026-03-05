@@ -26,7 +26,7 @@ describe('loadData()', () => {
         });
         const result = await loadData('test.json', []);
         expect(result).toEqual(payload);
-        expect(fetch).toHaveBeenCalledWith('data/test.json');
+        expect(fetch).toHaveBeenCalledWith('data/test.json', expect.objectContaining({ signal: expect.any(AbortSignal) }));
     });
 
     it('returns fallback when fetch fails', async () => {

@@ -4,6 +4,7 @@
  * Eliminates duplicated fetch-or-override logic scattered across desktop.js and admin.js.
  */
 import { Sanitize } from './sanitize.js';
+import { fetchWithTimeout } from './dom-helpers.js';
 
 /** @type {Map<string, Promise<any>>} */
 const cache = new Map();
@@ -37,7 +38,7 @@ async function _fetchData(key, fallback) {
         const override = localStorage.getItem(safeKey);
         if (override) return JSON.parse(override);
 
-        const res = await fetch(`data/${safeKey}`);
+        const res = await fetchWithTimeout(`data/${safeKey}`, { timeout: 5000 });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return await res.json();
     } catch (e) {

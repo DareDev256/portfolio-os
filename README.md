@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.30.0-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.31.1-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-237_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-46-b388ff?style=flat-square)
@@ -92,7 +92,8 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - `Sanitize.attr()` blocks `data:image/svg+xml` XSS vectors alongside `javascript:`, `vbscript:`, and `data:text/html`
 - `Sanitize.url()` allowlist-validates imported URLs (http(s) and relative paths only) — blocks stored XSS via crafted backup JSON
 - Admin Dashboard renders all tab content through `Sanitize.setHTML()` (defense-in-depth against future template injection)
-- CSP `connect-src` allowlists only known API origins (GitHub, Open-Meteo)
+- CSP `connect-src` allowlists only known API origins (GitHub, Open-Meteo, Passion API) — stale wildcards removed
+- All external API fetches protected by `AbortController` timeout (8s) via shared `fetchWithTimeout` — prevents frozen interfaces on slow/unreachable APIs
 - localStorage `JSON.parse` wrapped in try/catch with fallbacks
 - SVG content sanitized before DOM insertion
 - CSP `img-src` locked to explicit GitHub asset domains
