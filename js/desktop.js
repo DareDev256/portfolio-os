@@ -176,7 +176,7 @@ export const Desktop = {
         {
             id: 'passion',
             label: 'PASSION.ai',
-            icon: '🤖',
+            icon: 'svg:/assets/passion-ai.svg',
             color: '#00f0ff',
             action: () => Desktop.openPassionChat(),
         },
@@ -273,9 +273,11 @@ export const Desktop = {
         const updateIndicator = () => {
             const label = PassionLive.getStateLabel();
             const color = PassionLive.getStateColor();
+            const { mood } = PassionLive.getStatus();
+            const moodText = mood && mood !== 'resting' ? ` · ${Sanitize.text(mood)}` : '';
             indicator.innerHTML = `
                 <span class="passion-status-dot ${color}"></span>
-                <span class="passion-status-label">Passion is ${Sanitize.text(label)}</span>
+                <span class="passion-status-label">Passion is ${Sanitize.text(label)}${moodText}</span>
             `;
         };
 
@@ -1922,7 +1924,7 @@ export const Desktop = {
                     viewer.className = 'resume-viewer';
                     viewer.style.height = '100%';
                     viewer.innerHTML = `
-                        <iframe src="resume/resume.pdf" type="application/pdf" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer" loading="lazy" style="width:100%;height:100%;border:0"></iframe>
+                        <iframe src="resume/resume.pdf" type="application/pdf" referrerpolicy="no-referrer" loading="lazy" style="width:100%;height:100%;border:0"></iframe>
                     `;
 
                     // Clear and append

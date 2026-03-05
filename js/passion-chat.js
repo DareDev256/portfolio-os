@@ -67,6 +67,15 @@ export function render(container) {
                     <div class="passion-chat-fact">${Sanitize.text(fact)}</div>
                 </div>
 
+                <div class="passion-chat-section">
+                    <div class="passion-chat-section-title">My Site</div>
+                    <a href="https://passion.jamesdare.com" target="_blank" rel="noopener" class="passion-chat-site-link">
+                        <span class="passion-chat-site-icon">🌐</span>
+                        <span>Check out my own site — passion.jamesdare.com</span>
+                        <span class="passion-chat-site-arrow">→</span>
+                    </a>
+                </div>
+
                 <div class="passion-chat-footer">
                     Passion is James's autonomous AI companion. She runs 24/7 on a Mac Mini.
                     <br/>

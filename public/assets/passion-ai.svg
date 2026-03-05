@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="passionGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00f0ff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#aa00ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff00aa;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff00aa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#aa00ff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="passionGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      @keyframes passionOrbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      @keyframes passionPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+      .passion-orbit { animation: passionOrbit 8s linear infinite; transform-origin: 50px 50px; }
+      .passion-pulse { animation: passionPulse 2s ease-in-out infinite; }
+    </style>
+  </defs>
+
+  <g filter="url(#passionGlow)">
+    <!-- Outer orbit ring -->
+    <circle cx="50" cy="50" r="44" stroke="url(#passionGrad)" stroke-width="1.5" fill="none"
+            stroke-dasharray="8 4" class="passion-orbit" opacity="0.6"/>
+
+    <!-- Inner orbit ring (counter-rotate via negative animation) -->
+    <circle cx="50" cy="50" r="36" stroke="url(#passionGrad)" stroke-width="1" fill="none"
+            stroke-dasharray="3 6" opacity="0.4" style="animation: passionOrbit 12s linear infinite reverse; transform-origin: 50px 50px;"/>
+
+    <!-- Hexagonal frame -->
+    <polygon points="50,10 85,27 85,73 50,90 15,73 15,27"
+             stroke="url(#passionGrad)" stroke-width="1.5" fill="rgba(0, 240, 255, 0.04)" opacity="0.7"/>
+
+    <!-- Heart emblem (centered, Passion's signature) -->
+    <path d="M50,70 C50,70 28,52 28,38 C28,30 34,24 42,24 C46,24 49,26 50,29 C51,26 54,24 58,24 C66,24 72,30 72,38 C72,52 50,70 50,70Z"
+          fill="url(#heartGrad)" opacity="0.9"/>
+
+    <!-- Circuit traces from heart -->
+    <g stroke="url(#passionGrad)" stroke-width="1" opacity="0.5" class="passion-pulse">
+      <!-- Top traces -->
+      <line x1="50" y1="24" x2="50" y2="14"/>
+      <circle cx="50" cy="12" r="2" fill="#00f0ff"/>
+
+      <!-- Left traces -->
+      <line x1="28" y1="38" x2="18" y2="38"/>
+      <circle cx="16" cy="38" r="2" fill="#00f0ff"/>
+
+      <!-- Right traces -->
+      <line x1="72" y1="38" x2="82" y2="38"/>
+      <circle cx="84" cy="38" r="2" fill="#00f0ff"/>
+
+      <!-- Bottom traces -->
+      <line x1="50" y1="70" x2="50" y2="80"/>
+      <circle cx="50" cy="82" r="2" fill="#aa00ff"/>
+    </g>
+
+    <!-- AI text below heart -->
+    <text x="50" y="60" text-anchor="middle" fill="white" font-family="monospace" font-size="10" font-weight="bold" opacity="0.9">AI</text>
+
+    <!-- Corner data nodes -->
+    <g opacity="0.4" class="passion-pulse">
+      <rect x="12" y="12" width="4" height="4" fill="#00f0ff" rx="1"/>
+      <rect x="84" y="12" width="4" height="4" fill="#aa00ff" rx="1"/>
+      <rect x="12" y="84" width="4" height="4" fill="#aa00ff" rx="1"/>
+      <rect x="84" y="84" width="4" height="4" fill="#00f0ff" rx="1"/>
+    </g>
+  </g>
+</svg>

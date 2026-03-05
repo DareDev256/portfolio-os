@@ -23,14 +23,16 @@
   <g filter="url(#settingsGlow)">
     <!-- Gear teeth (8 teeth around a circle) -->
     <g class="settings-spin" stroke="url(#settingsGrad)" stroke-width="2" fill="rgba(0, 188, 212, 0.1)">
+      <!-- Cardinal teeth -->
       <path d="M 44,12 L 56,12 L 58,22 L 42,22 Z"/>
-      <path d="M 78,44 L 78,56 L 88,58 L 88,42 Z"/>
-      <path d="M 44,88 L 56,88 L 58,78 L 42,78 Z"/>
-      <path d="M 12,44 L 12,56 L 22,58 L 22,42 Z"/>
+      <path d="M 78,44 L 88,42 L 88,58 L 78,56 Z"/>
+      <path d="M 56,88 L 44,88 L 42,78 L 58,78 Z"/>
+      <path d="M 12,56 L 12,44 L 22,42 L 22,58 Z"/>
+      <!-- Diagonal teeth (45° increments, symmetric) -->
       <path d="M 70,18 L 78,26 L 71,33 L 63,25 Z"/>
-      <path d="M 74,70 L 82,78 L 75,71 L 67,63 Z" transform="rotate(90, 50, 50)"/>
-      <path d="M 18,70 L 26,78 L 33,71 L 25,63 Z"/>
-      <path d="M 22,22 L 30,14 L 37,21 L 29,29 Z" transform="rotate(0, 50, 50)"/>
+      <path d="M 82,70 L 74,78 L 67,71 L 75,63 Z"/>
+      <path d="M 30,82 L 22,74 L 29,67 L 37,75 Z"/>
+      <path d="M 18,30 L 26,22 L 33,29 L 25,37 Z"/>
       <!-- Main gear body -->
       <circle cx="50" cy="50" r="28" stroke-width="2.5"/>
     </g>

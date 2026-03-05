@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.30.0
-last_updated: 2026-02-27
+version: 3.31.0
+last_updated: 2026-03-04
 
 ---
 
@@ -15,6 +15,21 @@ last_updated: 2026-02-27
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.31.0] — 2026-03-04
+
+### Fixed
+- **YouTube showcase embed** — Removed overly restrictive `sandbox` attribute from YouTube iframes that caused "refused to connect" errors. YouTube-nocookie.com embeds work correctly now.
+- **Resume PDF viewer** — Removed `sandbox` attribute from resume iframe that prevented PDF from loading properly, causing the site to reload instead.
+- **Settings gear SVG** — Fixed broken diagonal tooth geometry (asymmetric paths and incorrect rotation transforms). All 8 teeth now render symmetrically.
+- **Version sync** — Fixed stale v3.10.0 in HTML title and top bar (was out of sync with package.json).
+
+### Added
+- **Passion.AI custom SVG icon** — Replaced emoji 🤖 desktop icon with a purpose-built SVG featuring heart emblem, hexagonal frame, circuit traces, and orbit rings matching the cyberpunk theme.
+- **Passion Chat "My Site" link** — Added a styled link to passion.jamesdare.com in the Passion Chat window so visitors can explore Passion's own site.
+- **Mood display in status indicator** — The bottom-right status pill now shows Passion's current mood alongside her state (e.g., "Passion is crunching code · focused").
 
 ---
 

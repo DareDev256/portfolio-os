@@ -309,6 +309,49 @@
     border-color: var(--neon-cyan);
 }
 
+/* ── Site Link ─────────────────────────────────────────────────────── */
+
+.passion-chat-site-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: linear-gradient(135deg, rgba(170, 0, 255, 0.1), rgba(0, 240, 255, 0.08));
+    border: 1px solid rgba(170, 0, 255, 0.25);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.passion-chat-site-link:hover {
+    background: linear-gradient(135deg, rgba(170, 0, 255, 0.2), rgba(0, 240, 255, 0.15));
+    border-color: rgba(170, 0, 255, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(170, 0, 255, 0.2);
+}
+
+.passion-chat-site-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.passion-chat-site-arrow {
+    margin-left: auto;
+    font-size: 16px;
+    color: var(--neon-cyan);
+    opacity: 0.6;
+    transition: transform 0.2s ease;
+}
+
+.passion-chat-site-link:hover .passion-chat-site-arrow {
+    transform: translateX(3px);
+    opacity: 1;
+}
+
 /* ── Ambient Presence Toast ─────────────────────────────────────────── */
 
 .passion-toast {
