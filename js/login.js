@@ -405,6 +405,25 @@ export const Login = {
     },
 
     /**
+     * Skip boot/lock and go straight to desktop (for direct-access routes like /services)
+     */
+    skipToDesktop() {
+        this.lockScreen = document.getElementById('lockScreen');
+        this.desktop = document.getElementById('desktop');
+
+        // Hide lock screen, show desktop immediately
+        if (this.lockScreen) this.lockScreen.classList.add('hidden');
+        if (this.desktop) {
+            this.desktop.classList.remove('hidden');
+            this.desktop.classList.add('fade-in');
+        }
+
+        // Initialize desktop components (includes Router which opens the window)
+        this.initTaskbarClock();
+        this.initDesktop();
+    },
+
+    /**
      * Initialize taskbar clock (and Top Bar clock)
      */
     initTaskbarClock() {

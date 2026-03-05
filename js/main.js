@@ -120,8 +120,13 @@ async function init() {
         Parallax.init();
     }
 
-    // Show splash/boot, then continue to login
-    if (!safeMode) {
+    // Direct-access routes skip boot/lock entirely (e.g. /services for prospects)
+    const directAccessRoutes = ['/services'];
+    const isDirectAccess = directAccessRoutes.includes(window.location.pathname);
+
+    if (isDirectAccess) {
+        Login.skipToDesktop();
+    } else if (!safeMode) {
         Boot.start(() => Login.init());
     } else {
         Login.init();

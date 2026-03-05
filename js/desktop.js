@@ -2553,13 +2553,18 @@ export const Desktop = {
         // Wire up CTA button to open contact window
         document.addEventListener('open-contact', () => Desktop.openContact(), { once: true });
 
+        // Direct visits (/services) get a large, centered window
+        const isDirectVisit = window.location.pathname === '/services';
+        const winWidth = isDirectVisit ? Math.min(900, window.innerWidth - 80) : 750;
+        const winHeight = isDirectVisit ? Math.min(800, window.innerHeight - 120) : 700;
+
         WindowManager.create({
             id: 'services',
             title: 'SERVICES.exe — TDot Solutions',
             icon: '◈',
             content,
-            width: 750,
-            height: 700,
+            width: winWidth,
+            height: winHeight,
         });
     },
 
