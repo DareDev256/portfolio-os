@@ -91,11 +91,133 @@ body::before {
     transition: opacity 0.6s ease;
 }
 
+.intro-stage.act-0,
 .intro-stage.act-1,
 .intro-stage.act-2,
 .intro-stage.act-3,
 .intro-stage.revealed {
     opacity: 1;
+}
+
+/* ===== BLACK MIRROR SIGNAL ACQUISITION (Act 0) ===== */
+.bm-signal {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.intro-stage.act-0 .bm-signal {
+    opacity: 1;
+}
+
+/* Hide signal layer once Act 1 starts */
+.intro-stage.act-1 .bm-signal,
+.intro-stage.revealed .bm-signal {
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-accel);
+}
+
+/* Horizontal interference bars — staggered sweeps */
+.bm-noise-bar {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(212, 175, 55, 0.6) 20%,
+        rgba(139, 92, 246, 0.8) 50%,
+        rgba(212, 175, 55, 0.6) 80%,
+        transparent 100%);
+    box-shadow:
+        0 0 8px var(--gold-dim),
+        0 0 20px var(--amethyst-dim);
+    opacity: 0;
+}
+
+.intro-stage.act-0 .bm-noise-bar--1 {
+    animation: bm-sweep 0.6s 0s var(--ease-decel) forwards;
+}
+.intro-stage.act-0 .bm-noise-bar--2 {
+    animation: bm-sweep 0.5s 0.15s var(--ease-decel) forwards;
+}
+.intro-stage.act-0 .bm-noise-bar--3 {
+    animation: bm-sweep 0.4s 0.3s var(--ease-decel) forwards;
+}
+
+@keyframes bm-sweep {
+    0% { top: -1px; opacity: 0.8; }
+    60% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+
+/* Edge glows — gold from bottom, amethyst from top */
+.bm-edge-glow {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.bm-edge-glow--gold {
+    bottom: 0;
+    background: radial-gradient(ellipse at 50% 100%,
+        rgba(212, 175, 55, 0.15) 0%,
+        transparent 70%);
+}
+
+.bm-edge-glow--amethyst {
+    top: 0;
+    background: radial-gradient(ellipse at 50% 0%,
+        rgba(139, 92, 246, 0.12) 0%,
+        transparent 70%);
+}
+
+.intro-stage.act-0 .bm-edge-glow--gold {
+    animation: bm-glow-pulse 0.8s 0.1s ease-out forwards;
+}
+.intro-stage.act-0 .bm-edge-glow--amethyst {
+    animation: bm-glow-pulse 0.8s 0.2s ease-out forwards;
+}
+
+@keyframes bm-glow-pulse {
+    0% { opacity: 0; }
+    40% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Data flash text — brief "SIGNAL ACQUIRED" */
+.bm-data-flash {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    opacity: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.intro-stage.act-0 .bm-data-flash {
+    animation: bm-flash 0.7s 0.2s steps(1) forwards;
+}
+
+@keyframes bm-flash {
+    0% { opacity: 0; }
+    15% { opacity: 0.9; text-shadow: 0 0 12px var(--gold-dim); }
+    30% { opacity: 0; }
+    45% { opacity: 0.7; text-shadow: 0 0 8px var(--amethyst-dim); }
+    60% { opacity: 0.9; text-shadow: 0 0 15px var(--gold-dim); }
+    85% { opacity: 0.4; }
+    100% { opacity: 0; }
 }
 
 /* --- Scanline Sweep (Act 1) --- */

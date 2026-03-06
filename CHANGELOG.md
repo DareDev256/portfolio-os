@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.32.2
+version: 3.33.0
 last_updated: 2026-03-06
 
 ---
@@ -15,6 +15,19 @@ last_updated: 2026-03-06
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.33.0] — 2026-03-06
+
+### Added
+- **Black Mirror signal acquisition intro** — New "Act 0" cinematic phase before the existing 3-act lock screen sequence. Features three staggered horizontal interference bars sweeping with gold/amethyst gradients, radial edge glow pulses (gold from bottom, amethyst from top), and a stepped-keyframe "SIGNAL ACQUIRED" data flash. All animations use the existing design system variables (`--gold`, `--amethyst`, `--ease-decel`) and respect the dark luxury tech aesthetic.
+- 6 new HTML elements in lock screen intro stage for the signal acquisition layer.
+- 95 lines of CSS with 4 new `@keyframes` animations (`bm-sweep`, `bm-glow-pulse`, `bm-flash`) and scoped act-0 state selectors.
+
+### Changed
+- Cinematic intro timing shifted: Act 0 at 50ms, Act 1 at 950ms, Act 2 at 1450ms, Act 3 at 2900ms (was 50/550/2000/3000ms). Total sequence ~3.9s (was ~3s).
+- Skip cinematic and lock/re-lock flows now reset `act-0` class alongside existing act classes.
 
 ---
 

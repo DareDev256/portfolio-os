@@ -161,29 +161,35 @@ export const Login = {
         document.addEventListener('click', this._skipBound, { once: false });
         document.addEventListener('keydown', this._skipBound, { once: false });
 
-        // --- Act 1: Power On (0–0.5s) ---
-        // Galaxy fades in, scanline sweeps
+        // --- Act 0: Signal Acquisition (0–0.9s) ---
+        // Black Mirror interference bars, gold/amethyst edge glows, data flash
         this._queueTimeout(() => {
-            stage.classList.add('act-1');
+            stage.classList.add('act-0');
         }, 50);
 
-        // --- Act 2: Identity (0.5–2s) ---
+        // --- Act 1: Power On (0.9–1.4s) ---
+        // Galaxy fades in, scanline sweeps (act-0 signal fades out via CSS)
+        this._queueTimeout(() => {
+            stage.classList.add('act-1');
+        }, 950);
+
+        // --- Act 2: Identity (1.4–2.9s) ---
         // Title glitch-resolves, subtitle typewriter, watermark fades in
         this._queueTimeout(() => {
             stage.classList.add('act-2');
             this._startTypewriter();
-        }, 550);
+        }, 1450);
 
-        // --- Act 3: Ready (2–3s) ---
+        // --- Act 3: Ready (2.9–3.9s) ---
         // Username, roles, INITIALIZE button appear with border-draw
         this._queueTimeout(() => {
             stage.classList.add('act-3');
-        }, 2000);
+        }, 2900);
 
         // Cinematic complete — clean up skip listeners
         this._queueTimeout(() => {
             this._finishCinematic();
-        }, 3000);
+        }, 3900);
     },
 
     /**
@@ -212,7 +218,7 @@ export const Login = {
         }
 
         // Jump to revealed state
-        stage.classList.remove('act-1', 'act-2', 'act-3');
+        stage.classList.remove('act-0', 'act-1', 'act-2', 'act-3');
         stage.classList.add('revealed');
 
         this._finishCinematic();
@@ -358,7 +364,7 @@ export const Login = {
         // Reset cinematic state and replay
         const stage = document.getElementById('introStage');
         if (stage) {
-            stage.classList.remove('act-1', 'act-2', 'act-3', 'revealed', 'booting');
+            stage.classList.remove('act-0', 'act-1', 'act-2', 'act-3', 'revealed', 'booting');
         }
         this.startCinematic();
     },
@@ -517,7 +523,7 @@ export const Login = {
             bootSequence.innerHTML = '';
         }
         if (stage) {
-            stage.classList.remove('act-1', 'act-2', 'act-3', 'revealed', 'booting');
+            stage.classList.remove('act-0', 'act-1', 'act-2', 'act-3', 'revealed', 'booting');
         }
 
         // Reinitialize galaxy effect
