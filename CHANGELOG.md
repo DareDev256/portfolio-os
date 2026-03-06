@@ -18,6 +18,22 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [3.32.1] — 2026-03-05
+
+### Added
+- **44 new edge-case tests** across 3 new test suites (237 → 281 total, 16 suites). Key coverage areas:
+  - `GitHub.calculateLanguageStats` — division-by-zero when no repos have languages, single-language 100% dominance, top-3 cap enforcement, percentage rounding verification
+  - `GitHub.buildCommitTimeline` — PushEvent filtering, missing `payload.commits` fallback-to-1, events outside day window ignored, date format validation
+  - `animateCounter` edge cases — target=0 boundary (increment=0 but `0 >= 0` saves it), negative target convergence, `MAX_SAFE_INTEGER` overflow check
+  - `saveJSON` quota handling — QuotaExceededError returns false (required direct localStorage mock — jsdom's `setItem` is an own property, not on `Storage.prototype`), circular reference serialization failure
+  - `openExternal` protocol hardening — all-caps `JAVASCRIPT:`, null byte stripping, whitespace-only URLs, newline-in-protocol obfuscation, port number passthrough
+  - `el()` DOM factory — tag creation, className/textContent assignment, falsy-value handling
+  - State boolean toggle registry — auto-generated `set*/toggle*` method existence, localStorage persistence as "1"/"0", truthy/falsy coercion, event emission for toggles with/without event names
+  - `State._loadBoolean` — "1"→true, "0"→false, missing key preservation, non-"1" string→false
+  - `State.setCursorTrailType` — allowlist validation, XSS injection rejection, event emission
+
+---
+
 ## [3.32.0] — 2026-03-05
 
 ### Added
