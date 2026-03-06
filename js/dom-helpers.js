@@ -94,6 +94,46 @@ export function openExternal(url) {
 }
 
 /**
+ * Check whether a DOM element is visible (not hidden by CSS).
+ * Handles the offsetParent gotcha: position:fixed/sticky elements return null
+ * for offsetParent even when fully visible. Falls back to getComputedStyle
+ * only when offsetParent is null, keeping the fast path fast.
+ * @param {Element} el - DOM element to check
+ * @returns {boolean} True if the element is rendered and visible
+ */
+export function isElementVisible(el) {
+    if (!el || !(el instanceof Element)) return false;
+    // Fast path: offsetParent is non-null → element is in layout
+    if (el.offsetParent !== null) return true;
+    // offsetParent is null for: display:none, fixed/sticky, or <body>/<html>
+    const style = getComputedStyle(el);
+    // display:none → not visible regardless of position
+    if (style.display === 'none') return false;
+    // visibility:hidden → takes space but not rendered
+    if (style.visibility === 'hidden') return false;
+    // position:fixed or sticky with non-none display → visible
+    return style.position === 'fixed' || style.position === 'sticky';
+}
+
+/**
+ * Check whether a DOM element intersects the current viewport.
+ * Uses getBoundingClientRect for synchronous, frame-accurate checks.
+ * For scroll-triggered animations prefer IntersectionObserver instead.
+ * @param {Element} el - DOM element to check
+ * @returns {boolean} True if any part of the element is in the viewport
+ */
+export function isInViewport(el) {
+    if (!el || !(el instanceof Element)) return false;
+    const rect = el.getBoundingClientRect();
+    return (
+        rect.bottom > 0 &&
+        rect.right > 0 &&
+        rect.top < (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.left < (window.innerWidth || document.documentElement.clientWidth)
+    );
+}
+
+/**
  * Animate a number counter from 0 to target over a duration.
  * Previously duplicated identically in desktop.js and github.js.
  * Returns the interval ID so callers can cancel if needed.

@@ -4,8 +4,8 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.32.1-00f0ff?style=flat-square)
-![Tests](https://img.shields.io/badge/tests-281_passing-00e676?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.32.2-00f0ff?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-293_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-46-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
@@ -21,7 +21,7 @@ An interactive desktop environment that runs entirely in the browser. Draggable 
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> **46 ES modules** · **25 stylesheets** · **281 tests across 16 suites** · **20 desktop apps** · **10 security headers** · **0 runtime dependencies**
+> **46 ES modules** · **25 stylesheets** · **293 tests across 16 suites** · **20 desktop apps** · **10 security headers** · **0 runtime dependencies**
 
 ## Quick Start
 
@@ -169,7 +169,7 @@ js/                                 # 41 ES modules, zero framework imports
 ├── router.js                       # History API deep-linkable routing
 ├── command-palette.js              # Cmd+K fuzzy-search launcher
 ├── data-loader.js                  # Centralized JSON fetcher with caching
-├── dom-helpers.js                  # Shared utilities (openExternal, animateCounter, loadJSON, saveJSON, downloadJSON)
+├── dom-helpers.js                  # Shared utilities (isElementVisible, isInViewport, openExternal, animateCounter, loadJSON, saveJSON, downloadJSON)
 ├── sanitize.js                     # DOMPurify wrapper
 ├── notifications.js                # Toast notification queue system
 ├── shortcuts-overlay.js            # Press ? to show all keyboard shortcuts
@@ -237,7 +237,7 @@ tests/                              # 201 vitest tests across 13 suites
 ├── router.test.js                  # Path validation + routing (12 tests)
 ├── focus-trap.test.js              # Tab cycling + cleanup (7 tests)
 ├── lightbox.test.js                # Video ID validation + sandbox (14 tests)
-├── dom-helpers.test.js             # openExternal, animateCounter, loadJSON, saveJSON, downloadJSON (15 tests)
+├── dom-helpers.test.js             # openExternal, animateCounter, loadJSON, saveJSON, downloadJSON (21 tests)
 ├── modal.test.js                   # Dialog init, dismiss, prompt, alert (15 tests)
 ├── command-palette.test.js         # Fuzzy search, keyboard nav, ARIA, execute (22 tests)
 ├── mobile.test.js                  # Device detection, viewport meta, mobile styles (11 tests)

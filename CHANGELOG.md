@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.32.0
-last_updated: 2026-03-05
+version: 3.32.2
+last_updated: 2026-03-06
 
 ---
 
@@ -15,6 +15,19 @@ last_updated: 2026-03-05
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.32.2] — 2026-03-06
+
+### Fixed
+- **Element visibility checks** — `offsetParent !== null` always returned false for `position: fixed` elements (like the lock screen), making the first condition in parallax.js dead code. Added `isElementVisible()` to dom-helpers.js that correctly handles fixed/sticky positioning by falling back to `getComputedStyle` only when `offsetParent` is null.
+- **Parallax lock screen detection** — Replaced broken `offsetParent` + `.hidden` class OR-chain in parallax.js with centralized `isElementVisible()` utility.
+
+### Added
+- `isElementVisible(el)` — Correct visibility detection that handles `display: none`, `visibility: hidden`, and `position: fixed/sticky` elements where `offsetParent` lies.
+- `isInViewport(el)` — Synchronous viewport intersection check via `getBoundingClientRect` for frame-accurate culling.
+- **12 new tests** for visibility utilities covering null inputs, display:none, visibility:hidden, position:fixed, position:sticky, and viewport boundary conditions (281 → 293 total).
 
 ---
 

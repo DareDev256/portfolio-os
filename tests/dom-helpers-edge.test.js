@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { el, animateCounter, saveJSON, openExternal } from '../js/dom-helpers.js';
+import { el, animateCounter, saveJSON, openExternal, isElementVisible, isInViewport } from '../js/dom-helpers.js';
 
 describe('el() — DOM element factory', () => {
     it('creates element with correct tag', () => {
@@ -117,6 +117,113 @@ describe('saveJSON() — quota exceeded handling', () => {
         circular.self = circular;
         vi.spyOn(console, 'error').mockImplementation(() => {});
         expect(saveJSON('circ', circular)).toBe(false);
+    });
+});
+
+describe('isElementVisible() — element visibility detection', () => {
+    it('returns false for null/undefined/non-element', () => {
+        expect(isElementVisible(null)).toBe(false);
+        expect(isElementVisible(undefined)).toBe(false);
+        expect(isElementVisible('not-an-element')).toBe(false);
+        expect(isElementVisible(42)).toBe(false);
+    });
+
+    it('returns true for a normal in-layout element', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        // jsdom offsetParent is null for all elements, so this tests the
+        // getComputedStyle fallback path — div has display:block by default
+        // In jsdom, position is '' (static) so fixed/sticky check is false,
+        // but display is not 'none' — we test the logic path
+        // NOTE: jsdom doesn't compute offsetParent, so we mock it
+        Object.defineProperty(div, 'offsetParent', { value: document.body, configurable: true });
+        expect(isElementVisible(div)).toBe(true);
+        document.body.removeChild(div);
+    });
+
+    it('returns false for display:none element', () => {
+        const div = document.createElement('div');
+        div.style.display = 'none';
+        document.body.appendChild(div);
+        expect(isElementVisible(div)).toBe(false);
+        document.body.removeChild(div);
+    });
+
+    it('returns false for visibility:hidden element', () => {
+        const div = document.createElement('div');
+        div.style.visibility = 'hidden';
+        document.body.appendChild(div);
+        // offsetParent is null in jsdom, display is not none, visibility is hidden
+        expect(isElementVisible(div)).toBe(false);
+        document.body.removeChild(div);
+    });
+
+    it('returns true for position:fixed element (offsetParent is null)', () => {
+        const div = document.createElement('div');
+        div.style.position = 'fixed';
+        document.body.appendChild(div);
+        // offsetParent is null for fixed, but isElementVisible should detect it
+        expect(isElementVisible(div)).toBe(true);
+        document.body.removeChild(div);
+    });
+
+    it('returns true for position:sticky element', () => {
+        const div = document.createElement('div');
+        div.style.position = 'sticky';
+        document.body.appendChild(div);
+        expect(isElementVisible(div)).toBe(true);
+        document.body.removeChild(div);
+    });
+
+    it('returns false for position:fixed + display:none', () => {
+        const div = document.createElement('div');
+        div.style.position = 'fixed';
+        div.style.display = 'none';
+        document.body.appendChild(div);
+        expect(isElementVisible(div)).toBe(false);
+        document.body.removeChild(div);
+    });
+});
+
+describe('isInViewport() — viewport intersection check', () => {
+    it('returns false for null/undefined/non-element', () => {
+        expect(isInViewport(null)).toBe(false);
+        expect(isInViewport(undefined)).toBe(false);
+        expect(isInViewport(42)).toBe(false);
+    });
+
+    it('returns true when element rect is within viewport', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        // Mock getBoundingClientRect for jsdom
+        div.getBoundingClientRect = () => ({ top: 10, left: 10, bottom: 100, right: 100, width: 90, height: 90 });
+        expect(isInViewport(div)).toBe(true);
+        document.body.removeChild(div);
+    });
+
+    it('returns false when element is above viewport', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        div.getBoundingClientRect = () => ({ top: -200, left: 10, bottom: -100, right: 100, width: 90, height: 100 });
+        expect(isInViewport(div)).toBe(false);
+        document.body.removeChild(div);
+    });
+
+    it('returns false when element is below viewport', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        div.getBoundingClientRect = () => ({ top: 2000, left: 10, bottom: 2100, right: 100, width: 90, height: 100 });
+        expect(isInViewport(div)).toBe(false);
+        document.body.removeChild(div);
+    });
+
+    it('returns true when element partially overlaps viewport', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        // Top edge is above viewport, but bottom is inside
+        div.getBoundingClientRect = () => ({ top: -50, left: 10, bottom: 50, right: 100, width: 90, height: 100 });
+        expect(isInViewport(div)).toBe(true);
+        document.body.removeChild(div);
     });
 });
 

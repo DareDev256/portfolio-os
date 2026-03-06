@@ -6,6 +6,7 @@
  *
  * Respects prefers-reduced-motion and stays under 16ms/frame via rAF.
  */
+import { isElementVisible } from './dom-helpers.js';
 
 const LOCK_LAYERS = [
     { sel: '.grid-background',    z: 0.015, prop: 'translate' },
@@ -121,8 +122,10 @@ export const Parallax = {
         this._currShift = lerp(this._currShift, this._scrollShift, LERP);
 
         // --- Lock screen layers (mouse-driven depth) ---
-        const lockVisible = document.getElementById('lockScreen')?.offsetParent !== null
-            || !document.getElementById('lockScreen')?.classList.contains('hidden');
+        // Previous check used offsetParent !== null which is always false for
+        // position:fixed elements — isElementVisible handles fixed correctly.
+        const lockEl = document.getElementById('lockScreen');
+        const lockVisible = lockEl ? isElementVisible(lockEl) : false;
 
         if (lockVisible) {
             for (const { el, z } of this._lockEls) {
