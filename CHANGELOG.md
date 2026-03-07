@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.33.0
+version: 3.33.1
 last_updated: 2026-03-06
 
 ---
@@ -15,6 +15,17 @@ last_updated: 2026-03-06
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.33.1] — 2026-03-06
+
+### Added
+- **WindowManager test suite** — 65 new tests across 12 describe blocks covering the full window lifecycle: creation (DOM structure, ARIA attributes, viewport clamping, cascade positioning, saved state restoration), duplicate prevention, focus management (z-index, active class, minimized guard), minimize/restore cycle with localStorage persistence, maximize toggle, close with animation timing (onClose callback, error handling, RAF leak prevention, screen reader announcements, navigation stack cleanup), navigation stack (push/pop/breadcrumb rendering/back button visibility), ESC key priority (modal > lightbox > tour > window), taskbar integration (active/minimized states, click-to-restore/minimize/focus), titlebar structure (control buttons, ARIA labels, icon rendering), and content rendering (string HTML vs HTMLElement).
+- Documented a real ordering bug in `focus()`: `updateTaskbar()` is called before `activeWindow` is set, causing stale taskbar state until the next sync. Test captures and verifies the exact behavior.
+
+### Changed
+- Test count: 293 -> 358 across 17 suites (was 16).
 
 ---
 
