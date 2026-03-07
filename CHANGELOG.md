@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.33.1
+version: 3.33.2
 last_updated: 2026-03-06
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-06
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.33.2] — 2026-03-06
+
+### Fixed
+- **Version string drift** — Synced all version displays to `v3.33.2`. The `<title>` tag showed `v3.32.0`, the desktop top bar showed `v3.31.0`, and the boot/cinematic subtitle showed `v3.3.0` — all out of sync with `package.json`. Now all 5 version references (title, top bar, typewriter subtitle, skip subtitle, boot message) pull the same version.
 
 ---
 
