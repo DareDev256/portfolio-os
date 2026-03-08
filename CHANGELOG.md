@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.35.0
+version: 3.36.0
 last_updated: 2026-03-08
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-08
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.36.0] — 2026-03-08
+
+### Added
+- **Catalyst Aura** — Mouse-reactive radial glow on Purple Reign project chapters. A soft amethyst-to-gold gradient follows the cursor, with a hexagonal clip-path "crystal lens" that scales and rotates on hover. Gold geometric border traces itself around the chapter edges. Chapter titles gain an animated underline sweep (amethyst → gold gradient). All effects use CSS custom properties (`--mx`, `--my`) set via a lightweight `mousemove` handler — zero repaints from JS, the compositor handles it. Respects `prefers-reduced-motion`.
 
 ---
 

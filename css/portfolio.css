@@ -636,6 +636,104 @@
     perspective: 600px;
 }
 
+/* ─── Catalyst Aura: Interactive Crystal Glow ─── */
+/* Mouse-reactive radial glow that follows cursor across reign chapters */
+
+.reign-chapter {
+    --mx: 50%;
+    --my: 50%;
+    isolation: isolate;
+}
+
+/* Radial glow that tracks cursor position */
+.reign-chapter .catalyst-aura {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background: radial-gradient(
+        280px circle at var(--mx) var(--my),
+        rgba(139, 92, 246, 0.12) 0%,
+        rgba(212, 175, 55, 0.04) 40%,
+        transparent 70%
+    );
+    transition: opacity 0.4s var(--ease-decel, ease-out);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.reign-chapter:hover .catalyst-aura {
+    opacity: 1;
+}
+
+/* Hexagonal clip-path focus ring — crystalline portal indicator */
+.reign-chapter .catalyst-aura::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: var(--mx);
+    top: var(--my);
+    transform: translate(-50%, -50%);
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-decel, ease-out), transform 0.5s var(--ease-decel, ease-out);
+}
+
+.reign-chapter:hover .catalyst-aura::after {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.3) rotate(15deg);
+}
+
+/* Geometric border trace — accent line draws itself on hover */
+@keyframes catalyst-trace {
+    0%   { clip-path: inset(0 100% 100% 0); }
+    50%  { clip-path: inset(0 0 100% 0); }
+    100% { clip-path: inset(0 0 0 0); }
+}
+
+.reign-chapter .catalyst-border {
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--gold-dim, rgba(212, 175, 55, 0.25));
+    opacity: 0;
+    clip-path: inset(0 100% 100% 0);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.reign-chapter:hover .catalyst-border {
+    opacity: 1;
+    animation: catalyst-trace 0.8s var(--ease-decel, ease-out) forwards;
+}
+
+/* Accent line intensifies with aura active */
+.reign-chapter:hover::before {
+    box-shadow: 0 0 10px var(--reign-accent, #8b5cf6), 0 0 3px var(--gold-dim, rgba(212, 175, 55, 0.3));
+}
+
+/* Chapter title gets gold underline sweep on hover */
+@keyframes catalyst-underline {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+
+.reign-chapter__title::after {
+    content: '';
+    display: block;
+    height: 1px;
+    margin-top: 6px;
+    background: linear-gradient(90deg, var(--gold, #d4af37), var(--reign-accent, #8b5cf6), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s var(--ease-decel, ease-out);
+}
+
+.reign-chapter:hover .reign-chapter__title::after {
+    transform: scaleX(1);
+}
+
 /* ─── Opulent Interface: Reduced Motion ─── */
 @media (prefers-reduced-motion: reduce) {
     .portfolio-link,
@@ -654,4 +752,7 @@
     .reign-core { animation: none !important; }
     .reign-core__face { transition-duration: 0s !important; }
     .reign-core__glow { animation: none !important; }
+    .catalyst-aura { display: none !important; }
+    .catalyst-border { display: none !important; }
+    .reign-chapter__title::after { transition: none !important; }
 }

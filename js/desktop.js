@@ -1486,6 +1486,20 @@ export const Desktop = {
                 links.appendChild(repoBtn);
             }
 
+            // Catalyst Aura — interactive glow layers
+            const aura = document.createElement('div');
+            aura.className = 'catalyst-aura';
+            const border = document.createElement('div');
+            border.className = 'catalyst-border';
+            chapter.append(aura, border);
+
+            // Mouse tracking for radial glow
+            chapter.addEventListener('mousemove', (e) => {
+                const rect = chapter.getBoundingClientRect();
+                chapter.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+                chapter.style.setProperty('--my', `${e.clientY - rect.top}px`);
+            });
+
             if (project.snippet) {
                 const viewer = createCodeViewer({ code: project.snippet.code, lang: project.snippet.lang, accent: project.accent });
                 viewer.classList.add('reign-reveal');
