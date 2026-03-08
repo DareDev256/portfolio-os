@@ -550,6 +550,92 @@
     padding: 30px;
 }
 
+/* ─── Ascending Core: 3D Crystal Reveal ─── */
+/* Faceted obsidian shard with internal amethyst glow that fractures on scroll */
+
+.reign-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    transform-style: preserve-3d;
+    transform: translate(-50%, -50%) rotateX(-20deg) rotateY(45deg);
+    animation: core-idle 8s linear infinite;
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity 0.6s var(--ease-accel, ease-out);
+}
+
+.reign-core__face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    backface-visibility: visible;
+    transition:
+        transform 0.8s var(--ease-decel, ease-out),
+        opacity 0.6s var(--ease-decel, ease-out),
+        filter 0.8s var(--ease-decel, ease-out);
+}
+
+/* 8-face diamond: top 4 + bottom 4, obsidian surface with amethyst edge glow */
+.reign-core__face:nth-child(1) { background: linear-gradient(180deg, #1a1225 10%, #0d0a14 90%); transform: rotateY(0deg) rotateX(35deg) translateZ(42px); }
+.reign-core__face:nth-child(2) { background: linear-gradient(180deg, #1e1430 10%, #0d0a14 90%); transform: rotateY(90deg) rotateX(35deg) translateZ(42px); }
+.reign-core__face:nth-child(3) { background: linear-gradient(180deg, #1a1225 10%, #0d0a14 90%); transform: rotateY(180deg) rotateX(35deg) translateZ(42px); }
+.reign-core__face:nth-child(4) { background: linear-gradient(180deg, #1e1430 10%, #0d0a14 90%); transform: rotateY(270deg) rotateX(35deg) translateZ(42px); }
+.reign-core__face:nth-child(5) { background: linear-gradient(0deg, #1a1225 10%, #0d0a14 90%); transform: rotateY(0deg) rotateX(-35deg) translateZ(42px) scaleY(-1); }
+.reign-core__face:nth-child(6) { background: linear-gradient(0deg, #1e1430 10%, #0d0a14 90%); transform: rotateY(90deg) rotateX(-35deg) translateZ(42px) scaleY(-1); }
+.reign-core__face:nth-child(7) { background: linear-gradient(0deg, #1a1225 10%, #0d0a14 90%); transform: rotateY(180deg) rotateX(-35deg) translateZ(42px) scaleY(-1); }
+.reign-core__face:nth-child(8) { background: linear-gradient(0deg, #1e1430 10%, #0d0a14 90%); transform: rotateY(270deg) rotateX(-35deg) translateZ(42px) scaleY(-1); }
+
+/* Amethyst inner glow */
+.reign-core__glow {
+    position: absolute;
+    inset: 15%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.35) 0%, rgba(139, 92, 246, 0.08) 50%, transparent 70%);
+    animation: core-pulse 3s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes core-idle {
+    from { transform: translate(-50%, -50%) rotateX(-20deg) rotateY(45deg); }
+    to   { transform: translate(-50%, -50%) rotateX(-20deg) rotateY(405deg); }
+}
+
+@keyframes core-pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50%      { opacity: 1; transform: scale(1.15); }
+}
+
+/* Fracture state — faces fly outward and fade */
+.reign-core--fracturing .reign-core__face:nth-child(1) { transform: rotateY(10deg) rotateX(35deg) translateZ(140px) translateY(-60px); opacity: 0; filter: blur(2px); }
+.reign-core--fracturing .reign-core__face:nth-child(2) { transform: rotateY(100deg) rotateX(45deg) translateZ(130px) translateX(50px); opacity: 0; filter: blur(2px); }
+.reign-core--fracturing .reign-core__face:nth-child(3) { transform: rotateY(190deg) rotateX(25deg) translateZ(150px) translateY(-40px); opacity: 0; filter: blur(2px); }
+.reign-core--fracturing .reign-core__face:nth-child(4) { transform: rotateY(280deg) rotateX(40deg) translateZ(120px) translateX(-50px); opacity: 0; filter: blur(2px); }
+.reign-core--fracturing .reign-core__face:nth-child(5) { transform: rotateY(-10deg) rotateX(-45deg) translateZ(135px) translateY(60px); opacity: 0; filter: blur(2px); }
+.reign-core--fracturing .reign-core__face:nth-child(6) { transform: rotateY(80deg) rotateX(-35deg) translateZ(145px) translateX(40px); opacity: 0; filter: blur(2px); }
+.reign-core--fracturing .reign-core__face:nth-child(7) { transform: rotateY(170deg) rotateX(-50deg) translateZ(125px) translateY(50px); opacity: 0; filter: blur(2px); }
+.reign-core--fracturing .reign-core__face:nth-child(8) { transform: rotateY(260deg) rotateX(-30deg) translateZ(155px) translateX(-45px); opacity: 0; filter: blur(2px); }
+
+.reign-core--fracturing .reign-core__glow {
+    opacity: 0;
+    transform: scale(2.5);
+    transition: opacity 0.6s ease-out, transform 0.8s ease-out;
+}
+
+.reign-core--fracturing {
+    animation: none;
+    transform: translate(-50%, -60%) rotateX(-20deg) rotateY(45deg);
+    transition: transform 0.8s var(--ease-decel, ease-out);
+}
+
+/* Ensure hero has perspective for 3D */
+.reign-hero {
+    perspective: 600px;
+}
+
 /* ─── Opulent Interface: Reduced Motion ─── */
 @media (prefers-reduced-motion: reduce) {
     .portfolio-link,
@@ -565,4 +651,7 @@
     .portfolio-link:hover {
         letter-spacing: 1px;
     }
+    .reign-core { animation: none !important; }
+    .reign-core__face { transition-duration: 0s !important; }
+    .reign-core__glow { animation: none !important; }
 }

@@ -1421,7 +1421,19 @@ export const Desktop = {
         scrollHint.className = 'reign-hero__scroll-hint';
         scrollHint.textContent = '↓ SCROLL';
 
-        hero.append(heroTitle, heroTag, scrollHint);
+        // ── Ascending Core: 3D Crystal ──
+        const core = document.createElement('div');
+        core.className = 'reign-core';
+        const coreGlow = document.createElement('div');
+        coreGlow.className = 'reign-core__glow';
+        core.appendChild(coreGlow);
+        for (let f = 0; f < 8; f++) {
+            const face = document.createElement('div');
+            face.className = 'reign-core__face';
+            core.appendChild(face);
+        }
+
+        hero.append(core, heroTitle, heroTag, scrollHint);
         scroll.appendChild(hero);
 
         featured.forEach((project, i) => {
@@ -1543,6 +1555,19 @@ export const Desktop = {
 
         let closed = false;
 
+        // Ascending Core: fracture crystal when scrolling past hero
+        const onScrollFracture = () => {
+            if (closed) return;
+            const heroH = hero.offsetHeight || 1;
+            const progress = Math.min(scroll.scrollTop / (heroH * 0.6), 1);
+            if (progress > 0.3 && !core.classList.contains('reign-core--fracturing')) {
+                core.classList.add('reign-core--fracturing');
+            } else if (progress <= 0.2 && core.classList.contains('reign-core--fracturing')) {
+                core.classList.remove('reign-core--fracturing');
+            }
+        };
+        scroll.addEventListener('scroll', onScrollFracture, { passive: true });
+
         // Defer observer setup to after DOM attachment
         requestAnimationFrame(() => {
             if (closed) return; // window closed before rAF fired — skip to avoid re-activating disconnected observers
@@ -1563,6 +1588,7 @@ export const Desktop = {
                 heroObserver.disconnect();
                 revealObserver.disconnect();
                 chapterObserver.disconnect();
+                scroll.removeEventListener('scroll', onScrollFracture);
             },
         });
     },

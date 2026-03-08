@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.34.0
+version: 3.35.0
 last_updated: 2026-03-08
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-08
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.35.0] — 2026-03-08
+
+### Added
+- **Ascending Core reveal** — A CSS 3D obsidian crystal hovers in the Purple Reign hero section, rotating with an internal amethyst glow. As the user scrolls past the hero, the crystal fractures apart — each of 8 triangular faces flies outward with blur and fade — revealing the project chapters beneath. Scrolling back reassembles the core. Built with pure CSS `transform-style: preserve-3d` and scroll-driven class toggling, no external 3D libraries. Respects `prefers-reduced-motion`.
 
 ---
 

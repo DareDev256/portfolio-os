@@ -214,7 +214,7 @@ export const Login = {
         // Set subtitle to full text
         const subtitleText = stage.querySelector('.subtitle-text');
         if (subtitleText) {
-            subtitleText.textContent = 'CREATIVE OPERATING SYSTEM v3.34.0';
+            subtitleText.textContent = 'CREATIVE OPERATING SYSTEM v3.35.0';
         }
 
         // Jump to revealed state
@@ -253,7 +253,7 @@ export const Login = {
         const subtitleText = stage?.querySelector('.subtitle-text');
         if (!subtitleText) return;
 
-        const fullText = 'CREATIVE OPERATING SYSTEM v3.34.0';
+        const fullText = 'CREATIVE OPERATING SYSTEM v3.35.0';
         let i = 0;
         subtitleText.textContent = '';
 
@@ -318,7 +318,7 @@ export const Login = {
         bootSequence.classList.remove('hidden');
 
         const messages = [
-            '> INITIALIZING PASSION OS v3.34.0...',
+            '> INITIALIZING PASSION OS v3.35.0...',
             '> LOADING NEURAL INTERFACE...',
             '> AUTHENTICATING USER: DAREDEV256...',
             '> MOUNTING CREATIVE DRIVES...',
