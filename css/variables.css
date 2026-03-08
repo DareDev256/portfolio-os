@@ -84,10 +84,12 @@
     --duration-slow: 350ms;
     --duration-dramatic: 600ms;
 
-    /* Transitions — shorthand combos (legacy-compatible) */
-    --transition-fast: var(--duration-fast) ease;
-    --transition-medium: var(--duration-normal) ease;
-    --transition-slow: var(--duration-slow) ease;
+    /* Transitions — shorthand combos using intentional curves */
+    --transition-fast: var(--duration-fast) var(--ease-decel);
+    --transition-medium: var(--duration-normal) var(--ease-decel);
+    --transition-slow: var(--duration-slow) var(--ease-decel);
+    --transition-exit-fast: var(--duration-fast) var(--ease-accel);
+    --transition-exit-medium: var(--duration-normal) var(--ease-accel);
     --transition-bounce: 0.3s var(--ease-spring);
 
     /* Common Glow Effects */

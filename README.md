@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.33.2-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.34.0-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-358_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-46-b388ff?style=flat-square)
@@ -53,6 +53,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **MMBN Cyberspace Background** — Three.js perspective grid with cobalt data streams, glowing network nodes, and a deep blue-purple void sky.
 - **3D Mahoraga Wheel** — Three.js lock screen centerpiece. 60fps + antialiasing on desktop, 30fps lean mode on mobile.
 - **Glass UI** — `backdrop-filter` frosted panels on windows, top bar, and dock — GPU-optimized with reduced blur radii.
+- **Tokenized Motion System** — All transitions use design tokens (`--transition-fast/medium/slow`, `--ease-decel/accel/spring`) instead of hardcoded values. Entry animations decelerate, exits accelerate, emphasis bounces — no generic `ease` defaults.
 - **Parallax Depth Engine** — Mouse-driven lock screen layers + scroll-driven desktop background shifts. 4-layer depth with lerp smoothing, MutationObserver for dynamic windows, `will-change` GPU compositing. Respects `prefers-reduced-motion`.
 - **Glimmer Sweep** — Diagonal gold-to-amethyst light sweep on hover for portfolio cards, project cards, portfolio links, and dock icons. GPU-composited `translateX` animation with `ease-decel` fade-out. Respects `prefers-reduced-motion`.
 - **Black Mirror Signal Acquisition** — Cinematic "Act 0" pre-intro on the lock screen. Three staggered interference bars sweep vertically with gold-amethyst gradients, edge glows pulse from screen boundaries, and a "SIGNAL ACQUIRED" data flash flickers in stepped keyframes before dissolving into the existing boot sequence.
@@ -207,7 +208,7 @@ js/                                 # 41 ES modules, zero framework imports
 │   └── micro-interactions.js       # Hover/click micro-animations
 │
 css/                                # 21 modular stylesheets
-├── variables.css                   # Design tokens (colors, spacing, fonts, motion easing)
+├── variables.css                   # Design tokens (colors, spacing, fonts, motion easing, transition shorthands)
 ├── reset.css                       # Normalize + base resets
 ├── styles.css                      # Core layout, dock, desktop, icons
 ├── glass.css                       # Glassmorphism + backdrop-filter

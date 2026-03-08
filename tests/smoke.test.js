@@ -15,7 +15,7 @@ describe('Homepage smoke — critical DOM landmarks', () => {
             </div>
             <div id="desktop" class="desktop hidden">
                 <div class="top-bar">
-                    <div class="top-bar-left"><span class="brand">PASSION OS</span><span class="version">v3.33.2</span></div>
+                    <div class="top-bar-left"><span class="brand">PASSION OS</span><span class="version">v3.34.0</span></div>
                     <div class="top-bar-right"><span class="time-display">12:00:00</span></div>
                 </div>
                 <div class="desktop-icons" role="navigation" aria-label="Desktop icons"></div>

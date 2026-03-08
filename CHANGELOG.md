@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.33.2
-last_updated: 2026-03-06
+version: 3.34.0
+last_updated: 2026-03-08
 
 ---
 
@@ -15,6 +15,15 @@ last_updated: 2026-03-06
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.34.0] — 2026-03-08
+
+### Changed
+- **Motion system tokenization** — Replaced 30+ hardcoded `transition: ... ease` declarations across `styles.css`, `windows.css`, and `passion.css` with design system tokens (`--transition-fast`, `--transition-medium`, `--duration-*`, `--ease-decel/accel`). Every transition now uses intentional easing curves instead of the CSS generic `ease` default.
+- **Transition shorthands upgraded** — `--transition-fast/medium/slow` now use `--ease-decel` (smooth arrival) instead of generic `ease`. Added `--transition-exit-fast` and `--transition-exit-medium` using `--ease-accel` for elements leaving view.
+- **Window lifecycle motion** — `.minimized` and `.closing` states now use `--ease-accel` exit curves with duration tokens, matching the motion design language established in `glass.css` and `interactions.css`.
 
 ---
 

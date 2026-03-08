@@ -88,7 +88,7 @@ body::before {
     text-align: center;
     /* Start invisible — Act 1 fades in the galaxy */
     opacity: 0;
-    transition: opacity 0.6s ease;
+    transition: opacity var(--duration-dramatic) var(--ease-decel);
 }
 
 .intro-stage.act-0,
@@ -106,7 +106,7 @@ body::before {
     z-index: 50;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.15s ease;
+    transition: opacity var(--duration-fast) var(--ease-decel);
 }
 
 .intro-stage.act-0 .bm-signal {
@@ -264,7 +264,7 @@ body::before {
     opacity: 0;
     pointer-events: none;
     z-index: 1;
-    transition: opacity 0.8s ease;
+    transition: opacity 0.8s var(--ease-decel);
 }
 
 .intro-stage.act-2 .intro-watermark,
@@ -301,7 +301,7 @@ body::before {
 .intro-stage .os-title[data-act="2"] {
     opacity: 0;
     transform: translateY(10px);
-    transition: opacity 0.1s, transform 0.3s ease;
+    transition: opacity var(--duration-instant), transform var(--duration-normal) var(--ease-decel);
 }
 
 .intro-stage.act-2 .os-title[data-act="2"] {
@@ -360,7 +360,7 @@ body::before {
 /* --- Typewriter Subtitle (Act 2) --- */
 .intro-stage .os-subtitle[data-act="2"] {
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity var(--duration-fast) var(--ease-decel);
     margin-bottom: 0;
 }
 
@@ -389,7 +389,7 @@ body::before {
     z-index: 10;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: opacity var(--duration-slow) var(--ease-decel), transform var(--duration-slow) var(--ease-decel);
 }
 
 .intro-stage.act-3 .intro-identity,
@@ -422,7 +422,7 @@ body::before {
 .intro-stage.booting .intro-watermark,
 .intro-stage.booting .intro-identity {
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity var(--duration-slow) var(--ease-accel);
     pointer-events: none;
 }
 
@@ -491,7 +491,7 @@ body::before {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     text-transform: uppercase;
     border-radius: 30px;
     box-shadow:
@@ -1004,7 +1004,7 @@ body::before {
     align-items: center;
     cursor: grab;
     /* Changed cursor */
-    transition: transform 0.2s ease;
+    transition: transform var(--transition-fast);
     color: inherit;
     width: auto;
     pointer-events: auto;
@@ -1049,7 +1049,7 @@ body::before {
     height: 32px;
     object-fit: contain;
     filter: drop-shadow(0 0 8px currentColor);
-    transition: filter 0.3s ease, transform 0.3s ease;
+    transition: filter var(--transition-medium), transform var(--transition-medium);
 }
 
 .desktop-icon:hover .desktop-icon-svg {
@@ -1349,7 +1349,7 @@ body::before {
     height: 24px;
     object-fit: contain;
     filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5));
-    transition: filter 0.3s ease, transform 0.3s ease;
+    transition: filter var(--transition-medium), transform var(--transition-medium);
 }
 
 .dock-icon:hover .dock-icon-svg {
@@ -1430,7 +1430,7 @@ body::before {
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--transition-medium);
 }
 
 .lightbox:not(.hidden) {
@@ -1501,7 +1501,7 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
 }
 
 .lightbox-close:hover {
@@ -1526,7 +1526,7 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
 }
 
 .lightbox-prev:hover,

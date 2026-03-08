@@ -32,16 +32,16 @@
     transform: scale(0.3) translateY(100vh);
     pointer-events: none;
     transition:
-        opacity 0.25s ease,
-        transform 0.25s ease;
+        opacity var(--duration-normal) var(--ease-accel),
+        transform var(--duration-normal) var(--ease-accel);
 }
 
 .window.closing {
     opacity: 0;
     transform: scale(0.9) translateY(10px);
     transition:
-        opacity 0.2s ease,
-        transform 0.2s ease;
+        opacity var(--duration-fast) var(--ease-accel),
+        transform var(--duration-fast) var(--ease-accel);
 }
 
 .window.maximized {
@@ -254,7 +254,7 @@
     padding: 20px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
 }
 
 .media-folder:hover {
@@ -285,7 +285,7 @@
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     position: relative;
     aspect-ratio: 1;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -301,7 +301,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform var(--duration-slow) var(--ease-decel);
 }
 
 .photo-item:hover img {
@@ -315,7 +315,7 @@
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -523,7 +523,7 @@
     flex-direction: column;
     gap: 5px;
     margin-bottom: 10px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -1089,7 +1089,7 @@
     border: 1px solid rgba(0, 240, 255, 0.08);
     border-radius: 10px;
     padding: 15px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -1152,7 +1152,7 @@
     height: 20px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -1165,7 +1165,7 @@
     background: white;
     top: 1px;
     left: 2px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
 }
 
 .settings-toggle input:checked+.toggle-slider {
@@ -1221,7 +1221,7 @@
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1483,7 +1483,7 @@
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
 }
 
 .cyber-button.secondary:hover {
