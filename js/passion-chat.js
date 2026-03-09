@@ -21,8 +21,7 @@ export function render(container) {
         return `
             <div class="passion-chat">
                 <div class="passion-chat-header">
-                    <img src="${PassionLive.getPortraitImage()}" alt="Passion" class="passion-avatar passion-avatar-sm"
-                         onerror="this.style.display='none';" />
+                    <img src="${PassionLive.getPortraitImage()}" alt="Passion" class="passion-avatar passion-avatar-sm" />
                     <div class="passion-chat-header-info">
                         <div class="passion-chat-header-name">Passion</div>
                         <div class="passion-chat-header-status">
@@ -87,6 +86,11 @@ export function render(container) {
 
     function renderChat() {
         Sanitize.setHTML(container, buildContent());
+
+        // Programmatic image error handling — replaces inline onerror (CSP-safe)
+        container.querySelectorAll('.passion-avatar').forEach(img => {
+            img.addEventListener('error', () => { img.style.display = 'none'; }, { once: true });
+        });
 
         const refreshBtn = container.querySelector('#passionChatRefresh');
         if (refreshBtn) {

@@ -62,12 +62,17 @@ function showToast(message, key) {
 
     const toast = document.createElement('div');
     toast.className = 'passion-toast';
-    toast.innerHTML = `
-        <img src="${PassionLive.getPortraitImage()}" alt="Passion" class="passion-toast-avatar"
-             onerror="this.style.display='none';" />
-        <span class="passion-toast-text">${message}</span>
-        <button class="passion-toast-close" aria-label="Dismiss">&times;</button>
-    `;
+
+    // Safe DOM construction — no innerHTML, no inline event handlers
+    const avatar = PassionLive.createPortraitImg('passion-toast-avatar');
+    const text = document.createElement('span');
+    text.className = 'passion-toast-text';
+    text.textContent = message;
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'passion-toast-close';
+    closeBtn.setAttribute('aria-label', 'Dismiss');
+    closeBtn.textContent = '\u00d7';
+    toast.append(avatar, text, closeBtn);
 
     document.body.appendChild(toast);
     activeToast = toast;

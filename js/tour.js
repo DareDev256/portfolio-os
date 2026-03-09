@@ -91,8 +91,7 @@ export const Tour = {
                 <h3 class="tour-title"></h3>
                 <p class="tour-description"></p>
                 <div class="tour-passion-row">
-                    <img src="${PassionLive.getPortraitImage()}" alt="Passion" class="passion-avatar"
-                         onerror="this.style.display='none';" />
+                    <img src="${PassionLive.getPortraitImage()}" alt="Passion" class="passion-avatar" />
                     <span class="tour-passion-quip"></span>
                 </div>
                 <div class="tour-actions">
@@ -103,6 +102,12 @@ export const Tour = {
         `;
 
         document.body.appendChild(this.overlay);
+
+        // Programmatic image error handling — replaces inline onerror (CSP-safe)
+        const avatarImg = this.overlay.querySelector('.tour-passion-row .passion-avatar');
+        if (avatarImg) {
+            avatarImg.addEventListener('error', () => { avatarImg.style.display = 'none'; }, { once: true });
+        }
 
         // Get references
         this.spotlight = this.overlay.querySelector('.tour-spotlight');

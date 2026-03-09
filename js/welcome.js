@@ -50,8 +50,7 @@ export const Welcome = {
             <div class="welcome-modal">
                 <div class="welcome-header">
                     <div class="passion-avatar-container">
-                        <img src="${PassionLive.getPortraitImage()}" alt="Passion" class="passion-avatar"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <img src="${PassionLive.getPortraitImage()}" alt="Passion" class="passion-avatar" />
                         <div class="passion-avatar passion-avatar-fallback" style="display:none; align-items:center; justify-content:center; background: linear-gradient(135deg, #00f0ff, #aa00ff); font-size: 36px; color: #000; font-weight: 900;">P</div>
                     </div>
                     <h2>Hey! I'm Passion</h2>
@@ -85,6 +84,16 @@ export const Welcome = {
         `;
 
         document.body.appendChild(overlay);
+
+        // Programmatic image error handling — replaces inline onerror (CSP-safe)
+        const avatarImg = overlay.querySelector('.passion-avatar-container img');
+        if (avatarImg) {
+            avatarImg.addEventListener('error', () => {
+                avatarImg.style.display = 'none';
+                const fallback = avatarImg.nextElementSibling;
+                if (fallback) fallback.style.display = 'flex';
+            }, { once: true });
+        }
 
         // Animate in
         setTimeout(() => overlay.classList.add('visible'), 10);

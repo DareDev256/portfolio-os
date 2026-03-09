@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.37.1
-last_updated: 2026-03-08
+version: 3.37.2
+last_updated: 2026-03-09
 
 ---
 
@@ -15,6 +15,15 @@ last_updated: 2026-03-08
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.37.2] — 2026-03-09
+
+### Security
+- **API response sanitization** — PassionLive now sanitizes all string fields from the external API at the trust boundary before storing in state or localStorage. Enum fields (status, state) are validated against strict allowlists. Numeric fields are coerced and checked with `Number.isFinite()`. Prevents stored XSS via compromised API or localStorage cache poisoning.
+- **Inline onerror handler removal** — Eliminated all inline `onerror="..."` handlers from passion-ambient.js, passion-chat.js, welcome.js, and tour.js. Replaced with programmatic `addEventListener('error', ...)` calls. Inline handlers bypass Content-Security-Policy and are XSS vectors.
+- **DOM construction hardening** — passion-ambient.js showToast() rewritten from innerHTML template interpolation to safe DOM construction (createElement/textContent/append). New `PassionLive.createPortraitImg()` helper creates img elements with programmatic error handling.
 
 ---
 

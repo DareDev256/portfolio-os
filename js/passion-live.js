@@ -4,10 +4,39 @@
  * All other Passion UI components consume this module.
  */
 
+import { Sanitize } from './sanitize.js';
+
 const API_URL = 'https://passion-api.jamesdare.com/api/public';
 const CACHE_KEY = 'passion_live_cache';
 const POLL_INTERVAL = 30_000; // 30 seconds
 const FETCH_TIMEOUT = 5_000;  // 5 second abort
+
+// Known valid states — rejects anything the API shouldn't return
+const VALID_STATES = new Set([
+  'working', 'thinking', 'sleeping', 'focused', 'celebrating', 'idle',
+]);
+
+/**
+ * Sanitize API response at the trust boundary.
+ * Prevents stored XSS via compromised API or poisoned localStorage cache.
+ * String fields are HTML-escaped; enum fields are validated against allowlists.
+ */
+function sanitizeState(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  return {
+    status: raw.status === 'online' ? 'online' : 'offline',
+    state: VALID_STATES.has(raw.state) ? raw.state : 'sleeping',
+    stateEmoji: Sanitize.text(String(raw.stateEmoji || '😴')),
+    uptime: Sanitize.text(String(raw.uptime || '—')),
+    mood: Sanitize.text(String(raw.mood || 'resting')),
+    commentary: Sanitize.text(String(raw.commentary || '')),
+    cyclesTotal: Number.isFinite(Number(raw.cyclesTotal)) ? Number(raw.cyclesTotal) : 0,
+    tasksToday: Number.isFinite(Number(raw.tasksToday)) ? Number(raw.tasksToday) : 0,
+    currentFocus: Sanitize.text(String(raw.currentFocus || '—')),
+    lastActive: Sanitize.text(String(raw.lastActive || 'unknown')),
+    greeting: Sanitize.text(String(raw.greeting || '')),
+  };
+}
 
 // State-to-label mapping for visitors
 const STATE_LABELS = {
@@ -77,12 +106,12 @@ export const PassionLive = {
    * Initialize — load cache, start polling
    */
   init() {
-    // Load from localStorage cache immediately
+    // Load from localStorage cache immediately — sanitize at the trust boundary
     try {
       const cached = localStorage.getItem(CACHE_KEY);
       if (cached) {
         const parsed = JSON.parse(cached);
-        this.state = parsed.data;
+        this.state = sanitizeState(parsed.data);
         this.lastFetch = parsed.timestamp || 0;
       }
     } catch { /* corrupt cache, ignore */ }
@@ -116,7 +145,7 @@ export const PassionLive = {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
         const data = await res.json();
-        this.state = data;
+        this.state = sanitizeState(data);
         this.lastFetch = Date.now();
 
         // Cache to localStorage
@@ -235,5 +264,20 @@ export const PassionLive = {
 
   getPortraitImage() {
     return '/assets/passion-portrait.png';
+  },
+
+  /**
+   * Create a safe portrait <img> element with programmatic error handling.
+   * Replaces inline onerror="" handlers (which violate CSP and are XSS vectors).
+   * @param {string} [extraClass] - Additional CSS class(es) for the img element
+   * @returns {HTMLImageElement}
+   */
+  createPortraitImg(extraClass = '') {
+    const img = document.createElement('img');
+    img.src = this.getPortraitImage();
+    img.alt = 'Passion';
+    img.className = `passion-avatar${extraClass ? ' ' + extraClass : ''}`;
+    img.addEventListener('error', () => { img.style.display = 'none'; }, { once: true });
+    return img;
   },
 };
