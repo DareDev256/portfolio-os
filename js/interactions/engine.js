@@ -11,6 +11,7 @@ export const InteractionEngine = {
     rafId: null,
     _modulesLoaded: false,
     _initPromise: null,
+    _boundLoop: null, // cached bound loop — avoids allocating a new function every frame
 
     // Performance tracking
     lastFrameTime: 0,
@@ -41,6 +42,9 @@ export const InteractionEngine = {
     // Performance monitoring
     lowFPSCount: 0,
     lowFPSThreshold: 5000, // 5 seconds
+    FRAME_BUDGET_MS: 9,        // max ms per frame to maintain 60fps
+    THROTTLE_INTERVAL_MS: 33,  // 30fps throttle — skip work if less than this since last frame
+    APPROX_FRAME_MS: 16.67,    // approximate ms per frame at 60fps
 
     /**
      * Initialize the interaction engine
@@ -113,7 +117,8 @@ export const InteractionEngine = {
 
         this.isRunning = true;
         this.lastFrameTime = performance.now();
-        this.loop(this.lastFrameTime);
+        if (!this._boundLoop) this._boundLoop = this.loop.bind(this);
+        this._boundLoop(this.lastFrameTime);
 
         // Pause when tab is hidden, resume when visible
         if (!this._visibilityBound) {
@@ -153,11 +158,11 @@ export const InteractionEngine = {
         if (!this.isRunning) return;
 
         // Schedule next frame FIRST (ensures loop continues even if we skip work)
-        this.rafId = requestAnimationFrame(this.loop.bind(this));
+        this.rafId = requestAnimationFrame(this._boundLoop);
 
-        // 30fps throttle — skip work if less than 33ms since last frame
+        // 30fps throttle — skip work if less than THROTTLE_INTERVAL_MS since last frame
         const deltaTime = timestamp - this.lastFrameTime;
-        if (deltaTime < 33) return;
+        if (deltaTime < this.THROTTLE_INTERVAL_MS) return;
         this.lastFrameTime = timestamp;
 
         const currentFPS = 1000 / deltaTime;
@@ -205,7 +210,7 @@ export const InteractionEngine = {
 
         // Debug: Log frame time if over budget
         const frameTime = performance.now() - startTime;
-        if (frameTime > 9) {
+        if (frameTime > this.FRAME_BUDGET_MS) {
             console.warn(`[InteractionEngine] Frame time exceeded budget: ${frameTime.toFixed(2)}ms`);
         }
     },
@@ -222,7 +227,7 @@ export const InteractionEngine = {
 
         // Check for sustained low FPS
         if (currentFPS < this.settings.autoDisableThreshold) {
-            this.lowFPSCount += 16.67; // Approximate ms per frame
+            this.lowFPSCount += this.APPROX_FRAME_MS;
 
             // If low FPS for 5 seconds, disable engine
             if (this.lowFPSCount >= this.lowFPSThreshold) {
@@ -241,7 +246,7 @@ export const InteractionEngine = {
             }
         } else {
             // Reset counter if FPS recovers
-            this.lowFPSCount = Math.max(0, this.lowFPSCount - 16.67);
+            this.lowFPSCount = Math.max(0, this.lowFPSCount - this.APPROX_FRAME_MS);
         }
     },
 

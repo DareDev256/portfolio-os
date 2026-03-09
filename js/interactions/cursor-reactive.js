@@ -170,7 +170,7 @@ export const CursorReactive = {
         const rotateX = -relY * maxTilt;
 
         // Apply transform
-        element.style.transition = 'transform 0.15s ease-out';
+        element.style.transition = 'transform var(--transition-fast)';
         element.style.transformStyle = 'preserve-3d';
         element.style.perspective = '1000px';
         element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
@@ -252,7 +252,7 @@ export const CursorReactive = {
         const maxBlur = 30;
         const blur = baseBlur + (proximity * (maxBlur - baseBlur)) * this.intensityMultiplier;
 
-        element.style.transition = 'box-shadow 0.2s ease-out';
+        element.style.transition = 'box-shadow var(--transition-fast)';
         element.style.boxShadow = `
             0 0 ${blur}px ${color}${Math.floor(proximity * 0.6 * 255).toString(16).padStart(2, '0')},
             0 0 ${blur * 1.5}px ${color}${Math.floor(proximity * 0.3 * 255).toString(16).padStart(2, '0')}
@@ -272,7 +272,7 @@ export const CursorReactive = {
         const shiftX = -(dx / Math.abs(dx || 1)) * proximity * maxShift * this.intensityMultiplier;
         const shiftY = -(dy / Math.abs(dy || 1)) * proximity * maxShift * this.intensityMultiplier;
 
-        element.style.transition = 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+        element.style.transition = 'transform var(--duration-fast) var(--ease-decel)';
         element.style.transform = `translate(${shiftX}px, ${shiftY}px)`;
     },
 
@@ -290,7 +290,7 @@ export const CursorReactive = {
         const wobble = Math.sin(Date.now() / 200) * proximity * 2; // subtle wobble
         const color = data.config.color || '#00f0ff';
 
-        element.style.transition = 'transform 0.25s ease-out, box-shadow 0.25s ease-out';
+        element.style.transition = 'transform var(--transition-medium), box-shadow var(--transition-medium)';
         element.style.transform = `scale(${scale}) rotate(${wobble}deg)`;
         element.style.boxShadow = `
             0 0 ${proximity * 20}px ${color}${Math.floor(proximity * 0.5 * 255).toString(16).padStart(2, '0')}
@@ -317,12 +317,12 @@ export const CursorReactive = {
         const effects = data.config.effects || [];
 
         if (effects.includes('tilt') || effects.includes('magnetic-attract') || effects.includes('wake')) {
-            element.style.transition = 'transform 0.3s ease-out';
+            element.style.transition = 'transform var(--transition-slow)';
             element.style.transform = '';
         }
 
         if (effects.includes('ambient-glow') || effects.includes('proximity-glow')) {
-            element.style.transition = 'box-shadow 0.3s ease-out';
+            element.style.transition = 'box-shadow var(--transition-slow)';
             element.style.boxShadow = '';
         }
     },

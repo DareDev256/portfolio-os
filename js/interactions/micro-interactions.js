@@ -158,7 +158,7 @@ export const MicroInteractions = {
      * Apply press effect (scale down)
      */
     applyPressEffect(element) {
-        element.style.transition = 'transform 0.1s cubic-bezier(0.4, 0, 0.6, 1)';
+        element.style.transition = 'transform var(--duration-instant) var(--ease-press)';
         element.style.transform = 'scale(0.95)';
     },
 
@@ -166,7 +166,7 @@ export const MicroInteractions = {
      * Apply release effect (bounce back)
      */
     applyReleaseEffect(element) {
-        element.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        element.style.transition = 'transform var(--transition-bounce)';
         element.style.transform = 'scale(1.05)';
 
         setTimeout(() => {
@@ -246,7 +246,7 @@ export const MicroInteractions = {
         // Glow intensification
         if (effects.includes('glow')) {
             const color = config.color || '#00f0ff';
-            element.style.transition = 'box-shadow 0.2s ease-out';
+            element.style.transition = 'box-shadow var(--transition-fast)';
             element.style.boxShadow = `
                 0 0 20px ${color}40,
                 0 0 40px ${color}20,
@@ -256,7 +256,7 @@ export const MicroInteractions = {
 
         // Lift & tilt
         if (effects.includes('lift')) {
-            element.style.transition = 'transform 0.25s ease-out';
+            element.style.transition = 'transform var(--transition-medium)';
             element.style.transform = 'translateY(-4px) rotateX(2deg)';
         }
     },
@@ -269,13 +269,13 @@ export const MicroInteractions = {
 
         // Remove glow
         if (effects.includes('glow')) {
-            element.style.transition = 'box-shadow 0.3s ease-out';
+            element.style.transition = 'box-shadow var(--transition-slow)';
             element.style.boxShadow = '';
         }
 
         // Remove lift
         if (effects.includes('lift')) {
-            element.style.transition = 'transform 0.3s ease-out';
+            element.style.transition = 'transform var(--transition-slow)';
             element.style.transform = '';
         }
     },
@@ -313,7 +313,7 @@ export const MicroInteractions = {
         windowElement.style.filter = 'blur(10px)';
 
         requestAnimationFrame(() => {
-            windowElement.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            windowElement.style.transition = 'all var(--duration-slow) var(--ease-spring)';
             windowElement.style.opacity = '1';
             windowElement.style.transform = 'scale(1)';
             windowElement.style.filter = 'blur(0px)';
@@ -328,7 +328,7 @@ export const MicroInteractions = {
      * Create window dematerialize effect
      */
     dematerializeWindow(windowElement, callback) {
-        windowElement.style.transition = 'all 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53)';
+        windowElement.style.transition = 'all var(--duration-slow) var(--ease-snap)';
         windowElement.style.opacity = '0';
         windowElement.style.transform = 'scale(0.9)';
         windowElement.style.filter = 'blur(5px)';
@@ -350,7 +350,7 @@ export const MicroInteractions = {
         const translateX = targetRect.left - windowRect.left + (targetRect.width / 2) - (windowRect.width / 2);
         const translateY = targetRect.top - windowRect.top + (targetRect.height / 2) - (windowRect.height / 2);
 
-        windowElement.style.transition = 'all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        windowElement.style.transition = 'all var(--duration-slow) var(--ease-decel)';
         windowElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`;
         windowElement.style.opacity = '0';
 

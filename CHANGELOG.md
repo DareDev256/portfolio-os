@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.36.0
+version: 3.37.0
 last_updated: 2026-03-08
 
 ---
@@ -15,6 +15,15 @@ last_updated: 2026-03-08
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.37.0] — 2026-03-08
+
+### Changed
+- **Interaction motion tokens** — Replaced ~20 hardcoded `cubic-bezier()` and duration strings across `micro-interactions.js` and `cursor-reactive.js` with CSS design system variables (`--transition-fast`, `--ease-spring`, `--ease-press`, `--ease-snap`, etc.). All interaction animations now derive from the centralized motion token system in `variables.css`, making timing/easing adjustments a single-source change.
+- **Engine loop optimization** — Cached the bound `loop()` function in `InteractionEngine` instead of allocating a new `Function.prototype.bind()` on every animation frame. Eliminates per-frame GC pressure in the hot path.
+- **Named magic numbers** — Extracted frame budget (9ms), throttle interval (33ms), and approximate frame duration (16.67ms) into named constants on `InteractionEngine` for self-documenting code.
 
 ---
 
