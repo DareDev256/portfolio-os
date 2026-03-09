@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.37.0
+version: 3.37.1
 last_updated: 2026-03-08
 
 ---
@@ -15,6 +15,17 @@ last_updated: 2026-03-08
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.37.1] — 2026-03-08
+
+### Security
+- **CSP hardening** — Pinned `script-src` CDN allowlist from broad `https://cdn.jsdelivr.net` to exact versioned paths (`dompurify@3.0.8/`, `three@0.170.0/`). Removed stale `fonts.gstatic.com` from `img-src` (it serves fonts, not images). Added `font-src 'self'` for local font fallback. Added `connect-src` entries for Google Fonts stylesheet/woff2 fetches. Added `media-src 'self'`, `worker-src 'self'`, `manifest-src 'self'` to close implicit default-src fallback gaps.
+- **Permissions-Policy expansion** — Locked down 12 browser APIs (accelerometer, autoplay, encrypted-media, gyroscope, magnetometer, midi, payment, picture-in-picture, usb, interest-cohort) in addition to camera/microphone/geolocation. Removed geolocation self-grant (not used).
+- **New headers** — Added `X-DNS-Prefetch-Control: off` (prevents DNS leak of link targets) and `X-Download-Options: noopen` (IE download execution guard). Total: 12 security headers.
+- **Service worker cache control** — Dedicated `/sw.js` header block with `no-cache, no-store, must-revalidate` to prevent stale worker caching and `Service-Worker-Allowed: /` scope.
+- **Data endpoint hardening** — Added `/data/(.*)` header block with short-lived cache (300s + stale-while-revalidate) and `nosniff` to prevent MIME-type sniffing on JSON payloads.
 
 ---
 

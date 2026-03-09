@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.37.0-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.37.1-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-358_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-46-b388ff?style=flat-square)
@@ -21,7 +21,7 @@ An interactive desktop environment that runs entirely in the browser. Draggable 
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> **46 ES modules** · **25 stylesheets** · **358 tests across 17 suites** · **20 desktop apps** · **10 security headers** · **0 runtime dependencies**
+> **46 ES modules** · **25 stylesheets** · **358 tests across 17 suites** · **20 desktop apps** · **12 security headers** · **0 runtime dependencies**
 
 ## Quick Start
 
