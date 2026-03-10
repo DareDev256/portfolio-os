@@ -79,7 +79,7 @@ async function init() {
 
     // Initialize Interaction Engine — always load modules so event-driven
     // features (easter eggs) work even if the animation loop is off
-    if (!safeMode && sessionStorage.getItem('digivice-intro-seen')) {
+    if (!safeMode) {
         const { InteractionEngine } = await import('./interactions/engine.js');
         await InteractionEngine.init({ startLoop: State.interactionsEnabled });
         window.__InteractionEngine = InteractionEngine;
@@ -116,7 +116,7 @@ async function init() {
     }
 
     // Initialize parallax depth layers (lock screen + desktop)
-    if (!safeMode && sessionStorage.getItem('digivice-intro-seen')) {
+    if (!safeMode) {
         Parallax.init();
     }
 
@@ -126,7 +126,7 @@ async function init() {
 
     if (isDirectAccess) {
         Login.skipToDesktop();
-    } else if (!safeMode && sessionStorage.getItem('digivice-intro-seen')) {
+    } else if (!safeMode) {
         Boot.start(() => Login.init());
     } else {
         Login.init();

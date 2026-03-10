@@ -120,16 +120,21 @@ export const Modal = {
             const confirmBtn = this.container.querySelector('.confirm');
             const overlay = this.container.querySelector('.modal-overlay');
 
-            confirmBtn.onclick = dismiss;
-            overlay.onclick = dismiss;
-
-            // Keyboard: Enter or Escape dismisses alert
+            // Wrap dismiss so every path (click, overlay, keyboard) removes the keydown listener
             const onKey = (e) => {
                 if (e.key === 'Enter' || e.key === 'Escape') {
-                    document.removeEventListener('keydown', onKey);
-                    dismiss();
+                    dismissAndCleanup();
                 }
             };
+            const dismissAndCleanup = (value) => {
+                document.removeEventListener('keydown', onKey);
+                dismiss(value);
+            };
+
+            confirmBtn.onclick = dismissAndCleanup;
+            overlay.onclick = dismissAndCleanup;
+
+            // Keyboard: Enter or Escape dismisses alert
             document.addEventListener('keydown', onKey);
 
             setTimeout(() => confirmBtn.focus(), 100);

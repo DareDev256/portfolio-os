@@ -10,7 +10,6 @@ import { Router } from './router.js';
 import { Mobile } from './mobile.js';
 import { MahoragaWheel3D } from './mahoraga-wheel-3d.js';
 import { trapFocus } from './focus-trap.js';
-import { DigiviceIntro } from './digivice-intro.js';
 
 /**
  * Login and Lock Screen
@@ -33,6 +32,7 @@ export const Login = {
     _skipBound: null,
     _typewriterInterval: null,
     _focusTrapCleanup: null,
+    _enterKeyHandler: null,
 
     /**
      * Initialize login system
@@ -51,13 +51,11 @@ export const Login = {
 
         this.initLoginScreen();
         this.initTaskbarClock();
+        this.initGalaxyEffect();
+        this.init3DWheel();
 
-        // Play digivice intro video, then init GPU-heavy effects + cinematic
-        DigiviceIntro.play().then(() => {
-            this.initGalaxyEffect();
-            this.init3DWheel();
-            this.startCinematic();
-        });
+        // Start cinematic intro instead of old lock screen click handler
+        this.startCinematic();
 
         // Trap focus within the lock screen
         this._focusTrapCleanup = trapFocus(this.lockScreen);
@@ -295,11 +293,13 @@ export const Login = {
             });
 
             // Enter key handler (only after cinematic is done)
-            document.addEventListener('keydown', (e) => {
+            // Store reference so it can be removed after login completes
+            this._enterKeyHandler = (e) => {
                 if (e.key === 'Enter' && this._cinematicDone && !this.lockScreen.classList.contains('hidden')) {
                     this.startBootSequence();
                 }
-            });
+            };
+            document.addEventListener('keydown', this._enterKeyHandler);
         }
     },
 
@@ -377,6 +377,12 @@ export const Login = {
      * Login (accept any password or empty)
      */
     login() {
+        // Remove Enter key listener — no longer needed once desktop is active
+        if (this._enterKeyHandler) {
+            document.removeEventListener('keydown', this._enterKeyHandler);
+            this._enterKeyHandler = null;
+        }
+
         // Release focus trap on lock screen
         if (this._focusTrapCleanup) {
             this._focusTrapCleanup();
@@ -535,6 +541,16 @@ export const Login = {
 
         // Restart cinematic
         this.startCinematic();
+
+        // Re-attach Enter key handler for the lock screen
+        if (!this._enterKeyHandler) {
+            this._enterKeyHandler = (e) => {
+                if (e.key === 'Enter' && this._cinematicDone && !this.lockScreen.classList.contains('hidden')) {
+                    this.startBootSequence();
+                }
+            };
+            document.addEventListener('keydown', this._enterKeyHandler);
+        }
 
         // Re-trap focus within the lock screen
         this._focusTrapCleanup = trapFocus(this.lockScreen);

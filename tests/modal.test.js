@@ -176,4 +176,53 @@ describe('Modal.alert()', () => {
         await promise;
         expect(releaseSpy).toHaveBeenCalledOnce();
     });
+
+    it('removes keydown listener when dismissed via button click', async () => {
+        const removeSpy = vi.spyOn(document, 'removeEventListener');
+        const promise = Modal.alert('Title', 'Body');
+
+        // Dismiss via button click (not keyboard)
+        Modal.container.querySelector('.confirm').click();
+        await promise;
+
+        // The keydown listener should have been removed
+        const keydownCalls = removeSpy.mock.calls.filter(
+            ([event]) => event === 'keydown'
+        );
+        expect(keydownCalls.length).toBeGreaterThanOrEqual(1);
+        removeSpy.mockRestore();
+    });
+
+    it('removes keydown listener when dismissed via overlay click', async () => {
+        const removeSpy = vi.spyOn(document, 'removeEventListener');
+        const promise = Modal.alert('Title', 'Body');
+
+        Modal.container.querySelector('.modal-overlay').click();
+        await promise;
+
+        const keydownCalls = removeSpy.mock.calls.filter(
+            ([event]) => event === 'keydown'
+        );
+        expect(keydownCalls.length).toBeGreaterThanOrEqual(1);
+        removeSpy.mockRestore();
+    });
+
+    it('does not leak keydown listeners across multiple alert cycles', async () => {
+        const addSpy = vi.spyOn(document, 'addEventListener');
+        const removeSpy = vi.spyOn(document, 'removeEventListener');
+
+        // Open and dismiss 3 alerts via button click
+        for (let i = 0; i < 3; i++) {
+            const p = Modal.alert('Title', 'Body');
+            Modal.container.querySelector('.confirm').click();
+            await p;
+        }
+
+        const added = addSpy.mock.calls.filter(([e]) => e === 'keydown').length;
+        const removed = removeSpy.mock.calls.filter(([e]) => e === 'keydown').length;
+        expect(removed).toBe(added);
+
+        addSpy.mockRestore();
+        removeSpy.mockRestore();
+    });
 });

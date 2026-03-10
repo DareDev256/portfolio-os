@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.38.1
+version: 3.38.2
 last_updated: 2026-03-10
 
 ---
@@ -15,6 +15,14 @@ last_updated: 2026-03-10
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.38.2] — 2026-03-10
+
+### Fixed
+- **Modal alert keydown listener leak** — `alert()` registered a `keydown` handler on `document` but only removed it when the user dismissed via keyboard (Enter/Escape). Dismissing via OK button click or overlay click left the listener attached, stacking one orphan per alert cycle. Wrapped dismiss in a cleanup function that removes the listener regardless of dismissal path.
+- **Login Enter key listener leak** — `initLoginScreen()` attached an anonymous `keydown` listener on `document` that was never removed after login. The handler persisted for the entire session, firing on every keypress even when the desktop was active. Stored the handler reference and now remove it in `login()`, re-attach it in `lock()`.
 
 ---
 
