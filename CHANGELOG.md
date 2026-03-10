@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.38.0
-last_updated: 2026-03-09
+version: 3.38.1
+last_updated: 2026-03-10
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-03-09
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.38.1] — 2026-03-10
+
+### Fixed
+- **Idle timer listener leak** — `startIdleTimer()` added 5 document-level event listeners on every call but never removed them. Each lock/unlock cycle stacked 5 more listeners, causing memory growth and redundant `resetTimer` invocations on every user interaction. Extracted `stopIdleTimer()` to deterministically remove listeners and clear the timeout. `lock()` now calls `stopIdleTimer()` instead of only clearing the timeout, and `startIdleTimer()` defensively tears down prior listeners before attaching new ones.
 
 ---
 

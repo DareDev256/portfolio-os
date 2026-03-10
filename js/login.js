@@ -541,18 +541,23 @@ export const Login = {
         if (this.clockInterval) clearInterval(this.clockInterval);
         this.clockInterval = setInterval(() => this.updateClock(), 1000);
 
-        // Clear idle timer
-        if (this.idleTimer) {
-            clearTimeout(this.idleTimer);
-            this.idleTimer = null;
-        }
+        // Clear idle timer AND remove its listeners (prevents leak on lock/unlock cycles)
+        this.stopIdleTimer();
     },
 
+    /** @type {string[]} Events that reset the idle timer */
+    _idleEvents: ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'],
+
     /**
-     * Start idle timer to auto-lock
+     * Start idle timer to auto-lock.
+     * Removes any prior listeners before attaching new ones to prevent
+     * listener accumulation across lock/unlock cycles.
      */
     startIdleTimer() {
-        const resetTimer = () => {
+        // Tear down previous listeners if they exist
+        this.stopIdleTimer();
+
+        this._idleResetHandler = () => {
             clearTimeout(this.idleTimer);
 
             if (State && State.idleTime > 0) {
@@ -562,11 +567,27 @@ export const Login = {
             }
         };
 
-        // Reset on user activity
-        ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach((event) => {
-            document.addEventListener(event, resetTimer, true);
+        // Attach with capture so activity is caught before any stopPropagation
+        this._idleEvents.forEach((event) => {
+            document.addEventListener(event, this._idleResetHandler, true);
         });
 
-        resetTimer();
+        this._idleResetHandler();
+    },
+
+    /**
+     * Remove idle timer listeners and clear the pending timeout.
+     */
+    stopIdleTimer() {
+        if (this._idleResetHandler) {
+            this._idleEvents.forEach((event) => {
+                document.removeEventListener(event, this._idleResetHandler, true);
+            });
+            this._idleResetHandler = null;
+        }
+        if (this.idleTimer) {
+            clearTimeout(this.idleTimer);
+            this.idleTimer = null;
+        }
     },
 };
