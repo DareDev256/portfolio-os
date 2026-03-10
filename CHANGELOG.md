@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.37.2
+version: 3.38.0
 last_updated: 2026-03-09
 
 ---
@@ -15,6 +15,14 @@ last_updated: 2026-03-09
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.38.0] — 2026-03-09
+
+### Changed
+- **Centralized version constant** — Created `js/version.js` as the single source of truth for the application version string. `login.js` now imports `VERSION` instead of hardcoding `v3.35.0` in three places (skip subtitle, typewriter text, boot sequence message). Eliminates the recurring version-drift bug that was previously fixed in v3.7.1, v3.10.0, and v3.33.2.
+- **Version sync** — Updated all 6 version references (package.json, version.js, index.html title, index.html top bar, login.js ×3) to `3.38.0`. Previously, package.json was at `3.37.2` while login.js showed `v3.35.0` and index.html showed `v3.37.0`.
 
 ---
 
