@@ -10,6 +10,7 @@ import { Router } from './router.js';
 import { Mobile } from './mobile.js';
 import { MahoragaWheel3D } from './mahoraga-wheel-3d.js';
 import { trapFocus } from './focus-trap.js';
+import { DigiviceIntro } from './digivice-intro.js';
 
 /**
  * Login and Lock Screen
@@ -50,11 +51,13 @@ export const Login = {
 
         this.initLoginScreen();
         this.initTaskbarClock();
-        this.initGalaxyEffect();
-        this.init3DWheel();
 
-        // Start cinematic intro instead of old lock screen click handler
-        this.startCinematic();
+        // Play digivice intro video, then init GPU-heavy effects + cinematic
+        DigiviceIntro.play().then(() => {
+            this.initGalaxyEffect();
+            this.init3DWheel();
+            this.startCinematic();
+        });
 
         // Trap focus within the lock screen
         this._focusTrapCleanup = trapFocus(this.lockScreen);

@@ -79,7 +79,7 @@ async function init() {
 
     // Initialize Interaction Engine — always load modules so event-driven
     // features (easter eggs) work even if the animation loop is off
-    if (!safeMode) {
+    if (!safeMode && sessionStorage.getItem('digivice-intro-seen')) {
         const { InteractionEngine } = await import('./interactions/engine.js');
         await InteractionEngine.init({ startLoop: State.interactionsEnabled });
         window.__InteractionEngine = InteractionEngine;
@@ -98,8 +98,8 @@ async function init() {
     // Initialize Shortcuts Overlay (press ?)
     ShortcutsOverlay.init();
 
-    // Start galaxy background immediately (visible during boot)
-    if (!safeMode) {
+    // Defer galaxy on first visit — GPU contention blocks video intro decode
+    if (!safeMode && sessionStorage.getItem('digivice-intro-seen')) {
         try {
             const { initGalaxyBackground } = await import('./galaxy-background.js');
             const galaxyInstance = initGalaxyBackground(document.body, {
@@ -116,7 +116,7 @@ async function init() {
     }
 
     // Initialize parallax depth layers (lock screen + desktop)
-    if (!safeMode) {
+    if (!safeMode && sessionStorage.getItem('digivice-intro-seen')) {
         Parallax.init();
     }
 
@@ -126,7 +126,7 @@ async function init() {
 
     if (isDirectAccess) {
         Login.skipToDesktop();
-    } else if (!safeMode) {
+    } else if (!safeMode && sessionStorage.getItem('digivice-intro-seen')) {
         Boot.start(() => Login.init());
     } else {
         Login.init();
