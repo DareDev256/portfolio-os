@@ -23,12 +23,25 @@ export const DigiviceIntro = {
       this._createVideo('/assets/media/digivice-intro.mp4');
       this._video.addEventListener('ended', () => this._finish(resolve), { once: true });
       this._video.addEventListener('error', () => this._finish(resolve), { once: true });
-      this._video.addEventListener('canplaythrough', () => {
-        if (this._resolved) return;
+      // Mobile browsers ignore preload="auto" — canplaythrough never fires.
+      // Call play() immediately; the browser will buffer and start when ready.
+      // On desktop, wait for canplaythrough for a smoother start.
+      if (isMobile()) {
         this._video.play()
-          .then(() => { this._hideTapPrompt(); })
+          .then(() => { this._showVideo(); })
           .catch(() => { this._showTapPrompt(resolve); });
-      }, { once: true });
+      } else {
+        this._video.addEventListener('canplaythrough', () => {
+          if (this._resolved) return;
+          this._video.play()
+            .then(() => { this._showVideo(); })
+            .catch(() => { this._showTapPrompt(resolve); });
+        }, { once: true });
+      }
+      // Safety timeout — if nothing happens in 8s, skip to desktop
+      this._safetyTimer = setTimeout(() => {
+        if (!this._resolved) this._finish(resolve);
+      }, 8000);
     });
   },
   _createOverlay() {
@@ -54,7 +67,8 @@ export const DigiviceIntro = {
       transform: 'scale(0.95)',
       transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
     });
-    v.addEventListener('canplaythrough', () => { v.style.opacity='1'; v.style.transform='scale(1)'; }, { once: true });
+    // Reveal video when it actually starts playing (works on both mobile + desktop)
+    v.addEventListener('playing', () => { v.style.opacity='1'; v.style.transform='scale(1)'; }, { once: true });
     const w = document.createElement('div');
     Object.assign(w.style, { position:'relative',display:'flex',alignItems:'center',justifyContent:'center',width:'100%' });
     // Scanline overlay
@@ -66,6 +80,10 @@ export const DigiviceIntro = {
     w.appendChild(v); w.appendChild(sc); w.appendChild(vi);
     this._overlay.appendChild(w);
     this._video = v;
+  },
+  _showVideo() {
+    this._hideTapPrompt();
+    if (this._video) { this._video.style.opacity='1'; this._video.style.transform='scale(1)'; }
   },
   _showTapPrompt(resolve) {
     // Autoplay blocked (common on mobile) — show tap prompt
@@ -136,6 +154,7 @@ export const DigiviceIntro = {
     if (this._resolved) return;
     this._resolved = true;
     this._hideTapPrompt();
+    if (this._safetyTimer) { clearTimeout(this._safetyTimer); this._safetyTimer = null; }
     sessionStorage.setItem('digivice-intro-seen', '1');
     this._overlay.style.opacity = '0';
     this._overlay.style.transform = 'scale(1.02)';
