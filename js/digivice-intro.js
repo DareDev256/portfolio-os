@@ -1,5 +1,6 @@
 /**
- * Digivice Boot Intro — blob-fetch video before login cinematic.
+ * Digivice Boot Intro — video overlay before desktop.
+ * Uses direct src (blob URLs blocked by CSP on Vercel).
  */
 export const DigiviceIntro = {
   _overlay: null, _video: null, _skipBtn: null, _resolved: false,
@@ -16,15 +17,13 @@ export const DigiviceIntro = {
         if (this._video) this._video.pause();
         this._finish(resolve);
       });
-      fetch('/assets/media/digivice-intro.mp4')
-        .then((r) => r.blob())
-        .then((blob) => {
-          if (this._resolved) return;
-          this._createVideo(URL.createObjectURL(blob));
-          this._video.addEventListener('ended', () => this._finish(resolve), { once: true });
-          this._video.play().catch(() => this._finish(resolve));
-        })
-        .catch(() => this._finish(resolve));
+      this._createVideo('/assets/media/digivice-intro.mp4');
+      this._video.addEventListener('ended', () => this._finish(resolve), { once: true });
+      this._video.addEventListener('error', () => this._finish(resolve), { once: true });
+      this._video.addEventListener('canplaythrough', () => {
+        if (this._resolved) return;
+        this._video.play().catch(() => this._finish(resolve));
+      }, { once: true });
     });
   },
   _createOverlay() {
@@ -34,7 +33,7 @@ export const DigiviceIntro = {
   },
   _createVideo(src) {
     const v = document.createElement('video');
-    v.src = src; v.muted = true; v.playsInline = true;
+    v.src = src; v.muted = true; v.playsInline = true; v.preload = 'auto';
     Object.assign(v.style, { maxHeight:'85vh',maxWidth:'90vw',borderRadius:'8px',objectFit:'contain',filter:'brightness(1.05) contrast(1.05)',opacity:'0',transform:'scale(0.95)',transition:'opacity 0.6s ease-out, transform 0.6s ease-out' });
     v.addEventListener('canplaythrough', () => { v.style.opacity='1'; v.style.transform='scale(1)'; }, { once: true });
     const sc = document.createElement('div');
