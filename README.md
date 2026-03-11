@@ -4,10 +4,10 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.40.0-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.41.0-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-361_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
-![Modules](https://img.shields.io/badge/modules-48-b388ff?style=flat-square)
+![Modules](https://img.shields.io/badge/modules-49-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-888?style=flat-square)
 
@@ -44,7 +44,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **20 Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column grid. Right-click context menus on each. Includes 3 external deployed-project links (Vibe Coder, IMG_GEN.ai, TypeMaster) and a curated Portfolio showcase.
 - **Purple Reign Showcase** — Opens with the "Ascending Core" — a rotating CSS 3D obsidian crystal with internal amethyst glow that fractures apart on scroll, revealing the content beneath. Followed by the "Amethyst Code" hero reveal — a metallic purple glitch effect that resolves to unveil the section title. Featured projects display as cinematic scroll-snap chapters with forcefield reveal, gilded gold shimmer on titles, staggered animations, dot navigation, and syntax-highlighted code snippets with copy-to-clipboard. CTA buttons feature "Opulent Interface" micro-interactions: embossed depth, animated gold border trace, and letter-spacing breathe on hover. Each chapter has a "Catalyst Aura" — a mouse-reactive amethyst-gold glow with hexagonal crystal lens that follows the cursor.
 - **Command Palette** — `Cmd+K` / `Ctrl+K` opens a Spotlight-style fuzzy-search launcher across all apps and system toggles.
-- **Dock** — Active window indicators, minimize-to-dock animation, hover tooltips.
+- **Dock** — macOS-style magnetic magnification (icons swell on cursor proximity with Gaussian falloff), active window indicators, minimize-to-dock animation, hover tooltips.
 - **Client-Side Routing** — Deep-linkable URLs (`/about`, `/work`, `/resume`, `/terminal`) via History API.
 - **Themes** — Dark/light toggle with wallpaper cycling. State persists in localStorage.
 - **Ambient System Telemetry** — Live CPU/RAM metrics in the top bar fluctuate via weighted random walks, session uptime counter, visit tracking with welcome toasts, and periodic contextual tips.

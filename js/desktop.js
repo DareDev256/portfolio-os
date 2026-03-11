@@ -11,6 +11,7 @@ import { createCodeViewer } from './code-viewer.js';
 import { PassionLive } from './passion-live.js';
 import { initAmbientPresence } from './passion-ambient.js';
 import { AmbientSystem } from './ambient-system.js';
+import { initDockMagnify } from './dock-magnify.js';
 
 /**
  * Open a lazy-loaded window app.
@@ -238,6 +239,7 @@ export const Desktop = {
     init() {
         this.renderIcons();
         this.initDock(); // Initialize Dock
+        initDockMagnify(); // Proximity-based dock magnification
         this.initContextMenu();
         this.initDesktopEvents();
 

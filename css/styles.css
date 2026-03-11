@@ -1225,6 +1225,7 @@ body::before {
     /* Force emoji to show */
 }
 
+/* Default hover — overridden when dock magnification is active */
 .taskbar-window-btn:hover {
     transform: translateY(-8px) scale(1.15);
     background: rgba(15, 10, 30, 0.5);
@@ -1234,6 +1235,31 @@ body::before {
 
 .taskbar-window-btn.dock-icon:hover {
     filter: brightness(1.2);
+}
+
+/* Dock Magnification — proximity-based scaling (driven by JS) */
+.dock-magnifying .dock-icon,
+.dock-magnifying .taskbar-window-btn {
+    transition: transform 0.15s var(--ease-spring),
+                border-color 0.2s ease-out,
+                box-shadow 0.2s ease-out;
+    will-change: transform;
+    transform-origin: bottom center;
+}
+
+/* Disable CSS hover when JS magnification is active */
+.dock-magnifying .taskbar-window-btn:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: inherit;
+}
+
+/* Smooth return when cursor leaves dock */
+.taskbar.dock-style:not(.dock-magnifying) .dock-icon,
+.taskbar.dock-style:not(.dock-magnifying) .taskbar-window-btn {
+    transition: transform 0.35s var(--ease-decel),
+                border-color 0.3s ease-out,
+                box-shadow 0.3s ease-out;
 }
 
 .taskbar-window-btn.active {

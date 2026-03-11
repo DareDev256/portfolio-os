@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.40.0
+version: 3.41.0
 last_updated: 2026-03-11
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-11
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.41.0] — 2026-03-11
+
+### Added
+- **Dock magnetic magnification** — macOS-style proximity-based scaling on the dock. Icons swell smoothly as the cursor approaches using Gaussian distance falloff, with neighboring icons scaling proportionally. Includes dynamic cyan glow intensification, spring-eased transitions, and smooth deceleration on mouse leave. New `dock-magnify.js` module (94 lines) with MutationObserver to track dynamically added taskbar buttons.
 
 ---
 
