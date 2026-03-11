@@ -1366,7 +1366,7 @@ export const Desktop = {
             },
             {
                 name: 'VIBE_CODER',
-                desc: 'Vampire survivors-style idle game — 18 enemy types, 4 bosses, 26 weapons, Claude Code integration.',
+                desc: 'Vampire survivors-style idle game. 18 enemy types, 4 bosses, 26 weapons, Claude Code integration.',
                 tech: ['Phaser 3', 'JavaScript', 'Vite', 'Web Audio'],
                 accent: '#c084fc',
                 demo: 'https://daredev256.github.io/vibe-coder/',
@@ -1375,7 +1375,7 @@ export const Desktop = {
             },
             {
                 name: 'PORTFOLIO_OS',
-                desc: 'This cyberpunk desktop OS — 44 vanilla JS modules, Three.js galaxy, draggable windows, zero frameworks.',
+                desc: 'This cyberpunk desktop OS. 44 vanilla JS modules, Three.js galaxy, draggable windows, zero frameworks.',
                 tech: ['JavaScript', 'Three.js', 'CSS3', 'Vite'],
                 accent: '#a78bfa',
                 demo: 'https://jamesdare.com',
@@ -1383,14 +1383,14 @@ export const Desktop = {
             },
             {
                 name: 'CULTURE_DROP_HQ',
-                desc: 'Operations dashboard for Toronto hip-hop media — manage content, artists, and releases.',
+                desc: 'Operations dashboard for Toronto hip-hop media. Manage content, artists, and releases.',
                 tech: ['React', 'Node.js', 'MongoDB', 'Tailwind'],
                 accent: '#d4af37',
                 snippet: { lang: 'jsx', code: `const Dashboard = () => (\n  <Layout sidebar={<ArtistNav />}>\n    <ContentGrid filter={useFilter()} />\n    <ReleaseTimeline data={releases} />\n  </Layout>\n);` },
             },
             {
                 name: 'FCPXML_MCP_SERVER',
-                desc: 'AI-powered MCP server for Final Cut Pro XML — automate timeline editing with natural language.',
+                desc: 'AI-powered MCP server for Final Cut Pro XML. Automate timeline editing with natural language.',
                 tech: ['Python', 'Claude AI', 'MCP', 'XML'],
                 accent: '#7c3aed',
                 repo: 'https://github.com/DareDev256/fcpxml-mcp-server',
@@ -1641,11 +1641,20 @@ export const Desktop = {
                 ],
             },
             {
+                name: 'Web Development',
+                color: '#ff4444',
+                apps: [
+                    { name: 'SAVV4X.COM', desc: 'Official website for Toronto rapper Savv4x (Problem Child)', status: 'live', link: 'https://savv4x.com' },
+                    { name: 'WHYG35.COM', desc: 'Official website for Toronto rapper WhyG 35 (Big Boss El Neato)', status: 'live', link: 'https://whyg35.com' },
+                    { name: 'SEANPANE.COM', desc: 'Official website for artist Sean Pane', status: 'live', link: 'https://seanpane.com' },
+                    { name: 'SWAGGERRITE.COM', desc: 'Official website for Toronto rapper SwaggerRite', status: 'live', link: 'https://swaggerrite.com' },
+                    { name: 'TDOTS_PORTFOLIO', desc: 'Synthwave 3D music video portfolio', status: 'live', link: 'https://tdotssolutionsz-portfolio.vercel.app' },
+                ],
+            },
+            {
                 name: 'Creative & Client Work',
                 color: '#ffaa00',
                 apps: [
-                    { name: 'TDOTS_PORTFOLIO', desc: 'Synthwave 3D music video portfolio', status: 'live', link: 'https://tdotssolutionsz-portfolio.vercel.app' },
-                    { name: 'CASPER_TNG_SITE', desc: 'Official website for Toronto rapper Casper TNG', status: 'deployed', link: 'https://github.com/DareDev256/casper-tng-website' },
                     { name: 'IMG_GEN_PROMPTS', desc: 'AI prompt engineering tool for image/video generation', status: 'live', link: 'https://web-ten-vert-46.vercel.app' },
                     { name: 'BUILDRIGHT', desc: 'Duolingo-style mobile learning app (React Native)', status: 'deployed', link: 'https://github.com/DareDev256/buildright' },
                 ],
@@ -2452,7 +2461,7 @@ export const Desktop = {
                 title: 'WEBSITE DESIGN & DEVELOPMENT',
                 icon: '◈',
                 color: '#00f0ff',
-                description: 'Custom-built websites tailored to your brand. From single-page landing sites to full multi-page experiences — designed for speed, mobile responsiveness, and conversion.',
+                description: 'Custom-built websites tailored to your brand. From single-page landing sites to full multi-page experiences, designed for speed, mobile responsiveness, and conversion.',
                 features: [
                     'Custom design from scratch (no templates)',
                     'Mobile-first responsive development',
@@ -2572,7 +2581,7 @@ export const Desktop = {
             </div>
 
             <div class="window-section-header green" style="margin-top: 35px;">◈ MONTHLY RETAINERS</div>
-            <p class="services-retainer-intro">Keep your site running, updated, and growing — without the hassle.</p>
+            <p class="services-retainer-intro">Keep your site running, updated, and growing without the hassle.</p>
 
             <div class="retainer-grid">
                 ${RETAINERS.map(r => `
@@ -2607,7 +2616,7 @@ export const Desktop = {
 
         WindowManager.create({
             id: 'services',
-            title: 'SERVICES.exe — TDot Solutions',
+            title: 'SERVICES.exe | TDot Solutions',
             icon: '◈',
             content,
             width: winWidth,

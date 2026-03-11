@@ -1,7 +1,7 @@
 [
     {
         "title": "Passion Agent",
-        "description": "24/7 autonomous AI code improvement system — analyzes repos, spawns Claude Code for fixes, submits PRs, and learns from merge/reject patterns.",
+        "description": "24/7 autonomous AI code improvement system. Analyzes repos, spawns Claude Code for fixes, submits PRs, and learns from merge/reject patterns.",
         "tech": ["Node.js", "Claude Code", "MCP", "SQLite"],
         "tags": ["AI", "Tools"],
         "demo": null,
@@ -9,7 +9,7 @@
     },
     {
         "title": "FCPXML MCP Server",
-        "description": "AI-powered MCP server for Final Cut Pro XML editing — automate timeline manipulation with natural language.",
+        "description": "AI-powered MCP server for Final Cut Pro XML editing. Automate timeline manipulation with natural language.",
         "tech": ["Python", "Claude AI", "MCP", "XML"],
         "tags": ["AI", "Tools"],
         "demo": null,
@@ -17,7 +17,7 @@
     },
     {
         "title": "RAG with Citations",
-        "description": "Enterprise RAG pipeline with source attribution — retrieve, generate, and cite with confidence scores.",
+        "description": "Enterprise RAG pipeline with source attribution. Retrieve, generate, and cite with confidence scores.",
         "tech": ["Python", "LangChain", "OpenAI", "FAISS"],
         "tags": ["AI", "Fullstack"],
         "demo": null,
@@ -33,7 +33,7 @@
     },
     {
         "title": "LLM Evaluation Harness",
-        "description": "LLM evaluation framework with CI/CD integration — benchmark models across accuracy, latency, and cost.",
+        "description": "LLM evaluation framework with CI/CD integration. Benchmark models across accuracy, latency, and cost.",
         "tech": ["Python", "OpenAI", "CI/CD", "pytest"],
         "tags": ["AI", "Tools"],
         "demo": null,
@@ -49,7 +49,7 @@
     },
     {
         "title": "Contract Translator",
-        "description": "AI contract analysis tool — breaks down legal documents into plain-English summaries with risk highlighting.",
+        "description": "AI contract analysis tool. Breaks down legal documents into plain-English summaries with risk highlighting.",
         "tech": ["Next.js", "OpenAI", "Vercel", "TypeScript"],
         "tags": ["AI", "Web"],
         "demo": "https://contract-translator.vercel.app",
@@ -65,7 +65,7 @@
     },
     {
         "title": "PulseMap",
-        "description": "Real-time global disease surveillance dashboard — track outbreaks with interactive maps and live data feeds.",
+        "description": "Real-time global disease surveillance dashboard. Track outbreaks with interactive maps and live data feeds.",
         "tech": ["React", "D3.js", "Vercel", "REST APIs"],
         "tags": ["Fullstack", "Web"],
         "demo": "https://pulsemap-three.vercel.app",
@@ -73,7 +73,7 @@
     },
     {
         "title": "Culture Drop HQ",
-        "description": "Operations dashboard for Toronto hip-hop media — manage content, artists, and releases in one place.",
+        "description": "Operations dashboard for Toronto hip-hop media. Manage content, artists, and releases in one place.",
         "tech": ["React", "Node.js", "MongoDB", "Tailwind"],
         "tags": ["Fullstack", "Web"],
         "demo": null,
@@ -89,11 +89,43 @@
     },
     {
         "title": "Viral Clone",
-        "description": "Telegram bot that clones viral TikTok content and auto-publishes across platforms — AI-powered content curation with queue management.",
+        "description": "Telegram bot that clones viral TikTok content and auto-publishes across platforms. AI-powered content curation with queue management.",
         "tech": ["TypeScript", "grammY", "SQLite", "BullMQ"],
         "tags": ["AI", "Tools"],
         "demo": null,
         "repo": "https://github.com/DareDev256/Viral-Clone"
+    },
+    {
+        "title": "Savv4x.com",
+        "description": "Official website for Toronto rapper Savv4x (Problem Child). Cinematic intro, SEO-optimized, full discography and video showcase.",
+        "tech": ["Next.js", "React", "Tailwind CSS", "Framer Motion"],
+        "tags": ["Web"],
+        "demo": "https://savv4x.com",
+        "repo": "https://github.com/DareDev256/savv4x-website"
+    },
+    {
+        "title": "WhyG35.com",
+        "description": "Official website for Toronto rapper WhyG 35 (Big Boss El Neato). Music, videos, and artist showcase.",
+        "tech": ["Next.js", "React", "Tailwind CSS", "Framer Motion"],
+        "tags": ["Web"],
+        "demo": "https://whyg35.com",
+        "repo": null
+    },
+    {
+        "title": "SeanPane.com",
+        "description": "Official website for artist Sean Pane. Portfolio and music showcase.",
+        "tech": ["Next.js", "React", "Tailwind CSS"],
+        "tags": ["Web"],
+        "demo": "https://seanpane.com",
+        "repo": null
+    },
+    {
+        "title": "SwaggerRite.com",
+        "description": "Official website for Toronto rapper SwaggerRite. Music, videos, and brand showcase.",
+        "tech": ["Next.js", "React", "Tailwind CSS", "Framer Motion"],
+        "tags": ["Web"],
+        "demo": "https://swaggerrite.com",
+        "repo": null
     },
     {
         "title": "Tdots Portfolio",
@@ -105,7 +137,7 @@
     },
     {
         "title": "IMG Gen Prompts",
-        "description": "AI prompt engineering tool for image and video generation — craft, test, and refine prompts.",
+        "description": "AI prompt engineering tool for image and video generation. Craft, test, and refine prompts.",
         "tech": ["React", "OpenAI", "Vercel", "TypeScript"],
         "tags": ["AI", "Web"],
         "demo": "https://web-ten-vert-46.vercel.app",
@@ -113,7 +145,7 @@
     },
     {
         "title": "BuildRight",
-        "description": "Duolingo-style mobile learning app for construction trades — gamified skill building with React Native.",
+        "description": "Duolingo-style mobile learning app for construction trades. Gamified skill building with React Native.",
         "tech": ["React Native", "Node.js", "Firebase"],
         "tags": ["Mobile", "Fullstack"],
         "demo": null,
@@ -129,7 +161,7 @@
     },
     {
         "title": "Fandom Wiki Bot",
-        "description": "AI-assisted Fandom wiki bot with approval workflows — automate edits while keeping human oversight.",
+        "description": "AI-assisted Fandom wiki bot with approval workflows. Automate edits while keeping human oversight.",
         "tech": ["Python", "MediaWiki API", "OpenAI"],
         "tags": ["AI", "Tools"],
         "demo": null,
@@ -137,7 +169,7 @@
     },
     {
         "title": "Portfolio OS",
-        "description": "This interactive desktop OS portfolio — vanilla JS, Three.js galaxy background, draggable windows, and full terminal.",
+        "description": "This interactive desktop OS portfolio. Vanilla JS, Three.js galaxy background, draggable windows, and full terminal.",
         "tech": ["JavaScript", "CSS3", "Three.js", "HTML5"],
         "tags": ["Web", "Creative"],
         "demo": "https://jamesdare.com",
