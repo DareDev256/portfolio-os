@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.39.0
-last_updated: 2026-03-10
+version: 3.40.0
+last_updated: 2026-03-11
 
 ---
 
@@ -15,6 +15,16 @@ last_updated: 2026-03-10
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.40.0] — 2026-03-11
+
+### Added
+- **Ambient system telemetry** — Top bar CPU and RAM metrics now fluctuate organically using weighted random walks instead of showing static "98% CPU". CPU indicator changes color (cyan → amber → red) based on simulated load. RAM display shows gradual memory allocation growth over session time.
+- **Session uptime counter** — Live uptime timer in the top bar tracks how long the visitor has been on the site, displayed in amethyst purple with monospace font.
+- **Visit tracking with welcome toasts** — First-time visitors see "Welcome to Passion OS. Press Cmd+K to explore." Returning visitors see their session count. Persisted via localStorage.
+- **Ambient tips system** — Periodic contextual tips surface as toast notifications (keyboard shortcuts, terminal, context menu, etc.) with randomized 2–4 minute intervals. Pauses when tab is hidden to avoid notification spam.
 
 ---
 

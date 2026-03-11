@@ -10,6 +10,7 @@ import { openExternal, animateCounter, loadJSON, saveJSON } from './dom-helpers.
 import { createCodeViewer } from './code-viewer.js';
 import { PassionLive } from './passion-live.js';
 import { initAmbientPresence } from './passion-ambient.js';
+import { AmbientSystem } from './ambient-system.js';
 
 /**
  * Open a lazy-loaded window app.
@@ -259,6 +260,9 @@ export const Desktop = {
         PassionLive.init();
         this.initPassionStatusIndicator();
         initAmbientPresence();
+
+        // Ambient system telemetry (live CPU, RAM, uptime, visit tracking)
+        AmbientSystem.init();
     },
 
     /**

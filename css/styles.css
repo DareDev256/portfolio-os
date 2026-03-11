@@ -619,6 +619,17 @@ body::before {
     letter-spacing: 1px;
 }
 
+.status-item.status-uptime {
+    color: rgba(139, 92, 246, 0.7);
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
+    font-size: 10px;
+    letter-spacing: 0.5px;
+}
+
+.status-item {
+    transition: color 0.6s ease-out;
+}
+
 /* Control Panel */
 .control-panel-icon {
     background: rgba(0, 240, 255, 0.1);
