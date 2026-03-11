@@ -11,6 +11,7 @@ import { Mobile } from './mobile.js';
 import { MahoragaWheel3D } from './mahoraga-wheel-3d.js';
 import { trapFocus } from './focus-trap.js';
 import { DigiviceIntro } from './digivice-intro.js';
+import { ensureGalaxy } from './galaxy-init.js';
 
 /**
  * Login and Lock Screen
@@ -67,39 +68,13 @@ export const Login = {
      * Initialize galaxy background effect on document body (persists across login/desktop)
      */
     async initGalaxyEffect() {
-        // Already initialized by main.js during boot
-        if (this.galaxyInstance || document.body.classList.contains('galaxy-active')) {
-            this.galaxyInstance = window.__galaxyInstance || null;
-            // Still apply galaxy text styling
-            const osTitle = this.lockScreen?.querySelector('.os-title');
-            if (osTitle) osTitle.classList.add('galaxy-text');
-            this.init3DWheel();
-            return;
-        }
-
         // Apply galaxy text styling to title
         const osTitle = this.lockScreen?.querySelector('.os-title');
-        if (osTitle) {
-            osTitle.classList.add('galaxy-text');
-        }
+        if (osTitle) osTitle.classList.add('galaxy-text');
 
-        // Initialize Three.js galaxy background on BODY (persists through login)
-        // Dynamic import preserves Vite code-splitting (main.js also imports dynamically)
-        try {
-            const { initGalaxyBackground } = await import('./galaxy-background.js');
-            this.galaxyInstance = initGalaxyBackground(document.body, {
-                starCount: 150,
-                nebulaSpeed: 0.00025,
-                starDriftSpeed: 0.0003,
-                mouseInfluence: 0.015
-            });
-            document.body.classList.add('galaxy-active', 'galaxy-container');
-            console.log('[Login] Full-page galaxy background initialized on body');
-        } catch (err) {
-            console.warn('[Login] Galaxy background failed to initialize, using CSS fallback:', err);
-        }
+        // ensureGalaxy is idempotent — safe if main.js already initialized it
+        this.galaxyInstance = await ensureGalaxy(document.body);
 
-        // Initialize 3D Mahoraga wheel on the lock screen
         this.init3DWheel();
     },
 
@@ -410,10 +385,8 @@ export const Login = {
             this.initDesktop();
 
             // Disable effects during initial load for performance
-            if (typeof Glyphs !== 'undefined') Glyphs.setEnabled(false);
-
-            this.updateFxIcon();
-            if (typeof StartMenu !== 'undefined') StartMenu.close();
+            Glyphs.setEnabled(false);
+            StartMenu.close();
 
             Warp.pulse();
         });
@@ -483,31 +456,21 @@ export const Login = {
      * Initialize desktop after login
      */
     initDesktop() {
-        // Initialize mobile detection and optimizations
-        if (typeof Mobile !== 'undefined') {
-            Mobile.init();
-            if (Mobile.isMobile()) {
-                Mobile.renderMobileOS();
-            }
+        // Mobile detection and optimizations
+        Mobile.init();
+        if (Mobile.isMobile()) {
+            Mobile.renderMobileOS();
         }
 
-        // Initialize desktop components
-        if (typeof Desktop !== 'undefined') Desktop.init();
-        if (typeof WindowManager !== 'undefined') WindowManager.init();
-        if (typeof StartMenu !== 'undefined') StartMenu.init();
-        if (typeof Lightbox !== 'undefined') Lightbox.init();
-        if (typeof Router !== 'undefined') Router.init();
+        // Desktop components — all statically imported, no typeof guards needed
+        Desktop.init();
+        WindowManager.init();
+        StartMenu.init();
+        Lightbox.init();
+        Router.init();
 
         // Start idle timer
         this.startIdleTimer();
-    },
-
-    /**
-     * Update FX icon based on state
-     */
-    updateFxIcon() {
-        // This method updates visual effects icon if needed
-        // Can be empty if not using FX icons in taskbar
     },
 
     /**

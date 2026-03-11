@@ -20,6 +20,7 @@ import { CommandPalette } from './command-palette.js';
 import { ShortcutsOverlay } from './shortcuts-overlay.js';
 import { Notify } from './notifications.js';
 import { Parallax } from './parallax.js';
+import { ensureGalaxy } from './galaxy-init.js';
 
 /* ── Visual module registry ────────────────────────────────────────
  * Each entry drives: module.init(), module.setEnabled(), and a
@@ -100,19 +101,7 @@ async function init() {
 
     // Defer galaxy on first visit — GPU contention blocks video intro decode
     if (!safeMode && sessionStorage.getItem('digivice-intro-seen')) {
-        try {
-            const { initGalaxyBackground } = await import('./galaxy-background.js');
-            const galaxyInstance = initGalaxyBackground(document.body, {
-                starCount: 150,
-                nebulaSpeed: 0.00025,
-                starDriftSpeed: 0.0003,
-                mouseInfluence: 0.015
-            });
-            document.body.classList.add('galaxy-active', 'galaxy-container');
-            window.__galaxyInstance = galaxyInstance;
-        } catch (err) {
-            console.warn('[Main] Galaxy background failed, Login will retry:', err);
-        }
+        await ensureGalaxy(document.body);
     }
 
     // Initialize parallax depth layers (lock screen + desktop)

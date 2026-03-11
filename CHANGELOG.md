@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.38.2
+version: 3.39.0
 last_updated: 2026-03-10
 
 ---
@@ -15,6 +15,16 @@ last_updated: 2026-03-10
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.39.0] — 2026-03-10
+
+### Changed
+- **Extract galaxy init into shared module** — Duplicated galaxy background config and initialization logic (main.js + login.js) consolidated into `js/galaxy-init.js` with a single `ensureGalaxy()` helper. Idempotent — safe to call from multiple entry points without double-init.
+- **Remove dead typeof guards** — `initDesktop()` wrapped every module call in `typeof X !== 'undefined'` checks despite all modules being statically imported. Removed 6 unnecessary guards.
+- **Remove empty updateFxIcon()** — Dead method that was a no-op stub. Cleaned up its call site in `login()`.
+- **Fix version drift** — `index.html` title and top bar referenced v3.38.1 while `version.js` was at 3.38.2. Synced all version references.
 
 ---
 
