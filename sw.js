@@ -1,5 +1,6 @@
-// Service Worker (F) – simple pre-cache + runtime cache for images
-const CACHE_NAME = 'portfolio-os-v3';
+// Service Worker (F) – pre-cache + hardened runtime cache
+const CACHE_NAME = 'portfolio-os-v4';
+const MAX_CACHE_ENTRIES = 150; // Prevent unbounded cache growth
 const PRECACHE = [
     '/',
     '/index.html',
@@ -18,6 +19,30 @@ const PRECACHE = [
     '/css/accessibility.css',
     '/assets/wallpapers/default.jpg',
 ];
+
+/**
+ * Validate a response is safe to cache.
+ * Blocks opaque responses (from redirects/no-cors) that could poison the cache,
+ * and non-ok responses that would serve error pages as cached content.
+ */
+function isCacheable(response) {
+    if (!response || !response.ok) return false;
+    // Block opaque responses — they hide status codes and could be error pages
+    if (response.type === 'opaque' || response.type === 'opaqueredirect') return false;
+    return true;
+}
+
+/**
+ * Evict oldest entries when cache exceeds max size.
+ * Prevents storage exhaustion from runtime-cached images.
+ */
+async function trimCache(cacheName, max) {
+    const cache = await caches.open(cacheName);
+    const keys = await cache.keys();
+    if (keys.length > max) {
+        await Promise.all(keys.slice(0, keys.length - max).map((k) => cache.delete(k)));
+    }
+}
 
 self.addEventListener('install', (e) => {
     e.waitUntil(
@@ -41,9 +66,31 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
     const url = new URL(e.request.url);
-    // Only cache same-origin requests
+    // Only cache same-origin GET requests
     if (url.origin !== location.origin) return;
-    // Runtime cache for images
+    if (e.request.method !== 'GET') return;
+
+    // Navigation requests: network-first to prevent serving stale HTML
+    if (e.request.mode === 'navigate') {
+        e.respondWith(
+            (async () => {
+                try {
+                    const res = await fetch(e.request);
+                    if (isCacheable(res)) {
+                        const cache = await caches.open(CACHE_NAME);
+                        cache.put(e.request, res.clone());
+                    }
+                    return res;
+                } catch {
+                    const cached = await caches.match(e.request);
+                    return cached || new Response('Offline', { status: 503 });
+                }
+            })()
+        );
+        return;
+    }
+
+    // Runtime cache for images — validate before caching
     if (e.request.destination === 'image') {
         e.respondWith(
             (async () => {
@@ -51,8 +98,9 @@ self.addEventListener('fetch', (e) => {
                 const cached = await cache.match(e.request);
                 if (cached) return cached;
                 const res = await fetch(e.request);
-                if (res.ok) {
+                if (isCacheable(res)) {
                     cache.put(e.request, res.clone());
+                    trimCache(CACHE_NAME, MAX_CACHE_ENTRIES);
                 }
                 return res;
             })()

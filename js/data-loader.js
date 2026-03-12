@@ -36,7 +36,13 @@ async function _fetchData(key, fallback) {
 
     try {
         const override = localStorage.getItem(safeKey);
-        if (override) return JSON.parse(override);
+        if (override) {
+            const parsed = JSON.parse(override);
+            // Strip prototype-pollution keys — localStorage data originates from
+            // user-imported backups and could contain crafted __proto__ keys
+            Sanitize.stripDangerousKeys(parsed);
+            return parsed;
+        }
 
         const res = await fetchWithTimeout(`data/${safeKey}`, { timeout: 5000 });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);

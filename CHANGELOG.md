@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.41.0
+version: 3.41.1
 last_updated: 2026-03-11
 
 ---
@@ -15,6 +15,16 @@ last_updated: 2026-03-11
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.41.1] — 2026-03-11
+
+### Security
+- **Service Worker cache poisoning hardened** — validate response type before caching (blocks opaque/redirect responses), network-first for navigation requests, cache size cap (150 entries) with LRU eviction, reject non-GET methods. Cache version bumped to `portfolio-os-v4`.
+- **Prototype pollution protection** — new `Sanitize.stripDangerousKeys()` strips `__proto__`, `constructor`, `prototype` keys from parsed JSON. Applied to admin backup import and data-loader localStorage reads.
+- **Backup import file size limit** — reject files > 5 MB before `FileReader.readAsText()` to prevent tab freeze from crafted payloads.
+- **Desktop item icon/URL sanitization on import** — SVG icon fields now pass through DOMPurify, URL fields validated via `Sanitize.url()` to block stored XSS via crafted backup JSON.
 
 ---
 

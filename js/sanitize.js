@@ -164,6 +164,31 @@ export const Sanitize = {
             return trimmed;
         }
         return '';
+    },
+
+    /**
+     * Recursively strip prototype-pollution keys (__proto__, constructor, prototype)
+     * from a parsed JSON object. Call this on any user-supplied JSON (backup imports,
+     * localStorage overrides) before assigning properties into application state.
+     * Prevents an attacker from modifying Object.prototype via crafted JSON payloads.
+     * @param {*} obj - Parsed JSON value
+     * @returns {*} Cleaned value (mutated in-place)
+     */
+    stripDangerousKeys(obj) {
+        if (!obj || typeof obj !== 'object') return obj;
+        if (Array.isArray(obj)) {
+            for (let i = 0; i < obj.length; i++) this.stripDangerousKeys(obj[i]);
+            return obj;
+        }
+        const BLOCKED = ['__proto__', 'constructor', 'prototype'];
+        for (const key of Object.keys(obj)) {
+            if (BLOCKED.includes(key)) {
+                delete obj[key];
+            } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+                this.stripDangerousKeys(obj[key]);
+            }
+        }
+        return obj;
     }
 };
 

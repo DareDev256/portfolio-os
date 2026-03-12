@@ -996,10 +996,20 @@ export const Admin = {
             const file = e.target.files[0];
             if (!file) return;
 
+            // Reject oversized backup files (5 MB) to prevent tab freeze during parse
+            const MAX_BACKUP_SIZE = 5 * 1024 * 1024;
+            if (file.size > MAX_BACKUP_SIZE) {
+                alert(`Backup file too large (${(file.size / 1048576).toFixed(1)} MB). Maximum is 5 MB.`);
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = (event) => {
                 try {
                     const backup = JSON.parse(event.target.result);
+
+                    // Strip prototype-pollution keys before processing
+                    Sanitize.stripDangerousKeys(backup);
 
                     // Validate schema before writing to localStorage
                     const MAX_STRING = 2000;
@@ -1013,6 +1023,10 @@ export const Admin = {
                             if (typeof item !== 'object' || !item) throw new Error('Invalid desktop item');
                             if (item.label && !isStr(item.label)) throw new Error('Desktop item label too long');
                             if (item.id && !isStr(item.id)) throw new Error('Desktop item id too long');
+                            // Sanitize SVG icon field — blocks stored XSS via crafted backup
+                            if (item.icon) item.icon = Sanitize.html(item.icon);
+                            // Sanitize action URLs to block javascript:/data: schemes
+                            if (item.url) item.url = Sanitize.url(item.url);
                         }
                         localStorage.setItem('desktopItems', JSON.stringify(backup.desktopItems));
                         this.desktopItems = backup.desktopItems;
