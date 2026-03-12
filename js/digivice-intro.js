@@ -57,11 +57,12 @@ export const DigiviceIntro = {
     v.setAttribute('webkit-playsinline', '');
     const mobile = isMobile();
     Object.assign(v.style, {
-      maxHeight: mobile ? '50vh' : '85vh',
+      width: '100vw',
+      height: '100vh',
       maxWidth: mobile ? '100vw' : '90vw',
-      width: mobile ? '100%' : 'auto',
+      maxHeight: mobile ? '100vh' : '85vh',
       borderRadius: mobile ? '0' : '8px',
-      objectFit: 'contain',
+      objectFit: mobile ? 'cover' : 'contain',
       filter: 'brightness(1.05) contrast(1.05)',
       opacity: '0',
       transform: 'scale(0.95)',
