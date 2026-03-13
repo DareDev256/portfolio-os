@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.41.2
+version: 3.42.0
 last_updated: 2026-03-13
 
 ---
@@ -17,6 +17,11 @@ last_updated: 2026-03-13
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.42.0] — 2026-03-13
+
+### Changed
+- **Context menu refactored to data-driven architecture** — extracted shared `_renderContextMenu(x, y, items)` method that both `showContextMenu` and `showIconContextMenu` now delegate to. Replaced fragile innerHTML + `document.getElementById` wiring with scoped element creation and direct event listeners. Menu items are now descriptor arrays (`{ icon, label, action }`), making menus trivially extensible — adding an item is one object instead of ~12 lines. Labels now pass through `Sanitize.text()`, closing a potential XSS vector from `item.label` interpolation.
 
 ## [3.41.2] — 2026-03-13
 

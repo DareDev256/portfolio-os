@@ -690,121 +690,52 @@ export const Desktop = {
     },
 
     /**
-     * Show context menu
+     * Render a context menu from a descriptor array.
+     * Each item: { icon: svgPath, label: string, action: () => void }
+     * Eliminates fragile getElementById wiring — uses scoped event delegation.
+     */
+    _renderContextMenu(x, y, items) {
+        const menu = this.contextMenu;
+        menu.innerHTML = '';
+
+        items.forEach(({ icon, label, action }) => {
+            const btn = document.createElement('button');
+            btn.className = 'context-menu-item';
+            btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="${icon}"/></svg><span>${Sanitize.text(label)}</span>`;
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                action();
+                this.hideContextMenu();
+            });
+            menu.appendChild(btn);
+        });
+
+        menu.style.left = `${x}px`;
+        menu.style.top = `${y}px`;
+        menu.classList.remove('hidden');
+    },
+
+    /**
+     * Show desktop context menu (wallpaper, theme controls)
      */
     showContextMenu(x, y) {
-        this.contextMenu.innerHTML = `
-            <button class="context-menu-item" id="changeWallpaper">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                </svg>
-                <span>Next Wallpaper</span>
-            </button>
-            <button class="context-menu-item" id="randomWallpaper">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/>
-                </svg>
-                <span>Random Wallpaper</span>
-            </button>
-            <button class="context-menu-item" id="resetWallpaper">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 6V3L8 7l4 4V8c2.76 0 5 2.24 5 5 0 2.21-1.79 4-4 4H7v2h6c3.87 0 7-3.13 7-7s-3.13-7-7-7z"/>
-                </svg>
-                <span>Reset to Default</span>
-            </button>
-            <button class="context-menu-item" id="applyGreyGradient">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M2 12h20v2H2zM2 7h20v2H2zM2 17h20v2H2z"/>
-                </svg>
-                <span>Apply Grey Gradient</span>
-            </button>
-            <button class="context-menu-item" id="toggleThemeContext">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>
-                </svg>
-                <span>Toggle Theme</span>
-            </button>
-        `;
-
-        // Position context menu
-        this.contextMenu.style.left = `${x}px`;
-        this.contextMenu.style.top = `${y}px`;
-        this.contextMenu.classList.remove('hidden');
-
-        // Add event listeners
-        document.getElementById('changeWallpaper').onclick = (e) => {
-            e.stopPropagation();
-            this.changeWallpaper();
-            this.hideContextMenu();
-        };
-
-        document.getElementById('randomWallpaper').onclick = (e) => {
-            e.stopPropagation();
-            this.randomWallpaper();
-            this.hideContextMenu();
-        };
-
-        const resetBtn = document.getElementById('resetWallpaper');
-        if (resetBtn) {
-            resetBtn.onclick = (e) => {
-                e.stopPropagation();
-                State.resetWallpaper();
-                this.hideContextMenu();
-            };
-        }
-
-        const applyGreyGradient = document.getElementById('applyGreyGradient');
-        if (applyGreyGradient) {
-            applyGreyGradient.onclick = (e) => {
-                e.stopPropagation();
-                State.setWallpaper('gradient:grey-ombre');
-                this.hideContextMenu();
-            };
-        }
-
-        document.getElementById('toggleThemeContext').onclick = (e) => {
-            e.stopPropagation();
-            State.toggleTheme();
-            this.hideContextMenu();
-        };
+        this._renderContextMenu(x, y, [
+            { icon: 'M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z', label: 'Next Wallpaper', action: () => this.changeWallpaper() },
+            { icon: 'M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z', label: 'Random Wallpaper', action: () => this.randomWallpaper() },
+            { icon: 'M12 6V3L8 7l4 4V8c2.76 0 5 2.24 5 5 0 2.21-1.79 4-4 4H7v2h6c3.87 0 7-3.13 7-7s-3.13-7-7-7z', label: 'Reset to Default', action: () => State.resetWallpaper() },
+            { icon: 'M2 12h20v2H2zM2 7h20v2H2zM2 17h20v2H2z', label: 'Apply Grey Gradient', action: () => State.setWallpaper('gradient:grey-ombre') },
+            { icon: 'M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z', label: 'Toggle Theme', action: () => State.toggleTheme() },
+        ]);
     },
 
     /**
      * Show icon-specific context menu
      */
     showIconContextMenu(x, y, item) {
-        this.contextMenu.innerHTML = `
-            <button class="context-menu-item" id="iconOpen">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
-                </svg>
-                <span>Open ${item.label}</span>
-            </button>
-            <button class="context-menu-item" id="iconInfo">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                </svg>
-                <span>Properties</span>
-            </button>
-        `;
-
-        // Position context menu
-        this.contextMenu.style.left = `${x}px`;
-        this.contextMenu.style.top = `${y}px`;
-        this.contextMenu.classList.remove('hidden');
-
-        // Add event listeners
-        document.getElementById('iconOpen').onclick = (e) => {
-            e.stopPropagation();
-            item.action();
-            this.hideContextMenu();
-        };
-
-        document.getElementById('iconInfo').onclick = (e) => {
-            e.stopPropagation();
-            this.showIconProperties(item);
-            this.hideContextMenu();
-        };
+        this._renderContextMenu(x, y, [
+            { icon: 'M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z', label: `Open ${item.label}`, action: () => item.action() },
+            { icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z', label: 'Properties', action: () => this.showIconProperties(item) },
+        ]);
     },
 
     /**
