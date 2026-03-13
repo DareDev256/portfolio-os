@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.41.2
+version: 3.42.0
 last_updated: 2026-03-13
 
 ---
@@ -17,6 +17,13 @@ last_updated: 2026-03-13
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.42.0] — 2026-03-13
+
+### Added
+- **Cursor-reactive amethyst aurora on lock screen** — A dual-layer radial gradient (amethyst + gold) follows the mouse cursor across the lock screen via CSS custom properties (`--aurora-x`, `--aurora-y`). Fades in on mouse entry, trails naturally via CSS transition, fades out on mouse leave. Zero layout thrash — GPU-composited gradient repositioning only.
+- **INITIALIZE button amethyst hover state** — Button hover shifts from cyan to amethyst/gold accent palette matching the aurora, with a dedicated `:active` press state for tactile feedback.
+- **Aurora lifecycle management** — Aurora listeners attach on init and lock, detach on login to desktop, preventing orphaned listeners across lock/unlock cycles.
 
 ## [3.41.2] — 2026-03-13
 
