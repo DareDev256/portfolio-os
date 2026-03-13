@@ -166,7 +166,7 @@ export const GitHub = {
                     <!-- Header Stats -->
                     <div class="gh-header">
                         <div class="gh-profile">
-                            <img src="${Sanitize.attr(user.avatar_url)}" class="gh-avatar" alt="Avatar">
+                            <img src="${Sanitize.url(user.avatar_url)}" class="gh-avatar" alt="Avatar">
                             <div class="gh-info">
                                 <h2>${Sanitize.text(user.login)}</h2>
                                 <div class="gh-badges">

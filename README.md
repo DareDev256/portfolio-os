@@ -4,7 +4,7 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.41.1-00f0ff?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.41.2-00f0ff?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-361_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-49-b388ff?style=flat-square)
@@ -87,13 +87,14 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | **WEATHER** | Window | Live weather with geolocation, current conditions, 3-day forecast via Open-Meteo |
 | **SYS_MONITOR** | Window | Live FPS graph, heap usage, DOM count, network info, uptime |
 
-### Security (Hardened Across v3.1–v3.16.7)
+### Security (Hardened Across v3.1–v3.41.2)
 
 - All `innerHTML` routed through DOMPurify (SRI hash on CDN) — including window content, titlebar icons, taskbar icons, and start menu items
 - 10 HTTP security headers via Vercel (CSP, HSTS, X-Frame-Options, COOP, COEP, CORP, Permissions-Policy)
 - URL injection prevention — allowlist-based router, CSS breakout stripping
 - `Sanitize.attr()` blocks `data:image/svg+xml` XSS vectors alongside `javascript:`, `vbscript:`, and `data:text/html`
-- `Sanitize.url()` allowlist-validates imported URLs (http(s) and relative paths only) — blocks stored XSS via crafted backup JSON
+- `Sanitize.url()` enforced on all `href`/`src` attributes sourced from external data (project links, media posters, GitHub avatars, lightbox images) — blocks `blob:`, `ftp:`, and other dangerous URI schemes
+- Prototype pollution protection on all `localStorage` reads — `loadJSON()` strips `__proto__`/`constructor`/`prototype` keys from every parsed value across all callers
 - Admin Dashboard renders all tab content through `Sanitize.setHTML()` (defense-in-depth against future template injection)
 - CSP `connect-src` allowlists only known API origins (GitHub, Open-Meteo, Passion API) — stale wildcards removed
 - All external API fetches protected by `AbortController` timeout (8s) via shared `fetchWithTimeout` — prevents frozen interfaces on slow/unreachable APIs
@@ -101,7 +102,8 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - SVG content sanitized before DOM insertion
 - CSP `img-src` locked to explicit GitHub asset domains
 - YouTube/Vimeo video ID regex validation — blocks injection via crafted embed URLs
-- Iframe `sandbox` on all video embeds — prevents top-navigation and popup abuse
+- Iframe `sandbox="allow-scripts allow-same-origin allow-presentation"` on all video embeds — blocks top-navigation, form submission, and popups
+- Navigator API values HTML-escaped before innerHTML interpolation (defense-in-depth against extension/polyfill mutation)
 - Weather widget validates API response shape and coordinate inputs
 - GitHub API response shape validation — rejects malformed cache/API data before rendering
 - `rel="noopener noreferrer"` on all `target="_blank"` links — prevents tabnapping

@@ -1264,7 +1264,7 @@ export const Desktop = {
                 poster = video.generatedPoster;
             }
 
-            const bgStyle = poster ? `background-image:url('${Sanitize.attr(poster)}')` : 'background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;';
+            const bgStyle = poster ? `background-image:url('${Sanitize.url(poster)}')` : 'background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;';
             const contentHtml = poster ? '' : '<span style="font-size: 40px; opacity: 0.5;">🎬</span>';
 
             if (mode === 'list') {
@@ -1328,7 +1328,7 @@ export const Desktop = {
                 item.className = 'video-item';
                 item.innerHTML = `
                     <div class="video-thumbnail">
-                        <img src="${Sanitize.attr(video.poster)}" alt="${Sanitize.text(video.title)}">
+                        <img src="${Sanitize.url(video.poster)}" alt="${Sanitize.text(video.title)}">
                         <div class="video-play-icon">
                             <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                 <path d="M8 5v14l11-7z"/>
@@ -1808,8 +1808,8 @@ export const Desktop = {
                         ${tagList ? `<div class="lab-notes__row"><span class="lab-notes__label">Class</span><span class="lab-notes__value">${tagList}</span></div>` : ''}
                     </div>
                     <div class="project-links">
-                        ${project.demo ? `<a href="${Sanitize.attr(project.demo)}" target="_blank" rel="noopener noreferrer" class="project-link">View Demo</a>` : ''}
-                        ${project.repo ? `<a href="${Sanitize.attr(project.repo)}" target="_blank" rel="noopener noreferrer" class="project-link secondary">GitHub</a>` : ''}
+                        ${project.demo ? `<a href="${Sanitize.url(project.demo)}" target="_blank" rel="noopener noreferrer" class="project-link">View Demo</a>` : ''}
+                        ${project.repo ? `<a href="${Sanitize.url(project.repo)}" target="_blank" rel="noopener noreferrer" class="project-link secondary">GitHub</a>` : ''}
                     </div>
                 </div>
             `;

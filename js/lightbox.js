@@ -5,6 +5,7 @@
 
 import { WindowManager } from './windows.js';
 import { trapFocus } from './focus-trap.js';
+import { Sanitize } from './sanitize.js';
 
 export const Lightbox = {
     container: null,
@@ -245,9 +246,11 @@ export const Lightbox = {
         this.pointX = 0;
         this.pointY = 0;
 
-        // Create image element
+        // Create image element — validate source URL to block javascript:/data: schemes
+        // Media items originate from localStorage-backed JSON (admin-editable)
         const img = document.createElement('img');
-        img.src = item.url || item.src || item;
+        const rawSrc = item.url || item.src || (typeof item === 'string' ? item : '');
+        img.src = Sanitize.url(rawSrc) || '/assets/wallpapers/default.jpg';
         img.alt = item.title || item.alt || 'Lightbox image';
         img.style.maxWidth = '90vw';
         img.style.maxHeight = '90vh';
@@ -382,6 +385,9 @@ export const Lightbox = {
         iframe.frameBorder = '0';
         iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
         iframe.allowFullscreen = true;
+        // Sandbox restricts embed to media playback — blocks top-navigation,
+        // form submission, and script access to parent window
+        iframe.sandbox = 'allow-scripts allow-same-origin allow-presentation';
         iframe.style.width = '100%';
         iframe.style.height = '100%';
         return iframe;
@@ -399,6 +405,7 @@ export const Lightbox = {
         iframe.frameBorder = '0';
         iframe.allow = 'autoplay; fullscreen; picture-in-picture';
         iframe.allowFullscreen = true;
+        iframe.sandbox = 'allow-scripts allow-same-origin allow-presentation';
         iframe.style.width = '100%';
         iframe.style.height = '100%';
         return iframe;

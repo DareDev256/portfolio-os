@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.41.1
-last_updated: 2026-03-11
+version: 3.41.2
+last_updated: 2026-03-13
 
 ---
 
@@ -17,6 +17,15 @@ last_updated: 2026-03-11
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.41.2] — 2026-03-13
+
+### Security
+- **Prototype pollution protection expanded to all localStorage reads** — `loadJSON()` in dom-helpers.js now strips `__proto__`/`constructor`/`prototype` keys from every parsed value. Previously only `data-loader.js` was protected; 8+ callers (sticky notes, GitHub cache, folder icons, etc.) were exposed.
+- **URL scheme enforcement on media/link attributes** — replaced `Sanitize.attr()` with `Sanitize.url()` for project demo/repo hrefs, video poster sources, and GitHub avatar URLs. `attr()` blocked `javascript:` but allowed `blob:`, `ftp:`, and other exploitable schemes; `url()` allowlists only `http(s)` and relative paths.
+- **Lightbox source validation** — media `img.src` now runs through `Sanitize.url()` before assignment. Previously set raw URLs from localStorage-sourced data (admin-editable), enabling potential `javascript:`/`data:` URI injection.
+- **Iframe sandbox hardening** — YouTube and Vimeo embeds now use `sandbox="allow-scripts allow-same-origin allow-presentation"`, blocking top-navigation hijacking, form submission, and popup creation from embedded content.
+- **System monitor defense-in-depth** — Navigator API values (`platform`, `language`, `effectiveType`) now HTML-escaped before innerHTML interpolation. Prevents XSS if browser extensions or polyfills mutate navigator properties. Network downlink coerced to `Number()` to prevent string injection.
 
 ## [3.41.1] — 2026-03-11
 

@@ -1,4 +1,5 @@
 import { State } from './state.js';
+import { Sanitize } from './sanitize.js';
 
 /**
  * System Monitor — real-time performance dashboard for Passion OS.
@@ -154,14 +155,19 @@ export function renderSystemMonitor(container) {
 
         // System info
         const uptime = formatUptime(Date.now() - SESSION_START);
+        // Escape navigator values — browser APIs are generally trusted, but defense-in-depth
+        // prevents XSS if a browser extension or polyfill mutates navigator properties
+        const platform = Sanitize.text(navigator.platform || 'Unknown');
+        const lang = Sanitize.text(navigator.language || '?');
         let rows = `
             <div class="sysmon-row"><span>SESSION UPTIME</span><span style="color:#00f0ff;">${uptime}</span></div>
             <div class="sysmon-row"><span>PAGE LOAD</span><span style="color:#00ff88;">${loadTime}ms</span></div>
-            <div class="sysmon-row"><span>PLATFORM</span><span>${navigator.platform || 'Unknown'}</span></div>
-            <div class="sysmon-row"><span>LANGUAGE</span><span>${navigator.language}</span></div>
+            <div class="sysmon-row"><span>PLATFORM</span><span>${platform}</span></div>
+            <div class="sysmon-row"><span>LANGUAGE</span><span>${lang}</span></div>
             <div class="sysmon-row"><span>CORES</span><span style="color:#ffaa00;">${navigator.hardwareConcurrency || '?'}</span></div>`;
         if (conn) {
-            rows += `<div class="sysmon-row"><span>NETWORK</span><span style="color:#00ff88;">${conn.effectiveType?.toUpperCase() || '?'} · ${conn.downlink || '?'} Mbps</span></div>`;
+            const netType = Sanitize.text(conn.effectiveType?.toUpperCase() || '?');
+            rows += `<div class="sysmon-row"><span>NETWORK</span><span style="color:#00ff88;">${netType} · ${Number(conn.downlink) || '?'} Mbps</span></div>`;
         }
         if (mem) {
             rows += `<div class="sysmon-row"><span>HEAP TOTAL</span><span>${formatBytes(mem.totalJSHeapSize)}</span></div>`;

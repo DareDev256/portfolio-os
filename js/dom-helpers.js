@@ -2,6 +2,7 @@
  * Shared DOM Utilities
  * Centralizes duplicated patterns across desktop.js, github.js, and others.
  */
+import { Sanitize } from './sanitize.js';
 
 /** Default fetch timeout — prevents indefinitely hanging requests from freezing the UI */
 const DEFAULT_FETCH_TIMEOUT = 8_000; // 8 seconds
@@ -38,7 +39,14 @@ export function loadJSON(key, fallback = null) {
     try {
         const raw = localStorage.getItem(key);
         if (raw === null) return fallback;
-        return JSON.parse(raw);
+        const parsed = JSON.parse(raw);
+        // Strip prototype-pollution keys (__proto__, constructor, prototype).
+        // localStorage data can originate from user-imported backups containing
+        // crafted keys that modify Object.prototype when assigned to app state.
+        if (parsed && typeof parsed === 'object') {
+            Sanitize.stripDangerousKeys(parsed);
+        }
+        return parsed;
     } catch {
         return fallback;
     }
