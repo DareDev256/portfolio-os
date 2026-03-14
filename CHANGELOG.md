@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.42.1
+version: 3.43.0
 last_updated: 2026-03-14
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-14
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.43.0] — 2026-03-14
+
+### Added
+- **Scroll-triggered reveal system for window content** — New `ScrollReveal` module (`js/scroll-reveal.js`) uses IntersectionObserver to animate elements as they scroll into view inside `.window-content` containers. A MutationObserver auto-wires new windows without manual hookup, and a nested child watcher catches dynamically rendered content (e.g. filtered project cards). Supports three reveal variants (`fade-up`, `fade-left`, `scale`) with staggered delay cascades via `data-reveal-delay` attributes. Applied to project cards (Applications window), About sections, and Contact window elements. Includes amethyst accent-line animation on project card reveal and full `prefers-reduced-motion` support. CSS uses `cubic-bezier(0.22, 1, 0.36, 1)` — a deceleration curve that gives reveals a cinematic ease-out feel.
 
 ---
 

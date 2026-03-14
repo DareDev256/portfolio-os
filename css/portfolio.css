@@ -734,6 +734,63 @@
     transform: scaleX(1);
 }
 
+/* ─── Scroll Reveal: Cinematic Viewport Entry ─── */
+/* Shared system for animating elements as they scroll into view */
+
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(2px);
+    transition:
+        opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform, filter;
+}
+
+.scroll-reveal[data-reveal="fade-left"] {
+    transform: translateX(-18px) translateY(0);
+}
+
+.scroll-reveal[data-reveal="scale"] {
+    transform: scale(0.92);
+    filter: blur(3px);
+}
+
+.scroll-reveal--visible {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+}
+
+/* Staggered cascade — each sibling waits 80ms longer */
+.scroll-reveal[data-reveal-delay="1"] { transition-delay: 0.08s; }
+.scroll-reveal[data-reveal-delay="2"] { transition-delay: 0.16s; }
+.scroll-reveal[data-reveal-delay="3"] { transition-delay: 0.24s; }
+.scroll-reveal[data-reveal-delay="4"] { transition-delay: 0.32s; }
+.scroll-reveal[data-reveal-delay="5"] { transition-delay: 0.40s; }
+.scroll-reveal[data-reveal-delay="6"] { transition-delay: 0.48s; }
+
+/* Amethyst edge glow on reveal — subtle purple line flash */
+.scroll-reveal--visible.project-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10%;
+    height: 80%;
+    width: 2px;
+    background: var(--amethyst, #8b5cf6);
+    opacity: 0;
+    animation: reveal-accent 0.8s ease-out 0.3s forwards;
+    pointer-events: none;
+}
+
+@keyframes reveal-accent {
+    0%   { opacity: 0; height: 0; top: 50%; }
+    60%  { opacity: 0.7; }
+    100% { opacity: 0.25; height: 80%; top: 10%; }
+}
+
 /* ─── Opulent Interface: Reduced Motion ─── */
 @media (prefers-reduced-motion: reduce) {
     .portfolio-link,
@@ -755,4 +812,11 @@
     .catalyst-aura { display: none !important; }
     .catalyst-border { display: none !important; }
     .reign-chapter__title::after { transition: none !important; }
+    .scroll-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
+    }
+    .scroll-reveal--visible.project-card::before { animation: none !important; display: none; }
 }

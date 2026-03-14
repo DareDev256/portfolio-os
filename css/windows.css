@@ -513,6 +513,7 @@
 }
 
 .project-card {
+    position: relative;
     background: rgba(15, 10, 30, 0.3);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);

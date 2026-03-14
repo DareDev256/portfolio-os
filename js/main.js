@@ -20,6 +20,7 @@ import { CommandPalette } from './command-palette.js';
 import { ShortcutsOverlay } from './shortcuts-overlay.js';
 import { Notify } from './notifications.js';
 import { Parallax } from './parallax.js';
+import { ScrollReveal } from './scroll-reveal.js';
 import { ensureGalaxy } from './galaxy-init.js';
 
 /* ── Visual module registry ────────────────────────────────────────
@@ -108,6 +109,9 @@ async function init() {
     if (!safeMode) {
         Parallax.init();
     }
+
+    // Scroll-triggered reveals for window content
+    ScrollReveal.init();
 
     // Direct-access routes skip boot/lock entirely (e.g. /services for prospects)
     const directAccessRoutes = ['/services'];

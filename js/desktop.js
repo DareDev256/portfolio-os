@@ -1715,13 +1715,13 @@ export const Desktop = {
                 filterTag === 'all' ? projects : projects.filter((p) => p.tags.includes(filterTag));
             grid.innerHTML = filtered
                 .map(
-                    (project) => {
+                    (project, index) => {
                         const status = project.demo ? 'LIVE' : 'ARCHIVED';
                         const statusClass = project.demo ? '' : 'lab-notes__status--archived';
                         const tagList = (project.tags || []).map(t => Sanitize.text(t)).join(' · ');
                         const techCount = project.tech ? project.tech.length : 0;
                         return `
-                <div class="project-card project-card--expandable">
+                <div class="project-card project-card--expandable scroll-reveal" data-reveal-delay="${Math.min(index % 6, 5)}">
                     <div class="project-title">${Sanitize.text(project.title)}</div>
                     <div class="project-description">${Sanitize.text(project.description)}</div>
                     <div class="project-tech">
@@ -1950,14 +1950,14 @@ export const Desktop = {
         content.className = 'about-content';
 
         content.innerHTML = `
-            <div class="window-section-header purple">◈ ABOUT_ME.exe</div>
-            <div class="about-identity">
+            <div class="window-section-header purple scroll-reveal">◈ ABOUT_ME.exe</div>
+            <div class="about-identity scroll-reveal" data-reveal-delay="1">
                 <div><span class="about-label">NAME:</span> James Olusoga <span class="about-alias">(DareDev256)</span></div>
                 <div><span class="about-label">ROLE:</span> AI Solutions Engineer &bull; Creative Technologist <span class="verified-badge">✓ SYSTEM VERIFIED</span></div>
                 <div><span class="about-label">LOCATION:</span> Toronto, Canada</div>
                 <div><span class="about-label">STATUS:</span> Always shipping</div>
             </div>
-            <div class="about-bio">
+            <div class="about-bio scroll-reveal" data-reveal-delay="2">
                 <p>
                     I build autonomous AI systems that work while I sleep. My flagship project,
                     <span class="text-cyan">Passion Agent</span>, is a 24/7 autonomous code improvement system
@@ -1970,7 +1970,7 @@ export const Desktop = {
                     built with zero frameworks &mdash; pure vanilla JS, Three.js for 3D, and hand-crafted CSS.
                 </p>
             </div>
-            <div class="about-skills-section">
+            <div class="about-skills-section scroll-reveal" data-reveal-delay="3">
                 <h3 class="about-skills-heading">SKILLS & TECHNOLOGIES</h3>
                 <div class="about-skills-grid">
                     ${ABOUT_SKILLS.map(s => `<div class="about-skill-badge" style="--badge-color:${s.color}">${Sanitize.text(s.name)}</div>`).join('')}
@@ -2000,7 +2000,7 @@ export const Desktop = {
         content.className = 'contact-window-content';
 
         content.innerHTML = `
-            <div class="contact-header">
+            <div class="contact-header scroll-reveal">
                 <div class="contact-title">OFFICIAL COMMUNICATION CHANNEL</div>
                 <div class="contact-subtitle">
                     ESTABLISHED CONNECTION 
@@ -2008,7 +2008,7 @@ export const Desktop = {
                 </div>
             </div>
 
-            <div class="social-grid">
+            <div class="social-grid scroll-reveal" data-reveal-delay="1">
                 <a href="https://github.com/DareDev256" target="_blank" rel="noopener noreferrer" class="social-btn">
                     <span style="font-size: 1.2em">💻</span>
                     <span>GITHUB_REPO</span>
@@ -2019,9 +2019,9 @@ export const Desktop = {
                 </a>
             </div>
 
-            <div class="window-section-header purple" style="margin: 20px 0 15px;">◈ DIRECT_TRANSMISSION</div>
+            <div class="window-section-header purple scroll-reveal" data-reveal-delay="2" style="margin: 20px 0 15px;">◈ DIRECT_TRANSMISSION</div>
 
-            <form class="contact-form">
+            <form class="contact-form scroll-reveal" data-reveal-delay="3">
                 <div class="cyber-form-group">
                     <label class="cyber-label" for="contact-name">IDENTITY</label>
                     <input type="text" id="contact-name" name="name" class="cyber-input" placeholder="ENTER DESIGNATION" required maxlength="100">
