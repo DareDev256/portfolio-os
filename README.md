@@ -4,8 +4,8 @@
 
 ### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
 
-![Version](https://img.shields.io/badge/version-3.42.0-00f0ff?style=flat-square)
-![Tests](https://img.shields.io/badge/tests-361_passing-00e676?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.42.1-00f0ff?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-383_passing-00e676?style=flat-square)
 ![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
 ![Modules](https://img.shields.io/badge/modules-49-b388ff?style=flat-square)
 ![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
@@ -21,7 +21,7 @@ An interactive desktop environment that runs entirely in the browser. Draggable 
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> **48 ES modules** · **25 stylesheets** · **361 tests across 17 suites** · **20 desktop apps** · **12 security headers** · **0 runtime dependencies**
+> **48 ES modules** · **25 stylesheets** · **383 tests across 18 suites** · **20 desktop apps** · **12 security headers** · **0 runtime dependencies**
 
 ## Quick Start
 
@@ -147,7 +147,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 | Metric | Value |
 |--------|-------|
-| **Test Coverage** | 212 tests across 13 suites (vitest + jsdom) |
+| **Test Coverage** | 383 tests across 18 suites (vitest + jsdom) |
 | **Security** | DOMPurify on all innerHTML, 10 HTTP headers, CSP, SRI |
 | **Accessibility** | WCAG focus trapping, aria-live, skip-link, reduced-motion |
 | **Performance** | Lazy-loaded modules, RAF pausing, 30fps-throttled FX |
@@ -236,18 +236,24 @@ css/                                # 21 modular stylesheets
 ├── loading.css                     # Boot sequence, spinners
 └── admin.css                       # Content editor panel
 │
-tests/                              # 201 vitest tests across 13 suites
-├── sanitize.test.js                # XSS sanitization (29 tests)
-├── state.test.js                   # State persistence + events (15 tests)
+tests/                              # 383 vitest tests across 18 suites
+├── sanitize.test.js                # XSS sanitization (46 tests)
+├── state.test.js                   # State persistence + events (17 tests)
+├── state-toggles.test.js           # Auto-generated boolean toggles (14 tests)
 ├── data-loader.test.js             # JSON fetch + cache (9 tests)
 ├── router.test.js                  # Path validation + routing (12 tests)
 ├── focus-trap.test.js              # Tab cycling + cleanup (7 tests)
-├── lightbox.test.js                # Video ID validation + sandbox (14 tests)
+├── lightbox.test.js                # Video ID validation + sandbox (20 tests)
 ├── dom-helpers.test.js             # openExternal, animateCounter, loadJSON, saveJSON, downloadJSON (21 tests)
-├── modal.test.js                   # Dialog init, dismiss, prompt, alert (15 tests)
+├── dom-helpers-edge.test.js        # el(), visibility, viewport, protocol edges (27 tests)
+├── modal.test.js                   # Dialog init, dismiss, prompt, alert (18 tests)
 ├── command-palette.test.js         # Fuzzy search, keyboard nav, ARIA, execute (22 tests)
 ├── mobile.test.js                  # Device detection, viewport meta, mobile styles (11 tests)
 ├── github.test.js                  # API response validation (7 tests)
+├── github-stats.test.js            # GitHub stats display + error handling (12 tests)
+├── windows.test.js                 # Window manager, titlebar, cascade, content (65 tests)
+├── desktop-utils.test.js           # Desktop utilities + DOMPurify fallback (23 tests)
+├── security-boundaries.test.js     # Prototype pollution, fetchWithTimeout, state persistence (22 tests)
 └── smoke.test.js                   # Critical path integration: DOM, routing, contact form, responsive (27 tests)
 ```
 
@@ -276,7 +282,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run 201 vitest tests
+npm run test      # Run 383 vitest tests
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
