@@ -1,27 +1,25 @@
 <div align="center">
 
-# Passion OS
+# ◈ PASSION OS
 
-### A Cyberpunk Desktop OS Portfolio — Built with Zero Frameworks
+### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/version-3.42.1-00f0ff?style=flat-square)
-![Tests](https://img.shields.io/badge/tests-383_passing-00e676?style=flat-square)
-![CSS](https://img.shields.io/badge/stylesheets-25-ff9100?style=flat-square)
-![Modules](https://img.shields.io/badge/modules-49-b388ff?style=flat-square)
-![Frameworks](https://img.shields.io/badge/frameworks-0-ff5252?style=flat-square)
-![License](https://img.shields.io/badge/license-MIT-888?style=flat-square)
+![Version](https://img.shields.io/badge/v3.42.1-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Tests](https://img.shields.io/badge/361_tests-00e676?style=flat-square&labelColor=0d0d0d)
+![Modules](https://img.shields.io/badge/49_modules-b388ff?style=flat-square&labelColor=0d0d0d)
+![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
-### [Try the Live Demo &rarr;](https://jamesdare.com)
+**[▸ ENTER THE LIVE DEMO](https://jamesdare.com)**
 
 </div>
 
 ---
 
-An interactive desktop environment that runs entirely in the browser. Draggable windows, GPU-optimized glass effects, a Three.js cyberspace background, Spotlight-style command palette, and 42 vanilla JavaScript modules — no React, no Vue, no dependencies beyond the web platform.
+A fully interactive desktop environment — draggable windows, GPU-composited glass UI, Three.js cyberspace, Spotlight-style command palette — running entirely in the browser with zero runtime dependencies. Not a portfolio template. An operating system.
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> **48 ES modules** · **25 stylesheets** · **383 tests across 18 suites** · **20 desktop apps** · **12 security headers** · **0 runtime dependencies**
+> `49 modules` · `25 stylesheets` · `361 tests / 17 suites` · `20 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -36,7 +34,7 @@ npm run dev
 
 Open `http://localhost:5173`. Click the lock screen to enter.
 
-## What's Inside
+## What You're Looking At
 
 ### Desktop Environment
 
@@ -147,7 +145,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 | Metric | Value |
 |--------|-------|
-| **Test Coverage** | 383 tests across 18 suites (vitest + jsdom) |
+| **Test Coverage** | 361 tests across 17 suites (vitest + jsdom) |
 | **Security** | DOMPurify on all innerHTML, 10 HTTP headers, CSP, SRI |
 | **Accessibility** | WCAG focus trapping, aria-live, skip-link, reduced-motion |
 | **Performance** | Lazy-loaded modules, RAF pausing, 30fps-throttled FX |
@@ -156,16 +154,16 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 ## Why No Frameworks?
 
-This isn't anti-framework ideology — it's a deliberate architectural choice to demonstrate depth.
+Not ideology. Proof of depth.
 
-Every feature recruiters expect from a React/Next.js portfolio is here (routing, state management, component lifecycle, lazy loading, accessibility) — built from scratch against the raw DOM API. The result is a 41-module codebase that proves understanding of **what frameworks abstract away**, not just how to use them.
+Routing, state management, component lifecycle, lazy loading, accessibility — everything you'd expect from a React/Next.js build — implemented against the raw DOM API. 49 hand-written modules that prove understanding of what frameworks abstract away.
 
-**The constraint is the point.** Anyone can `npx create-next-app`. Not everyone can build a desktop OS with draggable windows, GPU-composited glass effects, and a 3D WebGL background in 41 hand-written modules with zero runtime dependencies.
+**The constraint is the point.** Anyone can `npx create-next-app`. Building a desktop OS with draggable windows, GPU-composited glass, and WebGL backgrounds from scratch is a different conversation.
 
 ## Architecture
 
 ```
-js/                                 # 41 ES modules, zero framework imports
+js/                                 # 49 ES modules, zero framework imports
 ├── main.js                         # Entry — orchestrates boot, lazy-loads FX
 ├── boot.js                         # Cinematic boot sequence
 ├── login.js                        # Lock screen + 3D wheel init
@@ -211,7 +209,7 @@ js/                                 # 41 ES modules, zero framework imports
 │   ├── easter-eggs.js              # Konami, 418, glitch pulse
 │   └── micro-interactions.js       # Hover/click micro-animations
 │
-css/                                # 21 modular stylesheets
+css/                                # 25 modular stylesheets
 ├── variables.css                   # Design tokens (colors, spacing, fonts, motion easing, transition shorthands)
 ├── reset.css                       # Normalize + base resets
 ├── styles.css                      # Core layout, dock, desktop, icons
@@ -236,7 +234,7 @@ css/                                # 21 modular stylesheets
 ├── loading.css                     # Boot sequence, spinners
 └── admin.css                       # Content editor panel
 │
-tests/                              # 383 vitest tests across 18 suites
+tests/                              # 361 vitest tests across 17 suites
 ├── sanitize.test.js                # XSS sanitization (46 tests)
 ├── state.test.js                   # State persistence + events (17 tests)
 ├── state-toggles.test.js           # Auto-generated boolean toggles (14 tests)
@@ -282,7 +280,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run 383 vitest tests
+npm run test      # Run 361 vitest tests
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
@@ -306,14 +304,14 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 
 ## License
 
-MIT — **v3.16.6**
+MIT — **v3.42.1**
 
 ---
 
 <div align="center">
 
-**Built with vanilla JavaScript. No frameworks. No dependencies. Just web standards.**
+**No frameworks. No dependencies. No excuses.**
 
-[Live Demo](https://jamesdare.com) · [Source](https://github.com/DareDev256/portfolio-os) · [Changelog](CHANGELOG.md)
+[▸ Live Demo](https://jamesdare.com) · [Source](https://github.com/DareDev256/portfolio-os) · [Changelog](CHANGELOG.md)
 
 </div>

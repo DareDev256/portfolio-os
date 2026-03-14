@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.42.0
-last_updated: 2026-03-13
+version: 3.42.1
+last_updated: 2026-03-14
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-03-13
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.42.1] — 2026-03-14
+
+### Changed
+- **README rewritten to portfolio-grade standard** — Hero section redesigned with cinematic copy aligned to dark luxury tech aesthetic. Badges use dark label backgrounds for visual cohesion. Stale module/test counts synced across all sections (49 modules, 25 stylesheets, 361 tests / 17 suites). "Why No Frameworks?" sharpened from three paragraphs to three decisive lines. Version references unified to 3.42.1 across README, package.json, and version.js (was drifted at v3.16.6 in footer). Architecture tree header counts corrected.
 
 ---
 
