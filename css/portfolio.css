@@ -757,6 +757,42 @@
     filter: blur(3px);
 }
 
+.scroll-reveal[data-reveal="fade-right"] {
+    transform: translateX(18px) translateY(0);
+}
+
+.scroll-reveal[data-reveal="clip-up"] {
+    transform: translateY(0);
+    filter: blur(0);
+    clip-path: inset(100% 0 0 0);
+    transition:
+        opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        clip-path 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.scroll-reveal[data-reveal="clip-up"].scroll-reveal--visible {
+    clip-path: inset(0 0 0 0);
+}
+
+/* Gold accent line on revealed service cards */
+.scroll-reveal--visible.service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    width: 0;
+    height: 1px;
+    background: var(--gold, #d4a843);
+    animation: gold-line-sweep 0.7s ease-out 0.4s forwards;
+    pointer-events: none;
+}
+
+@keyframes gold-line-sweep {
+    0%   { width: 0; opacity: 0; }
+    50%  { opacity: 0.8; }
+    100% { width: 60%; opacity: 0.3; }
+}
+
 .scroll-reveal--visible {
     opacity: 1;
     transform: none;
@@ -816,7 +852,9 @@
         opacity: 1 !important;
         transform: none !important;
         filter: none !important;
+        clip-path: none !important;
         transition: none !important;
     }
     .scroll-reveal--visible.project-card::before { animation: none !important; display: none; }
+    .scroll-reveal--visible.service-card::after { animation: none !important; display: none; }
 }

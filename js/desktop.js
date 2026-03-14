@@ -891,7 +891,8 @@ export const Desktop = {
         const protectedFolders = { 'Real Estate': '1234', 'Cars': '1234' };
 
         const header = document.createElement('div');
-        header.className = 'window-section-header';
+        header.className = 'window-section-header scroll-reveal';
+        header.dataset.reveal = 'fade-left';
         header.textContent = '▸ MEDIA VAULT';
         container.appendChild(header);
 
@@ -1608,7 +1609,8 @@ export const Desktop = {
 
         // Header with count
         const header = document.createElement('div');
-        header.className = 'window-section-header magenta';
+        header.className = 'window-section-header magenta scroll-reveal';
+        header.dataset.reveal = 'fade-left';
         header.innerHTML = `\u26A1 APPLICATIONS <span style="font-size:11px; opacity:0.7; margin-left:10px;">${totalApps} Projects</span>`;
         content.appendChild(header);
 
@@ -1622,14 +1624,16 @@ export const Desktop = {
         categories.forEach((category) => {
             // Category header
             const catHeader = document.createElement('div');
-            catHeader.className = 'app-category-header';
+            catHeader.className = 'app-category-header scroll-reveal';
+            catHeader.dataset.reveal = 'fade-right';
             catHeader.style.setProperty('--cat-color', category.color);
             catHeader.textContent = `\u25B8 ${category.name}`;
             appList.appendChild(catHeader);
 
-            category.apps.forEach((app) => {
+            category.apps.forEach((app, appIdx) => {
                 const appItem = document.createElement('div');
-                appItem.className = 'app-item';
+                appItem.className = 'app-item scroll-reveal';
+                appItem.dataset.revealDelay = String(Math.min(appIdx + 1, 5));
 
                 const isLive = app.status === 'live';
                 const badgeClass = isLive ? 'app-status-badge--live' : 'app-status-badge--source';
@@ -2484,17 +2488,17 @@ export const Desktop = {
         content.className = 'services-content';
 
         content.innerHTML = `
-            <div class="services-hero">
+            <div class="services-hero scroll-reveal" data-reveal="scale">
                 <div class="services-hero-label">TDOT SOLUTIONS</div>
                 <h1 class="services-hero-title">WEB DESIGN &<br>DIGITAL SERVICES</h1>
                 <p class="services-hero-sub">Custom websites, e-commerce, branding, and AI solutions.<br>Built by an engineer, designed for results.</p>
             </div>
 
-            <div class="window-section-header purple" style="margin-top: 30px;">◈ SERVICES</div>
+            <div class="window-section-header purple scroll-reveal" data-reveal="fade-left" data-reveal-delay="1" style="margin-top: 30px;">◈ SERVICES</div>
 
             <div class="services-grid">
-                ${SERVICES.map(s => `
-                    <div class="service-card" style="--card-color: ${s.color}">
+                ${SERVICES.map((s, i) => `
+                    <div class="service-card scroll-reveal" data-reveal="fade-up" data-reveal-delay="${Math.min(i + 2, 6)}" style="--card-color: ${s.color}">
                         <div class="service-card-header">
                             <span class="service-card-icon" style="color: ${s.color}">${s.icon}</span>
                             <h3 class="service-card-title">${Sanitize.text(s.title)}</h3>
@@ -2511,12 +2515,12 @@ export const Desktop = {
                 `).join('')}
             </div>
 
-            <div class="window-section-header green" style="margin-top: 35px;">◈ MONTHLY RETAINERS</div>
-            <p class="services-retainer-intro">Keep your site running, updated, and growing without the hassle.</p>
+            <div class="window-section-header green scroll-reveal" data-reveal="fade-right" style="margin-top: 35px;">◈ MONTHLY RETAINERS</div>
+            <p class="services-retainer-intro scroll-reveal" data-reveal-delay="1">Keep your site running, updated, and growing without the hassle.</p>
 
             <div class="retainer-grid">
-                ${RETAINERS.map(r => `
-                    <div class="retainer-card" style="--card-color: ${r.color}">
+                ${RETAINERS.map((r, i) => `
+                    <div class="retainer-card scroll-reveal" data-reveal="clip-up" data-reveal-delay="${Math.min(i + 2, 6)}" style="--card-color: ${r.color}">
                         <div class="retainer-tier">${Sanitize.text(r.tier)}</div>
                         <div class="retainer-price">
                             <span class="retainer-price-amount">${Sanitize.text(r.price)}</span>
@@ -2529,7 +2533,7 @@ export const Desktop = {
                 `).join('')}
             </div>
 
-            <div class="services-cta">
+            <div class="services-cta scroll-reveal" data-reveal="scale" data-reveal-delay="1">
                 <div class="services-cta-text">Ready to build something?</div>
                 <a href="mailto:tdotssolutionsz@gmail.com?subject=Service%20Inquiry%20from%20jamesdare.com" class="cyber-button services-cta-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
                     <span>GET IN TOUCH</span>

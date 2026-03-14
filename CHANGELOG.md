@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.43.0
+version: 3.44.0
 last_updated: 2026-03-14
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-14
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.44.0] — 2026-03-14
+
+### Added
+- **Extended scroll-triggered reveals to Services, Applications, and Media windows** — Two new reveal variants: `fade-right` (mirror of fade-left) and `clip-up` (clip-path wipe reveal for a cinematic lab-notes effect). Services window now reveals hero (scale), section headers (fade-left/fade-right), service cards (staggered fade-up with gold accent line sweep), retainer cards (clip-up wipe), and CTA block. Applications window reveals header (fade-left), category headers (fade-right), and app items (staggered cascade). Media Vault header gets fade-left reveal. Gold accent line animation on service cards mirrors the amethyst accent on project cards. All new variants respect `prefers-reduced-motion`.
 
 ---
 
