@@ -35,6 +35,7 @@ export const Login = {
     _typewriterInterval: null,
     _focusTrapCleanup: null,
     _enterKeyHandler: null,
+    _auroraMoveHandler: null,
 
     /**
      * Initialize login system
@@ -55,6 +56,9 @@ export const Login = {
 
         // Listen for system lock event (from Start Menu)
         window.addEventListener('system-lock', () => this.lock());
+
+        // Cursor-reactive aurora on lock screen
+        this.initCursorAurora();
 
         // Play digivice intro video → go straight to desktop (no cinematic/boot text)
         DigiviceIntro.play().then(() => {
@@ -98,6 +102,36 @@ export const Login = {
             // Restore flat SVG on failure
             const flatImg = watermark.querySelector('.intro-watermark-img');
             if (flatImg) flatImg.style.display = '';
+        }
+    },
+
+    /**
+     * Cursor-reactive amethyst/gold aurora on lock screen.
+     * Sets CSS custom properties that drive the ::after pseudo-element gradient.
+     */
+    initCursorAurora() {
+        if (this._auroraMoveHandler) return;
+        const ls = this.lockScreen;
+        if (!ls) return;
+
+        this._auroraMoveHandler = (e) => {
+            ls.style.setProperty('--aurora-x', `${e.clientX}px`);
+            ls.style.setProperty('--aurora-y', `${e.clientY}px`);
+            ls.style.setProperty('--aurora-opacity', '1');
+        };
+
+        ls.addEventListener('mousemove', this._auroraMoveHandler);
+        // Fade out when cursor leaves
+        ls.addEventListener('mouseleave', () => {
+            ls.style.setProperty('--aurora-opacity', '0');
+        });
+    },
+
+    destroyCursorAurora() {
+        if (this._auroraMoveHandler && this.lockScreen) {
+            this.lockScreen.removeEventListener('mousemove', this._auroraMoveHandler);
+            this._auroraMoveHandler = null;
+            this.lockScreen.style.setProperty('--aurora-opacity', '0');
         }
     },
 
@@ -370,6 +404,9 @@ export const Login = {
 
         // Galaxy stays running - it's now on the body element
 
+        // Release cursor aurora (lock screen hidden)
+        this.destroyCursorAurora();
+
         // Stop 3D wheel to save GPU (lock screen hidden)
         if (this.wheel3D) this.wheel3D.stop();
 
@@ -500,6 +537,9 @@ export const Login = {
 
         // Reinitialize galaxy effect
         this.initGalaxyEffect();
+
+        // Re-attach cursor aurora
+        this.initCursorAurora();
 
         // Restart cinematic
         this.startCinematic();

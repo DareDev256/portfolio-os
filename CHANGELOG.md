@@ -22,6 +22,10 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ### Changed
 - **Context menu refactored to data-driven architecture** — extracted shared `_renderContextMenu(x, y, items)` method that both `showContextMenu` and `showIconContextMenu` now delegate to. Replaced fragile innerHTML + `document.getElementById` wiring with scoped element creation and direct event listeners. Menu items are now descriptor arrays (`{ icon, label, action }`), making menus trivially extensible — adding an item is one object instead of ~12 lines. Labels now pass through `Sanitize.text()`, closing a potential XSS vector from `item.label` interpolation.
+### Added
+- **Cursor-reactive amethyst aurora on lock screen** — A dual-layer radial gradient (amethyst + gold) follows the mouse cursor across the lock screen via CSS custom properties (`--aurora-x`, `--aurora-y`). Fades in on mouse entry, trails naturally via CSS transition, fades out on mouse leave. Zero layout thrash — GPU-composited gradient repositioning only.
+- **INITIALIZE button amethyst hover state** — Button hover shifts from cyan to amethyst/gold accent palette matching the aurora, with a dedicated `:active` press state for tactile feedback.
+- **Aurora lifecycle management** — Aurora listeners attach on init and lock, detach on login to desktop, preventing orphaned listeners across lock/unlock cycles.
 
 ## [3.41.2] — 2026-03-13
 
