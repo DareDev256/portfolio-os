@@ -194,6 +194,8 @@ export const Lightbox = {
      * Open video in a draggable window
      */
     openVideoWindow(item) {
+        // Early gate: reject items with no URL or non-string URLs before any processing
+        if (!item?.url || typeof item.url !== 'string') return;
         const videoInfo = this.detectVideoType(item.url);
         let content = document.createElement('div');
         content.style.background = '#000';
@@ -211,13 +213,25 @@ export const Lightbox = {
             iframe.style.height = '100%';
             content.appendChild(iframe);
         } else {
-            const video = document.createElement('video');
-            video.src = item.url;
-            video.controls = true;
-            video.autoplay = true;
-            video.style.width = '100%';
-            video.style.maxHeight = '100%';
-            content.appendChild(video);
+            // Validate URL before setting as video source — media items originate
+            // from admin-editable localStorage JSON (imported backups, manual edits).
+            // Without validation, a poisoned URL (javascript:, data:text/html, blob:)
+            // could execute arbitrary code when the browser processes the src attribute.
+            const safeUrl = Sanitize.url(item.url);
+            if (!safeUrl) {
+                const blocked = document.createElement('div');
+                blocked.textContent = 'Blocked: invalid video URL';
+                blocked.style.cssText = 'color:#ff4444;display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:var(--font-mono,monospace);font-size:0.85rem;';
+                content.appendChild(blocked);
+            } else {
+                const video = document.createElement('video');
+                video.src = safeUrl;
+                video.controls = true;
+                video.autoplay = true;
+                video.style.width = '100%';
+                video.style.maxHeight = '100%';
+                content.appendChild(video);
+            }
         }
 
         WindowManager.create({

@@ -4,7 +4,7 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.44.0-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.44.1-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/361_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/50_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
@@ -102,6 +102,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - SVG content sanitized before DOM insertion
 - CSP `img-src` locked to explicit GitHub asset domains
 - YouTube/Vimeo video ID regex validation — blocks injection via crafted embed URLs
+- Direct `<video>` sources validated through `Sanitize.url()` — blocks `javascript:`, `data:`, `blob:` URI schemes from admin-editable media entries
 - Iframe `sandbox="allow-scripts allow-same-origin allow-presentation"` on all video embeds — blocks top-navigation, form submission, and popups
 - Navigator API values HTML-escaped before innerHTML interpolation (defense-in-depth against extension/polyfill mutation)
 - Weather widget validates API response shape and coordinate inputs
@@ -305,7 +306,7 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 
 ## License
 
-MIT — **v3.44.0**
+MIT — **v3.44.1**
 
 ---
 

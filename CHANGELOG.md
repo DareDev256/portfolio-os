@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.44.0
-last_updated: 2026-03-14
+version: 3.44.1
+last_updated: 2026-03-15
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-03-14
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.44.1] — 2026-03-15
+
+### Security
+- **Hardened video source URL validation in Lightbox** — Direct `<video>` elements now pass through `Sanitize.url()` before setting `src`, blocking `javascript:`, `data:`, `blob:`, and protocol-obfuscated URIs from admin-editable media entries. YouTube/Vimeo embeds already validated IDs via regex; this closes the gap for non-embed video sources. Added early null/type guard on `openVideoWindow()` input. Invalid URLs render a visible error instead of silently loading dangerous content.
 
 ---
 
