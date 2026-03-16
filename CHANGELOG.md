@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.44.1
+version: 3.44.2
 last_updated: 2026-03-15
 
 ---
@@ -15,6 +15,14 @@ last_updated: 2026-03-15
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.44.2] — 2026-03-16
+
+### Added
+- **Test coverage for ScrollReveal** — 9 tests covering IntersectionObserver wiring, `scroll-reveal--visible` class toggling, MutationObserver auto-detection of new windows, WeakSet deduplication preventing double-observation, manual `.observe()` API, and dynamic element pickup inside observed containers.
+- **Test coverage for Notify (toast system)** — 17 tests covering toast creation with a11y attributes, all four type variants (success/error/warning/info) with correct icons and labels, auto-dismiss timing with fake timers, queue eviction at MAX_VISIBLE=4, close button idempotency, hover pause/resume with remaining-time arithmetic, and progress bar animation state toggling.
 
 ---
 

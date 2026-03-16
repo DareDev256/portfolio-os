@@ -5,7 +5,7 @@
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
 ![Version](https://img.shields.io/badge/v3.44.1-00f0ff?style=flat-square&labelColor=0d0d0d)
-![Tests](https://img.shields.io/badge/361_tests-00e676?style=flat-square&labelColor=0d0d0d)
+![Tests](https://img.shields.io/badge/387_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/50_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `49 modules` · `25 stylesheets` · `361 tests / 17 suites` · `20 desktop apps` · `0 dependencies`
+> `49 modules` · `25 stylesheets` · `387 tests / 19 suites` · `20 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -147,7 +147,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 | Metric | Value |
 |--------|-------|
-| **Test Coverage** | 361 tests across 17 suites (vitest + jsdom) |
+| **Test Coverage** | 387 tests across 19 suites (vitest + jsdom) |
 | **Security** | DOMPurify on all innerHTML, 10 HTTP headers, CSP, SRI |
 | **Accessibility** | WCAG focus trapping, aria-live, skip-link, reduced-motion |
 | **Performance** | Lazy-loaded modules, RAF pausing, 30fps-throttled FX |
@@ -236,7 +236,7 @@ css/                                # 25 modular stylesheets
 ├── loading.css                     # Boot sequence, spinners
 └── admin.css                       # Content editor panel
 │
-tests/                              # 361 vitest tests across 17 suites
+tests/                              # 387 vitest tests across 19 suites
 ├── sanitize.test.js                # XSS sanitization (46 tests)
 ├── state.test.js                   # State persistence + events (17 tests)
 ├── state-toggles.test.js           # Auto-generated boolean toggles (14 tests)
@@ -253,6 +253,8 @@ tests/                              # 361 vitest tests across 17 suites
 ├── github-stats.test.js            # GitHub stats display + error handling (12 tests)
 ├── windows.test.js                 # Window manager, titlebar, cascade, content (65 tests)
 ├── desktop-utils.test.js           # Desktop utilities + DOMPurify fallback (23 tests)
+├── scroll-reveal.test.js           # IntersectionObserver, MutationObserver, WeakSet dedup (9 tests)
+├── notifications.test.js           # Toast queue, auto-dismiss, hover pause/resume, a11y (17 tests)
 ├── security-boundaries.test.js     # Prototype pollution, fetchWithTimeout, state persistence (22 tests)
 └── smoke.test.js                   # Critical path integration: DOM, routing, contact form, responsive (27 tests)
 ```
@@ -282,7 +284,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run 361 vitest tests
+npm run test      # Run 387 vitest tests
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
