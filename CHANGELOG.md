@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.44.2
-last_updated: 2026-03-15
+version: 3.44.3
+last_updated: 2026-03-17
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-03-15
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.44.3] — 2026-03-17
+
+### Changed
+- **README updated with deployment instructions and version sync** — Added a full Deployment section documenting Vercel production workflow (CLI commands, `vercel.json` security header config, custom domain setup, local preview build). Corrected stale module count from 49 → 55 and stylesheet count from 25 → 26. Architecture tree expanded with 6 previously undocumented modules (`version.js`, `scroll-reveal.js`, `parallax.js`, `dock-magnify.js`, `ambient-system.js`, `weather.js`). Unified version references across README badges, `version.js`, and `package.json` to 3.44.3 — resolving a 3-file version drift (was 3.44.1 in version.js/README, 3.44.2 in package.json).
 
 ---
 

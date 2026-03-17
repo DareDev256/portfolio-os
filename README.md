@@ -4,9 +4,9 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.44.1-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.44.3-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/387_tests-00e676?style=flat-square&labelColor=0d0d0d)
-![Modules](https://img.shields.io/badge/50_modules-b388ff?style=flat-square&labelColor=0d0d0d)
+![Modules](https://img.shields.io/badge/55_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
 **[▸ ENTER THE LIVE DEMO](https://jamesdare.com)**
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `49 modules` · `25 stylesheets` · `387 tests / 19 suites` · `20 desktop apps` · `0 dependencies`
+> `55 modules` · `26 stylesheets` · `387 tests / 19 suites` · `20 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -165,7 +165,7 @@ Routing, state management, component lifecycle, lazy loading, accessibility — 
 ## Architecture
 
 ```
-js/                                 # 49 ES modules, zero framework imports
+js/                                 # 55 ES modules, zero framework imports
 ├── main.js                         # Entry — orchestrates boot, lazy-loads FX
 ├── boot.js                         # Cinematic boot sequence
 ├── login.js                        # Lock screen + 3D wheel init
@@ -202,6 +202,12 @@ js/                                 # 49 ES modules, zero framework imports
 ├── startmenu.js                    # Start menu + system tray
 ├── admin.js                        # No-code content editor (console-only)
 ├── audiofx.js                      # Audio effects system
+├── version.js                      # Single source of truth for app version
+├── scroll-reveal.js                # IntersectionObserver scroll-triggered animations
+├── parallax.js                     # Mouse-driven parallax depth engine
+├── dock-magnify.js                 # macOS-style dock icon magnification
+├── ambient-system.js               # Live system telemetry simulation
+├── weather.js                      # Geolocation weather widget (Open-Meteo)
 ├── interactions/
 │   ├── engine.js                   # Orchestrator (30fps throttled)
 │   ├── cursor-trail.js             # Particle cursor effects
@@ -211,7 +217,7 @@ js/                                 # 49 ES modules, zero framework imports
 │   ├── easter-eggs.js              # Konami, 418, glitch pulse
 │   └── micro-interactions.js       # Hover/click micro-animations
 │
-css/                                # 25 modular stylesheets
+css/                                # 26 modular stylesheets
 ├── variables.css                   # Design tokens (colors, spacing, fonts, motion easing, transition shorthands)
 ├── reset.css                       # Normalize + base resets
 ├── styles.css                      # Core layout, dock, desktop, icons
@@ -291,6 +297,51 @@ npm run format    # Prettier
 
 The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and **ESLint** + **Prettier** for code quality. There are no runtime dependencies — only dev tooling.
 
+## Deployment
+
+Passion OS is deployed on **Vercel** at [jamesdare.com](https://jamesdare.com). Every push to `main` triggers an automatic production deployment.
+
+### Vercel (Production)
+
+```bash
+# Install the Vercel CLI
+npm i -g vercel
+
+# Link to the project (first time only)
+vercel link
+
+# Deploy to preview
+vercel
+
+# Deploy to production
+vercel --prod
+```
+
+The project ships with a `vercel.json` that configures:
+- **SPA rewrites** — all routes fall through to `index.html` for client-side routing
+- **12 security headers** — CSP, HSTS (2-year preload), X-Frame-Options, COOP, COEP, CORP, Permissions-Policy, DNS prefetch control, download options, and cross-domain policies
+- **Service Worker cache control** — `no-cache` on `sw.js` to prevent stale worker versions
+- **Data endpoint caching** — 5-minute `Cache-Control` with `stale-while-revalidate` on `/data/*`
+
+### Custom Domain
+
+1. Add your domain in the Vercel Dashboard → Settings → Domains
+2. Point your DNS `A` record to `76.76.21.21` (or use the CNAME Vercel provides)
+3. SSL is provisioned automatically
+
+### Local Preview (Production Build)
+
+```bash
+npm run build      # Vite build → dist/
+npm run preview    # Serve dist/ on localhost:4173
+```
+
+### Environment Notes
+
+- No `.env` file required — the app has zero server-side secrets
+- All API calls (GitHub, Open-Meteo, Passion API) use public endpoints
+- The Service Worker (`sw.js`) caches assets locally with network-first for navigation and LRU eviction at 150 entries
+
 ## Documentation
 
 | Document | Description |
@@ -308,7 +359,7 @@ The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and
 
 ## License
 
-MIT — **v3.44.1**
+MIT — **v3.44.3**
 
 ---
 
