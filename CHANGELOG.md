@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.44.3
-last_updated: 2026-03-17
+version: 3.44.4
+last_updated: 2026-03-20
 
 ---
 
@@ -15,6 +15,17 @@ last_updated: 2026-03-17
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.44.4] — 2026-03-20
+
+### Security
+- **Patched 5 npm dependency vulnerabilities** — Fixed 1 moderate (ajv ReDoS) and 4 high-severity CVEs: flatted unbounded recursion DoS + prototype pollution, minimatch ReDoS (3 vectors), rollup arbitrary file write via path traversal, undici HTTP smuggling + WebSocket memory DoS (6 issues). All resolved via dependency upgrades.
+- **GitHub API rate-limit hardening** — Added `X-RateLimit-Remaining` / `X-RateLimit-Reset` header tracking to `github.js`. Prevents silent app degradation when the 60 req/hr unauthenticated cap is hit. Now detects 403 rate-limit responses explicitly and provides reset time in error messaging instead of a generic connection failure.
+
+### Changed
+- **Version synced** — Unified version across `package.json`, `version.js`, `index.html` title, README badge, and CHANGELOG to 3.44.4.
 
 ---
 

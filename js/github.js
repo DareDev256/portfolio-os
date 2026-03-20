@@ -119,8 +119,26 @@ export const GitHub = {
         }
 
         try {
+            /** @type {number|null} Rate-limit remaining from last response */
+            let rateLimitRemaining = null;
+            let rateLimitReset = null;
+
             const safeFetch = async (url) => {
+                // Preemptive rate-limit guard — abort if we already know we're exhausted
+                if (rateLimitRemaining !== null && rateLimitRemaining <= 0) {
+                    const resetAt = rateLimitReset ? new Date(rateLimitReset * 1000).toLocaleTimeString() : 'soon';
+                    throw new Error(`RATE_LIMITED (resets at ${resetAt})`);
+                }
                 const r = await fetchWithTimeout(url, { timeout: 8000 });
+                // Track GitHub rate-limit headers for defensive throttling
+                const remaining = parseInt(r.headers.get('x-ratelimit-remaining'), 10);
+                if (Number.isFinite(remaining)) rateLimitRemaining = remaining;
+                const reset = parseInt(r.headers.get('x-ratelimit-reset'), 10);
+                if (Number.isFinite(reset)) rateLimitReset = reset;
+
+                if (r.status === 403 && remaining === 0) {
+                    throw new Error('RATE_LIMITED');
+                }
                 if (!r.ok) throw new Error(`HTTP ${r.status}`);
                 return r.json();
             };
