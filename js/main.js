@@ -21,6 +21,7 @@ import { ShortcutsOverlay } from './shortcuts-overlay.js';
 import { Notify } from './notifications.js';
 import { Parallax } from './parallax.js';
 import { ScrollReveal } from './scroll-reveal.js';
+import { IconTilt } from './icon-tilt.js';
 import { ensureGalaxy } from './galaxy-init.js';
 
 /* ── Visual module registry ────────────────────────────────────────
@@ -112,6 +113,9 @@ async function init() {
 
     // Scroll-triggered reveals for window content
     ScrollReveal.init();
+
+    // 3D tilt on desktop icon hover (Phase 1 — Alien Tech Upgrade)
+    IconTilt.init();
 
     // Direct-access routes skip boot/lock entirely (e.g. /services for prospects)
     const directAccessRoutes = ['/services'];

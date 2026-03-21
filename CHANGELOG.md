@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.44.4
+version: 3.45.0
 last_updated: 2026-03-20
 
 ---
@@ -15,6 +15,17 @@ last_updated: 2026-03-20
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.45.0] — 2026-03-20
+
+### Added
+- **3D icon tilt with frosted glass** — New `icon-tilt.js` module adds mouse-tracked gyroscopic 3D perspective tilt (±18°) to all desktop icons. Icons tilt toward the cursor with an inner light bloom that shifts to simulate overhead lighting, creating a premium holographic feel. Uses CSS custom properties (`--tilt-x`, `--tilt-y`, `--bloom-x`, `--bloom-y`) for GPU-composited transforms. MutationObserver auto-wires dynamically added icons. Respects `prefers-reduced-motion`.
+- **Desktop icon frosted glass upgrade** — Icon boxes now use real `backdrop-filter` glass material (`--glass-bg`, `--glass-blur-light`) instead of opaque backgrounds, integrating with the Alien Tech glass system. Hover state upgraded from basic `scale(1.1)` to perspective-aware transform with enhanced glow.
+
+### Changed
+- **Version synced** — Unified version across `package.json`, `version.js`, `index.html` title, README badge, and CHANGELOG to 3.45.0.
 
 ---
 

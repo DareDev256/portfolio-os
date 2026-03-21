@@ -1062,15 +1062,19 @@ body::before {
 }
 
 .desktop-icon:hover {
-    transform: scale(1.1);
     z-index: 100;
-    /* Bring to front on hover */
 }
 
 .desktop-icon-box {
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+    --bloom-x: 50%;
+    --bloom-y: 50%;
     width: 64px;
     height: 64px;
-    background: rgba(15, 10, 30, 0.55);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur-light);
+    -webkit-backdrop-filter: var(--glass-blur-light);
     border: 1px solid rgba(0, 240, 255, 0.1);
     border-radius: 50%;
     display: flex;
@@ -1079,9 +1083,31 @@ body::before {
     box-shadow:
         0 4px 20px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    transition: all 0.3s var(--ease-spring);
+    transition: transform var(--duration-fast) ease-out,
+                box-shadow var(--duration-normal) var(--ease-decel),
+                border-color var(--duration-normal) var(--ease-decel);
+    transform: perspective(600px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+    transform-style: preserve-3d;
     margin-bottom: 8px;
     position: relative;
+    will-change: transform;
+}
+
+/* Inner light bloom — shifts with tilt to simulate overhead light */
+.desktop-icon-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+        circle at var(--bloom-x) var(--bloom-y),
+        rgba(255, 255, 255, 0.12) 0%,
+        transparent 60%
+    );
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--duration-normal) var(--ease-decel);
+    z-index: 1;
 }
 
 .desktop-icon-emoji {
@@ -1104,18 +1130,22 @@ body::before {
 }
 
 .desktop-icon:hover .desktop-icon-box {
-    transform: scale(1.12);
     box-shadow:
         0 0 20px rgba(0, 240, 255, 0.3),
         0 0 40px rgba(0, 240, 255, 0.15),
         0 8px 25px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     border-color: rgba(0, 240, 255, 0.4);
-    background: rgba(15, 10, 30, 0.55);
+    background: var(--glass-bg-dense);
+}
+
+/* Show inner light bloom on hover */
+.desktop-icon:hover .desktop-icon-box::before {
+    opacity: 1;
 }
 
 .desktop-icon:active .desktop-icon-box {
-    transform: scale(0.95);
+    transform: perspective(600px) scale(0.95);
 }
 
 .desktop-icon-label {

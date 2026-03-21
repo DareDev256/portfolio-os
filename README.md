@@ -4,9 +4,9 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.44.4-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.45.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/387_tests-00e676?style=flat-square&labelColor=0d0d0d)
-![Modules](https://img.shields.io/badge/55_modules-b388ff?style=flat-square&labelColor=0d0d0d)
+![Modules](https://img.shields.io/badge/56_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
 **[▸ ENTER THE LIVE DEMO](https://jamesdare.com)**
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `55 modules` · `26 stylesheets` · `387 tests / 19 suites` · `20 desktop apps` · `0 dependencies`
+> `56 modules` · `26 stylesheets` · `387 tests / 19 suites` · `20 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -51,7 +51,8 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 - **MMBN Cyberspace Background** — Three.js perspective grid with cobalt data streams, glowing network nodes, and a deep blue-purple void sky.
 - **3D Mahoraga Wheel** — Three.js lock screen centerpiece. 60fps + antialiasing on desktop, 30fps lean mode on mobile.
-- **Glass UI** — `backdrop-filter` frosted panels on windows, top bar, and dock — GPU-optimized with reduced blur radii.
+- **Glass UI** — `backdrop-filter` frosted panels on windows, top bar, dock, and desktop icons — GPU-optimized with reduced blur radii.
+- **3D Icon Tilt** — Desktop icons respond to cursor position with gyroscopic 3D perspective tilt (±18°) and an inner light bloom that shifts to simulate overhead lighting. Mouse-tracked via CSS custom properties, MutationObserver for dynamic icons. Respects `prefers-reduced-motion`.
 - **Tokenized Motion System** — All transitions use design tokens (`--transition-fast/medium/slow`, `--ease-decel/accel/spring`) instead of hardcoded values. Entry animations decelerate, exits accelerate, emphasis bounces — no generic `ease` defaults.
 - **Parallax Depth Engine** — Mouse-driven lock screen layers + scroll-driven desktop background shifts. 4-layer depth with lerp smoothing, MutationObserver for dynamic windows, `will-change` GPU compositing. Respects `prefers-reduced-motion`.
 - **Glimmer Sweep** — Diagonal gold-to-amethyst light sweep on hover for portfolio cards, project cards, portfolio links, and dock icons. GPU-composited `translateX` animation with `ease-decel` fade-out. Respects `prefers-reduced-motion`.
