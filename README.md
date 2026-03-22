@@ -4,7 +4,7 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.45.0-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.46.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/387_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/56_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
@@ -74,7 +74,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | **SKILLS_MATRIX** | Window | Interactive skills visualization |
 | **GITHUB_OPS** | Window | Live GitHub API integration |
 | **PORTFOLIO** | Window | Curated 5-project featured showcase with tech badges, live demo links, and rich cards |
-| **APPLICATIONS** | Window | 17 real projects across 4 categories with DEPLOYED/SOURCE badges and Lab Notes click-to-reveal diagnostics |
+| **APPLICATIONS** | Window | 17 real projects across 4 categories with DEPLOYED/SOURCE badges, Lab Notes click-to-reveal diagnostics, and classified dossier declassification reveals (scan-line sweep + ACCESS GRANTED stamp) |
 | **DEV_TERMINAL** | Window | Fake terminal with 18 sass commands (`neofetch`, `cowsay`, `matrix`...) |
 | **Vibe_Coder.exe** | External | Browser-based game — deployed project link |
 | **IMG_GEN.ai** | External | AI image generation tool — deployed project link |
