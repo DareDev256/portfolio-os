@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.45.0
-last_updated: 2026-03-20
+version: 3.45.1
+last_updated: 2026-03-23
 
 ---
 
@@ -15,6 +15,16 @@ last_updated: 2026-03-20
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.45.1] — 2026-03-23
+
+### Added
+- **Deep Dive: 3D Icon Tilt** — Portfolio-grade README section documenting the `icon-tilt.js` module: normalized coordinate math, CSS custom property architecture (`--tilt-x/y`, `--bloom-x/y`), `perspective(600px)` rationale, light bloom simulation via `::before` pseudo-element, `MutationObserver` auto-wiring, and `prefers-reduced-motion` accessibility. Includes file cross-reference table.
+
+### Changed
+- **Version synced** — Unified version across `package.json`, `version.js`, README badges, and CHANGELOG to 3.45.1.
 
 ---
 

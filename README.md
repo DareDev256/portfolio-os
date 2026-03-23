@@ -4,7 +4,7 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.46.0-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.45.1-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/387_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/56_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
@@ -155,6 +155,61 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | **Performance** | Lazy-loaded modules, RAF pausing, 30fps-throttled FX |
 | **Lint** | 0 ESLint warnings, Prettier-formatted |
 | **Bundle** | 132 kB main chunk, code-split lazy modules |
+
+## Deep Dive: 3D Icon Tilt (`icon-tilt.js`)
+
+The desktop icons respond to cursor proximity with a gyroscopic 3D perspective tilt — a small module (83 LOC) that punches well above its weight in perceived polish. Here's how it works under the hood.
+
+### The Math
+
+Every icon tracks its center relative to the viewport. On `mousemove`, the cursor position is normalized to a `−1…1` coordinate space:
+
+```
+          −1
+           │
+  −1 ──────┼────── +1     nx = (clientX − centerX) / halfWidth
+           │               ny = (clientY − centerY) / halfHeight
+          +1
+```
+
+These normalized values drive two things:
+
+1. **Tilt angles** — `rotateY(nx × 18°)` and `rotateX(−ny × 18°)`. The Y-axis tracks horizontal movement, X-axis tracks vertical (inverted so the icon tilts *toward* the cursor, not away).
+2. **Light bloom position** — The `::before` pseudo-element renders a `radial-gradient` spotlight. Its center shifts *opposite* to the tilt (`50% + n × 30%`), simulating overhead lighting — when the icon tilts left, the light appears to come from the right. This sells the 3D illusion.
+
+### CSS Architecture
+
+The JS never touches `transform` directly. Instead it writes four CSS custom properties:
+
+| Property | Default | Range | Purpose |
+|----------|---------|-------|---------|
+| `--tilt-x` | `0deg` | ±18° | X-axis rotation |
+| `--tilt-y` | `0deg` | ±18° | Y-axis rotation |
+| `--bloom-x` | `50%` | 20–80% | Light bloom horizontal |
+| `--bloom-y` | `50%` | 20–80% | Light bloom vertical |
+
+CSS consumes them via `transform: perspective(600px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y))` on `.desktop-icon-box`, and `radial-gradient(circle at var(--bloom-x) var(--bloom-y), ...)` on the `::before` pseudo-element. This separation means the effect is entirely CSS-removable — delete the custom properties and the icons fall back to flat, zero-breakage.
+
+### Why It Feels Right
+
+- **`perspective(600px)`** — Close enough to create visible depth without fisheye distortion. Values below 400px warp aggressively; above 800px the tilt becomes imperceptible.
+- **`will-change: transform`** — Promotes the element to its own compositor layer. The GPU handles the 3D transform instead of triggering layout/paint cycles.
+- **`ease-out` transition on transform** — The icon follows the cursor with slight inertia on the way in, then springs back smoothly on `mouseleave` when all properties reset to defaults.
+- **`MutationObserver`** — Auto-wires icons added dynamically to the DOM, so no manual re-init is needed when the desktop grid changes.
+
+### Accessibility
+
+The module checks `prefers-reduced-motion: reduce` at init and listens for live changes via `matchMedia.addEventListener('change')`. When reduced motion is active, `handleMove` early-returns — icons remain static. The bloom and tilt custom properties stay at their defaults, so the frosted glass appearance is preserved without any motion.
+
+### Files
+
+| File | Role |
+|------|------|
+| `js/icon-tilt.js` | Mouse tracking, coordinate math, custom property writes |
+| `css/styles.css:1068–1111` | `.desktop-icon-box` transform + `::before` bloom gradient |
+| `css/glass.css:464–465` | Glass system integration (tilt vars in glass transforms) |
+
+---
 
 ## Why No Frameworks?
 
@@ -361,7 +416,7 @@ npm run preview    # Serve dist/ on localhost:4173
 
 ## License
 
-MIT — **v3.44.3**
+MIT — **v3.45.1**
 
 ---
 
