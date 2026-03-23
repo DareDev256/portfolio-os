@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.45.1
+version: 3.45.2
 last_updated: 2026-03-23
 
 ---
@@ -15,6 +15,18 @@ last_updated: 2026-03-23
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.45.2] — 2026-03-23
+
+### Added
+- **Test: Icon Tilt** — 7-test suite for `icon-tilt.js` covering 3D tilt CSS property application on mousemove, reset on mouseleave, `prefers-reduced-motion` accessibility compliance (both static and dynamic toggle), graceful no-op when container is missing, `MutationObserver` auto-wiring for dynamically added icons, and bloom position math verification.
+- **Test: Calculator** — 15-test suite for `calculator.js` covering basic arithmetic (add, subtract, multiply, divide), division-by-zero ERR lockout with Clear recovery, decimal input with double-dot prevention, sign toggle (±), percentage, backspace (single-digit→0 edge case), operation chaining without `=`, Clear full reset, and cleanup function validation.
+
+### Changed
+- **Test counts updated** — README badges and inline stats bumped from 387→409 tests, 19→21 suites across all references.
+- **Version synced** — Unified version across `package.json`, `version.js`, README badges, and CHANGELOG to 3.45.2.
 
 ---
 
