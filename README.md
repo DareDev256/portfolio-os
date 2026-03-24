@@ -4,7 +4,7 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.45.3-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.46.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/444_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/56_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
@@ -55,6 +55,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **3D Icon Tilt** — Desktop icons respond to cursor position with gyroscopic 3D perspective tilt (±18°) and an inner light bloom that shifts to simulate overhead lighting. Mouse-tracked via CSS custom properties, MutationObserver for dynamic icons. Respects `prefers-reduced-motion`.
 - **Tokenized Motion System** — All transitions use design tokens (`--transition-fast/medium/slow`, `--ease-decel/accel/spring`) instead of hardcoded values. Entry animations decelerate, exits accelerate, emphasis bounces — no generic `ease` defaults.
 - **Parallax Depth Engine** — Mouse-driven lock screen layers + scroll-driven desktop background shifts. 4-layer depth with lerp smoothing, MutationObserver for dynamic windows, `will-change` GPU compositing. Respects `prefers-reduced-motion`.
+- **Holographic Blueprint Reveal** — Project cards in the Applications window enter with a tech-blueprint animation: gold corner crosshairs lock on, edge-trace lines draw themselves (gold → amethyst gradient), a scan line sweeps, then content resolves from blur to clarity. Overlay fades out after completion. CSS-only, zero JS overhead. Respects `prefers-reduced-motion`.
 - **Glimmer Sweep** — Diagonal gold-to-amethyst light sweep on hover for portfolio cards, project cards, portfolio links, and dock icons. GPU-composited `translateX` animation with `ease-decel` fade-out. Respects `prefers-reduced-motion`.
 - **Black Mirror Signal Acquisition** — Cinematic "Act 0" pre-intro on the lock screen. Three staggered interference bars sweep vertically with gold-amethyst gradients, edge glows pulse from screen boundaries, and a "SIGNAL ACQUIRED" data flash flickers in stepped keyframes before dissolving into the existing boot sequence.
 - **Cursor Aurora** — Lock screen tracks mouse position via CSS custom properties, rendering a dual-layer amethyst/gold radial glow that follows the cursor. GPU-composited, zero layout thrash. INITIALIZE button shifts to amethyst hover state to match.

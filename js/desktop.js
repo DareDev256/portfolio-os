@@ -1725,7 +1725,18 @@ export const Desktop = {
                         const tagList = (project.tags || []).map(t => Sanitize.text(t)).join(' · ');
                         const techCount = project.tech ? project.tech.length : 0;
                         return `
-                <div class="project-card project-card--expandable scroll-reveal" data-reveal-delay="${Math.min(index % 6, 5)}">
+                <div class="project-card project-card--expandable project-card--blueprint scroll-reveal" data-reveal-delay="${Math.min(index % 6, 5)}">
+                    <div class="blueprint-overlay" aria-hidden="true">
+                        <div class="bp-corner bp-corner--tl"></div>
+                        <div class="bp-corner bp-corner--tr"></div>
+                        <div class="bp-corner bp-corner--bl"></div>
+                        <div class="bp-corner bp-corner--br"></div>
+                        <div class="bp-line-h bp-line-h--top"></div>
+                        <div class="bp-line-h bp-line-h--bottom"></div>
+                        <div class="bp-line-v bp-line-v--left"></div>
+                        <div class="bp-line-v bp-line-v--right"></div>
+                        <div class="bp-scan"></div>
+                    </div>
                     <div class="project-title">${Sanitize.text(project.title)}</div>
                     <div class="project-description">${Sanitize.text(project.description)}</div>
                     <div class="project-tech">

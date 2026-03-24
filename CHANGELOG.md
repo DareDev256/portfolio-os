@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.45.3
+version: 3.46.0
 last_updated: 2026-03-23
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-23
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.46.0] — 2026-03-23
+
+### Added
+- **Holographic Blueprint Reveal** — Project cards in the Applications grid now enter with a tech-blueprint animation sequence: gold corner crosshairs materialize, geometric edge-trace lines draw themselves (gold → amethyst gradient), a scan line sweeps vertically, and content resolves from blur to clarity with staggered delays. The overlay fades out after completion. Respects `prefers-reduced-motion`. Purely CSS-driven, zero JavaScript overhead.
 
 ---
 
