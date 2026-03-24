@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.45.2
+version: 3.45.3
 last_updated: 2026-03-23
 
 ---
@@ -15,6 +15,18 @@ last_updated: 2026-03-23
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.45.3] — 2026-03-23
+
+### Added
+- **Test: Terminal** — 19-test suite for `terminal.js` covering command parsing (case normalization, arg preservation), command routing for all 7 built-in commands (`help`, `clear`, `whoami`, `ls`, `cat`, `sys`, `deploy`), file system boundary enforcement (path traversal blocked, case-sensitive keys, closed file set), and history navigation edge cases (empty history, LIFO traversal, oldest-entry clamping, down-to-empty reset, index reset on new push).
+- **Test: Dock Magnify** — 16-test suite for `dock-magnify.js` covering Gaussian falloff math (identity at zero, decay at distance, symmetry, non-negativity), scale computation (MAX_SCALE at cursor, BASE_SCALE at distance, no overshoot), lift pixel values, glow opacity thresholds (peak 0.33, floor 0.08), box-shadow activation boundary (factor > 0.3), and z-index monotonic ordering by proximity.
+
+### Changed
+- **Test counts updated** — 409→444 tests, 21→23 suites across all references.
+- **Version synced** — 3.45.2→3.45.3 across `package.json`, `version.js`, README badges, and CHANGELOG.
 
 ---
 
