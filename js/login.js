@@ -12,6 +12,7 @@ import { MahoragaWheel3D } from './mahoraga-wheel-3d.js';
 import { trapFocus } from './focus-trap.js';
 import { DigiviceIntro } from './digivice-intro.js';
 import { ensureGalaxy } from './galaxy-init.js';
+import { PurpleHaze } from './purple-haze.js';
 
 /**
  * Login and Lock Screen
@@ -410,13 +411,14 @@ export const Login = {
         // Stop 3D wheel to save GPU (lock screen hidden)
         if (this.wheel3D) this.wheel3D.stop();
 
-        // Warp tunnel: login -> desktop
-        Warp.transition(() => {
-            this.lockScreen.classList.add('hidden'); // Hide lock/login container
+        // Purple Haze curtain: cover → swap screens → reveal
+        PurpleHaze.cover();
+
+        // Brief hold while curtain settles, then swap behind it
+        setTimeout(() => {
+            this.lockScreen.classList.add('hidden');
             this.desktop.classList.remove('hidden');
             this.desktop.classList.add('fade-in');
-
-            // Galaxy persists through login - don't destroy it!
 
             // Initialize desktop components
             this.initDesktop();
@@ -425,8 +427,9 @@ export const Login = {
             Glyphs.setEnabled(false);
             StartMenu.close();
 
-            Warp.pulse();
-        });
+            // Part the curtain to reveal the desktop
+            PurpleHaze.reveal().then(() => Warp.pulse());
+        }, 400);
     },
 
     /**

@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.46.0
-last_updated: 2026-03-23
+version: 3.47.0
+last_updated: 2026-03-24
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-03-23
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.47.0] — 2026-03-24
+
+### Added
+- **Purple Haze Reveal Curtain** — Cinematic lock-to-desktop transition inspired by Prince's Purple Rain staging. Two amethyst velvet panels cover the screen during boot, a golden seam draws across the divide, an atmospheric bloom radiates from center, then the panels part vertically to reveal the desktop. Subtle CSS noise texture simulates velvet material. Uses design system motion tokens (`--ease-decel`, `--ease-accel`). Respects `prefers-reduced-motion`. New module: `js/purple-haze.js` + `css/purple-haze.css`.
 
 ---
 
