@@ -102,6 +102,9 @@ export const CommandPalette = {
         this.overlay.classList.add('active');
         this.filterAndRender();
         requestAnimationFrame(() => this.input.focus());
+
+        // Achievement system: track command palette usage
+        document.dispatchEvent(new CustomEvent('passion:command-palette'));
     },
 
     close() {

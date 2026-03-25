@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.48.0
+version: 3.49.0
 last_updated: 2026-03-24
 
 ---
@@ -15,6 +15,15 @@ last_updated: 2026-03-24
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.49.0] — 2026-03-24
+
+### Added
+- **Achievement System (TROPHIES.exe)** — Gamified portfolio exploration with 10 unlockable trophies across 4 rarity tiers (common, rare, epic, legendary). Visitors earn achievements by exploring the OS: "System Online" (boot complete), "Explorer" (3 apps), "Cartographer" (7 apps), "Terminal Jockey" (use terminal), "Due Diligence" (resume + about + skills), "Night Owl" (visit midnight–5am), "Power User" (command palette), "Passion's Friend" (open Passion chat), "Speed Demon" (5 windows in 30s), and "Completionist" (all achievements). Features slide-in unlock popups with rarity-themed glow effects, a gold trophy SVG desktop icon, a dedicated viewer window with progress bar, and full localStorage persistence. Zero coupling — uses CustomEvent observer pattern via `passion:window-open`, `passion:command-palette`, and `passion:boot-complete` events. Respects `prefers-reduced-motion`. CSP-compliant (all DOM construction is programmatic, no innerHTML in viewer).
+
+> *"Any sufficiently advanced technology is indistinguishable from magic."* — Arthur C. Clarke
 
 ---
 

@@ -1,0 +1,342 @@
+/* ══════════════════════════════════════════════════════════════════════
+   Achievement System — Unlock Popups + Trophy Viewer Window
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Rarity Colors ─────────────────────────────────────────────────── */
+:root {
+    --ach-common: #aaaaaa;
+    --ach-rare: var(--neon-cyan);
+    --ach-epic: var(--neon-purple);
+    --ach-legendary: var(--gold);
+}
+
+/* ── Unlock Popup (slides in from top-right) ──────────────────────── */
+
+.achievement-popup {
+    position: fixed;
+    top: 20px;
+    right: -400px;
+    width: 340px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: rgba(5, 5, 15, 0.95);
+    backdrop-filter: blur(16px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 9999;
+    font-family: 'Tomorrow', sans-serif;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    transition: right 0.5s var(--ease-spring), opacity 0.3s;
+}
+
+.achievement-popup.active {
+    right: 20px;
+}
+
+.achievement-popup.dismissing {
+    animation: achPopupOut 0.4s var(--ease-accel) forwards;
+}
+
+@keyframes achPopupOut {
+    to {
+        right: -400px;
+        opacity: 0;
+    }
+}
+
+/* Rarity border glow */
+.achievement-rarity-common { border-color: var(--ach-common); }
+.achievement-rarity-rare {
+    border-color: var(--ach-rare);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 240, 255, 0.15);
+}
+.achievement-rarity-epic {
+    border-color: var(--ach-epic);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(170, 0, 255, 0.2);
+}
+.achievement-rarity-legendary {
+    border-color: var(--ach-legendary);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 30px rgba(212, 175, 55, 0.3);
+    animation: achLegendaryGlow 2s ease-in-out infinite;
+}
+
+@keyframes achLegendaryGlow {
+    0%, 100% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 30px rgba(212, 175, 55, 0.3); }
+    50% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 50px rgba(212, 175, 55, 0.5); }
+}
+
+.achievement-popup-icon {
+    font-size: 36px;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.achievement-popup-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.achievement-popup-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.achievement-popup-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 2px;
+}
+
+.achievement-popup-desc {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.4;
+}
+
+/* ── Trophy Viewer Window ─────────────────────────────────────────── */
+
+.trophy-viewer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 10, 25, 0.95), rgba(5, 5, 20, 0.98));
+    color: white;
+    font-family: 'Tomorrow', sans-serif;
+    overflow-y: auto;
+}
+
+.trophy-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(212, 175, 55, 0.04);
+}
+
+.trophy-header-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+/* Progress bar */
+.trophy-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.trophy-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.trophy-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--neon-cyan));
+    border-radius: 3px;
+    transition: width 0.6s var(--ease-spring);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+}
+
+.trophy-progress-text {
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: right;
+}
+
+/* Achievement grid */
+.trophy-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px;
+}
+
+.trophy-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: all var(--transition-medium);
+    position: relative;
+    overflow: hidden;
+}
+
+.trophy-card:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Locked state */
+.trophy-card.locked {
+    opacity: 0.45;
+}
+
+.trophy-card.locked .trophy-card-icon {
+    filter: grayscale(1) brightness(0.5);
+}
+
+/* Rarity accent on unlock */
+.trophy-card.unlocked {
+    border-color: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.trophy-card.unlocked.rarity-common { border-left: 3px solid var(--ach-common); }
+.trophy-card.unlocked.rarity-rare { border-left: 3px solid var(--ach-rare); }
+.trophy-card.unlocked.rarity-epic { border-left: 3px solid var(--ach-epic); }
+.trophy-card.unlocked.rarity-legendary {
+    border-left: 3px solid var(--ach-legendary);
+    background: rgba(212, 175, 55, 0.04);
+}
+
+.trophy-card-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+    line-height: 1;
+    width: 36px;
+    text-align: center;
+}
+
+.trophy-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.trophy-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 2px;
+}
+
+.trophy-card-desc {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.4;
+}
+
+.trophy-card-rarity {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.trophy-card-rarity.common { color: var(--ach-common); background: rgba(170, 170, 170, 0.1); }
+.trophy-card-rarity.rare { color: var(--ach-rare); background: rgba(0, 240, 255, 0.1); }
+.trophy-card-rarity.epic { color: var(--ach-epic); background: rgba(170, 0, 255, 0.1); }
+.trophy-card-rarity.legendary { color: var(--ach-legendary); background: rgba(212, 175, 55, 0.1); }
+
+/* Timestamp */
+.trophy-card-time {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 4px;
+}
+
+/* Reset button */
+.trophy-footer {
+    padding: 12px 20px;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.trophy-footer-hint {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.3);
+    font-style: italic;
+}
+
+.trophy-reset-btn {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    transition: all var(--transition-fast);
+}
+
+.trophy-reset-btn:hover {
+    color: var(--neon-red);
+    border-color: rgba(255, 0, 102, 0.3);
+    background: rgba(255, 0, 102, 0.05);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+    .achievement-popup {
+        width: calc(100vw - 32px);
+        right: -100vw;
+        top: auto;
+        bottom: 80px;
+    }
+
+    .achievement-popup.active {
+        right: 16px;
+    }
+
+    .trophy-card {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .trophy-card-icon {
+        font-size: 22px;
+        width: 28px;
+    }
+}
+
+/* ── Reduced Motion ───────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+    .achievement-popup {
+        transition: opacity 0.2s;
+        right: 20px;
+        opacity: 0;
+    }
+
+    .achievement-popup.active {
+        opacity: 1;
+    }
+
+    .achievement-popup.dismissing {
+        animation: none;
+        opacity: 0;
+    }
+
+    .achLegendaryGlow {
+        animation: none;
+    }
+}

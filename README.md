@@ -6,7 +6,7 @@
 
 ![Version](https://img.shields.io/badge/v3.49.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/444_tests-00e676?style=flat-square&labelColor=0d0d0d)
-![Modules](https://img.shields.io/badge/58_modules-b388ff?style=flat-square&labelColor=0d0d0d)
+![Modules](https://img.shields.io/badge/60_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
 **[▸ ENTER THE LIVE DEMO](https://jamesdare.com)**
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `58 modules` · `28 stylesheets` · `444 tests / 23 suites` · `20 desktop apps` · `0 dependencies`
+> `60 modules` · `29 stylesheets` · `444 tests / 23 suites` · `21 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -39,7 +39,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 ### Desktop Environment
 
 - **Window Manager** — Drag, resize, minimize, maximize, z-index focus management with ceiling-bounded normalization. Animated open/close with glass shimmer effects.
-- **20 Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column grid. Right-click context menus on each. Includes 3 external deployed-project links (Vibe Coder, IMG_GEN.ai, TypeMaster) and a curated Portfolio showcase.
+- **21 Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column grid. Right-click context menus on each. Includes 3 external deployed-project links (Vibe Coder, IMG_GEN.ai, TypeMaster) and a curated Portfolio showcase.
 - **Purple Reign Showcase** — Opens with the "Ascending Core" — a rotating CSS 3D obsidian crystal with internal amethyst glow that fractures apart on scroll, revealing the content beneath. Followed by the "Amethyst Code" hero reveal — a metallic purple glitch effect that resolves to unveil the section title. Featured projects display as cinematic scroll-snap chapters with forcefield reveal, gilded gold shimmer on titles, staggered animations, dot navigation, and syntax-highlighted code snippets with copy-to-clipboard. CTA buttons feature "Opulent Interface" micro-interactions: embossed depth, animated gold border trace, and letter-spacing breathe on hover. Each chapter has a "Catalyst Aura" — a mouse-reactive amethyst-gold glow with hexagonal crystal lens that follows the cursor.
 - **Command Palette** — `Cmd+K` / `Ctrl+K` opens a Spotlight-style fuzzy-search launcher across all apps and system toggles.
 - **Dock** — macOS-style magnetic magnification (icons swell on cursor proximity with Gaussian falloff), active window indicators, minimize-to-dock animation, hover tooltips.
@@ -66,7 +66,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Toast Notifications** — Non-blocking notification queue with success/error/warning/info types, auto-dismiss progress bar, hover-to-pause, and `aria-live` screen reader support.
 - **Easter Eggs** — Konami code, triple-click glitch pulse, type "418" for teapot, `Ctrl+Shift+V` for system info, 18 terminal sass commands.
 
-### Desktop Icons (20)
+### Desktop Icons (21)
 
 | Icon | Type | What It Does |
 |------|------|-------------|
@@ -90,6 +90,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | **CALC.exe** | Window | Cyberpunk calculator with keyboard input, expression chaining, glass UI |
 | **WEATHER** | Window | Live weather with geolocation, current conditions, 3-day forecast via Open-Meteo |
 | **SYS_MONITOR** | Window | Live FPS graph, heap usage, DOM count, network info, uptime |
+| **TROPHIES.exe** | Window | Achievement system — 10 unlockable trophies for exploring the OS (explorer, speed demon, night owl, completionist...) |
 
 ### Security (Hardened Across v3.1–v3.41.2)
 

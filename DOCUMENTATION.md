@@ -77,7 +77,7 @@ Direct code editing for developers:
 
 ## Desktop Apps
 
-Passion OS ships with **20 desktop applications**, each launched from the icon grid. Apps are lazy-loaded — zero bytes until opened.
+Passion OS ships with **21 desktop applications**, each launched from the icon grid. Apps are lazy-loaded — zero bytes until opened.
 
 | App | Description |
 |-----|-------------|
@@ -154,7 +154,7 @@ The system uses a non-blocking notification queue. All user-facing feedback (set
 
 ### Command Palette
 
-Press `Cmd+K` / `Ctrl+K` to open the Spotlight-style launcher. It fuzzy-searches across all 20 desktop apps and 4 system toggles (theme, cursor trail, sound, interactions). Full keyboard navigation with arrow keys and Enter.
+Press `Cmd+K` / `Ctrl+K` to open the Spotlight-style launcher. It fuzzy-searches across all 21 desktop apps and 4 system toggles (theme, cursor trail, sound, interactions). Full keyboard navigation with arrow keys and Enter.
 
 ---
 

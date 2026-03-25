@@ -127,6 +127,9 @@ export const WindowManager = {
         const announcer = document.getElementById('screenReaderAnnouncer');
         if (announcer) announcer.textContent = 'Opened window: ' + title;
 
+        // Achievement system: notify that a window was opened
+        document.dispatchEvent(new CustomEvent('passion:window-open', { detail: { id } }));
+
         // Make window visible with shimmer + scan effect
         setTimeout(() => {
             windowEl.classList.add('visible');

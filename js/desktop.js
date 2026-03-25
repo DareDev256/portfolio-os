@@ -231,6 +231,13 @@ export const Desktop = {
             color: '#00ff88',
             action: () => Desktop.openSystemMonitor(),
         },
+        {
+            id: 'trophies',
+            label: 'TROPHIES.exe',
+            icon: 'svg:/assets/trophies.svg',
+            color: '#d4af37',
+            action: () => Desktop.openTrophies(),
+        },
     ],
 
     /**
@@ -306,6 +313,21 @@ export const Desktop = {
             width: 380,
             height: 520,
             load: () => import('./passion-chat.js'),
+            exportName: 'render',
+        });
+    },
+
+    /**
+     * Open Trophies (Achievement Viewer) as a WindowManager app
+     */
+    openTrophies() {
+        createLazyWindow({
+            id: 'trophies',
+            title: 'TROPHIES.exe',
+            icon: '🏆',
+            width: 420,
+            height: 560,
+            load: () => import('./achievement-viewer.js'),
             exportName: 'render',
         });
     },

@@ -23,6 +23,7 @@ import { Parallax } from './parallax.js';
 import { ScrollReveal } from './scroll-reveal.js';
 import { IconTilt } from './icon-tilt.js';
 import { ensureGalaxy } from './galaxy-init.js';
+import { Achievements } from './achievements.js';
 
 /* ── Visual module registry ────────────────────────────────────────
  * Each entry drives: module.init(), module.setEnabled(), and a
@@ -97,6 +98,9 @@ async function init() {
 
     // Initialize Command Palette (Cmd+K / Ctrl+K)
     CommandPalette.init();
+
+    // Initialize Achievement System (must be before Desktop.init fires boot-complete)
+    Achievements.init();
 
     // Initialize Shortcuts Overlay (press ?)
     ShortcutsOverlay.init();

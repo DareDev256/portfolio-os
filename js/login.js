@@ -509,6 +509,9 @@ export const Login = {
         Lightbox.init();
         Router.init();
 
+        // Achievement system: boot sequence complete
+        document.dispatchEvent(new CustomEvent('passion:boot-complete'));
+
         // Start idle timer
         this.startIdleTimer();
     },
