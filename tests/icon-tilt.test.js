@@ -98,6 +98,7 @@ describe('IconTilt', () => {
         const box = container.querySelector('.desktop-icon-box');
 
         // Simulate user enabling reduced motion at runtime
+        motionMatches = true;
         listeners.forEach(cb => cb({ matches: true }));
         fireMouseMove(box, 180, 140);
         expect(box.style.getPropertyValue('--tilt-x')).toBe('');

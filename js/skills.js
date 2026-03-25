@@ -4,8 +4,7 @@
  * No external libraries. Pure performance.
  */
 
-let _hidden = false;
-document.addEventListener('visibilitychange', () => { _hidden = document.hidden; });
+import { isPageHidden } from './dom-helpers.js';
 
 export const SkillsUniverse = {
     canvas: null,
@@ -201,7 +200,7 @@ export const SkillsUniverse = {
 
     loop() {
         if (!this.isRunning) return;
-        if (_hidden) { this.animationFrame = requestAnimationFrame(() => this.loop()); return; }  // skip frame when hidden
+        if (isPageHidden()) { this.animationFrame = requestAnimationFrame(() => this.loop()); return; }  // skip frame when hidden
 
         // Auto-stop if canvas is removed from DOM
         if (this.canvas && !this.canvas.isConnected) {

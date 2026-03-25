@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.47.0
+version: 3.48.0
 last_updated: 2026-03-24
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-24
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.48.0] — 2026-03-24
+
+### Changed
+- **Centralized page-visibility and reduced-motion detection** — Extracted `isPageHidden()` and `prefersReducedMotion()` into `dom-helpers.js`, eliminating 4 duplicate `visibilitychange` listeners (fx.js, aurora.js, skills.js, mahoraga-wheel-3d.js) and 5 duplicate `matchMedia` calls (icon-tilt.js, parallax.js, mahoraga-wheel-3d.js, galaxy-background.js, cursor-trail.js). Single source of truth for accessibility and performance guards across all animation modules.
 
 ---
 

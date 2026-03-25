@@ -6,12 +6,12 @@
  * Phase 1 of the Alien Tech Upgrade plan.
  */
 
+import { prefersReducedMotion } from './dom-helpers.js';
+
 const MAX_TILT = 18; // degrees
 
-let reducedMotion = false;
-
 function handleMove(e) {
-    if (reducedMotion) return;
+    if (prefersReducedMotion()) return;
     const box = e.currentTarget;
     const rect = box.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
@@ -51,10 +51,6 @@ function attach(container) {
 
 export const IconTilt = {
     init() {
-        reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        window.matchMedia('(prefers-reduced-motion: reduce)')
-            .addEventListener('change', (e) => { reducedMotion = e.matches; });
-
         const container = document.querySelector('.desktop-icons');
         if (!container) return;
 

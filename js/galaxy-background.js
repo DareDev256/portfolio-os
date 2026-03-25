@@ -5,6 +5,7 @@
  */
 
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+import { prefersReducedMotion } from './dom-helpers.js';
 
 export class GalaxyBackground {
     constructor(container, options = {}) {
@@ -22,7 +23,7 @@ export class GalaxyBackground {
         this.time = 0;
         this.isRunning = false;
         this._lastRenderTime = 0;
-        this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        this.prefersReducedMotion = prefersReducedMotion();
 
         this.init();
     }

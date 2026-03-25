@@ -6,8 +6,7 @@
 
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
 
-let _hidden = false;
-document.addEventListener('visibilitychange', () => { _hidden = document.hidden; });
+import { isPageHidden, prefersReducedMotion } from './dom-helpers.js';
 
 export class MahoragaWheel3D {
     constructor(container, options = {}) {
@@ -17,7 +16,7 @@ export class MahoragaWheel3D {
         this.adaptationAngle = 0;
         this.targetAngle = 0;
         this.adaptationTimer = 0;
-        this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        this.prefersReducedMotion = prefersReducedMotion();
         this._lastRenderTime = 0;
         this._isMobile = ('ontouchstart' in window || navigator.maxTouchPoints > 0) && window.innerWidth <= 768;
 
@@ -242,7 +241,7 @@ export class MahoragaWheel3D {
     animate() {
         if (!this.isRunning) return;
         this.rafId = requestAnimationFrame(() => this.animate());
-        if (_hidden) return;  // skip frame when hidden
+        if (isPageHidden()) return;  // skip frame when hidden
 
         // 60fps on desktop (16ms), 30fps on mobile (32ms)
         const now = performance.now();

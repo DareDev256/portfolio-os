@@ -6,7 +6,7 @@
  *
  * Respects prefers-reduced-motion and stays under 16ms/frame via rAF.
  */
-import { isElementVisible } from './dom-helpers.js';
+import { isElementVisible, prefersReducedMotion } from './dom-helpers.js';
 
 const LOCK_LAYERS = [
     { sel: '.grid-background',    z: 0.015, prop: 'translate' },
@@ -32,15 +32,13 @@ export const Parallax = {
     _scrollShift: 0,
     _currShift: 0,
     _active: false,
-    _reduced: false,
     _lockEls: [],
     _bgWheel: null,
     _observer: null,
 
     init() {
         // Respect accessibility
-        this._reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (this._reduced) return;
+        if (prefersReducedMotion()) return;
 
         this._bgWheel = document.querySelector(BG_WHEEL_SEL);
         this._cacheLockElements();

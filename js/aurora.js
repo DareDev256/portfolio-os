@@ -3,8 +3,8 @@
  * Lightweight animated gradient-noise aurora/fog on a canvas.
  */
 
-let _hidden = false;
-document.addEventListener('visibilitychange', () => { _hidden = document.hidden; });
+import { isPageHidden } from './dom-helpers.js';
+
 let _lastFrame = 0;
 
 export const Aurora = {
@@ -88,7 +88,7 @@ export const Aurora = {
     loop() {
         cancelAnimationFrame(this.raf);
         if (!this.enabled) return;
-        if (_hidden) { this.raf = requestAnimationFrame(() => this.loop()); return; }  // skip frame when hidden
+        if (isPageHidden()) { this.raf = requestAnimationFrame(() => this.loop()); return; }  // skip frame when hidden
         const now = performance.now();
         if (now - _lastFrame < 41.6) { this.raf = requestAnimationFrame(() => this.loop()); return; }  // ~24fps
         _lastFrame = now;

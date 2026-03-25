@@ -5,8 +5,8 @@
  * - Optional scanline overlay
  */
 
-let _hidden = false;
-document.addEventListener('visibilitychange', () => { _hidden = document.hidden; });
+import { isPageHidden } from './dom-helpers.js';
+
 let _lastFrame = 0;
 
 export const FX = {
@@ -161,7 +161,7 @@ export const FX = {
     loop() {
         cancelAnimationFrame(this.raf);
         if (!this.enabled) return;
-        if (_hidden) { this.raf = requestAnimationFrame(() => this.loop()); return; }  // skip frame when hidden
+        if (isPageHidden()) { this.raf = requestAnimationFrame(() => this.loop()); return; }  // skip frame when hidden
         const now = performance.now();
         if (now - _lastFrame < 33.3) { this.raf = requestAnimationFrame(() => this.loop()); return; }  // ~30fps
         _lastFrame = now;

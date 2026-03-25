@@ -4,6 +4,21 @@
  */
 import { Sanitize } from './sanitize.js';
 
+/* ── Page Visibility (single listener, replaces 4 duplicate listeners) ── */
+let _pageHidden = document.hidden;
+document.addEventListener('visibilitychange', () => { _pageHidden = document.hidden; });
+
+/** @returns {boolean} True when the tab is backgrounded */
+export function isPageHidden() { return _pageHidden; }
+
+/* ── Reduced Motion ── */
+const _REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+
+/** @returns {boolean} True when the user prefers reduced motion */
+export function prefersReducedMotion() {
+    return window.matchMedia(_REDUCED_MOTION_QUERY).matches;
+}
+
 /** Default fetch timeout — prevents indefinitely hanging requests from freezing the UI */
 const DEFAULT_FETCH_TIMEOUT = 8_000; // 8 seconds
 
