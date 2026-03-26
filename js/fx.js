@@ -5,7 +5,7 @@
  * - Optional scanline overlay
  */
 
-import { isPageHidden } from './dom-helpers.js';
+import { isPageHidden, loadBool, saveBool } from './dom-helpers.js';
 
 let _lastFrame = 0;
 
@@ -20,7 +20,7 @@ export const FX = {
     suction: null,
 
     init() {
-        this.enabled = (localStorage.getItem('fxEnabled') ?? '0') === '1';
+        this.enabled = loadBool('fxEnabled', false);
         // Canvas
         this.canvas = document.createElement('canvas');
         this.canvas.className = 'fx-canvas';
@@ -49,7 +49,7 @@ export const FX = {
 
     setEnabled(v) {
         this.enabled = !!v;
-        localStorage.setItem('fxEnabled', this.enabled ? '1' : '0');
+        saveBool('fxEnabled', this.enabled);
         if (this.enabled) this.loop();
         else this.clear();
     },

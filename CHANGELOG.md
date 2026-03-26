@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.49.0
-last_updated: 2026-03-24
+version: 3.49.1
+last_updated: 2026-03-26
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-03-24
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.49.1] — 2026-03-26
+
+### Changed
+- **Boolean persistence helpers (`loadBool`/`saveBool`)** — Extracted the duplicated `localStorage.getItem(k) === '1'` / `localStorage.setItem(k, v ? '1' : '0')` pattern from Aurora, FX, AudioFX, and Glyphs into two shared functions in `dom-helpers.js`. State module's `_loadBoolean`/`_setBoolean` now delegate to these helpers too. Centralizes the `'1'`/`'0'` convention in one place, adds `try/catch` on writes for quota-exceeded resilience.
 
 ---
 

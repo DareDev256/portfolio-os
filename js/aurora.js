@@ -3,7 +3,7 @@
  * Lightweight animated gradient-noise aurora/fog on a canvas.
  */
 
-import { isPageHidden } from './dom-helpers.js';
+import { isPageHidden, loadBool, saveBool } from './dom-helpers.js';
 
 let _lastFrame = 0;
 
@@ -15,7 +15,7 @@ export const Aurora = {
     raf: 0,
 
     init() {
-        this.enabled = (localStorage.getItem('auroraEnabled') ?? '1') === '1';
+        this.enabled = loadBool('auroraEnabled', true);
         this.canvas = document.createElement('canvas');
         this.canvas.className = 'fx-canvas';
         this.canvas.style.zIndex = 79; // behind FX particles
@@ -28,7 +28,7 @@ export const Aurora = {
 
     setEnabled(v) {
         this.enabled = !!v;
-        localStorage.setItem('auroraEnabled', this.enabled ? '1' : '0');
+        saveBool('auroraEnabled', this.enabled);
         if (this.enabled) this.loop();
         else this.clear();
     },

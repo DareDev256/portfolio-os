@@ -4,7 +4,7 @@
  * Modules register themselves via registerModule() — no static imports here
  * to avoid defeating lazy loading.
  */
-import { loadJSON } from './dom-helpers.js';
+import { loadJSON, loadBool, saveBool } from './dom-helpers.js';
 import { Sanitize } from './sanitize.js';
 
 /**
@@ -36,13 +36,13 @@ export const State = {
     /** Load a boolean from localStorage ('1'/'0'), falling back to current value */
     _loadBoolean(key) {
         const saved = localStorage.getItem(key);
-        if (saved !== null) this[key] = saved === '1';
+        if (saved !== null) this[key] = loadBool(key, this[key]);
     },
 
     /** Generic boolean setter: persist, emit, return new value */
     _setBoolean(prop, enabled, event) {
         this[prop] = !!enabled;
-        localStorage.setItem(prop, this[prop] ? '1' : '0');
+        saveBool(prop, this[prop]);
         if (event) this._emit(event, { enabled: this[prop] });
     },
 

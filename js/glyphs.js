@@ -4,13 +4,15 @@
  * Now uses CSS animation instead of RAF loop for zero main-thread cost.
  */
 
+import { loadBool, saveBool } from './dom-helpers.js';
+
 export const Glyphs = {
     enabled: true,
     el: null,
     glyphs: '⟟⋉⋔⋇⋏⋎⋒⋙⋛⋌⋋⋈⋐⋱⋰⋣⋠⋵',
 
     init() {
-        this.enabled = (localStorage.getItem('glyphsEnabled') ?? '1') === '1';
+        this.enabled = loadBool('glyphsEnabled', true);
         this.el = document.createElement('div');
         this.el.style.position = 'fixed';
         this.el.style.inset = '0';
@@ -67,7 +69,7 @@ export const Glyphs = {
 
     setEnabled(v) {
         this.enabled = !!v;
-        localStorage.setItem('glyphsEnabled', this.enabled ? '1' : '0');
+        saveBool('glyphsEnabled', this.enabled);
         if (this.enabled) {
             this.el.style.display = '';
         } else {

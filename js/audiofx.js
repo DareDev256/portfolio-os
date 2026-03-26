@@ -3,12 +3,14 @@
  * WebAudio-based subtle SFX and a short boot chime. No external files.
  */
 
+import { loadBool, saveBool } from './dom-helpers.js';
+
 export const AudioFX = {
     enabled: true,
     ctx: null,
     master: null,
     init() {
-        this.enabled = (localStorage.getItem('soundEnabled') ?? '1') === '1';
+        this.enabled = loadBool('soundEnabled', true);
         // Lazy: create context on first play due to browser gesture policies
         document.addEventListener('click', () => this.ensureContext(), { once: true });
     },
@@ -27,7 +29,7 @@ export const AudioFX = {
 
     setEnabled(v) {
         this.enabled = !!v;
-        localStorage.setItem('soundEnabled', this.enabled ? '1' : '0');
+        saveBool('soundEnabled', this.enabled);
         if (!this.ctx) return;
         this.master.gain.setTargetAtTime(this.enabled ? 0.15 : 0, this.ctx.currentTime, 0.05);
     },

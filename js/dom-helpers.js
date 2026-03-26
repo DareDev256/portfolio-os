@@ -44,6 +44,32 @@ export function fetchWithTimeout(input, init = {}) {
 }
 
 /**
+ * Load a boolean flag from localStorage ('1'/'0' convention).
+ * Replaces the duplicated `(localStorage.getItem(k) ?? 'd') === '1'` pattern
+ * found across Aurora, FX, AudioFX, and Glyphs modules.
+ * @param {string} key - localStorage key
+ * @param {boolean} fallback - Value when key is absent (default true)
+ * @returns {boolean}
+ */
+export function loadBool(key, fallback = true) {
+    const raw = localStorage.getItem(key);
+    if (raw === null) return fallback;
+    return raw === '1';
+}
+
+/**
+ * Persist a boolean flag to localStorage as '1'/'0'.
+ * Companion to {@link loadBool}.
+ * @param {string} key - localStorage key
+ * @param {boolean} value - Boolean to persist
+ */
+export function saveBool(key, value) {
+    try {
+        localStorage.setItem(key, value ? '1' : '0');
+    } catch { /* quota exceeded — non-critical */ }
+}
+
+/**
  * Safely parse a JSON value from localStorage.
  * Replaces 6 inconsistent try/catch patterns scattered across the codebase.
  * @param {string} key - localStorage key
