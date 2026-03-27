@@ -4,7 +4,7 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.49.0-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.51.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/444_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/60_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `60 modules` · `29 stylesheets` · `444 tests / 23 suites` · `21 desktop apps` · `0 dependencies`
+> `60 modules` · `30 stylesheets` · `444 tests / 23 suites` · `21 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -56,6 +56,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Tokenized Motion System** — All transitions use design tokens (`--transition-fast/medium/slow`, `--ease-decel/accel/spring`) instead of hardcoded values. Entry animations decelerate, exits accelerate, emphasis bounces — no generic `ease` defaults.
 - **Parallax Depth Engine** — Mouse-driven lock screen layers + scroll-driven desktop background shifts. 4-layer depth with lerp smoothing, MutationObserver for dynamic windows, `will-change` GPU compositing. Respects `prefers-reduced-motion`.
 - **Holographic Blueprint Reveal** — Project cards in the Applications window enter with a tech-blueprint animation: gold corner crosshairs lock on, edge-trace lines draw themselves (gold → amethyst gradient), a scan line sweeps, then content resolves from blur to clarity. Overlay fades out after completion. CSS-only, zero JS overhead. Respects `prefers-reduced-motion`.
+- **Signature Accents** — Gold HUD corner brackets materialize on active windows like Stark Industries targeting overlays. A gold focus-flash briefly warms the border on window activation, and the titlebar line shifts to a breathing gold-amethyst heartbeat pulse. Active window titles gain a faint gold text-shadow. Pure CSS, zero JS overhead. Respects `prefers-reduced-motion`.
 - **Glimmer Sweep** — Diagonal gold-to-amethyst light sweep on hover for portfolio cards, project cards, portfolio links, and dock icons. GPU-composited `translateX` animation with `ease-decel` fade-out. Respects `prefers-reduced-motion`.
 - **Golden Cadence** — Mouse-reactive metallic sheen on the top bar and dock. A gold/holographic radial gradient tracks the cursor, simulating light catching on brushed metal. CSS custom properties bridge JS cursor tracking to GPU-composited radial gradients. Dock border warms to gold on proximity. Respects `prefers-reduced-motion`.
 - **Purple Haze Reveal Curtain** — Cinematic lock-to-desktop transition. Two amethyst velvet panels (CSS noise texture) cover the screen during boot, a golden seam draws across the divide, an atmospheric bloom radiates from center, then the panels part vertically to reveal the desktop. Inspired by Prince's Purple Rain staging. Uses design system motion tokens. Respects `prefers-reduced-motion`.

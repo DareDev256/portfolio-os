@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.50.0
+version: 3.51.0
 last_updated: 2026-03-26
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-26
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.51.0] — 2026-03-26
+
+### Added
+- **Signature Accents — gold/amethyst HUD branding for active windows** — Gold corner brackets (8-segment background-gradient technique) materialize on active windows like targeting HUD overlays. A gold focus-flash briefly warms the border on window activation via `focus-flash` keyframe. The titlebar holo-line shifts to a breathing gold-amethyst `heartbeat-line` pulse on active windows. Active window titles gain a subtle gold text-shadow. New `css/signature-accents.css` stylesheet (pure CSS, zero JS). Suppressed on maximized windows. Respects `prefers-reduced-motion`.
 
 ---
 

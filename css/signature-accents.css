@@ -1,0 +1,130 @@
+/* ============================================
+   SIGNATURE ACCENTS — Gold/Amethyst HUD Branding
+   Corner brackets, focus flash, and heartbeat line
+   that brand every active window as high-tech luxury.
+   Think Stark Industries targeting HUD meets
+   Prince's gold/purple palette.
+   ============================================ */
+
+/* ── HUD Corner Brackets ────────────────────────────────
+   Four gold corner brackets appear on active windows,
+   evoking targeting overlays from Tony Stark's lab.
+   Uses background gradients on ::before to draw all
+   eight bracket segments without extra DOM nodes.      */
+
+.window::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    z-index: 10;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity var(--duration-normal, 250ms) var(--ease-decel, ease-out);
+    background:
+        /* Top-left corner */
+        linear-gradient(var(--gold), var(--gold)) 0 0 / 22px 2px no-repeat,
+        linear-gradient(var(--gold), var(--gold)) 0 0 / 2px 22px no-repeat,
+        /* Top-right corner */
+        linear-gradient(var(--gold), var(--gold)) 100% 0 / 22px 2px no-repeat,
+        linear-gradient(var(--gold), var(--gold)) 100% 0 / 2px 22px no-repeat,
+        /* Bottom-left corner */
+        linear-gradient(var(--gold), var(--gold)) 0 100% / 22px 2px no-repeat,
+        linear-gradient(var(--gold), var(--gold)) 0 100% / 2px 22px no-repeat,
+        /* Bottom-right corner */
+        linear-gradient(var(--gold), var(--gold)) 100% 100% / 22px 2px no-repeat,
+        linear-gradient(var(--gold), var(--gold)) 100% 100% / 2px 22px no-repeat;
+}
+
+.window.active::before {
+    opacity: 0.65;
+}
+
+/* Hide brackets on maximized windows — no frame to accent */
+.window.maximized::before {
+    display: none;
+}
+
+/* ── Gold Focus Flash ───────────────────────────────────
+   Brief gold shimmer on the border when a window first
+   receives focus, settling back to the standard active
+   glow. A single-fire branding moment.                 */
+
+@keyframes focus-flash {
+    0% {
+        border-color: var(--gold);
+        box-shadow:
+            0 12px 40px rgba(0, 0, 0, 0.5),
+            0 0 40px var(--gold-dim),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    100% {
+        border-color: rgba(0, 240, 255, 0.15);
+        box-shadow:
+            0 12px 40px rgba(0, 0, 0, 0.5),
+            0 0 30px rgba(0, 240, 255, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+}
+
+.window.active {
+    animation: focus-flash var(--duration-dramatic, 600ms) var(--ease-decel, ease-out) forwards;
+}
+
+/* ── Gold Heartbeat Line ────────────────────────────────
+   The titlebar holo-line shifts to a gold-amethyst pulse
+   on active windows — a slow breathing rhythm that
+   signals "this window is alive and selected."          */
+
+@keyframes heartbeat-line {
+    0%, 100% {
+        background-position: 0% 0;
+        opacity: 0.6;
+    }
+    50% {
+        background-position: 100% 0;
+        opacity: 1;
+    }
+}
+
+.window.active .window-titlebar::after {
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--gold-dim) 15%,
+        var(--gold) 35%,
+        var(--amethyst) 50%,
+        var(--gold) 65%,
+        var(--gold-dim) 85%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: heartbeat-line 4s ease-in-out infinite;
+}
+
+/* ── Gold Title Glow ────────────────────────────────────
+   Active window titles get a faint gold text-shadow
+   that reinforces the luxury accent palette.            */
+
+.window.active .window-title {
+    text-shadow: 0 0 8px var(--gold-dim);
+}
+
+/* ── Reduced Motion ─────────────────────────────────────
+   Respects user preference: brackets still appear (static),
+   but all animations are suppressed.                    */
+
+@media (prefers-reduced-motion: reduce) {
+    .window.active {
+        animation: none;
+    }
+
+    .window.active .window-titlebar::after {
+        animation: none;
+        opacity: 0.8;
+    }
+
+    .window::before {
+        transition: none;
+    }
+}
