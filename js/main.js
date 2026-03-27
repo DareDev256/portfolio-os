@@ -24,6 +24,7 @@ import { ScrollReveal } from './scroll-reveal.js';
 import { IconTilt } from './icon-tilt.js';
 import { ensureGalaxy } from './galaxy-init.js';
 import { Achievements } from './achievements.js';
+import { Gauntlet } from './gauntlet.js';
 
 /* ── Visual module registry ────────────────────────────────────────
  * Each entry drives: module.init(), module.setEnabled(), and a
@@ -117,6 +118,7 @@ async function init() {
 
     // Scroll-triggered reveals for window content
     ScrollReveal.init();
+    Gauntlet.init();
 
     // 3D tilt on desktop icon hover (Phase 1 — Alien Tech Upgrade)
     IconTilt.init();

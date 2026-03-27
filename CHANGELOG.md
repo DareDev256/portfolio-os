@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.49.1
+version: 3.50.0
 last_updated: 2026-03-26
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-26
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.50.0] — 2026-03-26
+
+### Added
+- **Unveiling Gauntlet — cinematic About window** — Redesigned the About Me window as a multi-stage scroll experience. Three full-height cinematic stages (Identity, Mission, Arsenal) reveal progressively with perspective-based depth transforms, staggered text animations, gold divider sweeps, and an SVG "auric signature" stroke-draw animation. Each stage acts as a deliberate reveal — scroll to unveil. New `gauntlet.js` IntersectionObserver module and `gauntlet.css` with CSS custom property integration.
 
 ---
 

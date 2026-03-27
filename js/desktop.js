@@ -1983,35 +1983,83 @@ export const Desktop = {
             { name: 'Vercel / Cloud',  color: '#ffaa00' },
         ];
 
+        /* Auric signature — SVG monogram drawn on scroll */
+        const SIG_SVG = `<svg class="gauntlet-sig" viewBox="0 0 48 48"><path d="M8 40 L24 8 L40 40 M16 28 L32 28"/></svg>`;
+
         const content = document.createElement('div');
         content.className = 'about-content';
 
         content.innerHTML = `
-            <div class="window-section-header purple scroll-reveal">◈ ABOUT_ME.exe</div>
-            <div class="about-identity scroll-reveal" data-reveal-delay="1">
-                <div><span class="about-label">NAME:</span> James Olusoga <span class="about-alias">(DareDev256)</span></div>
-                <div><span class="about-label">ROLE:</span> AI Solutions Engineer &bull; Creative Technologist <span class="verified-badge">✓ SYSTEM VERIFIED</span></div>
-                <div><span class="about-label">LOCATION:</span> Toronto, Canada</div>
-                <div><span class="about-label">STATUS:</span> Always shipping</div>
+            <!-- Stage 1: Identity reveal -->
+            <div class="gauntlet-stage">
+                <div class="gauntlet-reveal">
+                    <div class="gauntlet-label">// system.identity</div>
+                </div>
+                <div class="gauntlet-reveal" data-gauntlet-delay="1">
+                    <div class="gauntlet-title"><span class="accent-gold">James</span> Olusoga</div>
+                    <div class="gauntlet-divider"></div>
+                </div>
+                <div class="gauntlet-reveal" data-gauntlet-delay="2">
+                    <div class="gauntlet-text">
+                        AI Solutions Engineer &bull; Creative Technologist<br>
+                        <strong>Toronto, Canada</strong> &mdash; Always shipping
+                    </div>
+                </div>
+                ${SIG_SVG}
             </div>
-            <div class="about-bio scroll-reveal" data-reveal-delay="2">
-                <p>
-                    I build autonomous AI systems that work while I sleep. My flagship project,
-                    <span class="text-cyan">Passion Agent</span>, is a 24/7 autonomous code improvement system
-                    that analyzes repositories, generates improvements via Claude Code, and submits PRs &mdash;
-                    learning from what I merge vs reject to get smarter over time.
-                </p>
-                <p>
-                    I specialize in <span class="text-cyan">agentic AI workflows</span>, RAG systems with citations,
-                    MCP server development, and full-stack engineering. This portfolio itself is a cyberpunk OS
-                    built with zero frameworks &mdash; pure vanilla JS, Three.js for 3D, and hand-crafted CSS.
-                </p>
+
+            <!-- Stage 2: Mission -->
+            <div class="gauntlet-stage">
+                <div class="gauntlet-reveal">
+                    <div class="gauntlet-label">// core.mission</div>
+                </div>
+                <div class="gauntlet-reveal" data-gauntlet-delay="1">
+                    <div class="gauntlet-title">I build <span class="accent-purple">autonomous AI</span> that works while I sleep</div>
+                    <div class="gauntlet-divider"></div>
+                </div>
+                <div class="gauntlet-reveal" data-gauntlet-delay="2">
+                    <div class="gauntlet-text">
+                        My flagship project, <strong>Passion Agent</strong>, is a 24/7 autonomous code improvement
+                        system &mdash; analyzing repos, generating improvements via Claude Code, and submitting PRs.
+                        It learns from what I merge vs reject to get smarter over time.
+                    </div>
+                </div>
+                <div class="gauntlet-reveal gauntlet-stats" data-gauntlet-delay="3">
+                    <div class="gauntlet-stat">
+                        <span class="gauntlet-stat__value">92</span>
+                        <span class="gauntlet-stat__label">Modules</span>
+                    </div>
+                    <div class="gauntlet-stat">
+                        <span class="gauntlet-stat__value">109K</span>
+                        <span class="gauntlet-stat__label">Lines of Code</span>
+                    </div>
+                    <div class="gauntlet-stat">
+                        <span class="gauntlet-stat__value">47</span>
+                        <span class="gauntlet-stat__label">Managed Repos</span>
+                    </div>
+                </div>
+                ${SIG_SVG}
             </div>
-            <div class="about-skills-section scroll-reveal" data-reveal-delay="3">
-                <h3 class="about-skills-heading">SKILLS & TECHNOLOGIES</h3>
-                <div class="about-skills-grid">
+
+            <!-- Stage 3: Arsenal -->
+            <div class="gauntlet-stage">
+                <div class="gauntlet-reveal">
+                    <div class="gauntlet-label">// tech.arsenal</div>
+                </div>
+                <div class="gauntlet-reveal" data-gauntlet-delay="1">
+                    <div class="gauntlet-title">Skills & <span class="accent-gold">Technologies</span></div>
+                    <div class="gauntlet-divider"></div>
+                </div>
+                <div class="gauntlet-reveal about-skills-grid" data-gauntlet-delay="2">
                     ${ABOUT_SKILLS.map(s => `<div class="about-skill-badge" style="--badge-color:${s.color}">${Sanitize.text(s.name)}</div>`).join('')}
                 </div>
+                <div class="gauntlet-reveal" data-gauntlet-delay="3">
+                    <div class="gauntlet-text" style="margin-top:16px">
+                        This portfolio is a cyberpunk OS built with <strong>zero frameworks</strong> &mdash;
+                        pure vanilla JS, Three.js for 3D, and hand-crafted CSS.
+                    </div>
+                </div>
+                ${SIG_SVG}
             </div>
         `;
 
@@ -2021,7 +2069,7 @@ export const Desktop = {
             icon: '◈',
             content,
             width: 600,
-            height: 600,
+            height: 620,
         });
     },
 

@@ -1,0 +1,142 @@
+/* Gauntlet — Cinematic scroll-triggered reveal stages for About window */
+
+.gauntlet-stage {
+    min-height: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 32px 28px;
+    position: relative;
+    perspective: 600px;
+}
+
+.gauntlet-stage + .gauntlet-stage {
+    border-top: 1px solid rgba(212, 175, 55, 0.08);
+}
+
+/* ── Reveal animation base ─────────────────────────────────── */
+.gauntlet-reveal {
+    opacity: 0;
+    transform: translateY(24px) translateZ(-30px);
+    transition: opacity var(--duration-dramatic) var(--ease-decel),
+                transform var(--duration-dramatic) var(--ease-decel);
+    will-change: opacity, transform;
+}
+
+.gauntlet-reveal--visible {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+}
+
+/* Stagger delays for child elements */
+.gauntlet-reveal[data-gauntlet-delay="1"] { transition-delay: 120ms; }
+.gauntlet-reveal[data-gauntlet-delay="2"] { transition-delay: 240ms; }
+.gauntlet-reveal[data-gauntlet-delay="3"] { transition-delay: 380ms; }
+.gauntlet-reveal[data-gauntlet-delay="4"] { transition-delay: 520ms; }
+
+/* ── Typography ────────────────────────────────────────────── */
+.gauntlet-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.gauntlet-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 16px;
+}
+
+.gauntlet-title .accent-gold { color: var(--gold); }
+.gauntlet-title .accent-purple { color: var(--amethyst); }
+
+.gauntlet-text {
+    font-size: 12px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 480px;
+}
+
+.gauntlet-text strong {
+    color: var(--neon-cyan);
+    font-weight: 600;
+}
+
+/* ── Stat row ──────────────────────────────────────────────── */
+.gauntlet-stats {
+    display: flex;
+    gap: 28px;
+    margin-top: 20px;
+}
+
+.gauntlet-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.gauntlet-stat__value {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 2px;
+}
+
+.gauntlet-stat__label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.35);
+    text-transform: uppercase;
+}
+
+/* ── Auric signature SVG ───────────────────────────────────── */
+.gauntlet-sig {
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    opacity: 0;
+    transition: opacity 1.2s var(--ease-decel);
+}
+
+.gauntlet-sig--drawn { opacity: 0.12; }
+
+.gauntlet-sig path {
+    stroke: var(--gold);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    transition: stroke-dashoffset 1.8s var(--ease-decel);
+}
+
+.gauntlet-sig--drawn path { stroke-dashoffset: 0; }
+
+/* ── Divider line with glow ────────────────────────────────── */
+.gauntlet-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 14px 0;
+    box-shadow: 0 0 8px var(--gold-dim);
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: opacity 0.5s var(--ease-decel) 0.3s,
+                transform 0.6s var(--ease-spring) 0.3s;
+}
+
+.gauntlet-reveal--visible .gauntlet-divider {
+    opacity: 1;
+    transform: scaleX(1);
+}
