@@ -1,0 +1,62 @@
+/* ── System Whispers — ambient floating HUD data ──────────────────
+ * Holographic text fragments that drift across the desktop.
+ * Sits at z-index 2 (behind windows at 100+, above galaxy at 0). */
+
+.whisper-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.whisper-fragment {
+    position: absolute;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--neon-cyan);
+    opacity: 0;
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
+    transform: rotate(var(--tilt, 0deg));
+    animation: whisper-drift var(--drift-duration, 16s) linear forwards;
+    will-change: transform, opacity;
+}
+
+.whisper--gold {
+    color: var(--gold);
+    text-shadow: 0 0 8px var(--gold-dim);
+}
+
+/* Drift animation: fade in → float → fade out.
+ * Uses custom properties --drift-x and --drift-y set per fragment. */
+@keyframes whisper-drift {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(var(--tilt, 0deg));
+    }
+    8% {
+        opacity: 0.14;
+    }
+    40% {
+        opacity: 0.14;
+    }
+    85% {
+        opacity: 0.06;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--drift-x, 0), var(--drift-y, -8vh)) rotate(var(--tilt, 0deg));
+    }
+}
+
+/* Reduced motion: disable entirely */
+@media (prefers-reduced-motion: reduce) {
+    .whisper-fragment {
+        animation: none;
+        display: none;
+    }
+}

@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.51.0
-last_updated: 2026-03-26
+version: 3.52.0
+last_updated: 2026-03-27
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-03-26
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.52.0] — 2026-03-27
+
+### Added
+- **System Whispers — ambient floating HUD data fragments** — Translucent monospace text snippets (cipher hashes, system diagnostics, neural-link telemetry) spawn at random desktop positions and drift upward, creating a "data-in-the-air" holographic lab atmosphere. Max 6 concurrent fragments, staggered spawn every 4s, gold/cyan color alternation matching the signature accent palette. New `js/whispers.js` module + `css/whispers.css`. Auto-pauses when tab hidden. Disabled in safe mode. Respects `prefers-reduced-motion`.
 
 ---
 
