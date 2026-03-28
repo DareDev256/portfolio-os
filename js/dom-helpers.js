@@ -202,6 +202,81 @@ export function el(tag, cls, text) {
     return e;
 }
 
+/* ── Viewport Reveal System ── */
+
+/**
+ * Create a scroll-triggered reveal system for elements inside `.window-content`
+ * containers. Centralizes the identical pattern duplicated across scroll-reveal.js
+ * and gauntlet.js: WeakSet dedup → IntersectionObserver → MutationObserver wiring
+ * → windowsContainer auto-init.
+ *
+ * @param {object} opts
+ * @param {string} opts.selector  - CSS selector for reveal targets (e.g. '.scroll-reveal')
+ * @param {string} opts.activeClass - Class added when target enters viewport
+ * @param {number} [opts.threshold=0.15] - IntersectionObserver threshold
+ * @param {(entry: IntersectionObserverEntry) => void} [opts.onReveal] - Extra callback per reveal
+ * @returns {{ init(): void, observe(container: Element): void }}
+ */
+export function createRevealSystem({ selector, activeClass, threshold = 0.15, onReveal }) {
+    const observed = new WeakSet();
+
+    function makeObserver(root) {
+        return new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add(activeClass);
+                        if (onReveal) onReveal(entry);
+                    }
+                }
+            },
+            { root, threshold },
+        );
+    }
+
+    function wire(container) {
+        if (observed.has(container)) return;
+        observed.add(container);
+
+        const observer = makeObserver(container);
+        container.querySelectorAll(selector).forEach((el) => observer.observe(el));
+
+        new MutationObserver((mutations) => {
+            for (const m of mutations) {
+                for (const node of m.addedNodes) {
+                    if (node.nodeType !== 1) continue;
+                    if (node.classList?.contains(selector.slice(1))) observer.observe(node);
+                    node.querySelectorAll?.(selector).forEach((el) => observer.observe(el));
+                }
+            }
+        }).observe(container, { childList: true, subtree: true });
+    }
+
+    return {
+        init() {
+            const wc = document.getElementById('windowsContainer');
+            if (!wc) return;
+
+            wc.querySelectorAll('.window-content').forEach(wire);
+
+            new MutationObserver((mutations) => {
+                for (const m of mutations) {
+                    for (const node of m.addedNodes) {
+                        if (node.nodeType !== 1) continue;
+                        const content = node.classList?.contains('window-content')
+                            ? node
+                            : node.querySelector?.('.window-content');
+                        if (content) wire(content);
+                    }
+                }
+            }).observe(wc, { childList: true, subtree: true });
+        },
+        observe(container) {
+            if (container) wire(container);
+        },
+    };
+}
+
 export function animateCounter(element, target, duration = 1500) {
     let start = 0;
     const increment = target / (duration / 16);

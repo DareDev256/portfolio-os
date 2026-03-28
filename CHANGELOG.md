@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.52.0
+version: 3.52.1
 last_updated: 2026-03-27
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-27
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.52.1] — 2026-03-27
+
+### Changed
+- **Viewport reveal system — centralized scroll-triggered observer pattern** — Extracted the identical IntersectionObserver + MutationObserver + WeakSet scaffolding duplicated across `scroll-reveal.js` and `gauntlet.js` into a single `createRevealSystem()` factory in `dom-helpers.js`. Both modules now declare only their configuration (selector, class, threshold, optional callback) — zero boilerplate. Gauntlet's SVG signature-draw side-effect preserved via `onReveal` callback. Combined ~100 lines of duplicated wiring reduced to ~50 shared lines. API surface unchanged (`{ init, observe }`).
 
 ---
 
