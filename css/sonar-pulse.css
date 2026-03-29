@@ -1,0 +1,111 @@
+/* ============================================
+   SONAR PULSE — Holographic Click Ripple
+   Concentric gold/amethyst rings + HUD coord
+   readout on desktop click. Stark Industries
+   targeting overlay meets Prince's palette.
+   ============================================ */
+
+.sonar-pulse {
+    position: fixed;
+    pointer-events: none;
+    z-index: 50;            /* above desktop, below windows */
+    transform: translate(-50%, -50%);
+}
+
+/* ── Expanding rings ─────────────────────────── */
+
+.sonar-ring {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+/* Ring 0 — gold, fastest */
+.sonar-ring--0 {
+    border: 1.5px solid var(--gold, #d4af37);
+    box-shadow: 0 0 8px var(--gold-dim, rgba(212,175,55,0.4));
+    animation: sonar-expand 1.2s var(--ease-decel, ease-out) forwards;
+}
+
+/* Ring 1 — amethyst, slightly delayed */
+.sonar-ring--1 {
+    border: 1px solid var(--amethyst, #8b5cf6);
+    box-shadow: 0 0 6px var(--amethyst-dim, rgba(139,92,246,0.3));
+    animation: sonar-expand 1.2s 0.12s var(--ease-decel, ease-out) forwards;
+}
+
+/* Ring 2 — gold faint, most delayed & largest */
+.sonar-ring--2 {
+    border: 0.5px solid var(--gold, #d4af37);
+    animation: sonar-expand 1.4s 0.24s var(--ease-decel, ease-out) forwards;
+}
+
+@keyframes sonar-expand {
+    0%   { transform: translate(-50%, -50%) scale(0);  opacity: 0.9; }
+    30%  { opacity: 0.6; }
+    100% { transform: translate(-50%, -50%) scale(28);  opacity: 0; }
+}
+
+/* ── Crosshair flash ─────────────────────────── */
+
+.sonar-cross {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 20px; height: 20px;
+    transform: translate(-50%, -50%);
+    animation: sonar-cross-flash 0.6s var(--ease-snap, ease-in-out) forwards;
+}
+
+.sonar-cross::before,
+.sonar-cross::after {
+    content: '';
+    position: absolute;
+    background: var(--gold, #d4af37);
+}
+
+.sonar-cross::before {          /* horizontal */
+    top: 50%; left: 0;
+    width: 100%; height: 1px;
+    transform: translateY(-50%);
+}
+
+.sonar-cross::after {           /* vertical */
+    left: 50%; top: 0;
+    width: 1px; height: 100%;
+    transform: translateX(-50%);
+}
+
+@keyframes sonar-cross-flash {
+    0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
+    40%  { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+}
+
+/* ── HUD coordinate readout ──────────────────── */
+
+.sonar-hud {
+    position: absolute;
+    left: 50%;
+    top: -8px;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold-light, #f5d76e);
+    text-shadow: 0 0 6px var(--gold-dim, rgba(212,175,55,0.5));
+    animation: sonar-hud-rise 1.4s var(--ease-decel, ease-out) forwards;
+    pointer-events: none;
+}
+
+@keyframes sonar-hud-rise {
+    0%   { opacity: 0; transform: translateX(-50%) translateY(0); }
+    15%  { opacity: 0.9; }
+    60%  { opacity: 0.5; }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-32px); }
+}

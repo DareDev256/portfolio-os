@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.53.0
-last_updated: 2026-03-28
+version: 3.54.0
+last_updated: 2026-03-29
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-03-28
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.54.0] — 2026-03-29
+
+### Added
+- **Sonar Pulse — holographic desktop click ripple** — Clicking on the desktop surface spawns a Stark Industries-style targeting ping: three concentric rings (alternating gold/amethyst from `--gold` and `--amethyst` tokens) expand outward with staggered timing, a crosshair flashes at the impact origin, and a JetBrains Mono HUD readout floats upward showing `x:NNN y:NNN · SECTOR CLEAR` with randomized tactical status tags. Rings use CSS `scale()` animation for GPU compositing. Click-debounced at 320ms to prevent visual spam. Desktop-only (skipped on `pointer: coarse`). Respects `prefers-reduced-motion`.
 
 ---
 

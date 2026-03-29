@@ -26,6 +26,7 @@ import { ensureGalaxy } from './galaxy-init.js';
 import { Achievements } from './achievements.js';
 import { Gauntlet } from './gauntlet.js';
 import { Whispers } from './whispers.js';
+import { SonarPulse } from './sonar-pulse.js';
 
 /* ── Visual module registry ────────────────────────────────────────
  * Each entry drives: module.init(), module.setEnabled(), and a
@@ -126,6 +127,9 @@ async function init() {
 
     // Ambient floating HUD data fragments on desktop
     if (!safeMode) Whispers.init();
+
+    // Holographic sonar pulse on desktop clicks
+    if (!safeMode) SonarPulse.init();
 
     // Direct-access routes skip boot/lock entirely (e.g. /services for prospects)
     const directAccessRoutes = ['/services'];

@@ -4,7 +4,7 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.52.1-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.54.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/485_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/60_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
@@ -57,6 +57,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Parallax Depth Engine** — Mouse-driven lock screen layers + wheel-driven cinematic depth separation + ambient drift + scroll-driven desktop background shifts. 4-layer depth with lerp smoothing, scroll momentum decay, sine-wave ambient oscillation, MutationObserver for dynamic windows, `will-change` GPU compositing. Scroll the hero to pull layers apart at different rates. Respects `prefers-reduced-motion`.
 - **Holographic Blueprint Reveal** — Project cards in the Applications window enter with a tech-blueprint animation: gold corner crosshairs lock on, edge-trace lines draw themselves (gold → amethyst gradient), a scan line sweeps, then content resolves from blur to clarity. Overlay fades out after completion. CSS-only, zero JS overhead. Respects `prefers-reduced-motion`.
 - **Signature Accents** — Gold HUD corner brackets materialize on active windows like Stark Industries targeting overlays. A gold focus-flash briefly warms the border on window activation, and the titlebar line shifts to a breathing gold-amethyst heartbeat pulse. Active window titles gain a faint gold text-shadow. Pure CSS, zero JS overhead. Respects `prefers-reduced-motion`.
+- **Sonar Pulse** — Click anywhere on the desktop surface and concentric gold/amethyst rings radiate outward from the impact point like a Stark Industries targeting ping. A crosshair flashes at the origin while a JetBrains Mono HUD readout floats upward showing click coordinates and a randomized sector status tag (`SECTOR CLEAR`, `SIGNAL NOMINAL`, etc.). Three staggered rings alternate gold/amethyst with decreasing opacity. Debounced to prevent spam. Desktop-only, respects `prefers-reduced-motion`.
 - **Glimmer Sweep** — Diagonal gold-to-amethyst light sweep on hover for portfolio cards, project cards, portfolio links, and dock icons. GPU-composited `translateX` animation with `ease-decel` fade-out. Respects `prefers-reduced-motion`.
 - **Golden Cadence** — Mouse-reactive metallic sheen on the top bar and dock. A gold/holographic radial gradient tracks the cursor, simulating light catching on brushed metal. CSS custom properties bridge JS cursor tracking to GPU-composited radial gradients. Dock border warms to gold on proximity. Respects `prefers-reduced-motion`.
 - **Purple Haze Reveal Curtain** — Cinematic lock-to-desktop transition. Two amethyst velvet panels (CSS noise texture) cover the screen during boot, a golden seam draws across the divide, an atmospheric bloom radiates from center, then the panels part vertically to reveal the desktop. Inspired by Prince's Purple Rain staging. Uses design system motion tokens. Respects `prefers-reduced-motion`.
