@@ -1,26 +1,43 @@
 /**
  * Parallax Engine
- * Two modes:
+ * Three modes:
  *   1) Lock screen — mouse-position depth layers on intro elements
- *   2) Desktop — window scroll drives subtle background shifts
+ *   2) Lock screen — wheel-driven vertical parallax separation (cinematic depth pull)
+ *   3) Desktop — window scroll drives subtle background shifts
  *
+ * Ambient drift keeps the scene alive even without user interaction.
  * Respects prefers-reduced-motion and stays under 16ms/frame via rAF.
  */
 import { isElementVisible, prefersReducedMotion } from './dom-helpers.js';
 
+/* ── Layer config ─────────────────────────────────────────────────
+ * z  = mouse-parallax intensity (fraction of viewport)
+ * sz = scroll-parallax multiplier (px shift per unit of scroll)
+ * Negative sz pulls layers *toward* the viewer on scroll-down.    */
 const LOCK_LAYERS = [
-    { sel: '.grid-background',    z: 0.015, prop: 'translate' },
-    { sel: '.intro-watermark',    z: 0.035, prop: 'translate' },
-    { sel: '.intro-title-block',  z: 0.020, prop: 'translate' },
-    { sel: '.intro-identity',     z: 0.012, prop: 'translate' },
+    { sel: '.grid-background',    z: 0.015, sz:  40 },
+    { sel: '.intro-watermark',    z: 0.035, sz: -25 },
+    { sel: '.intro-title-block',  z: 0.020, sz: -50 },
+    { sel: '.intro-identity',     z: 0.012, sz: -70 },
 ];
 
 const BG_WHEEL_SEL = '.bg-wheel-container';
-const LERP = 0.08; // Smoothing factor — lower = silkier
+const LERP        = 0.08;  // Mouse smoothing — lower = silkier
+const SCROLL_LERP = 0.06;  // Scroll smoothing — extra silk for cinematic feel
+const DRIFT_AMP   = 0.003; // Ambient drift amplitude (fraction of viewport)
+const DRIFT_SPEED  = 0.0004; // Ambient oscillation speed
+const SCROLL_CLAMP = 1;    // Max normalized scroll accumulator (±1)
+const SCROLL_DECAY = 0.97; // Scroll momentum decay per frame (0–1)
+const SCROLL_SENS  = 0.003; // Wheel deltaY → normalized scroll conversion
 
 /** Linearly interpolate toward target */
 function lerp(current, target, factor) {
     return current + (target - current) * factor;
+}
+
+/** Clamp value between min and max */
+function clamp(val, min, max) {
+    return Math.max(min, Math.min(max, val));
 }
 
 export const Parallax = {
@@ -29,26 +46,29 @@ export const Parallax = {
     _mouseY: 0,
     _currX: 0,
     _currY: 0,
-    _scrollShift: 0,
-    _currShift: 0,
+    _scrollTarget: 0,    // Raw scroll accumulator (wheel-driven)
+    _scrollCurr: 0,      // Smoothed scroll value
+    _windowShift: 0,     // Desktop window-content scroll
+    _windowShiftCurr: 0,
     _active: false,
     _lockEls: [],
     _bgWheel: null,
     _observer: null,
+    _startTime: 0,
 
     init() {
-        // Respect accessibility
         if (prefersReducedMotion()) return;
 
         this._bgWheel = document.querySelector(BG_WHEEL_SEL);
+        this._startTime = performance.now();
         this._cacheLockElements();
         this._bindMouse();
+        this._bindLockWheel();
         this._bindWindowScroll();
         this._active = true;
         this._tick();
     },
 
-    /** Cache lock screen element references */
     _cacheLockElements() {
         this._lockEls = LOCK_LAYERS.map(layer => ({
             ...layer,
@@ -56,26 +76,31 @@ export const Parallax = {
         })).filter(l => l.el);
     },
 
-    /** Mouse tracking for lock screen depth */
     _bindMouse() {
         document.addEventListener('mousemove', (e) => {
-            // Normalize to -1…1 from viewport center
             this._mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
             this._mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
         }, { passive: true });
     },
 
-    /**
-     * Observe scroll inside every .window-content.
-     * Uses a MutationObserver to catch dynamically-created windows.
-     */
+    /** Wheel events on lock screen → vertical depth separation */
+    _bindLockWheel() {
+        const lockEl = document.getElementById('lockScreen');
+        if (!lockEl) return;
+        lockEl.addEventListener('wheel', (e) => {
+            this._scrollTarget = clamp(
+                this._scrollTarget + e.deltaY * SCROLL_SENS,
+                -SCROLL_CLAMP, SCROLL_CLAMP,
+            );
+        }, { passive: true });
+    },
+
     _bindWindowScroll() {
         const handler = (e) => {
             const el = e.target;
             const maxScroll = el.scrollHeight - el.clientHeight;
             if (maxScroll > 0) {
-                // Normalize 0…1
-                this._scrollShift = el.scrollTop / maxScroll;
+                this._windowShift = el.scrollTop / maxScroll;
             }
         };
 
@@ -92,13 +117,11 @@ export const Parallax = {
             });
         };
 
-        // Attach to existing windows
         document.querySelectorAll('.window-content').forEach(wc => {
             wc.addEventListener('scroll', handler, { passive: true });
             wc.__parallaxBound = true;
         });
 
-        // Watch for new windows
         this._observer = new MutationObserver((mutations) => {
             for (const m of mutations) {
                 m.addedNodes.forEach(attach);
@@ -110,49 +133,53 @@ export const Parallax = {
         }
     },
 
-    /** Main animation loop */
     _tick() {
         if (!this._active) return;
 
-        // Smooth interpolation toward target
+        const t = performance.now() - this._startTime;
+
+        // Smooth interpolation
         this._currX = lerp(this._currX, this._mouseX, LERP);
         this._currY = lerp(this._currY, this._mouseY, LERP);
-        this._currShift = lerp(this._currShift, this._scrollShift, LERP);
+        this._scrollCurr = lerp(this._scrollCurr, this._scrollTarget, SCROLL_LERP);
+        this._windowShiftCurr = lerp(this._windowShiftCurr, this._windowShift, LERP);
 
-        // --- Lock screen layers (mouse-driven depth) ---
-        // Previous check used offsetParent !== null which is always false for
-        // position:fixed elements — isElementVisible handles fixed correctly.
+        // Scroll momentum decay — slowly return to center when not scrolling
+        this._scrollTarget *= SCROLL_DECAY;
+
+        // Ambient drift — gentle sine oscillation keeps the scene alive
+        const driftX = Math.sin(t * DRIFT_SPEED) * DRIFT_AMP;
+        const driftY = Math.cos(t * DRIFT_SPEED * 0.7) * DRIFT_AMP * 0.6;
+
+        // --- Lock screen parallax (mouse + scroll + drift) ---
         const lockEl = document.getElementById('lockScreen');
         const lockVisible = lockEl ? isElementVisible(lockEl) : false;
 
         if (lockVisible) {
-            for (const { el, z } of this._lockEls) {
-                const dx = this._currX * z * window.innerWidth;
-                const dy = this._currY * z * window.innerHeight;
-                // Preserve any existing transform by composing translate
-                el.style.translate = `${dx.toFixed(1)}px ${dy.toFixed(1)}px`;
+            for (const { el, z, sz } of this._lockEls) {
+                const mx = (this._currX + driftX) * z * window.innerWidth;
+                const my = (this._currY + driftY) * z * window.innerHeight;
+                const scrollY = this._scrollCurr * sz;
+                el.style.translate = `${mx.toFixed(1)}px ${(my + scrollY).toFixed(1)}px`;
             }
         }
 
-        // --- Background wheel (scroll-driven shift) ---
+        // --- Background wheel (desktop scroll + mouse + drift) ---
         if (this._bgWheel) {
-            // Subtle vertical drift + mouse influence when on desktop
-            const scrollY = this._currShift * -30; // max 30px upward shift
-            const mouseInfluenceX = this._currX * 8;
-            const mouseInfluenceY = this._currY * 8;
+            const scrollY = this._windowShiftCurr * -30;
+            const mouseX = (this._currX + driftX) * 8;
+            const mouseY = (this._currY + driftY) * 8;
             this._bgWheel.style.translate =
-                `calc(-50% + ${mouseInfluenceX.toFixed(1)}px) calc(-50% + ${(scrollY + mouseInfluenceY).toFixed(1)}px)`;
+                `calc(-50% + ${mouseX.toFixed(1)}px) calc(-50% + ${(scrollY + mouseY).toFixed(1)}px)`;
         }
 
         this._raf = requestAnimationFrame(() => this._tick());
     },
 
-    /** Clean up */
     destroy() {
         this._active = false;
         if (this._raf) cancelAnimationFrame(this._raf);
         if (this._observer) this._observer.disconnect();
-        // Reset transforms
         this._lockEls.forEach(({ el }) => { el.style.translate = ''; });
         if (this._bgWheel) this._bgWheel.style.translate = '';
     },

@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.52.1
-last_updated: 2026-03-27
+version: 3.53.0
+last_updated: 2026-03-28
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-03-27
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.53.0] — 2026-03-28
+
+### Added
+- **Parallax scroll depth — cinematic hero layer separation** — Enhanced the parallax engine with wheel-driven vertical depth separation on the lock screen hero. Scrolling (mousewheel/trackpad) pulls the four depth layers apart at different rates: grid background drifts up (+40px), watermark shifts subtly (-25px), title block separates faster (-50px), identity block leads the pull (-70px). Scroll momentum decays naturally back to center via 0.97 per-frame decay factor. Added ambient sine-wave drift oscillation that keeps the scene alive even without user interaction. Desktop background wheel now also inherits the ambient drift. All values lerp-smoothed at 0.06 for cinematic silk. Respects `prefers-reduced-motion`.
 
 ---
 

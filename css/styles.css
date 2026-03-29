@@ -57,6 +57,11 @@ body::before {
     will-change: translate;
 }
 
+/* Lock screen scroll-parallax depth cue — subtle opacity fade on scroll */
+.lock-screen {
+    --parallax-scroll: 0;
+}
+
 /* Lock Screen / Login Panel */
 .lock-screen {
     position: fixed;

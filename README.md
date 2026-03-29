@@ -54,7 +54,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Glass UI** — `backdrop-filter` frosted panels on windows, top bar, dock, and desktop icons — GPU-optimized with reduced blur radii.
 - **3D Icon Tilt** — Desktop icons respond to cursor position with gyroscopic 3D perspective tilt (±18°) and an inner light bloom that shifts to simulate overhead lighting. Mouse-tracked via CSS custom properties, MutationObserver for dynamic icons. Respects `prefers-reduced-motion`.
 - **Tokenized Motion System** — All transitions use design tokens (`--transition-fast/medium/slow`, `--ease-decel/accel/spring`) instead of hardcoded values. Entry animations decelerate, exits accelerate, emphasis bounces — no generic `ease` defaults.
-- **Parallax Depth Engine** — Mouse-driven lock screen layers + scroll-driven desktop background shifts. 4-layer depth with lerp smoothing, MutationObserver for dynamic windows, `will-change` GPU compositing. Respects `prefers-reduced-motion`.
+- **Parallax Depth Engine** — Mouse-driven lock screen layers + wheel-driven cinematic depth separation + ambient drift + scroll-driven desktop background shifts. 4-layer depth with lerp smoothing, scroll momentum decay, sine-wave ambient oscillation, MutationObserver for dynamic windows, `will-change` GPU compositing. Scroll the hero to pull layers apart at different rates. Respects `prefers-reduced-motion`.
 - **Holographic Blueprint Reveal** — Project cards in the Applications window enter with a tech-blueprint animation: gold corner crosshairs lock on, edge-trace lines draw themselves (gold → amethyst gradient), a scan line sweeps, then content resolves from blur to clarity. Overlay fades out after completion. CSS-only, zero JS overhead. Respects `prefers-reduced-motion`.
 - **Signature Accents** — Gold HUD corner brackets materialize on active windows like Stark Industries targeting overlays. A gold focus-flash briefly warms the border on window activation, and the titlebar line shifts to a breathing gold-amethyst heartbeat pulse. Active window titles gain a faint gold text-shadow. Pure CSS, zero JS overhead. Respects `prefers-reduced-motion`.
 - **Glimmer Sweep** — Diagonal gold-to-amethyst light sweep on hover for portfolio cards, project cards, portfolio links, and dock icons. GPU-composited `translateX` animation with `ease-decel` fade-out. Respects `prefers-reduced-motion`.
@@ -268,7 +268,7 @@ js/                                 # 55 ES modules, zero framework imports
 ├── audiofx.js                      # Audio effects system
 ├── version.js                      # Single source of truth for app version
 ├── scroll-reveal.js                # IntersectionObserver scroll-triggered animations
-├── parallax.js                     # Mouse-driven parallax depth engine
+├── parallax.js                     # Parallax depth engine (mouse + scroll + ambient drift)
 ├── dock-magnify.js                 # macOS-style dock icon magnification
 ├── ambient-system.js               # Live system telemetry simulation
 ├── weather.js                      # Geolocation weather widget (Open-Meteo)
