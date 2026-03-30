@@ -100,37 +100,72 @@ describe('State.setInteractionIntensity()', () => {
     });
 });
 
-describe('State.applyWallpaper()', () => {
+describe('State._validateWallpaperUrl()', () => {
     it('blocks javascript: protocol', () => {
-        const spy = [];
-        const origWarn = console.warn;
-        console.warn = (...args) => spy.push(args);
-        State.applyWallpaper('javascript:alert(1)');
-        console.warn = origWarn;
-        expect(spy.length).toBeGreaterThan(0);
-        expect(spy[0][0]).toContain('Blocked');
+        expect(State._validateWallpaperUrl('javascript:alert(1)')).toBe('');
     });
 
     it('blocks data:text/html protocol', () => {
+        expect(State._validateWallpaperUrl('data:text/html,<script>alert(1)</script>')).toBe('');
+    });
+
+    it('blocks data:image/svg+xml (can contain scripts)', () => {
+        expect(State._validateWallpaperUrl('data:image/svg+xml,<svg onload="alert(1)"/>')).toBe('');
+    });
+
+    it('allows safe data:image/ URIs', () => {
+        const png = 'data:image/png;base64,iVBOR';
+        expect(State._validateWallpaperUrl(png)).toBe(png);
+    });
+
+    it('allows http/https URLs via Sanitize.url()', () => {
+        expect(State._validateWallpaperUrl('https://example.com/bg.jpg')).toBe('https://example.com/bg.jpg');
+    });
+
+    it('allows relative asset paths', () => {
+        expect(State._validateWallpaperUrl('assets/wallpapers/default.jpg')).toBe('assets/wallpapers/default.jpg');
+    });
+
+    it('allows valid gradient tokens', () => {
+        expect(State._validateWallpaperUrl('gradient:dark-ombre')).toBe('gradient:dark-ombre');
+    });
+
+    it('blocks invalid gradient tokens', () => {
+        expect(State._validateWallpaperUrl('gradient:evil-payload')).toBe('');
+    });
+
+    it('blocks vbscript: protocol', () => {
+        expect(State._validateWallpaperUrl('vbscript:alert(1)')).toBe('');
+    });
+
+    it('strips control characters before validation', () => {
+        expect(State._validateWallpaperUrl("java\tscript:alert(1)")).toBe('');
+    });
+});
+
+describe('State.setWallpaper()', () => {
+    it('rejects dangerous URLs and does not persist them', () => {
         const spy = [];
         const origWarn = console.warn;
         console.warn = (...args) => spy.push(args);
-        State.applyWallpaper('data:text/html,<script>alert(1)</script>');
+        State.setWallpaper('javascript:alert(1)');
         console.warn = origWarn;
         expect(spy.length).toBeGreaterThan(0);
+        expect(spy[0][0]).toContain('Blocked');
+        expect(localStorage.getItem('wallpaper')).not.toBe('javascript:alert(1)');
     });
+});
 
+describe('State.applyWallpaper()', () => {
     it('handles gradient tokens', () => {
         State.applyWallpaper('gradient:dark-ombre');
         const val = document.documentElement.style.getPropertyValue('--wallpaper-url');
         expect(val).toContain('linear-gradient');
     });
 
-    it('strips dangerous characters from URLs', () => {
-        State.applyWallpaper("test')inject");
+    it('strips dangerous characters from URLs (defense-in-depth)', () => {
+        State.applyWallpaper("testinject");
         const val = document.documentElement.style.getPropertyValue('--wallpaper-url');
-        // After stripping ' and ), the URL should be clean
-        expect(val).not.toContain("'test");
         expect(val).toContain('testinject');
     });
 });

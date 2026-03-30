@@ -78,10 +78,18 @@ export const State = {
         }
 
         // Load wallpaper (only if user has set a custom one)
+        // Validate before applying — localStorage could contain poisoned values
+        // from crafted backup imports or devtools tampering
         const savedWallpaper = localStorage.getItem('wallpaper');
         if (savedWallpaper) {
-            this.wallpaper = savedWallpaper;
-            this.applyWallpaper(savedWallpaper);
+            const safe = this._validateWallpaperUrl(savedWallpaper);
+            if (safe) {
+                this.wallpaper = safe;
+                this.applyWallpaper(safe);
+            } else {
+                // Purge invalid stored wallpaper so it doesn't re-trigger on every load
+                localStorage.removeItem('wallpaper');
+            }
         }
 
         // Load all boolean toggles from localStorage
@@ -124,61 +132,90 @@ export const State = {
     },
 
     /**
-     * Set and persist wallpaper
+     * Allowlisted gradient tokens for wallpaper.
+     * Only these keys are valid — prevents injection via crafted gradient: strings.
      */
-    setWallpaper(url) {
-        this.wallpaper = url;
-        this.applyWallpaper(url);
-        localStorage.setItem('wallpaper', url);
+    VALID_GRADIENTS: {
+        'grey-ombre': 'linear-gradient(135deg, #2e3238 0%, #3b424a 50%, #2c3036 100%)',
+        'dark-ombre': 'linear-gradient(135deg, #121316 0%, #1a1c20 50%, #0b0c0e 100%)',
     },
 
     /**
-     * Apply wallpaper to all wallpaper elements
-     * Supports URL prefixes for local assets and external links
+     * Validate a wallpaper URL before persistence or application.
+     * Uses Sanitize.url() (allowlist: http/https/relative) as the primary gate,
+     * with explicit allowlists for gradient tokens and safe data:image/ URIs.
+     * Returns the validated string, or empty string if blocked.
+     * @param {string} input - Raw wallpaper URL or gradient token
+     * @returns {string} Validated value or ''
      */
-    applyWallpaper(input) {
-        // Support gradients via tokens like 'gradient:dark-ombre'
-        let cssValue = '';
-        if (typeof input === 'string' && input.startsWith('gradient:')) {
-            const key = input.split(':')[1] || 'grey-ombre';
-            switch (key) {
-                case 'grey-ombre':
-                    cssValue = 'linear-gradient(135deg, #2e3238 0%, #3b424a 50%, #2c3036 100%)';
-                    break;
-                case 'dark-ombre':
-                default:
-                    cssValue = 'linear-gradient(135deg, #121316 0%, #1a1c20 50%, #0b0c0e 100%)';
-            }
-        } else {
-            // Determine correct CSS path: prefix '../' for local asset paths
-            let url = input;
+    _validateWallpaperUrl(input) {
+        if (!input || typeof input !== 'string') return '';
 
-            // Block dangerous protocols — allowlist safe data: subtypes only
-            const lower = url.toLowerCase().trim();
-            if (
-                lower.startsWith('javascript:') ||
-                (lower.startsWith('data:') &&
-                    !lower.startsWith('data:image/png') &&
-                    !lower.startsWith('data:image/jpeg') &&
-                    !lower.startsWith('data:image/gif') &&
-                    !lower.startsWith('data:image/webp'))
-            ) {
-                console.warn('[State] Blocked dangerous wallpaper URL:', url);
-                return;
-            }
-
-            // Strip characters that could break out of CSS url('...')
-            url = url.replace(/['"()\\;<>]/g, '');
-
-            const isExternal =
-                /^https?:\/\//.test(url) || url.startsWith('/') || url.startsWith('data:');
-            if (!isExternal) {
-                url = `../${url}`;
-            }
-            cssValue = `url('${url}')`;
+        // Gradient tokens — validate key against allowlist
+        if (input.startsWith('gradient:')) {
+            const key = input.slice(9);
+            return (key in this.VALID_GRADIENTS) ? input : '';
         }
 
-        document.documentElement.style.setProperty('--wallpaper-url', cssValue);
+        // Strip control chars that hide protocol (tab, newline, null)
+        // eslint-disable-next-line no-control-regex
+        const stripped = input.replace(/[\x00-\x1f\x7f]/g, '').trim();
+        if (!stripped) return '';
+
+        // Safe data:image/ URIs — strict MIME allowlist (no svg+xml, no text/html)
+        const lower = stripped.toLowerCase();
+        if (lower.startsWith('data:image/')) {
+            const SAFE_MIMES = ['data:image/png', 'data:image/jpeg', 'data:image/gif', 'data:image/webp'];
+            if (SAFE_MIMES.some(m => lower.startsWith(m))) return stripped;
+            return ''; // Blocks svg+xml (can contain <script>), and any unknown image type
+        }
+
+        // All other URLs go through the centralized allowlist validator
+        // (permits only http(s) and relative paths — blocks javascript:, vbscript:, blob:, etc.)
+        return Sanitize.url(stripped);
+    },
+
+    /**
+     * Set and persist wallpaper — validates before storing to prevent
+     * localStorage poisoning with dangerous URIs that persist across sessions.
+     */
+    setWallpaper(url) {
+        const safe = this._validateWallpaperUrl(url);
+        if (!safe) {
+            console.warn('[State] Blocked invalid wallpaper URL');
+            return;
+        }
+        this.wallpaper = safe;
+        this.applyWallpaper(safe);
+        localStorage.setItem('wallpaper', safe);
+    },
+
+    /**
+     * Apply wallpaper to all wallpaper elements.
+     * Expects pre-validated input from setWallpaper/init — keeps defense-in-depth
+     * CSS injection guards as a secondary layer.
+     */
+    applyWallpaper(input) {
+        // Gradient tokens — lookup from validated allowlist
+        if (typeof input === 'string' && input.startsWith('gradient:')) {
+            const key = input.slice(9);
+            const cssValue = this.VALID_GRADIENTS[key] || this.VALID_GRADIENTS['dark-ombre'];
+            document.documentElement.style.setProperty('--wallpaper-url', cssValue);
+            return;
+        }
+
+        // Defense-in-depth: strip CSS-breakout chars even though input is pre-validated
+        let url = typeof input === 'string' ? input : '';
+        url = url.replace(/['"()\\;<>]/g, '');
+        if (!url) return;
+
+        const isExternal =
+            /^https?:\/\//.test(url) || url.startsWith('/') || url.startsWith('data:');
+        if (!isExternal) {
+            url = `../${url}`;
+        }
+
+        document.documentElement.style.setProperty('--wallpaper-url', `url('${url}')`);
     },
 
     setCursorTrailType(type) {

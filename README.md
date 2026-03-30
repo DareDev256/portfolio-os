@@ -4,8 +4,8 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.55.0-00f0ff?style=flat-square&labelColor=0d0d0d)
-![Tests](https://img.shields.io/badge/485_tests-00e676?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.55.1-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Tests](https://img.shields.io/badge/453_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/60_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `60 modules` · `30 stylesheets` · `444 tests / 23 suites` · `21 desktop apps` · `0 dependencies`
+> `60 modules` · `30 stylesheets` · `453 tests / 23 suites` · `21 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -102,6 +102,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - All `innerHTML` routed through DOMPurify (SRI hash on CDN) — including window content, titlebar icons, taskbar icons, and start menu items
 - 10 HTTP security headers via Vercel (CSP, HSTS, X-Frame-Options, COOP, COEP, CORP, Permissions-Policy)
 - URL injection prevention — allowlist-based router, CSS breakout stripping
+- `State.setWallpaper()` validates URLs through `Sanitize.url()` before localStorage persistence — prevents stored CSS injection via localStorage poisoning; gradient tokens validated against an explicit allowlist; `data:image/` URIs restricted to safe MIME types (png, jpeg, gif, webp)
 - `Sanitize.attr()` blocks `data:image/svg+xml` XSS vectors alongside `javascript:`, `vbscript:`, and `data:text/html`
 - `Sanitize.url()` enforced on all `href`/`src` attributes sourced from external data (project links, media posters, GitHub avatars, lightbox images) — blocks `blob:`, `ftp:`, and other dangerous URI schemes
 - `Sanitize.cssUrl()` strips CSS-breaking characters (`'`, `"`, `(`, `)`, `;`, `\`) from URLs embedded in CSS `url('...')` contexts — prevents stored CSS injection via crafted backup imports

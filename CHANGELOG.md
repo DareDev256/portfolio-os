@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.55.0
-last_updated: 2026-03-29
+version: 3.55.1
+last_updated: 2026-03-30
 
 ---
 
@@ -17,6 +17,11 @@ last_updated: 2026-03-29
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.55.1] — 2026-03-30
+
+### Security
+- **Wallpaper URL validation hardened (state.js)** — `setWallpaper()` now validates URLs through `Sanitize.url()` (allowlist-based) before persisting to localStorage, closing a stored CSS injection vector where dangerous URIs could be written to localStorage and survive across sessions. Gradient tokens validated against an explicit `VALID_GRADIENTS` allowlist instead of open-ended string matching. `data:image/` URIs restricted to safe MIME types only (png, jpeg, gif, webp) — blocks `svg+xml` which can contain `<script>`. Invalid stored wallpapers are now purged from localStorage on load instead of silently re-rejected every session. Added `_validateWallpaperUrl()` as a centralized validation gate used by both `setWallpaper()` and `init()`. Comprehensive test coverage: 10 new validation tests covering protocol blocking, MIME allowlisting, gradient token validation, control character stripping, and persistence rejection.
 
 ## [3.55.0] — 2026-03-29
 
