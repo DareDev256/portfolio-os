@@ -1,0 +1,81 @@
+/* Catalyst Pulse — ambient breathing energy field behind lock-screen hero
+ * Gold core + amethyst halo that intensifies on mouse proximity. */
+
+.catalyst-pulse { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+
+/* Core gold breath — radial glow from center */
+.catalyst-core {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 320px; height: 320px;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,175,55,0.18) 0%, rgba(212,175,55,0.06) 40%, transparent 70%);
+    animation: catalyst-breathe 4s ease-in-out infinite;
+    will-change: transform, opacity;
+}
+
+/* Amethyst outer halo — wider, slower rhythm */
+.catalyst-halo {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 600px; height: 600px;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, rgba(139,92,246,0.04) 50%, transparent 75%);
+    animation: catalyst-breathe 6s ease-in-out infinite 1s;
+    will-change: transform, opacity;
+}
+
+/* Circuit texture lines — subtle geometric fragments */
+.catalyst-circuit {
+    position: absolute;
+    top: 50%; left: 50%;
+    translate: -50% -50%;
+    width: 500px; height: 500px;
+    opacity: 0.04;
+    animation: catalyst-circuit-fade 8s ease-in-out infinite;
+    will-change: opacity;
+}
+.catalyst-circuit::before,
+.catalyst-circuit::after { content: ''; position: absolute; border: 1px solid var(--gold); }
+.catalyst-circuit::before {
+    top: 50%; left: 10%; width: 80%; height: 0; opacity: 0.5;
+    mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
+}
+.catalyst-circuit::after {
+    left: 50%; top: 10%; width: 0; height: 80%; opacity: 0.5;
+    mask-image: linear-gradient(to bottom, transparent, white 20%, white 80%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, white 20%, white 80%, transparent);
+}
+
+/* Corner brackets — tech-frame around the pulse */
+.catalyst-bracket { position: absolute; width: 40px; height: 40px; opacity: 0.08; animation: catalyst-circuit-fade 8s ease-in-out infinite 2s; }
+.catalyst-bracket--tl { top: calc(50% - 160px); left: calc(50% - 160px); border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+.catalyst-bracket--tr { top: calc(50% - 160px); right: calc(50% - 160px); border-top: 1px solid var(--amethyst); border-right: 1px solid var(--amethyst); }
+.catalyst-bracket--bl { bottom: calc(50% - 160px); left: calc(50% - 160px); border-bottom: 1px solid var(--amethyst); border-left: 1px solid var(--amethyst); }
+.catalyst-bracket--br { bottom: calc(50% - 160px); right: calc(50% - 160px); border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+
+/* Intensified state — mouse proximity within threshold */
+.catalyst-pulse.catalyst--intense .catalyst-core { background: radial-gradient(circle, rgba(212,175,55,0.35) 0%, rgba(212,175,55,0.12) 40%, transparent 70%); }
+.catalyst-pulse.catalyst--intense .catalyst-halo { background: radial-gradient(circle, rgba(139,92,246,0.22) 0%, rgba(139,92,246,0.08) 50%, transparent 75%); }
+.catalyst-pulse.catalyst--intense .catalyst-circuit { opacity: 0.09; }
+.catalyst-pulse.catalyst--intense .catalyst-bracket { opacity: 0.16; }
+
+/* Smooth transition for intensity changes */
+.catalyst-core, .catalyst-halo, .catalyst-circuit, .catalyst-bracket { transition: background 0.8s ease, opacity 0.8s ease; }
+
+@keyframes catalyst-breathe {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.12); opacity: 0.7; }
+}
+@keyframes catalyst-circuit-fade {
+    0%, 100% { opacity: 0.04; }
+    50%      { opacity: 0.1; }
+}
+
+/* Reduced motion — static glow, no animation */
+@media (prefers-reduced-motion: reduce) {
+    .catalyst-core, .catalyst-halo, .catalyst-circuit, .catalyst-bracket { animation: none; }
+}

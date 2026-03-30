@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.54.0
+version: 3.55.0
 last_updated: 2026-03-29
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-03-29
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.55.0] — 2026-03-29
+
+### Added
+- **Catalyst Pulse — ambient breathing energy field** — Lock screen hero gains a living atmosphere: a gold-core radial glow with amethyst outer halo breathes in dual-rhythm cycles (4s core, 6s halo). Geometric crosshair lines and corner brackets frame the central wheel. Mouse proximity to screen center intensifies the glow, creating a reveal-on-approach effect. DOM injected dynamically by JS module, CSS-animated with `will-change` GPU compositing. Respects `prefers-reduced-motion`.
 
 ---
 

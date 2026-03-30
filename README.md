@@ -4,7 +4,7 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.54.0-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.55.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/485_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/60_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
@@ -54,6 +54,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Glass UI** — `backdrop-filter` frosted panels on windows, top bar, dock, and desktop icons — GPU-optimized with reduced blur radii.
 - **3D Icon Tilt** — Desktop icons respond to cursor position with gyroscopic 3D perspective tilt (±18°) and an inner light bloom that shifts to simulate overhead lighting. Mouse-tracked via CSS custom properties, MutationObserver for dynamic icons. Respects `prefers-reduced-motion`.
 - **Tokenized Motion System** — All transitions use design tokens (`--transition-fast/medium/slow`, `--ease-decel/accel/spring`) instead of hardcoded values. Entry animations decelerate, exits accelerate, emphasis bounces — no generic `ease` defaults.
+- **Catalyst Pulse** — Ambient breathing energy field behind the lock screen hero. A gold-core radial glow with an amethyst outer halo pulsates in a 4s/6s dual-rhythm breath cycle, with geometric crosshair lines and corner brackets framing the wheel. Moving the cursor toward screen center intensifies the glow — a proximity-driven reveal that makes the lock screen feel alive before the user interacts. CSS-animated with GPU-composited `will-change`, JS mouse tracking for intensity. Respects `prefers-reduced-motion`.
 - **Parallax Depth Engine** — Mouse-driven lock screen layers + wheel-driven cinematic depth separation + ambient drift + scroll-driven desktop background shifts. 4-layer depth with lerp smoothing, scroll momentum decay, sine-wave ambient oscillation, MutationObserver for dynamic windows, `will-change` GPU compositing. Scroll the hero to pull layers apart at different rates. Respects `prefers-reduced-motion`.
 - **Holographic Blueprint Reveal** — Project cards in the Applications window enter with a tech-blueprint animation: gold corner crosshairs lock on, edge-trace lines draw themselves (gold → amethyst gradient), a scan line sweeps, then content resolves from blur to clarity. Overlay fades out after completion. CSS-only, zero JS overhead. Respects `prefers-reduced-motion`.
 - **Signature Accents** — Gold HUD corner brackets materialize on active windows like Stark Industries targeting overlays. A gold focus-flash briefly warms the border on window activation, and the titlebar line shifts to a breathing gold-amethyst heartbeat pulse. Active window titles gain a faint gold text-shadow. Pure CSS, zero JS overhead. Respects `prefers-reduced-motion`.
