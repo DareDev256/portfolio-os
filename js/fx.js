@@ -5,9 +5,7 @@
  * - Optional scanline overlay
  */
 
-import { isPageHidden, loadBool, saveBool } from './dom-helpers.js';
-
-let _lastFrame = 0;
+import { loadBool, saveBool, resizeCanvasDPR, createThrottledLoop } from './dom-helpers.js';
 
 export const FX = {
     enabled: true,
@@ -16,7 +14,7 @@ export const FX = {
     scanlines: null,
     particles: [],
     mouse: { x: 0, y: 0, active: false },
-    raf: 0,
+    _loop: null,
     suction: null,
 
     init() {
@@ -32,6 +30,11 @@ export const FX = {
         this.scanlines.className = 'fx-scanlines';
         document.body.appendChild(this.scanlines);
 
+        this._loop = createThrottledLoop(() => this._frame(), {
+            isEnabled: () => this.enabled,
+            minInterval: 33.3, // ~30fps
+        });
+
         this.onResize();
         window.addEventListener('resize', () => this.onResize());
         window.addEventListener('mousemove', (e) => {
@@ -43,14 +46,14 @@ export const FX = {
         // Seed background particles
         for (let i = 0; i < 140; i++) this.particles.push(this.makeParticle());
 
-        if (this.enabled) this.loop();
+        if (this.enabled) this._loop.start();
         else this.clear();
     },
 
     setEnabled(v) {
         this.enabled = !!v;
         saveBool('fxEnabled', this.enabled);
-        if (this.enabled) this.loop();
+        if (this.enabled) this._loop.start();
         else this.clear();
     },
 
@@ -59,10 +62,7 @@ export const FX = {
     },
 
     onResize() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        this.canvas.width = Math.floor(window.innerWidth * dpr);
-        this.canvas.height = Math.floor(window.innerHeight * dpr);
-        this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        resizeCanvasDPR(this.canvas, this.ctx);
     },
 
     makeParticle(x = Math.random() * window.innerWidth, y = Math.random() * window.innerHeight) {
@@ -158,20 +158,14 @@ export const FX = {
         ctx.restore();
     },
 
-    loop() {
-        cancelAnimationFrame(this.raf);
-        if (!this.enabled) return;
-        if (isPageHidden()) { this.raf = requestAnimationFrame(() => this.loop()); return; }  // skip frame when hidden
-        const now = performance.now();
-        if (now - _lastFrame < 33.3) { this.raf = requestAnimationFrame(() => this.loop()); return; }  // ~30fps
-        _lastFrame = now;
+    /** Per-frame work — called by the throttled loop */
+    _frame() {
         this.step();
         this.draw();
-        this.raf = requestAnimationFrame(() => this.loop());
     },
 
     clear() {
-        cancelAnimationFrame(this.raf);
+        this._loop.stop();
         if (this.ctx) this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (this.scanlines) this.scanlines.style.display = 'none';
     },

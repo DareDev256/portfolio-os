@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.55.1
+version: 3.55.2
 last_updated: 2026-03-30
 
 ---
@@ -17,6 +17,11 @@ last_updated: 2026-03-30
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.55.2] — 2026-03-30
+
+### Changed
+- **Centralized throttled animation loop (dom-helpers.js)** — Extracted `createThrottledLoop()` factory into `dom-helpers.js`, replacing the identical 6-line loop boilerplate (cancelAnimationFrame → enabled check → page-visibility gate → frame-rate cap → work → recurse) duplicated across canvas modules. Accepts `isEnabled` callback and configurable `minInterval` for per-module frame rates. Also extracted `resizeCanvasDPR()` for the identical 4-line DPR-aware canvas resize pattern. Refactored `aurora.js` (~24fps) and `fx.js` (~30fps) to use both helpers, eliminating module-level `_lastFrame` state and reducing each module by ~10 lines while making the frame-skip logic a single source of truth.
 
 ## [3.55.1] — 2026-03-30
 

@@ -3,16 +3,14 @@
  * Lightweight animated gradient-noise aurora/fog on a canvas.
  */
 
-import { isPageHidden, loadBool, saveBool } from './dom-helpers.js';
-
-let _lastFrame = 0;
+import { loadBool, saveBool, resizeCanvasDPR, createThrottledLoop } from './dom-helpers.js';
 
 export const Aurora = {
     enabled: true,
     canvas: null,
     ctx: null,
     t: 0,
-    raf: 0,
+    _loop: null,
 
     init() {
         this.enabled = loadBool('auroraEnabled', true);
@@ -21,15 +19,21 @@ export const Aurora = {
         this.canvas.style.zIndex = 79; // behind FX particles
         this.ctx = this.canvas.getContext('2d');
         document.body.appendChild(this.canvas);
+
+        this._loop = createThrottledLoop(() => this._frame(), {
+            isEnabled: () => this.enabled,
+            minInterval: 41.6, // ~24fps
+        });
+
         this.onResize();
         window.addEventListener('resize', () => this.onResize());
-        if (this.enabled) this.loop();
+        if (this.enabled) this._loop.start();
     },
 
     setEnabled(v) {
         this.enabled = !!v;
         saveBool('auroraEnabled', this.enabled);
-        if (this.enabled) this.loop();
+        if (this.enabled) this._loop.start();
         else this.clear();
     },
     toggle() {
@@ -37,10 +41,7 @@ export const Aurora = {
     },
 
     onResize() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        this.canvas.width = Math.floor(window.innerWidth * dpr);
-        this.canvas.height = Math.floor(window.innerHeight * dpr);
-        this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        resizeCanvasDPR(this.canvas, this.ctx);
     },
 
     noise(x, y, t) {
@@ -85,13 +86,8 @@ export const Aurora = {
         ctx.fillRect(0, 0, w, h);
     },
 
-    loop() {
-        cancelAnimationFrame(this.raf);
-        if (!this.enabled) return;
-        if (isPageHidden()) { this.raf = requestAnimationFrame(() => this.loop()); return; }  // skip frame when hidden
-        const now = performance.now();
-        if (now - _lastFrame < 41.6) { this.raf = requestAnimationFrame(() => this.loop()); return; }  // ~24fps
-        _lastFrame = now;
+    /** Per-frame work — called by the throttled loop */
+    _frame() {
         // Trail: fade instead of clear for smoother motion
         this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.fillStyle = 'rgba(0,0,0,0.10)';
@@ -99,11 +95,10 @@ export const Aurora = {
         this.ctx.globalCompositeOperation = 'lighter';
         this.draw();
         this.t += 0.02;
-        this.raf = requestAnimationFrame(() => this.loop());
     },
 
     clear() {
-        cancelAnimationFrame(this.raf);
+        this._loop.stop();
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     },
 };

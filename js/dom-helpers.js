@@ -277,6 +277,54 @@ export function createRevealSystem({ selector, activeClass, threshold = 0.15, on
     };
 }
 
+/* ── Canvas & Animation Utilities ── */
+
+/**
+ * DPR-aware canvas resize. Replaces the identical 4-line pattern
+ * duplicated in aurora.js, fx.js, and other canvas modules.
+ * Caps DPR at 2 to avoid GPU over-draw on high-density displays.
+ * @param {HTMLCanvasElement} canvas
+ * @param {CanvasRenderingContext2D} ctx
+ */
+export function resizeCanvasDPR(canvas, ctx) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(window.innerWidth * dpr);
+    canvas.height = Math.floor(window.innerHeight * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+/**
+ * Create a throttled requestAnimationFrame loop with page-visibility gating.
+ * Replaces the identical loop() boilerplate duplicated in aurora.js and fx.js:
+ * cancel → enabled check → hidden check → frame-rate cap → work → recurse.
+ *
+ * @param {() => void} callback  - Frame work function
+ * @param {object} opts
+ * @param {() => boolean} opts.isEnabled - Return false to stop the loop
+ * @param {number} [opts.minInterval=33.3] - Minimum ms between frames (~30fps default)
+ * @returns {{ start(): void, stop(): void }} Loop controller
+ */
+export function createThrottledLoop(callback, { isEnabled, minInterval = 33.3 } = {}) {
+    let rafId = 0;
+    let lastFrame = 0;
+
+    function tick() {
+        rafId = 0;
+        if (isEnabled && !isEnabled()) return;
+        if (isPageHidden()) { rafId = requestAnimationFrame(tick); return; }
+        const now = performance.now();
+        if (now - lastFrame < minInterval) { rafId = requestAnimationFrame(tick); return; }
+        lastFrame = now;
+        callback();
+        rafId = requestAnimationFrame(tick);
+    }
+
+    return {
+        start() { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(tick); },
+        stop()  { cancelAnimationFrame(rafId); rafId = 0; },
+    };
+}
+
 export function animateCounter(element, target, duration = 1500) {
     let start = 0;
     const increment = target / (duration / 16);

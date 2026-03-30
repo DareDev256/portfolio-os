@@ -242,7 +242,7 @@ js/                                 # 55 ES modules, zero framework imports
 ├── router.js                       # History API deep-linkable routing
 ├── command-palette.js              # Cmd+K fuzzy-search launcher
 ├── data-loader.js                  # Centralized JSON fetcher with caching
-├── dom-helpers.js                  # Shared utilities (isPageHidden, prefersReducedMotion, isElementVisible, isInViewport, openExternal, animateCounter, loadJSON, saveJSON, downloadJSON, loadBool, saveBool, createRevealSystem)
+├── dom-helpers.js                  # Shared utilities (isPageHidden, prefersReducedMotion, isElementVisible, isInViewport, openExternal, animateCounter, loadJSON, saveJSON, downloadJSON, loadBool, saveBool, createRevealSystem, createThrottledLoop, resizeCanvasDPR)
 ├── sanitize.js                     # DOMPurify wrapper
 ├── notifications.js                # Toast notification queue system
 ├── shortcuts-overlay.js            # Press ? to show all keyboard shortcuts
