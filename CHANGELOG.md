@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.55.2
-last_updated: 2026-03-30
+version: 3.57.0
+last_updated: 2026-03-31
 
 ---
 
@@ -17,6 +17,11 @@ last_updated: 2026-03-30
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.57.0] — 2026-03-31
+
+### Added
+- **Phantom Reticle — HUD targeting cursor overlay (phantom-reticle.js + phantom-reticle.css)** — A persistent geometric reticle that follows the cursor with spring-physics elastic easing, creating an Iron Man targeting HUD feel. The reticle is a dashed gold ring with crosshair lines and a center dot that smoothly tracks mouse movement via configurable stiffness/damping constants. When the cursor approaches interactive elements (dock items, desktop icons, buttons, titlebar controls, context menu items), the reticle "locks on" — snapping to the element center, scaling proportionally to target size, and shifting from gold to amethyst with increased opacity and faster rotation. Clicks trigger an expanding pulse ring that radiates outward from the reticle. DOM-light (5 elements), GPU-composited with `will-change` and `mix-blend-mode: screen`, spring simulation runs at display refresh rate but skips frames when tab is hidden. Hides on mouse leave, invisible on touch devices (`hover: none` media query). Respects `prefers-reduced-motion`.
 
 ## [3.55.2] — 2026-03-30
 

@@ -28,6 +28,7 @@ import { Gauntlet } from './gauntlet.js';
 import { Whispers } from './whispers.js';
 import { SonarPulse } from './sonar-pulse.js';
 import { CatalystPulse } from './catalyst-pulse.js';
+import { PhantomReticle } from './phantom-reticle.js';
 
 /* ── Visual module registry ────────────────────────────────────────
  * Each entry drives: module.init(), module.setEnabled(), and a
@@ -134,6 +135,9 @@ async function init() {
 
     // Catalyst Pulse — ambient breathing energy field on lock screen
     if (!safeMode) CatalystPulse.init();
+
+    // Phantom Reticle — HUD targeting cursor overlay
+    if (!safeMode) PhantomReticle.init();
 
     // Direct-access routes skip boot/lock entirely (e.g. /services for prospects)
     const directAccessRoutes = ['/services'];
