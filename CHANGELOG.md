@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.57.1
+version: 3.57.2
 last_updated: 2026-03-31
 
 ---
@@ -15,6 +15,16 @@ last_updated: 2026-03-31
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.57.2] — 2026-03-31
+
+### Security
+- **Sanitize input length cap (sanitize.js)** — All sanitization functions (`html()`, `attr()`, `url()`) now enforce a 500KB `MAX_INPUT_LENGTH` ceiling via `clampLength()`. Prevents algorithmic-complexity attacks (CWE-400, CWE-1333) where adversarial mega-strings could stall DOMPurify or regex processing.
+- **Terminal prototype property leak (terminal.js)** — `cat` command now uses `Object.hasOwn()` instead of bracket-notation lookup on `fileSystem`, preventing access to inherited `Object.prototype` properties (`__proto__`, `constructor`, `toString`) via crafted filenames (CWE-1321).
+- **Terminal history cap (terminal.js)** — Command history capped at 100 entries to prevent unbounded memory growth in long sessions (CWE-770).
+- **URL length guard (dom-helpers.js)** — `openExternal()` rejects URLs exceeding 2048 characters before processing, blocking oversized payloads from reaching `window.open()` (CWE-400).
 
 ---
 

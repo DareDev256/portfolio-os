@@ -3,6 +3,19 @@
  * Provides XSS protection using DOMPurify
  */
 
+/**
+ * Maximum input length for sanitization functions.
+ * Inputs exceeding this are truncated before processing to prevent
+ * ReDoS and algorithmic-complexity attacks (CWE-400, CWE-1333).
+ * 500KB covers any legitimate portfolio content with wide margin.
+ */
+const MAX_INPUT_LENGTH = 500_000;
+
+/** @param {string} s @returns {string} */
+function clampLength(s) {
+    return (typeof s === 'string' && s.length > MAX_INPUT_LENGTH) ? s.slice(0, MAX_INPUT_LENGTH) : s;
+}
+
 export const Sanitize = {
     /**
      * Sanitize HTML string before inserting into DOM
@@ -16,7 +29,7 @@ export const Sanitize = {
             return this.text(dirty);
         }
 
-        return DOMPurify.sanitize(dirty, {
+        return DOMPurify.sanitize(clampLength(dirty), {
             ALLOWED_TAGS: [
                 'div', 'span', 'p', 'br', 'strong', 'em', 'u', 'a', 'img',
                 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
@@ -68,6 +81,7 @@ export const Sanitize = {
      */
     attr(value) {
         if (!value) return '';
+        value = clampLength(value);
 
         // Strip ASCII control chars that browsers ignore inside URIs
         // (tabs, newlines, null bytes) — prevents "java\tscript:" obfuscation
@@ -104,6 +118,7 @@ export const Sanitize = {
      */
     url(url) {
         if (!url || typeof url !== 'string') return '';
+        url = clampLength(url);
         // Strip control chars that hide protocol (tab, newline, null)
         // eslint-disable-next-line no-control-regex
         const stripped = url.replace(/[\x00-\x1f\x7f]/g, '').trim();

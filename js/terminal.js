@@ -8,6 +8,7 @@ import { Sanitize } from './sanitize.js';
 export const Terminal = {
     history: [],
     historyIndex: -1,
+    MAX_HISTORY: 100, // Prevent unbounded memory growth from long sessions
     fileSystem: {
         'resume.json': 'ACCESS_DENIED: Try "cat resume.txt" or contact for PDF.',
         'secrets.env': 'nice_try_buddy=true',
@@ -92,6 +93,10 @@ export const Terminal = {
     },
 
     async handleCommand(cmdRaw) {
+        // Cap history to prevent unbounded memory growth in long sessions (CWE-770)
+        if (this.history.length >= this.MAX_HISTORY) {
+            this.history.splice(0, this.history.length - this.MAX_HISTORY + 1);
+        }
         this.history.push(cmdRaw);
         this.historyIndex = -1;
 
@@ -131,7 +136,7 @@ export const Terminal = {
             case 'cat':
                 if (!args[0]) {
                     this.println('Usage: cat [filename]');
-                } else if (this.fileSystem[args[0]]) {
+                } else if (Object.hasOwn(this.fileSystem, args[0])) {
                     this.println(this.fileSystem[args[0]]);
                 } else {
                     this.println(`cat: ${Sanitize.text(args[0])}: No such file or directory`, 'term-error');

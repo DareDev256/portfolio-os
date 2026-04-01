@@ -154,6 +154,9 @@ export function downloadJSON(data, filename) {
  */
 export function openExternal(url) {
     if (!url || typeof url !== 'string') return;
+    // Cap URL length — legitimate URLs are well under 2KB; longer strings are
+    // either malformed or attack payloads (CWE-400)
+    if (url.length > 2048) return;
     // Strip control characters that could obfuscate the protocol
     // eslint-disable-next-line no-control-regex
     const cleaned = url.replace(/[\x00-\x1f\x7f]/g, '').trim();

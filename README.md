@@ -4,7 +4,7 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.57.1-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.57.2-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/453_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/60_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
@@ -98,7 +98,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 | **SYS_MONITOR** | Window | Live FPS graph, heap usage, DOM count, network info, uptime |
 | **TROPHIES.exe** | Window | Achievement system — 10 unlockable trophies for exploring the OS (explorer, speed demon, night owl, completionist...) |
 
-### Security (Hardened Across v3.1–v3.41.2)
+### Security (Hardened Across v3.1–v3.57.2)
 
 - All `innerHTML` routed through DOMPurify (SRI hash on CDN) — including window content, titlebar icons, taskbar icons, and start menu items
 - 10 HTTP security headers via Vercel (CSP, HSTS, X-Frame-Options, COOP, COEP, CORP, Permissions-Policy)
@@ -122,6 +122,10 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - GitHub API response shape validation — rejects malformed cache/API data before rendering
 - `rel="noopener noreferrer"` on all `target="_blank"` links — prevents tabnapping
 - Contact form input length limits (name 100, email 254, message 2000) — prevents mailto URI abuse
+- All `Sanitize.*()` inputs capped at 500KB (`MAX_INPUT_LENGTH`) — prevents ReDoS and algorithmic-complexity attacks on sanitization functions (CWE-400)
+- Terminal `cat` command uses `Object.hasOwn()` instead of bracket-notation — prevents prototype property leakage (CWE-1321)
+- `openExternal()` rejects URLs exceeding 2048 characters — caps input before `window.open()` processing
+- Terminal command history bounded at 100 entries — prevents unbounded memory growth in long sessions (CWE-770)
 
 ### Accessibility (WCAG)
 
