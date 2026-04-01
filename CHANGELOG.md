@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.57.0
+version: 3.57.1
 last_updated: 2026-03-31
 
 ---
@@ -15,6 +15,14 @@ last_updated: 2026-03-31
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.57.1] — 2026-03-31
+
+### Changed
+- **dom-helpers: centralize page-visibility subscriptions with `onVisibilityChange()`** — New pub/sub API piggybacks on the single shared `visibilitychange` listener instead of each module adding its own. Returns an unsubscribe function for proper cleanup in `destroy()` methods. Migrated Whispers, GalaxyBackground, and InteractionEngine to use it — eliminates 3 redundant DOM listeners.
+- **dom-helpers: fix orphaned JSDoc for `animateCounter()`** — Relocated the dangling docblock from above `el()` to directly above `animateCounter()` where it belongs, and added proper `@param`/`@returns` annotations.
 
 ---
 

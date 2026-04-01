@@ -4,7 +4,7 @@
  * creating a "data-in-the-air" Tony Stark's lab atmosphere.
  * Spawns behind windows (z-index 2), respects reduced motion.
  */
-import { isPageHidden, prefersReducedMotion } from './dom-helpers.js';
+import { isPageHidden, prefersReducedMotion, onVisibilityChange } from './dom-helpers.js';
 
 const MAX_WHISPERS = 6;
 const SPAWN_INTERVAL = 4000;
@@ -37,6 +37,7 @@ const FRAGMENTS = [
 let container = null;
 let spawnTimer = null;
 let activeCount = 0;
+let unsubVisibility = null;
 
 function randomBetween(min, max) {
     return min + Math.random() * (max - min);
@@ -107,18 +108,16 @@ export const Whispers = {
 
         spawnTimer = setInterval(spawnWhisper, SPAWN_INTERVAL);
 
-        // Pause when tab hidden
-        document.addEventListener('visibilitychange', () => {
-            if (isPageHidden()) {
-                clearInterval(spawnTimer);
-                spawnTimer = null;
-            } else if (!spawnTimer) {
-                spawnTimer = setInterval(spawnWhisper, SPAWN_INTERVAL);
-            }
-        });
+        // Pause when tab hidden — uses shared visibility listener
+        unsubVisibility = onVisibilityChange(
+            () => { clearInterval(spawnTimer); spawnTimer = null; },
+            () => { if (!spawnTimer) spawnTimer = setInterval(spawnWhisper, SPAWN_INTERVAL); },
+        );
     },
 
     destroy() {
+        unsubVisibility?.();
+        unsubVisibility = null;
         if (spawnTimer) clearInterval(spawnTimer);
         spawnTimer = null;
         container?.remove();

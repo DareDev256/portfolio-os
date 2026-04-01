@@ -5,7 +5,7 @@
  */
 
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
-import { prefersReducedMotion } from './dom-helpers.js';
+import { prefersReducedMotion, onVisibilityChange } from './dom-helpers.js';
 
 export class GalaxyBackground {
     constructor(container, options = {}) {
@@ -344,18 +344,14 @@ export class GalaxyBackground {
             }
         };
 
-        // Visibility change - pause when tab not visible
-        this.onVisibilityChange = () => {
-            if (document.hidden) {
-                this.stop();
-            } else {
-                this.start();
-            }
-        };
+        // Visibility change — uses shared listener, returns unsubscribe fn
+        this._unsubVisibility = onVisibilityChange(
+            () => this.stop(),
+            () => this.start(),
+        );
 
         window.addEventListener('mousemove', this.onMouseMove);
         window.addEventListener('resize', this.onResize);
-        document.addEventListener('visibilitychange', this.onVisibilityChange);
     }
 
     animate() {
@@ -428,7 +424,7 @@ export class GalaxyBackground {
 
         window.removeEventListener('mousemove', this.onMouseMove);
         window.removeEventListener('resize', this.onResize);
-        document.removeEventListener('visibilitychange', this.onVisibilityChange);
+        this._unsubVisibility?.();
 
         // Dispose Three.js resources
         if (this.nebulaMesh) {

@@ -3,6 +3,7 @@
  * Central coordination hub for all micro-interactions, cursor-reactive effects,
  * and easter eggs. Runs a single requestAnimationFrame loop for optimal performance.
  */
+import { onVisibilityChange } from '../dom-helpers.js';
 
 export const InteractionEngine = {
     // Core state
@@ -12,6 +13,7 @@ export const InteractionEngine = {
     _modulesLoaded: false,
     _initPromise: null,
     _boundLoop: null, // cached bound loop — avoids allocating a new function every frame
+    _unsubVisibility: null,
 
     // Performance tracking
     lastFrameTime: 0,
@@ -120,16 +122,12 @@ export const InteractionEngine = {
         if (!this._boundLoop) this._boundLoop = this.loop.bind(this);
         this._boundLoop(this.lastFrameTime);
 
-        // Pause when tab is hidden, resume when visible
-        if (!this._visibilityBound) {
-            this._visibilityBound = true;
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    this.stop();
-                } else {
-                    this.start();
-                }
-            });
+        // Pause when tab is hidden, resume when visible — shared listener
+        if (!this._unsubVisibility) {
+            this._unsubVisibility = onVisibilityChange(
+                () => this.stop(),
+                () => this.start(),
+            );
         }
 
         console.log('[InteractionEngine] Animation loop started');

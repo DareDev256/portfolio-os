@@ -4,12 +4,32 @@
  */
 import { Sanitize } from './sanitize.js';
 
-/* ── Page Visibility (single listener, replaces 4 duplicate listeners) ── */
+/* ── Page Visibility (single listener, replaces duplicate listeners) ── */
 let _pageHidden = document.hidden;
-document.addEventListener('visibilitychange', () => { _pageHidden = document.hidden; });
+/** @type {Set<(hidden: boolean) => void>} */
+const _visibilitySubs = new Set();
+
+document.addEventListener('visibilitychange', () => {
+    _pageHidden = document.hidden;
+    for (const cb of _visibilitySubs) cb(_pageHidden);
+});
 
 /** @returns {boolean} True when the tab is backgrounded */
 export function isPageHidden() { return _pageHidden; }
+
+/**
+ * Subscribe to page visibility changes with separate hide/show callbacks.
+ * Piggybacks on the single shared visibilitychange listener instead of
+ * adding redundant DOM listeners per module.
+ * @param {() => void} onHide  - Called when tab becomes hidden
+ * @param {() => void} onShow  - Called when tab becomes visible
+ * @returns {() => void} Unsubscribe function (call in destroy/cleanup)
+ */
+export function onVisibilityChange(onHide, onShow) {
+    const handler = (hidden) => { hidden ? onHide() : onShow(); };
+    _visibilitySubs.add(handler);
+    return () => { _visibilitySubs.delete(handler); };
+}
 
 /* ── Reduced Motion ── */
 const _REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
@@ -183,11 +203,6 @@ export function isInViewport(el) {
 }
 
 /**
- * Animate a number counter from 0 to target over a duration.
- * Previously duplicated identically in desktop.js and github.js.
- * Returns the interval ID so callers can cancel if needed.
- */
-/**
  * Create a DOM element with optional class and text content.
  * Replaces identical helpers duplicated in sticky-notes.js and pomodoro-timer.js.
  * @param {string} tag - HTML tag name
@@ -325,6 +340,14 @@ export function createThrottledLoop(callback, { isEnabled, minInterval = 33.3 } 
     };
 }
 
+/**
+ * Animate a number counter from 0 to target over a duration.
+ * Returns the interval ID so callers can cancel if needed.
+ * @param {HTMLElement} element - Element whose textContent is updated
+ * @param {number} target - Final counter value
+ * @param {number} [duration=1500] - Animation duration in ms
+ * @returns {number} Interval ID
+ */
 export function animateCounter(element, target, duration = 1500) {
     let start = 0;
     const increment = target / (duration / 16);
