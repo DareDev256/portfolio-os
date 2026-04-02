@@ -4,8 +4,8 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.57.3-00f0ff?style=flat-square&labelColor=0d0d0d)
-![Tests](https://img.shields.io/badge/453_tests-00e676?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.57.4-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Tests](https://img.shields.io/badge/486_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/60_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `60 modules` · `30 stylesheets` · `453 tests / 23 suites` · `21 desktop apps` · `0 dependencies`
+> `60 modules` · `30 stylesheets` · `486 tests / 25 suites` · `21 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
