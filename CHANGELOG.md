@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.57.3
-last_updated: 2026-04-01
+version: 3.58.0
+last_updated: 2026-04-02
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-04-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.58.0] — 2026-04-02
+
+### Added
+- **Glitch Text effect (glitch-text.js, glitch-text.css)** — Controlled chromatic aberration on window title hover. Amethyst and gold pseudo-element ghost layers animate via `clip-path` inset slicing and translate offsets in stepped keyframes, creating a brief digital corruption that resolves cleanly. MutationObserver auto-wires new windows and keeps `data-text` attributes synced during breadcrumb navigation. Pure CSS animation with minimal JS wiring. Respects `prefers-reduced-motion`.
 
 ---
 

@@ -1,0 +1,119 @@
+/* ============================================
+   GLITCH TEXT — Controlled Digital Corruption
+   Hover-triggered chromatic aberration + clip-path
+   slicing on window titles. A$AP Rocky 'Testing'
+   meets Stark Industries diagnostics.
+   ============================================ */
+
+/* ── Base setup ─────────────────────────────────
+   The real text stays put. ::before and ::after
+   clone it via data-text for the glitch layers.  */
+
+.glitch-text {
+    position: relative;
+    display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease-out;
+}
+
+/* Amethyst channel — shifts left */
+.glitch-text::before {
+    color: var(--amethyst, #8b5cf6);
+    z-index: 1;
+}
+
+/* Gold channel — shifts right */
+.glitch-text::after {
+    color: var(--gold, #d4af37);
+    z-index: 2;
+}
+
+/* ── Hover activation ───────────────────────────
+   Glitch fires on titlebar hover, not the text
+   itself — wider hit area, feels more natural.   */
+
+.window-titlebar:hover .glitch-text::before,
+.window-titlebar:hover .glitch-text::after {
+    opacity: 0.7;
+    animation-play-state: running;
+}
+
+.window-titlebar:hover .glitch-text::before {
+    animation: glitch-shift-left 0.4s steps(2, jump-none) 1;
+}
+
+.window-titlebar:hover .glitch-text::after {
+    animation: glitch-shift-right 0.4s steps(3, jump-none) 1;
+}
+
+/* ── Keyframes — clip-path slicing + translate ── */
+
+@keyframes glitch-shift-left {
+    0% {
+        clip-path: inset(0 0 65% 0);
+        transform: translate(-2px, 0);
+        opacity: 0.7;
+    }
+    25% {
+        clip-path: inset(40% 0 20% 0);
+        transform: translate(1px, 0);
+        opacity: 0.5;
+    }
+    50% {
+        clip-path: inset(70% 0 0 0);
+        transform: translate(-1px, 0);
+        opacity: 0.8;
+    }
+    75% {
+        clip-path: inset(10% 0 50% 0);
+        transform: translate(2px, 0);
+        opacity: 0.4;
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+        transform: translate(0, 0);
+        opacity: 0;
+    }
+}
+
+@keyframes glitch-shift-right {
+    0% {
+        clip-path: inset(60% 0 0 0);
+        transform: translate(2px, 0);
+        opacity: 0.6;
+    }
+    33% {
+        clip-path: inset(0 0 40% 0);
+        transform: translate(-2px, 0);
+        opacity: 0.8;
+    }
+    66% {
+        clip-path: inset(25% 0 35% 0);
+        transform: translate(1px, 0);
+        opacity: 0.5;
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+        transform: translate(0, 0);
+        opacity: 0;
+    }
+}
+
+/* ── Reduced motion — kill animation, keep static ── */
+
+@media (prefers-reduced-motion: reduce) {
+    .glitch-text::before,
+    .glitch-text::after {
+        animation: none !important;
+        opacity: 0 !important;
+    }
+}
