@@ -312,6 +312,65 @@ export function resizeCanvasDPR(canvas, ctx) {
 }
 
 /**
+ * Bootstrap a canvas-based visual effect module with the shared lifecycle:
+ * canvas creation → loadBool toggle state → throttled loop → DPR resize.
+ *
+ * Eliminates the identical init / setEnabled / toggle / clear boilerplate
+ * duplicated across Aurora, FX, and any future full-screen canvas effect.
+ * The module only needs to define `_frame()` for its per-frame work.
+ *
+ * @param {object} mod - Target module object (mutated in place)
+ * @param {string} storageKey - localStorage key for the enabled toggle
+ * @param {object} [opts]
+ * @param {boolean} [opts.defaultEnabled=true] - Initial state when no saved pref
+ * @param {number}  [opts.minInterval=33.3]    - Min ms between frames (~30fps)
+ * @param {string}  [opts.canvasClass='fx-canvas'] - CSS class for the canvas
+ * @param {number}  [opts.zIndex]              - Optional z-index override
+ * @param {object}  [opts.contextOptions]      - getContext options (e.g. { alpha: true })
+ */
+export function bootstrapCanvasEffect(mod, storageKey, {
+    defaultEnabled = true,
+    minInterval = 33.3,
+    canvasClass = 'fx-canvas',
+    zIndex,
+    contextOptions,
+} = {}) {
+    mod.enabled = loadBool(storageKey, defaultEnabled);
+
+    mod.canvas = document.createElement('canvas');
+    mod.canvas.className = canvasClass;
+    if (zIndex != null) mod.canvas.style.zIndex = String(zIndex);
+    mod.ctx = mod.canvas.getContext('2d', contextOptions);
+    document.body.appendChild(mod.canvas);
+
+    mod._loop = createThrottledLoop(() => mod._frame(), {
+        isEnabled: () => mod.enabled,
+        minInterval,
+    });
+
+    resizeCanvasDPR(mod.canvas, mod.ctx);
+    window.addEventListener('resize', () => resizeCanvasDPR(mod.canvas, mod.ctx));
+
+    if (mod.enabled) mod._loop.start();
+}
+
+/**
+ * Shared setEnabled / toggle / clear for canvas effect modules.
+ * Pairs with {@link bootstrapCanvasEffect} — call `setEnabled` on any
+ * module that was bootstrapped, and it handles persist + loop lifecycle.
+ *
+ * @param {object} mod - The bootstrapped module
+ * @param {string} storageKey - Same key passed to bootstrapCanvasEffect
+ * @param {boolean} v - New enabled state
+ */
+export function setCanvasEffectEnabled(mod, storageKey, v) {
+    mod.enabled = !!v;
+    saveBool(storageKey, mod.enabled);
+    if (mod.enabled) mod._loop.start();
+    else mod.clear();
+}
+
+/**
  * Create a throttled requestAnimationFrame loop with page-visibility gating.
  * Replaces the identical loop() boilerplate duplicated in aurora.js and fx.js:
  * cancel → enabled check → hidden check → frame-rate cap → work → recurse.

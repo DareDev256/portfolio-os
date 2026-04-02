@@ -3,45 +3,26 @@
  * Lightweight animated gradient-noise aurora/fog on a canvas.
  */
 
-import { loadBool, saveBool, resizeCanvasDPR, createThrottledLoop } from './dom-helpers.js';
+import { bootstrapCanvasEffect, setCanvasEffectEnabled } from './dom-helpers.js';
+
+const STORAGE_KEY = 'auroraEnabled';
 
 export const Aurora = {
-    enabled: true,
-    canvas: null,
-    ctx: null,
     t: 0,
-    _loop: null,
 
     init() {
-        this.enabled = loadBool('auroraEnabled', true);
-        this.canvas = document.createElement('canvas');
-        this.canvas.className = 'fx-canvas';
-        this.canvas.style.zIndex = 79; // behind FX particles
-        this.ctx = this.canvas.getContext('2d');
-        document.body.appendChild(this.canvas);
-
-        this._loop = createThrottledLoop(() => this._frame(), {
-            isEnabled: () => this.enabled,
+        bootstrapCanvasEffect(this, STORAGE_KEY, {
+            defaultEnabled: true,
             minInterval: 41.6, // ~24fps
+            zIndex: 79,       // behind FX particles
         });
-
-        this.onResize();
-        window.addEventListener('resize', () => this.onResize());
-        if (this.enabled) this._loop.start();
     },
 
     setEnabled(v) {
-        this.enabled = !!v;
-        saveBool('auroraEnabled', this.enabled);
-        if (this.enabled) this._loop.start();
-        else this.clear();
+        setCanvasEffectEnabled(this, STORAGE_KEY, v);
     },
     toggle() {
         this.setEnabled(!this.enabled);
-    },
-
-    onResize() {
-        resizeCanvasDPR(this.canvas, this.ctx);
     },
 
     noise(x, y, t) {

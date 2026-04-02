@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.57.2
-last_updated: 2026-03-31
+version: 3.57.3
+last_updated: 2026-04-01
 
 ---
 
@@ -15,6 +15,15 @@ last_updated: 2026-03-31
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.57.3] — 2026-04-01
+
+### Changed
+- **Canvas effect lifecycle factory (dom-helpers.js)** — New `bootstrapCanvasEffect()` and `setCanvasEffectEnabled()` utilities centralize the identical init/toggle/resize boilerplate shared across canvas-based visual effect modules. Eliminates duplicated canvas creation, DPR resize wiring, throttled loop setup, and localStorage toggle persistence.
+- **Aurora refactored (aurora.js)** — Replaced ~20 lines of manual canvas lifecycle with `bootstrapCanvasEffect()` call, keeping only the unique noise/draw logic.
+- **FX refactored (fx.js)** — Replaced ~20 lines of manual canvas lifecycle with `bootstrapCanvasEffect()` call, keeping only particle simulation and rendering logic.
 
 ---
 

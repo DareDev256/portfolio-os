@@ -5,38 +5,28 @@
  * - Optional scanline overlay
  */
 
-import { loadBool, saveBool, resizeCanvasDPR, createThrottledLoop } from './dom-helpers.js';
+import { bootstrapCanvasEffect, setCanvasEffectEnabled } from './dom-helpers.js';
+
+const STORAGE_KEY = 'fxEnabled';
 
 export const FX = {
-    enabled: true,
-    canvas: null,
-    ctx: null,
     scanlines: null,
     particles: [],
     mouse: { x: 0, y: 0, active: false },
-    _loop: null,
     suction: null,
 
     init() {
-        this.enabled = loadBool('fxEnabled', false);
-        // Canvas
-        this.canvas = document.createElement('canvas');
-        this.canvas.className = 'fx-canvas';
-        this.ctx = this.canvas.getContext('2d', { alpha: true });
-        document.body.appendChild(this.canvas);
+        bootstrapCanvasEffect(this, STORAGE_KEY, {
+            defaultEnabled: false,
+            minInterval: 33.3, // ~30fps
+            contextOptions: { alpha: true },
+        });
 
         // Scanlines overlay
         this.scanlines = document.createElement('div');
         this.scanlines.className = 'fx-scanlines';
         document.body.appendChild(this.scanlines);
 
-        this._loop = createThrottledLoop(() => this._frame(), {
-            isEnabled: () => this.enabled,
-            minInterval: 33.3, // ~30fps
-        });
-
-        this.onResize();
-        window.addEventListener('resize', () => this.onResize());
         window.addEventListener('mousemove', (e) => {
             this.mouse = { x: e.clientX, y: e.clientY, active: true };
             this.spawnComet(e.clientX, e.clientY);
@@ -46,23 +36,15 @@ export const FX = {
         // Seed background particles
         for (let i = 0; i < 140; i++) this.particles.push(this.makeParticle());
 
-        if (this.enabled) this._loop.start();
-        else this.clear();
+        if (!this.enabled) this.clear();
     },
 
     setEnabled(v) {
-        this.enabled = !!v;
-        saveBool('fxEnabled', this.enabled);
-        if (this.enabled) this._loop.start();
-        else this.clear();
+        setCanvasEffectEnabled(this, STORAGE_KEY, v);
     },
 
     toggle() {
         this.setEnabled(!this.enabled);
-    },
-
-    onResize() {
-        resizeCanvasDPR(this.canvas, this.ctx);
     },
 
     makeParticle(x = Math.random() * window.innerWidth, y = Math.random() * window.innerHeight) {
