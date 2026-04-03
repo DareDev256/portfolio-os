@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.58.0
+version: 3.58.1
 last_updated: 2026-04-02
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-04-02
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.58.1] — 2026-04-02
+
+### Fixed
+- **Glitch Text hover residue (glitch-text.css)** — Chromatic aberration pseudo-elements snapped back to `opacity: 0.7` after the 0.4s animation completed on sustained hovers, leaving persistent amethyst/gold ghost layers over the title text. Added `forwards` fill mode so the animation's final keyframe (`opacity: 0`) holds, giving a clean glitch-and-vanish on every hover.
 
 ---
 

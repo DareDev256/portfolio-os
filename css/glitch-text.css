@@ -48,11 +48,11 @@
 }
 
 .window-titlebar:hover .glitch-text::before {
-    animation: glitch-shift-left 0.4s steps(2, jump-none) 1;
+    animation: glitch-shift-left 0.4s steps(2, jump-none) 1 forwards;
 }
 
 .window-titlebar:hover .glitch-text::after {
-    animation: glitch-shift-right 0.4s steps(3, jump-none) 1;
+    animation: glitch-shift-right 0.4s steps(3, jump-none) 1 forwards;
 }
 
 /* ── Keyframes — clip-path slicing + translate ── */
