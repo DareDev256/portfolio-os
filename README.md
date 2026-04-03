@@ -4,9 +4,9 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.58.2-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.59.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/475_tests-00e676?style=flat-square&labelColor=0d0d0d)
-![Modules](https://img.shields.io/badge/60_modules-b388ff?style=flat-square&labelColor=0d0d0d)
+![Modules](https://img.shields.io/badge/61_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
 **[▸ ENTER THE LIVE DEMO](https://jamesdare.com)**
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `60 modules` · `30 stylesheets` · `475 tests / 25 suites` · `21 desktop apps` · `0 dependencies`
+> `61 modules` · `31 stylesheets` · `475 tests / 25 suites` · `21 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -68,6 +68,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Unveiling Gauntlet** — The About Me window is a cinematic multi-stage scroll experience. Three full-height stages (Identity, Mission, Arsenal) reveal progressively with CSS perspective-based depth transforms (`translateZ`), staggered child animations, gold divider sweeps with spring easing, and an SVG "auric signature" monogram that draws itself via `stroke-dashoffset` as each stage enters view. Built on a dedicated `Gauntlet` IntersectionObserver module that auto-wires new windows via MutationObserver.
 - **System Whispers** — Ambient floating HUD data fragments that drift across the desktop at low opacity. Monospace text snippets (cipher hashes, neural-link telemetry, system diagnostics) spawn at random positions and float upward in gold/cyan, creating a "data-in-the-air" holographic lab atmosphere. Max 6 concurrent, auto-pauses when tab hidden. Respects `prefers-reduced-motion`.
 - **Glitch Text** — Hover over any window title and watch controlled chromatic aberration fire: amethyst and gold ghost layers slice through the text via `clip-path` insets, shifting left/right in stepped keyframes before resolving cleanly. MutationObserver auto-wires new windows, keeps `data-text` synced on breadcrumb navigation. Pure CSS animation, JS only for attribute wiring. Respects `prefers-reduced-motion`.
+- **Spectral Echo** — Window materialization burst. When a window opens, a gold border outline expands outward from the window bounds with amethyst corner crosshairs and a scanning light band, then fades — like a holographic interface powering up in Stark's lab. Complements the glitch-close animation symmetrically (open = energy burst, close = glitch disintegration). MutationObserver auto-wires to all windows. One-shot CSS animation, single disposable div, zero JS overhead after spawn. Respects `prefers-reduced-motion`.
 - **Phantom Reticle** — A spring-physics HUD targeting reticle that follows the cursor with elastic easing. A dashed gold ring with crosshairs smoothly tracks movement, then "locks on" to interactive elements (dock items, icons, buttons) by snapping to their center, scaling proportionally, and shifting from gold to amethyst. Clicks trigger an expanding pulse ring. DOM-light (5 elements), GPU-composited with `mix-blend-mode: screen`. Respects `prefers-reduced-motion`.
 - **Cursor Trails** — Particle effects with PlayStation/chakra symbols. Lazy-initialized, throttled to 30fps.
 - **Toast Notifications** — Non-blocking notification queue with success/error/warning/info types, auto-dismiss progress bar, hover-to-pause, and `aria-live` screen reader support.

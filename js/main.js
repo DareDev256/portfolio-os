@@ -30,6 +30,7 @@ import { SonarPulse } from './sonar-pulse.js';
 import { CatalystPulse } from './catalyst-pulse.js';
 import { PhantomReticle } from './phantom-reticle.js';
 import { GlitchText } from './glitch-text.js';
+import { SpectralEcho } from './spectral-echo.js';
 
 /* ── Visual module registry ────────────────────────────────────────
  * Each entry drives: module.init(), module.setEnabled(), and a
@@ -142,6 +143,9 @@ async function init() {
 
     // Glitch Text — chromatic aberration on window title hover
     if (!safeMode) GlitchText.init();
+
+    // Spectral Echo — materialization burst on window open
+    if (!safeMode) SpectralEcho.init();
 
     // Direct-access routes skip boot/lock entirely (e.g. /services for prospects)
     const directAccessRoutes = ['/services'];

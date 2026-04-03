@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.58.2
-last_updated: 2026-04-02
+version: 3.59.0
+last_updated: 2026-04-03
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-04-02
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.59.0] — 2026-04-03
+
+### Added
+- **Spectral Echo** (`spectral-echo.js`, `spectral-echo.css`) — Window materialization burst effect. When any window opens and becomes visible, a gold/amethyst border outline expands outward from the window bounds and fades, like a holographic interface powering up. Features amethyst corner crosshairs and a vertical scan line that sweeps through the echo. One-shot CSS animation with auto-disposal. MutationObserver-driven, desktop-only, respects `prefers-reduced-motion`.
 
 ---
 

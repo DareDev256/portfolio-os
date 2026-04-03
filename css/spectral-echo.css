@@ -1,0 +1,94 @@
+/* ============================================
+   SPECTRAL ECHO — Window Materialization Burst
+   A gold/amethyst border outline expands from
+   the window bounds on open, like a holographic
+   interface powering up. One-shot animation,
+   auto-disposed after completion.
+   ============================================ */
+
+.spectral-echo {
+    position: fixed;
+    pointer-events: none;
+    z-index: 50;
+    border-radius: var(--glass-radius, 12px);
+    border: 1.5px solid var(--gold, #d4af37);
+    box-shadow:
+        0 0 12px rgba(212, 175, 55, 0.3),
+        0 0 24px rgba(139, 92, 246, 0.15),
+        inset 0 0 8px rgba(212, 175, 55, 0.1);
+    animation: spectral-burst var(--duration-dramatic, 600ms) var(--ease-decel, ease-out) forwards;
+    will-change: transform, opacity;
+}
+
+/* Inner scan line — sweeps top to bottom during burst */
+.spectral-echo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(212, 175, 55, 0.08) 48%,
+        rgba(139, 92, 246, 0.12) 50%,
+        transparent 52%
+    );
+    background-size: 100% 400%;
+    animation: spectral-scan var(--duration-dramatic, 600ms) var(--ease-decel, ease-out) forwards;
+}
+
+/* Corner accent flashes — brief crosshair markers */
+.spectral-echo::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background:
+        /* Top-left */
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 0 / 16px 1.5px no-repeat,
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 0 / 1.5px 16px no-repeat,
+        /* Top-right */
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 0 / 16px 1.5px no-repeat,
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 0 / 1.5px 16px no-repeat,
+        /* Bottom-left */
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 100% / 16px 1.5px no-repeat,
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 100% / 1.5px 16px no-repeat,
+        /* Bottom-right */
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 100% / 16px 1.5px no-repeat,
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 100% / 1.5px 16px no-repeat;
+    opacity: 0;
+    animation: spectral-corners var(--duration-dramatic, 600ms) var(--ease-decel, ease-out) forwards;
+}
+
+@keyframes spectral-burst {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+        border-color: var(--gold, #d4af37);
+    }
+    40% {
+        opacity: 0.5;
+        border-color: var(--amethyst, #8b5cf6);
+    }
+    100% {
+        transform: scale(1.06);
+        opacity: 0;
+        border-color: var(--amethyst, #8b5cf6);
+    }
+}
+
+@keyframes spectral-scan {
+    0%   { background-position: 0 -100%; }
+    100% { background-position: 0 200%; }
+}
+
+@keyframes spectral-corners {
+    0%   { opacity: 0; }
+    20%  { opacity: 0.8; }
+    100% { opacity: 0; }
+}
+
+/* Reduced motion — skip entirely */
+@media (prefers-reduced-motion: reduce) {
+    .spectral-echo { animation: none; opacity: 0; }
+}
