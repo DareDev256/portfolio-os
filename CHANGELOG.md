@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.58.1
+version: 3.58.2
 last_updated: 2026-04-02
 
 ---
@@ -17,6 +17,12 @@ last_updated: 2026-04-02
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.58.2] — 2026-04-02
+
+### Added
+- **Glitch Text test suite (glitch-text.test.js)** — 10 tests covering `wireTitle` idempotency, `wireAll` subtree scanning, `syncText` data-text synchronization, special character handling, and empty state edge cases. Targets the chromatic aberration feature added in v3.58.0.
+- **Phantom Reticle test suite (phantom-reticle.test.js)** — 12 tests covering spring physics convergence, velocity dampening, overshoot bounds, lock-on scale calculations for various target sizes, DOM lifecycle (create/destroy/hidden state), and negative coordinate handling.
 
 ## [3.58.1] — 2026-04-02
 
