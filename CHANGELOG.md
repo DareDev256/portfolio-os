@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.59.1
-last_updated: 2026-04-03
+version: 3.59.2
+last_updated: 2026-04-04
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-04-03
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.59.2] — 2026-04-04
+
+### Security
+- **desktop.js** — Hardened three innerHTML rendering paths (desktop icons, dock icons, properties window) that interpolated `item.color`, `item.label`, `item.icon`, and `item.id` without sanitization. Applied `Sanitize.hexColor()` for colors, `Sanitize.text()` for labels/IDs, and `Sanitize.url()` for SVG icon paths. Closes defense-in-depth gap — admin panel already persists custom desktop items to localStorage, and any future code connecting that data to desktop rendering would have been immediate stored XSS without this fix.
 
 ---
 

@@ -128,6 +128,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - Terminal `cat` command uses `Object.hasOwn()` instead of bracket-notation — prevents prototype property leakage (CWE-1321)
 - `openExternal()` rejects URLs exceeding 2048 characters — caps input before `window.open()` processing
 - Terminal command history bounded at 100 entries — prevents unbounded memory growth in long sessions (CWE-770)
+- Desktop icon, dock icon, and properties window rendering sanitized at point-of-use — `Sanitize.hexColor()` for colors, `Sanitize.text()` for labels/IDs, `Sanitize.url()` for SVG icon paths (defense-in-depth against stored XSS via localStorage-backed desktop items)
 
 ### Accessibility (WCAG)
 

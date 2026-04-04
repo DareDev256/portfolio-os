@@ -444,11 +444,11 @@ export const Desktop = {
                 // Set dock index for staggered animations
                 btn.style.setProperty('--dock-index', index);
 
-                // Use emoji or SVG icon
+                // Use emoji or SVG icon — sanitize for defense-in-depth
                 const isSvgIcon = item.icon.startsWith('svg:');
                 btn.innerHTML = isSvgIcon
-                    ? `<img src="${item.icon.replace('svg:', '')}" alt="${item.label}" class="dock-icon-svg" />`
-                    : `<span class="dock-icon-emoji">${item.icon}</span>`;
+                    ? `<img src="${Sanitize.url(item.icon.replace('svg:', ''))}" alt="${Sanitize.text(item.label)}" class="dock-icon-svg" />`
+                    : `<span class="dock-icon-emoji">${Sanitize.text(item.icon)}</span>`;
 
                 // Add click handler
                 btn.onclick = (e) => {
@@ -553,18 +553,23 @@ export const Desktop = {
             }
 
             // Check if icon is SVG path or emoji
+            // Sanitize all interpolated values — defense-in-depth even for static data.
+            // Admin panel already saves custom desktop items to localStorage;
+            // if this code ever reads from that source, unsanitized innerHTML = stored XSS.
             const isSvgIcon = item.icon.startsWith('svg:');
+            const safeColor = Sanitize.hexColor(item.color, '#00f0ff');
+            const safeLabel = Sanitize.text(item.label);
             const iconContent = isSvgIcon
-                ? `<img src="${item.icon.replace('svg:', '')}" alt="${item.label}" class="desktop-icon-svg" />`
-                : `<span class="desktop-icon-emoji">${item.icon}</span>`;
+                ? `<img src="${Sanitize.url(item.icon.replace('svg:', ''))}" alt="${safeLabel}" class="desktop-icon-svg" />`
+                : `<span class="desktop-icon-emoji">${Sanitize.text(item.icon)}</span>`;
 
             icon.innerHTML = `
-                <div class="desktop-icon-box hud-scannable" style="border-color: ${item.color}40; box-shadow: 0 0 20px ${item.color}20;">
+                <div class="desktop-icon-box hud-scannable" style="border-color: ${safeColor}40; box-shadow: 0 0 20px ${safeColor}20;">
                     ${iconContent}
                     <div class="hud-scan-ring"></div>
                     <div class="hud-scan-ring"></div>
                 </div>
-                <span class="desktop-icon-label" style="color: ${item.color};">${item.label}</span>
+                <span class="desktop-icon-label" style="color: ${safeColor};">${safeLabel}</span>
             `;
 
             // Initialize Drag
@@ -765,20 +770,26 @@ export const Desktop = {
      */
     showIconProperties(item) {
         const content = document.createElement('div');
+        // Sanitize all interpolated values — this innerHTML previously had zero sanitization,
+        // making it the single weakest rendering path in the entire codebase.
+        const sc = Sanitize.hexColor(item.color, '#00f0ff');
+        const sl = Sanitize.text(item.label);
+        const si = Sanitize.text(item.id);
+        const sIcon = Sanitize.text(item.icon);
         content.innerHTML = `
-            <div class="window-section-header" style="color: ${item.color};">
-                ${item.icon} ${item.label}
+            <div class="window-section-header" style="color: ${sc};">
+                ${sIcon} ${sl}
             </div>
             <div style="line-height: 2; font-size: 12px; margin-top: 20px;">
-                <div><span style="color: ${item.color};">ID:</span> ${item.id}</div>
-                <div><span style="color: ${item.color};">Type:</span> Application</div>
-                <div><span style="color: ${item.color};">Color:</span> ${item.color}</div>
+                <div><span style="color: ${sc};">ID:</span> ${si}</div>
+                <div><span style="color: ${sc};">Type:</span> Application</div>
+                <div><span style="color: ${sc};">Color:</span> ${sc}</div>
             </div>
         `;
 
         WindowManager.create({
             id: `properties-${item.id}`,
-            title: `${item.label} Properties`,
+            title: `${sl} Properties`,
             icon: item.icon,
             content,
             width: 400,
