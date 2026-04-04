@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.59.2
+version: 3.60.0
 last_updated: 2026-04-04
 
 ---
@@ -15,6 +15,15 @@ last_updated: 2026-04-04
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.60.0] — 2026-04-04
+
+### Added
+- **Cipher Decode** — Holographic code materialization effect for code-viewer panels. When `.cv-panel` elements scroll into view, syntax-highlighted tokens scramble through hex/glyph noise before resolving left-to-right in a wavefront pattern. A gold scan line sweeps across the code block during decode, and resolved characters flash gold before settling to their syntax color. IntersectionObserver-triggered with MutationObserver for dynamically added panels. Desktop-only, respects `prefers-reduced-motion`.
+  - New files: `js/cipher-decode.js`, `css/cipher-decode.css`
+  - Wired into `main.js` init sequence (safe-mode guarded)
 
 ---
 
