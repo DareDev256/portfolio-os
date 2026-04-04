@@ -3,6 +3,7 @@
  * Makes UI elements respond to cursor proximity and position
  * Windows tilt, buttons glow, icons wake up - everything feels aware
  */
+import { hexAlpha } from '../dom-helpers.js';
 
 export const CursorReactive = {
     registeredElements: new Map(),
@@ -233,8 +234,8 @@ export const CursorReactive = {
         // Create radial gradient glow effect
         const glowOpacity = 0.3 * this.intensityMultiplier;
         element.style.boxShadow = `
-            0 0 30px ${color}${Math.floor(glowOpacity * 255).toString(16).padStart(2, '0')},
-            inset 0 0 30px ${color}${Math.floor(glowOpacity * 0.3 * 255).toString(16).padStart(2, '0')}
+            0 0 30px ${color}${hexAlpha(glowOpacity)},
+            inset 0 0 30px ${color}${hexAlpha(glowOpacity * 0.3)}
         `;
     },
 
@@ -254,8 +255,8 @@ export const CursorReactive = {
 
         element.style.transition = 'box-shadow var(--transition-fast)';
         element.style.boxShadow = `
-            0 0 ${blur}px ${color}${Math.floor(proximity * 0.6 * 255).toString(16).padStart(2, '0')},
-            0 0 ${blur * 1.5}px ${color}${Math.floor(proximity * 0.3 * 255).toString(16).padStart(2, '0')}
+            0 0 ${blur}px ${color}${hexAlpha(proximity * 0.6)},
+            0 0 ${blur * 1.5}px ${color}${hexAlpha(proximity * 0.3)}
         `;
     },
 
@@ -293,7 +294,7 @@ export const CursorReactive = {
         element.style.transition = 'transform var(--transition-medium), box-shadow var(--transition-medium)';
         element.style.transform = `scale(${scale}) rotate(${wobble}deg)`;
         element.style.boxShadow = `
-            0 0 ${proximity * 20}px ${color}${Math.floor(proximity * 0.5 * 255).toString(16).padStart(2, '0')}
+            0 0 ${proximity * 20}px ${color}${hexAlpha(proximity * 0.5)}
         `;
     },
 

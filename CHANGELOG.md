@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.59.0
+version: 3.59.1
 last_updated: 2026-04-03
 
 ---
@@ -15,6 +15,15 @@ last_updated: 2026-04-03
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.59.1] — 2026-04-03
+
+### Changed
+- **dom-helpers** — Added `hexAlpha()` utility for opacity-to-hex conversion, eliminating 5 duplicated `Math.floor(v * 255).toString(16).padStart(2, '0')` expressions across cursor-reactive effects. Added `transitionWindow()` with declarative preset configs (`materialize`, `dematerialize`, `minimize`) that parameterize the identical structure previously copy-pasted across three separate functions.
+- **micro-interactions** — Refactored `materializeWindow()`, `dematerializeWindow()`, and `minimizeWindow()` to delegate to the shared `transitionWindow()` preset system. Same behavior, single source of truth.
+- **cursor-reactive** — Replaced inline hex-alpha arithmetic with `hexAlpha()` calls in `applyAmbientGlow()`, `applyProximityGlow()`, and `applyWakeEffect()`.
 
 ---
 

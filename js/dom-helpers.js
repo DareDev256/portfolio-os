@@ -295,6 +295,86 @@ export function createRevealSystem({ selector, activeClass, threshold = 0.15, on
     };
 }
 
+/* ── Color Utilities ── */
+
+/**
+ * Convert a 0–1 opacity float to a 2-digit hex string for CSS color suffixes.
+ * Replaces the duplicated `Math.floor(v * 255).toString(16).padStart(2, '0')`
+ * expression scattered across cursor-reactive effects.
+ * @param {number} opacity - Value between 0 and 1
+ * @returns {string} Two-character hex string (e.g. '4d', 'ff')
+ */
+export function hexAlpha(opacity) {
+    return Math.floor(Math.max(0, Math.min(1, opacity)) * 255)
+        .toString(16)
+        .padStart(2, '0');
+}
+
+/* ── Window Transition Presets ── */
+
+/**
+ * Preset configurations for window transition animations.
+ * Each preset defines initial styles, target styles, transition timing,
+ * and callback delay — parameterizing the identical structure previously
+ * duplicated across materializeWindow, dematerializeWindow, minimizeWindow.
+ * @type {Record<string, object>}
+ */
+const WINDOW_PRESETS = {
+    materialize: {
+        initial: { opacity: '0', transform: 'scale(0.8)', filter: 'blur(10px)' },
+        target:  { opacity: '1', transform: 'scale(1)',   filter: 'blur(0px)' },
+        transition: 'all var(--duration-slow) var(--ease-spring)',
+        delay: 400,
+        deferred: true, // apply target in rAF for browser to paint initial state
+    },
+    dematerialize: {
+        initial: null, // no initial styles — starts from current state
+        target:  { opacity: '0', transform: 'scale(0.9)', filter: 'blur(5px)' },
+        transition: 'all var(--duration-slow) var(--ease-snap)',
+        delay: 300,
+        deferred: false,
+    },
+    minimize: {
+        initial: null,
+        target:  { opacity: '0' }, // transform set dynamically
+        transition: 'all var(--duration-slow) var(--ease-decel)',
+        delay: 350,
+        deferred: false,
+    },
+};
+
+/**
+ * Animate a window element using a named transition preset.
+ * Consolidates materializeWindow / dematerializeWindow / minimizeWindow
+ * into a single parameterized entry point.
+ *
+ * @param {HTMLElement} windowElement - The window DOM element
+ * @param {'materialize'|'dematerialize'|'minimize'} preset - Named preset
+ * @param {Function} [callback] - Called after the transition's delay
+ * @param {object} [overrides] - Extra style properties merged into target
+ */
+export function transitionWindow(windowElement, preset, callback, overrides) {
+    const p = WINDOW_PRESETS[preset];
+    if (!p) return;
+
+    // Apply initial styles (e.g. materialize starts invisible)
+    if (p.initial) Object.assign(windowElement.style, p.initial);
+
+    const applyTarget = () => {
+        windowElement.style.transition = p.transition;
+        Object.assign(windowElement.style, p.target);
+        if (overrides) Object.assign(windowElement.style, overrides);
+        if (callback) setTimeout(callback, p.delay);
+    };
+
+    // Deferred presets use rAF so the browser paints initial state first
+    if (p.deferred) {
+        requestAnimationFrame(applyTarget);
+    } else {
+        applyTarget();
+    }
+}
+
 /* ── Canvas & Animation Utilities ── */
 
 /**

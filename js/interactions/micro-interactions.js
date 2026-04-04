@@ -3,6 +3,7 @@
  * Handles ripples, glows, particles, button animations, and state transitions
  * Every interaction should feel incredibly satisfying
  */
+import { transitionWindow } from '../dom-helpers.js';
 
 export const MicroInteractions = {
     registeredElements: new Map(),
@@ -305,41 +306,21 @@ export const MicroInteractions = {
     },
 
     /**
-     * Create window materialize effect
+     * Create window materialize effect (fade + scale in from blur)
      */
     materializeWindow(windowElement, callback) {
-        windowElement.style.opacity = '0';
-        windowElement.style.transform = 'scale(0.8)';
-        windowElement.style.filter = 'blur(10px)';
-
-        requestAnimationFrame(() => {
-            windowElement.style.transition = 'all var(--duration-slow) var(--ease-spring)';
-            windowElement.style.opacity = '1';
-            windowElement.style.transform = 'scale(1)';
-            windowElement.style.filter = 'blur(0px)';
-
-            if (callback) {
-                setTimeout(callback, 400);
-            }
-        });
+        transitionWindow(windowElement, 'materialize', callback);
     },
 
     /**
-     * Create window dematerialize effect
+     * Create window dematerialize effect (fade + scale out to blur)
      */
     dematerializeWindow(windowElement, callback) {
-        windowElement.style.transition = 'all var(--duration-slow) var(--ease-snap)';
-        windowElement.style.opacity = '0';
-        windowElement.style.transform = 'scale(0.9)';
-        windowElement.style.filter = 'blur(5px)';
-
-        setTimeout(() => {
-            if (callback) callback();
-        }, 300);
+        transitionWindow(windowElement, 'dematerialize', callback);
     },
 
     /**
-     * Minimize window animation
+     * Minimize window animation (shrink toward taskbar target)
      */
     minimizeWindow(windowElement, targetElement, callback) {
         const windowRect = windowElement.getBoundingClientRect();
@@ -350,13 +331,9 @@ export const MicroInteractions = {
         const translateX = targetRect.left - windowRect.left + (targetRect.width / 2) - (windowRect.width / 2);
         const translateY = targetRect.top - windowRect.top + (targetRect.height / 2) - (windowRect.height / 2);
 
-        windowElement.style.transition = 'all var(--duration-slow) var(--ease-decel)';
-        windowElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`;
-        windowElement.style.opacity = '0';
-
-        setTimeout(() => {
-            if (callback) callback();
-        }, 350);
+        transitionWindow(windowElement, 'minimize', callback, {
+            transform: `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`,
+        });
     },
 
     /**
