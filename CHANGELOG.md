@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.60.0
+version: 3.61.0
 last_updated: 2026-04-04
 
 ---
@@ -15,6 +15,15 @@ last_updated: 2026-04-04
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.61.0] — 2026-04-04
+
+### Added
+- **Neural Link** — Luminous connection traces between desktop icons on hover. When a desktop icon is hovered, thin energy lines trace from it to its 2–3 nearest neighbors using a gold→amethyst gradient with a stroke-dashoffset drawing animation — like neural pathways firing in a cybernetic brain. Lines glow with dual drop-shadow halos and fade out smoothly on hover end. SVG overlay layer with `pointer-events: none`, MutationObserver for dynamic icons. Desktop-only, respects `prefers-reduced-motion`.
+  - New files: `js/neural-link.js`, `css/neural-link.css`
+  - Modified: `js/main.js` (registration), `index.html` (CSS link)
 
 ---
 

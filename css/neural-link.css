@@ -1,0 +1,29 @@
+/* Neural Link — Luminous connection traces between desktop icons */
+
+.neural-link-layer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 99; /* below hovered icons (z:100) but above desktop surface */
+    overflow: visible;
+}
+
+.neural-link-line {
+    stroke: url(#nl-grad);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    fill: none;
+    opacity: 1;
+    filter: drop-shadow(0 0 4px var(--gold-dim, rgba(212, 175, 55, 0.5)))
+            drop-shadow(0 0 8px var(--amethyst-dim, rgba(139, 92, 246, 0.35)));
+}
+
+/* Reduced-motion: disable the draw animation, show lines instantly */
+@media (prefers-reduced-motion: reduce) {
+    .neural-link-line {
+        stroke-dashoffset: 0 !important;
+        transition: none !important;
+    }
+}
