@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.61.0
+version: 3.62.0
 last_updated: 2026-04-04
 
 ---
@@ -15,6 +15,14 @@ last_updated: 2026-04-04
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.62.0] — 2026-04-04
+
+### Added
+- **Pulse Grid** — Reactive ambient floor grid on the desktop surface. A faint geometric grid overlays the desktop; as the cursor moves, nearby cells illuminate with a gold→amethyst radial glow using quadratic distance falloff — like walking through Stark's lab with a light-up floor. Canvas-based for zero layout thrash, redraws only on `pointermove` via single `requestAnimationFrame`. Pauses when tab is hidden. Desktop-only (skipped on coarse-pointer devices), respects `prefers-reduced-motion`.
+  - New files: `js/pulse-grid.js`, `css/pulse-grid.css`
 
 ---
 

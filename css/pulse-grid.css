@@ -1,0 +1,14 @@
+/* Pulse Grid — Reactive ambient floor grid on the desktop */
+
+.pulse-grid-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1; /* behind icons (z:5+) and windows, above desktop bg */
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pulse-grid-canvas { display: none; }
+}

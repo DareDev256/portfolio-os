@@ -4,9 +4,9 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.61.0-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.62.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/475_tests-00e676?style=flat-square&labelColor=0d0d0d)
-![Modules](https://img.shields.io/badge/61_modules-b388ff?style=flat-square&labelColor=0d0d0d)
+![Modules](https://img.shields.io/badge/62_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
 **[▸ ENTER THE LIVE DEMO](https://jamesdare.com)**
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `61 modules` · `31 stylesheets` · `475 tests / 25 suites` · `21 desktop apps` · `0 dependencies`
+> `62 modules` · `32 stylesheets` · `475 tests / 25 suites` · `21 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -72,6 +72,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Phantom Reticle** — A spring-physics HUD targeting reticle that follows the cursor with elastic easing. A dashed gold ring with crosshairs smoothly tracks movement, then "locks on" to interactive elements (dock items, icons, buttons) by snapping to their center, scaling proportionally, and shifting from gold to amethyst. Clicks trigger an expanding pulse ring. DOM-light (5 elements), GPU-composited with `mix-blend-mode: screen`. Respects `prefers-reduced-motion`.
 - **Cipher Decode** — Code-viewer panels don't just appear — they *materialize*. When a `.cv-panel` scrolls into view, every syntax token scrambles through hex/glyph noise before resolving left-to-right in a wavefront pattern, while a gold scan line sweeps across the code block. Characters flash gold on resolve before settling to their syntax color. IntersectionObserver-triggered, MutationObserver auto-wires dynamically added panels. Respects `prefers-reduced-motion`.
 - **Neural Link** — Hover over a desktop icon and watch luminous energy lines trace to its nearest neighbors — like neural pathways firing in a cybernetic brain. Lines draw themselves with a gold→amethyst gradient using `stroke-dashoffset` animation, glow with dual drop-shadow halos (gold + amethyst), and fade smoothly on hover end. SVG overlay layer, MutationObserver for dynamic icons. Respects `prefers-reduced-motion`.
+- **Pulse Grid** — A reactive ambient floor grid overlays the desktop surface. Faint geometric lines become visible as the cursor approaches — nearby cells illuminate with a gold→amethyst radial glow using quadratic distance falloff. Like walking through Stark's lab with a light-up floor. Canvas-based (zero layout thrash), redraws only on cursor movement via single `requestAnimationFrame`. Pauses when tab hidden. Desktop-only, respects `prefers-reduced-motion`.
 - **Cursor Trails** — Particle effects with PlayStation/chakra symbols. Lazy-initialized, throttled to 30fps.
 - **Toast Notifications** — Non-blocking notification queue with success/error/warning/info types, auto-dismiss progress bar, hover-to-pause, and `aria-live` screen reader support.
 - **Easter Eggs** — Konami code, triple-click glitch pulse, type "418" for teapot, `Ctrl+Shift+V` for system info, 18 terminal sass commands.
