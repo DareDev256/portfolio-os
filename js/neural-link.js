@@ -10,7 +10,7 @@
  * reduced-motion.
  */
 
-import { prefersReducedMotion } from './dom-helpers.js';
+import { shouldSkipDesktopEffects, prefersReducedMotion, createDecorativeEl, getElementCenter } from './dom-helpers.js';
 
 const MAX_LINKS = 3;
 const MAX_DISTANCE = 400;        // px — skip icons further than this
@@ -21,11 +21,7 @@ let svgLayer = null;
 let activeLines = [];
 let currentTarget = null;
 
-/** Get the center point of an element relative to the viewport. */
-function center(el) {
-    const r = el.getBoundingClientRect();
-    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-}
+const SVG_NS = 'http://www.w3.org/2000/svg';
 
 /** Euclidean distance between two points. */
 function dist(a, b) {
@@ -35,9 +31,7 @@ function dist(a, b) {
 /** Create the SVG overlay layer (once). */
 function ensureLayer() {
     if (svgLayer) return svgLayer;
-    svgLayer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svgLayer.classList.add('neural-link-layer');
-    svgLayer.setAttribute('aria-hidden', 'true');
+    svgLayer = createDecorativeEl('svg', 'neural-link-layer', SVG_NS);
 
     // Gradient definition — gold → amethyst
     svgLayer.innerHTML = `<defs>
@@ -100,12 +94,12 @@ function onIconEnter(e) {
     currentTarget = icon;
 
     const allIcons = Array.from(document.querySelectorAll('.desktop-icon'));
-    const origin = center(icon.querySelector('.desktop-icon-box') || icon);
+    const origin = getElementCenter(icon.querySelector('.desktop-icon-box') || icon);
 
     // Compute distances to all other icons, sort, take closest
     const neighbors = allIcons
         .filter(ic => ic !== icon)
-        .map(ic => ({ el: ic, pt: center(ic.querySelector('.desktop-icon-box') || ic) }))
+        .map(ic => ({ el: ic, pt: getElementCenter(ic.querySelector('.desktop-icon-box') || ic) }))
         .map(n => ({ ...n, d: dist(origin, n.pt) }))
         .filter(n => n.d < MAX_DISTANCE)
         .sort((a, b) => a.d - b.d)
@@ -131,8 +125,7 @@ function wireIcons() {
 
 export const NeuralLink = {
     init() {
-        // Desktop only — skip on coarse-pointer (touch) devices
-        if (window.matchMedia('(pointer: coarse)').matches) return;
+        if (shouldSkipDesktopEffects()) return;
 
         // Icons may be rendered after init — use MutationObserver
         const container = document.querySelector('.desktop-icons');

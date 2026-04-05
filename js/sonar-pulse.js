@@ -5,6 +5,8 @@
  * Desktop-only (skipped on mobile / reduced-motion).
  */
 
+import { shouldSkipDesktopEffects } from './dom-helpers.js';
+
 const RING_COUNT   = 3;
 const LIFETIME_MS  = 1600;
 const SECTOR_TAGS  = ['SECTOR CLEAR', 'SIGNAL NOMINAL', 'FIELD STABLE', 'GRID LOCKED', 'PING OK'];
@@ -56,8 +58,7 @@ function isDesktopSurface(target) {
 
 export const SonarPulse = {
     init() {
-        if (window.matchMedia('(pointer: coarse)').matches) return;      // mobile — skip
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (shouldSkipDesktopEffects()) return;
 
         document.addEventListener('click', (e) => {
             if (!isDesktopSurface(e.target)) return;

@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.62.0
-last_updated: 2026-04-04
+version: 3.62.1
+last_updated: 2026-04-05
 
 ---
 
@@ -15,6 +15,17 @@ last_updated: 2026-04-04
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.62.1] — 2026-04-05
+
+### Changed
+- **dom-helpers** — Extract three new shared utilities: `shouldSkipDesktopEffects()` (combined reduced-motion + coarse-pointer guard), `createDecorativeEl()` (aria-hidden element factory), and `getElementCenter()` (viewport-relative center calculation). Eliminates duplicated boilerplate across 8 visual effect modules.
+- **neural-link, spectral-echo, pulse-grid, cipher-decode, sonar-pulse** — Replace inline `matchMedia` desktop guards with centralized `shouldSkipDesktopEffects()`.
+- **spectral-echo, phantom-reticle, pulse-grid, cipher-decode, catalyst-pulse** — Replace `createElement + className + aria-hidden` three-liner with `createDecorativeEl()`.
+- **neural-link, phantom-reticle, icon-tilt** — Replace inline `getBoundingClientRect` center calculations with `getElementCenter()`.
+- **pulse-grid** — Replace duplicated DPR canvas resize logic with existing `resizeCanvasDPR()` from dom-helpers.
 
 ---
 

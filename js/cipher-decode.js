@@ -12,7 +12,7 @@
  * Desktop-only (skipped on coarse-pointer devices).
  */
 
-import { prefersReducedMotion } from './dom-helpers.js';
+import { shouldSkipDesktopEffects, createDecorativeEl } from './dom-helpers.js';
 
 const GLYPHS = '0123456789ABCDEF.:;{}[]<>/\\|=+-*&^%$#@!~';
 const CHARS_PER_FRAME = 3;       // characters resolved per animation tick
@@ -118,9 +118,7 @@ function decodePanelCode(codeEl, scanLine) {
  * Inject scan line element into a .cv-panel and return it.
  */
 function injectScanLine(panel) {
-    const line = document.createElement('div');
-    line.className = 'cipher-scan';
-    line.setAttribute('aria-hidden', 'true');
+    const line = createDecorativeEl('div', 'cipher-scan');
     const pre = panel.querySelector('.cv-pre');
     if (pre) {
         pre.style.position = 'relative';
@@ -131,8 +129,7 @@ function injectScanLine(panel) {
 
 export const CipherDecode = {
     init() {
-        if (window.matchMedia('(pointer: coarse)').matches) return;
-        if (prefersReducedMotion()) return;
+        if (shouldSkipDesktopEffects()) return;
 
         const decoded = new WeakSet();
 

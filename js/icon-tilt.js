@@ -6,16 +6,15 @@
  * Phase 1 of the Alien Tech Upgrade plan.
  */
 
-import { prefersReducedMotion } from './dom-helpers.js';
+import { prefersReducedMotion, getElementCenter } from './dom-helpers.js';
 
 const MAX_TILT = 18; // degrees
 
 function handleMove(e) {
     if (prefersReducedMotion()) return;
     const box = e.currentTarget;
+    const { x: cx, y: cy } = getElementCenter(box);
     const rect = box.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
 
     // Normalize cursor position to -1…1 relative to center
     const nx = (e.clientX - cx) / (rect.width / 2);

@@ -39,6 +39,46 @@ export function prefersReducedMotion() {
     return window.matchMedia(_REDUCED_MOTION_QUERY).matches;
 }
 
+/**
+ * Combined desktop-only guard: skip when user prefers reduced motion
+ * OR is on a coarse-pointer (touch) device.
+ * Replaces the identical two-line check duplicated in 7+ visual effect inits.
+ * @returns {boolean} True when desktop visual effects should be skipped
+ */
+export function shouldSkipDesktopEffects() {
+    return prefersReducedMotion() || window.matchMedia('(pointer: coarse)').matches;
+}
+
+/**
+ * Create a decorative (aria-hidden) DOM element.
+ * Replaces the createElement → className → setAttribute('aria-hidden', 'true')
+ * three-liner duplicated in 10+ visual effect modules.
+ * @param {string} tag - HTML tag name (or SVG tag when namespace is provided)
+ * @param {string} [className] - CSS class name(s)
+ * @param {string} [namespace] - XML namespace (use 'http://www.w3.org/2000/svg' for SVG)
+ * @returns {Element}
+ */
+export function createDecorativeEl(tag, className, namespace) {
+    const el = namespace
+        ? document.createElementNS(namespace, tag)
+        : document.createElement(tag);
+    if (className) el.className = className;
+    el.setAttribute('aria-hidden', 'true');
+    return el;
+}
+
+/**
+ * Get the center point of a DOM element relative to the viewport.
+ * Replaces the identical `getBoundingClientRect → left + width/2` pattern
+ * duplicated in 8+ modules (neural-link, phantom-reticle, icon-tilt, etc.).
+ * @param {Element} el - DOM element
+ * @returns {{ x: number, y: number }} Center point in viewport coordinates
+ */
+export function getElementCenter(el) {
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+}
+
 /** Default fetch timeout — prevents indefinitely hanging requests from freezing the UI */
 const DEFAULT_FETCH_TIMEOUT = 8_000; // 8 seconds
 

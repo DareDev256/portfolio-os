@@ -8,7 +8,7 @@
  * Canvas-based for performance. Desktop-only, respects reduced-motion.
  */
 
-import { prefersReducedMotion, isPageHidden, onVisibilityChange } from './dom-helpers.js';
+import { shouldSkipDesktopEffects, createDecorativeEl, resizeCanvasDPR, isPageHidden, onVisibilityChange } from './dom-helpers.js';
 
 const CELL_SIZE = 72;          // px per grid cell
 const GLOW_RADIUS = 180;       // px — how far the glow reaches from cursor
@@ -36,10 +36,7 @@ function colorAt(t) {
 }
 
 function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.floor(window.innerWidth * dpr);
-    canvas.height = Math.floor(window.innerHeight * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    resizeCanvasDPR(canvas, ctx);
 }
 
 function draw() {
@@ -128,12 +125,9 @@ function onLeave() {
 
 export const PulseGrid = {
     init() {
-        if (prefersReducedMotion()) return;
-        if (window.matchMedia('(pointer: coarse)').matches) return;
+        if (shouldSkipDesktopEffects()) return;
 
-        canvas = document.createElement('canvas');
-        canvas.classList.add('pulse-grid-canvas');
-        canvas.setAttribute('aria-hidden', 'true');
+        canvas = createDecorativeEl('canvas', 'pulse-grid-canvas');
         ctx = canvas.getContext('2d');
 
         const desktop = document.getElementById('desktop');

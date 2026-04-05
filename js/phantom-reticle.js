@@ -9,7 +9,7 @@
  * Think Iron Man's targeting HUD meets Prince's gold/purple palette.
  */
 
-import { prefersReducedMotion, isPageHidden } from './dom-helpers.js';
+import { prefersReducedMotion, isPageHidden, createDecorativeEl, getElementCenter } from './dom-helpers.js';
 
 /** Selectors that count as "lockable" interactive targets */
 const LOCK_TARGETS = [
@@ -37,9 +37,7 @@ export const PhantomReticle = {
         if (prefersReducedMotion()) return;
 
         // Create reticle DOM
-        this.el = document.createElement('div');
-        this.el.className = 'phantom-reticle';
-        this.el.setAttribute('aria-hidden', 'true');
+        this.el = createDecorativeEl('div', 'phantom-reticle');
         this.el.innerHTML =
             '<div class="pr-crosshair pr-h"></div>' +
             '<div class="pr-crosshair pr-v"></div>' +
@@ -70,9 +68,10 @@ export const PhantomReticle = {
         // Check lock target
         const target = e.target.closest?.(LOCK_TARGETS);
         if (target) {
+            const c = getElementCenter(target);
+            this._mx = c.x;
+            this._my = c.y;
             const r = target.getBoundingClientRect();
-            this._mx = r.left + r.width / 2;
-            this._my = r.top + r.height / 2;
             this._scale = Math.max(r.width, r.height) / 36;
             if (!this._locked) this.el.classList.add('pr-locked');
             this._locked = true;

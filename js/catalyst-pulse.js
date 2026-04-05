@@ -7,7 +7,7 @@
  *
  * Respects prefers-reduced-motion (skips mouse tracking, keeps static glow).
  */
-import { prefersReducedMotion } from './dom-helpers.js';
+import { prefersReducedMotion, createDecorativeEl } from './dom-helpers.js';
 
 const PROXIMITY_THRESHOLD = 0.35; // fraction of viewport diagonal
 
@@ -23,9 +23,7 @@ export const CatalystPulse = {
 
         // Build DOM
         const frag = document.createDocumentFragment();
-        const wrap = document.createElement('div');
-        wrap.className = 'catalyst-pulse';
-        wrap.setAttribute('aria-hidden', 'true');
+        const wrap = createDecorativeEl('div', 'catalyst-pulse');
 
         wrap.innerHTML =
             '<div class="catalyst-halo"></div>' +

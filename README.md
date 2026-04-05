@@ -4,7 +4,7 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.62.0-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.62.1-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/475_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/62_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
@@ -253,7 +253,7 @@ js/                                 # 55 ES modules, zero framework imports
 ├── router.js                       # History API deep-linkable routing
 ├── command-palette.js              # Cmd+K fuzzy-search launcher
 ├── data-loader.js                  # Centralized JSON fetcher with caching
-├── dom-helpers.js                  # Shared utilities (isPageHidden, prefersReducedMotion, isElementVisible, isInViewport, openExternal, animateCounter, loadJSON, saveJSON, downloadJSON, loadBool, saveBool, createRevealSystem, createThrottledLoop, resizeCanvasDPR, bootstrapCanvasEffect, setCanvasEffectEnabled)
+├── dom-helpers.js                  # Shared utilities (isPageHidden, prefersReducedMotion, shouldSkipDesktopEffects, createDecorativeEl, getElementCenter, isElementVisible, isInViewport, openExternal, animateCounter, loadJSON, saveJSON, downloadJSON, loadBool, saveBool, createRevealSystem, createThrottledLoop, resizeCanvasDPR, bootstrapCanvasEffect, setCanvasEffectEnabled)
 ├── sanitize.js                     # DOMPurify wrapper
 ├── notifications.js                # Toast notification queue system
 ├── shortcuts-overlay.js            # Press ? to show all keyboard shortcuts

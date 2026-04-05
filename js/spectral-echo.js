@@ -12,7 +12,7 @@
  * Desktop-only (skipped on mobile / reduced-motion).
  */
 
-import { prefersReducedMotion } from './dom-helpers.js';
+import { shouldSkipDesktopEffects, createDecorativeEl } from './dom-helpers.js';
 
 const ECHO_LIFETIME_MS = 650;
 
@@ -20,9 +20,7 @@ const ECHO_LIFETIME_MS = 650;
 function spawnEcho(windowEl) {
     const rect = windowEl.getBoundingClientRect();
 
-    const echo = document.createElement('div');
-    echo.className = 'spectral-echo';
-    echo.setAttribute('aria-hidden', 'true');
+    const echo = createDecorativeEl('div', 'spectral-echo');
     echo.style.left   = `${rect.left}px`;
     echo.style.top    = `${rect.top}px`;
     echo.style.width  = `${rect.width}px`;
@@ -34,8 +32,7 @@ function spawnEcho(windowEl) {
 
 export const SpectralEcho = {
     init() {
-        if (window.matchMedia('(pointer: coarse)').matches) return;
-        if (prefersReducedMotion()) return;
+        if (shouldSkipDesktopEffects()) return;
 
         const container = document.getElementById('windowsContainer');
         if (!container) return;
