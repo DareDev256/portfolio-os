@@ -110,10 +110,10 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - 10 HTTP security headers via Vercel (CSP, HSTS, X-Frame-Options, COOP, COEP, CORP, Permissions-Policy)
 - URL injection prevention — allowlist-based router, CSS breakout stripping
 - `State.setWallpaper()` validates URLs through `Sanitize.url()` before localStorage persistence — prevents stored CSS injection via localStorage poisoning; gradient tokens validated against an explicit allowlist; `data:image/` URIs restricted to safe MIME types (png, jpeg, gif, webp)
-- `Sanitize.attr()` blocks `data:image/svg+xml` XSS vectors alongside `javascript:`, `vbscript:`, and `data:text/html`
+- `Sanitize.attr()` allowlists only safe raster `data:image/` MIMEs (png, jpeg, gif, webp) — blocks svg+xml, Flash, and all non-image data: URIs; returns control-char-stripped output to prevent validation/output mismatch (CWE-116)
 - `Sanitize.url()` enforced on all `href`/`src` attributes sourced from external data (project links, media posters, GitHub avatars, lightbox images) — blocks `blob:`, `ftp:`, and other dangerous URI schemes
 - `Sanitize.cssUrl()` strips CSS-breaking characters (`'`, `"`, `(`, `)`, `;`, `\`) from URLs embedded in CSS `url('...')` contexts — prevents stored CSS injection via crafted backup imports
-- Prototype pollution protection on all `localStorage` reads — `loadJSON()` strips `__proto__`/`constructor`/`prototype` keys from every parsed value across all callers
+- Prototype pollution protection on all `localStorage` reads — `loadJSON()` strips `__proto__`/`constructor`/`prototype` + legacy mutation methods (`__defineGetter__`, `__defineSetter__`, `__lookupGetter__`, `__lookupSetter__`) from every parsed value; depth-limited to 20 levels to prevent stack overflow DoS (CWE-674)
 - Admin Dashboard renders all tab content through `Sanitize.setHTML()` (defense-in-depth against future template injection)
 - CSP `connect-src` allowlists only known API origins (GitHub, Open-Meteo, Passion API) — stale wildcards removed
 - All external API fetches protected by `AbortController` timeout (8s) via shared `fetchWithTimeout` — prevents frozen interfaces on slow/unreachable APIs

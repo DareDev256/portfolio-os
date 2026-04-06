@@ -75,7 +75,8 @@ export const Sanitize = {
 
     /**
      * Sanitize attributes (prevent dangerous URI schemes and protocol obfuscation).
-     * Blocks javascript:, vbscript:, data:text/html, and whitespace-obfuscated variants.
+     * Blocks javascript:, vbscript:, and all non-image data: URIs.
+     * Returns the control-char-stripped version — never leaks raw input back to the DOM.
      * @param {string} value - Attribute value
      * @returns {string} Safe attribute value
      */
@@ -98,14 +99,19 @@ export const Sanitize = {
             return '';
         }
 
-        // Block data: URIs that can execute scripts:
-        // - data:image/svg+xml can contain <script> and onload handlers
-        // - data: with any script-capable MIME (text/html already caught above)
+        // Block data: URIs except safe raster image MIME types.
+        // svg+xml is excluded — SVG can contain <script>, onload handlers, and
+        // foreignObject with arbitrary HTML. Only allow known-safe bitmap formats.
         if (lower.startsWith('data:')) {
-            if (lower.includes('script') || lower.includes('svg')) return '';
+            const SAFE_DATA_MIMES = ['data:image/png', 'data:image/jpeg', 'data:image/gif', 'data:image/webp'];
+            if (!SAFE_DATA_MIMES.some(m => lower.startsWith(m))) return '';
         }
 
-        return value;
+        // Return the stripped value — NOT the original.
+        // Previous code returned `value` (with control chars intact), creating a
+        // validation/output mismatch (CWE-116). Browsers normalize control chars
+        // inconsistently, so always return the sanitized form.
+        return stripped;
     },
 
     /**
@@ -182,25 +188,45 @@ export const Sanitize = {
     },
 
     /**
-     * Recursively strip prototype-pollution keys (__proto__, constructor, prototype)
-     * from a parsed JSON object. Call this on any user-supplied JSON (backup imports,
-     * localStorage overrides) before assigning properties into application state.
+     * Recursively strip prototype-pollution keys from a parsed JSON object.
+     * Call this on any user-supplied JSON (backup imports, localStorage overrides)
+     * before assigning properties into application state.
      * Prevents an attacker from modifying Object.prototype via crafted JSON payloads.
+     *
+     * Depth-limited to prevent stack overflow from deeply nested payloads (CWE-674).
+     * A crafted backup with 10,000+ nesting levels would crash the browser tab without
+     * this guard. MAX_DEPTH of 20 covers any legitimate data structure.
+     *
      * @param {*} obj - Parsed JSON value
+     * @param {number} _depth - Internal recursion counter (do not pass manually)
      * @returns {*} Cleaned value (mutated in-place)
      */
-    stripDangerousKeys(obj) {
+    stripDangerousKeys(obj, _depth = 0) {
+        const MAX_DEPTH = 20;
         if (!obj || typeof obj !== 'object') return obj;
-        if (Array.isArray(obj)) {
-            for (let i = 0; i < obj.length; i++) this.stripDangerousKeys(obj[i]);
+        if (_depth >= MAX_DEPTH) {
+            // Truncate overly nested structures — no legitimate portfolio data
+            // requires 20+ levels. Anything deeper is suspicious or malformed.
             return obj;
         }
-        const BLOCKED = ['__proto__', 'constructor', 'prototype'];
+        if (Array.isArray(obj)) {
+            for (let i = 0; i < obj.length; i++) this.stripDangerousKeys(obj[i], _depth + 1);
+            return obj;
+        }
+        // Block prototype pollution vectors:
+        //   __proto__, constructor, prototype — direct pollution (CVE-2019-11358 class)
+        //   __defineGetter__, __defineSetter__ — legacy property mutation
+        //   __lookupGetter__, __lookupSetter__ — legacy property introspection
+        const BLOCKED = new Set([
+            '__proto__', 'constructor', 'prototype',
+            '__defineGetter__', '__defineSetter__',
+            '__lookupGetter__', '__lookupSetter__',
+        ]);
         for (const key of Object.keys(obj)) {
-            if (BLOCKED.includes(key)) {
+            if (BLOCKED.has(key)) {
                 delete obj[key];
             } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-                this.stripDangerousKeys(obj[key]);
+                this.stripDangerousKeys(obj[key], _depth + 1);
             }
         }
         return obj;

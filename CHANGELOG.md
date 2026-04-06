@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.63.0
-last_updated: 2026-04-05
+version: 3.63.1
+last_updated: 2026-04-06
 
 ---
 
@@ -17,6 +17,14 @@ last_updated: 2026-04-05
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.63.1] — 2026-04-06
+
+### Security
+- **`Sanitize.attr()` — fix validation/output mismatch (CWE-116)**: Previously returned the original input (with control chars intact) after validating against a stripped copy. Now returns the stripped value, closing a gap where inconsistent browser control-char normalization could bypass URI scheme checks.
+- **`Sanitize.attr()` — restrict data: URI allowlist**: Replaced broad `includes('script')||includes('svg')` check with an explicit safe-MIME allowlist (png, jpeg, gif, webp). Blocks all non-raster data: URIs including svg+xml, Flash, PDF, and unknown types.
+- **`stripDangerousKeys()` — depth-limited recursion (CWE-674)**: Added MAX_DEPTH=20 guard to prevent stack overflow from deeply nested JSON payloads via admin backup import. A crafted 10,000+ level payload previously crashed the browser tab.
+- **`stripDangerousKeys()` — expanded blocklist**: Added `__defineGetter__`, `__defineSetter__`, `__lookupGetter__`, `__lookupSetter__` legacy mutation methods to the prototype pollution blocklist. Upgraded from Array to Set for O(1) lookup.
 
 ## [3.63.0] — 2026-04-05
 
