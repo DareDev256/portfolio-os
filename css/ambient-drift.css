@@ -1,0 +1,15 @@
+/* Ambient Drift — Luminous floating orbs on the desktop */
+
+.ambient-drift-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2; /* above pulse-grid (z:1), below icons (z:5+) */
+    mix-blend-mode: screen; /* orbs glow additively over dark bg */
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ambient-drift-canvas { display: none; }
+}

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.62.1
+version: 3.63.0
 last_updated: 2026-04-05
 
 ---
@@ -15,6 +15,15 @@ last_updated: 2026-04-05
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.63.0] — 2026-04-05
+
+### Added
+- **Ambient Drift** — Luminous floating orbs on the desktop surface. 7 softly glowing spheres (alternating gold & amethyst) drift in slow organic paths using smoothed pseudo-noise, creating a living atmosphere like dust motes catching light in a darkened lab. Orbs repel gently from the cursor within a 180px radius, pulse in brightness over time, and fade near viewport edges to avoid hard pop-in. Canvas-based with `mix-blend-mode: screen` for additive glow over the dark background. Pauses when tab is hidden. Desktop-only, respects `prefers-reduced-motion`.
+  - New files: `js/ambient-drift.js`, `css/ambient-drift.css`
+  - Modified: `js/main.js` (registration), `index.html` (CSS link)
 
 ---
 
