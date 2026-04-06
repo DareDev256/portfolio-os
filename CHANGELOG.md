@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.63.1
+version: 3.63.2
 last_updated: 2026-04-06
 
 ---
@@ -17,6 +17,13 @@ last_updated: 2026-04-06
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.63.2] — 2026-04-06
+
+### Changed
+- **`dom-helpers.js` — extract `PALETTE`, `initDesktopCanvas`, `createPointerTracker`**: Centralized the gold/amethyst RGB palette and the duplicated canvas-init + pointer-tracking boilerplate shared by `ambient-drift.js` and `pulse-grid.js`. New desktop canvas effects now get DPR-aware setup, desktop mounting, resize wiring, and cursor tracking in two function calls instead of 20+ lines of ceremony.
+- **`ambient-drift.js` — use shared helpers**: Replaced inline color constants, canvas creation, mouse tracking, and resize wiring with `PALETTE`, `initDesktopCanvas`, and `createPointerTracker` from `dom-helpers.js`. Net −12 lines.
+- **`pulse-grid.js` — use shared helpers**: Same extraction — replaced duplicated init boilerplate and color constants. Pointer events now schedule redraws through the shared tracker. Net −19 lines.
 
 ## [3.63.1] — 2026-04-06
 

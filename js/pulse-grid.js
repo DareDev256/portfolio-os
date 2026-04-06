@@ -8,19 +8,18 @@
  * Canvas-based for performance. Desktop-only, respects reduced-motion.
  */
 
-import { shouldSkipDesktopEffects, createDecorativeEl, resizeCanvasDPR, isPageHidden, onVisibilityChange } from './dom-helpers.js';
+import { shouldSkipDesktopEffects, isPageHidden, onVisibilityChange, initDesktopCanvas, createPointerTracker, PALETTE } from './dom-helpers.js';
 
 const CELL_SIZE = 72;          // px per grid cell
 const GLOW_RADIUS = 180;       // px — how far the glow reaches from cursor
 const LINE_ALPHA_BASE = 0.04;  // grid line opacity when unlit
 const LINE_ALPHA_PEAK = 0.35;  // grid line opacity at cursor center
 const FILL_ALPHA_PEAK = 0.08;  // cell fill opacity at cursor center
-const GOLD = { r: 212, g: 175, b: 55 };
-const AMETHYST = { r: 139, g: 92, b: 246 };
+const GOLD = PALETTE.GOLD;
+const AMETHYST = PALETTE.AMETHYST;
 
-let canvas = null;
 let ctx = null;
-let mouse = { x: -9999, y: -9999 };
+let pointer = null;    // initialized in init()
 let rafId = 0;
 let visible = true;
 
@@ -35,9 +34,6 @@ function colorAt(t) {
     };
 }
 
-function resize() {
-    resizeCanvasDPR(canvas, ctx);
-}
 
 function draw() {
     const w = window.innerWidth;
@@ -52,8 +48,8 @@ function draw() {
         for (let col = 0; col < cols; col++) {
             const cx = col * CELL_SIZE + CELL_SIZE / 2;
             const cy = row * CELL_SIZE + CELL_SIZE / 2;
-            const dx = mouse.x - cx;
-            const dy = mouse.y - cy;
+            const dx = pointer.mouse.x - cx;
+            const dy = pointer.mouse.y - cy;
             const dist = Math.sqrt(dx * dx + dy * dy);
 
             if (dist < GLOW_RADIUS) {
@@ -71,7 +67,7 @@ function draw() {
     // Vertical grid lines
     for (let col = 0; col <= cols; col++) {
         const x = col * CELL_SIZE;
-        const dist = Math.abs(mouse.x - x);
+        const dist = Math.abs(pointer.mouse.x - x);
         const proximity = dist < GLOW_RADIUS ? 1 - (dist / GLOW_RADIUS) : 0;
         const alpha = LINE_ALPHA_BASE + (LINE_ALPHA_PEAK - LINE_ALPHA_BASE) * proximity;
         const c = colorAt(1 - proximity);
@@ -87,7 +83,7 @@ function draw() {
     // Horizontal grid lines
     for (let row = 0; row <= rows; row++) {
         const y = row * CELL_SIZE;
-        const dist = Math.abs(mouse.y - y);
+        const dist = Math.abs(pointer.mouse.y - y);
         const proximity = dist < GLOW_RADIUS ? 1 - (dist / GLOW_RADIUS) : 0;
         const alpha = LINE_ALPHA_BASE + (LINE_ALPHA_PEAK - LINE_ALPHA_BASE) * proximity;
         const c = colorAt(1 - proximity);
@@ -111,36 +107,17 @@ function scheduleFrame() {
     if (!rafId) rafId = requestAnimationFrame(tick);
 }
 
-function onMove(e) {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-    scheduleFrame();
-}
-
-function onLeave() {
-    mouse.x = -9999;
-    mouse.y = -9999;
-    scheduleFrame();
-}
-
 export const PulseGrid = {
     init() {
         if (shouldSkipDesktopEffects()) return;
 
-        canvas = createDecorativeEl('canvas', 'pulse-grid-canvas');
-        ctx = canvas.getContext('2d');
+        ({ ctx } = initDesktopCanvas('pulse-grid-canvas'));
+        pointer = createPointerTracker();
 
-        const desktop = document.getElementById('desktop');
-        if (desktop) {
-            desktop.appendChild(canvas);
-        } else {
-            document.body.appendChild(canvas);
-        }
+        // Redraw on pointer movement (cursor-reactive, not continuous)
+        document.addEventListener('pointermove', scheduleFrame);
+        document.addEventListener('pointerleave', scheduleFrame);
 
-        resize();
-        window.addEventListener('resize', resize);
-        document.addEventListener('pointermove', onMove);
-        document.addEventListener('pointerleave', onLeave);
         onVisibilityChange(
             () => { visible = false; },
             () => { visible = true; scheduleFrame(); },

@@ -11,10 +11,11 @@
 
 import {
     shouldSkipDesktopEffects,
-    createDecorativeEl,
-    resizeCanvasDPR,
     isPageHidden,
     onVisibilityChange,
+    initDesktopCanvas,
+    createPointerTracker,
+    PALETTE,
 } from './dom-helpers.js';
 
 /* ── Tuning ────────────────────────────────── */
@@ -28,13 +29,13 @@ const REPEL_STRENGTH  = 2.5;       // max push-back px/frame
 const GLOW_RADIUS_MUL = 8;        // radialGradient outer stop = r * MUL
 const FADE_EDGE       = 60;        // px — orbs fade near viewport edges
 
-const GOLD     = { r: 212, g: 175, b: 55 };
-const AMETHYST = { r: 139, g: 92,  b: 246 };
+const GOLD     = PALETTE.GOLD;
+const AMETHYST = PALETTE.AMETHYST;
 
 /* ── State ─────────────────────────────────── */
-let canvas, ctx;
+let ctx;
 let orbs = [];
-let mouse = { x: -9999, y: -9999 };
+let pointer;    // initialized in init()
 let rafId = 0;
 let visible = true;
 let time = 0;
@@ -91,8 +92,8 @@ function update() {
         orb.y += ny * orb.speed;
 
         // Cursor repulsion
-        const dx = orb.x - mouse.x;
-        const dy = orb.y - mouse.y;
+        const dx = orb.x - pointer.mouse.x;
+        const dy = orb.y - pointer.mouse.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < REPEL_RADIUS && dist > 0) {
             const force = (1 - dist / REPEL_RADIUS) * REPEL_STRENGTH;
@@ -155,28 +156,15 @@ function start() {
     if (!rafId) rafId = requestAnimationFrame(tick);
 }
 
-/* ── Event Handlers ────────────────────────── */
-function onMove(e)  { mouse.x = e.clientX; mouse.y = e.clientY; }
-function onLeave()  { mouse.x = -9999; mouse.y = -9999; }
-function onResize() { resizeCanvasDPR(canvas, ctx); }
-
 /* ── Public API ────────────────────────────── */
 export const AmbientDrift = {
     init() {
         if (shouldSkipDesktopEffects()) return;
 
-        canvas = createDecorativeEl('canvas', 'ambient-drift-canvas');
-        ctx = canvas.getContext('2d');
-
-        const desktop = document.getElementById('desktop');
-        (desktop || document.body).appendChild(canvas);
-
-        onResize();
+        ({ ctx } = initDesktopCanvas('ambient-drift-canvas'));
+        pointer = createPointerTracker();
         spawnOrbs();
 
-        window.addEventListener('resize', onResize);
-        document.addEventListener('pointermove', onMove);
-        document.addEventListener('pointerleave', onLeave);
         onVisibilityChange(
             () => { visible = false; },
             () => { visible = true; start(); },

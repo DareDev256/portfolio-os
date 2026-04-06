@@ -415,6 +415,64 @@ export function transitionWindow(windowElement, preset, callback, overrides) {
     }
 }
 
+/* ── Shared Palette ── */
+
+/**
+ * Canonical gold/amethyst RGB palette for desktop visual effects.
+ * Single source of truth — previously duplicated in ambient-drift.js,
+ * pulse-grid.js, and referenced via CSS vars in neural-link.js.
+ */
+export const PALETTE = {
+    GOLD:     { r: 212, g: 175, b: 55 },
+    AMETHYST: { r: 139, g: 92,  b: 246 },
+};
+
+/* ── Desktop Canvas Bootstrap ── */
+
+/**
+ * Shared pointer-position tracker for canvas effects.
+ * Returns a reactive `mouse` object and wires pointermove/pointerleave
+ * on `document` — replacing the identical 4-line pattern in ambient-drift
+ * and pulse-grid.
+ *
+ * @returns {{ mouse: { x: number, y: number }, destroy: () => void }}
+ */
+export function createPointerTracker() {
+    const mouse = { x: -9999, y: -9999 };
+    const onMove  = (e) => { mouse.x = e.clientX; mouse.y = e.clientY; };
+    const onLeave = ()  => { mouse.x = -9999; mouse.y = -9999; };
+    document.addEventListener('pointermove', onMove);
+    document.addEventListener('pointerleave', onLeave);
+    return {
+        mouse,
+        destroy() {
+            document.removeEventListener('pointermove', onMove);
+            document.removeEventListener('pointerleave', onLeave);
+        },
+    };
+}
+
+/**
+ * Shared canvas init for desktop ambient effects.
+ * Creates a DPR-aware canvas, appends it to `#desktop` (or body),
+ * wires the resize listener, and returns `{ canvas, ctx }`.
+ *
+ * Collapses the 8-line init ceremony duplicated across ambient-drift,
+ * pulse-grid, and any future canvas-based desktop overlays.
+ *
+ * @param {string} className - CSS class name for the canvas element
+ * @returns {{ canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D }}
+ */
+export function initDesktopCanvas(className) {
+    const canvas = createDecorativeEl('canvas', className);
+    const ctx = canvas.getContext('2d');
+    const desktop = document.getElementById('desktop');
+    (desktop || document.body).appendChild(canvas);
+    resizeCanvasDPR(canvas, ctx);
+    window.addEventListener('resize', () => resizeCanvasDPR(canvas, ctx));
+    return { canvas, ctx };
+}
+
 /* ── Canvas & Animation Utilities ── */
 
 /**
