@@ -4,9 +4,9 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.62.1-00f0ff?style=flat-square&labelColor=0d0d0d)
-![Tests](https://img.shields.io/badge/475_tests-00e676?style=flat-square&labelColor=0d0d0d)
-![Modules](https://img.shields.io/badge/62_modules-b388ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.63.4-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Tests](https://img.shields.io/badge/506_tests-00e676?style=flat-square&labelColor=0d0d0d)
+![Modules](https://img.shields.io/badge/70_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
 **[▸ ENTER THE LIVE DEMO](https://jamesdare.com)**
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `62 modules` · `32 stylesheets` · `475 tests / 25 suites` · `21 desktop apps` · `0 dependencies`
+> `70 modules` · `40 stylesheets` · `506 tests / 26 suites` · `21 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -244,7 +244,7 @@ Routing, state management, component lifecycle, lazy loading, accessibility — 
 ## Architecture
 
 ```
-js/                                 # 55 ES modules, zero framework imports
+js/                                 # 63 ES modules, zero framework imports
 ├── main.js                         # Entry — orchestrates boot, lazy-loads FX
 ├── boot.js                         # Cinematic boot sequence
 ├── login.js                        # Lock screen + 3D wheel init
@@ -287,6 +287,27 @@ js/                                 # 55 ES modules, zero framework imports
 ├── dock-magnify.js                 # macOS-style dock icon magnification
 ├── ambient-system.js               # Live system telemetry simulation
 ├── weather.js                      # Geolocation weather widget (Open-Meteo)
+├── achievements.js                 # Achievement state tracking + unlock logic
+├── achievement-viewer.js           # Trophy display window renderer
+├── code-viewer.js                  # Syntax-highlighted code panel renderer
+├── gauntlet.js                     # About Me multi-stage scroll reveal (Unveiling Gauntlet)
+├── galaxy-init.js                  # Three.js scene bootstrap + lazy-load orchestrator
+├── digivice-intro.js               # Digivice-themed lock screen intro animation
+├── purple-haze.js                  # Purple Rain reveal curtain transition
+├── passion-chat.js                 # Passion AI chat integration
+├── passion-live.js                 # Live status indicator
+├── passion-ambient.js              # Ambient Passion API telemetry overlay
+├── icon-tilt.js                    # 3D gyroscopic icon tilt (±18°) with light bloom
+├── glitch-text.js                  # Chromatic aberration hover on window titles
+├── catalyst-pulse.js               # Breathing energy field behind lock screen hero
+├── sonar-pulse.js                  # Click-to-ping concentric ring effect
+├── spectral-echo.js                # Window open materialization burst
+├── phantom-reticle.js              # Spring-physics HUD targeting reticle
+├── whispers.js                     # Ambient floating HUD data fragments
+├── cipher-decode.js                # Holographic code materialization on scroll
+├── neural-link.js                  # Luminous connection traces between icons
+├── pulse-grid.js                   # Reactive ambient floor grid (canvas)
+├── ambient-drift.js                # Luminous floating orbs (canvas)
 ├── interactions/
 │   ├── engine.js                   # Orchestrator (30fps throttled)
 │   ├── cursor-trail.js             # Particle cursor effects
@@ -296,7 +317,7 @@ js/                                 # 55 ES modules, zero framework imports
 │   ├── easter-eggs.js              # Konami, 418, glitch pulse
 │   └── micro-interactions.js       # Hover/click micro-animations
 │
-css/                                # 26 modular stylesheets
+css/                                # 40 modular stylesheets
 ├── variables.css                   # Design tokens (colors, spacing, fonts, motion easing, transition shorthands)
 ├── reset.css                       # Normalize + base resets
 ├── styles.css                      # Core layout, dock, desktop, icons
@@ -320,6 +341,23 @@ css/                                # 26 modular stylesheets
 ├── tour.css                        # Guided tour steps
 ├── loading.css                     # Boot sequence, spinners
 └── admin.css                       # Content editor panel
+├── achievements.css                # Trophy display and unlock animations
+├── code-viewer.css                 # Syntax-highlighted panel styles
+├── gauntlet.css                    # Unveiling Gauntlet multi-stage scroll
+├── purple-haze.css                 # Purple Rain reveal curtain
+├── passion.css                     # Passion AI integration styles
+├── weather.css                     # Weather widget conditions + forecast
+├── signature-accents.css           # Gold HUD corner brackets + focus flash
+├── whispers.css                    # Ambient floating HUD fragments
+├── sonar-pulse.css                 # Click-to-ping concentric rings
+├── catalyst-pulse.css              # Breathing energy field glow
+├── phantom-reticle.css             # Spring-physics targeting reticle
+├── glitch-text.css                 # Chromatic aberration title hover
+├── spectral-echo.css               # Window open materialization burst
+├── cipher-decode.css               # Holographic code materialization
+├── neural-link.css                 # Icon connection traces
+├── pulse-grid.css                  # Reactive floor grid canvas container
+├── ambient-drift.css               # Floating orbs canvas container
 │
 tests/                              # 506 vitest tests across 26 suites
 ├── sanitize.test.js                # XSS sanitization (54 tests)
@@ -340,7 +378,13 @@ tests/                              # 506 vitest tests across 26 suites
 ├── desktop-utils.test.js           # Desktop utilities + DOMPurify fallback (23 tests)
 ├── scroll-reveal.test.js           # IntersectionObserver, MutationObserver, WeakSet dedup (9 tests)
 ├── notifications.test.js           # Toast queue, auto-dismiss, hover pause/resume, a11y (17 tests)
-├── security-boundaries.test.js     # Prototype pollution, fetchWithTimeout, state persistence (22 tests)
+├── calculator.test.js              # Glass calculator input + expression chaining (12 tests)
+├── terminal.test.js                # Terminal command parsing + sass responses (15 tests)
+├── dock-magnify.test.js            # Dock magnification Gaussian falloff (8 tests)
+├── icon-tilt.test.js               # 3D tilt coordinate math + reduced-motion (10 tests)
+├── glitch-text.test.js             # Chromatic aberration wiring + MutationObserver (9 tests)
+├── phantom-reticle.test.js         # Reticle spring physics + element snapping (11 tests)
+├── desktop-effects.test.js         # v3.59–v3.63 surface FX logic cores (31 tests)
 └── smoke.test.js                   # Critical path integration: DOM, routing, contact form, responsive (27 tests)
 ```
 
@@ -369,7 +413,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run 506 vitest tests
+npm run test      # Run vitest (506 tests / 26 suites)
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
@@ -438,7 +482,7 @@ npm run preview    # Serve dist/ on localhost:4173
 
 ## License
 
-MIT — **v3.45.2**
+MIT — **v3.63.4**
 
 ---
 
