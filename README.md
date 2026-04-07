@@ -4,7 +4,7 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.63.4-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.64.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/506_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/70_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
@@ -74,6 +74,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Neural Link** — Hover over a desktop icon and watch luminous energy lines trace to its nearest neighbors — like neural pathways firing in a cybernetic brain. Lines draw themselves with a gold→amethyst gradient using `stroke-dashoffset` animation, glow with dual drop-shadow halos (gold + amethyst), and fade smoothly on hover end. SVG overlay layer, MutationObserver for dynamic icons. Respects `prefers-reduced-motion`.
 - **Pulse Grid** — A reactive ambient floor grid overlays the desktop surface. Faint geometric lines become visible as the cursor approaches — nearby cells illuminate with a gold→amethyst radial glow using quadratic distance falloff. Like walking through Stark's lab with a light-up floor. Canvas-based (zero layout thrash), redraws only on cursor movement via single `requestAnimationFrame`. Pauses when tab hidden. Desktop-only, respects `prefers-reduced-motion`.
 - **Ambient Drift** — Luminous floating orbs drift across the desktop in slow organic paths driven by smoothed noise. 7 gold & amethyst spheres pulse gently in brightness and repel from the cursor — like dust motes catching light in a darkened lab. Canvas-based with additive `screen` blend mode, edge-fade for seamless wrapping. Pauses when tab hidden. Desktop-only, respects `prefers-reduced-motion`.
+- **Cosmic Dust** — Faint twinkling star-field of 50 tiny particles drifting across the desktop. Particles twinkle via smooth oscillation with rare stochastic flares — brief gold/amethyst radial glows that decay exponentially, like distant starlight through darkened glass. Deepest ambient layer (z:1), no cursor interaction by design. Canvas-based, additive blend, edge-fade wrapping. Desktop-only, respects `prefers-reduced-motion`.
 - **Cursor Trails** — Particle effects with PlayStation/chakra symbols. Lazy-initialized, throttled to 30fps.
 - **Toast Notifications** — Non-blocking notification queue with success/error/warning/info types, auto-dismiss progress bar, hover-to-pause, and `aria-live` screen reader support.
 - **Easter Eggs** — Konami code, triple-click glitch pulse, type "418" for teapot, `Ctrl+Shift+V` for system info, 18 terminal sass commands.
@@ -308,6 +309,7 @@ js/                                 # 63 ES modules, zero framework imports
 ├── neural-link.js                  # Luminous connection traces between icons
 ├── pulse-grid.js                   # Reactive ambient floor grid (canvas)
 ├── ambient-drift.js                # Luminous floating orbs (canvas)
+├── cosmic-dust.js                  # Twinkling star-field particles (canvas)
 ├── interactions/
 │   ├── engine.js                   # Orchestrator (30fps throttled)
 │   ├── cursor-trail.js             # Particle cursor effects
@@ -358,6 +360,7 @@ css/                                # 40 modular stylesheets
 ├── neural-link.css                 # Icon connection traces
 ├── pulse-grid.css                  # Reactive floor grid canvas container
 ├── ambient-drift.css               # Floating orbs canvas container
+├── cosmic-dust.css                 # Star-field canvas container
 │
 tests/                              # 506 vitest tests across 26 suites
 ├── sanitize.test.js                # XSS sanitization (54 tests)

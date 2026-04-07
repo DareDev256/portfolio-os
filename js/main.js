@@ -35,6 +35,7 @@ import { CipherDecode } from './cipher-decode.js';
 import { NeuralLink } from './neural-link.js';
 import { PulseGrid } from './pulse-grid.js';
 import { AmbientDrift } from './ambient-drift.js';
+import { CosmicDust } from './cosmic-dust.js';
 
 /* ── Visual module registry ────────────────────────────────────────
  * Each entry drives: module.init(), module.setEnabled(), and a
@@ -162,6 +163,9 @@ async function init() {
 
     // Ambient Drift — luminous floating orbs on the desktop
     if (!safeMode) AmbientDrift.init();
+
+    // Cosmic Dust — faint twinkling star-field on the desktop
+    if (!safeMode) CosmicDust.init();
 
     // Direct-access routes skip boot/lock entirely (e.g. /services for prospects)
     const directAccessRoutes = ['/services'];

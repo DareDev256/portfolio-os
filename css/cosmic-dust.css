@@ -1,0 +1,15 @@
+/* Cosmic Dust — Faint twinkling star-field on the desktop */
+
+.cosmic-dust-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1; /* deepest ambient layer, below drift (z:2) */
+    mix-blend-mode: screen; /* particles glow additively over dark bg */
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cosmic-dust-canvas { display: none; }
+}

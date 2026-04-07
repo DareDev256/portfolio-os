@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.63.3
-last_updated: 2026-04-06
+version: 3.64.0
+last_updated: 2026-04-07
 
 ---
 
@@ -17,6 +17,11 @@ last_updated: 2026-04-06
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.64.0] — 2026-04-07
+
+### Added
+- **Cosmic Dust** — Faint twinkling star-field of 50 tiny particles drifting across the desktop surface. Particles fade in and out via smooth twinkle oscillation, with rare stochastic flares — brief gold or amethyst radial glows that decay exponentially, creating a "distant starlight through darkened glass" atmosphere. Canvas-based at z-index 1 (deepest ambient layer), additive `screen` blend mode, edge-fade wrapping. No cursor interaction by design — these particles exist behind the glass. Pauses when tab hidden. Desktop-only, respects `prefers-reduced-motion`.
 
 ## [3.63.3] — 2026-04-06
 
