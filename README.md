@@ -171,7 +171,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 | Metric | Value |
 |--------|-------|
-| **Test Coverage** | 485 tests across 25 suites (vitest + jsdom) |
+| **Test Coverage** | 506 tests across 26 suites (vitest + jsdom) |
 | **Security** | DOMPurify on all innerHTML, 10 HTTP headers, CSP, SRI |
 | **Accessibility** | WCAG focus trapping, aria-live, skip-link, reduced-motion |
 | **Performance** | Lazy-loaded modules, RAF pausing, 30fps-throttled FX |
@@ -321,7 +321,7 @@ css/                                # 26 modular stylesheets
 ├── loading.css                     # Boot sequence, spinners
 └── admin.css                       # Content editor panel
 │
-tests/                              # 485 vitest tests across 25 suites
+tests/                              # 506 vitest tests across 26 suites
 ├── sanitize.test.js                # XSS sanitization (54 tests)
 ├── state.test.js                   # State persistence + events (17 tests)
 ├── state-toggles.test.js           # Auto-generated boolean toggles (14 tests)
@@ -369,7 +369,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run 485 vitest tests
+npm run test      # Run 506 vitest tests
 npm run lint      # ESLint
 npm run format    # Prettier
 ```

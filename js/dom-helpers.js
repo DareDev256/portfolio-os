@@ -62,7 +62,9 @@ export function createDecorativeEl(tag, className, namespace) {
     const el = namespace
         ? document.createElementNS(namespace, tag)
         : document.createElement(tag);
-    if (className) el.className = className;
+    // SVG elements have a read-only className (SVGAnimatedString);
+    // use setAttribute('class', ...) which works for both HTML and SVG.
+    if (className) el.setAttribute('class', className);
     el.setAttribute('aria-hidden', 'true');
     return el;
 }

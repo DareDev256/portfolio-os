@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.63.2
+version: 3.63.3
 last_updated: 2026-04-06
 
 ---
@@ -17,6 +17,14 @@ last_updated: 2026-04-06
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.63.3] — 2026-04-06
+
+### Added
+- **`tests/desktop-effects.test.js` — 31 tests for v3.59–v3.63 features**: Comprehensive test coverage for the pure logic cores of spectral-echo, cipher-decode, neural-link, pulse-grid, and ambient-drift. Tests extracted math (lerp, colorAt, dist, noise2d, smoothNoise), neighbor selection with MAX_LINKS/MAX_DISTANCE constraints, hexAlpha edge cases, createDecorativeEl (HTML + SVG), getElementCenter, shouldSkipDesktopEffects media query guard, and createPointerTracker lifecycle.
+
+### Fixed
+- **`dom-helpers.js` — SVG className assignment bug in `createDecorativeEl`**: SVG elements have a read-only `className` property (`SVGAnimatedString`), so `el.className = 'foo'` silently failed in browsers and threw in jsdom. Switched to `setAttribute('class', ...)` which works for both HTML and SVG elements. This bug affected `neural-link.js` which creates an SVG overlay via `createDecorativeEl`.
 
 ## [3.63.2] — 2026-04-06
 
