@@ -36,6 +36,7 @@ import { NeuralLink } from './neural-link.js';
 import { PulseGrid } from './pulse-grid.js';
 import { AmbientDrift } from './ambient-drift.js';
 import { CosmicDust } from './cosmic-dust.js';
+import { HoloTilt } from './holo-tilt.js';
 
 /* ── Visual module registry ────────────────────────────────────────
  * Each entry drives: module.init(), module.setEnabled(), and a
@@ -166,6 +167,9 @@ async function init() {
 
     // Cosmic Dust — faint twinkling star-field on the desktop
     if (!safeMode) CosmicDust.init();
+
+    // Holographic Card Tilt — 3D perspective + light sweep on project cards
+    if (!safeMode) HoloTilt.init();
 
     // Direct-access routes skip boot/lock entirely (e.g. /services for prospects)
     const directAccessRoutes = ['/services'];

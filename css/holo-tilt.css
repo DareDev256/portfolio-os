@@ -1,0 +1,56 @@
+/* Holographic Card Tilt — 3D perspective + light sweep on project cards
+ * Variables set by holo-tilt.js: --holo-x, --holo-y, --holo-r, --holo-opacity */
+
+.project-card {
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+/* Holographic light sweep — pseudo-element tracks cursor */
+.project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 2;
+    opacity: var(--holo-opacity, 0);
+    background: radial-gradient(
+        var(--holo-r, 260px) circle at var(--holo-x, 50%) var(--holo-y, 50%),
+        rgba(212, 175, 55, 0.12) 0%,
+        rgba(139, 92, 246, 0.06) 40%,
+        transparent 70%
+    );
+    transition: opacity 0.3s var(--ease-decel);
+    mix-blend-mode: screen;
+}
+
+/* Blueprint corners illuminate on hover (tilt active) */
+.project-card:hover .bp-corner {
+    border-color: var(--gold);
+    filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.4));
+    transition: border-color 0.3s, filter 0.3s;
+}
+
+/* Scan line gets a gold tint during tilt */
+.project-card:hover .bp-scan {
+    background: linear-gradient(
+        180deg,
+        transparent,
+        rgba(212, 175, 55, 0.08) 50%,
+        transparent
+    );
+}
+
+/* Edge glow intensifies on tilt */
+.project-card:hover {
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        0 0 15px rgba(139, 92, 246, 0.1),
+        0 0 30px rgba(212, 175, 55, 0.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-card::after { display: none; }
+    .project-card { transform-style: flat !important; }
+}

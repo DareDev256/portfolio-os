@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.64.1
+version: 3.65.0
 last_updated: 2026-04-08
 
 ---
@@ -17,6 +17,11 @@ last_updated: 2026-04-08
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.65.0] — 2026-04-08
+
+### Added
+- **Holographic Card Tilt** — Project cards in the Applications window now respond to the cursor with 3D perspective tilt (±8°) and a holographic light sweep that tracks mouse position. A gold-to-amethyst radial gradient follows the cursor across the card surface via `mix-blend-mode: screen`, blueprint corner markers illuminate with gold drop-shadow on hover, and the scan line shifts to a warm gold tint. Cards scale up 2% during interaction and spring back with `--ease-decel` on mouse leave. Event-delegation-based — works with dynamically rendered cards without rebinding. Desktop-only, respects `prefers-reduced-motion`.
 
 ## [3.64.1] — 2026-04-08
 
