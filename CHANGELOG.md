@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.64.0
-last_updated: 2026-04-07
+version: 3.64.1
+last_updated: 2026-04-08
 
 ---
 
@@ -17,6 +17,11 @@ last_updated: 2026-04-07
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.64.1] — 2026-04-08
+
+### Fixed
+- **`dom-helpers.js` — fragile selector matching in `createRevealSystem` MutationObserver**: The dynamic-element watcher used `classList.contains(selector.slice(1))` to detect newly added scroll-reveal targets, which only works for simple `.class-name` selectors and silently fails for compound, attribute, or ID selectors. Replaced with `node.matches(selector)` — the DOM's native CSS selector matcher that handles any valid selector string. Affects both `ScrollReveal` and `Gauntlet` reveal systems.
 
 ## [3.64.0] — 2026-04-07
 

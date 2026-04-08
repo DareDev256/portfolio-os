@@ -305,7 +305,7 @@ export function createRevealSystem({ selector, activeClass, threshold = 0.15, on
             for (const m of mutations) {
                 for (const node of m.addedNodes) {
                     if (node.nodeType !== 1) continue;
-                    if (node.classList?.contains(selector.slice(1))) observer.observe(node);
+                    if (node.matches?.(selector)) observer.observe(node);
                     node.querySelectorAll?.(selector).forEach((el) => observer.observe(el));
                 }
             }
