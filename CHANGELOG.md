@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.65.0
+version: 3.65.1
 last_updated: 2026-04-08
 
 ---
@@ -17,6 +17,11 @@ last_updated: 2026-04-08
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.65.1] — 2026-04-08
+
+### Fixed
+- **Holographic Card Tilt — flicker on child element hover**: The `mouseleave` capture handler in `holo-tilt.js` fired on every internal element boundary crossing (overlay, title, tech tags), resetting the 3D tilt transform and causing visible flicker during hover. Root cause: `document.addEventListener('mouseleave', handler, true)` catches `mouseleave` events on all descendant elements, not just the card itself. Fix uses `e.relatedTarget` to distinguish internal child-to-child moves from actual card exits. Also handles viewport-leave edge case (null `relatedTarget`) by cleaning up lingering `_activeCard` state. Added 8 tests covering tilt application, child-element traversal, viewport exit, and reduced-motion guard.
 
 ## [3.65.0] — 2026-04-08
 

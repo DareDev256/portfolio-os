@@ -55,7 +55,16 @@ export const HoloTilt = {
 
     _onLeave(e) {
         const card = e.target.closest(SELECTOR);
-        if (card) this._reset(card);
+        if (!card) {
+            // Cursor left a non-card element (e.g. leaving the viewport).
+            // Reset any lingering active card.
+            if (this._activeCard) this._reset(this._activeCard);
+            return;
+        }
+        // Ignore mouseleave events between child elements within the same
+        // card — only reset when the cursor actually exits the card boundary.
+        if (e.relatedTarget && card.contains(e.relatedTarget)) return;
+        this._reset(card);
     },
 
     _reset(card) {
