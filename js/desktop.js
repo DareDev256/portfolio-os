@@ -1506,6 +1506,16 @@ export const Desktop = {
 
         wrapper.append(scroll, nav);
 
+        // ── Obsidian Veil: monolith fracture overlay ──
+        const veil = document.createElement('div');
+        veil.className = 'obsidian-veil';
+        for (let s = 0; s < 6; s++) {
+            const shard = document.createElement('div');
+            shard.className = 'obsidian-shard';
+            veil.appendChild(shard);
+        }
+        wrapper.appendChild(veil);
+
         // IntersectionObserver for scroll-triggered reveals + active dot
         const revealObserver = new IntersectionObserver(
             entries => entries.forEach(e => {
@@ -1549,6 +1559,14 @@ export const Desktop = {
                 core.classList.add('reign-core--fracturing');
             } else if (progress <= 0.2 && core.classList.contains('reign-core--fracturing')) {
                 core.classList.remove('reign-core--fracturing');
+            }
+            // Obsidian Veil — two-phase fracture reveal
+            if (progress > 0.5 && !veil.classList.contains('obsidian-veil--glowing')) {
+                veil.classList.add('obsidian-veil--glowing');
+            }
+            if (progress > 0.7 && !veil.classList.contains('obsidian-veil--fractured')) {
+                veil.classList.add('obsidian-veil--fractured');
+                setTimeout(() => veil.classList.add('obsidian-veil--dismissed'), 1500);
             }
         };
         scroll.addEventListener('scroll', onScrollFracture, { passive: true });

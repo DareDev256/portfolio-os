@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.66.1
+version: 3.67.0
 last_updated: 2026-04-09
 
 ---
@@ -17,6 +17,11 @@ last_updated: 2026-04-09
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.67.0] — 2026-04-09
+
+### Added
+- **Obsidian Veil — monolith fracture reveal overlay**: Full-viewport dark monolith overlays the Purple Reign portfolio window and fractures into six irregular polygon shards when scrolling past the hero. Two-phase scroll-driven choreography: Phase 1 (50% scroll) traces amethyst glow along fracture lines via `drop-shadow` on `clip-path` shapes; Phase 2 (70% scroll) scatters shards outward with staggered delays, directional rotation, and fade, while gold/amethyst particle blooms radiate from fracture intersection points. Sequences after the crystal fracture (30% scroll) for layered dramatic impact. Shards use `will-change` GPU compositing, zero extra JS modules — 8 lines of DOM creation + 6 lines of scroll logic integrated into existing handler. Respects `prefers-reduced-motion`. Files: `css/obsidian-veil.css`, `js/desktop.js`.
 
 ## [3.66.1] — 2026-04-09
 

@@ -1,0 +1,82 @@
+/* ─── Obsidian Veil: Monolith Fracture Reveal ─── */
+/* Full-viewport dark overlay that fractures into shards when scrolling past
+   the Purple Reign hero, revealing project chapters beneath. Two-phase animation:
+   1. Fracture lines glow amethyst  2. Shards fly apart with particle scatter */
+
+.obsidian-veil {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.obsidian-shard {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    will-change: transform, opacity, filter;
+    transition:
+        transform 1s var(--ease-decel, ease-out),
+        opacity 0.8s ease-out,
+        filter 0.6s ease-out;
+}
+
+/* 6-shard irregular tiling — jagged fracture lines between shards */
+.obsidian-shard:nth-child(1) { clip-path: polygon(0 0, 53% 0, 46% 36%, 0 33%); }
+.obsidian-shard:nth-child(2) { clip-path: polygon(53% 0, 100% 0, 100% 38%, 46% 36%); }
+.obsidian-shard:nth-child(3) { clip-path: polygon(0 33%, 46% 36%, 52% 68%, 0 64%); }
+.obsidian-shard:nth-child(4) { clip-path: polygon(46% 36%, 100% 38%, 100% 66%, 52% 68%); }
+.obsidian-shard:nth-child(5) { clip-path: polygon(0 64%, 52% 68%, 47% 100%, 0 100%); }
+.obsidian-shard:nth-child(6) { clip-path: polygon(52% 68%, 100% 66%, 100% 100%, 47% 100%); }
+
+/* Phase 1 — fracture lines glow amethyst via drop-shadow on clipped shapes */
+.obsidian-veil--glowing .obsidian-shard {
+    filter:
+        drop-shadow(0 0 6px rgba(139, 92, 246, 0.6))
+        drop-shadow(0 0 14px rgba(139, 92, 246, 0.25));
+}
+
+/* Phase 2 — shards translate outward, rotate, fade */
+.obsidian-veil--fractured .obsidian-shard:nth-child(1) { transform: translate(-40px, -30px) rotate(-4deg); opacity: 0; }
+.obsidian-veil--fractured .obsidian-shard:nth-child(2) { transform: translate(45px, -35px) rotate(5deg); opacity: 0; }
+.obsidian-veil--fractured .obsidian-shard:nth-child(3) { transform: translate(-50px, 8px) rotate(-3deg); opacity: 0; }
+.obsidian-veil--fractured .obsidian-shard:nth-child(4) { transform: translate(55px, -10px) rotate(4deg); opacity: 0; }
+.obsidian-veil--fractured .obsidian-shard:nth-child(5) { transform: translate(-35px, 35px) rotate(-5deg); opacity: 0; }
+.obsidian-veil--fractured .obsidian-shard:nth-child(6) { transform: translate(40px, 40px) rotate(3deg); opacity: 0; }
+
+/* Stagger shard exits for organic feel */
+.obsidian-shard:nth-child(2) { transition-delay: 0.06s; }
+.obsidian-shard:nth-child(3) { transition-delay: 0.12s; }
+.obsidian-shard:nth-child(4) { transition-delay: 0.1s; }
+.obsidian-shard:nth-child(5) { transition-delay: 0.18s; }
+.obsidian-shard:nth-child(6) { transition-delay: 0.15s; }
+
+/* Amethyst + gold scatter particles at fracture intersection points */
+.obsidian-veil--fractured::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 48% 37%, rgba(139, 92, 246, 0.45) 0%, transparent 22%),
+        radial-gradient(circle at 51% 67%, rgba(139, 92, 246, 0.3) 0%, transparent 18%),
+        radial-gradient(circle at 46% 36%, rgba(212, 175, 55, 0.25) 0%, transparent 14%);
+    animation: veil-scatter 0.9s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes veil-scatter {
+    0%   { opacity: 1; transform: scale(1); filter: blur(0); }
+    100% { opacity: 0; transform: scale(1.6); filter: blur(4px); }
+}
+
+/* Remove from layout after animation completes */
+.obsidian-veil--dismissed {
+    display: none;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .obsidian-shard { transition-duration: 0.01s; }
+    .obsidian-veil--fractured::after { animation-duration: 0.01s; }
+}
