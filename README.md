@@ -4,9 +4,9 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.65.0-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.66.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/506_tests-00e676?style=flat-square&labelColor=0d0d0d)
-![Modules](https://img.shields.io/badge/70_modules-b388ff?style=flat-square&labelColor=0d0d0d)
+![Modules](https://img.shields.io/badge/71_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
 **[▸ ENTER THE LIVE DEMO](https://jamesdare.com)**
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `70 modules` · `40 stylesheets` · `506 tests / 26 suites` · `21 desktop apps` · `0 dependencies`
+> `71 modules` · `41 stylesheets` · `506 tests / 26 suites` · `21 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -75,6 +75,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Pulse Grid** — A reactive ambient floor grid overlays the desktop surface. Faint geometric lines become visible as the cursor approaches — nearby cells illuminate with a gold→amethyst radial glow using quadratic distance falloff. Like walking through Stark's lab with a light-up floor. Canvas-based (zero layout thrash), redraws only on cursor movement via single `requestAnimationFrame`. Pauses when tab hidden. Desktop-only, respects `prefers-reduced-motion`.
 - **Ambient Drift** — Luminous floating orbs drift across the desktop in slow organic paths driven by smoothed noise. 7 gold & amethyst spheres pulse gently in brightness and repel from the cursor — like dust motes catching light in a darkened lab. Canvas-based with additive `screen` blend mode, edge-fade for seamless wrapping. Pauses when tab hidden. Desktop-only, respects `prefers-reduced-motion`.
 - **Cosmic Dust** — Faint twinkling star-field of 50 tiny particles drifting across the desktop. Particles twinkle via smooth oscillation with rare stochastic flares — brief gold/amethyst radial glows that decay exponentially, like distant starlight through darkened glass. Deepest ambient layer (z:1), no cursor interaction by design. Canvas-based, additive blend, edge-fade wrapping. Desktop-only, respects `prefers-reduced-motion`.
+- **Void Scroll** — Global cyberpunk scrollbar theme (6px neon-cyan thumb, amethyst on active) replaces all default browser scrollbars. Every window gains a 2px scroll-progress indicator at its top edge — a luminous bar that fills left-to-right with a radial glow at the leading tip. MutationObserver detects dynamically spawned windows; ResizeObserver handles async content. rAF-throttled. Respects `prefers-reduced-motion`.
 - **Holographic Card Tilt** — Project cards respond to the cursor with 3D perspective tilt (±8°) and a holographic light sweep. A gold-to-amethyst radial gradient follows the cursor across the card surface via `mix-blend-mode: screen`, blueprint corner markers illuminate with gold glow, and cards spring back with `--ease-decel` on leave. Uses `relatedTarget`-aware `mouseleave` handling to prevent flicker when crossing internal child element boundaries. Event-delegation-based for dynamic cards. Desktop-only, respects `prefers-reduced-motion`.
 - **Cursor Trails** — Particle effects with PlayStation/chakra symbols. Lazy-initialized, throttled to 30fps.
 - **Toast Notifications** — Non-blocking notification queue with success/error/warning/info types, auto-dismiss progress bar, hover-to-pause, and `aria-live` screen reader support.

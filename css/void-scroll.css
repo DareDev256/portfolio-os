@@ -1,0 +1,98 @@
+/**
+ * Void Scroll — Cyberpunk scrollbar theme + scroll-progress indicators
+ *
+ * Replaces default browser scrollbars with thin, neon-traced bars that
+ * feel native to the Passion OS aesthetic. Every window-content area
+ * gains a luminous progress indicator at the top edge — a thin line
+ * that fills as you scroll, like a data-transfer gauge in a sci-fi HUD.
+ */
+
+/* ── Global Scrollbar — WebKit (Chrome, Edge, Safari) ─────────────── */
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: rgba(0, 240, 255, 0.15);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 240, 255, 0.35);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.2);
+}
+
+*::-webkit-scrollbar-thumb:active {
+    background: rgba(139, 92, 246, 0.4);
+}
+
+*::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* ── Global Scrollbar — Firefox ───────────────────────────────────── */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 240, 255, 0.15) transparent;
+}
+
+/* ── Window-specific: slightly brighter for visibility ────────────── */
+.window-content::-webkit-scrollbar-thumb {
+    background: rgba(0, 240, 255, 0.2);
+}
+
+.window-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 240, 255, 0.4);
+}
+
+/* ── Scroll Progress Indicator ────────────────────────────────────── */
+.void-scroll-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: var(--neon-cyan, #00f0ff);
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-decel, ease-out);
+    will-change: width;
+}
+
+/* Visible once the user has scrolled */
+.void-scroll-progress.active {
+    opacity: 1;
+}
+
+/* Leading-edge glow — pseudo-element at the tip of the progress bar */
+.void-scroll-progress::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: -2px;
+    width: 30px;
+    height: 6px;
+    background: radial-gradient(
+        ellipse at right center,
+        rgba(0, 240, 255, 0.6) 0%,
+        rgba(0, 240, 255, 0) 80%
+    );
+    pointer-events: none;
+}
+
+/* Reduced-motion: instant transitions, no glow flare */
+@media (prefers-reduced-motion: reduce) {
+    .void-scroll-progress {
+        transition: none;
+    }
+    .void-scroll-progress::after {
+        display: none;
+    }
+}

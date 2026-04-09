@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.65.1
+version: 3.66.0
 last_updated: 2026-04-08
 
 ---
@@ -17,6 +17,11 @@ last_updated: 2026-04-08
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.66.0] — 2026-04-08
+
+### Added
+- **Void Scroll — cyberpunk scrollbar theme + scroll-progress indicators**: Global scrollbar reskin replaces default browser scrollbars with thin (6px), neon-traced bars using the Passion OS palette — cyan thumb, transparent track, amethyst on active. Every `.window-content` area gains a luminous 2px progress indicator at its top edge that fills proportionally as the user scrolls, with a radial glow at the leading tip. Uses MutationObserver to detect dynamically spawned windows, ResizeObserver for async content loading, and rAF-throttled scroll updates. Respects `prefers-reduced-motion`. Firefox `scrollbar-color` and WebKit `::-webkit-scrollbar` both covered. Files: `css/void-scroll.css`, `js/void-scroll.js`.
 
 ## [3.65.1] — 2026-04-08
 
