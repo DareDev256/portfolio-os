@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.66.0
-last_updated: 2026-04-08
+version: 3.66.1
+last_updated: 2026-04-09
 
 ---
 
@@ -17,6 +17,12 @@ last_updated: 2026-04-08
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.66.1] — 2026-04-09
+
+### Added
+- **tests(void-scroll):** 9 tests covering progress bar injection, scroll percentage calculation, active-class toggling, reduced-motion guard, edge case for zero maxScroll, and MutationObserver wiring for dynamically added windows
+- **tests(cosmic-dust):** 12 tests covering particle creation bounds (radius, color palette, speed, phase distribution), twinkle oscillation range, edge-fade calculation (center, boundary, partial, symmetry), viewport wrapping logic, and flare decay math
 
 ## [3.66.0] — 2026-04-08
 
