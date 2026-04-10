@@ -1404,7 +1404,26 @@ export const Desktop = {
             core.appendChild(face);
         }
 
-        hero.append(core, heroTitle, heroTag, scrollHint);
+        // ── Amethyst Aperture: cinematic iris reveal with identity ──
+        const iris = document.createElement('div');
+        iris.className = 'aperture-iris';
+
+        const identity = document.createElement('div');
+        identity.className = 'aperture-identity';
+
+        const name = document.createElement('div');
+        name.className = 'aperture-name';
+        name.textContent = 'JAMES OLUSOGA';
+
+        const divider = document.createElement('div');
+        divider.className = 'aperture-divider';
+
+        const role = document.createElement('div');
+        role.className = 'aperture-role';
+        role.textContent = 'AI SOLUTIONS ENGINEER \u2022 CREATIVE TECHNOLOGIST';
+
+        identity.append(name, divider, role);
+        hero.append(iris, core, identity, heroTitle, heroTag, scrollHint);
         scroll.appendChild(hero);
 
         featured.forEach((project, i) => {

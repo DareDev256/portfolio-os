@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.67.1
-last_updated: 2026-04-09
+version: 3.68.0
+last_updated: 2026-04-10
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-04-09
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.68.0] — 2026-04-10
+
+### Added
+- **Amethyst Aperture** — Cinematic camera-iris reveal on the Purple Reign portfolio hero. A `clip-path: circle()` animation opens from center to reveal the creative director's identity: James Olusoga's name in muted gold Playfair Display serif with staggered letter-spacing animation, a self-drawing gold divider line, and an amethyst role tagline. Brushed-metal texture overlay adds depth. 6-stage staggered timing (iris 0s → name 0.7s → divider 1.1s → role 1.3s) layers with existing glitch animations. Respects `prefers-reduced-motion` via existing hero observer.
 
 ---
 

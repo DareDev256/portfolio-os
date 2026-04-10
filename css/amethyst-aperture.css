@@ -1,0 +1,135 @@
+/* ─── Amethyst Aperture: Cinematic Iris Reveal ─── */
+/* Camera-iris opening that reveals the creative director's identity */
+/* Added v3.68.0 */
+
+@keyframes aperture-iris {
+    from { clip-path: circle(0% at 50% 50%); }
+    to   { clip-path: circle(75% at 50% 50%); }
+}
+
+@keyframes aperture-zoom {
+    from { transform: scale(1.08); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+
+@keyframes aperture-name-rise {
+    from { opacity: 0; transform: translateY(14px); letter-spacing: 10px; }
+    to   { opacity: 1; transform: translateY(0);    letter-spacing: 6px; }
+}
+
+@keyframes aperture-role-fade {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes aperture-divider {
+    from { transform: scaleX(0); opacity: 0; }
+    to   { transform: scaleX(1); opacity: 0.4; }
+}
+
+/* Iris mask — covers hero, opens circularly on enter */
+.aperture-iris {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        ellipse at 50% 55%,
+        rgba(88, 28, 135, 0.06) 0%,
+        rgba(10, 10, 15, 0.95) 55%,
+        rgba(5, 5, 7, 1) 100%
+    );
+    clip-path: circle(0% at 50% 50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.reign-hero--entered .aperture-iris {
+    animation: aperture-iris 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Identity block — name and role above PURPLE REIGN */
+.aperture-identity {
+    text-align: center;
+    margin-bottom: 28px;
+    opacity: 0;
+    z-index: 1;
+}
+
+.reign-hero--entered .aperture-identity {
+    animation: aperture-zoom 1.2s ease-out 0.5s forwards;
+}
+
+.aperture-name {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 10px;
+    text-transform: uppercase;
+    color: var(--gold, #d4af37);
+    opacity: 0;
+}
+
+.reign-hero--entered .aperture-name {
+    animation: aperture-name-rise 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+}
+
+.aperture-divider {
+    width: 48px;
+    height: 1px;
+    background: var(--gold, #d4af37);
+    margin: 12px auto;
+    transform: scaleX(0);
+    opacity: 0;
+}
+
+.reign-hero--entered .aperture-divider {
+    animation: aperture-divider 0.8s ease-out 1.1s forwards;
+}
+
+.aperture-role {
+    font-family: var(--font-mono, monospace);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--amethyst-dim, rgba(139, 92, 246, 0.5));
+    opacity: 0;
+}
+
+.reign-hero--entered .aperture-role {
+    animation: aperture-role-fade 1s ease-out 1.3s forwards;
+}
+
+/* Post-resolve: name settles into subtle glow breathing */
+.reign-hero--resolved .aperture-name {
+    opacity: 1;
+    letter-spacing: 6px;
+    text-shadow: 0 0 18px rgba(212, 175, 55, 0.25);
+    animation: none;
+}
+
+.reign-hero--resolved .aperture-divider {
+    transform: scaleX(1);
+    opacity: 0.3;
+    animation: none;
+}
+
+.reign-hero--resolved .aperture-role {
+    opacity: 1;
+    animation: none;
+}
+
+/* Subtle background texture — brushed metal hint */
+.reign-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(139, 92, 246, 0.008) 2px,
+            rgba(139, 92, 246, 0.008) 4px
+        );
+    pointer-events: none;
+    z-index: 0;
+}
