@@ -27,7 +27,7 @@
                 },
                 {
                     "key": "Permissions-Policy",
-                    "value": "camera=(), microphone=(), geolocation=(), accelerometer=(), autoplay=(), encrypted-media=(), gyroscope=(), magnetometer=(), midi=(), payment=(), picture-in-picture=(), usb=(), interest-cohort=()"
+                    "value": "camera=(), microphone=(), geolocation=(), accelerometer=(), autoplay=(self \"https://www.youtube-nocookie.com\" \"https://player.vimeo.com\"), encrypted-media=(self \"https://www.youtube-nocookie.com\"), gyroscope=(), magnetometer=(), midi=(), payment=(), picture-in-picture=(self \"https://www.youtube-nocookie.com\" \"https://player.vimeo.com\"), usb=(), interest-cohort=()"
                 },
                 {
                     "key": "Strict-Transport-Security",
