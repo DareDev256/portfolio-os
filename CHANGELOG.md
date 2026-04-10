@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.67.0
+version: 3.67.1
 last_updated: 2026-04-09
 
 ---
@@ -15,6 +15,15 @@ last_updated: 2026-04-09
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.67.1] — 2026-04-09
+
+### Added
+- **Ambient Drift tests (20)**: Noise function determinism, orb creation bounds (radius, color alternation, speed range), cursor repulsion physics (direction, decay, zero-distance guard), viewport wrapping thresholds, and edge-fade dimming.
+- **Neural Link tests (11)**: Distance calculation, nearest-neighbor sorting, `MAX_DISTANCE` exclusion (strict `<`), `MAX_LINKS` capping, self-exclusion, single/empty icon edge cases.
+- **DOM Helpers utility tests (21)**: `hexAlpha` clamping/padding, `loadBool`/`saveBool` round-trip and quota handling, `createDecorativeEl` HTML/SVG with aria-hidden, `createPointerTracker` lifecycle (init/move/leave/destroy), `fetchWithTimeout` abort on timeout and external signal passthrough.
 
 ---
 
