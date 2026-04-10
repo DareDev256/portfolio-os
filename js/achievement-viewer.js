@@ -77,7 +77,11 @@ export function render(container) {
 
             const icon = document.createElement('span');
             icon.className = 'trophy-card-icon';
-            icon.textContent = ach.unlocked ? ach.icon : '🔒';
+            if (ach.unlocked) {
+                icon.innerHTML = ach.icon;
+            } else {
+                icon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="11" rx="2"/><path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/></svg>`;
+            }
 
             const info = document.createElement('div');
             info.className = 'trophy-card-info';

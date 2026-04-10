@@ -48,6 +48,12 @@
     }
 }
 
+/* Rarity popup icon colors */
+.achievement-rarity-common .achievement-popup-icon svg { color: var(--ach-common); }
+.achievement-rarity-rare .achievement-popup-icon svg { color: var(--ach-rare); }
+.achievement-rarity-epic .achievement-popup-icon svg { color: var(--ach-epic); }
+.achievement-rarity-legendary .achievement-popup-icon svg { color: var(--ach-legendary); filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6)); }
+
 /* Rarity border glow */
 .achievement-rarity-common { border-color: var(--ach-common); }
 .achievement-rarity-rare {
@@ -70,9 +76,17 @@
 }
 
 .achievement-popup-icon {
-    font-size: 36px;
     flex-shrink: 0;
-    line-height: 1;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.achievement-popup-icon svg {
+    width: 28px;
+    height: 28px;
 }
 
 .achievement-popup-info {
@@ -202,6 +216,13 @@
     background: rgba(255, 255, 255, 0.02);
 }
 
+/* SVG icon colors by rarity */
+.trophy-card.unlocked.rarity-common .trophy-card-icon svg { color: var(--ach-common); }
+.trophy-card.unlocked.rarity-rare .trophy-card-icon svg { color: var(--ach-rare); }
+.trophy-card.unlocked.rarity-epic .trophy-card-icon svg { color: var(--ach-epic); }
+.trophy-card.unlocked.rarity-legendary .trophy-card-icon svg { color: var(--ach-legendary); filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5)); }
+.trophy-card.locked .trophy-card-icon svg { color: rgba(255, 255, 255, 0.25); }
+
 .trophy-card.unlocked.rarity-common { border-left: 3px solid var(--ach-common); }
 .trophy-card.unlocked.rarity-rare { border-left: 3px solid var(--ach-rare); }
 .trophy-card.unlocked.rarity-epic { border-left: 3px solid var(--ach-epic); }
@@ -211,11 +232,17 @@
 }
 
 .trophy-card-icon {
-    font-size: 28px;
     flex-shrink: 0;
-    line-height: 1;
     width: 36px;
-    text-align: center;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.trophy-card-icon svg {
+    width: 24px;
+    height: 24px;
 }
 
 .trophy-card-info {
@@ -313,8 +340,13 @@
     }
 
     .trophy-card-icon {
-        font-size: 22px;
         width: 28px;
+        height: 28px;
+    }
+
+    .trophy-card-icon svg {
+        width: 20px;
+        height: 20px;
     }
 }
 

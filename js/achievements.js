@@ -11,19 +11,33 @@ const STORAGE_KEY = 'passion_os_achievements';
 // ── Achievement Definitions ──────────────────────────────────────────
 // Each achievement has: id, title, description, icon (emoji), rarity, and a check function.
 // Rarity: common (grey) | rare (cyan) | epic (purple) | legendary (gold)
+// SVG icon builder — returns inline SVG markup for each achievement
+const SVG_ICONS = {
+    first_boot: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+    explorer: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>`,
+    cartographer: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`,
+    terminal_jockey: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><polyline points="7 9 10 12 7 15"/><line x1="13" y1="15" x2="17" y2="15"/></svg>`,
+    due_diligence: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="2" width="18" height="20" rx="2"/><path d="M9 2v4h6V2"/><path d="M8 12l2.5 2.5L16 9"/></svg>`,
+    night_owl: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/><circle cx="8" cy="11" r="1" fill="currentColor"/><circle cx="14" cy="9" r="0.5" fill="currentColor"/></svg>`,
+    power_user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10l3 3-3 3"/><line x1="12" y1="16" x2="18" y2="16"/></svg>`,
+    passion_fan: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="11" r="1.5" fill="currentColor"/><circle cx="15" cy="11" r="1.5" fill="currentColor"/><path d="M9 15.5c0 0 1.5 1.5 3 1.5s3-1.5 3-1.5"/></svg>`,
+    speed_demon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/><path d="M5 19l-2 2M7 21l-1 1" opacity="0.5"/></svg>`,
+    completionist: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.09 6.26L21 9.27l-5 4.87L17.18 21 12 17.77 6.82 21 8 14.14 3 9.27l6.91-1.01L12 2z" fill="currentColor" opacity="0.15"/><path d="M12 2l2.09 6.26L21 9.27l-5 4.87L17.18 21 12 17.77 6.82 21 8 14.14 3 9.27l6.91-1.01L12 2z"/></svg>`,
+};
+
 const ACHIEVEMENTS = [
     {
         id: 'first_boot',
         title: 'System Online',
         description: 'Completed the Passion OS boot sequence.',
-        icon: '⚡',
+        icon: SVG_ICONS.first_boot,
         rarity: 'common',
     },
     {
         id: 'explorer',
         title: 'Explorer',
         description: 'Opened 3 different desktop applications.',
-        icon: '🔍',
+        icon: SVG_ICONS.explorer,
         rarity: 'common',
         threshold: 3,
     },
@@ -31,7 +45,7 @@ const ACHIEVEMENTS = [
         id: 'cartographer',
         title: 'Cartographer',
         description: 'Opened 7 different desktop applications.',
-        icon: '🗺️',
+        icon: SVG_ICONS.cartographer,
         rarity: 'rare',
         threshold: 7,
     },
@@ -39,14 +53,14 @@ const ACHIEVEMENTS = [
         id: 'terminal_jockey',
         title: 'Terminal Jockey',
         description: 'Opened the developer terminal.',
-        icon: '💻',
+        icon: SVG_ICONS.terminal_jockey,
         rarity: 'rare',
     },
     {
         id: 'due_diligence',
         title: 'Due Diligence',
         description: 'Reviewed Resume, About Me, and Skills Matrix.',
-        icon: '📋',
+        icon: SVG_ICONS.due_diligence,
         rarity: 'epic',
         requires: ['resume', 'about', 'skills'],
     },
@@ -54,35 +68,35 @@ const ACHIEVEMENTS = [
         id: 'night_owl',
         title: 'Night Owl',
         description: 'Visited Passion OS between midnight and 5 AM.',
-        icon: '🌙',
+        icon: SVG_ICONS.night_owl,
         rarity: 'rare',
     },
     {
         id: 'power_user',
         title: 'Power User',
         description: 'Used the command palette (Cmd/Alt + K).',
-        icon: '⌨️',
+        icon: SVG_ICONS.power_user,
         rarity: 'rare',
     },
     {
         id: 'passion_fan',
         title: "Passion's Friend",
         description: 'Opened the Passion AI chat window.',
-        icon: '🤖',
+        icon: SVG_ICONS.passion_fan,
         rarity: 'common',
     },
     {
         id: 'speed_demon',
         title: 'Speed Demon',
         description: 'Opened 5 windows within 30 seconds.',
-        icon: '🏃',
+        icon: SVG_ICONS.speed_demon,
         rarity: 'epic',
     },
     {
         id: 'completionist',
         title: 'Completionist',
         description: 'Unlocked every other achievement. Absolute legend.',
-        icon: '👑',
+        icon: SVG_ICONS.completionist,
         rarity: 'legendary',
     },
 ];
@@ -120,7 +134,7 @@ function showUnlockPopup(achievement) {
 
     const icon = document.createElement('span');
     icon.className = 'achievement-popup-icon';
-    icon.textContent = achievement.icon;
+    icon.innerHTML = achievement.icon;
 
     const info = document.createElement('div');
     info.className = 'achievement-popup-info';
