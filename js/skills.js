@@ -225,7 +225,7 @@ export const SkillsUniverse = {
                 const b = nodes[j];
                 const dx = b.x - a.x;
                 const dy = b.y - a.y;
-                let dist = Math.sqrt(dx * dx + dy * dy);
+                let dist = Math.hypot(dx, dy);
                 if (dist === 0) dist = 0.1; // Prevent div by zero
 
                 const force = cfg.repulsion / (dist * dist);
@@ -249,7 +249,7 @@ export const SkillsUniverse = {
             const b = spring.b;
             const dx = b.x - a.x;
             const dy = b.y - a.y;
-            let dist = Math.sqrt(dx * dx + dy * dy);
+            let dist = Math.hypot(dx, dy);
             if (dist === 0) dist = 0.1; // Prevent NaN from division by zero
 
             const stretch = dist - cfg.springLength;

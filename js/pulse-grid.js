@@ -50,7 +50,7 @@ function draw() {
             const cy = row * CELL_SIZE + CELL_SIZE / 2;
             const dx = pointer.mouse.x - cx;
             const dy = pointer.mouse.y - cy;
-            const dist = Math.sqrt(dx * dx + dy * dy);
+            const dist = Math.hypot(dx, dy);
 
             if (dist < GLOW_RADIUS) {
                 const t = dist / GLOW_RADIUS;          // 0 at cursor, 1 at edge

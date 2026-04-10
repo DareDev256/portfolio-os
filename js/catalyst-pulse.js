@@ -51,8 +51,8 @@ export const CatalystPulse = {
         const cy = window.innerHeight / 2;
         const dx = e.clientX - cx;
         const dy = e.clientY - cy;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const diag = Math.sqrt(cx * cx + cy * cy);
+        const dist = Math.hypot(dx, dy);
+        const diag = Math.hypot(cx, cy);
         const ratio = dist / diag;
 
         const shouldIntensify = ratio < PROXIMITY_THRESHOLD;

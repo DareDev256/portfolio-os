@@ -145,7 +145,7 @@ export const CursorTrail = {
         // Calculate distance traveled since last spawn
         const dx = cursorData.x - this.lastSpawnX;
         const dy = cursorData.y - this.lastSpawnY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const distance = Math.hypot(dx, dy);
 
         this.distanceTraveled += distance;
 

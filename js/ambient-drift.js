@@ -94,7 +94,7 @@ function update() {
         // Cursor repulsion
         const dx = orb.x - pointer.mouse.x;
         const dy = orb.y - pointer.mouse.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const dist = Math.hypot(dx, dy);
         if (dist < REPEL_RADIUS && dist > 0) {
             const force = (1 - dist / REPEL_RADIUS) * REPEL_STRENGTH;
             orb.x += (dx / dist) * force;

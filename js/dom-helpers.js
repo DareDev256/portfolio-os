@@ -337,6 +337,36 @@ export function createRevealSystem({ selector, activeClass, threshold = 0.15, on
     };
 }
 
+/* ── Spatial Utilities ── */
+
+/**
+ * Euclidean distance between two 2D points.
+ * Replaces the `Math.sqrt(dx * dx + dy * dy)` pattern duplicated in 9+ modules
+ * (cursor-tracker, cursor-reactive, cursor-trail, ambient-drift, pulse-grid, etc.).
+ * Uses Math.hypot for numerical stability against overflow/underflow.
+ * @param {number} ax - First point X
+ * @param {number} ay - First point Y
+ * @param {number} bx - Second point X
+ * @param {number} by - Second point Y
+ * @returns {number} Distance in pixels
+ */
+export function distance2D(ax, ay, bx, by) {
+    return Math.hypot(bx - ax, by - ay);
+}
+
+/**
+ * Check whether a point lies inside a DOMRect (or BoundingClientRect).
+ * Replaces the identical bounds-check duplicated in cursor-tracker.isOverElement
+ * and cursor-reactive.isOverElement.
+ * @param {number} x - Point X (e.g. cursor clientX)
+ * @param {number} y - Point Y (e.g. cursor clientY)
+ * @param {DOMRect} rect - Element bounding rect
+ * @returns {boolean} True if point is inside the rect
+ */
+export function isPointInRect(x, y, rect) {
+    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+}
+
 /* ── Color Utilities ── */
 
 /**

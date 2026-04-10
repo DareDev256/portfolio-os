@@ -3,6 +3,7 @@
  * Tracks cursor position, velocity, direction, proximity, and idle state
  * Provides data to cursor-reactive and cursor-trail modules
  */
+import { distance2D, isPointInRect } from '../dom-helpers.js';
 
 export const CursorTracker = {
     // Cursor state
@@ -123,7 +124,7 @@ export const CursorTracker = {
         this.velocityY = dy;
 
         // Calculate magnitude (speed)
-        this.velocity = Math.sqrt(dx * dx + dy * dy);
+        this.velocity = Math.hypot(dx, dy);
     },
 
     /**
@@ -147,9 +148,7 @@ export const CursorTracker = {
      * @returns {number} Distance in pixels
      */
     getDistanceTo(targetX, targetY) {
-        const dx = this.x - targetX;
-        const dy = this.y - targetY;
-        return Math.sqrt(dx * dx + dy * dy);
+        return distance2D(this.x, this.y, targetX, targetY);
     },
 
     /**
@@ -170,13 +169,7 @@ export const CursorTracker = {
      * @returns {boolean} True if cursor is over element
      */
     isOverElement(element) {
-        const rect = element.getBoundingClientRect();
-        return (
-            this.x >= rect.left &&
-            this.x <= rect.right &&
-            this.y >= rect.top &&
-            this.y <= rect.bottom
-        );
+        return isPointInRect(this.x, this.y, element.getBoundingClientRect());
     },
 
     /**

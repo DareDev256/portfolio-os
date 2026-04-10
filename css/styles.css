@@ -1656,15 +1656,7 @@ body::before {
     src: url('/assets/fonts/Hacked-KerX.ttf') format('truetype');
 }
 
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
+/* @keyframes spin — already defined above (line ~1489) */
 
 .logo-wheel {
     width: 40px;

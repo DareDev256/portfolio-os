@@ -3,7 +3,7 @@
  * Makes UI elements respond to cursor proximity and position
  * Windows tilt, buttons glow, icons wake up - everything feels aware
  */
-import { hexAlpha } from '../dom-helpers.js';
+import { hexAlpha, isPointInRect } from '../dom-helpers.js';
 
 export const CursorReactive = {
     registeredElements: new Map(),
@@ -68,7 +68,7 @@ export const CursorReactive = {
             // Calculate distance from cursor to element center
             const dx = cursorData.x - data.centerX;
             const dy = cursorData.y - data.centerY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            const distance = Math.hypot(dx, dy);
 
             // Skip if too far away (performance optimization)
             if (distance > this.proximityThreshold && !this.isOverElement(element, cursorData)) {
@@ -302,13 +302,7 @@ export const CursorReactive = {
      * Check if cursor is over element
      */
     isOverElement(element, cursorData) {
-        const bounds = element.getBoundingClientRect();
-        return (
-            cursorData.x >= bounds.left &&
-            cursorData.x <= bounds.right &&
-            cursorData.y >= bounds.top &&
-            cursorData.y <= bounds.bottom
-        );
+        return isPointInRect(cursorData.x, cursorData.y, element.getBoundingClientRect());
     },
 
     /**

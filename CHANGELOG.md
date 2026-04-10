@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.68.0
+version: 3.68.1
 last_updated: 2026-04-10
 
 ---
@@ -17,6 +17,13 @@ last_updated: 2026-04-10
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.68.1] — 2026-04-10
+
+### Changed
+- **Spatial utilities extracted to dom-helpers** — Added `distance2D()` and `isPointInRect()` helpers to `js/dom-helpers.js`, consolidating duplicated Euclidean distance calculations (9 occurrences across 7 files) and point-in-bounds checks (2 identical implementations in cursor-tracker and cursor-reactive).
+- **Math.hypot adoption** — Replaced `Math.sqrt(dx * dx + dy * dy)` with `Math.hypot(dx, dy)` across cursor-tracker, cursor-reactive, cursor-trail, ambient-drift, catalyst-pulse, pulse-grid, and skills modules for improved readability and numerical stability.
+- **CSS @keyframes spin deduplicated** — Consolidated 4 identical `@keyframes spin` definitions (across styles.css, loading.css, interactions.css) into a single canonical definition in `styles.css`.
 
 ## [3.68.0] — 2026-04-10
 

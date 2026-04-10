@@ -51,11 +51,7 @@
     animation: spin 0.8s linear infinite;
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
+/* @keyframes spin — defined in styles.css (single source of truth) */
 
 .loader-text {
     font-size: 14px;
