@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.68.1
-last_updated: 2026-04-10
+version: 3.69.0
+last_updated: 2026-04-11
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-04-10
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.69.0] — 2026-04-11
+
+### Added
+- **Arc Reactor** (`js/arc-reactor.js`, `css/arc-reactor.css`) — Stark Industries-inspired window focus effect. A racing energy trace (gold→amethyst→cyan conic gradient) continuously orbits the active window's titlebar border using CSS `@property` for smooth angle interpolation. Four corner energy nodes pulse at staggered intervals with gold glow halos. Activates on window focus, deactivates on blur. `mask-composite: exclude` renders the conic gradient as a thin border ring — zero JS animation loops. MutationObserver auto-wires dynamically spawned windows via `WeakSet`-tracked decoration. Respects `prefers-reduced-motion`.
 
 ---
 

@@ -38,6 +38,7 @@ import { AmbientDrift } from './ambient-drift.js';
 import { CosmicDust } from './cosmic-dust.js';
 import { HoloTilt } from './holo-tilt.js';
 import { VoidScroll } from './void-scroll.js';
+import { ArcReactor } from './arc-reactor.js';
 
 /* ── Visual module registry ────────────────────────────────────────
  * Each entry drives: module.init(), module.setEnabled(), and a
@@ -174,6 +175,9 @@ async function init() {
 
     // Void Scroll — cyberpunk scroll-progress indicators on windows
     if (!safeMode) VoidScroll.init();
+
+    // Arc Reactor — Stark Industries racing-light border on active windows
+    if (!safeMode) ArcReactor.init();
 
     // Direct-access routes skip boot/lock entirely (e.g. /services for prospects)
     const directAccessRoutes = ['/services'];

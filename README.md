@@ -4,7 +4,7 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.68.1-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.69.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/592_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/71_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `71 modules` · `41 stylesheets` · `506 tests / 26 suites` · `21 desktop apps` · `0 dependencies`
+> `72 modules` · `42 stylesheets` · `506 tests / 26 suites` · `21 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -78,6 +78,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Obsidian Veil** — Full-viewport monolith overlay that fractures to reveal project chapters in the Purple Reign showcase. Six irregular polygon shards tile the viewport as a solid black surface. As the user scrolls past the hero, amethyst glow traces the fracture lines via `drop-shadow` on `clip-path` shapes, then shards fly apart with staggered delays and directional rotation while gold/amethyst scatter particles bloom from the fracture intersection points. Two-phase scroll-driven choreography (glow at 50%, shatter at 70%) sequences after the crystal fracture for layered dramatic impact. CSS-only animation, zero extra JS modules. Respects `prefers-reduced-motion`.
 - **Amethyst Aperture** — Cinematic camera-iris reveal on the portfolio hero. A `clip-path: circle()` animation opens from center to reveal the creative director's identity — gold serif name, self-drawing divider, amethyst role tagline — with 6-stage staggered timing that layers with the existing glitch animations. Brushed-metal texture overlay. Respects `prefers-reduced-motion`.
 - **Void Scroll** — Global cyberpunk scrollbar theme (6px neon-cyan thumb, amethyst on active) replaces all default browser scrollbars. Every window gains a 2px scroll-progress indicator at its top edge — a luminous bar that fills left-to-right with a radial glow at the leading tip. MutationObserver detects dynamically spawned windows; ResizeObserver handles async content. rAF-throttled. Respects `prefers-reduced-motion`.
+- **Arc Reactor** — Active window focus effect inspired by Stark Industries circuitry. A racing energy trace (gold→amethyst→cyan conic gradient) orbits the active window's titlebar border via CSS `@property` animated rotation, while four corner energy nodes pulse at staggered intervals. The effect activates on window focus and deactivates on blur, making window switching feel like powering up terminals in a sci-fi command center. CSS `mask-composite: exclude` carves the gradient into a thin border ring — zero JS animation loops. MutationObserver for dynamic windows. Respects `prefers-reduced-motion`.
 - **Holographic Card Tilt** — Project cards respond to the cursor with 3D perspective tilt (±8°) and a holographic light sweep. A gold-to-amethyst radial gradient follows the cursor across the card surface via `mix-blend-mode: screen`, blueprint corner markers illuminate with gold glow, and cards spring back with `--ease-decel` on leave. Uses `relatedTarget`-aware `mouseleave` handling to prevent flicker when crossing internal child element boundaries. Event-delegation-based for dynamic cards. Desktop-only, respects `prefers-reduced-motion`.
 - **Cursor Trails** — Particle effects with PlayStation/chakra symbols. Lazy-initialized, throttled to 30fps.
 - **Toast Notifications** — Non-blocking notification queue with success/error/warning/info types, auto-dismiss progress bar, hover-to-pause, and `aria-live` screen reader support.

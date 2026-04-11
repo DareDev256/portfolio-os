@@ -1,0 +1,101 @@
+/* ─── Arc Reactor: Stark Industries Window Focus ─── */
+/* Racing energy trace orbits the active window border. v3.69.0 */
+@property --arc-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes arc-orbit {
+    to { --arc-angle: 360deg; }
+}
+
+@keyframes arc-pulse {
+    0%, 100% { opacity: 0.5; }
+    50%      { opacity: 1; }
+}
+
+.window.active .window-titlebar::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+        from var(--arc-angle) at 50% 50%,
+        transparent 0%,
+        transparent 70%,
+        var(--gold, #d4af37) 78%,
+        var(--amethyst, #8b5cf6) 85%,
+        rgba(0, 240, 255, 0.9) 90%,
+        transparent 100%
+    );
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+
+    animation: arc-orbit 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+    pointer-events: none;
+}
+
+.window.active .window-titlebar::before {
+    opacity: 1;
+}
+
+.window.active.arc-reactor-on {
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(0, 240, 255, 0.1),
+        0 0 60px rgba(139, 92, 246, 0.06),
+        0 0 2px rgba(212, 175, 55, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.arc-reactor-node {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold, #d4af37);
+    box-shadow:
+        0 0 6px var(--gold, #d4af37),
+        0 0 12px rgba(139, 92, 246, 0.4);
+    opacity: 0;
+    transition: opacity 0.6s ease-out;
+    pointer-events: none;
+    z-index: 1;
+    animation: arc-pulse 2.4s ease-in-out infinite;
+}
+
+.arc-reactor-node--tl { top: -2px;    left: -2px; }
+.arc-reactor-node--tr { top: -2px;    right: -2px; }
+.arc-reactor-node--bl { bottom: -2px; left: -2px; }
+.arc-reactor-node--br { bottom: -2px; right: -2px; }
+
+.window.active.arc-reactor-on .arc-reactor-node {
+    opacity: 1;
+}
+
+.arc-reactor-node--tr { animation-delay: 0.6s; }
+.arc-reactor-node--bl { animation-delay: 1.2s; }
+.arc-reactor-node--br { animation-delay: 1.8s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .window.active .window-titlebar::before {
+        animation: none;
+        opacity: 0.4;
+    }
+    .arc-reactor-node {
+        animation: none;
+        opacity: 0.5;
+    }
+}
