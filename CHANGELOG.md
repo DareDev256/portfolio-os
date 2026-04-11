@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.69.0
+version: 3.70.0
 last_updated: 2026-04-11
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-04-11
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.70.0] — 2026-04-11
+
+### Added
+- **Phantom Keys** (`js/phantom-keys.js`, `css/phantom-keys.css`) — Holographic keystroke projections on the desktop surface. Typing spawns brief gold/amethyst characters that float upward and dissolve like Tony Stark's projected keyboard. Characters materialize at viewport bottom-center with horizontal jitter, rise 120px with per-character lateral drift via CSS custom property `--drift-x`, and fade through progressive blur. JetBrains Mono font at 28px ±4px random variation. 60ms cooldown between spawns with a 6-element active pool cap to prevent GPU saturation. Filters out input/textarea/contentEditable targets and modifier-key combos. `cubic-bezier(0.16, 1, 0.3, 1)` easing for natural deceleration. 14 unit tests covering spawn bounds, cooldown gating, pool limits, typing target detection, and palette selection. Respects `prefers-reduced-motion`.
 
 ---
 

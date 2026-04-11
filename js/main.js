@@ -39,6 +39,7 @@ import { CosmicDust } from './cosmic-dust.js';
 import { HoloTilt } from './holo-tilt.js';
 import { VoidScroll } from './void-scroll.js';
 import { ArcReactor } from './arc-reactor.js';
+import { PhantomKeys } from './phantom-keys.js';
 
 /* ── Visual module registry ────────────────────────────────────────
  * Each entry drives: module.init(), module.setEnabled(), and a
@@ -178,6 +179,9 @@ async function init() {
 
     // Arc Reactor — Stark Industries racing-light border on active windows
     if (!safeMode) ArcReactor.init();
+
+    // Phantom Keys — holographic keystroke projections on the desktop
+    if (!safeMode) PhantomKeys.init();
 
     // Direct-access routes skip boot/lock entirely (e.g. /services for prospects)
     const directAccessRoutes = ['/services'];
