@@ -394,14 +394,9 @@ export const Lightbox = {
         if (!id) return this._blockedEmbedPlaceholder('YouTube');
         const iframe = document.createElement('iframe');
         iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
-        iframe.referrerPolicy = 'no-referrer';
-        iframe.loading = 'lazy';
         iframe.frameBorder = '0';
         iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
         iframe.allowFullscreen = true;
-        // Sandbox restricts embed to media playback — blocks top-navigation,
-        // form submission, and script access to parent window
-        iframe.sandbox = 'allow-scripts allow-same-origin allow-presentation';
         iframe.style.width = '100%';
         iframe.style.height = '100%';
         return iframe;
@@ -414,12 +409,9 @@ export const Lightbox = {
         if (!id) return this._blockedEmbedPlaceholder('Vimeo');
         const iframe = document.createElement('iframe');
         iframe.src = `https://player.vimeo.com/video/${id}?autoplay=1`;
-        iframe.referrerPolicy = 'no-referrer';
-        iframe.loading = 'lazy';
         iframe.frameBorder = '0';
         iframe.allow = 'autoplay; fullscreen; picture-in-picture';
         iframe.allowFullscreen = true;
-        iframe.sandbox = 'allow-scripts allow-same-origin allow-presentation';
         iframe.style.width = '100%';
         iframe.style.height = '100%';
         return iframe;
