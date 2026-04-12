@@ -8,6 +8,78 @@
         "repo": null
     },
     {
+        "title": "BetMetrics.ca",
+        "description": "Sports betting odds comparison platform with live data from 11 sportsbooks, forum, and user accounts. Built for affiliate marketing at scale.",
+        "tech": ["Next.js 16", "React 19", "Convex", "Clerk", "TypeScript"],
+        "tags": ["Fullstack", "Web"],
+        "demo": "https://betmetrics.ca",
+        "repo": null
+    },
+    {
+        "title": "LetsTrade",
+        "description": "Real-time options trading scanner and dashboard with autonomous paper trading, market regime detection, and earnings analysis. 190K+ lines, runs 24/7.",
+        "tech": ["Python", "FastAPI", "WebSocket", "SQLite", "Tailscale"],
+        "tags": ["Fullstack", "Tools"],
+        "demo": null,
+        "repo": null
+    },
+    {
+        "title": "LockedIn",
+        "description": "One-tap connection card with action routing — follow all socials, download vCard, DM, book, or pay in a single tap. Built live at a Claude Code meetup.",
+        "tech": ["React", "Vite", "JavaScript"],
+        "tags": ["Web", "Tools"],
+        "demo": null,
+        "repo": "https://github.com/DareDev256/lockedin"
+    },
+    {
+        "title": "Aerial Sentinel",
+        "description": "Commercial drone-as-a-service surveillance platform with autonomous patrol, AI object detection, and client dashboard. Targeting the unserved Canadian mid-market.",
+        "tech": ["Python", "MAVSDK", "YOLOv8", "FastAPI", "Next.js"],
+        "tags": ["AI", "Startup"],
+        "demo": null,
+        "repo": null
+    },
+    {
+        "title": "Privacy Shield",
+        "description": "Unified defensive OSINT tool combining digital footprint aggregation, facial recognition search, and automated data broker removal.",
+        "tech": ["Python", "InsightFace", "Playwright", "Maigret"],
+        "tags": ["AI", "Tools"],
+        "demo": null,
+        "repo": null
+    },
+    {
+        "title": "SyrenEffect",
+        "description": "Official website for Twitch streamer SyrenEffect. Embedded clips, collab showcase, link analytics, and admin panel.",
+        "tech": ["Next.js 16", "TypeScript", "Tailwind CSS", "Supabase"],
+        "tags": ["Web"],
+        "demo": "https://syreneffect.com",
+        "repo": null
+    },
+    {
+        "title": "MustHaveFrenchies",
+        "description": "French Bulldog breeder site with full admin CMS. Non-technical owner manages puppies, litters, and content through a browser-based panel.",
+        "tech": ["HTML", "CSS", "JavaScript", "Vercel Serverless"],
+        "tags": ["Fullstack", "Web"],
+        "demo": "https://musthavefrenchies.com",
+        "repo": "https://github.com/DareDev256/musthavefrenchies-site"
+    },
+    {
+        "title": "Passion Pop",
+        "description": "Match-and-pop bubble game with combos, power-ups, daily challenges, and achievement system. PWA-ready mobile-first design.",
+        "tech": ["Phaser 3", "JavaScript", "Vite", "PWA"],
+        "tags": ["Games", "Web"],
+        "demo": null,
+        "repo": null
+    },
+    {
+        "title": "Vibe Coder",
+        "description": "Vampire survivors-style idle game powered by coding. 18 enemy types, 4 bosses, 26 weapons, and Claude Code integration.",
+        "tech": ["Phaser 3", "JavaScript", "Vite", "Web Audio API"],
+        "tags": ["Games", "Web"],
+        "demo": "https://daredev256.github.io/vibe-coder/",
+        "repo": "https://github.com/DareDev256/vibe-coder"
+    },
+    {
         "title": "FCPXML MCP Server",
         "description": "AI-powered MCP server for Final Cut Pro XML editing. Automate timeline manipulation with natural language.",
         "tech": ["Python", "Claude AI", "MCP", "XML"],
@@ -16,76 +88,12 @@
         "repo": "https://github.com/DareDev256/fcpxml-mcp-server"
     },
     {
-        "title": "RAG with Citations",
-        "description": "Enterprise RAG pipeline with source attribution. Retrieve, generate, and cite with confidence scores.",
-        "tech": ["Python", "LangChain", "OpenAI", "FAISS"],
-        "tags": ["AI", "Fullstack"],
-        "demo": null,
-        "repo": "https://github.com/DareDev256/rag-system-with-citations"
-    },
-    {
-        "title": "Vector vs Keyword Search",
-        "description": "Semantic vector search vs BM25 keyword search comparison engine with interactive benchmarks.",
-        "tech": ["Python", "Sentence Transformers", "BM25", "Streamlit"],
+        "title": "Fandom Wiki Bot",
+        "description": "AI-assisted Fandom wiki bot with approval workflows. Automate edits while keeping human oversight.",
+        "tech": ["Python", "MediaWiki API", "OpenAI"],
         "tags": ["AI", "Tools"],
         "demo": null,
-        "repo": "https://github.com/DareDev256/vector-vs-keyword-search"
-    },
-    {
-        "title": "LLM Evaluation Harness",
-        "description": "LLM evaluation framework with CI/CD integration. Benchmark models across accuracy, latency, and cost.",
-        "tech": ["Python", "OpenAI", "CI/CD", "pytest"],
-        "tags": ["AI", "Tools"],
-        "demo": null,
-        "repo": "https://github.com/DareDev256/llm-evaluation-harness"
-    },
-    {
-        "title": "Memory Master",
-        "description": "AI spaced repetition learning platform powered by GPT-4 and FSRS algorithm for optimal retention.",
-        "tech": ["React", "Node.js", "GPT-4", "FSRS"],
-        "tags": ["AI", "Fullstack"],
-        "demo": null,
-        "repo": "https://github.com/DareDev256/memory-master-mvp"
-    },
-    {
-        "title": "Contract Translator",
-        "description": "AI contract analysis tool. Breaks down legal documents into plain-English summaries with risk highlighting.",
-        "tech": ["Next.js", "OpenAI", "Vercel", "TypeScript"],
-        "tags": ["AI", "Web"],
-        "demo": "https://contract-translator.vercel.app",
-        "repo": "https://github.com/DareDev256/contract-translator"
-    },
-    {
-        "title": "Service Tracker Pro",
-        "description": "Dealership vehicle tracking system with real-time status updates, drag-and-drop interface, and role-based access.",
-        "tech": ["React", "Node.js", "PostgreSQL", "Tailwind"],
-        "tags": ["Fullstack", "Web"],
-        "demo": "https://servicetracker-production-f05b.up.railway.app",
-        "repo": null
-    },
-    {
-        "title": "PulseMap",
-        "description": "Real-time global disease surveillance dashboard. Track outbreaks with interactive maps and live data feeds.",
-        "tech": ["React", "D3.js", "Vercel", "REST APIs"],
-        "tags": ["Fullstack", "Web"],
-        "demo": "https://pulsemap-three.vercel.app",
-        "repo": "https://github.com/DareDev256/pulsemap"
-    },
-    {
-        "title": "Culture Drop HQ",
-        "description": "Operations dashboard for Toronto hip-hop media. Manage content, artists, and releases in one place.",
-        "tech": ["React", "Node.js", "MongoDB", "Tailwind"],
-        "tags": ["Fullstack", "Web"],
-        "demo": null,
-        "repo": null
-    },
-    {
-        "title": "Music Time Machine",
-        "description": "Music intelligence dashboard combining Spotify, YouTube, and Billboard data for trend analysis.",
-        "tech": ["TypeScript", "Spotify API", "YouTube API", "Next.js"],
-        "tags": ["Fullstack", "Tools"],
-        "demo": null,
-        "repo": "https://github.com/DareDev256/music-time-machine"
+        "repo": "https://github.com/DareDev256/fandom-wiki-bot-template"
     },
     {
         "title": "Viral Clone",
@@ -134,38 +142,6 @@
         "tags": ["Web", "Creative"],
         "demo": "https://tdotssolutionsz-portfolio.vercel.app",
         "repo": "https://github.com/DareDev256/tdotssolutionsz-portfolio"
-    },
-    {
-        "title": "IMG Gen Prompts",
-        "description": "AI prompt engineering tool for image and video generation. Craft, test, and refine prompts.",
-        "tech": ["React", "OpenAI", "Vercel", "TypeScript"],
-        "tags": ["AI", "Web"],
-        "demo": "https://web-ten-vert-46.vercel.app",
-        "repo": "https://github.com/DareDev256/Ultimate-Image-Video-Prompt-Generator"
-    },
-    {
-        "title": "BuildRight",
-        "description": "Duolingo-style mobile learning app for construction trades. Gamified skill building with React Native.",
-        "tech": ["React Native", "Node.js", "Firebase"],
-        "tags": ["Mobile", "Fullstack"],
-        "demo": null,
-        "repo": "https://github.com/DareDev256/buildright"
-    },
-    {
-        "title": "Vibe Coder",
-        "description": "Vampire survivors-style idle game powered by coding. 18 enemy types, 4 bosses, 26 weapons, and Claude Code integration.",
-        "tech": ["Phaser 3", "JavaScript", "Vite", "Web Audio API"],
-        "tags": ["Games", "Web"],
-        "demo": "https://daredev256.github.io/vibe-coder/",
-        "repo": "https://github.com/DareDev256/vibe-coder"
-    },
-    {
-        "title": "Fandom Wiki Bot",
-        "description": "AI-assisted Fandom wiki bot with approval workflows. Automate edits while keeping human oversight.",
-        "tech": ["Python", "MediaWiki API", "OpenAI"],
-        "tags": ["AI", "Tools"],
-        "demo": null,
-        "repo": "https://github.com/DareDev256/fandom-wiki-bot-template"
     },
     {
         "title": "Portfolio OS",
