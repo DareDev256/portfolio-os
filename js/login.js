@@ -58,7 +58,9 @@ export const Login = {
         // Listen for system lock event (from Start Menu)
         window.addEventListener('system-lock', () => this.lock());
 
-        // Skip heavy GPU effects — go straight to login
+        // Skip heavy GPU effects — go straight to desktop
+        // Mark intro as seen so galaxy can load later
+        sessionStorage.setItem('digivice-intro-seen', '1');
         this.login();
     },
 
@@ -404,25 +406,13 @@ export const Login = {
         // Stop 3D wheel to save GPU (lock screen hidden)
         if (this.wheel3D) this.wheel3D.stop();
 
-        // Purple Haze curtain: cover → swap screens → reveal
-        PurpleHaze.cover();
+        // Swap screens directly — no curtain animation
+        this.lockScreen.classList.add('hidden');
+        this.desktop.classList.remove('hidden');
+        this.desktop.classList.add('fade-in');
 
-        // Brief hold while curtain settles, then swap behind it
-        setTimeout(() => {
-            this.lockScreen.classList.add('hidden');
-            this.desktop.classList.remove('hidden');
-            this.desktop.classList.add('fade-in');
-
-            // Initialize desktop components
-            this.initDesktop();
-
-            // Disable effects during initial load for performance
-            Glyphs.setEnabled(false);
-            StartMenu.close();
-
-            // Part the curtain to reveal the desktop
-            PurpleHaze.reveal().then(() => Warp.pulse());
-        }, 400);
+        // Initialize desktop components
+        this.initDesktop();
     },
 
     /**
