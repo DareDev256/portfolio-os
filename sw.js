@@ -1,5 +1,5 @@
 // Service Worker (F) – pre-cache + hardened runtime cache
-const CACHE_NAME = 'portfolio-os-v4';
+const CACHE_NAME = 'portfolio-os-v5';
 const MAX_CACHE_ENTRIES = 150; // Prevent unbounded cache growth
 const PRECACHE = [
     '/',
@@ -107,11 +107,37 @@ self.addEventListener('fetch', (e) => {
         );
         return;
     }
-    // Default: try cache, fall back to network
+    // Hashed assets (Vite bundles): cache-first — hash changes on rebuild
+    // Unhashed assets: network-first so deploys land immediately
+    const isHashed = /\.[a-zA-Z0-9_-]{8,}\.(js|css)$/.test(url.pathname);
+    if (isHashed) {
+        e.respondWith(
+            (async () => {
+                const cached = await caches.match(e.request);
+                return cached || fetch(e.request).then(res => {
+                    if (isCacheable(res)) {
+                        const cache = caches.open(CACHE_NAME).then(c => c.put(e.request, res.clone()));
+                    }
+                    return res;
+                });
+            })()
+        );
+        return;
+    }
+    // Everything else: network-first
     e.respondWith(
         (async () => {
-            const cached = await caches.match(e.request);
-            return cached || fetch(e.request);
+            try {
+                const res = await fetch(e.request);
+                if (isCacheable(res)) {
+                    const cache = await caches.open(CACHE_NAME);
+                    cache.put(e.request, res.clone());
+                }
+                return res;
+            } catch {
+                const cached = await caches.match(e.request);
+                return cached || new Response('Offline', { status: 503 });
+            }
         })()
     );
 });
