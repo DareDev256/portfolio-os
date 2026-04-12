@@ -58,10 +58,11 @@ export const Login = {
         // Listen for system lock event (from Start Menu)
         window.addEventListener('system-lock', () => this.lock());
 
-        // Skip heavy GPU effects — go straight to desktop
-        // Mark intro as seen so galaxy can load later
-        sessionStorage.setItem('digivice-intro-seen', '1');
-        this.login();
+        // Play digivice intro video, then transition to desktop
+        // (skip galaxy + 3D wheel — they cause GPU deadlock)
+        DigiviceIntro.play().then(() => {
+            this.login();
+        });
     },
 
     /**
