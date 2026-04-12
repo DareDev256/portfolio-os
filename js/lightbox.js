@@ -234,6 +234,12 @@ export const Lightbox = {
             }
         }
 
+        // Pause heavy GPU effects while video plays to prevent freezing
+        const galaxy = window.__galaxyInstance;
+        const engine = window.__InteractionEngine;
+        if (galaxy) galaxy.stop();
+        if (engine) engine.setEnabled(false);
+
         WindowManager.create({
             id: `video-${Date.now()}`,
             title: item.title || 'Media Player',
@@ -242,7 +248,11 @@ export const Lightbox = {
             width: 800,
             height: 500,
             x: 100,
-            y: 100
+            y: 100,
+            onClose() {
+                if (galaxy) galaxy.start();
+                if (engine) engine.setEnabled(true);
+            },
         });
     },
 
