@@ -11,10 +11,10 @@ export const CursorTrail = {
     // Particle system
     particles: [],
     particlePool: [],
-    maxParticles: 50,
+    maxParticles: 25,
 
     // Spawning config
-    spawnDistance: 40, // pixels between spawns
+    spawnDistance: 60, // pixels between spawns
     lastSpawnX: 0,
     lastSpawnY: 0,
     distanceTraveled: 0,

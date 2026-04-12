@@ -365,12 +365,12 @@ export class GalaxyBackground {
             return;
         }
 
-        // Throttle to ~24fps — background effect doesn't need 60fps
+        // Throttle to ~15fps — background starfield, doesn't need more
         const now = performance.now();
-        if (now - this._lastRenderTime < 42) return;
+        if (now - this._lastRenderTime < 66) return;
         this._lastRenderTime = now;
 
-        this.time += 0.042; // ~24fps timestep
+        this.time += 0.066; // ~15fps timestep
 
         // Smooth mouse follow
         this.mouse.x += (this.targetMouse.x - this.mouse.x) * 0.05;

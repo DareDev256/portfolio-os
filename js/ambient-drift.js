@@ -39,6 +39,8 @@ let pointer;    // initialized in init()
 let rafId = 0;
 let visible = true;
 let time = 0;
+let lastFrame = 0;
+const FRAME_INTERVAL = 50; // ~20fps — ambient effect doesn't need 60fps
 
 /* ── Cheap pseudo-noise (no dependency) ────── */
 function noise2d(x, y) {
@@ -144,9 +146,14 @@ function draw() {
     }
 }
 
-function tick() {
+function tick(now) {
     rafId = 0;
     if (isPageHidden() || !visible) return;
+    if (now - lastFrame < FRAME_INTERVAL) {
+        rafId = requestAnimationFrame(tick);
+        return;
+    }
+    lastFrame = now;
     update();
     draw();
     rafId = requestAnimationFrame(tick);

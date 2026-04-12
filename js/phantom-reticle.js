@@ -28,10 +28,12 @@ export const PhantomReticle = {
     _locked: false,
     _scale: 1,
     _alive: false,
+    _settled: true,        // true when reticle has caught up to cursor
 
     /* ── Spring physics constants ── */
     STIFFNESS: 0.12,
     DAMPING: 0.72,
+    SETTLE_THRESHOLD: 0.1, // velocity below this = settled
 
     init() {
         if (prefersReducedMotion()) return;
@@ -54,16 +56,22 @@ export const PhantomReticle = {
         window.addEventListener('mouseleave', () => { this.el.classList.add('pr-hidden'); });
         window.addEventListener('mouseenter', () => { this.el.classList.remove('pr-hidden'); });
 
-        // Start hidden until first mouse move
+        // Start hidden + settled until first mouse move wakes the loop
         this.el.classList.add('pr-hidden');
         this._alive = true;
-        this._tick();
+        this._settled = true;
     },
 
     _onMove(e) {
         this._mx = e.clientX;
         this._my = e.clientY;
         this.el.classList.remove('pr-hidden');
+
+        // Wake the animation loop if settled
+        if (this._settled) {
+            this._settled = false;
+            this._tick();
+        }
 
         // Check lock target
         const target = e.target.closest?.(LOCK_TARGETS);
@@ -91,8 +99,7 @@ export const PhantomReticle = {
     },
 
     _tick() {
-        if (!this._alive) return;
-        this._raf = requestAnimationFrame(() => this._tick());
+        if (!this._alive || this._settled) return;
         if (isPageHidden()) return;
 
         // Spring physics: acceleration toward target
@@ -111,6 +118,13 @@ export const PhantomReticle = {
             : 1;
         this.el.style.transform =
             `translate(${this._rx}px, ${this._ry}px) scale(${s})`;
+
+        // Stop loop when settled (velocity near zero)
+        if (Math.abs(this._vx) < this.SETTLE_THRESHOLD && Math.abs(this._vy) < this.SETTLE_THRESHOLD) {
+            this._settled = true;
+            return;
+        }
+        this._raf = requestAnimationFrame(() => this._tick());
     },
 
     destroy() {

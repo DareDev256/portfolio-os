@@ -45,7 +45,7 @@ export const InteractionEngine = {
     lowFPSCount: 0,
     lowFPSThreshold: 5000, // 5 seconds
     FRAME_BUDGET_MS: 9,        // max ms per frame to maintain 60fps
-    THROTTLE_INTERVAL_MS: 33,  // 30fps throttle — skip work if less than this since last frame
+    THROTTLE_INTERVAL_MS: 50,  // 20fps throttle — cursor effects don't need 30fps
     APPROX_FRAME_MS: 16.67,    // approximate ms per frame at 60fps
 
     /**
