@@ -9,9 +9,6 @@
  */
 
 import { State } from './state.js';
-import { Aurora } from './aurora.js';
-import { Glyphs } from './glyphs.js';
-import { AudioFX } from './audiofx.js';
 import { Boot } from './boot.js';
 import { Login } from './login.js';
 import { Modal } from './modal.js';
@@ -19,27 +16,10 @@ import { Desktop } from './desktop.js';
 import { CommandPalette } from './command-palette.js';
 import { ShortcutsOverlay } from './shortcuts-overlay.js';
 import { Notify } from './notifications.js';
-import { Parallax } from './parallax.js';
 import { ScrollReveal } from './scroll-reveal.js';
-import { IconTilt } from './icon-tilt.js';
 import { ensureGalaxy } from './galaxy-init.js';
 import { Achievements } from './achievements.js';
 import { Gauntlet } from './gauntlet.js';
-import { GlitchText } from './glitch-text.js';
-import { SpectralEcho } from './spectral-echo.js';
-import { CipherDecode } from './cipher-decode.js';
-import { HoloTilt } from './holo-tilt.js';
-import { VoidScroll } from './void-scroll.js';
-import { ArcReactor } from './arc-reactor.js';
-
-/* ── Visual module registry ────────────────────────────────────────
- * Each entry drives: module.init(), module.setEnabled(), and a
- * state-event listener — all from a single declarative row.        */
-const VISUAL_MODULES = [
-    { module: Aurora,  stateKey: 'auroraEnabled', event: 'aurora' },
-    { module: Glyphs,  stateKey: 'glyphsEnabled', event: 'glyphs' },
-    { module: AudioFX, stateKey: 'soundEnabled',  event: 'sound' },
-];
 
 /* ── Keyboard shortcut table ───────────────────────────────────────
  * key → { toggle, label } — looked up on (Cmd|Alt)+key press.     */
@@ -72,83 +52,21 @@ async function init() {
     const params = new URLSearchParams(location.search);
     const safeMode = params.get('safe') === '1';
 
-    // Initialize FX layer (lazy-load only if enabled)
-    if (!safeMode && State.fxEnabled) {
-        const { FX } = await import('./fx.js');
-        FX.init();
-        FX.setEnabled(true);
-        window.__FX = FX;
-        document.addEventListener('state:fx', (e) => FX.setEnabled(e.detail.enabled));
-    }
-
-    // Initialize visual modules from registry
-    for (const { module, stateKey, event } of VISUAL_MODULES) {
-        module.init();
-        module.setEnabled(safeMode ? false : State[stateKey]);
-        document.addEventListener(`state:${event}`, (e) => module.setEnabled(e.detail.enabled));
-    }
-
-    // Initialize Interaction Engine — always load modules so event-driven
-    // features (easter eggs) work even if the animation loop is off
-    if (!safeMode) {
-        const { InteractionEngine } = await import('./interactions/engine.js');
-        await InteractionEngine.init({ startLoop: State.interactionsEnabled });
-        window.__InteractionEngine = InteractionEngine;
-        document.addEventListener('state:interactions', (e) => InteractionEngine.setEnabled(e.detail.enabled));
-        document.addEventListener('state:cursorTrail', (e) => InteractionEngine.cursorTrail?.setEnabled(e.detail.enabled));
-        document.addEventListener('state:cursorTrailType', (e) => InteractionEngine.cursorTrail?.setType(e.detail.type));
-        Desktop.setupEasterEggHooks();
-    }
-
-    // Initialize Modal system
+    // ── Core systems only — all visual effects disabled for stability ──
     Modal.init();
-
-    // Initialize Command Palette (Cmd+K / Ctrl+K)
     CommandPalette.init();
-
-    // Initialize Achievement System (must be before Desktop.init fires boot-complete)
     Achievements.init();
-
-    // Initialize Shortcuts Overlay (press ?)
     ShortcutsOverlay.init();
-
-    // Defer galaxy on first visit — GPU contention blocks video intro decode
-    if (!safeMode && sessionStorage.getItem('digivice-intro-seen')) {
-        await ensureGalaxy(document.body);
-    }
-
-    // Initialize parallax depth layers (lock screen + desktop)
-    if (!safeMode) {
-        Parallax.init();
-    }
-
-    // Scroll-triggered reveals for window content
     ScrollReveal.init();
     Gauntlet.init();
 
-    // 3D tilt on desktop icon hover (Phase 1 — Alien Tech Upgrade)
-    IconTilt.init();
-
-    // ── Lightweight event-driven effects (no continuous loops) ──
-    if (!safeMode) {
-        GlitchText.init();      // CSS-only, hover-triggered
-        SpectralEcho.init();    // CSS-only, window-open triggered
-        CipherDecode.init();    // Scroll-reveal triggered
-        HoloTilt.init();        // CSS transform on hover
-        VoidScroll.init();      // Scroll-debounced RAF
-        ArcReactor.init();      // Pure CSS, no JS loop
+    // Galaxy background — deferred, only after intro seen
+    if (!safeMode && sessionStorage.getItem('digivice-intro-seen')) {
+        // Load galaxy after a delay to not block initial interaction
+        setTimeout(async () => {
+            try { await ensureGalaxy(document.body); } catch {}
+        }, 3000);
     }
-
-    // ── Disabled for performance — re-enable selectively via settings ──
-    // AmbientDrift.init();   // Canvas RAF 20fps, 7 radial gradients/frame
-    // CosmicDust.init();     // Canvas RAF 20fps, 50 particles/frame
-    // PhantomReticle.init(); // RAF spring loop, DOM transform every frame
-    // PulseGrid.init();     // Canvas RAF on cursor, 60+ cell calculations
-    // NeuralLink.init();    // SVG DOM reflow on hover
-    // Whispers.init();      // DOM-based floating fragments
-    // SonarPulse.init();    // Click-triggered but spawns DOM + animations
-    // CatalystPulse.init(); // Lock screen only, but adds infinite CSS anims
-    // PhantomKeys.init();   // Keystroke DOM projections
 
     // Direct-access routes skip boot/lock entirely (e.g. /services for prospects)
     const directAccessRoutes = ['/services'];
