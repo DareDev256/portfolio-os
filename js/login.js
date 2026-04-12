@@ -58,15 +58,8 @@ export const Login = {
         // Listen for system lock event (from Start Menu)
         window.addEventListener('system-lock', () => this.lock());
 
-        // Cursor-reactive aurora on lock screen
-        this.initCursorAurora();
-
-        // Play digivice intro video → go straight to desktop (no cinematic/boot text)
-        DigiviceIntro.play().then(() => {
-            this.initGalaxyEffect();
-            this.init3DWheel();
-            this.login();
-        });
+        // Skip heavy GPU effects — go straight to login
+        this.login();
     },
 
     /**
