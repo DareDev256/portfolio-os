@@ -25,21 +25,12 @@ import { IconTilt } from './icon-tilt.js';
 import { ensureGalaxy } from './galaxy-init.js';
 import { Achievements } from './achievements.js';
 import { Gauntlet } from './gauntlet.js';
-import { Whispers } from './whispers.js';
-import { SonarPulse } from './sonar-pulse.js';
-import { CatalystPulse } from './catalyst-pulse.js';
-import { PhantomReticle } from './phantom-reticle.js';
 import { GlitchText } from './glitch-text.js';
 import { SpectralEcho } from './spectral-echo.js';
 import { CipherDecode } from './cipher-decode.js';
-import { NeuralLink } from './neural-link.js';
-import { PulseGrid } from './pulse-grid.js';
-import { AmbientDrift } from './ambient-drift.js';
-import { CosmicDust } from './cosmic-dust.js';
 import { HoloTilt } from './holo-tilt.js';
 import { VoidScroll } from './void-scroll.js';
 import { ArcReactor } from './arc-reactor.js';
-import { PhantomKeys } from './phantom-keys.js';
 
 /* ── Visual module registry ────────────────────────────────────────
  * Each entry drives: module.init(), module.setEnabled(), and a
@@ -138,50 +129,26 @@ async function init() {
     // 3D tilt on desktop icon hover (Phase 1 — Alien Tech Upgrade)
     IconTilt.init();
 
-    // Ambient floating HUD data fragments on desktop
-    if (!safeMode) Whispers.init();
+    // ── Lightweight event-driven effects (no continuous loops) ──
+    if (!safeMode) {
+        GlitchText.init();      // CSS-only, hover-triggered
+        SpectralEcho.init();    // CSS-only, window-open triggered
+        CipherDecode.init();    // Scroll-reveal triggered
+        HoloTilt.init();        // CSS transform on hover
+        VoidScroll.init();      // Scroll-debounced RAF
+        ArcReactor.init();      // Pure CSS, no JS loop
+    }
 
-    // Holographic sonar pulse on desktop clicks
-    if (!safeMode) SonarPulse.init();
-
-    // Catalyst Pulse — ambient breathing energy field on lock screen
-    if (!safeMode) CatalystPulse.init();
-
-    // Phantom Reticle — HUD targeting cursor overlay
-    if (!safeMode) PhantomReticle.init();
-
-    // Glitch Text — chromatic aberration on window title hover
-    if (!safeMode) GlitchText.init();
-
-    // Spectral Echo — materialization burst on window open
-    if (!safeMode) SpectralEcho.init();
-
-    // Cipher Decode — holographic code materialization on scroll reveal
-    if (!safeMode) CipherDecode.init();
-
-    // Neural Link — luminous connection traces between desktop icons
-    if (!safeMode) NeuralLink.init();
-
-    // Pulse Grid — reactive ambient floor grid on the desktop
-    if (!safeMode) PulseGrid.init();
-
-    // Ambient Drift — luminous floating orbs on the desktop
-    if (!safeMode) AmbientDrift.init();
-
-    // Cosmic Dust — faint twinkling star-field on the desktop
-    if (!safeMode) CosmicDust.init();
-
-    // Holographic Card Tilt — 3D perspective + light sweep on project cards
-    if (!safeMode) HoloTilt.init();
-
-    // Void Scroll — cyberpunk scroll-progress indicators on windows
-    if (!safeMode) VoidScroll.init();
-
-    // Arc Reactor — Stark Industries racing-light border on active windows
-    if (!safeMode) ArcReactor.init();
-
-    // Phantom Keys — holographic keystroke projections on the desktop
-    if (!safeMode) PhantomKeys.init();
+    // ── Disabled for performance — re-enable selectively via settings ──
+    // AmbientDrift.init();   // Canvas RAF 20fps, 7 radial gradients/frame
+    // CosmicDust.init();     // Canvas RAF 20fps, 50 particles/frame
+    // PhantomReticle.init(); // RAF spring loop, DOM transform every frame
+    // PulseGrid.init();     // Canvas RAF on cursor, 60+ cell calculations
+    // NeuralLink.init();    // SVG DOM reflow on hover
+    // Whispers.init();      // DOM-based floating fragments
+    // SonarPulse.init();    // Click-triggered but spawns DOM + animations
+    // CatalystPulse.init(); // Lock screen only, but adds infinite CSS anims
+    // PhantomKeys.init();   // Keystroke DOM projections
 
     // Direct-access routes skip boot/lock entirely (e.g. /services for prospects)
     const directAccessRoutes = ['/services'];
