@@ -912,12 +912,10 @@ export const Desktop = {
         const videos = media.videos || [];
 
         // Find the featured video (first one with category 'Featured' or just the first one)
-        const featuredIndex = videos.findIndex(v => v.category === 'Featured' || v.title.includes('Showcase'));
+        const featured = videos.find(v => v.category === 'Featured' || v.title.includes('Showcase')) || videos[0];
 
-        if (featuredIndex !== -1) {
-            Lightbox.open(videos, featuredIndex, 'video');
-        } else if (videos.length > 0) {
-            Lightbox.open(videos, 0, 'video');
+        if (featured?.url) {
+            window.open(featured.url, '_blank', 'noopener,noreferrer');
         } else {
             Modal.alert('Error', 'No featured video found.');
         }
