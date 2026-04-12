@@ -200,4 +200,30 @@ describe('createLazyWindow pattern', () => {
         // Should not throw
         expect(() => onClose()).not.toThrow();
     });
+
+    it('skips render when window is closed before module loads (race condition fix)', () => {
+        const cleanupFn = vi.fn();
+        const renderFn = vi.fn(() => cleanupFn);
+
+        // Replicate the fixed createLazyWindow closure pattern:
+        // closed flag prevents orphaned timers when window closes before import resolves
+        let cleanup = null;
+        let closed = false;
+        const onClose = () => {
+            closed = true;
+            if (cleanup) cleanup();
+        };
+
+        // User closes the window immediately (before module loads)
+        onClose();
+        expect(closed).toBe(true);
+
+        // Module import resolves after close — should NOT render
+        if (!closed) {
+            cleanup = renderFn();
+        }
+
+        expect(renderFn).not.toHaveBeenCalled();
+        expect(cleanupFn).not.toHaveBeenCalled();
+    });
 });

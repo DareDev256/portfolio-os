@@ -35,6 +35,7 @@ import { initDockMagnify } from './dock-magnify.js';
  */
 function createLazyWindow({ id, title, icon, width, height, load, exportName, onLoad, containerClass, windowOptions }) {
     let cleanup = null;
+    let closed = false;
     const content = document.createElement('div');
     content.style.height = '100%';
     if (containerClass) content.className = containerClass;
@@ -46,13 +47,18 @@ function createLazyWindow({ id, title, icon, width, height, load, exportName, on
         content,
         width,
         height,
-        onClose: () => { if (cleanup) cleanup(); },
+        onClose: () => {
+            closed = true;
+            if (cleanup) cleanup();
+        },
         ...windowOptions,
     });
 
     load().then((mod) => {
+        if (closed) return; // Window closed before module loaded — skip render to avoid orphaned timers
         cleanup = onLoad ? onLoad(mod, content) : mod[exportName](content);
     }).catch((err) => {
+        if (closed) return;
         console.error(`[LazyWindow] Failed to load module for "${id}":`, err);
         Sanitize.setHTML(content, `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ff4444;font-family:monospace;font-size:13px;padding:20px;text-align:center;">Failed to load module.<br><span style="opacity:0.5;font-size:11px;">${Sanitize.text(err.message || String(err))}</span></div>`);
     });

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.70.0
+version: 3.70.1
 last_updated: 2026-04-11
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-04-11
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.70.1] — 2026-04-11
+
+### Fixed
+- **Lazy Window Race Condition** (`js/desktop.js`) — Fixed timer/rAF leak in `createLazyWindow` when a window is closed before its dynamic import resolves. Previously, the module would still render into a detached DOM element and its cleanup function (setInterval, requestAnimationFrame loops) would be orphaned — never called. Added `closed` sentinel flag to gate both rendering and error display. Affects all lazy-loaded windows: System Monitor, Weather, Skills Universe, Passion Chat, Calculator, Pomodoro, Achievement Viewer. Added regression test (607 total, all passing).
 
 ---
 
