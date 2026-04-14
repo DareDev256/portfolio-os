@@ -2642,6 +2642,7 @@ export const Desktop = {
 
         const CLIENT_WORK = [
             { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff', thumb: '/thumbnails/edsonlegal.jpg' },
+            { name: 'BetMetrics.ca', type: 'Sports Analytics', url: 'https://betmetrics.ca', color: '#ff4444', thumb: '/thumbnails/betmetrics.jpg' },
             { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies-site.vercel.app', color: '#d4a574', thumb: '/thumbnails/musthavefrenchies.jpg' },
             { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x-website.vercel.app', color: '#ff3366', thumb: '/thumbnails/savv4x.jpg' },
             { name: 'The Syren Effect', type: 'Content Creator', url: 'https://syreneffect-site.vercel.app', color: '#aa00ff', thumb: '/thumbnails/syreneffect.jpg' },
@@ -2840,11 +2841,12 @@ export const Desktop = {
      */
     openPortfolio() {
         const CLIENT_WORK = [
+            { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff' },
+            { name: 'BetMetrics.ca', type: 'Sports Analytics', url: 'https://betmetrics.ca', color: '#ff4444' },
             { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies-site.vercel.app', color: '#d4a574' },
             { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x-website.vercel.app', color: '#ff3366' },
             { name: 'The Syren Effect', type: 'Content Creator', url: 'https://syreneffect-site.vercel.app', color: '#aa00ff' },
             { name: 'Dancehall Princess Canada', type: 'Dance & Culture', url: 'https://dancehall-princess-canada.vercel.app', color: '#ff8c00' },
-            { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff' },
         ];
 
         const DEMOS = [
