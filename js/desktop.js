@@ -175,13 +175,6 @@ export const Desktop = {
             action: () => Desktop.openPassionChat(),
         },
         {
-            id: 'sticky-notes',
-            label: 'NOTES',
-            icon: 'svg:/assets/sticky-notes.svg',
-            color: '#ffaa00',
-            action: () => Desktop.openStickyNotes(),
-        },
-        {
             id: 'portfolio-videos',
             label: 'MUSIC_VIDEOS',
             icon: 'svg:/assets/portfolio-videos.svg',
@@ -194,13 +187,6 @@ export const Desktop = {
             icon: 'svg:/assets/settings.svg',
             color: '#00BCD4',
             action: () => Desktop.openSettings(),
-        },
-        {
-            id: 'trophies',
-            label: 'TROPHIES.exe',
-            icon: 'svg:/assets/trophies.svg',
-            color: '#d4af37',
-            action: () => Desktop.openTrophies(),
         },
     ],
 
@@ -395,7 +381,7 @@ export const Desktop = {
         // User requested Key Apps for the Dock:
         // Skills Matrix, GitHub Ops, Applications, About Me
         // plus Developer Console (Terminal) as a bonus for power users
-        const dockIds = ['about', 'portfolio', 'applications', 'sticky-notes', 'trophies', 'terminal'];
+        const dockIds = ['about', 'portfolio', 'applications', 'terminal'];
 
         dockIds.forEach((id, index) => {
             const item = this.DESKTOP_ITEMS.find(i => i.id === id);
@@ -2258,6 +2244,12 @@ export const Desktop = {
                         <button class="settings-tool-btn" id="openPomodoro" style="--tool-color:#ff0066;">
                             <span>\u23F1</span> Focus Timer
                         </button>
+                        <button class="settings-tool-btn" id="openTrophies" style="--tool-color:#d4af37;">
+                            <span>\u{1F3C6}</span> Trophies
+                        </button>
+                        <button class="settings-tool-btn" id="openNotes" style="--tool-color:#ffaa00;">
+                            <span>\u{1F4DD}</span> Notes
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2290,6 +2282,8 @@ export const Desktop = {
         content.querySelector('#openWeather').addEventListener('click', () => Desktop.openWeather());
         content.querySelector('#openSysmon').addEventListener('click', () => Desktop.openSystemMonitor());
         content.querySelector('#openPomodoro').addEventListener('click', () => Desktop.openPomodoroTimer());
+        content.querySelector('#openTrophies').addEventListener('click', () => Desktop.openTrophies());
+        content.querySelector('#openNotes').addEventListener('click', () => Desktop.openStickyNotes());
 
         // Admin panel accessible via console: import('./admin.js').then(m => m.Admin.open())
     },
