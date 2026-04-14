@@ -1,5 +1,5 @@
 // Service Worker (F) – pre-cache + hardened runtime cache
-const CACHE_NAME = 'portfolio-os-v5';
+const CACHE_NAME = 'portfolio-os-v6';
 const MAX_CACHE_ENTRIES = 150; // Prevent unbounded cache growth
 const PRECACHE = [
     '/',
