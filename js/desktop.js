@@ -1625,54 +1625,72 @@ export const Desktop = {
     openApplicationsShowcase() {
         const categories = [
             {
-                name: 'AI & Machine Learning',
+                name: 'Passion Ecosystem',
+                color: '#d4af37',
+                apps: [
+                    { name: 'PASSION_FRAMEWORK', desc: 'Autonomous AI agent framework \u2014 92 modules, 3 LLM backends, runs 24/7', status: 'live', link: 'https://github.com/DareDev256/passion-framework' },
+                    { name: 'PASSION_SITE', desc: 'Live AI agent presence \u2014 passion.jamesdare.com', status: 'live', link: 'https://passion.jamesdare.com' },
+                    { name: 'PASSION_MEMORY', desc: 'Shared brain MCP server \u2014 somatic markers, session handoffs, feedback loops', status: 'private', link: '' },
+                    { name: 'PACT_DASHBOARD', desc: 'Real-time HUD \u2014 101 components, 60 API routes, live metrics, task history', status: 'private', link: '' },
+                    { name: 'PASSION_LEARNING', desc: '6 educational AI games \u2014 Prompt Craft, Token Prophet, Hallucination Hunter, more', status: 'live', link: 'https://github.com/DareDev256/passion-learning-suite' },
+                ],
+            },
+            {
+                name: 'AI & Engineering',
                 color: '#00f0ff',
                 apps: [
-                    { name: 'FCPXML_MCP_SERVER', desc: 'AI-powered MCP server for Final Cut Pro XML editing', status: 'deployed', link: 'https://github.com/DareDev256/fcpxml-mcp-server' },
-                    { name: 'RAG_WITH_CITATIONS', desc: 'Enterprise RAG pipeline with source attribution', status: 'deployed', link: 'https://github.com/DareDev256/rag-system-with-citations' },
-                    { name: 'VECTOR_SEARCH_ENGINE', desc: 'Semantic vector vs BM25 keyword search comparison', status: 'deployed', link: 'https://github.com/DareDev256/vector-vs-keyword-search' },
-                    { name: 'LLM_EVAL_HARNESS', desc: 'LLM evaluation framework with CI/CD integration', status: 'deployed', link: 'https://github.com/DareDev256/llm-evaluation-harness' },
-                    { name: 'MEMORY_MASTER', desc: 'AI spaced repetition learning platform (GPT-4 + FSRS)', status: 'deployed', link: 'https://github.com/DareDev256/memory-master-mvp' },
-                    { name: 'CONTRACT_TRANSLATOR', desc: 'AI contract analysis \u2014 plain-English legal breakdown', status: 'live', link: 'https://contract-translator.vercel.app' },
+                    { name: 'FCPXML_MCP', desc: 'First AI-powered MCP server for Final Cut Pro XML editing', status: 'live', link: 'https://github.com/DareDev256/fcpxml-mcp-server' },
+                    { name: 'RAG_CITATIONS', desc: 'RAG pipeline with source attribution for verifiable AI responses', status: 'live', link: 'https://github.com/DareDev256/rag-system-with-citations' },
+                    { name: 'LLM_EVAL', desc: 'LLM evaluation harness \u2014 rule-based, semantic, LLM-as-judge scoring', status: 'live', link: 'https://github.com/DareDev256/llm-evaluation-harness' },
+                    { name: 'VECTOR_SEARCH', desc: 'Semantic vector vs BM25 keyword search \u2014 embedding tradeoffs', status: 'live', link: 'https://github.com/DareDev256/vector-vs-keyword-search' },
+                    { name: 'CONTRACT_TRANSLATOR', desc: 'Upload any legal contract \u2014 plain-English clause-by-clause breakdown', status: 'live', link: 'https://contract-translator.vercel.app' },
+                    { name: 'IMG_PROMPT_GEN', desc: 'Structured prompt builder for Nano Banana, Veo3, DALL-E, Kling, Sora', status: 'live', link: 'https://github.com/DareDev256/Ultimate-Image-Video-Prompt-Generator' },
+                ],
+            },
+            {
+                name: 'Client Websites',
+                color: '#ff00aa',
+                apps: [
+                    { name: 'EDSON_LEGAL', desc: 'Law firm website \u2014 practice areas, consultations, professional trust', status: 'live', link: 'https://www.edsonlegal.com/' },
+                    { name: 'MUSTHAVEFRENCHIES', desc: 'Premium French Bulldog breeder \u2014 CMS, puppy listings, admin panel', status: 'live', link: 'https://musthavefrenchies-site.vercel.app' },
+                    { name: 'SAVV4X', desc: 'Toronto rapper \u2014 artist portfolio, music links, events', status: 'live', link: 'https://savv4x-website.vercel.app' },
+                    { name: 'SYREN_EFFECT', desc: 'Twitch streamer & content creator \u2014 Discord integration, media gallery', status: 'live', link: 'https://syreneffect-site.vercel.app' },
+                    { name: 'DANCEHALL_PRINCESS', desc: 'Dance, culture, confidence \u2014 class bookings, collab roster, media', status: 'live', link: 'https://dancehall-princess-canada.vercel.app' },
+                    { name: 'TDOTS_PORTFOLIO', desc: 'Synthwave 3D music video portfolio for TdotsSolutionsz', status: 'live', link: 'https://tdotssolutionsz-portfolio.vercel.app' },
                 ],
             },
             {
                 name: 'Full-Stack Applications',
-                color: '#ff00aa',
-                apps: [
-                    { name: 'SERVICE_TRACKER_PRO', desc: 'Dealership vehicle tracking system', status: 'live', link: 'https://servicetracker-production-f05b.up.railway.app' },
-                    { name: 'PULSEMAP', desc: 'Real-time global disease surveillance dashboard', status: 'live', link: 'https://pulsemap-three.vercel.app' },
-                    { name: 'CULTURE_DROP_HQ', desc: 'Operations dashboard for Toronto hip-hop media', status: 'deployed', link: 'https://github.com/DareDev256/culture-drop-hq' },
-                    { name: 'MUSIC_TIME_MACHINE', desc: 'Music intelligence dashboard (Spotify, YouTube, Billboard)', status: 'deployed', link: 'https://github.com/DareDev256/music-time-machine' },
-                ],
-            },
-            {
-                name: 'Web Development',
                 color: '#ff4444',
                 apps: [
-                    { name: 'SAVV4X.COM', desc: 'Official website for Toronto rapper Savv4x (Problem Child)', status: 'live', link: 'https://savv4x.com' },
-                    { name: 'WHYG35.COM', desc: 'Official website for Toronto rapper WhyG 35 (Big Boss El Neato)', status: 'live', link: 'https://whyg35.com' },
-                    { name: 'SEANPANE.COM', desc: 'Official website for artist Sean Pane', status: 'live', link: 'https://seanpane.com' },
-                    { name: 'SWAGGERRITE.COM', desc: 'Official website for Toronto rapper SwaggerRite', status: 'live', link: 'https://swaggerrite.com' },
-                    { name: 'TDOTS_PORTFOLIO', desc: 'Synthwave 3D music video portfolio', status: 'live', link: 'https://tdotssolutionsz-portfolio.vercel.app' },
+                    { name: 'LETSTRADE', desc: 'Real-time options scanner + dashboard \u2014 35+ API routes, AI copilot, auto-trader', status: 'private', link: '' },
+                    { name: 'TORONTO_CITY_PULSE', desc: '3D city intelligence \u2014 11 live data layers, celestial clock, search, fly-in', status: 'live', link: 'https://github.com/DareDev256/toronto-parking-viz' },
+                    { name: 'PULSEMAP', desc: 'Real-time global disease surveillance \u2014 weather radar for outbreaks', status: 'live', link: 'https://pulsemap-three.vercel.app' },
+                    { name: 'MUSIC_TIME_MACHINE', desc: 'Music intelligence dashboard \u2014 Spotify, YouTube, Billboard, Genius', status: 'live', link: 'https://github.com/DareDev256/music-time-machine' },
+                    { name: 'POOLCAST', desc: 'AI underwriting platform for creator asset-backed securities', status: 'private', link: '' },
+                    { name: 'LOCKEDIN', desc: 'One-tap connection card \u2014 action router with Follow, Connect, DM, Book, Pay', status: 'live', link: 'https://github.com/DareDev256/lockedin' },
                 ],
             },
             {
-                name: 'Creative & Client Work',
-                color: '#ffaa00',
+                name: 'Creative & Interactive',
+                color: '#aa00ff',
                 apps: [
-                    { name: 'IMG_GEN_PROMPTS', desc: 'AI prompt engineering tool for image/video generation', status: 'live', link: 'https://web-ten-vert-46.vercel.app' },
-                    { name: 'BUILDRIGHT', desc: 'Duolingo-style mobile learning app (React Native)', status: 'deployed', link: 'https://github.com/DareDev256/buildright' },
+                    { name: 'PASSION_INTERACTIVE', desc: 'AR gesture/voice OS \u2014 hand tracking controls all projects and databases', status: 'private', link: '' },
+                    { name: 'HAND_PLAYGROUND', desc: 'Hand-tracking gesture lab \u2014 7 exercises with MediaPipe + Canvas 2D', status: 'live', link: 'https://github.com/DareDev256/hand-playground' },
+                    { name: 'PORTFOLIO_OS', desc: 'This cyberpunk desktop OS \u2014 46 vanilla JS modules, Three.js, zero frameworks', status: 'private', link: '' },
+                    { name: 'PRIVACY_SHIELD', desc: 'Defensive OSINT tool \u2014 find your digital footprint, remove from data brokers', status: 'private', link: '' },
+                    { name: 'VEHICLE_TRACKER', desc: 'Dealership detailing hour tracker \u2014 Streamlit + SQLite/Supabase', status: 'live', link: 'https://github.com/DareDev256/Vehicle-Hour-Tracker' },
                 ],
             },
             {
-                name: 'Games & Tools',
+                name: 'Games & Experiments',
                 color: '#00ff88',
                 apps: [
                     { name: 'VIBE_CODER', desc: 'Vampire survivors-style idle game powered by coding', status: 'live', link: 'https://daredev256.github.io/vibe-coder' },
-                    { name: 'RAW_EXE', desc: 'Personal NetNavi Desktop Companion (Claude AI)', status: 'deployed', link: 'https://github.com/DareDev256/raw-exe' },
-                    { name: 'NIN_WIKI_TOOLS', desc: 'AI-assisted Fandom wiki bot with approval workflows', status: 'deployed', link: 'https://github.com/DareDev256/fandom-wiki-bot-template' },
-                    { name: 'PIXEL_ART_LORA', desc: 'LoRA training toolkit for Flux sprite sheets', status: 'deployed', link: 'https://github.com/DareDev256/pixel-art-lora-training' },
+                    { name: 'WHATS_POPPIN', desc: 'Bubble pop game with cultural sauce \u2014 match, combo, dominate', status: 'live', link: 'https://github.com/DareDev256/whats-poppin' },
+                    { name: 'TYPEMASTER', desc: 'Customizable typing game \u2014 fork and add your own curriculum', status: 'live', link: 'https://github.com/DareDev256/typemaster-template' },
+                    { name: 'RED_TEAM_ARENA', desc: 'Break the AI \u2014 learn prompt injection through ethical challenges', status: 'live', link: 'https://github.com/DareDev256/red-team-arena' },
+                    { name: 'NIN_WIKI', desc: 'AI-assisted Nin Online Wiki with approval workflows', status: 'private', link: '' },
                 ],
             },
         ];
@@ -1710,22 +1728,31 @@ export const Desktop = {
                 appItem.dataset.revealDelay = String(Math.min(appIdx + 1, 5));
 
                 const isLive = app.status === 'live';
-                const badgeClass = isLive ? 'app-status-badge--live' : 'app-status-badge--source';
+                const isPrivate = app.status === 'private';
+                const badgeClass = isLive ? 'app-status-badge--live' : isPrivate ? 'app-status-badge--private' : 'app-status-badge--source';
+                const badgeText = isLive ? 'DEPLOYED' : isPrivate ? 'PRIVATE' : 'SOURCE';
 
                 const appInfo = document.createElement('div');
                 appInfo.className = 'app-item-info';
                 appInfo.innerHTML = `
                     <div class="app-item-name">${Sanitize.text(app.name)}</div>
                     <div class="app-item-desc">${Sanitize.text(app.desc)}</div>
-                    <span class="app-status-badge ${badgeClass}">${isLive ? 'DEPLOYED' : 'SOURCE'}</span>
+                    <span class="app-status-badge ${badgeClass}">${badgeText}</span>
                 `;
 
                 const launchBtn = document.createElement('button');
-                launchBtn.className = isLive ? 'app-launch-btn--live' : '';
-                launchBtn.textContent = isLive ? 'LAUNCH' : 'VIEW';
-                launchBtn.addEventListener('click', () => {
-                    if (app.link) openExternal(app.link);
-                });
+                if (isPrivate) {
+                    launchBtn.className = 'app-launch-btn--private';
+                    launchBtn.textContent = '\u{1F512}';
+                    launchBtn.style.cursor = 'default';
+                    launchBtn.style.opacity = '0.3';
+                } else {
+                    launchBtn.className = isLive ? 'app-launch-btn--live' : '';
+                    launchBtn.textContent = isLive ? 'LAUNCH' : 'VIEW';
+                    launchBtn.addEventListener('click', () => {
+                        if (app.link) openExternal(app.link);
+                    });
+                }
 
                 appItem.appendChild(appInfo);
                 appItem.appendChild(launchBtn);
@@ -2620,6 +2647,62 @@ export const Desktop = {
         const content = document.createElement('div');
         content.className = 'services-content';
 
+        const CLIENT_WORK = [
+            { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff' },
+            { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies-site.vercel.app', color: '#d4a574' },
+            { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x-website.vercel.app', color: '#ff3366' },
+            { name: 'The Syren Effect', type: 'Content Creator', url: 'https://syreneffect-site.vercel.app', color: '#aa00ff' },
+            { name: 'Dancehall Princess Canada', type: 'Dance & Culture', url: 'https://dancehall-princess-canada.vercel.app', color: '#ff8c00' },
+        ];
+
+        // SVG icon helper — thin line art, cyberpunk style
+        const svg = (d, vb = '0 0 24 24') => `<svg viewBox="${vb}" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+
+        const DEMOS = [
+            { name: 'Restaurant & Bar', url: 'https://tdots-demo-restaurant.vercel.app', live: true,
+              icon: svg('<path d="M3 11h18M5 11V6a2 2 0 012-2h10a2 2 0 012 2v5M7 11v9h10v-9M12 4v7M12 14v3"/>') },
+            { name: 'Barbershop & Salon', url: 'https://tdots-demo-barbershop.vercel.app', live: true,
+              icon: svg('<circle cx="12" cy="7" r="3"/><path d="M5 21v-2a4 4 0 014-4h6a4 4 0 014 4v2"/><path d="M15 3l2 4M9 3L7 7"/>') },
+            { name: 'Contractor & Trades', url: 'https://tdots-demo-contractor.vercel.app', live: true,
+              icon: svg('<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.2a2 2 0 01-2.83 0l-.1-.1a2 2 0 010-2.83l6.83-6.73A6 6 0 016.3 2.53l3.77 3.77z"/>') },
+            { name: 'Solo / Starter', url: 'https://tdots-demo-starter.vercel.app', live: true,
+              icon: svg('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>') },
+            { name: 'Auto Detailing', url: '#', live: false,
+              icon: svg('<path d="M5 17h14M6 17l1-5h10l1 5M8 12l1-4h6l1 4"/><circle cx="8" cy="17" r="1.5"/><circle cx="16" cy="17" r="1.5"/>') },
+            { name: 'Fitness & Gym', url: '#', live: false,
+              icon: svg('<path d="M6.5 6.5l11 11M21 3l-5.5 5.5M3 21l5.5-5.5M14 7l-1.5-1.5L7 11l1.5 1.5M17 13l-1.5-1.5L10 17l1.5 1.5"/>') },
+            { name: 'Nails & Beauty', url: '#', live: false,
+              icon: svg('<path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/>') },
+            { name: 'Tattoo & Piercing', url: '#', live: false,
+              icon: svg('<path d="M12 19l-1-6-5-1 12-8-8 12-1-5z"/>') },
+            { name: 'Pet Services', url: '#', live: false,
+              icon: svg('<path d="M12 21c-1.5 0-5-2.5-5-6.5C7 11 9 9 12 7c3 2 5 4 5 7.5 0 4-3.5 6.5-5 6.5z"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="6" r="2"/><circle cx="5" cy="11" r="1.5"/><circle cx="19" cy="11" r="1.5"/>') },
+            { name: 'Cleaning', url: '#', live: false,
+              icon: svg('<path d="M12 2v6M8.5 8.5L12 12M15.5 8.5L12 12M12 12v10M8 22h8"/><circle cx="12" cy="5" r="3"/>') },
+            { name: 'Medical & Dental', url: '#', live: false,
+              icon: svg('<path d="M12 6v12M6 12h12"/><rect x="3" y="3" width="18" height="18" rx="3"/>') },
+            { name: 'Wedding & Events', url: '#', live: false,
+              icon: svg('<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/>') },
+            { name: 'Cannabis', url: '#', live: false,
+              icon: svg('<path d="M12 22V12M12 12C12 12 7 10 5 5c3 0 5.5 2 7 4M12 12c0 0 5-2 7-7-3 0-5.5 2-7 4M12 12C12 8 10 4 8 2c0 3 2 6 4 8M12 12c0-4 2-8 4-10 0 3-2 6-4 8"/>') },
+            { name: 'Food Truck', url: '#', live: false,
+              icon: svg('<rect x="1" y="10" width="22" height="8" rx="2"/><path d="M5 10V6a2 2 0 012-2h6l4 6M5 18v2M19 18v2"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/>') },
+            { name: 'Car Dealership', url: '#', live: false,
+              icon: svg('<path d="M5 17h14M6 17l1.5-6h9L18 17M9 11l.5-4h5l.5 4"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/><path d="M3 17h2M19 17h2"/>') },
+            { name: 'Law Firm', url: '#', live: false,
+              icon: svg('<path d="M12 2L3 7h18zM5 7v10M19 7v10M3 17h18M3 21h18"/><path d="M8 7v10M12 7v10M16 7v10"/>') },
+            { name: 'Real Estate', url: '#', live: false,
+              icon: svg('<path d="M3 21h18M5 21V10l7-7 7 7v11"/><rect x="9" y="14" width="6" height="7"/><path d="M9 10h6"/>') },
+            { name: 'Immigration', url: '#', live: false,
+              icon: svg('<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 014 10 15 15 0 01-4 10 15 15 0 01-4-10A15 15 0 0112 2z"/>') },
+            { name: 'Construction', url: '#', live: false,
+              icon: svg('<path d="M2 20h20M4 20V10l4-4M20 20V10l-4-4M8 6h8M6 10h12"/><path d="M10 20v-6h4v6"/>') },
+            { name: 'Daycare', url: '#', live: false,
+              icon: svg('<circle cx="12" cy="8" r="4"/><path d="M6 21v-1a6 6 0 016-6 6 6 0 016 6v1"/><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/>') },
+        ];
+
+        const liveCount = DEMOS.filter(d => d.live).length;
+
         content.innerHTML = `
             <div class="services-hero scroll-reveal" data-reveal="scale">
                 <div class="services-hero-label">TDOT SOLUTIONS</div>
@@ -2627,53 +2710,99 @@ export const Desktop = {
                 <p class="services-hero-sub">Custom websites, e-commerce, branding, and AI solutions.<br>Built by an engineer, designed for results.</p>
             </div>
 
-            <div class="window-section-header purple scroll-reveal" data-reveal="fade-left" data-reveal-delay="1" style="margin-top: 30px;">◈ SERVICES</div>
-
-            <div class="services-grid">
-                ${SERVICES.map((s, i) => `
-                    <div class="service-card scroll-reveal" data-reveal="fade-up" data-reveal-delay="${Math.min(i + 2, 6)}" style="--card-color: ${s.color}">
-                        <div class="service-card-header">
-                            <span class="service-card-icon" style="color: ${s.color}">${s.icon}</span>
-                            <h3 class="service-card-title">${Sanitize.text(s.title)}</h3>
-                        </div>
-                        <p class="service-card-desc">${Sanitize.text(s.description)}</p>
-                        <ul class="service-card-features">
-                            ${s.features.map(f => `<li>${Sanitize.text(f)}</li>`).join('')}
-                        </ul>
-                        <div class="service-card-price">
-                            <span class="service-price-amount">${Sanitize.text(s.price)}</span>
-                            <span class="service-price-note">${Sanitize.text(s.priceNote)}</span>
-                        </div>
-                    </div>
-                `).join('')}
+            <div class="svc-tabs">
+                <button class="svc-tab active" data-tab="services">Services & Pricing</button>
+                <button class="svc-tab" data-tab="clients">Clients & Demos</button>
             </div>
 
-            <div class="window-section-header green scroll-reveal" data-reveal="fade-right" style="margin-top: 35px;">◈ MONTHLY RETAINERS</div>
-            <p class="services-retainer-intro scroll-reveal" data-reveal-delay="1">Keep your site running, updated, and growing without the hassle.</p>
+            <div class="svc-panel active" id="svc-panel-services">
+                <div class="window-section-header purple scroll-reveal" data-reveal="fade-left" data-reveal-delay="1">◈ SERVICES</div>
 
-            <div class="retainer-grid">
-                ${RETAINERS.map((r, i) => `
-                    <div class="retainer-card scroll-reveal" data-reveal="clip-up" data-reveal-delay="${Math.min(i + 2, 6)}" style="--card-color: ${r.color}">
-                        <div class="retainer-tier">${Sanitize.text(r.tier)}</div>
-                        <div class="retainer-price">
-                            <span class="retainer-price-amount">${Sanitize.text(r.price)}</span>
-                            <span class="retainer-price-period">${Sanitize.text(r.period)}</span>
+                <div class="services-grid">
+                    ${SERVICES.map((s, i) => `
+                        <div class="service-card scroll-reveal" data-reveal="fade-up" data-reveal-delay="${Math.min(i + 2, 6)}" style="--card-color: ${s.color}">
+                            <div class="service-card-header">
+                                <span class="service-card-icon" style="color: ${s.color}">${s.icon}</span>
+                                <h3 class="service-card-title">${Sanitize.text(s.title)}</h3>
+                            </div>
+                            <p class="service-card-desc">${Sanitize.text(s.description)}</p>
+                            <ul class="service-card-features">
+                                ${s.features.map(f => `<li>${Sanitize.text(f)}</li>`).join('')}
+                            </ul>
+                            <div class="service-card-price">
+                                <span class="service-price-amount">${Sanitize.text(s.price)}</span>
+                                <span class="service-price-note">${Sanitize.text(s.priceNote)}</span>
+                            </div>
                         </div>
-                        <ul class="retainer-features">
-                            ${r.features.map(f => `<li>${Sanitize.text(f)}</li>`).join('')}
-                        </ul>
-                    </div>
-                `).join('')}
+                    `).join('')}
+                </div>
+
+                <div class="window-section-header green scroll-reveal" data-reveal="fade-right" style="margin-top: 35px;">◈ MONTHLY RETAINERS</div>
+                <p class="services-retainer-intro scroll-reveal" data-reveal-delay="1">Keep your site running, updated, and growing without the hassle.</p>
+
+                <div class="retainer-grid">
+                    ${RETAINERS.map((r, i) => `
+                        <div class="retainer-card scroll-reveal" data-reveal="clip-up" data-reveal-delay="${Math.min(i + 2, 6)}" style="--card-color: ${r.color}">
+                            <div class="retainer-tier">${Sanitize.text(r.tier)}</div>
+                            <div class="retainer-price">
+                                <span class="retainer-price-amount">${Sanitize.text(r.price)}</span>
+                                <span class="retainer-price-period">${Sanitize.text(r.period)}</span>
+                            </div>
+                            <ul class="retainer-features">
+                                ${r.features.map(f => `<li>${Sanitize.text(f)}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <div class="svc-panel" id="svc-panel-clients">
+                <div class="window-section-header orange scroll-reveal" data-reveal="fade-left" data-reveal-delay="1">▶ CLIENT WORK</div>
+                <div class="portfolio-clients scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
+                    ${CLIENT_WORK.map(c => `
+                        <a href="${Sanitize.text(c.url)}" target="_blank" rel="noopener" class="portfolio-client-item" style="text-decoration:none;color:inherit;--client-color:${c.color}">
+                            <span class="portfolio-client-dot" style="background:${c.color};box-shadow:0 0 8px ${c.color};"></span>
+                            <div class="portfolio-client-info">
+                                <span class="portfolio-client-name">${Sanitize.text(c.name)}</span>
+                                <span class="portfolio-client-type">${Sanitize.text(c.type)}</span>
+                            </div>
+                            <span class="portfolio-client-live">LIVE</span>
+                            <span class="portfolio-client-arrow">\u2197</span>
+                        </a>
+                    `).join('')}
+                </div>
+
+                <div class="window-section-header cyan scroll-reveal" data-reveal="fade-right" style="margin-top: 25px;">◈ INDUSTRY DEMOS <span style="opacity:0.4;font-size:9px;margin-left:8px;">${liveCount} LIVE / ${DEMOS.length} TOTAL</span></div>
+                <p class="services-retainer-intro scroll-reveal" data-reveal-delay="1">Click any live demo to preview. Each site is a unique custom build.</p>
+                <div class="portfolio-demos-grid scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
+                    ${DEMOS.map(d => `
+                        <a href="${d.live ? Sanitize.text(d.url) : '#'}" ${d.live ? 'target="_blank" rel="noopener"' : ''} class="portfolio-demo-card ${d.live ? 'portfolio-demo-live' : 'portfolio-demo-soon'}" style="text-decoration:none;color:inherit;">
+                            <span class="portfolio-demo-icon">${d.icon}</span>
+                            <span class="portfolio-demo-name">${Sanitize.text(d.name)}</span>
+                            <span class="portfolio-demo-status">${d.live ? '\u25CF LIVE' : '\u25CB SOON'}</span>
+                        </a>
+                    `).join('')}
+                </div>
             </div>
 
             <div class="services-cta scroll-reveal" data-reveal="scale" data-reveal-delay="1">
                 <div class="services-cta-text">Ready to build something?</div>
-                <a href="mailto:tdotssolutionsz@gmail.com?subject=Service%20Inquiry%20from%20jamesdare.com" class="cyber-button services-cta-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+                <a href="mailto:dev@jamesdare.com?subject=Service%20Inquiry%20from%20jamesdare.com" class="cyber-button services-cta-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
                     <span>GET IN TOUCH</span>
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
                 </a>
             </div>
         `;
+
+        // Tab switching
+        content.querySelectorAll('.svc-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                content.querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
+                content.querySelectorAll('.svc-panel').forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                content.querySelector(`#svc-panel-${tab.dataset.tab}`).classList.add('active');
+            });
+        });
 
         // CTA links directly to mailto — no extra window needed
 
@@ -2685,6 +2814,107 @@ export const Desktop = {
         WindowManager.create({
             id: 'services',
             title: 'SERVICES.exe | TDot Solutions',
+            icon: '◈',
+            content,
+            width: winWidth,
+            height: winHeight,
+        });
+    },
+
+    /**
+     * Open Portfolio/Demos window
+     * Accessed via jamesdare.com/portfolio
+     */
+    openPortfolio() {
+        const CLIENT_WORK = [
+            { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies-site.vercel.app', color: '#d4a574' },
+            { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x-website.vercel.app', color: '#ff3366' },
+            { name: 'The Syren Effect', type: 'Content Creator', url: 'https://syreneffect-site.vercel.app', color: '#aa00ff' },
+            { name: 'Dancehall Princess Canada', type: 'Dance & Culture', url: 'https://dancehall-princess-canada.vercel.app', color: '#ff8c00' },
+            { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff' },
+        ];
+
+        const DEMOS = [
+            { name: 'Restaurant & Bar', url: 'https://tdots-demo-restaurant.vercel.app', live: true, icon: '🍽' },
+            { name: 'Barbershop & Salon', url: 'https://tdots-demo-barbershop.vercel.app', live: true, icon: '✂' },
+            { name: 'Contractor & Trades', url: 'https://tdots-demo-contractor.vercel.app', live: true, icon: '🔧' },
+            { name: 'Solo / Starter', url: 'https://tdots-demo-starter.vercel.app', live: true, icon: '◈' },
+            { name: 'Auto Detailing', url: '#', live: false, icon: '🚗' },
+            { name: 'Fitness & Gym', url: '#', live: false, icon: '💪' },
+            { name: 'Nails, Lashes & Beauty', url: '#', live: false, icon: '💅' },
+            { name: 'Tattoo & Piercing', url: '#', live: false, icon: '🖋' },
+            { name: 'Pet Services', url: '#', live: false, icon: '🐾' },
+            { name: 'Cleaning Services', url: '#', live: false, icon: '✨' },
+            { name: 'Medical & Dental', url: '#', live: false, icon: '🏥' },
+            { name: 'Wedding & Events', url: '#', live: false, icon: '💐' },
+            { name: 'Cannabis Dispensary', url: '#', live: false, icon: '🌿' },
+            { name: 'Food Truck & Pop-Up', url: '#', live: false, icon: '🚚' },
+            { name: 'Car Dealership', url: '#', live: false, icon: '🏎' },
+            { name: 'Law Firm', url: '#', live: false, icon: '⚖' },
+            { name: 'Real Estate', url: '#', live: false, icon: '🏠' },
+            { name: 'Immigration', url: '#', live: false, icon: '🌍' },
+            { name: 'Construction', url: '#', live: false, icon: '🏗' },
+            { name: 'Daycare & Childcare', url: '#', live: false, icon: '🧒' },
+        ];
+
+        const content = document.createElement('div');
+        content.className = 'services-content';
+
+        const liveCount = DEMOS.filter(d => d.live).length;
+        const totalCount = DEMOS.length;
+
+        content.innerHTML = `
+            <div class="services-hero scroll-reveal" data-reveal="scale">
+                <div class="services-hero-label">TDOT SOLUTIONS</div>
+                <h1 class="services-hero-title">PORTFOLIO &<br>LIVE DEMOS</h1>
+                <p class="services-hero-sub">Real client work and industry demo sites.<br>Custom-built, no templates, owned forever.</p>
+            </div>
+
+            <div class="window-section-header orange scroll-reveal" data-reveal="fade-left" data-reveal-delay="1" style="margin-top: 30px;">▶ CLIENT WORK</div>
+            <div class="portfolio-clients scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
+                ${CLIENT_WORK.map(c => `
+                    <a href="${Sanitize.text(c.url)}" target="_blank" rel="noopener" class="portfolio-client-item" style="text-decoration:none;color:inherit;--client-color:${c.color}">
+                        <span class="portfolio-client-dot" style="background:${c.color};box-shadow:0 0 8px ${c.color};"></span>
+                        <div class="portfolio-client-info">
+                            <span class="portfolio-client-name">${Sanitize.text(c.name)}</span>
+                            <span class="portfolio-client-type">${Sanitize.text(c.type)}</span>
+                        </div>
+                        <span class="portfolio-client-live">LIVE</span>
+                        <span class="portfolio-client-arrow">↗</span>
+                    </a>
+                `).join('')}
+            </div>
+
+            <div class="window-section-header cyan scroll-reveal" data-reveal="fade-right" style="margin-top: 35px;">◈ INDUSTRY DEMOS <span style="opacity:0.4;font-size:9px;margin-left:8px;">${liveCount} LIVE / ${totalCount} TOTAL</span></div>
+            <p class="services-retainer-intro scroll-reveal" data-reveal-delay="1">Click any live demo to preview. Each site is a unique design built for that industry.</p>
+
+            <div class="portfolio-demos-grid scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
+                ${DEMOS.map(d => `
+                    <a href="${d.live ? Sanitize.text(d.url) : '#'}" ${d.live ? 'target="_blank" rel="noopener"' : ''} class="portfolio-demo-card ${d.live ? 'portfolio-demo-live' : 'portfolio-demo-soon'}" style="text-decoration:none;color:inherit;">
+                        <span class="portfolio-demo-icon">${d.icon}</span>
+                        <span class="portfolio-demo-name">${Sanitize.text(d.name)}</span>
+                        <span class="portfolio-demo-status">${d.live ? '● LIVE' : '○ SOON'}</span>
+                    </a>
+                `).join('')}
+            </div>
+
+            <div class="services-cta scroll-reveal" data-reveal="scale" data-reveal-delay="1">
+                <div class="services-cta-text">Don't see your industry?</div>
+                <p style="font-size:11px;color:rgba(255,255,255,0.3);margin:8px 0 16px;max-width:350px;">Every business is different. I build custom — tell me what you need and I'll show you what's possible.</p>
+                <a href="mailto:dev@jamesdare.com?subject=Portfolio%20Inquiry%20from%20jamesdare.com" class="cyber-button services-cta-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+                    <span>GET A FREE QUOTE</span>
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </a>
+            </div>
+        `;
+
+        const isDirectVisit = window.location.pathname === '/portfolio';
+        const winWidth = isDirectVisit ? Math.min(900, window.innerWidth - 80) : 750;
+        const winHeight = isDirectVisit ? Math.min(800, window.innerHeight - 120) : 700;
+
+        WindowManager.create({
+            id: 'portfolio',
+            title: 'PORTFOLIO.exe | Live Demos & Client Work',
             icon: '◈',
             content,
             width: winWidth,

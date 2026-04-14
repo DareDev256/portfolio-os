@@ -492,6 +492,11 @@
     color: #00f0ff;
     background: rgba(0, 240, 255, 0.06);
 }
+.app-status-badge--private {
+    border: 1px solid #666;
+    color: #888;
+    background: rgba(255, 255, 255, 0.03);
+}
 
 /* Application showcase — category header */
 .app-category-header {
@@ -1002,6 +1007,48 @@
     color: rgba(255, 255, 255, 0.55);
     margin: 0;
 }
+/* Services Tabs */
+.svc-tabs {
+    display: flex;
+    gap: 2px;
+    margin: 20px 0 24px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    overflow: hidden;
+    padding: 3px;
+}
+.svc-tab {
+    flex: 1;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.35);
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+}
+.svc-tab:hover {
+    color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.03);
+}
+.svc-tab.active {
+    color: #00f0ff;
+    background: rgba(0,240,255,0.08);
+    box-shadow: 0 0 12px rgba(0,240,255,0.1);
+}
+.svc-panel {
+    display: none;
+}
+.svc-panel.active {
+    display: block;
+}
+
 .services-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1164,6 +1211,230 @@
     gap: 8px;
 }
 
+/* Industry Demos & Client Work Grid */
+.services-demos-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin: 12px 0 20px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.services-demo-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: rgba(10,8,20,0.6);
+    transition: all 0.25s;
+    cursor: pointer;
+}
+.services-demo-item:hover {
+    background: rgba(0,240,255,0.04);
+}
+.services-demo-soon {
+    opacity: 0.4;
+    cursor: default;
+}
+.services-demo-soon:hover {
+    background: rgba(10,8,20,0.6);
+}
+.services-demo-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.services-demo-name {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    flex: 1;
+}
+.services-demo-type {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+}
+.services-demo-arrow {
+    font-size: 12px;
+    color: rgba(0,240,255,0.5);
+    transition: transform 0.2s;
+}
+.services-demo-item:hover .services-demo-arrow {
+    transform: translate(2px, -2px);
+    color: rgba(0,240,255,0.8);
+}
+
+/* Section header color variants */
+.window-section-header.orange {
+    color: #ff8c00;
+    border-color: rgba(255,140,0,0.3);
+}
+.window-section-header.orange::before {
+    background: rgba(255,140,0,0.15);
+}
+.window-section-header.cyan {
+    color: #00f0ff;
+    border-color: rgba(0,240,255,0.3);
+}
+.window-section-header.cyan::before {
+    background: rgba(0,240,255,0.15);
+}
+
+/* Portfolio Window — Client Work */
+.portfolio-clients {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin: 12px 0 20px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.portfolio-client-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: rgba(10,8,20,0.6);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.portfolio-client-item:hover {
+    background: rgba(255,255,255,0.04);
+    padding-left: 20px;
+}
+.portfolio-client-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.portfolio-client-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.portfolio-client-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+.portfolio-client-type {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+}
+.portfolio-client-live {
+    font-size: 8px;
+    letter-spacing: 2px;
+    padding: 3px 8px;
+    border: 1px solid rgba(74,222,128,0.3);
+    color: #4ade80;
+    border-radius: 3px;
+}
+.portfolio-client-arrow {
+    font-size: 14px;
+    color: rgba(255,255,255,0.2);
+    transition: all 0.2s;
+}
+.portfolio-client-item:hover .portfolio-client-arrow {
+    color: var(--client-color, #00f0ff);
+    transform: translate(2px, -2px);
+}
+
+/* Portfolio Window — Industry Demo Grid */
+.portfolio-demos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1px;
+    margin: 12px 0 24px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.portfolio-demo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 18px 10px 14px;
+    background: rgba(10,8,20,0.6);
+    transition: all 0.3s;
+    text-align: center;
+}
+.portfolio-demo-live {
+    cursor: pointer;
+}
+.portfolio-demo-live:hover {
+    background: rgba(0,240,255,0.05);
+    transform: translateY(-2px);
+}
+.portfolio-demo-soon {
+    opacity: 0.3;
+    cursor: default;
+}
+.portfolio-demo-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0,240,255,0.5);
+    transition: color 0.3s;
+}
+.portfolio-demo-icon svg {
+    width: 20px;
+    height: 20px;
+}
+.portfolio-demo-live:hover .portfolio-demo-icon {
+    color: #00f0ff;
+    filter: drop-shadow(0 0 4px rgba(0,240,255,0.4));
+}
+.portfolio-demo-soon .portfolio-demo-icon {
+    color: rgba(255,255,255,0.12);
+}
+.portfolio-demo-name {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+}
+.portfolio-demo-status {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+}
+.portfolio-demo-live .portfolio-demo-status {
+    color: #4ade80;
+}
+.portfolio-demo-soon .portfolio-demo-status {
+    color: rgba(255,255,255,0.2);
+}
+
+/* Section header color variants */
+.window-section-header.orange {
+    color: #ff8c00;
+    border-color: rgba(255,140,0,0.3);
+}
+.window-section-header.orange::before {
+    background: rgba(255,140,0,0.15);
+}
+.window-section-header.cyan {
+    color: #00f0ff;
+    border-color: rgba(0,240,255,0.3);
+}
+.window-section-header.cyan::before {
+    background: rgba(0,240,255,0.15);
+}
+
 /* Mobile responsiveness for services */
 @media (max-width: 600px) {
     .services-grid,
@@ -1172,6 +1443,9 @@
     }
     .services-hero-title {
         font-size: 18px;
+    }
+    .services-demo-item {
+        padding: 8px 12px;
     }
 }
 
