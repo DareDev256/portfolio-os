@@ -18,7 +18,6 @@ export const Router = {
         '/resume': () => Desktop.openResume(),
         '/terminal': () => Desktop.openShell(),
         '/services': () => Desktop.openServices(),
-        '/portfolio': () => Desktop.openPortfolio(),
     },
 
     /**

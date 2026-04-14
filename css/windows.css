@@ -1285,7 +1285,113 @@
     background: rgba(0,240,255,0.15);
 }
 
-/* Portfolio Window — Client Work */
+/* Portfolio Thumbnail Grid */
+.portfolio-thumb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin: 12px 0 20px;
+}
+.portfolio-thumb-grid--demos {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px;
+}
+.portfolio-thumb-card {
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    overflow: hidden;
+    background: rgba(10,8,20,0.6);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.portfolio-thumb-card:hover {
+    border-color: rgba(0,240,255,0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.portfolio-thumb-card--soon {
+    opacity: 0.45;
+    cursor: default;
+}
+.portfolio-thumb-card--soon:hover {
+    border-color: rgba(255,255,255,0.06);
+    transform: none;
+    box-shadow: none;
+}
+.portfolio-thumb-img {
+    aspect-ratio: 16/10;
+    background-size: cover;
+    background-position: top center;
+    background-color: rgba(15,12,25,0.8);
+    position: relative;
+    overflow: hidden;
+}
+.portfolio-thumb-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(10,8,20,0.6) 100%);
+    pointer-events: none;
+}
+.portfolio-thumb-card:hover .portfolio-thumb-img::after {
+    background: linear-gradient(180deg, transparent 60%, rgba(10,8,20,0.3) 100%);
+}
+.portfolio-thumb-img--soon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(15,12,25,1) 0%, rgba(20,16,35,1) 100%);
+}
+.portfolio-thumb-icon {
+    position: relative;
+    z-index: 1;
+    color: rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.portfolio-thumb-icon svg {
+    width: 28px;
+    height: 28px;
+}
+.portfolio-thumb-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 2;
+    padding: 2px 6px;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    border-radius: 3px;
+}
+.portfolio-thumb-badge--soon {
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.06);
+}
+.portfolio-thumb-info {
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.portfolio-thumb-name {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.portfolio-thumb-type {
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+}
+
+/* Portfolio Window — Client Work (legacy list style - keeping for reference) */
 .portfolio-clients {
     display: flex;
     flex-direction: column;

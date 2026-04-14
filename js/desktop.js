@@ -132,14 +132,14 @@ export const Desktop = {
         },
         {
             id: 'portfolio',
-            label: 'PORTFOLIO',
+            label: 'SERVICES',
             icon: 'svg:/assets/portfolio.svg',
             color: '#00f0ff',
-            action: () => Desktop.openPortfolio(),
+            action: () => Desktop.openServices(),
         },
         {
             id: 'applications',
-            label: 'APPLICATIONS',
+            label: 'PORTFOLIO',
             icon: 'svg:/assets/applications.svg',
             color: '#ff00aa',
             action: () => Desktop.openApplicationsShowcase(),
@@ -2564,8 +2564,8 @@ export const Desktop = {
                     'Performance-tuned (90+ Lighthouse scores)',
                     'Hosted & deployed on Vercel',
                 ],
-                price: '$500 – $1,500',
-                priceNote: 'one-time',
+                price: '$250 – $2,000+',
+                priceNote: 'one-time \u2014 no monthly platform fees',
             },
             {
                 title: 'E-COMMERCE & ONLINE STORES',
@@ -2598,19 +2598,49 @@ export const Desktop = {
                 priceNote: 'one-time',
             },
             {
+                title: 'PHOTOGRAPHY & VIDEOGRAPHY',
+                icon: '▶',
+                color: '#ff3366',
+                description: 'Professional photography and video production for businesses, artists, and events. From product shoots to music videos and promotional content.',
+                features: [
+                    'Music video production (concept to delivery)',
+                    'Product & food photography',
+                    'Event coverage & highlight reels',
+                    'Social media content packages',
+                    'Drone & aerial footage',
+                ],
+                price: '$500 – $3,000',
+                priceNote: 'per project',
+            },
+            {
                 title: 'AI & AUTOMATION SOLUTIONS',
-                icon: '⟁',
+                icon: '\u27C1',
                 color: '#00ff88',
-                description: 'Custom AI integrations, chatbots, workflow automation, and intelligent systems. Leverage cutting-edge AI to streamline your business operations.',
+                description: 'Custom AI integrations, chatbots, workflow automation, and intelligent systems. From simple automations to full autonomous agent platforms.',
                 features: [
                     'AI chatbots & customer support agents',
-                    'Workflow automation (Zapier, custom scripts)',
+                    'Workflow automation & integrations',
                     'Content generation pipelines',
                     'Data processing & analysis tools',
-                    'API integrations & custom tooling',
+                    'Custom AI agent development',
                 ],
                 price: 'Custom quote',
                 priceNote: 'project-based',
+            },
+            {
+                title: 'CREATIVE DIRECTION & CONSULTING',
+                icon: '\u2726',
+                color: '#d4af37',
+                description: 'Strategic creative direction for brands, campaigns, and digital presence. From concept development to execution oversight.',
+                features: [
+                    'Brand strategy & positioning',
+                    'Campaign concept development',
+                    'Content strategy & calendar planning',
+                    'Social media growth consulting',
+                    'Pitch decks & investor materials',
+                ],
+                price: '$200 – $1,000',
+                priceNote: 'per engagement',
             },
         ];
 
@@ -2648,11 +2678,11 @@ export const Desktop = {
         content.className = 'services-content';
 
         const CLIENT_WORK = [
-            { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff' },
-            { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies-site.vercel.app', color: '#d4a574' },
-            { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x-website.vercel.app', color: '#ff3366' },
-            { name: 'The Syren Effect', type: 'Content Creator', url: 'https://syreneffect-site.vercel.app', color: '#aa00ff' },
-            { name: 'Dancehall Princess Canada', type: 'Dance & Culture', url: 'https://dancehall-princess-canada.vercel.app', color: '#ff8c00' },
+            { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff', thumb: '/thumbnails/edsonlegal.jpg' },
+            { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies-site.vercel.app', color: '#d4a574', thumb: '/thumbnails/musthavefrenchies.jpg' },
+            { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x-website.vercel.app', color: '#ff3366', thumb: '/thumbnails/savv4x.jpg' },
+            { name: 'The Syren Effect', type: 'Content Creator', url: 'https://syreneffect-site.vercel.app', color: '#aa00ff', thumb: '/thumbnails/syreneffect.jpg' },
+            { name: 'Dancehall Princess Canada', type: 'Dance & Culture', url: 'https://dancehall-princess-canada.vercel.app', color: '#ff8c00', thumb: '/thumbnails/dancehallprincess.jpg' },
         ];
 
         // SVG icon helper — thin line art, cyberpunk style
@@ -2711,8 +2741,8 @@ export const Desktop = {
             </div>
 
             <div class="svc-tabs">
-                <button class="svc-tab active" data-tab="services">Services & Pricing</button>
-                <button class="svc-tab" data-tab="clients">Clients & Demos</button>
+                <button class="svc-tab active" data-tab="services">Pricing</button>
+                <button class="svc-tab" data-tab="clients">Portfolio</button>
             </div>
 
             <div class="svc-panel active" id="svc-panel-services">
@@ -2757,40 +2787,60 @@ export const Desktop = {
             </div>
 
             <div class="svc-panel" id="svc-panel-clients">
-                <div class="window-section-header orange scroll-reveal" data-reveal="fade-left" data-reveal-delay="1">▶ CLIENT WORK</div>
-                <div class="portfolio-clients scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
+                <div class="window-section-header orange scroll-reveal" data-reveal="fade-left" data-reveal-delay="1">\u25B6 CLIENT WORK</div>
+                <div class="portfolio-thumb-grid scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
                     ${CLIENT_WORK.map(c => `
-                        <a href="${Sanitize.text(c.url)}" target="_blank" rel="noopener" class="portfolio-client-item" style="text-decoration:none;color:inherit;--client-color:${c.color}">
-                            <span class="portfolio-client-dot" style="background:${c.color};box-shadow:0 0 8px ${c.color};"></span>
-                            <div class="portfolio-client-info">
-                                <span class="portfolio-client-name">${Sanitize.text(c.name)}</span>
-                                <span class="portfolio-client-type">${Sanitize.text(c.type)}</span>
+                        <a href="${Sanitize.text(c.url)}" target="_blank" rel="noopener" class="portfolio-thumb-card" style="text-decoration:none;color:inherit;">
+                            <div class="portfolio-thumb-img" style="background-image:url('${c.thumb}')">
+                                <span class="portfolio-thumb-badge" style="background:${c.color};color:#000;">LIVE</span>
                             </div>
-                            <span class="portfolio-client-live">LIVE</span>
-                            <span class="portfolio-client-arrow">\u2197</span>
+                            <div class="portfolio-thumb-info">
+                                <span class="portfolio-thumb-name">${Sanitize.text(c.name)}</span>
+                                <span class="portfolio-thumb-type">${Sanitize.text(c.type)}</span>
+                            </div>
                         </a>
                     `).join('')}
                 </div>
 
-                <div class="window-section-header cyan scroll-reveal" data-reveal="fade-right" style="margin-top: 25px;">◈ INDUSTRY DEMOS <span style="opacity:0.4;font-size:9px;margin-left:8px;">${liveCount} LIVE / ${DEMOS.length} TOTAL</span></div>
+                <div class="window-section-header cyan scroll-reveal" data-reveal="fade-right" style="margin-top: 25px;">\u25C8 INDUSTRY DEMOS <span style="opacity:0.4;font-size:9px;margin-left:8px;">${liveCount} LIVE / ${DEMOS.length} TOTAL</span></div>
                 <p class="services-retainer-intro scroll-reveal" data-reveal-delay="1">Click any live demo to preview. Each site is a unique custom build.</p>
-                <div class="portfolio-demos-grid scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
-                    ${DEMOS.map(d => `
-                        <a href="${d.live ? Sanitize.text(d.url) : '#'}" ${d.live ? 'target="_blank" rel="noopener"' : ''} class="portfolio-demo-card ${d.live ? 'portfolio-demo-live' : 'portfolio-demo-soon'}" style="text-decoration:none;color:inherit;">
-                            <span class="portfolio-demo-icon">${d.icon}</span>
-                            <span class="portfolio-demo-name">${Sanitize.text(d.name)}</span>
-                            <span class="portfolio-demo-status">${d.live ? '\u25CF LIVE' : '\u25CB SOON'}</span>
-                        </a>
-                    `).join('')}
+                <div class="portfolio-thumb-grid portfolio-thumb-grid--demos scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
+                    ${DEMOS.map(d => {
+                        const thumbMap = {
+                            'Restaurant & Bar': '/thumbnails/demo-restaurant.jpg',
+                            'Barbershop & Salon': '/thumbnails/demo-barbershop.jpg',
+                            'Contractor & Trades': '/thumbnails/demo-contractor.jpg',
+                            'Solo / Starter': '/thumbnails/demo-starter.jpg',
+                        };
+                        const thumb = thumbMap[d.name] || '';
+                        return `
+                        <a href="${d.live ? Sanitize.text(d.url) : '#'}" ${d.live ? 'target="_blank" rel="noopener"' : ''} class="portfolio-thumb-card ${d.live ? '' : 'portfolio-thumb-card--soon'}" style="text-decoration:none;color:inherit;">
+                            <div class="portfolio-thumb-img ${d.live ? '' : 'portfolio-thumb-img--soon'}" ${thumb ? `style="background-image:url('${thumb}')"` : ''}>
+                                ${d.live
+                                    ? '<span class="portfolio-thumb-badge" style="background:#4ade80;color:#000;">LIVE</span>'
+                                    : '<span class="portfolio-thumb-badge portfolio-thumb-badge--soon">SOON</span>'}
+                                ${!d.live ? '<span class="portfolio-thumb-icon">' + d.icon + '</span>' : ''}
+                            </div>
+                            <div class="portfolio-thumb-info">
+                                <span class="portfolio-thumb-name">${Sanitize.text(d.name)}</span>
+                            </div>
+                        </a>`;
+                    }).join('')}
                 </div>
             </div>
 
-            <div class="services-cta scroll-reveal" data-reveal="scale" data-reveal-delay="1">
+            <div class="services-cta" style="opacity:1;transform:none;">
                 <div class="services-cta-text">Ready to build something?</div>
+                <p style="font-size:11px;color:rgba(255,255,255,0.4);margin:6px 0 14px;">Custom builds for any industry. No templates. You own everything.</p>
                 <a href="mailto:dev@jamesdare.com?subject=Service%20Inquiry%20from%20jamesdare.com" class="cyber-button services-cta-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
                     <span>GET IN TOUCH</span>
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
                 </a>
+                <div style="margin-top:12px;font-size:11px;color:rgba(0,240,255,0.6);letter-spacing:1px;">
+                    <a href="mailto:dev@jamesdare.com" style="color:rgba(0,240,255,0.6);text-decoration:none;">dev@jamesdare.com</a>
+                    <span style="margin:0 8px;opacity:0.3;">|</span>
+                    <span>Toronto, ON</span>
+                </div>
             </div>
         `;
 
