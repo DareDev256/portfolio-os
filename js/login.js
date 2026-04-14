@@ -525,7 +525,19 @@ export const Login = {
             bootSequence.innerHTML = '';
         }
         if (stage) {
-            stage.classList.remove('act-0', 'act-1', 'act-2', 'act-3', 'revealed', 'booting');
+            // Skip cinematic on AFK return — jump straight to revealed + button visible
+            stage.classList.remove('act-0', 'act-1', 'act-2', 'act-3', 'booting');
+            stage.classList.add('revealed');
+        }
+
+        // Mark cinematic as done so ADAPT button works immediately
+        this._cinematicDone = true;
+
+        // Clean up any stale skip listeners
+        if (this._skipBound) {
+            document.removeEventListener('click', this._skipBound);
+            document.removeEventListener('keydown', this._skipBound);
+            this._skipBound = null;
         }
 
         // Reinitialize galaxy effect
@@ -533,9 +545,6 @@ export const Login = {
 
         // Re-attach cursor aurora
         this.initCursorAurora();
-
-        // Restart cinematic
-        this.startCinematic();
 
         // Re-attach Enter key handler for the lock screen
         if (!this._enterKeyHandler) {
