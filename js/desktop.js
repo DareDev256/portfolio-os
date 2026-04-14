@@ -83,52 +83,20 @@ export const Desktop = {
         'https://images.unsplash.com/photo-1557682260-96773eb01377',
     ],
 
-    // Desktop item configurations — ordered for recruiter flow
-    // Column 1: "Hire Me" | Column 2: "What I Build" | Column 3: "Projects" | Column 4: "Extras"
+    // Desktop item configurations — ordered to match row layout
+    // Desktop: getDefaultPosition() maps to rows. Mobile: DOM order = grid order.
+    // Row 1: about, portfolio(services), applications(portfolio), resume
+    // Row 2: linkedin, github, skills, terminal
+    // Row 3: passion, image-generator, portfolio-videos, contact
+    // Row 4: typemaster, settings
     DESKTOP_ITEMS: [
-        // Column 1 — Hire Me (leftmost)
-        {
-            id: 'resume',
-            label: 'RESUME',
-            icon: 'svg:/assets/resume.svg',
-            color: '#ffaa00',
-            action: () => Desktop.openResume(),
-        },
+        // Row 1 — First impression
         {
             id: 'about',
             label: 'ABOUT_ME.exe',
             icon: 'svg:/assets/about-me.svg',
             color: '#aa00ff',
             action: () => Desktop.openAbout(),
-        },
-        {
-            id: 'contact',
-            label: 'CONNECT',
-            icon: 'svg:/assets/connect.svg',
-            color: '#ff0066',
-            action: () => Desktop.openContact(),
-        },
-        {
-            id: 'linkedin',
-            label: 'LINKEDIN',
-            icon: 'svg:/assets/linkedin.svg',
-            color: '#0077b5',
-            action: () => openExternal('https://linkedin.com/in/james-olusoga'),
-        },
-        // Column 2 — What I Build
-        {
-            id: 'skills',
-            label: 'SKILLS_MATRIX',
-            icon: 'svg:/assets/skills-matrix.svg',
-            color: '#00f0ff',
-            action: () => Desktop.openSkills(),
-        },
-        {
-            id: 'github',
-            label: 'GITHUB_OPS',
-            icon: 'svg:/assets/github-ops.svg',
-            color: '#00f0ff',
-            action: () => Desktop.openGitHubCenter(),
         },
         {
             id: 'portfolio',
@@ -145,28 +113,42 @@ export const Desktop = {
             action: () => Desktop.openApplicationsShowcase(),
         },
         {
+            id: 'resume',
+            label: 'RESUME',
+            icon: 'svg:/assets/resume.svg',
+            color: '#ffaa00',
+            action: () => Desktop.openResume(),
+        },
+        // Row 2 — Professional credibility
+        {
+            id: 'linkedin',
+            label: 'LINKEDIN',
+            icon: 'svg:/assets/linkedin.svg',
+            color: '#0077b5',
+            action: () => openExternal('https://linkedin.com/in/james-olusoga'),
+        },
+        {
+            id: 'github',
+            label: 'GITHUB_OPS',
+            icon: 'svg:/assets/github-ops.svg',
+            color: '#00f0ff',
+            action: () => Desktop.openGitHubCenter(),
+        },
+        {
+            id: 'skills',
+            label: 'SKILLS_MATRIX',
+            icon: 'svg:/assets/skills-matrix.svg',
+            color: '#00f0ff',
+            action: () => Desktop.openSkills(),
+        },
+        {
             id: 'terminal',
             label: 'DEV_TERMINAL',
             icon: 'svg:/assets/dev-terminal.svg',
             color: '#00ff88',
             action: () => Desktop.openTerminal(),
         },
-        // Column 3 — Projects
-        {
-            id: 'image-generator',
-            label: 'IMG_GEN.ai',
-            icon: 'svg:/assets/image-generator.svg',
-            color: '#be185d',
-            action: () => openExternal('https://web-ten-vert-46.vercel.app/'),
-        },
-        {
-            id: 'typemaster',
-            label: 'TYPEMASTER',
-            icon: 'svg:/assets/typemaster.svg',
-            color: '#00ff88',
-            action: () => openExternal('https://typing-game-kappa-seven.vercel.app/'),
-        },
-        // Column 4 — Extras
+        // Row 3 — Creative work
         {
             id: 'passion',
             label: 'PASSION.ai',
@@ -175,11 +157,33 @@ export const Desktop = {
             action: () => Desktop.openPassionChat(),
         },
         {
+            id: 'image-generator',
+            label: 'IMG_GEN.ai',
+            icon: 'svg:/assets/image-generator.svg',
+            color: '#be185d',
+            action: () => openExternal('https://web-ten-vert-46.vercel.app/'),
+        },
+        {
             id: 'portfolio-videos',
             label: 'MUSIC_VIDEOS',
             icon: 'svg:/assets/portfolio-videos.svg',
             color: '#ff4444',
             action: () => openExternal('https://tdotssolutionsz.com/'),
+        },
+        {
+            id: 'contact',
+            label: 'CONNECT',
+            icon: 'svg:/assets/connect.svg',
+            color: '#ff0066',
+            action: () => Desktop.openContact(),
+        },
+        // Row 4 — Extras
+        {
+            id: 'typemaster',
+            label: 'TYPEMASTER',
+            icon: 'svg:/assets/typemaster.svg',
+            color: '#00ff88',
+            action: () => openExternal('https://typing-game-kappa-seven.vercel.app/'),
         },
         {
             id: 'settings',

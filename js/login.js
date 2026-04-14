@@ -496,6 +496,9 @@ export const Login = {
         // Achievement system: boot sequence complete
         document.dispatchEvent(new CustomEvent('passion:boot-complete'));
 
+        // Passion Assistant — floating chat widget
+        import('./passion-assistant.js').then(m => m.initPassionAssistant()).catch(() => {});
+
         // Start idle timer
         this.startIdleTimer();
     },

@@ -81,24 +81,8 @@
 /* ── Live Status Indicator (bottom-right corner) ────────────────────── */
 
 .passion-status-indicator {
-    position: fixed;
-    bottom: 70px; /* above taskbar */
-    right: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 14px;
-    background: rgba(0, 10, 20, 0.85);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 240, 255, 0.2);
-    border-radius: 20px;
-    cursor: pointer;
-    z-index: 800;
-    transition: all var(--transition-medium);
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.8);
-    font-family: 'JetBrains Mono', monospace;
-    user-select: none;
+    /* Hidden — replaced by Passion Assistant chat widget (pa-bubble) */
+    display: none !important;
 }
 
 .passion-status-indicator:hover {
