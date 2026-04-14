@@ -1698,6 +1698,31 @@
     align-items: center;
 }
 
+/* Quick Tool Buttons in Settings */
+.settings-tool-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    color: rgba(255,255,255,0.7);
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.settings-tool-btn:hover {
+    background: rgba(var(--tool-color), 0.08);
+    border-color: var(--tool-color, rgba(0,240,255,0.3));
+    color: #fff;
+}
+.settings-tool-btn span {
+    font-size: 16px;
+}
+
 /* Modern Toggle Switch */
 .settings-toggle {
     display: flex;

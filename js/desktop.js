@@ -153,13 +153,6 @@ export const Desktop = {
         },
         // Column 3 — Projects
         {
-            id: 'vibe-coder',
-            label: 'Vibe_Coder.exe',
-            icon: 'svg:/assets/vibe-coder.svg',
-            color: '#ff00aa',
-            action: () => openExternal('https://daredev256.github.io/vibe-coder/'),
-        },
-        {
             id: 'image-generator',
             label: 'IMG_GEN.ai',
             icon: 'svg:/assets/image-generator.svg',
@@ -172,13 +165,6 @@ export const Desktop = {
             icon: 'svg:/assets/typemaster.svg',
             color: '#00ff88',
             action: () => openExternal('https://typing-game-kappa-seven.vercel.app/'),
-        },
-        {
-            id: 'showcase',
-            label: 'SHOWCASE.mp4',
-            icon: 'svg:/assets/showcase.svg',
-            color: '#FF0000',
-            action: () => Desktop.openFeaturedVideo(),
         },
         // Column 4 — Extras
         {
@@ -196,27 +182,6 @@ export const Desktop = {
             action: () => Desktop.openStickyNotes(),
         },
         {
-            id: 'pomodoro',
-            label: 'FOCUS_TIMER',
-            icon: 'svg:/assets/pomodoro-timer.svg',
-            color: '#ff0066',
-            action: () => Desktop.openPomodoroTimer(),
-        },
-        {
-            id: 'calculator',
-            label: 'CALC.exe',
-            icon: 'svg:/assets/calculator.svg',
-            color: '#aa00ff',
-            action: () => Desktop.openCalculator(),
-        },
-        {
-            id: 'weather',
-            label: 'WEATHER',
-            icon: 'svg:/assets/weather.svg',
-            color: '#aa00ff',
-            action: () => Desktop.openWeather(),
-        },
-        {
             id: 'portfolio-videos',
             label: 'MUSIC_VIDEOS',
             icon: 'svg:/assets/portfolio-videos.svg',
@@ -229,13 +194,6 @@ export const Desktop = {
             icon: 'svg:/assets/settings.svg',
             color: '#00BCD4',
             action: () => Desktop.openSettings(),
-        },
-        {
-            id: 'sysmon',
-            label: 'SYS_MONITOR',
-            icon: 'svg:/assets/system-monitor.svg',
-            color: '#00ff88',
-            action: () => Desktop.openSystemMonitor(),
         },
         {
             id: 'trophies',
@@ -437,7 +395,7 @@ export const Desktop = {
         // User requested Key Apps for the Dock:
         // Skills Matrix, GitHub Ops, Applications, About Me
         // plus Developer Console (Terminal) as a bonus for power users
-        const dockIds = ['about', 'portfolio', 'skills', 'github', 'applications', 'terminal'];
+        const dockIds = ['about', 'portfolio', 'applications', 'sticky-notes', 'trophies', 'terminal'];
 
         dockIds.forEach((id, index) => {
             const item = this.DESKTOP_ITEMS.find(i => i.id === id);
@@ -509,18 +467,16 @@ export const Desktop = {
             const iconSpacingY = 100;
             const topAreaY = 100; // Below top bar
 
-            // Row 1: First impression — About Me, Portfolio, Applications, Resume
+            // Row 1: First impression — client-facing
             const row1 = ['about', 'portfolio', 'applications', 'resume'];
-            // Row 2: Technical depth
-            const row2 = ['github', 'skills', 'showcase', 'linkedin'];
-            // Row 3: Live projects
-            const row3 = ['vibe-coder', 'image-generator', 'terminal', 'contact'];
-            // Row 4: Extras/Utilities
-            const row4 = ['passion', 'typemaster', 'portfolio-videos', 'settings'];
-            // Row 5: More extras
-            const row5 = ['sysmon', 'sticky-notes', 'pomodoro', 'calculator', 'weather'];
+            // Row 2: Professional credibility
+            const row2 = ['linkedin', 'github', 'skills', 'terminal'];
+            // Row 3: Creative work
+            const row3 = ['passion', 'image-generator', 'portfolio-videos', 'contact'];
+            // Row 4: Extras
+            const row4 = ['typemaster', 'settings'];
 
-            const allRows = [row1, row2, row3, row4, row5];
+            const allRows = [row1, row2, row3, row4];
             for (let row = 0; row < allRows.length; row++) {
                 for (let col = 0; col < allRows[row].length; col++) {
                     if (allRows[row][col] === item.id) {
@@ -2248,39 +2204,15 @@ export const Desktop = {
         content.className = 'settings-content';
         content.innerHTML = `
             <div class="settings-header">
-                <h2 style="color: var(--neon-cyan); margin: 0 0 8px 0; font-size: 20px;">⚙️ SYSTEM SETTINGS</h2>
+                <h2 style="color: var(--neon-cyan); margin: 0 0 8px 0; font-size: 20px;">\u2699\uFE0F SYSTEM SETTINGS</h2>
                 <p style="color: rgba(255,255,255,0.6); margin: 0; font-size: 12px;">Customize your experience</p>
             </div>
 
             <div class="settings-grid">
-                <!-- Appearance Card -->
-                <div class="settings-card">
-                    <div class="settings-card-header">
-                        <span class="settings-icon">🎨</span>
-                        <h3>Appearance</h3>
-                    </div>
-                    <div class="settings-card-body">
-                        <div class="settings-row">
-                            <label class="settings-toggle">
-                                <input type="checkbox" id="fxEnabled">
-                                <span class="toggle-slider"></span>
-                                <span class="toggle-label">Particle Effects</span>
-                            </label>
-                        </div>
-                        <div class="settings-row">
-                            <label class="settings-toggle">
-                                <input type="checkbox" id="glyphsEnabled">
-                                <span class="toggle-slider"></span>
-                                <span class="toggle-label">Hologram Ring</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- System Card -->
                 <div class="settings-card">
                     <div class="settings-card-header">
-                        <span class="settings-icon">🔧</span>
+                        <span class="settings-icon">\u{1F527}</span>
                         <h3>System</h3>
                     </div>
                     <div class="settings-card-body">
@@ -2292,6 +2224,13 @@ export const Desktop = {
                             </label>
                         </div>
                         <div class="settings-row">
+                            <label class="settings-toggle">
+                                <input type="checkbox" id="fxEnabled">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">Ambient Effects</span>
+                            </label>
+                        </div>
+                        <div class="settings-row">
                             <label class="settings-input-row">
                                 <span>Idle Lock (minutes)</span>
                                 <input type="number" id="idleMinutes" min="1" max="60" step="1" class="settings-number-input">
@@ -2300,7 +2239,27 @@ export const Desktop = {
                     </div>
                 </div>
 
-                <!-- Content Management: Admin panel accessible via console Admin.open() -->
+                <!-- Quick Tools Card -->
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <span class="settings-icon">\u{1F9F0}</span>
+                        <h3>Quick Tools</h3>
+                    </div>
+                    <div class="settings-card-body">
+                        <button class="settings-tool-btn" id="openCalc" style="--tool-color:#aa00ff;">
+                            <span>\u{1F5A9}</span> Calculator
+                        </button>
+                        <button class="settings-tool-btn" id="openWeather" style="--tool-color:#00BCD4;">
+                            <span>\u2601</span> Weather
+                        </button>
+                        <button class="settings-tool-btn" id="openSysmon" style="--tool-color:#00ff88;">
+                            <span>\u{1F4CA}</span> System Monitor
+                        </button>
+                        <button class="settings-tool-btn" id="openPomodoro" style="--tool-color:#ff0066;">
+                            <span>\u23F1</span> Focus Timer
+                        </button>
+                    </div>
+                </div>
             </div>
         `;
 
@@ -2315,18 +2274,22 @@ export const Desktop = {
 
         // Initialize values
         content.querySelector('#fxEnabled').checked = State.fxEnabled;
-        content.querySelector('#glyphsEnabled').checked = State.glyphsEnabled;
         content.querySelector('#soundEnabled').checked = State.soundEnabled;
         content.querySelector('#idleMinutes').value = Math.round(State.idleTime / 60000) || 2;
 
         // Bind changes
         content.querySelector('#fxEnabled').addEventListener('change', (e) => State.setFxEnabled(e.target.checked));
-        content.querySelector('#glyphsEnabled').addEventListener('change', (e) => State.setGlyphsEnabled(e.target.checked));
         content.querySelector('#soundEnabled').addEventListener('change', (e) => State.setSoundEnabled(e.target.checked));
         content.querySelector('#idleMinutes').addEventListener('change', (e) => {
             const m = Math.max(1, Math.min(60, parseInt(e.target.value || '2', 10)));
             State.idleTime = m * 60000;
         });
+
+        // Quick tool launchers
+        content.querySelector('#openCalc').addEventListener('click', () => Desktop.openCalculator());
+        content.querySelector('#openWeather').addEventListener('click', () => Desktop.openWeather());
+        content.querySelector('#openSysmon').addEventListener('click', () => Desktop.openSystemMonitor());
+        content.querySelector('#openPomodoro').addEventListener('click', () => Desktop.openPomodoroTimer());
 
         // Admin panel accessible via console: import('./admin.js').then(m => m.Admin.open())
     },
