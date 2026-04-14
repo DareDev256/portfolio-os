@@ -48,9 +48,9 @@ const INTENTS = [
 // Response generators
 const RESPONSES = {
     greeting: () => pickRandom([
-        `Hey! I'm Passion, James's AI assistant. I can tell you about our services, show you our work, or help you book a consultation. What are you looking for?`,
-        `Welcome! I'm Passion — I help visitors find what they need. Are you looking for web design, branding, AI solutions, or something else?`,
-        `Hey there! Great to meet you. I'm here to help. Looking to build something or just browsing?`,
+        `Hey! I'm Passion, James's AI assistant. He just shipped BetMetrics.ca — a full sports analytics platform. I can tell you about our services, show our work, or book a consultation. What brings you here?`,
+        `Welcome! I'm Passion. James has been busy — 6 client sites live, 20+ industry demos in the works. Looking for web design, branding, AI, or something else?`,
+        `Hey there! James is currently building AR gesture interfaces and an autonomous AI framework. Want to see what he can build for you?`,
     ]),
 
     services: () => {

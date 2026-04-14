@@ -42,7 +42,7 @@ function sanitizeState(raw) {
 const STATE_LABELS = {
   working:     'crunching code',
   thinking:    'pondering something',
-  sleeping:    'off duty (zzz)',
+  sleeping:    'recharging',
   focused:     'deep in focus',
   celebrating: 'celebrating a win!',
   idle:        'hanging out',
@@ -58,19 +58,34 @@ const STATE_COLORS = {
   sleeping:    'grey',
 };
 
+// Recent project highlights — shown when Passion is offline or as context
+const PROJECT_HIGHLIGHTS = [
+  "Just shipped BetMetrics.ca — a multi-sport analytics platform with live odds across 7 sports",
+  "Building AR gesture interfaces with hand tracking — pinch to click, swipe to navigate",
+  "Designed 20+ industry demo sites for the web design portfolio",
+  "Integrated Hevy's fitness API into the Passion dashboard for workout tracking",
+  "Built a lead generation pipeline with Playwright that scraped 2,400+ Toronto businesses",
+  "Launched custom sites for Edson Legal, Dancehall Princess, and The Syren Effect",
+  "Working on an autonomous AI agent framework — 92 modules running 24/7",
+];
+
+function getRandomHighlight() {
+  return PROJECT_HIGHLIGHTS[Math.floor(Math.random() * PROJECT_HIGHLIGHTS.length)];
+}
+
 // Offline fallback data
 const FALLBACK = {
   status: 'offline',
   state: 'sleeping',
-  stateEmoji: '😴',
+  stateEmoji: '🌙',
   uptime: '—',
   mood: 'resting',
-  commentary: "I'm off duty right now, but feel free to explore!",
+  commentary: getRandomHighlight(),
   cyclesTotal: 0,
   tasksToday: 0,
   currentFocus: '—',
   lastActive: 'unknown',
-  greeting: "Hey! I'm Passion, James's AI assistant. I'm off duty right now, but let me show you around!",
+  greeting: "Hey! I'm Passion, James's AI assistant. He's been busy — " + getRandomHighlight().toLowerCase() + ". Want me to show you around?",
 };
 
 // Tour step quips (offline fallbacks)
