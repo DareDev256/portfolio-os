@@ -2651,13 +2651,13 @@ export const Desktop = {
         const svg = (d, vb = '0 0 24 24') => `<svg viewBox="${vb}" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 
         const DEMOS = [
-            { name: 'Restaurant & Bar', url: 'https://tdots-demo-restaurant.vercel.app', live: true,
+            { name: 'Restaurant & Bar', url: '#', live: false,
               icon: svg('<path d="M3 11h18M5 11V6a2 2 0 012-2h10a2 2 0 012 2v5M7 11v9h10v-9M12 4v7M12 14v3"/>') },
-            { name: 'Barbershop & Salon', url: 'https://tdots-demo-barbershop.vercel.app', live: true,
+            { name: 'Barbershop & Salon', url: '#', live: false,
               icon: svg('<circle cx="12" cy="7" r="3"/><path d="M5 21v-2a4 4 0 014-4h6a4 4 0 014 4v2"/><path d="M15 3l2 4M9 3L7 7"/>') },
-            { name: 'Contractor & Trades', url: 'https://tdots-demo-contractor.vercel.app', live: true,
+            { name: 'Contractor & Trades', url: '#', live: false,
               icon: svg('<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.2a2 2 0 01-2.83 0l-.1-.1a2 2 0 010-2.83l6.83-6.73A6 6 0 016.3 2.53l3.77 3.77z"/>') },
-            { name: 'Solo / Starter', url: 'https://tdots-demo-starter.vercel.app', live: true,
+            { name: 'Solo / Starter', url: '#', live: false,
               icon: svg('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>') },
             { name: 'Auto Detailing', url: '#', live: false,
               icon: svg('<path d="M5 17h14M6 17l1-5h10l1 5M8 12l1-4h6l1 4"/><circle cx="8" cy="17" r="1.5"/><circle cx="16" cy="17" r="1.5"/>') },
