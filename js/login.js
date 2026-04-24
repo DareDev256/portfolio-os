@@ -58,10 +58,40 @@ export const Login = {
         // Listen for system lock event (from Start Menu)
         window.addEventListener('system-lock', () => this.lock());
 
+        // Reveal ADAPT button immediately and wire it as a guaranteed fallback — if
+        // the digivice intro stalls (autoplay blocked, slow network, broken video),
+        // users can always tap ADAPT to enter the site.
+        const stage = document.getElementById('introStage');
+        if (stage) stage.classList.add('revealed');
+        this._wireAdaptFallback();
+
         // Play digivice intro video, then transition to desktop
         // (skip galaxy + 3D wheel — they cause GPU deadlock)
         DigiviceIntro.play().then(() => {
             this.login();
+        });
+    },
+
+    /**
+     * Wire the ADAPT button as a guaranteed login entry point. Safe to call
+     * multiple times — handler is attached once via _adaptWired flag.
+     */
+    _wireAdaptFallback() {
+        if (this._adaptWired) return;
+        const btn = document.getElementById('loginButton');
+        if (!btn) return;
+        this._adaptWired = true;
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            this.login();
+        });
+        // Enter/Space also trigger
+        btn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.login();
+            }
         });
     },
 

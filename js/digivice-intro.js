@@ -15,33 +15,26 @@ export const DigiviceIntro = {
       this._createSkipButton();
       this._createWatermark();
       document.body.appendChild(this._overlay);
-      this._skipBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+      const skip = (e) => {
+        if (e) e.stopPropagation();
         if (this._video) this._video.pause();
         this._finish(resolve);
-      });
+      };
+      this._skipBtn.addEventListener('click', skip);
+      // Tap anywhere on the overlay dismisses — guarantees users can always get past the intro
+      this._overlay.addEventListener('click', skip);
       this._createVideo('/assets/media/digivice-intro.mp4');
       this._video.addEventListener('ended', () => this._finish(resolve), { once: true });
       this._video.addEventListener('error', () => this._finish(resolve), { once: true });
-      // Mobile browsers ignore preload="auto" — canplaythrough never fires.
-      // Call play() immediately; the browser will buffer and start when ready.
-      // On desktop, wait for canplaythrough for a smoother start.
-      if (isMobile()) {
-        this._video.play()
-          .then(() => { this._showVideo(); })
-          .catch(() => { this._showTapPrompt(resolve); });
-      } else {
-        this._video.addEventListener('canplaythrough', () => {
-          if (this._resolved) return;
-          this._video.play()
-            .then(() => { this._showVideo(); })
-            .catch(() => { this._showTapPrompt(resolve); });
-        }, { once: true });
-      }
-      // Safety timeout — if nothing happens in 8s, skip to desktop
+      // Try to play immediately on both mobile and desktop — waiting for canplaythrough
+      // deadlocks when the event never fires (seen on slow connections + some browsers).
+      this._video.play()
+        .then(() => { this._showVideo(); })
+        .catch(() => { this._showTapPrompt(resolve); });
+      // Safety timeout — if nothing happens in 4s, skip to desktop
       this._safetyTimer = setTimeout(() => {
         if (!this._resolved) this._finish(resolve);
-      }, 8000);
+      }, 4000);
     });
   },
   _createOverlay() {
@@ -83,10 +76,13 @@ export const DigiviceIntro = {
     this._video = v;
   },
   _showVideo() {
+    if (this._resolved || !this._overlay) return;
     this._hideTapPrompt();
     if (this._video) { this._video.style.opacity='1'; this._video.style.transform='scale(1)'; }
   },
   _showTapPrompt(resolve) {
+    // Skip if we already resolved (e.g., safety timer fired before autoplay .catch ran)
+    if (this._resolved || !this._overlay) return;
     // Autoplay blocked (common on mobile) — show tap prompt
     const tap = document.createElement('div');
     tap.textContent = 'TAP TO PLAY';

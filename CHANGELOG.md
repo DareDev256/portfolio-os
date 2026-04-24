@@ -18,6 +18,18 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [3.70.2] — 2026-04-24
+
+### Fixed
+- **ADAPT button unclickable on mobile and desktop** (`js/login.js`, `js/digivice-intro.js`) — Three root causes, all fixed:
+  1. ADAPT button had no click handler in the active init flow (`initLoginScreen()` was defined but never called after the digivice-first refactor). Added `_wireAdaptFallback()` in `Login.init()` that attaches click + Enter/Space handlers to `#loginButton` and calls `login()` directly — guarantees the button always works as a fallback entry point regardless of cinematic state.
+  2. Digivice intro overlay absorbed taps across the entire viewport with no dismiss handler, trapping users if the video failed to play (readyState stuck at 0). Added tap-anywhere-to-skip on the overlay itself, not just the small Skip button.
+  3. Safety timeout was 8s and desktop path waited indefinitely for `canplaythrough` (which never fires on some browsers/connections). Reduced safety timer to 4s and dropped the canplaythrough wait — `play()` is called immediately on all devices, with autoplay-blocked catch handled by tap prompt.
+- **Null-ref crash in `_showTapPrompt` / `_showVideo`** (`js/digivice-intro.js`) — When the autoplay Promise rejected after the safety timer had already fired `_finish()` (nulling `this._overlay`), the `.catch()` handler called `_showTapPrompt()` which threw `Cannot read properties of null (reading 'appendChild')`. Guarded both methods with `if (this._resolved || !this._overlay) return`.
+- **Always-revealed lock screen** (`js/login.js`) — `#introStage` now gets the `revealed` class immediately on `Login.init()` so the ADAPT button is visible as soon as the lock screen is shown, not gated behind the 3-act cinematic that isn't run in the current flow.
+
+---
+
 ## [3.70.1] — 2026-04-11
 
 ### Fixed
