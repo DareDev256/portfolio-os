@@ -58,11 +58,47 @@ export const Login = {
         // Listen for system lock event (from Start Menu)
         window.addEventListener('system-lock', () => this.lock());
 
+        // Wire ADAPT button — fires on AFK-lock return where the button is revealed.
+        // Click just swaps screens; desktop is already initialized from the first
+        // login() call, so re-running initDesktop() would duplicate listeners/intervals.
+        const adaptBtn = document.getElementById('loginButton');
+        if (adaptBtn && !adaptBtn._adaptWired) {
+            adaptBtn._adaptWired = true;
+            adaptBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this._resumeFromLock();
+            });
+        }
+
         // Play digivice intro video, then transition to desktop
         // (skip galaxy + 3D wheel — they cause GPU deadlock)
         DigiviceIntro.play().then(() => {
             this.login();
         });
+    },
+
+    /**
+     * Resume from AFK lock — swap lock screen out, show already-initialized desktop.
+     * Unlike login(), does NOT re-run initDesktop(): that would stack listeners,
+     * intervals, and routers from the first session and can freeze the renderer.
+     */
+    _resumeFromLock() {
+        // Same teardown login() does for the lock screen, minus the double-init.
+        if (this._enterKeyHandler) {
+            document.removeEventListener('keydown', this._enterKeyHandler);
+            this._enterKeyHandler = null;
+        }
+        if (this._focusTrapCleanup) {
+            this._focusTrapCleanup();
+            this._focusTrapCleanup = null;
+        }
+        this.destroyCursorAurora();
+        if (this.wheel3D) this.wheel3D.stop();
+        if (this.lockScreen) this.lockScreen.classList.add('hidden');
+        if (this.desktop) {
+            this.desktop.classList.remove('hidden');
+            this.desktop.classList.add('fade-in');
+        }
     },
 
     /**
