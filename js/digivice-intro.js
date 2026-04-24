@@ -38,10 +38,10 @@ export const DigiviceIntro = {
             .catch(() => { this._showTapPrompt(resolve); });
         }, { once: true });
       }
-      // Safety timeout — if nothing happens in 8s, skip to desktop
+      // Safety timeout — if nothing happens in 3s, skip to desktop
       this._safetyTimer = setTimeout(() => {
         if (!this._resolved) this._finish(resolve);
-      }, 8000);
+      }, 3000);
     });
   },
   _createOverlay() {
