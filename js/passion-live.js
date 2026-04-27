@@ -65,7 +65,7 @@ const PROJECT_HIGHLIGHTS = [
   "Designed 20+ industry demo sites for the web design portfolio",
   "Integrated Hevy's fitness API into the Passion dashboard for workout tracking",
   "Built a lead generation pipeline with Playwright that scraped 2,400+ Toronto businesses",
-  "Launched custom sites for Edson Legal, Dancehall Princess, and The Syren Effect",
+  "Launched custom sites for Edson Legal, MustHaveFrenchies, and The Syren Effect",
   "Working on an autonomous AI agent framework — 92 modules running 24/7",
 ];
 

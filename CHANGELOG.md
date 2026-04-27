@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.70.1
-last_updated: 2026-04-11
+version: 3.70.3
+last_updated: 2026-04-27
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-04-11
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.70.3] — 2026-04-27
+
+### Removed
+- **Dancehall Princess Canada** from the Client Work portfolio — pulled across all surfaces: SEO `<noscript>` block (`index.html`), Services window client grid + legacy `openPortfolio` list (`js/desktop.js`), Client Websites category in Applications showcase (`js/desktop.js`), Passion Assistant knowledge base clients array (`js/passion-assistant.js`), and the Passion Live offline project highlight string (`js/passion-live.js`, replaced reference with MustHaveFrenchies).
 
 ---
 

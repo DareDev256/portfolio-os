@@ -18,7 +18,7 @@ const KNOWLEDGE = {
         ai: { name: 'AI & Automation', price: 'Custom quote', note: 'Chatbots, workflow automation, AI agents' },
         creative: { name: 'Creative Direction', price: '$200 – $1,000', note: 'Brand strategy, campaigns, content planning' },
     },
-    clients: ['Edson Legal', 'BetMetrics.ca', 'MustHaveFrenchies', 'SAVV4X', 'The Syren Effect', 'Dancehall Princess Canada'],
+    clients: ['Edson Legal', 'BetMetrics.ca', 'MustHaveFrenchies', 'SAVV4X', 'The Syren Effect'],
     industries: ['restaurants', 'barbershops', 'auto detailing', 'fitness', 'beauty', 'tattoo', 'pet services', 'cleaning', 'medical', 'law firms', 'real estate', 'cannabis', 'food trucks', 'car dealerships', 'construction', 'immigration', 'events', 'daycares'],
     location: 'Toronto, ON',
     turnaround: '5-10 business days',
