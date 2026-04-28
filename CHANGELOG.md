@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.70.3
-last_updated: 2026-04-27
+version: 3.71.0
+last_updated: 2026-04-28
 
 ---
 
@@ -15,6 +15,13 @@ last_updated: 2026-04-27
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.71.0] — 2026-04-28
+
+### Added
+- **Hackathon category** at the top of the Applications showcase (`js/desktop.js`) with a dedicated Anthropic-cream color stripe (`#cc785c`) and a single entry: **SECOND_OPINION** — multi-agent medical second-opinion AI built for the Cerebral Valley × Anthropic "Built with Opus 4.7" hackathon (Apr 2026, 1 of ~500 submissions across ~20K eligible applicants). Card links to the live `/sample` route on `second-opinion-eta.vercel.app` so the demo is interactive without depending on a live API key. Future hackathon / press / award credentials can rejoin this slot.
 
 ---
 

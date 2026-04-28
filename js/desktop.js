@@ -1571,6 +1571,13 @@ export const Desktop = {
     openApplicationsShowcase() {
         const categories = [
             {
+                name: 'Hackathon',
+                color: '#cc785c',
+                apps: [
+                    { name: 'SECOND_OPINION', desc: 'Multi-agent medical second-opinion AI — verifier loop, prompt-cache discipline, $5.55/case transparency. Cerebral Valley × Anthropic "Built with Opus 4.7" hackathon, Apr 2026 — 1 of ~500 submissions across ~20K eligible applicants.', status: 'live', link: 'https://second-opinion-eta.vercel.app/sample' },
+                ],
+            },
+            {
                 name: 'Passion Ecosystem',
                 color: '#d4af37',
                 apps: [
