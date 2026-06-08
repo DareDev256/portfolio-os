@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.71.0
-last_updated: 2026-04-28
+version: 3.72.0
+last_updated: 2026-06-08
 
 ---
 
@@ -15,6 +15,18 @@ last_updated: 2026-04-28
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.72.0] — 2026-06-08
+
+### Added
+- **15 industry demo sites went live** in the Services/Demos window (`js/desktop.js`). The `DEMOS` array flipped 15 entries from `live:false` placeholders to real `tdots-demo-*.vercel.app` URLs (all verified returning 200), reordered by design impact (Fitness, Pet, Food Truck, Restaurant, Cannabis, Beauty… first), each with a custom SVG icon and matching thumbnail. Remaining industries (Auto Detailing, Car Dealership, Law Firm, Tattoo, etc.) stay as "SOON" placeholders.
+- **11 new + 4 refreshed demo thumbnails** in `public/thumbnails/` (beauty, cannabis, cleaning, cleaning-premium, daycare, events, fitness, food-truck, medical, moving, pet + barbershop/contractor/restaurant/starter refreshes).
+
+### Changed
+- **SEO `<noscript>` block** (`index.html`) updated to list all 15 live demos ("15 live demo websites — each a unique custom build…") instead of the old "20+ industries" four-link stub.
+- **README counts reconciled to disk** — modules 76, stylesheets 50, tests 607 across 33 files (verified via `npm run test`). The README had drifted to inconsistent figures: modules shown as 72/63/49/41, stylesheets as 40/42, and tests as 506/592 in places that disagreed with the badge.
 
 ---
 

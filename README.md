@@ -4,9 +4,9 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.71.0-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v3.72.0-00f0ff?style=flat-square&labelColor=0d0d0d)
 ![Tests](https://img.shields.io/badge/607_tests-00e676?style=flat-square&labelColor=0d0d0d)
-![Modules](https://img.shields.io/badge/72_modules-b388ff?style=flat-square&labelColor=0d0d0d)
+![Modules](https://img.shields.io/badge/76_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
 **[▸ ENTER THE LIVE DEMO](https://jamesdare.com)**
@@ -19,7 +19,7 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `72 modules` · `42 stylesheets` · `506 tests / 26 suites` · `21 desktop apps` · `0 dependencies`
+> `76 modules` · `50 stylesheets` · `607 tests / 33 files` · `21 desktop apps` · `0 dependencies`
 
 ## Quick Start
 
@@ -178,7 +178,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 | Metric | Value |
 |--------|-------|
-| **Test Coverage** | 592 tests across 32 suites (vitest + jsdom) |
+| **Test Coverage** | 607 tests across 33 files (vitest + jsdom) |
 | **Security** | DOMPurify on all innerHTML, 10 HTTP headers, CSP, SRI |
 | **Accessibility** | WCAG focus trapping, aria-live, skip-link, reduced-motion |
 | **Performance** | Lazy-loaded modules, RAF pausing, 30fps-throttled FX |
@@ -244,14 +244,14 @@ The module checks `prefers-reduced-motion: reduce` at init and listens for live 
 
 Not ideology. Proof of depth.
 
-Routing, state management, component lifecycle, lazy loading, accessibility — everything you'd expect from a React/Next.js build — implemented against the raw DOM API. 49 hand-written modules that prove understanding of what frameworks abstract away.
+Routing, state management, component lifecycle, lazy loading, accessibility — everything you'd expect from a React/Next.js build — implemented against the raw DOM API. 76 hand-written modules that prove understanding of what frameworks abstract away.
 
 **The constraint is the point.** Anyone can `npx create-next-app`. Building a desktop OS with draggable windows, GPU-composited glass, and WebGL backgrounds from scratch is a different conversation.
 
 ## Architecture
 
 ```
-js/                                 # 63 ES modules, zero framework imports
+js/                                 # 76 ES modules, zero framework imports
 ├── main.js                         # Entry — orchestrates boot, lazy-loads FX
 ├── boot.js                         # Cinematic boot sequence
 ├── login.js                        # Lock screen + 3D wheel init
@@ -325,7 +325,7 @@ js/                                 # 63 ES modules, zero framework imports
 │   ├── easter-eggs.js              # Konami, 418, glitch pulse
 │   └── micro-interactions.js       # Hover/click micro-animations
 │
-css/                                # 40 modular stylesheets
+css/                                # 50 modular stylesheets
 ├── variables.css                   # Design tokens (colors, spacing, fonts, motion easing, transition shorthands)
 ├── reset.css                       # Normalize + base resets
 ├── styles.css                      # Core layout, dock, desktop, icons
@@ -368,7 +368,7 @@ css/                                # 40 modular stylesheets
 ├── ambient-drift.css               # Floating orbs canvas container
 ├── cosmic-dust.css                 # Star-field canvas container
 │
-tests/                              # 506 vitest tests across 26 suites
+tests/                              # 607 vitest tests across 33 files
 ├── sanitize.test.js                # XSS sanitization (54 tests)
 ├── state.test.js                   # State persistence + events (17 tests)
 ├── state-toggles.test.js           # Auto-generated boolean toggles (14 tests)
@@ -422,7 +422,7 @@ Chrome 61+ · Firefox 60+ · Safari 11+ · Edge 79+
 npm run dev       # Vite dev server (localhost:5173)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build
-npm run test      # Run vitest (506 tests / 26 suites)
+npm run test      # Run vitest (607 tests / 33 files)
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
@@ -482,7 +482,7 @@ npm run preview    # Serve dist/ on localhost:4173
 | [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) | No-code content editor (console-only) |
 | [EASTER_EGGS_GUIDE.md](EASTER_EGGS_GUIDE.md) | All hidden easter eggs and secret interactions |
 | [CHANGELOG.md](CHANGELOG.md) | Full version history from v1.0 to present |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture — all 41 modules, dependency graph, init sequence |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture — all 76 modules, dependency graph, init sequence |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | Terminology and codebase glossary |
 | [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Common issues and solutions |
 | [docs/anthropic-claude-code-marketing-ops.md](docs/anthropic-claude-code-marketing-ops.md) | Case study: Anthropic's marketing team using Claude Code for ad ops |
