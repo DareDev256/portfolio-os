@@ -13,8 +13,6 @@ export const MicroInteractions = {
     maxParticles: 100,
 
     init() {
-        console.log('[MicroInteractions] Initialized');
-
         // Pre-create particle pool
         this.createParticlePool();
 
