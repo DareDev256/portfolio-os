@@ -11,6 +11,7 @@ export const CursorTrail = {
     // Particle system
     particles: [],
     particlePool: [],
+    particleIndex: 0,
     maxParticles: 25,
 
     // Spawning config
@@ -125,10 +126,15 @@ export const CursorTrail = {
     },
 
     /**
-     * Get available particle from pool
+     * Get available particle from pool (round-robin O(1) amortized)
      */
     getParticle() {
-        return this.particlePool.find(p => !p.inUse);
+        for (let i = 0; i < this.maxParticles; i++) {
+            const particle = this.particlePool[this.particleIndex];
+            this.particleIndex = (this.particleIndex + 1) % this.maxParticles;
+            if (!particle.inUse) return particle;
+        }
+        return undefined;
     },
 
     /**
