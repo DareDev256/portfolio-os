@@ -21,18 +21,18 @@ export const SkillsUniverse = {
 
     // Configuration
     config: {
-        friction: 0.90,
+        friction: 0.9,
         springStiffness: 0.04,
         springLength: 150,
         repulsion: 1500,
         nodeRadius: 25,
         colors: {
             frontend: '#00f0ff', // Cyan
-            backend: '#aa00ff',  // Purple
-            db: '#ff00aa',       // Pink
-            tool: '#00ff88',     // Green
-            core: '#ffffff'      // White centre
-        }
+            backend: '#aa00ff', // Purple
+            db: '#ff00aa', // Pink
+            tool: '#00ff88', // Green
+            core: '#ffffff', // White centre
+        },
     },
 
     // Raw Data
@@ -68,31 +68,46 @@ export const SkillsUniverse = {
         { id: 'docker', label: 'Docker', type: 'tool' },
         { id: 'aws', label: 'AWS', type: 'tool' },
         { id: 'linux', label: 'Linux', type: 'tool' },
-        { id: 'playwright', label: 'Playwright', type: 'tool' }
+        { id: 'playwright', label: 'Playwright', type: 'tool' },
     ],
 
     connections: [
         // Connect Core to Main Categories
-        ['core', 'react'], ['core', 'node'], ['core', 'postgres'], ['core', 'git'],
+        ['core', 'react'],
+        ['core', 'node'],
+        ['core', 'postgres'],
+        ['core', 'git'],
 
         // Frontend Cluster
-        ['react', 'ts'], ['react', 'three'], ['react', 'vite'],
-        ['html', 'css'], ['css', 'three'],
+        ['react', 'ts'],
+        ['react', 'three'],
+        ['react', 'vite'],
+        ['html', 'css'],
+        ['css', 'three'],
 
         // Backend Cluster
-        ['node', 'api'], ['node', 'auth'], ['node', 'mongo'],
+        ['node', 'api'],
+        ['node', 'auth'],
+        ['node', 'mongo'],
         ['python', 'api'],
 
         // Database Cluster
-        ['postgres', 'node'], ['redis', 'node'],
+        ['postgres', 'node'],
+        ['redis', 'node'],
 
         // AI / Agents Cluster
-        ['claude', 'node'], ['claude', 'python'], ['claude', 'mcp'],
+        ['claude', 'node'],
+        ['claude', 'python'],
+        ['claude', 'mcp'],
         ['mcp', 'api'],
 
         // Tools Integration
-        ['git', 'linux'], ['docker', 'aws'], ['docker', 'node'],
-        ['aws', 'node'], ['playwright', 'node'], ['playwright', 'docker']
+        ['git', 'linux'],
+        ['docker', 'aws'],
+        ['docker', 'node'],
+        ['aws', 'node'],
+        ['playwright', 'node'],
+        ['playwright', 'docker'],
     ],
 
     /**
@@ -119,7 +134,10 @@ export const SkillsUniverse = {
         this._onMouseUp = () => this.inputEnd();
         this._onResize = () => {
             if (this.canvas && this.canvas.parentElement) {
-                this.resize(this.canvas.parentElement.clientWidth, this.canvas.parentElement.clientHeight);
+                this.resize(
+                    this.canvas.parentElement.clientWidth,
+                    this.canvas.parentElement.clientHeight
+                );
             }
         };
         this.canvas.addEventListener('mousedown', this._onMouseDown);
@@ -165,7 +183,7 @@ export const SkillsUniverse = {
 
     buildGraph() {
         // Create Nodes
-        this.nodes = this.skillData.map(d => ({
+        this.nodes = this.skillData.map((d) => ({
             ...d,
             x: this.width / 2 + (Math.random() - 0.5) * 50,
             y: this.height / 2 + (Math.random() - 0.5) * 50,
@@ -173,14 +191,14 @@ export const SkillsUniverse = {
             vy: 0,
             mass: d.type === 'core' ? 5 : 1,
             radius: d.r || this.config.nodeRadius,
-            color: this.config.colors[d.type]
+            color: this.config.colors[d.type],
         }));
 
         // Create Springs
         this.springs = [];
         this.connections.forEach(([idA, idB]) => {
-            const nodeA = this.nodes.find(n => n.id === idA);
-            const nodeB = this.nodes.find(n => n.id === idB);
+            const nodeA = this.nodes.find((n) => n.id === idA);
+            const nodeB = this.nodes.find((n) => n.id === idB);
             if (nodeA && nodeB) {
                 this.springs.push({ a: nodeA, b: nodeB });
             }
@@ -189,7 +207,7 @@ export const SkillsUniverse = {
 
     burst() {
         // Initial explosion to spread nodes
-        this.nodes.forEach(node => {
+        this.nodes.forEach((node) => {
             if (node.id === 'core') return;
             const angle = Math.random() * Math.PI * 2;
             const force = 15;
@@ -200,7 +218,10 @@ export const SkillsUniverse = {
 
     loop() {
         if (!this.isRunning) return;
-        if (isPageHidden()) { this.animationFrame = requestAnimationFrame(() => this.loop()); return; }  // skip frame when hidden
+        if (isPageHidden()) {
+            this.animationFrame = requestAnimationFrame(() => this.loop());
+            return;
+        } // skip frame when hidden
 
         // Auto-stop if canvas is removed from DOM
         if (this.canvas && !this.canvas.isConnected) {
@@ -244,7 +265,7 @@ export const SkillsUniverse = {
         }
 
         // 2. Springs (Connections pull together)
-        this.springs.forEach(spring => {
+        this.springs.forEach((spring) => {
             const a = spring.a;
             const b = spring.b;
             const dx = b.x - a.x;
@@ -270,7 +291,7 @@ export const SkillsUniverse = {
         // 3. Center Gravity (Keep in view)
         const cx = this.width / 2;
         const cy = this.height / 2;
-        nodes.forEach(node => {
+        nodes.forEach((node) => {
             if (node.id === 'core') {
                 // Core stays center with slight drift
                 node.x += (cx - node.x) * 0.05;
@@ -301,16 +322,16 @@ export const SkillsUniverse = {
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
         ctx.lineWidth = 1;
         ctx.beginPath();
-        this.springs.forEach(spring => {
+        this.springs.forEach((spring) => {
             ctx.moveTo(spring.a.x, spring.a.y);
             ctx.lineTo(spring.b.x, spring.b.y);
         });
         ctx.stroke();
 
         // Draw Nodes
-        this.nodes.forEach(node => {
+        this.nodes.forEach((node) => {
             // Draw Glow
-            const isHover = (node === this.hoveredNode || node === this.draggedNode);
+            const isHover = node === this.hoveredNode || node === this.draggedNode;
             if (isHover) {
                 ctx.shadowBlur = 20;
                 ctx.shadowColor = node.color;
@@ -343,8 +364,8 @@ export const SkillsUniverse = {
     getMousePos(e) {
         const rect = this.canvas.getBoundingClientRect();
         return {
-            x: (e.clientX - rect.left),
-            y: (e.clientY - rect.top)
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
         };
     },
 
@@ -392,5 +413,5 @@ export const SkillsUniverse = {
 
     inputEnd() {
         this.draggedNode = null;
-    }
+    },
 };

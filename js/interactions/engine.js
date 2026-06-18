@@ -44,9 +44,9 @@ export const InteractionEngine = {
     // Performance monitoring
     lowFPSCount: 0,
     lowFPSThreshold: 5000, // 5 seconds
-    FRAME_BUDGET_MS: 9,        // max ms per frame to maintain 60fps
-    THROTTLE_INTERVAL_MS: 50,  // 20fps throttle — cursor effects don't need 30fps
-    APPROX_FRAME_MS: 16.67,    // approximate ms per frame at 60fps
+    FRAME_BUDGET_MS: 9, // max ms per frame to maintain 60fps
+    THROTTLE_INTERVAL_MS: 50, // 20fps throttle — cursor effects don't need 30fps
+    APPROX_FRAME_MS: 16.67, // approximate ms per frame at 60fps
 
     /**
      * Initialize the interaction engine
@@ -62,20 +62,26 @@ export const InteractionEngine = {
     },
 
     async _doInit(startLoop) {
-
         console.log('[InteractionEngine] Initializing...');
 
         // Check for reduced motion preference — only gates the animation loop,
         // not event-driven modules like easter eggs
-        const prefersReducedMotion = this.settings.respectReducedMotion &&
+        const prefersReducedMotion =
+            this.settings.respectReducedMotion &&
             window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (prefersReducedMotion) {
-            console.log('[InteractionEngine] Reduced motion — loop disabled, event-driven features active');
+            console.log(
+                '[InteractionEngine] Reduced motion — loop disabled, event-driven features active'
+            );
         }
 
         // Check hardware capabilities (warn but don't block — user preference takes priority)
         if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
-            console.warn('[InteractionEngine] Low-end device detected (cores:', navigator.hardwareConcurrency, ') — running with reduced effects');
+            console.warn(
+                '[InteractionEngine] Low-end device detected (cores:',
+                navigator.hardwareConcurrency,
+                ') — running with reduced effects'
+            );
         }
 
         // Lazy-load modules — allSettled so one failure doesn't kill everything
@@ -85,11 +91,25 @@ export const InteractionEngine = {
             import('./cursor-reactive.js'),
             import('./cursor-trail.js'),
             import('./easter-eggs.js'),
-            import('./sound-manager.js')
+            import('./sound-manager.js'),
         ]);
 
-        const names = ['cursorTracker', 'microInteractions', 'cursorReactive', 'cursorTrail', 'easterEggs', 'soundManager'];
-        const exports = ['CursorTracker', 'MicroInteractions', 'CursorReactive', 'CursorTrail', 'EasterEggs', 'SoundManager'];
+        const names = [
+            'cursorTracker',
+            'microInteractions',
+            'cursorReactive',
+            'cursorTrail',
+            'easterEggs',
+            'soundManager',
+        ];
+        const exports = [
+            'CursorTracker',
+            'MicroInteractions',
+            'CursorReactive',
+            'CursorTrail',
+            'EasterEggs',
+            'SoundManager',
+        ];
 
         results.forEach((r, i) => {
             if (r.status === 'fulfilled') {
@@ -126,7 +146,7 @@ export const InteractionEngine = {
         if (!this._unsubVisibility) {
             this._unsubVisibility = onVisibilityChange(
                 () => this.stop(),
-                () => this.start(),
+                () => this.start()
             );
         }
 
@@ -188,7 +208,12 @@ export const InteractionEngine = {
             // 3. Update cursor-reactive effects (~3ms)
             if (this.cursorReactive) {
                 const cursorData = this.cursorTracker.getData();
-                this.cursorReactive.update(timestamp, deltaTime, cursorData, this.registeredElements);
+                this.cursorReactive.update(
+                    timestamp,
+                    deltaTime,
+                    cursorData,
+                    this.registeredElements
+                );
             }
 
             // 4. Update cursor trail (~2ms)
@@ -201,7 +226,6 @@ export const InteractionEngine = {
             if (this.easterEggs) {
                 this.easterEggs.update(timestamp, deltaTime);
             }
-
         } catch (error) {
             console.error('[InteractionEngine] Error in animation loop:', error);
         }
@@ -209,7 +233,9 @@ export const InteractionEngine = {
         // Debug: Log frame time if over budget
         const frameTime = performance.now() - startTime;
         if (frameTime > this.FRAME_BUDGET_MS) {
-            console.warn(`[InteractionEngine] Frame time exceeded budget: ${frameTime.toFixed(2)}ms`);
+            console.warn(
+                `[InteractionEngine] Frame time exceeded budget: ${frameTime.toFixed(2)}ms`
+            );
         }
     },
 
@@ -272,7 +298,7 @@ export const InteractionEngine = {
         // Parse data attributes if present
         const dataInteract = element.getAttribute('data-interact');
         if (dataInteract) {
-            finalConfig.effects = dataInteract.split(',').map(e => e.trim());
+            finalConfig.effects = dataInteract.split(',').map((e) => e.trim());
         }
 
         const dataColor = element.getAttribute('data-interact-color');
@@ -289,11 +315,18 @@ export const InteractionEngine = {
         });
 
         // Register with appropriate modules
-        if (finalConfig.effects.includes('ripple') || finalConfig.effects.includes('press-release')) {
+        if (
+            finalConfig.effects.includes('ripple') ||
+            finalConfig.effects.includes('press-release')
+        ) {
             this.microInteractions?.registerElement(element, finalConfig);
         }
 
-        if (finalConfig.effects.includes('tilt') || finalConfig.effects.includes('magnetic-edges') || finalConfig.effects.includes('ambient-glow')) {
+        if (
+            finalConfig.effects.includes('tilt') ||
+            finalConfig.effects.includes('magnetic-edges') ||
+            finalConfig.effects.includes('ambient-glow')
+        ) {
             this.cursorReactive?.registerElement(element, finalConfig);
         }
 

@@ -24,18 +24,42 @@ import { Gauntlet } from './gauntlet.js';
 /* ── Keyboard shortcut table ───────────────────────────────────────
  * key → { toggle, label } — looked up on (Cmd|Alt)+key press.     */
 const SHORTCUT_MAP = {
-    c: { toggle: () => State.toggleCursorTrail(), label: () => `Cursor trail ${State.cursorTrailEnabled ? 'ON' : 'OFF'}` },
-    s: { toggle: () => State.toggleSound(),       label: () => `Sound ${State.soundEnabled ? 'ON' : 'OFF'}` },
-    i: { toggle: () => State.toggleInteractions(), label: () => `Interactions ${State.interactionsEnabled ? 'ON' : 'OFF'}` },
+    c: {
+        toggle: () => State.toggleCursorTrail(),
+        label: () => `Cursor trail ${State.cursorTrailEnabled ? 'ON' : 'OFF'}`,
+    },
+    s: {
+        toggle: () => State.toggleSound(),
+        label: () => `Sound ${State.soundEnabled ? 'ON' : 'OFF'}`,
+    },
+    i: {
+        toggle: () => State.toggleInteractions(),
+        label: () => `Interactions ${State.interactionsEnabled ? 'ON' : 'OFF'}`,
+    },
     p: { toggle: () => document.getElementById('controlPanelBtn')?.click() },
 };
 
 /* ── Control panel toggle definitions ──────────────────────────────
  * Drives both DOM generation and click-handler wiring.             */
 const CONTROL_TOGGLES = [
-    { id: 'toggle-cursor-trail', label: 'Cursor Trail', toggle: () => State.toggleCursorTrail(), stateKey: 'cursorTrailEnabled' },
-    { id: 'toggle-sound',        label: 'Sound',        toggle: () => State.toggleSound(),       stateKey: 'soundEnabled' },
-    { id: 'toggle-interactions',  label: 'Interactions', toggle: () => State.toggleInteractions(), stateKey: 'interactionsEnabled' },
+    {
+        id: 'toggle-cursor-trail',
+        label: 'Cursor Trail',
+        toggle: () => State.toggleCursorTrail(),
+        stateKey: 'cursorTrailEnabled',
+    },
+    {
+        id: 'toggle-sound',
+        label: 'Sound',
+        toggle: () => State.toggleSound(),
+        stateKey: 'soundEnabled',
+    },
+    {
+        id: 'toggle-interactions',
+        label: 'Interactions',
+        toggle: () => State.toggleInteractions(),
+        stateKey: 'interactionsEnabled',
+    },
 ];
 
 // Wait for DOM to be ready
@@ -64,7 +88,9 @@ async function init() {
     if (!safeMode && sessionStorage.getItem('digivice-intro-seen')) {
         // Load galaxy after a delay to not block initial interaction
         setTimeout(async () => {
-            try { await ensureGalaxy(document.body); } catch {}
+            try {
+                await ensureGalaxy(document.body);
+            } catch {}
         }, 3000);
     }
 
@@ -82,9 +108,13 @@ async function init() {
 
     // Register service worker (production only — Vite dev server transforms
     // CSS into JS modules, and SW cache-first strategy poisons the cache)
-    if ('serviceWorker' in navigator && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+    if (
+        'serviceWorker' in navigator &&
+        location.hostname !== 'localhost' &&
+        location.hostname !== '127.0.0.1'
+    ) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js').catch(() => { });
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
         });
     }
 
@@ -94,7 +124,9 @@ async function init() {
 
     // Global error handlers
     window.addEventListener('error', (e) => console.error('Global error:', e.error));
-    window.addEventListener('unhandledrejection', (e) => console.error('Unhandled promise rejection:', e.reason));
+    window.addEventListener('unhandledrejection', (e) =>
+        console.error('Unhandled promise rejection:', e.reason)
+    );
 
     // Resize handler — clamp windows that drift off-screen
     let resizeTimeout;
@@ -105,8 +137,14 @@ async function init() {
             const maxY = window.innerHeight - 100;
             for (const win of State.getAllWindows()) {
                 if (!win.element || win.maximized) continue;
-                if (win.x > maxX) { win.x = maxX; win.element.style.left = `${win.x}px`; }
-                if (win.y > maxY) { win.y = maxY; win.element.style.top = `${win.y}px`; }
+                if (win.x > maxX) {
+                    win.x = maxX;
+                    win.element.style.left = `${win.x}px`;
+                }
+                if (win.y > maxY) {
+                    win.y = maxY;
+                    win.element.style.top = `${win.y}px`;
+                }
             }
         }, 250);
     });
@@ -115,13 +153,26 @@ async function init() {
 /* ── Style recovery ────────────────────────────────────────────────
  * Detects missing critical stylesheets (Vite HMR race, bad cache)
  * and force-injects them as a recovery fallback.                   */
-const CRITICAL_STYLES = ['css/reset.css', 'css/variables.css', 'css/styles.css', 'css/windows.css', 'css/modal.css', 'css/loading.css'];
+const CRITICAL_STYLES = [
+    'css/reset.css',
+    'css/variables.css',
+    'css/styles.css',
+    'css/windows.css',
+    'css/modal.css',
+    'css/loading.css',
+];
 
 function recoverStyles() {
     setTimeout(() => {
-        const hasOurStyles = Array.from(document.styleSheets).some(sheet => {
-            try { return sheet.href && (sheet.href.includes('styles.css') || sheet.href.includes('windows.css')); }
-            catch { return false; }
+        const hasOurStyles = Array.from(document.styleSheets).some((sheet) => {
+            try {
+                return (
+                    sheet.href &&
+                    (sheet.href.includes('styles.css') || sheet.href.includes('windows.css'))
+                );
+            } catch {
+                return false;
+            }
         });
         if (hasOurStyles) return;
 
@@ -164,12 +215,14 @@ function initControlPanel() {
     panel.className = 'control-panel-dropdown';
     panel.innerHTML = `
         <div class="control-panel-header">\u2699 QUICK SETTINGS</div>
-        ${CONTROL_TOGGLES.map(t => `
+        ${CONTROL_TOGGLES.map(
+            (t) => `
             <div class="control-panel-item">
                 <span class="control-panel-label">${t.label}</span>
                 <div class="mini-toggle" id="${t.id}"></div>
             </div>
-        `).join('')}
+        `
+        ).join('')}
     `;
     document.body.appendChild(panel);
 
@@ -179,12 +232,18 @@ function initControlPanel() {
         }
     }
 
-    btn.addEventListener('click', () => { panel.classList.toggle('active'); syncToggles(); });
+    btn.addEventListener('click', () => {
+        panel.classList.toggle('active');
+        syncToggles();
+    });
     document.addEventListener('click', (e) => {
         if (!panel.contains(e.target) && e.target !== btn) panel.classList.remove('active');
     });
 
     for (const t of CONTROL_TOGGLES) {
-        document.getElementById(t.id)?.addEventListener('click', () => { t.toggle(); syncToggles(); });
+        document.getElementById(t.id)?.addEventListener('click', () => {
+            t.toggle();
+            syncToggles();
+        });
     }
 }

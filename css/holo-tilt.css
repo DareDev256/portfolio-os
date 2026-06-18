@@ -29,17 +29,14 @@
 .project-card:hover .bp-corner {
     border-color: var(--gold);
     filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.4));
-    transition: border-color 0.3s, filter 0.3s;
+    transition:
+        border-color 0.3s,
+        filter 0.3s;
 }
 
 /* Scan line gets a gold tint during tilt */
 .project-card:hover .bp-scan {
-    background: linear-gradient(
-        180deg,
-        transparent,
-        rgba(212, 175, 55, 0.08) 50%,
-        transparent
-    );
+    background: linear-gradient(180deg, transparent, rgba(212, 175, 55, 0.08) 50%, transparent);
 }
 
 /* Edge glow intensifies on tilt */
@@ -51,6 +48,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .project-card::after { display: none; }
-    .project-card { transform-style: flat !important; }
+    .project-card::after {
+        display: none;
+    }
+    .project-card {
+        transform-style: flat !important;
+    }
 }

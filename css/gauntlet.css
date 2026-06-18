@@ -18,8 +18,9 @@
 .gauntlet-reveal {
     opacity: 0;
     transform: translateY(24px) translateZ(-30px);
-    transition: opacity var(--duration-dramatic) var(--ease-decel),
-                transform var(--duration-dramatic) var(--ease-decel);
+    transition:
+        opacity var(--duration-dramatic) var(--ease-decel),
+        transform var(--duration-dramatic) var(--ease-decel);
     will-change: opacity, transform;
 }
 
@@ -29,10 +30,18 @@
 }
 
 /* Stagger delays for child elements */
-.gauntlet-reveal[data-gauntlet-delay="1"] { transition-delay: 120ms; }
-.gauntlet-reveal[data-gauntlet-delay="2"] { transition-delay: 240ms; }
-.gauntlet-reveal[data-gauntlet-delay="3"] { transition-delay: 380ms; }
-.gauntlet-reveal[data-gauntlet-delay="4"] { transition-delay: 520ms; }
+.gauntlet-reveal[data-gauntlet-delay='1'] {
+    transition-delay: 120ms;
+}
+.gauntlet-reveal[data-gauntlet-delay='2'] {
+    transition-delay: 240ms;
+}
+.gauntlet-reveal[data-gauntlet-delay='3'] {
+    transition-delay: 380ms;
+}
+.gauntlet-reveal[data-gauntlet-delay='4'] {
+    transition-delay: 520ms;
+}
 
 /* ── Typography ────────────────────────────────────────────── */
 .gauntlet-label {
@@ -54,8 +63,12 @@
     margin-bottom: 16px;
 }
 
-.gauntlet-title .accent-gold { color: var(--gold); }
-.gauntlet-title .accent-purple { color: var(--amethyst); }
+.gauntlet-title .accent-gold {
+    color: var(--gold);
+}
+.gauntlet-title .accent-purple {
+    color: var(--amethyst);
+}
 
 .gauntlet-text {
     font-size: 12px;
@@ -109,7 +122,9 @@
     transition: opacity 1.2s var(--ease-decel);
 }
 
-.gauntlet-sig--drawn { opacity: 0.12; }
+.gauntlet-sig--drawn {
+    opacity: 0.12;
+}
 
 .gauntlet-sig path {
     stroke: var(--gold);
@@ -120,7 +135,9 @@
     transition: stroke-dashoffset 1.8s var(--ease-decel);
 }
 
-.gauntlet-sig--drawn path { stroke-dashoffset: 0; }
+.gauntlet-sig--drawn path {
+    stroke-dashoffset: 0;
+}
 
 /* ── Divider line with glow ────────────────────────────────── */
 .gauntlet-divider {
@@ -132,8 +149,9 @@
     opacity: 0;
     transform: scaleX(0);
     transform-origin: left;
-    transition: opacity 0.5s var(--ease-decel) 0.3s,
-                transform 0.6s var(--ease-spring) 0.3s;
+    transition:
+        opacity 0.5s var(--ease-decel) 0.3s,
+        transform 0.6s var(--ease-spring) 0.3s;
 }
 
 .gauntlet-reveal--visible .gauntlet-divider {

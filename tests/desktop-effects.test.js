@@ -20,7 +20,9 @@ import {
 /* ── Re-implemented pure logic from effect modules ── */
 
 // From pulse-grid.js
-function lerp(a, b, t) { return a + (b - a) * t; }
+function lerp(a, b, t) {
+    return a + (b - a) * t;
+}
 const GOLD = PALETTE.GOLD;
 const AMETHYST = PALETTE.AMETHYST;
 function colorAt(t) {
@@ -32,14 +34,16 @@ function colorAt(t) {
 }
 
 // From neural-link.js
-function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
+function dist(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+}
 const MAX_LINKS = 3;
 const MAX_DISTANCE = 400;
 function findNeighbors(origin, allIcons, currentIcon) {
     return allIcons
-        .filter(ic => ic !== currentIcon)
-        .map(ic => ({ el: ic, pt: ic.center, d: dist(origin, ic.center) }))
-        .filter(n => n.d < MAX_DISTANCE)
+        .filter((ic) => ic !== currentIcon)
+        .map((ic) => ({ el: ic, pt: ic.center, d: dist(origin, ic.center) }))
+        .filter((n) => n.d < MAX_DISTANCE)
         .sort((a, b) => a.d - b.d)
         .slice(0, MAX_LINKS);
 }
@@ -50,12 +54,16 @@ function noise2d(x, y) {
     return n - Math.floor(n);
 }
 function smoothNoise(x, y) {
-    const ix = Math.floor(x), iy = Math.floor(y);
-    const fx = x - ix, fy = y - iy;
+    const ix = Math.floor(x),
+        iy = Math.floor(y);
+    const fx = x - ix,
+        fy = y - iy;
     const sx = fx * fx * (3 - 2 * fx);
     const sy = fy * fy * (3 - 2 * fy);
-    const a = noise2d(ix, iy), b = noise2d(ix + 1, iy);
-    const c = noise2d(ix, iy + 1), d = noise2d(ix + 1, iy + 1);
+    const a = noise2d(ix, iy),
+        b = noise2d(ix + 1, iy);
+    const c = noise2d(ix, iy + 1),
+        d = noise2d(ix + 1, iy + 1);
     return a + (b - a) * sx + (c - a) * sy + (a - b - c + d) * sx * sy;
 }
 
@@ -109,8 +117,15 @@ describe('getElementCenter()', () => {
     it('computes center from bounding rect', () => {
         const el = document.createElement('div');
         vi.spyOn(el, 'getBoundingClientRect').mockReturnValue({
-            left: 100, top: 200, width: 60, height: 40,
-            right: 160, bottom: 240, x: 100, y: 200, toJSON() {},
+            left: 100,
+            top: 200,
+            width: 60,
+            height: 40,
+            right: 160,
+            bottom: 240,
+            x: 100,
+            y: 200,
+            toJSON() {},
         });
         expect(getElementCenter(el)).toEqual({ x: 130, y: 220 });
     });
@@ -118,8 +133,15 @@ describe('getElementCenter()', () => {
     it('handles zero-size elements', () => {
         const el = document.createElement('div');
         vi.spyOn(el, 'getBoundingClientRect').mockReturnValue({
-            left: 50, top: 50, width: 0, height: 0,
-            right: 50, bottom: 50, x: 50, y: 50, toJSON() {},
+            left: 50,
+            top: 50,
+            width: 0,
+            height: 0,
+            right: 50,
+            bottom: 50,
+            x: 50,
+            y: 50,
+            toJSON() {},
         });
         expect(getElementCenter(el)).toEqual({ x: 50, y: 50 });
     });
@@ -127,12 +149,16 @@ describe('getElementCenter()', () => {
 
 describe('shouldSkipDesktopEffects()', () => {
     const original = window.matchMedia;
-    afterEach(() => { window.matchMedia = original; });
+    afterEach(() => {
+        window.matchMedia = original;
+    });
 
     it('returns true when prefers-reduced-motion is set', () => {
         window.matchMedia = (q) => ({
             matches: q.includes('reduced-motion'),
-            media: q, addEventListener() {}, removeEventListener() {},
+            media: q,
+            addEventListener() {},
+            removeEventListener() {},
         });
         expect(shouldSkipDesktopEffects()).toBe(true);
     });
@@ -140,14 +166,19 @@ describe('shouldSkipDesktopEffects()', () => {
     it('returns true for coarse pointer (touch devices)', () => {
         window.matchMedia = (q) => ({
             matches: q.includes('coarse'),
-            media: q, addEventListener() {}, removeEventListener() {},
+            media: q,
+            addEventListener() {},
+            removeEventListener() {},
         });
         expect(shouldSkipDesktopEffects()).toBe(true);
     });
 
     it('returns false for desktop with fine pointer and motion OK', () => {
         window.matchMedia = () => ({
-            matches: false, media: '', addEventListener() {}, removeEventListener() {},
+            matches: false,
+            media: '',
+            addEventListener() {},
+            removeEventListener() {},
         });
         expect(shouldSkipDesktopEffects()).toBe(false);
     });
@@ -216,7 +247,8 @@ describe('NeuralLink — distance & neighbor selection', () => {
     it('limits neighbors to MAX_LINKS (3)', () => {
         const origin = { x: 0, y: 0 };
         const icons = Array.from({ length: 6 }, (_, i) => ({
-            id: i, center: { x: (i + 1) * 50, y: 0 },
+            id: i,
+            center: { x: (i + 1) * 50, y: 0 },
         }));
         const result = findNeighbors(origin, icons, null);
         expect(result).toHaveLength(3);
@@ -241,7 +273,7 @@ describe('NeuralLink — distance & neighbor selection', () => {
             { id: 'b', center: { x: 200, y: 0 } },
         ];
         const result = findNeighbors(origin, icons, null);
-        expect(result.map(n => n.el.id)).toEqual(['a', 'b', 'c']);
+        expect(result.map((n) => n.el.id)).toEqual(['a', 'b', 'c']);
     });
 });
 

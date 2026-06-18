@@ -28,25 +28,25 @@ export const SoundManager = {
         if (!AudioFX.ctx) return;
 
         // Deep orchestral hit (bass)
-        this.tone(55, 1.2, 'triangle', 0, 0.4);      // A1 - Deep foundation
-        this.tone(82.41, 1.2, 'triangle', 0, 0.35);  // E2 - Perfect 5th
+        this.tone(55, 1.2, 'triangle', 0, 0.4); // A1 - Deep foundation
+        this.tone(82.41, 1.2, 'triangle', 0, 0.35); // E2 - Perfect 5th
 
         // Mid-range harmony
-        this.tone(110, 1.0, 'sine', 0.1, 0.3);       // A2
-        this.tone(164.81, 1.0, 'sine', 0.15, 0.28);  // E3
+        this.tone(110, 1.0, 'sine', 0.1, 0.3); // A2
+        this.tone(164.81, 1.0, 'sine', 0.15, 0.28); // E3
 
         // Bright overtones (the "shimmer")
-        this.tone(220, 0.8, 'sine', 0.2, 0.25);      // A3
-        this.tone(277.18, 0.8, 'sine', 0.25, 0.22);  // C#4
-        this.tone(329.63, 0.8, 'sine', 0.3, 0.2);    // E4
+        this.tone(220, 0.8, 'sine', 0.2, 0.25); // A3
+        this.tone(277.18, 0.8, 'sine', 0.25, 0.22); // C#4
+        this.tone(329.63, 0.8, 'sine', 0.3, 0.2); // E4
 
         // High sparkle (PS1 signature)
-        this.tone(440, 0.6, 'sine', 0.35, 0.18);     // A4
-        this.tone(554.37, 0.6, 'sine', 0.4, 0.15);   // C#5
-        this.tone(659.25, 0.6, 'sine', 0.45, 0.12);  // E5
+        this.tone(440, 0.6, 'sine', 0.35, 0.18); // A4
+        this.tone(554.37, 0.6, 'sine', 0.4, 0.15); // C#5
+        this.tone(659.25, 0.6, 'sine', 0.45, 0.12); // E5
 
         // Ethereal top (like PS2 boot)
-        this.tone(880, 0.5, 'sine', 0.5, 0.1);       // A5
+        this.tone(880, 0.5, 'sine', 0.5, 0.1); // A5
         this.tone(1108.73, 0.4, 'sine', 0.55, 0.08); // C#6
 
         console.log('[SoundManager] PS1 Boot Sound');
@@ -211,9 +211,9 @@ export const SoundManager = {
         if (!AudioFX.ctx) return;
 
         // Soft bell-like chime (C major chord)
-        this.tone(523.25, 0.5, 'sine', 0, 0.15);    // C5
+        this.tone(523.25, 0.5, 'sine', 0, 0.15); // C5
         this.tone(659.25, 0.5, 'sine', 0.05, 0.13); // E5
-        this.tone(783.99, 0.5, 'sine', 0.1, 0.11);  // G5
+        this.tone(783.99, 0.5, 'sine', 0.1, 0.11); // G5
         this.tone(1046.5, 0.4, 'sine', 0.15, 0.09); // C6 (sparkle)
     },
 
@@ -227,13 +227,13 @@ export const SoundManager = {
         if (!AudioFX.ctx) return;
 
         // Classic power-up arpeggio
-        this.tone(261.63, 0.1, 'square', 0, 0.2);     // C4
-        this.tone(329.63, 0.1, 'square', 0.1, 0.2);   // E4
-        this.tone(392.00, 0.1, 'square', 0.2, 0.2);   // G4
-        this.tone(523.25, 0.1, 'square', 0.3, 0.2);   // C5
-        this.tone(659.25, 0.1, 'square', 0.4, 0.2);   // E5
-        this.tone(783.99, 0.2, 'square', 0.5, 0.25);  // G5
-        this.tone(1046.5, 0.3, 'square', 0.65, 0.3);  // C6 (sustain)
+        this.tone(261.63, 0.1, 'square', 0, 0.2); // C4
+        this.tone(329.63, 0.1, 'square', 0.1, 0.2); // E4
+        this.tone(392.0, 0.1, 'square', 0.2, 0.2); // G4
+        this.tone(523.25, 0.1, 'square', 0.3, 0.2); // C5
+        this.tone(659.25, 0.1, 'square', 0.4, 0.2); // E5
+        this.tone(783.99, 0.2, 'square', 0.5, 0.25); // G5
+        this.tone(1046.5, 0.3, 'square', 0.65, 0.3); // C6 (sustain)
 
         // Add some retro-style harmonics
         this.tone(1318.5, 0.25, 'square', 0.7, 0.15); // E6
@@ -267,8 +267,8 @@ export const SoundManager = {
         if (!AudioFX.ctx) return;
 
         // Dissonant tritone (devil's interval)
-        this.tone(349.23, 0.15, 'sawtooth', 0, 0.2);   // F4
-        this.tone(493.88, 0.15, 'sawtooth', 0, 0.2);   // B4 (tritone)
+        this.tone(349.23, 0.15, 'sawtooth', 0, 0.2); // F4
+        this.tone(493.88, 0.15, 'sawtooth', 0, 0.2); // B4 (tritone)
 
         // Descending sweep
         const t0 = AudioFX.ctx.currentTime;
@@ -297,10 +297,10 @@ export const SoundManager = {
         if (!AudioFX.ctx) return;
 
         // Bright C major progression
-        this.tone(523.25, 0.12, 'sine', 0, 0.15);    // C5
-        this.tone(659.25, 0.12, 'sine', 0.1, 0.15);  // E5
-        this.tone(783.99, 0.2, 'sine', 0.2, 0.2);    // G5
-        this.tone(1046.5, 0.25, 'sine', 0.3, 0.22);  // C6
+        this.tone(523.25, 0.12, 'sine', 0, 0.15); // C5
+        this.tone(659.25, 0.12, 'sine', 0.1, 0.15); // E5
+        this.tone(783.99, 0.2, 'sine', 0.2, 0.2); // G5
+        this.tone(1046.5, 0.25, 'sine', 0.3, 0.22); // C6
     },
 
     /**
@@ -312,22 +312,22 @@ export const SoundManager = {
 
         const soundMap = {
             'ps1-boot': () => this.ps1Boot(),
-            'boot': () => this.ps1Boot(),
-            'ripple': () => this.ripple(),
+            boot: () => this.ps1Boot(),
+            ripple: () => this.ripple(),
             'window-open': () => this.windowOpen(),
             'window-close': () => this.windowClose(),
             'window-minimize': () => this.windowMinimize(),
             'window-maximize': () => this.windowMaximize(),
-            'minimize': () => this.windowMinimize(),
-            'maximize': () => this.windowMaximize(),
-            'notification': () => this.notification(),
-            'konami': () => this.konami(),
+            minimize: () => this.windowMinimize(),
+            maximize: () => this.windowMaximize(),
+            notification: () => this.notification(),
+            konami: () => this.konami(),
             'particle-burst': () => this.particleBurst(),
-            'error': () => this.error(),
-            'success': () => this.success(),
-            'click': () => AudioFX.click(),
-            'hover': () => AudioFX.hover(),
-            'whoosh': () => AudioFX.whoosh(),
+            error: () => this.error(),
+            success: () => this.success(),
+            click: () => AudioFX.click(),
+            hover: () => AudioFX.hover(),
+            whoosh: () => AudioFX.whoosh(),
         };
 
         const soundFn = soundMap[soundName];
@@ -377,7 +377,7 @@ export const SoundManager = {
         return {
             enabled: this.enabled,
             audioContext: AudioFX.ctx ? 'initialized' : 'not initialized',
-            masterVolume: AudioFX.master?.gain.value || 0
+            masterVolume: AudioFX.master?.gain.value || 0,
         };
-    }
+    },
 };

@@ -34,9 +34,13 @@ function makeDesktop(...boxCount) {
 }
 
 function fireMouseMove(target, clientX, clientY) {
-    target.dispatchEvent(new MouseEvent('mousemove', {
-        clientX, clientY, bubbles: true,
-    }));
+    target.dispatchEvent(
+        new MouseEvent('mousemove', {
+            clientX,
+            clientY,
+            bubbles: true,
+        })
+    );
 }
 
 function fireMouseLeave(target) {
@@ -99,7 +103,7 @@ describe('IconTilt', () => {
 
         // Simulate user enabling reduced motion at runtime
         motionMatches = true;
-        listeners.forEach(cb => cb({ matches: true }));
+        listeners.forEach((cb) => cb({ matches: true }));
         fireMouseMove(box, 180, 140);
         expect(box.style.getPropertyValue('--tilt-x')).toBe('');
     });
@@ -124,7 +128,7 @@ describe('IconTilt', () => {
         container.appendChild(newBox);
 
         // MutationObserver fires asynchronously
-        await new Promise(r => setTimeout(r, 0));
+        await new Promise((r) => setTimeout(r, 0));
 
         fireMouseMove(newBox, 40, 40);
         expect(newBox.style.getPropertyValue('--tilt-y')).toBeTruthy();

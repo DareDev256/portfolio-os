@@ -9,26 +9,38 @@
  * Think Iron Man's targeting HUD meets Prince's gold/purple palette.
  */
 
-import { prefersReducedMotion, isPageHidden, createDecorativeEl, getElementCenter } from './dom-helpers.js';
+import {
+    prefersReducedMotion,
+    isPageHidden,
+    createDecorativeEl,
+    getElementCenter,
+} from './dom-helpers.js';
 
 /** Selectors that count as "lockable" interactive targets */
 const LOCK_TARGETS = [
-    '.dock-item', '.desktop-icon', '.cyber-button',
-    '.window .titlebar-btn', '.context-menu-item',
-    '.control-panel-icon', '.top-bar .status-item',
+    '.dock-item',
+    '.desktop-icon',
+    '.cyber-button',
+    '.window .titlebar-btn',
+    '.context-menu-item',
+    '.control-panel-icon',
+    '.top-bar .status-item',
 ].join(',');
 
 export const PhantomReticle = {
     el: null,
     ring: null,
     _raf: 0,
-    _mx: 0, _my: 0,       // mouse position
-    _rx: 0, _ry: 0,        // reticle position (smoothed)
-    _vx: 0, _vy: 0,        // velocity for spring physics
+    _mx: 0,
+    _my: 0, // mouse position
+    _rx: 0,
+    _ry: 0, // reticle position (smoothed)
+    _vx: 0,
+    _vy: 0, // velocity for spring physics
     _locked: false,
     _scale: 1,
     _alive: false,
-    _settled: true,        // true when reticle has caught up to cursor
+    _settled: true, // true when reticle has caught up to cursor
 
     /* ── Spring physics constants ── */
     STIFFNESS: 0.12,
@@ -53,8 +65,12 @@ export const PhantomReticle = {
         // Bind events
         window.addEventListener('mousemove', this._onMove.bind(this), { passive: true });
         window.addEventListener('mousedown', this._onDown.bind(this));
-        window.addEventListener('mouseleave', () => { this.el.classList.add('pr-hidden'); });
-        window.addEventListener('mouseenter', () => { this.el.classList.remove('pr-hidden'); });
+        window.addEventListener('mouseleave', () => {
+            this.el.classList.add('pr-hidden');
+        });
+        window.addEventListener('mouseenter', () => {
+            this.el.classList.remove('pr-hidden');
+        });
 
         // Start hidden + settled until first mouse move wakes the loop
         this.el.classList.add('pr-hidden');
@@ -114,13 +130,15 @@ export const PhantomReticle = {
 
         // Apply transform (translate + scale for lock-on sizing)
         const s = this._locked
-            ? 1 + (this._scale - 1) * 0.4  // partial scale toward target size
+            ? 1 + (this._scale - 1) * 0.4 // partial scale toward target size
             : 1;
-        this.el.style.transform =
-            `translate(${this._rx}px, ${this._ry}px) scale(${s})`;
+        this.el.style.transform = `translate(${this._rx}px, ${this._ry}px) scale(${s})`;
 
         // Stop loop when settled (velocity near zero)
-        if (Math.abs(this._vx) < this.SETTLE_THRESHOLD && Math.abs(this._vy) < this.SETTLE_THRESHOLD) {
+        if (
+            Math.abs(this._vx) < this.SETTLE_THRESHOLD &&
+            Math.abs(this._vy) < this.SETTLE_THRESHOLD
+        ) {
             this._settled = true;
             return;
         }

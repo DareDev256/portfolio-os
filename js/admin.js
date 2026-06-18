@@ -103,7 +103,7 @@ export const Admin = {
         this.desktopItems = loadJSON('desktopItems', null) || [...Desktop.DESKTOP_ITEMS];
 
         // Load projects and media via centralized data-loader
-        this.projects = await loadProjects() || [];
+        this.projects = (await loadProjects()) || [];
         this.media = await loadMedia();
     },
 
@@ -120,7 +120,22 @@ export const Admin = {
         const renderTab = (html, handler) => {
             Sanitize.setHTML(content, html, {
                 ADD_TAGS: ['input', 'textarea', 'select', 'option', 'form', 'style'],
-                ADD_ATTR: ['for', 'name', 'maxlength', 'rows', 'accept', 'multiple', 'checked', 'selected', 'data-tab', 'data-index', 'data-action', 'data-type', 'data-folder', 'style']
+                ADD_ATTR: [
+                    'for',
+                    'name',
+                    'maxlength',
+                    'rows',
+                    'accept',
+                    'multiple',
+                    'checked',
+                    'selected',
+                    'data-tab',
+                    'data-index',
+                    'data-action',
+                    'data-type',
+                    'data-folder',
+                    'style',
+                ],
             });
             handler(content);
         };
@@ -575,24 +590,30 @@ export const Admin = {
 
             const defaultIcons = {
                 'Real Estate': '🏠',
-                'Glamour': '✨',
-                'Cars': '🏎️',
+                Glamour: '✨',
+                Cars: '🏎️',
                 'Music Videos': '🎵',
-                'Archive': '📦'
+                Archive: '📦',
             };
 
-            Sanitize.setHTML(folderList, folders.map(folder => {
-                const icon = storedIcons[folder] || defaultIcons[folder] || '📁';
-                return `
+            Sanitize.setHTML(
+                folderList,
+                folders
+                    .map((folder) => {
+                        const icon = storedIcons[folder] || defaultIcons[folder] || '📁';
+                        return `
                     <div class="folder-icon-item" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
                         <label style="display: block; color: var(--neon-cyan); font-size: 11px; margin-bottom: 5px;">${Sanitize.text(folder)}</label>
                         <input type="text" class="folder-icon-input" data-folder="${Sanitize.text(folder)}" value="${Sanitize.text(icon)}" style="width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(0,240,255,0.3); color: white; padding: 5px; border-radius: 4px; text-align: center;">
                     </div>
                 `;
-            }).join(''), {
-                ADD_TAGS: ['input'],
-                ADD_ATTR: ['data-folder', 'style']
-            });
+                    })
+                    .join(''),
+                {
+                    ADD_TAGS: ['input'],
+                    ADD_ATTR: ['data-folder', 'style'],
+                }
+            );
         }
 
         // Add image
@@ -640,7 +661,9 @@ export const Admin = {
                     const posterInput = card.querySelector('.media-poster');
 
                     // YouTube ID extraction with strict 11-char alphanumeric validation
-                    const match = url.match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[&?/]|$)/);
+                    const match = url.match(
+                        /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[&?/]|$)/
+                    );
 
                     if (match && match[1] && posterInput && !posterInput.value) {
                         posterInput.value = `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
@@ -665,37 +688,53 @@ export const Admin = {
         });
 
         // Drag events
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-            }, false);
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
+            dropZone.addEventListener(
+                eventName,
+                (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                },
+                false
+            );
         });
 
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => {
-                dropZone.classList.add('drag-over');
-            }, false);
+        ['dragenter', 'dragover'].forEach((eventName) => {
+            dropZone.addEventListener(
+                eventName,
+                () => {
+                    dropZone.classList.add('drag-over');
+                },
+                false
+            );
         });
 
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => {
-                dropZone.classList.remove('drag-over');
-            }, false);
+        ['dragleave', 'drop'].forEach((eventName) => {
+            dropZone.addEventListener(
+                eventName,
+                () => {
+                    dropZone.classList.remove('drag-over');
+                },
+                false
+            );
         });
 
-        dropZone.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            this.handleFiles(files, content);
-        }, false);
+        dropZone.addEventListener(
+            'drop',
+            (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                this.handleFiles(files, content);
+            },
+            false
+        );
     },
 
     /**
      * Handle uploaded files
      */
     handleFiles(files, content) {
-        Array.from(files).forEach(file => {
+        Array.from(files).forEach((file) => {
             if (file.type.startsWith('image/')) {
                 // For a real app, we'd upload this. Here we'll use a local object URL or placeholder
                 // Since we can't really upload, we'll assume the user puts it in assets/media
@@ -705,7 +744,7 @@ export const Admin = {
                     this.media.images.unshift({
                         url: e.target.result, // This is a data URL, good for preview
                         caption: file.name,
-                        category: 'Uploads'
+                        category: 'Uploads',
                     });
                     this.renderCurrentTab(content.closest('.admin-dashboard'));
                 };
@@ -720,7 +759,7 @@ export const Admin = {
     saveMedia(content) {
         // Save Folder Icons
         const folderIcons = {};
-        content.querySelectorAll('.folder-icon-input').forEach(input => {
+        content.querySelectorAll('.folder-icon-input').forEach((input) => {
             folderIcons[input.dataset.folder] = input.value.trim();
         });
         localStorage.setItem('folderIcons', JSON.stringify(folderIcons));
@@ -982,7 +1021,10 @@ export const Admin = {
                 },
             };
 
-            downloadJSON(backup, `passion-os-backup-${new Date().toISOString().split('T')[0]}.json`);
+            downloadJSON(
+                backup,
+                `passion-os-backup-${new Date().toISOString().split('T')[0]}.json`
+            );
             alert('Complete backup exported!');
         });
 
@@ -999,7 +1041,9 @@ export const Admin = {
             // Reject oversized backup files (5 MB) to prevent tab freeze during parse
             const MAX_BACKUP_SIZE = 5 * 1024 * 1024;
             if (file.size > MAX_BACKUP_SIZE) {
-                alert(`Backup file too large (${(file.size / 1048576).toFixed(1)} MB). Maximum is 5 MB.`);
+                alert(
+                    `Backup file too large (${(file.size / 1048576).toFixed(1)} MB). Maximum is 5 MB.`
+                );
                 return;
             }
 
@@ -1018,11 +1062,15 @@ export const Admin = {
                     const isArr = (v, max) => Array.isArray(v) && v.length <= (max || MAX_ITEMS);
 
                     if (backup.desktopItems) {
-                        if (!isArr(backup.desktopItems, 50)) throw new Error('Invalid desktopItems: must be array (max 50)');
+                        if (!isArr(backup.desktopItems, 50))
+                            throw new Error('Invalid desktopItems: must be array (max 50)');
                         for (const item of backup.desktopItems) {
-                            if (typeof item !== 'object' || !item) throw new Error('Invalid desktop item');
-                            if (item.label && !isStr(item.label)) throw new Error('Desktop item label too long');
-                            if (item.id && !isStr(item.id)) throw new Error('Desktop item id too long');
+                            if (typeof item !== 'object' || !item)
+                                throw new Error('Invalid desktop item');
+                            if (item.label && !isStr(item.label))
+                                throw new Error('Desktop item label too long');
+                            if (item.id && !isStr(item.id))
+                                throw new Error('Desktop item id too long');
                             // Sanitize SVG icon field — blocks stored XSS via crafted backup
                             if (item.icon) item.icon = Sanitize.html(item.icon);
                             // Sanitize action URLs to block javascript:/data: schemes
@@ -1032,13 +1080,18 @@ export const Admin = {
                         this.desktopItems = backup.desktopItems;
                     }
                     if (backup.projects) {
-                        if (!isArr(backup.projects, 100)) throw new Error('Invalid projects: must be array (max 100)');
+                        if (!isArr(backup.projects, 100))
+                            throw new Error('Invalid projects: must be array (max 100)');
                         for (const p of backup.projects) {
                             if (typeof p !== 'object' || !p) throw new Error('Invalid project');
-                            if (p.title && !isStr(p.title)) throw new Error('Project title too long');
-                            if (p.description && !isStr(p.description)) throw new Error('Project description too long');
-                            if (p.tags && !isArr(p.tags, 20)) throw new Error('Too many project tags');
-                            if (p.tech && !isArr(p.tech, 20)) throw new Error('Too many project techs');
+                            if (p.title && !isStr(p.title))
+                                throw new Error('Project title too long');
+                            if (p.description && !isStr(p.description))
+                                throw new Error('Project description too long');
+                            if (p.tags && !isArr(p.tags, 20))
+                                throw new Error('Too many project tags');
+                            if (p.tech && !isArr(p.tech, 20))
+                                throw new Error('Too many project techs');
                             // Sanitize URLs to block javascript:/data: injection via imported JSON
                             if (p.demo) p.demo = Sanitize.url(p.demo);
                             if (p.repo) p.repo = Sanitize.url(p.repo);
@@ -1048,14 +1101,17 @@ export const Admin = {
                         this.projects = backup.projects;
                     }
                     if (backup.media) {
-                        if (typeof backup.media !== 'object') throw new Error('Invalid media object');
-                        if (backup.media.images && !isArr(backup.media.images, MAX_ITEMS)) throw new Error('Too many media images');
-                        if (backup.media.videos && !isArr(backup.media.videos, MAX_ITEMS)) throw new Error('Too many media videos');
+                        if (typeof backup.media !== 'object')
+                            throw new Error('Invalid media object');
+                        if (backup.media.images && !isArr(backup.media.images, MAX_ITEMS))
+                            throw new Error('Too many media images');
+                        if (backup.media.videos && !isArr(backup.media.videos, MAX_ITEMS))
+                            throw new Error('Too many media videos');
                         // Sanitize all media URLs to block stored XSS via crafted backup files
-                        for (const img of (backup.media.images || [])) {
+                        for (const img of backup.media.images || []) {
                             if (img.url) img.url = Sanitize.url(img.url);
                         }
-                        for (const vid of (backup.media.videos || [])) {
+                        for (const vid of backup.media.videos || []) {
                             if (vid.url) vid.url = Sanitize.url(vid.url);
                             if (vid.poster) vid.poster = Sanitize.url(vid.poster);
                         }
@@ -1068,7 +1124,11 @@ export const Admin = {
                         // Prevents CSS injection via crafted backup payloads
                         try {
                             const parsed = JSON.parse(backup.theme.colors);
-                            if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) {
+                            if (
+                                typeof parsed === 'object' &&
+                                parsed !== null &&
+                                !Array.isArray(parsed)
+                            ) {
                                 const safe = {};
                                 for (const [k, v] of Object.entries(parsed)) {
                                     safe[k] = Sanitize.hexColor(v);

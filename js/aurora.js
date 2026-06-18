@@ -14,7 +14,7 @@ export const Aurora = {
         bootstrapCanvasEffect(this, STORAGE_KEY, {
             defaultEnabled: true,
             minInterval: 41.6, // ~24fps
-            zIndex: 79,       // behind FX particles
+            zIndex: 79, // behind FX particles
         });
     },
 

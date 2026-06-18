@@ -50,7 +50,9 @@ describe('Modal._createDismiss()', () => {
     it('calls releaseFocus, hides container, and resolves with value', () => {
         const release = vi.fn();
         let resolved;
-        const resolve = (v) => { resolved = v; };
+        const resolve = (v) => {
+            resolved = v;
+        };
 
         const dismiss = Modal._createDismiss(release, resolve);
         dismiss('test-value');
@@ -63,7 +65,9 @@ describe('Modal._createDismiss()', () => {
     it('resolves with true when called without arguments', () => {
         const release = vi.fn();
         let resolved;
-        const resolve = (v) => { resolved = v; };
+        const resolve = (v) => {
+            resolved = v;
+        };
 
         const dismiss = Modal._createDismiss(release, resolve);
         dismiss();
@@ -92,9 +96,7 @@ describe('Modal.prompt()', () => {
 
     it('traps focus in the modal dialog', () => {
         Modal.prompt('Title', 'Msg');
-        expect(trapFocus).toHaveBeenCalledWith(
-            Modal.container.querySelector('.modal-dialog')
-        );
+        expect(trapFocus).toHaveBeenCalledWith(Modal.container.querySelector('.modal-dialog'));
     });
 
     it('resolves with input value when confirm is clicked', async () => {
@@ -186,9 +188,7 @@ describe('Modal.alert()', () => {
         await promise;
 
         // The keydown listener should have been removed
-        const keydownCalls = removeSpy.mock.calls.filter(
-            ([event]) => event === 'keydown'
-        );
+        const keydownCalls = removeSpy.mock.calls.filter(([event]) => event === 'keydown');
         expect(keydownCalls.length).toBeGreaterThanOrEqual(1);
         removeSpy.mockRestore();
     });
@@ -200,9 +200,7 @@ describe('Modal.alert()', () => {
         Modal.container.querySelector('.modal-overlay').click();
         await promise;
 
-        const keydownCalls = removeSpy.mock.calls.filter(
-            ([event]) => event === 'keydown'
-        );
+        const keydownCalls = removeSpy.mock.calls.filter(([event]) => event === 'keydown');
         expect(keydownCalls.length).toBeGreaterThanOrEqual(1);
         removeSpy.mockRestore();
     });

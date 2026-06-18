@@ -45,17 +45,22 @@
     border-radius: inherit;
     background:
         /* Top-left */
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 0 / 16px 1.5px no-repeat,
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 0 / 1.5px 16px no-repeat,
-        /* Top-right */
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 0 / 16px 1.5px no-repeat,
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 0 / 1.5px 16px no-repeat,
-        /* Bottom-left */
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 100% / 16px 1.5px no-repeat,
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 100% / 1.5px 16px no-repeat,
-        /* Bottom-right */
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 100% / 16px 1.5px no-repeat,
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 100% / 1.5px 16px no-repeat;
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 0 / 16px 1.5px
+            no-repeat,
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 0 / 1.5px 16px
+            no-repeat,
+        /* Top-right */ linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 0 /
+            16px 1.5px no-repeat,
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 0 / 1.5px 16px
+            no-repeat,
+        /* Bottom-left */ linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0
+            100% / 16px 1.5px no-repeat,
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 100% / 1.5px 16px
+            no-repeat,
+        /* Bottom-right */ linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100%
+            100% / 16px 1.5px no-repeat,
+        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 100% / 1.5px 16px
+            no-repeat;
     opacity: 0;
     animation: spectral-corners var(--duration-dramatic, 600ms) var(--ease-decel, ease-out) forwards;
 }
@@ -78,17 +83,30 @@
 }
 
 @keyframes spectral-scan {
-    0%   { background-position: 0 -100%; }
-    100% { background-position: 0 200%; }
+    0% {
+        background-position: 0 -100%;
+    }
+    100% {
+        background-position: 0 200%;
+    }
 }
 
 @keyframes spectral-corners {
-    0%   { opacity: 0; }
-    20%  { opacity: 0.8; }
-    100% { opacity: 0; }
+    0% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 /* Reduced motion — skip entirely */
 @media (prefers-reduced-motion: reduce) {
-    .spectral-echo { animation: none; opacity: 0; }
+    .spectral-echo {
+        animation: none;
+        opacity: 0;
+    }
 }

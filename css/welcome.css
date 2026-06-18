@@ -49,11 +49,13 @@
     content: '';
     position: absolute;
     inset: -2px;
-    background: linear-gradient(45deg,
-            var(--neon-cyan),
-            var(--neon-purple),
-            var(--neon-pink),
-            var(--neon-cyan));
+    background: linear-gradient(
+        45deg,
+        var(--neon-cyan),
+        var(--neon-purple),
+        var(--neon-pink),
+        var(--neon-cyan)
+    );
     border-radius: 16px;
     opacity: 0.5;
     filter: blur(8px);
@@ -62,7 +64,6 @@
 }
 
 @keyframes welcomeGlow {
-
     0%,
     100% {
         opacity: 0.3;
@@ -86,7 +87,6 @@
 }
 
 @keyframes welcomeWave {
-
     0%,
     100% {
         transform: rotate(0deg);

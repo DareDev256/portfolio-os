@@ -38,14 +38,14 @@ The information existed. The tools to process it efficiently did not. A trader's
 
 ## After Bloomberg: The Terminal Floor
 
-The Bloomberg Terminal didn't replace traders. It replaced the *friction* between a trader and the market:
+The Bloomberg Terminal didn't replace traders. It replaced the _friction_ between a trader and the market:
 
-| Before | After |
-|--------|-------|
-| Call three desks for a price | `ALLQ` — all quotes, one keystroke |
-| Wait for morning research packet | Real-time news, analytics, alerts |
-| Build spreadsheet models by hand | Integrated yield calculators |
-| Tribal knowledge about counterparties | Searchable transaction history |
+| Before                                | After                              |
+| ------------------------------------- | ---------------------------------- |
+| Call three desks for a price          | `ALLQ` — all quotes, one keystroke |
+| Wait for morning research packet      | Real-time news, analytics, alerts  |
+| Build spreadsheet models by hand      | Integrated yield calculators       |
+| Tribal knowledge about counterparties | Searchable transaction history     |
 
 The traders who thrived post-Bloomberg weren't the ones who memorized the most — they were the ones who **asked better questions** and **acted faster on answers**.
 
@@ -57,18 +57,18 @@ Claude Code, Cursor, and Windsurf are the Bloomberg Terminals of software engine
 
 ### Information Compression
 
-| Trading (Bloomberg) | Engineering (AI Tooling) |
-|---------------------|--------------------------|
-| Real-time market data feeds | Entire codebase in context window |
-| Cross-asset analytics | Cross-file refactoring in one prompt |
-| Historical transaction search | Instant grep + semantic code search |
-| Counterparty intelligence | Dependency analysis, vulnerability scanning |
+| Trading (Bloomberg)           | Engineering (AI Tooling)                    |
+| ----------------------------- | ------------------------------------------- |
+| Real-time market data feeds   | Entire codebase in context window           |
+| Cross-asset analytics         | Cross-file refactoring in one prompt        |
+| Historical transaction search | Instant grep + semantic code search         |
+| Counterparty intelligence     | Dependency analysis, vulnerability scanning |
 
 ### Skill Amplification, Not Replacement
 
-Bloomberg didn't make bad traders good — it made good traders *devastating*. The parallel holds:
+Bloomberg didn't make bad traders good — it made good traders _devastating_. The parallel holds:
 
-- **A junior dev with Claude Code** can scaffold a feature that previously required knowing three internal APIs by heart. The tool surfaces the patterns; the dev still needs judgment about *which* pattern fits.
+- **A junior dev with Claude Code** can scaffold a feature that previously required knowing three internal APIs by heart. The tool surfaces the patterns; the dev still needs judgment about _which_ pattern fits.
 - **A senior dev with Claude Code** operates at a qualitatively different level — reviewing entire subsystems, catching architectural drift across dozens of files, prototyping approaches in minutes instead of days.
 - **A non-engineer with Claude Code** (see: [Anthropic's marketing team case study](anthropic-claude-code-marketing-ops.md)) can build production tooling that previously required hiring. This is the "bond salesman who can now price their own structures" moment.
 
@@ -94,7 +94,7 @@ Bloomberg created its own command vocabulary (`DES`, `GP`, `CRVF`, `ALLQ`). Powe
 
 ### 3. Lock-In Through Fluency
 
-No one leaves Bloomberg because the switching cost is *cognitive*, not financial. You've built years of muscle memory. AI coding tools are following the same trajectory — your CLAUDE.md, your custom skills, your prompt patterns become a personalized instrument that doesn't transfer cleanly.
+No one leaves Bloomberg because the switching cost is _cognitive_, not financial. You've built years of muscle memory. AI coding tools are following the same trajectory — your CLAUDE.md, your custom skills, your prompt patterns become a personalized instrument that doesn't transfer cleanly.
 
 ### 4. The Network Effect
 
@@ -104,13 +104,13 @@ Bloomberg's chat (`MSG`) became Wall Street's messaging layer. Claude Code's MCP
 
 ## The Uncomfortable Implication
 
-When Bloomberg became standard, traders who refused to use it didn't become "purist traders who preferred the old way." They became *unemployable*. The market moved at terminal speed, and if you weren't on the terminal, you weren't in the market.
+When Bloomberg became standard, traders who refused to use it didn't become "purist traders who preferred the old way." They became _unemployable_. The market moved at terminal speed, and if you weren't on the terminal, you weren't in the market.
 
 We're watching the same dynamic emerge. The question isn't whether AI-assisted development becomes the baseline — it's how quickly the baseline shifts and what the new skill ceiling looks like.
 
 The developers who will define the next era aren't the ones who write the most code. They're the ones who **ask the best questions, see the largest context, and ship the clearest intent**.
 
-Bloomberg didn't kill trading. It killed trading *without Bloomberg*.
+Bloomberg didn't kill trading. It killed trading _without Bloomberg_.
 
 ---
 

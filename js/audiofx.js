@@ -56,10 +56,10 @@ export const AudioFX = {
 
     bootChime() {
         // Softer, deeper start chime (A-Major 7th ish)
-        this.tone(220, 0.2, 'triangle', 0);    // A3
+        this.tone(220, 0.2, 'triangle', 0); // A3
         this.tone(277.18, 0.2, 'triangle', 0.1); // C#4
         this.tone(329.63, 0.4, 'triangle', 0.2); // E4
-        this.tone(415.3, 0.4, 'sine', 0.3);    // G#4 (Sparkle)
+        this.tone(415.3, 0.4, 'sine', 0.3); // G#4 (Sparkle)
     },
 
     click() {

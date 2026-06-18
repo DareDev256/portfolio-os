@@ -3,7 +3,13 @@
  * Handles live data fetching from GitHub API and rendering the dashboard.
  */
 import { Sanitize } from './sanitize.js';
-import { openExternal, animateCounter, loadJSON, saveJSON, fetchWithTimeout } from './dom-helpers.js';
+import {
+    openExternal,
+    animateCounter,
+    loadJSON,
+    saveJSON,
+    fetchWithTimeout,
+} from './dom-helpers.js';
 
 export const GitHub = {
     username: 'DareDev256',
@@ -43,7 +49,7 @@ export const GitHub = {
         const langCount = {};
         let total = 0;
 
-        repos.forEach(repo => {
+        repos.forEach((repo) => {
             if (repo.language) {
                 langCount[repo.language] = (langCount[repo.language] || 0) + 1;
                 total++;
@@ -54,7 +60,7 @@ export const GitHub = {
             .map(([name, count]) => ({
                 name,
                 count,
-                percent: Math.round((count / total) * 100)
+                percent: Math.round((count / total) * 100),
             }))
             .sort((a, b) => b.count - a.count)
             .slice(0, 3); // Top 3 languages
@@ -75,14 +81,14 @@ export const GitHub = {
             date.setDate(date.getDate() - i);
             timeline.push({
                 date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-                count: 0
+                count: 0,
             });
         }
 
         // Count commits per day
         events
-            .filter(e => e.type === 'PushEvent')
-            .forEach(e => {
+            .filter((e) => e.type === 'PushEvent')
+            .forEach((e) => {
                 const eventDate = new Date(e.created_at);
                 const daysDiff = Math.floor((now - eventDate) / (1000 * 60 * 60 * 24));
 
@@ -126,7 +132,9 @@ export const GitHub = {
             const safeFetch = async (url) => {
                 // Preemptive rate-limit guard — abort if we already know we're exhausted
                 if (rateLimitRemaining !== null && rateLimitRemaining <= 0) {
-                    const resetAt = rateLimitReset ? new Date(rateLimitReset * 1000).toLocaleTimeString() : 'soon';
+                    const resetAt = rateLimitReset
+                        ? new Date(rateLimitReset * 1000).toLocaleTimeString()
+                        : 'soon';
                     throw new Error(`RATE_LIMITED (resets at ${resetAt})`);
                 }
                 const r = await fetchWithTimeout(url, { timeout: 8000 });
@@ -145,8 +153,12 @@ export const GitHub = {
             // Parallel fetch
             const [user, repos, events] = await Promise.all([
                 safeFetch(`https://api.github.com/users/${this.username}`),
-                safeFetch(`https://api.github.com/users/${this.username}/repos?sort=updated&per_page=6`),
-                safeFetch(`https://api.github.com/users/${this.username}/events/public?per_page=10`),
+                safeFetch(
+                    `https://api.github.com/users/${this.username}/repos?sort=updated&per_page=6`
+                ),
+                safeFetch(
+                    `https://api.github.com/users/${this.username}/events/public?per_page=10`
+                ),
             ]);
 
             const data = { user, repos, events };
@@ -213,7 +225,9 @@ export const GitHub = {
                     <div class="gh-language-viz">
                         <h3>CODE DISTRIBUTION</h3>
                         <div class="gh-lang-rings">
-                            ${languageBreakdown.map(lang => `
+                            ${languageBreakdown
+                                .map(
+                                    (lang) => `
                                 <div class="gh-lang-ring">
                                     <svg viewBox="0 0 100 100">
                                         <circle class="gh-ring-bg" cx="50" cy="50" r="40"/>
@@ -225,7 +239,9 @@ export const GitHub = {
                                         <div class="gh-ring-lang">${Sanitize.text(lang.name)}</div>
                                     </div>
                                 </div>
-                            `).join('')}
+                            `
+                                )
+                                .join('')}
                         </div>
                     </div>
 
@@ -233,11 +249,15 @@ export const GitHub = {
                     <div class="gh-commit-timeline">
                         <h3>COMMIT FREQUENCY (30 DAYS)</h3>
                         <div class="gh-timeline-bars">
-                            ${commitTimeline.map((day, i) => `
+                            ${commitTimeline
+                                .map(
+                                    (day, i) => `
                                 <div class="gh-timeline-bar" style="--i: ${i}; height: ${Math.min(day.count * 20, 100)}px"
                                     title="${Sanitize.text(day.date)}: ${day.count} commits">
                                 </div>
-                            `).join('')}
+                            `
+                                )
+                                .join('')}
                         </div>
                     </div>
 
@@ -246,7 +266,11 @@ export const GitHub = {
                         <div class="gh-section">
                             <h3>LATEST TRANSMISSIONS (COMMITS)</h3>
                             <div class="gh-list">
-                                ${events.filter(e => e.type === 'PushEvent').slice(0, 5).map(e => `
+                                ${events
+                                    .filter((e) => e.type === 'PushEvent')
+                                    .slice(0, 5)
+                                    .map(
+                                        (e) => `
                                     <div class="gh-item">
                                         <div class="gh-item-header">
                                             <span class="gh-repo">${Sanitize.text(e.repo.name)}</span>
@@ -256,7 +280,9 @@ export const GitHub = {
                                             ${Sanitize.text(e.payload.commits?.[0]?.message || 'Code update')}
                                         </div>
                                     </div>
-                                `).join('')}
+                                `
+                                    )
+                                    .join('')}
                             </div>
                         </div>
 
@@ -264,7 +290,10 @@ export const GitHub = {
                         <div class="gh-section">
                             <h3>ACTIVE SECTORS</h3>
                             <div class="gh-grid">
-                                ${repos.slice(0, 4).map(r => `
+                                ${repos
+                                    .slice(0, 4)
+                                    .map(
+                                        (r) => `
                                     <div class="gh-card" data-url="${Sanitize.attr(r.html_url)}">
                                         <div class="gh-card-top">
                                             <h4>${Sanitize.text(r.name)}</h4>
@@ -276,7 +305,9 @@ export const GitHub = {
                                             <span>⑂ ${Number(r.forks_count) || 0}</span>
                                         </div>
                                     </div>
-                                `).join('')}
+                                `
+                                    )
+                                    .join('')}
                             </div>
                         </div>
                     </div>
@@ -288,7 +319,7 @@ export const GitHub = {
             Sanitize.setHTML(container, html);
 
             // Delegated click handler for repo cards (replaces inline onclick)
-            container.querySelectorAll('.gh-card[data-url]').forEach(card => {
+            container.querySelectorAll('.gh-card[data-url]').forEach((card) => {
                 card.style.cursor = 'pointer';
                 card.addEventListener('click', () => {
                     const url = card.dataset.url;
@@ -304,11 +335,13 @@ export const GitHub = {
                 if (reposValue) this.animateCounter(reposValue, user.public_repos);
                 if (starsValue) this.animateCounter(starsValue, totalStars);
             }, 100);
-
         } catch (_err) {
             const errorDiv = document.createElement('div');
             errorDiv.className = 'error-state';
-            Sanitize.setHTML(errorDiv, '<h3>CONNECTION FAILED</h3><p>UPLINK OFFLINE. RETRYING PROXY...</p>');
+            Sanitize.setHTML(
+                errorDiv,
+                '<h3>CONNECTION FAILED</h3><p>UPLINK OFFLINE. RETRYING PROXY...</p>'
+            );
             const retryBtn = document.createElement('button');
             retryBtn.className = 'cyber-button';
             retryBtn.textContent = 'RETRY';
@@ -320,5 +353,5 @@ export const GitHub = {
             container.textContent = '';
             container.appendChild(errorDiv);
         }
-    }
+    },
 };

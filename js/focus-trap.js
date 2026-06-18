@@ -1,5 +1,6 @@
 export function trapFocus(container) {
-    const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const FOCUSABLE =
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
     function handler(e) {
         if (e.key !== 'Tab') return;

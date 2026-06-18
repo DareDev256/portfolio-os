@@ -15,9 +15,9 @@
 import { shouldSkipDesktopEffects, createDecorativeEl } from './dom-helpers.js';
 
 const GLYPHS = '0123456789ABCDEF.:;{}[]<>/\\|=+-*&^%$#@!~';
-const CHARS_PER_FRAME = 3;       // characters resolved per animation tick
-const SCRAMBLE_TICKS = 4;        // random cycles before a char resolves
-const TICK_MS = 28;              // milliseconds per animation tick
+const CHARS_PER_FRAME = 3; // characters resolved per animation tick
+const SCRAMBLE_TICKS = 4; // random cycles before a char resolves
+const TICK_MS = 28; // milliseconds per animation tick
 
 /** Pick a random glyph from the noise alphabet */
 function randomGlyph() {
@@ -36,7 +36,7 @@ function decodePanelCode(codeEl, scanLine) {
     const entries = [];
     for (const span of spans) {
         const text = span.textContent;
-        if (!text.trim()) continue;  // skip whitespace-only tokens
+        if (!text.trim()) continue; // skip whitespace-only tokens
         const chars = [];
         for (let i = 0; i < text.length; i++) {
             chars.push({
@@ -47,7 +47,7 @@ function decodePanelCode(codeEl, scanLine) {
         }
         entries.push({ span, originalText: text, chars });
         // Start with scrambled content
-        span.textContent = chars.map(c => c.resolved ? c.original : randomGlyph()).join('');
+        span.textContent = chars.map((c) => (c.resolved ? c.original : randomGlyph())).join('');
         span.classList.add('cipher-scrambled');
     }
 
@@ -88,12 +88,12 @@ function decodePanelCode(codeEl, scanLine) {
 
             if (dirty) {
                 entry.span.textContent = entry.chars
-                    .map(c => c.resolved ? c.original : randomGlyph())
+                    .map((c) => (c.resolved ? c.original : randomGlyph()))
                     .join('');
             }
 
             // Remove scramble class when fully resolved
-            if (entry.chars.every(c => c.resolved)) {
+            if (entry.chars.every((c) => c.resolved)) {
                 entry.span.classList.remove('cipher-scrambled');
                 entry.span.classList.add('cipher-resolved');
             }
@@ -133,21 +133,24 @@ export const CipherDecode = {
 
         const decoded = new WeakSet();
 
-        const observer = new IntersectionObserver((entries) => {
-            for (const entry of entries) {
-                if (!entry.isIntersecting) continue;
-                const panel = entry.target;
-                if (decoded.has(panel)) continue;
-                decoded.add(panel);
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (!entry.isIntersecting) continue;
+                    const panel = entry.target;
+                    if (decoded.has(panel)) continue;
+                    decoded.add(panel);
 
-                const codeEl = panel.querySelector('.cv-code');
-                if (!codeEl) continue;
+                    const codeEl = panel.querySelector('.cv-code');
+                    if (!codeEl) continue;
 
-                const scanLine = injectScanLine(panel);
-                // Small delay so the panel's own fade-in animation leads
-                setTimeout(() => decodePanelCode(codeEl, scanLine), 700);
-            }
-        }, { threshold: 0.3 });
+                    const scanLine = injectScanLine(panel);
+                    // Small delay so the panel's own fade-in animation leads
+                    setTimeout(() => decodePanelCode(codeEl, scanLine), 700);
+                }
+            },
+            { threshold: 0.3 }
+        );
 
         // Observe existing panels
         for (const panel of document.querySelectorAll('.cv-panel')) {

@@ -35,13 +35,9 @@ describe('GitHub.calculateLanguageStats()', () => {
 
     it('rounds percentages to whole numbers', () => {
         // 1/3 = 33.33... should round to 33
-        const repos = [
-            { language: 'A' },
-            { language: 'B' },
-            { language: 'C' },
-        ];
+        const repos = [{ language: 'A' }, { language: 'B' }, { language: 'C' }];
         const stats = GitHub.calculateLanguageStats(repos);
-        stats.forEach(s => {
+        stats.forEach((s) => {
             expect(s.percent).toBe(Math.round(s.percent));
             expect(Number.isInteger(s.percent)).toBe(true);
         });
@@ -52,7 +48,7 @@ describe('GitHub.calculateLanguageStats()', () => {
     });
 
     it('caps at 3 results even with more languages', () => {
-        const repos = 'ABCDE'.split('').map(l => ({ language: l }));
+        const repos = 'ABCDE'.split('').map((l) => ({ language: l }));
         expect(GitHub.calculateLanguageStats(repos)).toHaveLength(3);
     });
 });
@@ -61,38 +57,44 @@ describe('GitHub.buildCommitTimeline()', () => {
     it('creates timeline with correct number of days', () => {
         const timeline = GitHub.buildCommitTimeline([], 7);
         expect(timeline).toHaveLength(7);
-        timeline.forEach(day => expect(day.count).toBe(0));
+        timeline.forEach((day) => expect(day.count).toBe(0));
     });
 
     it('counts commits from PushEvents', () => {
         const now = new Date();
-        const events = [{
-            type: 'PushEvent',
-            created_at: now.toISOString(),
-            payload: { commits: [{ message: 'a' }, { message: 'b' }] },
-        }];
+        const events = [
+            {
+                type: 'PushEvent',
+                created_at: now.toISOString(),
+                payload: { commits: [{ message: 'a' }, { message: 'b' }] },
+            },
+        ];
         const timeline = GitHub.buildCommitTimeline(events, 1);
         expect(timeline[0].count).toBe(2);
     });
 
     it('ignores non-PushEvent types', () => {
         const now = new Date();
-        const events = [{
-            type: 'WatchEvent',
-            created_at: now.toISOString(),
-            payload: {},
-        }];
+        const events = [
+            {
+                type: 'WatchEvent',
+                created_at: now.toISOString(),
+                payload: {},
+            },
+        ];
         const timeline = GitHub.buildCommitTimeline(events, 1);
         expect(timeline[0].count).toBe(0);
     });
 
     it('defaults to 1 commit when payload.commits is missing', () => {
         const now = new Date();
-        const events = [{
-            type: 'PushEvent',
-            created_at: now.toISOString(),
-            payload: {},
-        }];
+        const events = [
+            {
+                type: 'PushEvent',
+                created_at: now.toISOString(),
+                payload: {},
+            },
+        ];
         const timeline = GitHub.buildCommitTimeline(events, 1);
         expect(timeline[0].count).toBe(1);
     });
@@ -100,11 +102,13 @@ describe('GitHub.buildCommitTimeline()', () => {
     it('ignores events outside the day window', () => {
         const old = new Date();
         old.setDate(old.getDate() - 31); // 31 days ago, outside 30-day window
-        const events = [{
-            type: 'PushEvent',
-            created_at: old.toISOString(),
-            payload: { commits: [{ message: 'ancient' }] },
-        }];
+        const events = [
+            {
+                type: 'PushEvent',
+                created_at: old.toISOString(),
+                payload: { commits: [{ message: 'ancient' }] },
+            },
+        ];
         const timeline = GitHub.buildCommitTimeline(events, 30);
         const total = timeline.reduce((sum, d) => sum + d.count, 0);
         expect(total).toBe(0);
@@ -112,7 +116,7 @@ describe('GitHub.buildCommitTimeline()', () => {
 
     it('each day entry has a formatted date string', () => {
         const timeline = GitHub.buildCommitTimeline([], 3);
-        timeline.forEach(day => {
+        timeline.forEach((day) => {
             // Format is "Mon D" e.g. "Mar 5"
             expect(day.date).toMatch(/^[A-Z][a-z]{2}\s\d{1,2}$/);
         });

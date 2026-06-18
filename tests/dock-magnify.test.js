@@ -10,10 +10,10 @@ import { describe, it, expect } from 'vitest';
 
 // ---------- Extracted constants and pure math from dock-magnify.js ----------
 const BASE_SCALE = 1;
-const MAX_SCALE  = 1.55;
-const SPREAD     = 120;
-const LIFT_PX    = 14;
-const SIGMA_SQ   = (SPREAD * SPREAD) / 4.5;
+const MAX_SCALE = 1.55;
+const SPREAD = 120;
+const LIFT_PX = 14;
+const SIGMA_SQ = (SPREAD * SPREAD) / 4.5;
 
 function gaussian(distSq) {
     return Math.exp(-distSq / (2 * SIGMA_SQ));
@@ -41,8 +41,8 @@ describe('Dock Magnify — Gaussian Falloff', () => {
     });
 
     it('is symmetric — equal for positive and negative offsets', () => {
-        const left  = gaussian(80 * 80);
-        const right = gaussian((-80) * (-80)); // same distSq
+        const left = gaussian(80 * 80);
+        const right = gaussian(-80 * -80); // same distSq
         expect(left).toBe(right);
     });
 
@@ -125,7 +125,7 @@ describe('Dock Magnify — z-index Ordering', () => {
 
     it('z-index decreases monotonically with distance', () => {
         const offsets = [0, 30, 60, 90, 120, 200];
-        const zIndexes = offsets.map(o => {
+        const zIndexes = offsets.map((o) => {
             const { factor } = computeIconTransform(400, 400 + o);
             return Math.round(factor * 10);
         });

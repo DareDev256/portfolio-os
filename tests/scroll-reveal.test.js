@@ -14,11 +14,19 @@ class MockIntersectionObserver {
         this.elements = new Set();
         observers.push(this);
     }
-    observe(el) { this.elements.add(el); }
-    unobserve(el) { this.elements.delete(el); }
-    disconnect() { this.elements.clear(); }
+    observe(el) {
+        this.elements.add(el);
+    }
+    unobserve(el) {
+        this.elements.delete(el);
+    }
+    disconnect() {
+        this.elements.clear();
+    }
     /** Simulate entries intersecting */
-    fire(entries) { this.cb(entries); }
+    fire(entries) {
+        this.cb(entries);
+    }
 }
 
 describe('ScrollReveal', () => {

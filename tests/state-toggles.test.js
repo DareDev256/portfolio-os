@@ -8,24 +8,34 @@ describe('State — auto-generated boolean toggles', () => {
 
     it('generates setter methods for all toggles', () => {
         const expected = [
-            'setFxEnabled', 'setAuroraEnabled', 'setGlyphsEnabled',
-            'setSoundEnabled', 'setInteractionsEnabled',
-            'setMicroInteractionsEnabled', 'setCursorReactiveEnabled',
-            'setCursorTrailEnabled', 'setEasterEggsEnabled',
+            'setFxEnabled',
+            'setAuroraEnabled',
+            'setGlyphsEnabled',
+            'setSoundEnabled',
+            'setInteractionsEnabled',
+            'setMicroInteractionsEnabled',
+            'setCursorReactiveEnabled',
+            'setCursorTrailEnabled',
+            'setEasterEggsEnabled',
         ];
-        expected.forEach(name => {
+        expected.forEach((name) => {
             expect(typeof State[name]).toBe('function');
         });
     });
 
     it('generates toggle methods for all toggles', () => {
         const expected = [
-            'toggleFx', 'toggleAurora', 'toggleGlyphs',
-            'toggleSound', 'toggleInteractions',
-            'toggleMicroInteractions', 'toggleCursorReactive',
-            'toggleCursorTrail', 'toggleEasterEggs',
+            'toggleFx',
+            'toggleAurora',
+            'toggleGlyphs',
+            'toggleSound',
+            'toggleInteractions',
+            'toggleMicroInteractions',
+            'toggleCursorReactive',
+            'toggleCursorTrail',
+            'toggleEasterEggs',
         ];
-        expected.forEach(name => {
+        expected.forEach((name) => {
             expect(typeof State[name]).toBe('function');
         });
     });
@@ -56,7 +66,13 @@ describe('State — auto-generated boolean toggles', () => {
 
     it('emits state event for toggles with event names', () => {
         let received = null;
-        document.addEventListener('state:fx', (e) => { received = e.detail; }, { once: true });
+        document.addEventListener(
+            'state:fx',
+            (e) => {
+                received = e.detail;
+            },
+            { once: true }
+        );
         State.setFxEnabled(true);
         expect(received).toEqual({ enabled: true });
     });
@@ -64,7 +80,9 @@ describe('State — auto-generated boolean toggles', () => {
     it('does not emit event for toggles without event name', () => {
         // microInteractionsEnabled has event: null
         let emitted = false;
-        const handler = () => { emitted = true; };
+        const handler = () => {
+            emitted = true;
+        };
         document.addEventListener('state:null', handler);
         State.setMicroInteractionsEnabled(true);
         document.removeEventListener('state:null', handler);
@@ -90,9 +108,13 @@ describe('State.setCursorTrailType()', () => {
 
     it('emits cursorTrailType event', () => {
         let received = null;
-        document.addEventListener('state:cursorTrailType', (e) => {
-            received = e.detail;
-        }, { once: true });
+        document.addEventListener(
+            'state:cursorTrailType',
+            (e) => {
+                received = e.detail;
+            },
+            { once: true }
+        );
         State.setCursorTrailType('playstation');
         expect(received).toEqual({ type: 'playstation' });
     });

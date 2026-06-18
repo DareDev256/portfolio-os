@@ -21,10 +21,12 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.72.0] — 2026-06-08
 
 ### Added
+
 - **15 industry demo sites went live** in the Services/Demos window (`js/desktop.js`). The `DEMOS` array flipped 15 entries from `live:false` placeholders to real `tdots-demo-*.vercel.app` URLs (all verified returning 200), reordered by design impact (Fitness, Pet, Food Truck, Restaurant, Cannabis, Beauty… first), each with a custom SVG icon and matching thumbnail. Remaining industries (Auto Detailing, Car Dealership, Law Firm, Tattoo, etc.) stay as "SOON" placeholders.
 - **11 new + 4 refreshed demo thumbnails** in `public/thumbnails/` (beauty, cannabis, cleaning, cleaning-premium, daycare, events, fitness, food-truck, medical, moving, pet + barbershop/contractor/restaurant/starter refreshes).
 
 ### Changed
+
 - **SEO `<noscript>` block** (`index.html`) updated to list all 15 live demos ("15 live demo websites — each a unique custom build…") instead of the old "20+ industries" four-link stub.
 - **README counts reconciled to disk** — modules 76, stylesheets 50, tests 607 across 33 files (verified via `npm run test`). The README had drifted to inconsistent figures: modules shown as 72/63/49/41, stylesheets as 40/42, and tests as 506/592 in places that disagreed with the badge.
 
@@ -33,6 +35,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.71.0] — 2026-04-28
 
 ### Added
+
 - **Hackathon category** at the top of the Applications showcase (`js/desktop.js`) with a dedicated Anthropic-cream color stripe (`#cc785c`) and a single entry: **SECOND_OPINION** — multi-agent medical second-opinion AI built for the Cerebral Valley × Anthropic "Built with Opus 4.7" hackathon (Apr 2026, 1 of ~500 submissions across ~20K eligible applicants). Card links to the live `/sample` route on `second-opinion-eta.vercel.app` so the demo is interactive without depending on a live API key. Future hackathon / press / award credentials can rejoin this slot.
 
 ---
@@ -40,6 +43,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.70.3] — 2026-04-27
 
 ### Removed
+
 - **Dancehall Princess Canada** from the Client Work portfolio — pulled across all surfaces: SEO `<noscript>` block (`index.html`), Services window client grid + legacy `openPortfolio` list (`js/desktop.js`), Client Websites category in Applications showcase (`js/desktop.js`), Passion Assistant knowledge base clients array (`js/passion-assistant.js`), and the Passion Live offline project highlight string (`js/passion-live.js`, replaced reference with MustHaveFrenchies).
 
 ---
@@ -47,6 +51,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.70.1] — 2026-04-11
 
 ### Fixed
+
 - **Lazy Window Race Condition** (`js/desktop.js`) — Fixed timer/rAF leak in `createLazyWindow` when a window is closed before its dynamic import resolves. Previously, the module would still render into a detached DOM element and its cleanup function (setInterval, requestAnimationFrame loops) would be orphaned — never called. Added `closed` sentinel flag to gate both rendering and error display. Affects all lazy-loaded windows: System Monitor, Weather, Skills Universe, Passion Chat, Calculator, Pomodoro, Achievement Viewer. Added regression test (607 total, all passing).
 
 ---
@@ -54,6 +59,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.70.0] — 2026-04-11
 
 ### Added
+
 - **Phantom Keys** (`js/phantom-keys.js`, `css/phantom-keys.css`) — Holographic keystroke projections on the desktop surface. Typing spawns brief gold/amethyst characters that float upward and dissolve like Tony Stark's projected keyboard. Characters materialize at viewport bottom-center with horizontal jitter, rise 120px with per-character lateral drift via CSS custom property `--drift-x`, and fade through progressive blur. JetBrains Mono font at 28px ±4px random variation. 60ms cooldown between spawns with a 6-element active pool cap to prevent GPU saturation. Filters out input/textarea/contentEditable targets and modifier-key combos. `cubic-bezier(0.16, 1, 0.3, 1)` easing for natural deceleration. 14 unit tests covering spawn bounds, cooldown gating, pool limits, typing target detection, and palette selection. Respects `prefers-reduced-motion`.
 
 ---
@@ -61,6 +67,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.69.0] — 2026-04-11
 
 ### Added
+
 - **Arc Reactor** (`js/arc-reactor.js`, `css/arc-reactor.css`) — Stark Industries-inspired window focus effect. A racing energy trace (gold→amethyst→cyan conic gradient) continuously orbits the active window's titlebar border using CSS `@property` for smooth angle interpolation. Four corner energy nodes pulse at staggered intervals with gold glow halos. Activates on window focus, deactivates on blur. `mask-composite: exclude` renders the conic gradient as a thin border ring — zero JS animation loops. MutationObserver auto-wires dynamically spawned windows via `WeakSet`-tracked decoration. Respects `prefers-reduced-motion`.
 
 ---
@@ -68,6 +75,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.68.1] — 2026-04-10
 
 ### Changed
+
 - **Spatial utilities extracted to dom-helpers** — Added `distance2D()` and `isPointInRect()` helpers to `js/dom-helpers.js`, consolidating duplicated Euclidean distance calculations (9 occurrences across 7 files) and point-in-bounds checks (2 identical implementations in cursor-tracker and cursor-reactive).
 - **Math.hypot adoption** — Replaced `Math.sqrt(dx * dx + dy * dy)` with `Math.hypot(dx, dy)` across cursor-tracker, cursor-reactive, cursor-trail, ambient-drift, catalyst-pulse, pulse-grid, and skills modules for improved readability and numerical stability.
 - **CSS @keyframes spin deduplicated** — Consolidated 4 identical `@keyframes spin` definitions (across styles.css, loading.css, interactions.css) into a single canonical definition in `styles.css`.
@@ -75,6 +83,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.68.0] — 2026-04-10
 
 ### Added
+
 - **Amethyst Aperture** — Cinematic camera-iris reveal on the Purple Reign portfolio hero. A `clip-path: circle()` animation opens from center to reveal the creative director's identity: James Olusoga's name in muted gold Playfair Display serif with staggered letter-spacing animation, a self-drawing gold divider line, and an amethyst role tagline. Brushed-metal texture overlay adds depth. 6-stage staggered timing (iris 0s → name 0.7s → divider 1.1s → role 1.3s) layers with existing glitch animations. Respects `prefers-reduced-motion` via existing hero observer.
 
 ---
@@ -82,6 +91,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.67.1] — 2026-04-09
 
 ### Added
+
 - **Ambient Drift tests (20)**: Noise function determinism, orb creation bounds (radius, color alternation, speed range), cursor repulsion physics (direction, decay, zero-distance guard), viewport wrapping thresholds, and edge-fade dimming.
 - **Neural Link tests (11)**: Distance calculation, nearest-neighbor sorting, `MAX_DISTANCE` exclusion (strict `<`), `MAX_LINKS` capping, self-exclusion, single/empty icon edge cases.
 - **DOM Helpers utility tests (21)**: `hexAlpha` clamping/padding, `loadBool`/`saveBool` round-trip and quota handling, `createDecorativeEl` HTML/SVG with aria-hidden, `createPointerTracker` lifecycle (init/move/leave/destroy), `fetchWithTimeout` abort on timeout and external signal passthrough.
@@ -91,50 +101,60 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.67.0] — 2026-04-09
 
 ### Added
+
 - **Obsidian Veil — monolith fracture reveal overlay**: Full-viewport dark monolith overlays the Purple Reign portfolio window and fractures into six irregular polygon shards when scrolling past the hero. Two-phase scroll-driven choreography: Phase 1 (50% scroll) traces amethyst glow along fracture lines via `drop-shadow` on `clip-path` shapes; Phase 2 (70% scroll) scatters shards outward with staggered delays, directional rotation, and fade, while gold/amethyst particle blooms radiate from fracture intersection points. Sequences after the crystal fracture (30% scroll) for layered dramatic impact. Shards use `will-change` GPU compositing, zero extra JS modules — 8 lines of DOM creation + 6 lines of scroll logic integrated into existing handler. Respects `prefers-reduced-motion`. Files: `css/obsidian-veil.css`, `js/desktop.js`.
 
 ## [3.66.1] — 2026-04-09
 
 ### Added
+
 - **tests(void-scroll):** 9 tests covering progress bar injection, scroll percentage calculation, active-class toggling, reduced-motion guard, edge case for zero maxScroll, and MutationObserver wiring for dynamically added windows
 - **tests(cosmic-dust):** 12 tests covering particle creation bounds (radius, color palette, speed, phase distribution), twinkle oscillation range, edge-fade calculation (center, boundary, partial, symmetry), viewport wrapping logic, and flare decay math
 
 ## [3.66.0] — 2026-04-08
 
 ### Added
+
 - **Void Scroll — cyberpunk scrollbar theme + scroll-progress indicators**: Global scrollbar reskin replaces default browser scrollbars with thin (6px), neon-traced bars using the Passion OS palette — cyan thumb, transparent track, amethyst on active. Every `.window-content` area gains a luminous 2px progress indicator at its top edge that fills proportionally as the user scrolls, with a radial glow at the leading tip. Uses MutationObserver to detect dynamically spawned windows, ResizeObserver for async content loading, and rAF-throttled scroll updates. Respects `prefers-reduced-motion`. Firefox `scrollbar-color` and WebKit `::-webkit-scrollbar` both covered. Files: `css/void-scroll.css`, `js/void-scroll.js`.
 
 ## [3.65.1] — 2026-04-08
 
 ### Fixed
+
 - **Holographic Card Tilt — flicker on child element hover**: The `mouseleave` capture handler in `holo-tilt.js` fired on every internal element boundary crossing (overlay, title, tech tags), resetting the 3D tilt transform and causing visible flicker during hover. Root cause: `document.addEventListener('mouseleave', handler, true)` catches `mouseleave` events on all descendant elements, not just the card itself. Fix uses `e.relatedTarget` to distinguish internal child-to-child moves from actual card exits. Also handles viewport-leave edge case (null `relatedTarget`) by cleaning up lingering `_activeCard` state. Added 8 tests covering tilt application, child-element traversal, viewport exit, and reduced-motion guard.
 
 ## [3.65.0] — 2026-04-08
 
 ### Added
+
 - **Holographic Card Tilt** — Project cards in the Applications window now respond to the cursor with 3D perspective tilt (±8°) and a holographic light sweep that tracks mouse position. A gold-to-amethyst radial gradient follows the cursor across the card surface via `mix-blend-mode: screen`, blueprint corner markers illuminate with gold drop-shadow on hover, and the scan line shifts to a warm gold tint. Cards scale up 2% during interaction and spring back with `--ease-decel` on mouse leave. Event-delegation-based — works with dynamically rendered cards without rebinding. Desktop-only, respects `prefers-reduced-motion`.
 
 ## [3.64.1] — 2026-04-08
 
 ### Fixed
+
 - **`dom-helpers.js` — fragile selector matching in `createRevealSystem` MutationObserver**: The dynamic-element watcher used `classList.contains(selector.slice(1))` to detect newly added scroll-reveal targets, which only works for simple `.class-name` selectors and silently fails for compound, attribute, or ID selectors. Replaced with `node.matches(selector)` — the DOM's native CSS selector matcher that handles any valid selector string. Affects both `ScrollReveal` and `Gauntlet` reveal systems.
 
 ## [3.64.0] — 2026-04-07
 
 ### Added
+
 - **Cosmic Dust** — Faint twinkling star-field of 50 tiny particles drifting across the desktop surface. Particles fade in and out via smooth twinkle oscillation, with rare stochastic flares — brief gold or amethyst radial glows that decay exponentially, creating a "distant starlight through darkened glass" atmosphere. Canvas-based at z-index 1 (deepest ambient layer), additive `screen` blend mode, edge-fade wrapping. No cursor interaction by design — these particles exist behind the glass. Pauses when tab hidden. Desktop-only, respects `prefers-reduced-motion`.
 
 ## [3.63.3] — 2026-04-06
 
 ### Added
+
 - **`tests/desktop-effects.test.js` — 31 tests for v3.59–v3.63 features**: Comprehensive test coverage for the pure logic cores of spectral-echo, cipher-decode, neural-link, pulse-grid, and ambient-drift. Tests extracted math (lerp, colorAt, dist, noise2d, smoothNoise), neighbor selection with MAX_LINKS/MAX_DISTANCE constraints, hexAlpha edge cases, createDecorativeEl (HTML + SVG), getElementCenter, shouldSkipDesktopEffects media query guard, and createPointerTracker lifecycle.
 
 ### Fixed
+
 - **`dom-helpers.js` — SVG className assignment bug in `createDecorativeEl`**: SVG elements have a read-only `className` property (`SVGAnimatedString`), so `el.className = 'foo'` silently failed in browsers and threw in jsdom. Switched to `setAttribute('class', ...)` which works for both HTML and SVG elements. This bug affected `neural-link.js` which creates an SVG overlay via `createDecorativeEl`.
 
 ## [3.63.2] — 2026-04-06
 
 ### Changed
+
 - **`dom-helpers.js` — extract `PALETTE`, `initDesktopCanvas`, `createPointerTracker`**: Centralized the gold/amethyst RGB palette and the duplicated canvas-init + pointer-tracking boilerplate shared by `ambient-drift.js` and `pulse-grid.js`. New desktop canvas effects now get DPR-aware setup, desktop mounting, resize wiring, and cursor tracking in two function calls instead of 20+ lines of ceremony.
 - **`ambient-drift.js` — use shared helpers**: Replaced inline color constants, canvas creation, mouse tracking, and resize wiring with `PALETTE`, `initDesktopCanvas`, and `createPointerTracker` from `dom-helpers.js`. Net −12 lines.
 - **`pulse-grid.js` — use shared helpers**: Same extraction — replaced duplicated init boilerplate and color constants. Pointer events now schedule redraws through the shared tracker. Net −19 lines.
@@ -142,6 +162,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.63.1] — 2026-04-06
 
 ### Security
+
 - **`Sanitize.attr()` — fix validation/output mismatch (CWE-116)**: Previously returned the original input (with control chars intact) after validating against a stripped copy. Now returns the stripped value, closing a gap where inconsistent browser control-char normalization could bypass URI scheme checks.
 - **`Sanitize.attr()` — restrict data: URI allowlist**: Replaced broad `includes('script')||includes('svg')` check with an explicit safe-MIME allowlist (png, jpeg, gif, webp). Blocks all non-raster data: URIs including svg+xml, Flash, PDF, and unknown types.
 - **`stripDangerousKeys()` — depth-limited recursion (CWE-674)**: Added MAX_DEPTH=20 guard to prevent stack overflow from deeply nested JSON payloads via admin backup import. A crafted 10,000+ level payload previously crashed the browser tab.
@@ -150,15 +171,17 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.63.0] — 2026-04-05
 
 ### Added
+
 - **Ambient Drift** — Luminous floating orbs on the desktop surface. 7 softly glowing spheres (alternating gold & amethyst) drift in slow organic paths using smoothed pseudo-noise, creating a living atmosphere like dust motes catching light in a darkened lab. Orbs repel gently from the cursor within a 180px radius, pulse in brightness over time, and fade near viewport edges to avoid hard pop-in. Canvas-based with `mix-blend-mode: screen` for additive glow over the dark background. Pauses when tab is hidden. Desktop-only, respects `prefers-reduced-motion`.
-  - New files: `js/ambient-drift.js`, `css/ambient-drift.css`
-  - Modified: `js/main.js` (registration), `index.html` (CSS link)
+    - New files: `js/ambient-drift.js`, `css/ambient-drift.css`
+    - Modified: `js/main.js` (registration), `index.html` (CSS link)
 
 ---
 
 ## [3.62.1] — 2026-04-05
 
 ### Changed
+
 - **dom-helpers** — Extract three new shared utilities: `shouldSkipDesktopEffects()` (combined reduced-motion + coarse-pointer guard), `createDecorativeEl()` (aria-hidden element factory), and `getElementCenter()` (viewport-relative center calculation). Eliminates duplicated boilerplate across 8 visual effect modules.
 - **neural-link, spectral-echo, pulse-grid, cipher-decode, sonar-pulse** — Replace inline `matchMedia` desktop guards with centralized `shouldSkipDesktopEffects()`.
 - **spectral-echo, phantom-reticle, pulse-grid, cipher-decode, catalyst-pulse** — Replace `createElement + className + aria-hidden` three-liner with `createDecorativeEl()`.
@@ -170,32 +193,36 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.62.0] — 2026-04-04
 
 ### Added
+
 - **Pulse Grid** — Reactive ambient floor grid on the desktop surface. A faint geometric grid overlays the desktop; as the cursor moves, nearby cells illuminate with a gold→amethyst radial glow using quadratic distance falloff — like walking through Stark's lab with a light-up floor. Canvas-based for zero layout thrash, redraws only on `pointermove` via single `requestAnimationFrame`. Pauses when tab is hidden. Desktop-only (skipped on coarse-pointer devices), respects `prefers-reduced-motion`.
-  - New files: `js/pulse-grid.js`, `css/pulse-grid.css`
+    - New files: `js/pulse-grid.js`, `css/pulse-grid.css`
 
 ---
 
 ## [3.61.0] — 2026-04-04
 
 ### Added
+
 - **Neural Link** — Luminous connection traces between desktop icons on hover. When a desktop icon is hovered, thin energy lines trace from it to its 2–3 nearest neighbors using a gold→amethyst gradient with a stroke-dashoffset drawing animation — like neural pathways firing in a cybernetic brain. Lines glow with dual drop-shadow halos and fade out smoothly on hover end. SVG overlay layer with `pointer-events: none`, MutationObserver for dynamic icons. Desktop-only, respects `prefers-reduced-motion`.
-  - New files: `js/neural-link.js`, `css/neural-link.css`
-  - Modified: `js/main.js` (registration), `index.html` (CSS link)
+    - New files: `js/neural-link.js`, `css/neural-link.css`
+    - Modified: `js/main.js` (registration), `index.html` (CSS link)
 
 ---
 
 ## [3.60.0] — 2026-04-04
 
 ### Added
+
 - **Cipher Decode** — Holographic code materialization effect for code-viewer panels. When `.cv-panel` elements scroll into view, syntax-highlighted tokens scramble through hex/glyph noise before resolving left-to-right in a wavefront pattern. A gold scan line sweeps across the code block during decode, and resolved characters flash gold before settling to their syntax color. IntersectionObserver-triggered with MutationObserver for dynamically added panels. Desktop-only, respects `prefers-reduced-motion`.
-  - New files: `js/cipher-decode.js`, `css/cipher-decode.css`
-  - Wired into `main.js` init sequence (safe-mode guarded)
+    - New files: `js/cipher-decode.js`, `css/cipher-decode.css`
+    - Wired into `main.js` init sequence (safe-mode guarded)
 
 ---
 
 ## [3.59.2] — 2026-04-04
 
 ### Security
+
 - **desktop.js** — Hardened three innerHTML rendering paths (desktop icons, dock icons, properties window) that interpolated `item.color`, `item.label`, `item.icon`, and `item.id` without sanitization. Applied `Sanitize.hexColor()` for colors, `Sanitize.text()` for labels/IDs, and `Sanitize.url()` for SVG icon paths. Closes defense-in-depth gap — admin panel already persists custom desktop items to localStorage, and any future code connecting that data to desktop rendering would have been immediate stored XSS without this fix.
 
 ---
@@ -203,6 +230,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.59.1] — 2026-04-03
 
 ### Changed
+
 - **dom-helpers** — Added `hexAlpha()` utility for opacity-to-hex conversion, eliminating 5 duplicated `Math.floor(v * 255).toString(16).padStart(2, '0')` expressions across cursor-reactive effects. Added `transitionWindow()` with declarative preset configs (`materialize`, `dematerialize`, `minimize`) that parameterize the identical structure previously copy-pasted across three separate functions.
 - **micro-interactions** — Refactored `materializeWindow()`, `dematerializeWindow()`, and `minimizeWindow()` to delegate to the shared `transitionWindow()` preset system. Same behavior, single source of truth.
 - **cursor-reactive** — Replaced inline hex-alpha arithmetic with `hexAlpha()` calls in `applyAmbientGlow()`, `applyProximityGlow()`, and `applyWakeEffect()`.
@@ -212,6 +240,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.59.0] — 2026-04-03
 
 ### Added
+
 - **Spectral Echo** (`spectral-echo.js`, `spectral-echo.css`) — Window materialization burst effect. When any window opens and becomes visible, a gold/amethyst border outline expands outward from the window bounds and fades, like a holographic interface powering up. Features amethyst corner crosshairs and a vertical scan line that sweeps through the echo. One-shot CSS animation with auto-disposal. MutationObserver-driven, desktop-only, respects `prefers-reduced-motion`.
 
 ---
@@ -219,12 +248,14 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.58.2] — 2026-04-02
 
 ### Added
+
 - **Glitch Text test suite (glitch-text.test.js)** — 10 tests covering `wireTitle` idempotency, `wireAll` subtree scanning, `syncText` data-text synchronization, special character handling, and empty state edge cases. Targets the chromatic aberration feature added in v3.58.0.
 - **Phantom Reticle test suite (phantom-reticle.test.js)** — 12 tests covering spring physics convergence, velocity dampening, overshoot bounds, lock-on scale calculations for various target sizes, DOM lifecycle (create/destroy/hidden state), and negative coordinate handling.
 
 ## [3.58.1] — 2026-04-02
 
 ### Fixed
+
 - **Glitch Text hover residue (glitch-text.css)** — Chromatic aberration pseudo-elements snapped back to `opacity: 0.7` after the 0.4s animation completed on sustained hovers, leaving persistent amethyst/gold ghost layers over the title text. Added `forwards` fill mode so the animation's final keyframe (`opacity: 0`) holds, giving a clean glitch-and-vanish on every hover.
 
 ---
@@ -232,6 +263,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.58.0] — 2026-04-02
 
 ### Added
+
 - **Glitch Text effect (glitch-text.js, glitch-text.css)** — Controlled chromatic aberration on window title hover. Amethyst and gold pseudo-element ghost layers animate via `clip-path` inset slicing and translate offsets in stepped keyframes, creating a brief digital corruption that resolves cleanly. MutationObserver auto-wires new windows and keeps `data-text` attributes synced during breadcrumb navigation. Pure CSS animation with minimal JS wiring. Respects `prefers-reduced-motion`.
 
 ---
@@ -239,6 +271,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.57.3] — 2026-04-01
 
 ### Changed
+
 - **Canvas effect lifecycle factory (dom-helpers.js)** — New `bootstrapCanvasEffect()` and `setCanvasEffectEnabled()` utilities centralize the identical init/toggle/resize boilerplate shared across canvas-based visual effect modules. Eliminates duplicated canvas creation, DPR resize wiring, throttled loop setup, and localStorage toggle persistence.
 - **Aurora refactored (aurora.js)** — Replaced ~20 lines of manual canvas lifecycle with `bootstrapCanvasEffect()` call, keeping only the unique noise/draw logic.
 - **FX refactored (fx.js)** — Replaced ~20 lines of manual canvas lifecycle with `bootstrapCanvasEffect()` call, keeping only particle simulation and rendering logic.
@@ -248,6 +281,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.57.2] — 2026-03-31
 
 ### Security
+
 - **Sanitize input length cap (sanitize.js)** — All sanitization functions (`html()`, `attr()`, `url()`) now enforce a 500KB `MAX_INPUT_LENGTH` ceiling via `clampLength()`. Prevents algorithmic-complexity attacks (CWE-400, CWE-1333) where adversarial mega-strings could stall DOMPurify or regex processing.
 - **Terminal prototype property leak (terminal.js)** — `cat` command now uses `Object.hasOwn()` instead of bracket-notation lookup on `fileSystem`, preventing access to inherited `Object.prototype` properties (`__proto__`, `constructor`, `toString`) via crafted filenames (CWE-1321).
 - **Terminal history cap (terminal.js)** — Command history capped at 100 entries to prevent unbounded memory growth in long sessions (CWE-770).
@@ -258,6 +292,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.57.1] — 2026-03-31
 
 ### Changed
+
 - **dom-helpers: centralize page-visibility subscriptions with `onVisibilityChange()`** — New pub/sub API piggybacks on the single shared `visibilitychange` listener instead of each module adding its own. Returns an unsubscribe function for proper cleanup in `destroy()` methods. Migrated Whispers, GalaxyBackground, and InteractionEngine to use it — eliminates 3 redundant DOM listeners.
 - **dom-helpers: fix orphaned JSDoc for `animateCounter()`** — Relocated the dangling docblock from above `el()` to directly above `animateCounter()` where it belongs, and added proper `@param`/`@returns` annotations.
 
@@ -266,21 +301,25 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.57.0] — 2026-03-31
 
 ### Added
+
 - **Phantom Reticle — HUD targeting cursor overlay (phantom-reticle.js + phantom-reticle.css)** — A persistent geometric reticle that follows the cursor with spring-physics elastic easing, creating an Iron Man targeting HUD feel. The reticle is a dashed gold ring with crosshair lines and a center dot that smoothly tracks mouse movement via configurable stiffness/damping constants. When the cursor approaches interactive elements (dock items, desktop icons, buttons, titlebar controls, context menu items), the reticle "locks on" — snapping to the element center, scaling proportionally to target size, and shifting from gold to amethyst with increased opacity and faster rotation. Clicks trigger an expanding pulse ring that radiates outward from the reticle. DOM-light (5 elements), GPU-composited with `will-change` and `mix-blend-mode: screen`, spring simulation runs at display refresh rate but skips frames when tab is hidden. Hides on mouse leave, invisible on touch devices (`hover: none` media query). Respects `prefers-reduced-motion`.
 
 ## [3.55.2] — 2026-03-30
 
 ### Changed
+
 - **Centralized throttled animation loop (dom-helpers.js)** — Extracted `createThrottledLoop()` factory into `dom-helpers.js`, replacing the identical 6-line loop boilerplate (cancelAnimationFrame → enabled check → page-visibility gate → frame-rate cap → work → recurse) duplicated across canvas modules. Accepts `isEnabled` callback and configurable `minInterval` for per-module frame rates. Also extracted `resizeCanvasDPR()` for the identical 4-line DPR-aware canvas resize pattern. Refactored `aurora.js` (~24fps) and `fx.js` (~30fps) to use both helpers, eliminating module-level `_lastFrame` state and reducing each module by ~10 lines while making the frame-skip logic a single source of truth.
 
 ## [3.55.1] — 2026-03-30
 
 ### Security
+
 - **Wallpaper URL validation hardened (state.js)** — `setWallpaper()` now validates URLs through `Sanitize.url()` (allowlist-based) before persisting to localStorage, closing a stored CSS injection vector where dangerous URIs could be written to localStorage and survive across sessions. Gradient tokens validated against an explicit `VALID_GRADIENTS` allowlist instead of open-ended string matching. `data:image/` URIs restricted to safe MIME types only (png, jpeg, gif, webp) — blocks `svg+xml` which can contain `<script>`. Invalid stored wallpapers are now purged from localStorage on load instead of silently re-rejected every session. Added `_validateWallpaperUrl()` as a centralized validation gate used by both `setWallpaper()` and `init()`. Comprehensive test coverage: 10 new validation tests covering protocol blocking, MIME allowlisting, gradient token validation, control character stripping, and persistence rejection.
 
 ## [3.55.0] — 2026-03-29
 
 ### Added
+
 - **Catalyst Pulse — ambient breathing energy field** — Lock screen hero gains a living atmosphere: a gold-core radial glow with amethyst outer halo breathes in dual-rhythm cycles (4s core, 6s halo). Geometric crosshair lines and corner brackets frame the central wheel. Mouse proximity to screen center intensifies the glow, creating a reveal-on-approach effect. DOM injected dynamically by JS module, CSS-animated with `will-change` GPU compositing. Respects `prefers-reduced-motion`.
 
 ---
@@ -288,6 +327,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.54.0] — 2026-03-29
 
 ### Added
+
 - **Sonar Pulse — holographic desktop click ripple** — Clicking on the desktop surface spawns a Stark Industries-style targeting ping: three concentric rings (alternating gold/amethyst from `--gold` and `--amethyst` tokens) expand outward with staggered timing, a crosshair flashes at the impact origin, and a JetBrains Mono HUD readout floats upward showing `x:NNN y:NNN · SECTOR CLEAR` with randomized tactical status tags. Rings use CSS `scale()` animation for GPU compositing. Click-debounced at 320ms to prevent visual spam. Desktop-only (skipped on `pointer: coarse`). Respects `prefers-reduced-motion`.
 
 ---
@@ -295,6 +335,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.53.0] — 2026-03-28
 
 ### Added
+
 - **Parallax scroll depth — cinematic hero layer separation** — Enhanced the parallax engine with wheel-driven vertical depth separation on the lock screen hero. Scrolling (mousewheel/trackpad) pulls the four depth layers apart at different rates: grid background drifts up (+40px), watermark shifts subtly (-25px), title block separates faster (-50px), identity block leads the pull (-70px). Scroll momentum decays naturally back to center via 0.97 per-frame decay factor. Added ambient sine-wave drift oscillation that keeps the scene alive even without user interaction. Desktop background wheel now also inherits the ambient drift. All values lerp-smoothed at 0.06 for cinematic silk. Respects `prefers-reduced-motion`.
 
 ---
@@ -302,6 +343,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.52.1] — 2026-03-27
 
 ### Changed
+
 - **Viewport reveal system — centralized scroll-triggered observer pattern** — Extracted the identical IntersectionObserver + MutationObserver + WeakSet scaffolding duplicated across `scroll-reveal.js` and `gauntlet.js` into a single `createRevealSystem()` factory in `dom-helpers.js`. Both modules now declare only their configuration (selector, class, threshold, optional callback) — zero boilerplate. Gauntlet's SVG signature-draw side-effect preserved via `onReveal` callback. Combined ~100 lines of duplicated wiring reduced to ~50 shared lines. API surface unchanged (`{ init, observe }`).
 
 ---
@@ -309,6 +351,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.52.0] — 2026-03-27
 
 ### Added
+
 - **System Whispers — ambient floating HUD data fragments** — Translucent monospace text snippets (cipher hashes, system diagnostics, neural-link telemetry) spawn at random desktop positions and drift upward, creating a "data-in-the-air" holographic lab atmosphere. Max 6 concurrent fragments, staggered spawn every 4s, gold/cyan color alternation matching the signature accent palette. New `js/whispers.js` module + `css/whispers.css`. Auto-pauses when tab hidden. Disabled in safe mode. Respects `prefers-reduced-motion`.
 
 ---
@@ -316,6 +359,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.51.0] — 2026-03-26
 
 ### Added
+
 - **Signature Accents — gold/amethyst HUD branding for active windows** — Gold corner brackets (8-segment background-gradient technique) materialize on active windows like targeting HUD overlays. A gold focus-flash briefly warms the border on window activation via `focus-flash` keyframe. The titlebar holo-line shifts to a breathing gold-amethyst `heartbeat-line` pulse on active windows. Active window titles gain a subtle gold text-shadow. New `css/signature-accents.css` stylesheet (pure CSS, zero JS). Suppressed on maximized windows. Respects `prefers-reduced-motion`.
 
 ---
@@ -323,6 +367,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.50.0] — 2026-03-26
 
 ### Added
+
 - **Unveiling Gauntlet — cinematic About window** — Redesigned the About Me window as a multi-stage scroll experience. Three full-height cinematic stages (Identity, Mission, Arsenal) reveal progressively with perspective-based depth transforms, staggered text animations, gold divider sweeps, and an SVG "auric signature" stroke-draw animation. Each stage acts as a deliberate reveal — scroll to unveil. New `gauntlet.js` IntersectionObserver module and `gauntlet.css` with CSS custom property integration.
 
 ---
@@ -330,6 +375,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.49.1] — 2026-03-26
 
 ### Changed
+
 - **Boolean persistence helpers (`loadBool`/`saveBool`)** — Extracted the duplicated `localStorage.getItem(k) === '1'` / `localStorage.setItem(k, v ? '1' : '0')` pattern from Aurora, FX, AudioFX, and Glyphs into two shared functions in `dom-helpers.js`. State module's `_loadBoolean`/`_setBoolean` now delegate to these helpers too. Centralizes the `'1'`/`'0'` convention in one place, adds `try/catch` on writes for quota-exceeded resilience.
 
 ---
@@ -337,15 +383,17 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.49.0] — 2026-03-24
 
 ### Added
+
 - **Achievement System (TROPHIES.exe)** — Gamified portfolio exploration with 10 unlockable trophies across 4 rarity tiers (common, rare, epic, legendary). Visitors earn achievements by exploring the OS: "System Online" (boot complete), "Explorer" (3 apps), "Cartographer" (7 apps), "Terminal Jockey" (use terminal), "Due Diligence" (resume + about + skills), "Night Owl" (visit midnight–5am), "Power User" (command palette), "Passion's Friend" (open Passion chat), "Speed Demon" (5 windows in 30s), and "Completionist" (all achievements). Features slide-in unlock popups with rarity-themed glow effects, a gold trophy SVG desktop icon, a dedicated viewer window with progress bar, and full localStorage persistence. Zero coupling — uses CustomEvent observer pattern via `passion:window-open`, `passion:command-palette`, and `passion:boot-complete` events. Respects `prefers-reduced-motion`. CSP-compliant (all DOM construction is programmatic, no innerHTML in viewer).
 
-> *"Any sufficiently advanced technology is indistinguishable from magic."* — Arthur C. Clarke
+> _"Any sufficiently advanced technology is indistinguishable from magic."_ — Arthur C. Clarke
 
 ---
 
 ## [3.48.0] — 2026-03-24
 
 ### Changed
+
 - **Centralized page-visibility and reduced-motion detection** — Extracted `isPageHidden()` and `prefersReducedMotion()` into `dom-helpers.js`, eliminating 4 duplicate `visibilitychange` listeners (fx.js, aurora.js, skills.js, mahoraga-wheel-3d.js) and 5 duplicate `matchMedia` calls (icon-tilt.js, parallax.js, mahoraga-wheel-3d.js, galaxy-background.js, cursor-trail.js). Single source of truth for accessibility and performance guards across all animation modules.
 
 ---
@@ -353,6 +401,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.47.0] — 2026-03-24
 
 ### Added
+
 - **Purple Haze Reveal Curtain** — Cinematic lock-to-desktop transition inspired by Prince's Purple Rain staging. Two amethyst velvet panels cover the screen during boot, a golden seam draws across the divide, an atmospheric bloom radiates from center, then the panels part vertically to reveal the desktop. Subtle CSS noise texture simulates velvet material. Uses design system motion tokens (`--ease-decel`, `--ease-accel`). Respects `prefers-reduced-motion`. New module: `js/purple-haze.js` + `css/purple-haze.css`.
 
 ---
@@ -360,6 +409,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.46.0] — 2026-03-23
 
 ### Added
+
 - **Holographic Blueprint Reveal** — Project cards in the Applications grid now enter with a tech-blueprint animation sequence: gold corner crosshairs materialize, geometric edge-trace lines draw themselves (gold → amethyst gradient), a scan line sweeps vertically, and content resolves from blur to clarity with staggered delays. The overlay fades out after completion. Respects `prefers-reduced-motion`. Purely CSS-driven, zero JavaScript overhead.
 
 ---
@@ -367,10 +417,12 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.45.3] — 2026-03-23
 
 ### Added
+
 - **Test: Terminal** — 19-test suite for `terminal.js` covering command parsing (case normalization, arg preservation), command routing for all 7 built-in commands (`help`, `clear`, `whoami`, `ls`, `cat`, `sys`, `deploy`), file system boundary enforcement (path traversal blocked, case-sensitive keys, closed file set), and history navigation edge cases (empty history, LIFO traversal, oldest-entry clamping, down-to-empty reset, index reset on new push).
 - **Test: Dock Magnify** — 16-test suite for `dock-magnify.js` covering Gaussian falloff math (identity at zero, decay at distance, symmetry, non-negativity), scale computation (MAX_SCALE at cursor, BASE_SCALE at distance, no overshoot), lift pixel values, glow opacity thresholds (peak 0.33, floor 0.08), box-shadow activation boundary (factor > 0.3), and z-index monotonic ordering by proximity.
 
 ### Changed
+
 - **Test counts updated** — 409→444 tests, 21→23 suites across all references.
 - **Version synced** — 3.45.2→3.45.3 across `package.json`, `version.js`, README badges, and CHANGELOG.
 
@@ -379,10 +431,12 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.45.2] — 2026-03-23
 
 ### Added
+
 - **Test: Icon Tilt** — 7-test suite for `icon-tilt.js` covering 3D tilt CSS property application on mousemove, reset on mouseleave, `prefers-reduced-motion` accessibility compliance (both static and dynamic toggle), graceful no-op when container is missing, `MutationObserver` auto-wiring for dynamically added icons, and bloom position math verification.
 - **Test: Calculator** — 15-test suite for `calculator.js` covering basic arithmetic (add, subtract, multiply, divide), division-by-zero ERR lockout with Clear recovery, decimal input with double-dot prevention, sign toggle (±), percentage, backspace (single-digit→0 edge case), operation chaining without `=`, Clear full reset, and cleanup function validation.
 
 ### Changed
+
 - **Test counts updated** — README badges and inline stats bumped from 387→409 tests, 19→21 suites across all references.
 - **Version synced** — Unified version across `package.json`, `version.js`, README badges, and CHANGELOG to 3.45.2.
 
@@ -391,9 +445,11 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.45.1] — 2026-03-23
 
 ### Added
+
 - **Deep Dive: 3D Icon Tilt** — Portfolio-grade README section documenting the `icon-tilt.js` module: normalized coordinate math, CSS custom property architecture (`--tilt-x/y`, `--bloom-x/y`), `perspective(600px)` rationale, light bloom simulation via `::before` pseudo-element, `MutationObserver` auto-wiring, and `prefers-reduced-motion` accessibility. Includes file cross-reference table.
 
 ### Changed
+
 - **Version synced** — Unified version across `package.json`, `version.js`, README badges, and CHANGELOG to 3.45.1.
 
 ---
@@ -401,10 +457,12 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.45.0] — 2026-03-20
 
 ### Added
+
 - **3D icon tilt with frosted glass** — New `icon-tilt.js` module adds mouse-tracked gyroscopic 3D perspective tilt (±18°) to all desktop icons. Icons tilt toward the cursor with an inner light bloom that shifts to simulate overhead lighting, creating a premium holographic feel. Uses CSS custom properties (`--tilt-x`, `--tilt-y`, `--bloom-x`, `--bloom-y`) for GPU-composited transforms. MutationObserver auto-wires dynamically added icons. Respects `prefers-reduced-motion`.
 - **Desktop icon frosted glass upgrade** — Icon boxes now use real `backdrop-filter` glass material (`--glass-bg`, `--glass-blur-light`) instead of opaque backgrounds, integrating with the Alien Tech glass system. Hover state upgraded from basic `scale(1.1)` to perspective-aware transform with enhanced glow.
 
 ### Changed
+
 - **Version synced** — Unified version across `package.json`, `version.js`, `index.html` title, README badge, and CHANGELOG to 3.45.0.
 
 ---
@@ -412,10 +470,12 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.44.4] — 2026-03-20
 
 ### Security
+
 - **Patched 5 npm dependency vulnerabilities** — Fixed 1 moderate (ajv ReDoS) and 4 high-severity CVEs: flatted unbounded recursion DoS + prototype pollution, minimatch ReDoS (3 vectors), rollup arbitrary file write via path traversal, undici HTTP smuggling + WebSocket memory DoS (6 issues). All resolved via dependency upgrades.
 - **GitHub API rate-limit hardening** — Added `X-RateLimit-Remaining` / `X-RateLimit-Reset` header tracking to `github.js`. Prevents silent app degradation when the 60 req/hr unauthenticated cap is hit. Now detects 403 rate-limit responses explicitly and provides reset time in error messaging instead of a generic connection failure.
 
 ### Changed
+
 - **Version synced** — Unified version across `package.json`, `version.js`, `index.html` title, README badge, and CHANGELOG to 3.44.4.
 
 ---
@@ -423,6 +483,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.44.3] — 2026-03-17
 
 ### Changed
+
 - **README updated with deployment instructions and version sync** — Added a full Deployment section documenting Vercel production workflow (CLI commands, `vercel.json` security header config, custom domain setup, local preview build). Corrected stale module count from 49 → 55 and stylesheet count from 25 → 26. Architecture tree expanded with 6 previously undocumented modules (`version.js`, `scroll-reveal.js`, `parallax.js`, `dock-magnify.js`, `ambient-system.js`, `weather.js`). Unified version references across README badges, `version.js`, and `package.json` to 3.44.3 — resolving a 3-file version drift (was 3.44.1 in version.js/README, 3.44.2 in package.json).
 
 ---
@@ -430,6 +491,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.44.2] — 2026-03-16
 
 ### Added
+
 - **Test coverage for ScrollReveal** — 9 tests covering IntersectionObserver wiring, `scroll-reveal--visible` class toggling, MutationObserver auto-detection of new windows, WeakSet deduplication preventing double-observation, manual `.observe()` API, and dynamic element pickup inside observed containers.
 - **Test coverage for Notify (toast system)** — 17 tests covering toast creation with a11y attributes, all four type variants (success/error/warning/info) with correct icons and labels, auto-dismiss timing with fake timers, queue eviction at MAX_VISIBLE=4, close button idempotency, hover pause/resume with remaining-time arithmetic, and progress bar animation state toggling.
 
@@ -438,6 +500,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.44.1] — 2026-03-15
 
 ### Security
+
 - **Hardened video source URL validation in Lightbox** — Direct `<video>` elements now pass through `Sanitize.url()` before setting `src`, blocking `javascript:`, `data:`, `blob:`, and protocol-obfuscated URIs from admin-editable media entries. YouTube/Vimeo embeds already validated IDs via regex; this closes the gap for non-embed video sources. Added early null/type guard on `openVideoWindow()` input. Invalid URLs render a visible error instead of silently loading dangerous content.
 
 ---
@@ -445,6 +508,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.44.0] — 2026-03-14
 
 ### Added
+
 - **Extended scroll-triggered reveals to Services, Applications, and Media windows** — Two new reveal variants: `fade-right` (mirror of fade-left) and `clip-up` (clip-path wipe reveal for a cinematic lab-notes effect). Services window now reveals hero (scale), section headers (fade-left/fade-right), service cards (staggered fade-up with gold accent line sweep), retainer cards (clip-up wipe), and CTA block. Applications window reveals header (fade-left), category headers (fade-right), and app items (staggered cascade). Media Vault header gets fade-left reveal. Gold accent line animation on service cards mirrors the amethyst accent on project cards. All new variants respect `prefers-reduced-motion`.
 
 ---
@@ -452,6 +516,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.43.0] — 2026-03-14
 
 ### Added
+
 - **Scroll-triggered reveal system for window content** — New `ScrollReveal` module (`js/scroll-reveal.js`) uses IntersectionObserver to animate elements as they scroll into view inside `.window-content` containers. A MutationObserver auto-wires new windows without manual hookup, and a nested child watcher catches dynamically rendered content (e.g. filtered project cards). Supports three reveal variants (`fade-up`, `fade-left`, `scale`) with staggered delay cascades via `data-reveal-delay` attributes. Applied to project cards (Applications window), About sections, and Contact window elements. Includes amethyst accent-line animation on project card reveal and full `prefers-reduced-motion` support. CSS uses `cubic-bezier(0.22, 1, 0.36, 1)` — a deceleration curve that gives reveals a cinematic ease-out feel.
 
 ---
@@ -459,6 +524,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.42.1] — 2026-03-14
 
 ### Changed
+
 - **README rewritten to portfolio-grade standard** — Hero section redesigned with cinematic copy aligned to dark luxury tech aesthetic. Badges use dark label backgrounds for visual cohesion. Stale module/test counts synced across all sections (49 modules, 25 stylesheets, 361 tests / 17 suites). "Why No Frameworks?" sharpened from three paragraphs to three decisive lines. Version references unified to 3.42.1 across README, package.json, and version.js (was drifted at v3.16.6 in footer). Architecture tree header counts corrected.
 
 ---
@@ -466,8 +532,11 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.42.0] — 2026-03-13
 
 ### Changed
+
 - **Context menu refactored to data-driven architecture** — extracted shared `_renderContextMenu(x, y, items)` method that both `showContextMenu` and `showIconContextMenu` now delegate to. Replaced fragile innerHTML + `document.getElementById` wiring with scoped element creation and direct event listeners. Menu items are now descriptor arrays (`{ icon, label, action }`), making menus trivially extensible — adding an item is one object instead of ~12 lines. Labels now pass through `Sanitize.text()`, closing a potential XSS vector from `item.label` interpolation.
+
 ### Added
+
 - **Cursor-reactive amethyst aurora on lock screen** — A dual-layer radial gradient (amethyst + gold) follows the mouse cursor across the lock screen via CSS custom properties (`--aurora-x`, `--aurora-y`). Fades in on mouse entry, trails naturally via CSS transition, fades out on mouse leave. Zero layout thrash — GPU-composited gradient repositioning only.
 - **INITIALIZE button amethyst hover state** — Button hover shifts from cyan to amethyst/gold accent palette matching the aurora, with a dedicated `:active` press state for tactile feedback.
 - **Aurora lifecycle management** — Aurora listeners attach on init and lock, detach on login to desktop, preventing orphaned listeners across lock/unlock cycles.
@@ -475,6 +544,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.41.2] — 2026-03-13
 
 ### Security
+
 - **Prototype pollution protection expanded to all localStorage reads** — `loadJSON()` in dom-helpers.js now strips `__proto__`/`constructor`/`prototype` keys from every parsed value. Previously only `data-loader.js` was protected; 8+ callers (sticky notes, GitHub cache, folder icons, etc.) were exposed.
 - **URL scheme enforcement on media/link attributes** — replaced `Sanitize.attr()` with `Sanitize.url()` for project demo/repo hrefs, video poster sources, and GitHub avatar URLs. `attr()` blocked `javascript:` but allowed `blob:`, `ftp:`, and other exploitable schemes; `url()` allowlists only `http(s)` and relative paths.
 - **Lightbox source validation** — media `img.src` now runs through `Sanitize.url()` before assignment. Previously set raw URLs from localStorage-sourced data (admin-editable), enabling potential `javascript:`/`data:` URI injection.
@@ -484,6 +554,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.41.1] — 2026-03-11
 
 ### Security
+
 - **Service Worker cache poisoning hardened** — validate response type before caching (blocks opaque/redirect responses), network-first for navigation requests, cache size cap (150 entries) with LRU eviction, reject non-GET methods. Cache version bumped to `portfolio-os-v4`.
 - **Prototype pollution protection** — new `Sanitize.stripDangerousKeys()` strips `__proto__`, `constructor`, `prototype` keys from parsed JSON. Applied to admin backup import and data-loader localStorage reads.
 - **Backup import file size limit** — reject files > 5 MB before `FileReader.readAsText()` to prevent tab freeze from crafted payloads.
@@ -494,6 +565,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.41.0] — 2026-03-11
 
 ### Added
+
 - **Dock magnetic magnification** — macOS-style proximity-based scaling on the dock. Icons swell smoothly as the cursor approaches using Gaussian distance falloff, with neighboring icons scaling proportionally. Includes dynamic cyan glow intensification, spring-eased transitions, and smooth deceleration on mouse leave. New `dock-magnify.js` module (94 lines) with MutationObserver to track dynamically added taskbar buttons.
 
 ---
@@ -501,6 +573,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.40.0] — 2026-03-11
 
 ### Added
+
 - **Ambient system telemetry** — Top bar CPU and RAM metrics now fluctuate organically using weighted random walks instead of showing static "98% CPU". CPU indicator changes color (cyan → amber → red) based on simulated load. RAM display shows gradual memory allocation growth over session time.
 - **Session uptime counter** — Live uptime timer in the top bar tracks how long the visitor has been on the site, displayed in amethyst purple with monospace font.
 - **Visit tracking with welcome toasts** — First-time visitors see "Welcome to Passion OS. Press Cmd+K to explore." Returning visitors see their session count. Persisted via localStorage.
@@ -511,6 +584,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.39.0] — 2026-03-10
 
 ### Changed
+
 - **Extract galaxy init into shared module** — Duplicated galaxy background config and initialization logic (main.js + login.js) consolidated into `js/galaxy-init.js` with a single `ensureGalaxy()` helper. Idempotent — safe to call from multiple entry points without double-init.
 - **Remove dead typeof guards** — `initDesktop()` wrapped every module call in `typeof X !== 'undefined'` checks despite all modules being statically imported. Removed 6 unnecessary guards.
 - **Remove empty updateFxIcon()** — Dead method that was a no-op stub. Cleaned up its call site in `login()`.
@@ -521,6 +595,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.38.2] — 2026-03-10
 
 ### Fixed
+
 - **Modal alert keydown listener leak** — `alert()` registered a `keydown` handler on `document` but only removed it when the user dismissed via keyboard (Enter/Escape). Dismissing via OK button click or overlay click left the listener attached, stacking one orphan per alert cycle. Wrapped dismiss in a cleanup function that removes the listener regardless of dismissal path.
 - **Login Enter key listener leak** — `initLoginScreen()` attached an anonymous `keydown` listener on `document` that was never removed after login. The handler persisted for the entire session, firing on every keypress even when the desktop was active. Stored the handler reference and now remove it in `login()`, re-attach it in `lock()`.
 
@@ -529,6 +604,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.38.1] — 2026-03-10
 
 ### Fixed
+
 - **Idle timer listener leak** — `startIdleTimer()` added 5 document-level event listeners on every call but never removed them. Each lock/unlock cycle stacked 5 more listeners, causing memory growth and redundant `resetTimer` invocations on every user interaction. Extracted `stopIdleTimer()` to deterministically remove listeners and clear the timeout. `lock()` now calls `stopIdleTimer()` instead of only clearing the timeout, and `startIdleTimer()` defensively tears down prior listeners before attaching new ones.
 
 ---
@@ -536,6 +612,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.38.0] — 2026-03-09
 
 ### Changed
+
 - **Centralized version constant** — Created `js/version.js` as the single source of truth for the application version string. `login.js` now imports `VERSION` instead of hardcoding `v3.35.0` in three places (skip subtitle, typewriter text, boot sequence message). Eliminates the recurring version-drift bug that was previously fixed in v3.7.1, v3.10.0, and v3.33.2.
 - **Version sync** — Updated all 6 version references (package.json, version.js, index.html title, index.html top bar, login.js ×3) to `3.38.0`. Previously, package.json was at `3.37.2` while login.js showed `v3.35.0` and index.html showed `v3.37.0`.
 
@@ -544,6 +621,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.37.2] — 2026-03-09
 
 ### Security
+
 - **API response sanitization** — PassionLive now sanitizes all string fields from the external API at the trust boundary before storing in state or localStorage. Enum fields (status, state) are validated against strict allowlists. Numeric fields are coerced and checked with `Number.isFinite()`. Prevents stored XSS via compromised API or localStorage cache poisoning.
 - **Inline onerror handler removal** — Eliminated all inline `onerror="..."` handlers from passion-ambient.js, passion-chat.js, welcome.js, and tour.js. Replaced with programmatic `addEventListener('error', ...)` calls. Inline handlers bypass Content-Security-Policy and are XSS vectors.
 - **DOM construction hardening** — passion-ambient.js showToast() rewritten from innerHTML template interpolation to safe DOM construction (createElement/textContent/append). New `PassionLive.createPortraitImg()` helper creates img elements with programmatic error handling.
@@ -553,6 +631,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.37.1] — 2026-03-08
 
 ### Security
+
 - **CSP hardening** — Pinned `script-src` CDN allowlist from broad `https://cdn.jsdelivr.net` to exact versioned paths (`dompurify@3.0.8/`, `three@0.170.0/`). Removed stale `fonts.gstatic.com` from `img-src` (it serves fonts, not images). Added `font-src 'self'` for local font fallback. Added `connect-src` entries for Google Fonts stylesheet/woff2 fetches. Added `media-src 'self'`, `worker-src 'self'`, `manifest-src 'self'` to close implicit default-src fallback gaps.
 - **Permissions-Policy expansion** — Locked down 12 browser APIs (accelerometer, autoplay, encrypted-media, gyroscope, magnetometer, midi, payment, picture-in-picture, usb, interest-cohort) in addition to camera/microphone/geolocation. Removed geolocation self-grant (not used).
 - **New headers** — Added `X-DNS-Prefetch-Control: off` (prevents DNS leak of link targets) and `X-Download-Options: noopen` (IE download execution guard). Total: 12 security headers.
@@ -564,6 +643,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.37.0] — 2026-03-08
 
 ### Changed
+
 - **Interaction motion tokens** — Replaced ~20 hardcoded `cubic-bezier()` and duration strings across `micro-interactions.js` and `cursor-reactive.js` with CSS design system variables (`--transition-fast`, `--ease-spring`, `--ease-press`, `--ease-snap`, etc.). All interaction animations now derive from the centralized motion token system in `variables.css`, making timing/easing adjustments a single-source change.
 - **Engine loop optimization** — Cached the bound `loop()` function in `InteractionEngine` instead of allocating a new `Function.prototype.bind()` on every animation frame. Eliminates per-frame GC pressure in the hot path.
 - **Named magic numbers** — Extracted frame budget (9ms), throttle interval (33ms), and approximate frame duration (16.67ms) into named constants on `InteractionEngine` for self-documenting code.
@@ -573,6 +653,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.36.0] — 2026-03-08
 
 ### Added
+
 - **Catalyst Aura** — Mouse-reactive radial glow on Purple Reign project chapters. A soft amethyst-to-gold gradient follows the cursor, with a hexagonal clip-path "crystal lens" that scales and rotates on hover. Gold geometric border traces itself around the chapter edges. Chapter titles gain an animated underline sweep (amethyst → gold gradient). All effects use CSS custom properties (`--mx`, `--my`) set via a lightweight `mousemove` handler — zero repaints from JS, the compositor handles it. Respects `prefers-reduced-motion`.
 
 ---
@@ -580,6 +661,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.35.0] — 2026-03-08
 
 ### Added
+
 - **Ascending Core reveal** — A CSS 3D obsidian crystal hovers in the Purple Reign hero section, rotating with an internal amethyst glow. As the user scrolls past the hero, the crystal fractures apart — each of 8 triangular faces flies outward with blur and fade — revealing the project chapters beneath. Scrolling back reassembles the core. Built with pure CSS `transform-style: preserve-3d` and scroll-driven class toggling, no external 3D libraries. Respects `prefers-reduced-motion`.
 
 ---
@@ -587,6 +669,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.34.0] — 2026-03-08
 
 ### Changed
+
 - **Motion system tokenization** — Replaced 30+ hardcoded `transition: ... ease` declarations across `styles.css`, `windows.css`, and `passion.css` with design system tokens (`--transition-fast`, `--transition-medium`, `--duration-*`, `--ease-decel/accel`). Every transition now uses intentional easing curves instead of the CSS generic `ease` default.
 - **Transition shorthands upgraded** — `--transition-fast/medium/slow` now use `--ease-decel` (smooth arrival) instead of generic `ease`. Added `--transition-exit-fast` and `--transition-exit-medium` using `--ease-accel` for elements leaving view.
 - **Window lifecycle motion** — `.minimized` and `.closing` states now use `--ease-accel` exit curves with duration tokens, matching the motion design language established in `glass.css` and `interactions.css`.
@@ -596,6 +679,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.33.2] — 2026-03-06
 
 ### Fixed
+
 - **Version string drift** — Synced all version displays to `v3.33.2`. The `<title>` tag showed `v3.32.0`, the desktop top bar showed `v3.31.0`, and the boot/cinematic subtitle showed `v3.3.0` — all out of sync with `package.json`. Now all 5 version references (title, top bar, typewriter subtitle, skip subtitle, boot message) pull the same version.
 
 ---
@@ -603,10 +687,12 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.33.1] — 2026-03-06
 
 ### Added
+
 - **WindowManager test suite** — 65 new tests across 12 describe blocks covering the full window lifecycle: creation (DOM structure, ARIA attributes, viewport clamping, cascade positioning, saved state restoration), duplicate prevention, focus management (z-index, active class, minimized guard), minimize/restore cycle with localStorage persistence, maximize toggle, close with animation timing (onClose callback, error handling, RAF leak prevention, screen reader announcements, navigation stack cleanup), navigation stack (push/pop/breadcrumb rendering/back button visibility), ESC key priority (modal > lightbox > tour > window), taskbar integration (active/minimized states, click-to-restore/minimize/focus), titlebar structure (control buttons, ARIA labels, icon rendering), and content rendering (string HTML vs HTMLElement).
 - Documented a real ordering bug in `focus()`: `updateTaskbar()` is called before `activeWindow` is set, causing stale taskbar state until the next sync. Test captures and verifies the exact behavior.
 
 ### Changed
+
 - Test count: 293 -> 358 across 17 suites (was 16).
 
 ---
@@ -614,11 +700,13 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.33.0] — 2026-03-06
 
 ### Added
+
 - **Black Mirror signal acquisition intro** — New "Act 0" cinematic phase before the existing 3-act lock screen sequence. Features three staggered horizontal interference bars sweeping with gold/amethyst gradients, radial edge glow pulses (gold from bottom, amethyst from top), and a stepped-keyframe "SIGNAL ACQUIRED" data flash. All animations use the existing design system variables (`--gold`, `--amethyst`, `--ease-decel`) and respect the dark luxury tech aesthetic.
 - 6 new HTML elements in lock screen intro stage for the signal acquisition layer.
 - 95 lines of CSS with 4 new `@keyframes` animations (`bm-sweep`, `bm-glow-pulse`, `bm-flash`) and scoped act-0 state selectors.
 
 ### Changed
+
 - Cinematic intro timing shifted: Act 0 at 50ms, Act 1 at 950ms, Act 2 at 1450ms, Act 3 at 2900ms (was 50/550/2000/3000ms). Total sequence ~3.9s (was ~3s).
 - Skip cinematic and lock/re-lock flows now reset `act-0` class alongside existing act classes.
 
@@ -627,10 +715,12 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.32.2] — 2026-03-06
 
 ### Fixed
+
 - **Element visibility checks** — `offsetParent !== null` always returned false for `position: fixed` elements (like the lock screen), making the first condition in parallax.js dead code. Added `isElementVisible()` to dom-helpers.js that correctly handles fixed/sticky positioning by falling back to `getComputedStyle` only when `offsetParent` is null.
 - **Parallax lock screen detection** — Replaced broken `offsetParent` + `.hidden` class OR-chain in parallax.js with centralized `isElementVisible()` utility.
 
 ### Added
+
 - `isElementVisible(el)` — Correct visibility detection that handles `display: none`, `visibility: hidden`, and `position: fixed/sticky` elements where `offsetParent` lies.
 - `isInViewport(el)` — Synchronous viewport intersection check via `getBoundingClientRect` for frame-accurate culling.
 - **12 new tests** for visibility utilities covering null inputs, display:none, visibility:hidden, position:fixed, position:sticky, and viewport boundary conditions (281 → 293 total).
@@ -640,22 +730,24 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.32.1] — 2026-03-05
 
 ### Added
+
 - **44 new edge-case tests** across 3 new test suites (237 → 281 total, 16 suites). Key coverage areas:
-  - `GitHub.calculateLanguageStats` — division-by-zero when no repos have languages, single-language 100% dominance, top-3 cap enforcement, percentage rounding verification
-  - `GitHub.buildCommitTimeline` — PushEvent filtering, missing `payload.commits` fallback-to-1, events outside day window ignored, date format validation
-  - `animateCounter` edge cases — target=0 boundary (increment=0 but `0 >= 0` saves it), negative target convergence, `MAX_SAFE_INTEGER` overflow check
-  - `saveJSON` quota handling — QuotaExceededError returns false (required direct localStorage mock — jsdom's `setItem` is an own property, not on `Storage.prototype`), circular reference serialization failure
-  - `openExternal` protocol hardening — all-caps `JAVASCRIPT:`, null byte stripping, whitespace-only URLs, newline-in-protocol obfuscation, port number passthrough
-  - `el()` DOM factory — tag creation, className/textContent assignment, falsy-value handling
-  - State boolean toggle registry — auto-generated `set*/toggle*` method existence, localStorage persistence as "1"/"0", truthy/falsy coercion, event emission for toggles with/without event names
-  - `State._loadBoolean` — "1"→true, "0"→false, missing key preservation, non-"1" string→false
-  - `State.setCursorTrailType` — allowlist validation, XSS injection rejection, event emission
+    - `GitHub.calculateLanguageStats` — division-by-zero when no repos have languages, single-language 100% dominance, top-3 cap enforcement, percentage rounding verification
+    - `GitHub.buildCommitTimeline` — PushEvent filtering, missing `payload.commits` fallback-to-1, events outside day window ignored, date format validation
+    - `animateCounter` edge cases — target=0 boundary (increment=0 but `0 >= 0` saves it), negative target convergence, `MAX_SAFE_INTEGER` overflow check
+    - `saveJSON` quota handling — QuotaExceededError returns false (required direct localStorage mock — jsdom's `setItem` is an own property, not on `Storage.prototype`), circular reference serialization failure
+    - `openExternal` protocol hardening — all-caps `JAVASCRIPT:`, null byte stripping, whitespace-only URLs, newline-in-protocol obfuscation, port number passthrough
+    - `el()` DOM factory — tag creation, className/textContent assignment, falsy-value handling
+    - State boolean toggle registry — auto-generated `set*/toggle*` method existence, localStorage persistence as "1"/"0", truthy/falsy coercion, event emission for toggles with/without event names
+    - `State._loadBoolean` — "1"→true, "0"→false, missing key preservation, non-"1" string→false
+    - `State.setCursorTrailType` — allowlist validation, XSS injection rejection, event emission
 
 ---
 
 ## [3.32.0] — 2026-03-05
 
 ### Added
+
 - **Opulent Interface micro-interactions** — Elevated `.reign-link` and `.portfolio-link` CTA buttons with luxury hover treatment: embossed inset shadows for tactile depth, animated gold border trace via `clip-path` transition on `.reign-link::before`, letter-spacing breathe effect (1.2px → 2.5px) using a refined `cubic-bezier(0.645, 0.045, 0.355, 1)` timing curve, and coordinated text-shadow/box-shadow glow on hover. Active state adds a pressed-in feel with deeper inset shadows and subtle downward translate. All effects respect `prefers-reduced-motion`.
 
 ---
@@ -663,6 +755,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.31.1] — 2026-03-05
 
 ### Security
+
 - **Fetch timeout hardening** — Added `fetchWithTimeout` utility (AbortController-based, 8s default) to `dom-helpers.js`. Applied to GitHub API (3 parallel requests), Weather API, and DataLoader fetches. Prevents indefinitely frozen interfaces when external APIs are slow or unreachable.
 - **CSP tightening** — Removed stale `https://*.trycloudflare.com` wildcard from `connect-src` directive in `vercel.json`. This wildcard allowed any trycloudflare subdomain as a valid connect target — a potential data exfiltration vector. Only `passion-api.jamesdare.com` is now permitted.
 - **Consistent sanitization** — Replaced raw `innerHTML` in GitHub error render path with `Sanitize.setHTML()` for defense-in-depth consistency.
@@ -672,12 +765,14 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.31.0] — 2026-03-04
 
 ### Fixed
+
 - **YouTube showcase embed** — Removed overly restrictive `sandbox` attribute from YouTube iframes that caused "refused to connect" errors. YouTube-nocookie.com embeds work correctly now.
 - **Resume PDF viewer** — Removed `sandbox` attribute from resume iframe that prevented PDF from loading properly, causing the site to reload instead.
 - **Settings gear SVG** — Fixed broken diagonal tooth geometry (asymmetric paths and incorrect rotation transforms). All 8 teeth now render symmetrically.
 - **Version sync** — Fixed stale v3.10.0 in HTML title and top bar (was out of sync with package.json).
 
 ### Added
+
 - **Passion.AI custom SVG icon** — Replaced emoji 🤖 desktop icon with a purpose-built SVG featuring heart emblem, hexagonal frame, circuit traces, and orbit rings matching the cyberpunk theme.
 - **Passion Chat "My Site" link** — Added a styled link to passion.jamesdare.com in the Passion Chat window so visitors can explore Passion's own site.
 - **Mood display in status indicator** — The bottom-right status pill now shows Passion's current mood alongside her state (e.g., "Passion is crunching code · focused").
@@ -687,6 +782,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.30.0] — 2026-02-27
 
 ### Changed
+
 - **Data-driven DOM generation** — Extracted `openAbout()` skill badges (12 items), `openResume()` stat cards (4 items) and skill bars (4 items) from copy-pasted HTML blocks into declarative data arrays with `.map()` loops. Adding or removing entries is now a one-line table change.
 - **CSS custom property badges** — Replaced 12 inline-style skill badge divs in About with a single `.about-skill-badge` class using `--badge-color` custom property and `color-mix()` for dynamic background/border tinting.
 - **Application showcase semantic CSS** — Replaced inline `style.cssText` category headers with `.app-category-header` class using `--cat-color` custom property. Replaced inline badge/button styles with `.app-status-badge--live`, `.app-status-badge--source`, and `.app-launch-btn--live` classes.
@@ -697,6 +793,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.29.0] — 2026-02-24
 
 ### Added
+
 - **Glimmer sweep hover effect** — Diagonal gold-to-amethyst light sweep triggered on hover for portfolio cards, project cards, portfolio links, and dock icons. Uses a `::after` pseudo-element with `skewX(-15deg)` diagonal gradient, GPU-composited `translateX` animation, and `ease-decel` fade-out on mouse-leave. Expanded project cards suppress the sweep to avoid visual conflict with lab notes. Reduced-motion users get a static soft overlay instead of animation.
 
 ---
@@ -704,6 +801,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.28.2] — 2026-02-24
 
 ### Security
+
 - **YouTube privacy-enhanced embeds** — Switched all YouTube iframes from `youtube.com` to `youtube-nocookie.com` to eliminate third-party cookie tracking and Chrome deprecation warnings.
 - **CSP frame-src hardened** — Updated Content-Security-Policy to only allow `youtube-nocookie.com` (blocking regular `youtube.com` embeds), added `img.youtube.com` to `img-src` for thumbnail loading.
 - **Resume PDF iframe sandboxed** — Added `sandbox="allow-scripts allow-same-origin"` to the resume PDF viewer iframe, preventing unrestricted top-navigation and popup capabilities.
@@ -712,6 +810,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 - **Lazy loading on iframes** — Added `loading="lazy"` to defer iframe connections until visible, reducing unnecessary network exposure on page load.
 
 ### Added
+
 - **6 new security tests** — Privacy-enhanced embed URL validation, admin regex hardening tests, and nocookie domain enforcement assertions.
 
 ---
@@ -719,6 +818,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.28.1] — 2026-02-24
 
 ### Added
+
 - **Research doc: The Two-Week Boomerang** (`docs/research-cursor-poach-boomerang.md`) — Competitive intelligence analysis documenting how Cursor (Anysphere) poached Claude Code's lead engineer Boris Cherny and product manager Cat Wu, only for Anthropic to hire both back within fourteen days. Covers the "wrapper vs. platform" tension in AI tooling, the "80% of Anthropic's code is written by Claude" datapoint, and what the boomerang reveals about Claude Code's strategic weight. Includes sourced timeline table, market context, and implications for anyone building on top of model providers.
 - **README docs table** — Added entries for the Bloomberg Terminal analogy and the Cursor poach boomerang research documents.
 
@@ -727,6 +827,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.28.0] — 2026-02-23
 
 ### Changed
+
 - **Data-driven init architecture** (`js/main.js`) — Refactored the 260-line monolithic `init()` function into a declarative, table-driven architecture. Visual module initialization (Aurora, Glyphs, AudioFX) now loops over a `VISUAL_MODULES` registry instead of 3 copy-pasted init/setEnabled/addEventListener blocks. Keyboard shortcuts use a `SHORTCUT_MAP` lookup table replacing 4 chained `if` statements. Control panel toggle wiring uses a `CONTROL_TOGGLES` config array that drives both DOM generation and event binding, eliminating 6 repeated `getElementById` calls. Extracted `recoverStyles()`, `initShortcuts()`, and `initControlPanel()` as focused single-responsibility functions. Adding a new visual module, shortcut, or settings toggle is now a one-line table entry — zero structural code changes required.
 
 ---
@@ -734,6 +835,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.27.0] — 2026-02-23
 
 ### Added
+
 - **Parallax depth engine** (`js/parallax.js`) — New cinematic depth system with two interaction modes. Lock screen responds to mouse position across 4 depth layers (grid background, watermark wheel, title block, identity block) with independent parallax factors. Desktop mode shifts the background wheel based on scroll position within any open window, using MutationObserver to auto-attach to dynamically-created windows. Engine uses rAF with lerp smoothing (factor 0.08) for silky 60fps interpolation, `will-change: translate` GPU hints on all parallax elements, and fully respects `prefers-reduced-motion`. Includes cleanup/destroy method.
 
 ---
@@ -741,6 +843,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.26.0] — 2026-02-23
 
 ### Changed
+
 - **Motion easing design tokens** — Extracted 6 semantic easing function tokens (`--ease-spring`, `--ease-decel`, `--ease-accel`, `--ease-snap`, `--ease-elastic`, `--ease-press`) and 5 duration tokens (`--duration-instant` through `--duration-dramatic`) into `variables.css`. Replaced 14 hardcoded `cubic-bezier()` values across 8 CSS files (`styles.css`, `interactions.css`, `glass.css`, `passion.css`, `welcome.css`, `command-palette.css`, `shortcuts-overlay.css`, `variables.css`) with token references. Existing `--transition-*` shorthands now compose from the new tokens for backward compatibility. Enables site-wide motion tuning from a single location.
 
 ---
@@ -748,6 +851,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.25.2] — 2026-02-23
 
 ### Fixed
+
 - **Window z-index stacking overflow** — Windows no longer breach reserved UI tiers (top bar, dock, modals) during prolonged use. Added ceiling-bounded z-index management (`WINDOW_Z_CEILING = 899`) with automatic normalization that compacts all window z-indices back to base range while preserving relative stacking order. Raised top bar and dock to `z-index: 900` so they always render above windows. Added 2 tests for ceiling enforcement and order-preserving normalization.
 
 ---
@@ -755,6 +859,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.25.1] — 2026-02-22
 
 ### Added
+
 - **Research: Bloomberg Terminal analogy** — New analysis document (`docs/research-bloomberg-terminal-analogy.md`) framing Claude Code, Cursor, and Windsurf as the Bloomberg Terminals of software engineering. Maps the finance paradigm shift (information access → speed of interpretation) onto the developer tooling shift (knowing the codebase → knowing what to build). Cross-references the existing Anthropic marketing case study. Updated docs index with new Research & Analysis section.
 
 ---
@@ -762,6 +867,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.25.0] — 2026-02-22
 
 ### Added
+
 - **Lab Notes: click-to-reveal project diagnostics** — Each project card in the Applications window now has a hidden "Lab Notes" panel. Click any card to expand a diagnostic overlay showing project status (live/archived indicator), tech stack count, and classification tags. Features a gold scan-line animation on reveal, gold accent border draw, and accordion behavior (one panel open at a time). Inspired by Stark's lab blueprint aesthetic — makes browsing projects feel like inspecting classified tech specs.
 
 ---
@@ -769,6 +875,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.24.0] — 2026-02-22
 
 ### Changed
+
 - **Glass material token alignment** — Corrected `--glass-bg`, `--glass-bg-dense`, `--glass-bg-light`, and `--glass-blur` tokens in `variables.css` to match the actual rendered values in `glass.css`, closing a drift where the tokens and implementations had diverged
 - **Glass classes use token references** — `.glass`, `.glass-dense`, `.glass-light` now reference `var(--glass-*)` tokens instead of hardcoded rgba/blur values, making the entire glass system configurable from one file
 - **Added `--glass-blur-dense` token** — New intermediate blur tier for `.glass-dense` panels, previously only available as a hardcoded value
@@ -783,6 +890,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.23.0] — 2026-02-22
 
 ### Changed
+
 - **Design token elevation** — Centralized gold (`--gold`, `--gold-light`, `--gold-dim`) and amethyst (`--amethyst`, `--amethyst-dim`) accent colors into `variables.css` design tokens, replacing 8 hardcoded hex values across `portfolio.css`
 - **Gold glow system** — Added `--glow-gold-sm/md` and `--glow-amethyst-sm/md` to the shared glow token set for consistent luxury accent effects
 - **Holographic border refinement** — Introduced warm gold stop into the `conic-gradient` rotation on `.holo-border`, `.holo-border-bright`, and `.holo-line-bottom`, shifting the signature visual from pure cyberpunk to luxury tech
@@ -796,6 +904,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.22.1] — 2026-02-21
 
 ### Added
+
 - **Research doc: Anthropic Claude Code Marketing Ops** — Case study documenting how Anthropic's growth marketing team (Austin Lau, single non-technical operator) built four production systems with Claude Code: Google Ads copy generator with sub-agent architecture, Figma batch creative plugin (10× output), Meta Ads MCP server, and self-improving A/B test memory system. Includes metrics, architecture patterns, and relevance to Passion Agent's own automation design
 
 **Files Modified**: `docs/anthropic-claude-code-marketing-ops.md` (new), `README.md`, `CHANGELOG.md`, `package.json`
@@ -805,6 +914,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.22.0] — 2026-02-20
 
 ### Added
+
 - **CodeViewer component** — Zero-dependency syntax-highlighted code panel with regex-based JS tokenizer, copy-to-clipboard with gold visual feedback, and scroll-triggered reveal animation. Uses a curated dark-luxury palette (purple keywords, gold strings, cyan function names) matching the Purple Reign aesthetic
 - **Code snippets in Purple Reign showcase** — Each of the 5 featured projects now displays a representative code snippet within the cinematic scroll chapters, giving technical visitors an immediate feel for the codebase
 
@@ -815,6 +925,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.21.1] — 2026-02-20
 
 ### Fixed
+
 - **Shell command crashes** — `photos` and `videos` terminal commands called non-existent `Desktop.openPhotos()` and crashed on `openVideos()` accessing `.icon` on undefined `DESKTOP_ITEMS` entry. Both now route to `openMediaVault()` correctly
 - **Toast hover timer desync** — Hovering a notification then mousing away used a hardcoded `duration / 2` timeout instead of tracking actual remaining time, allowing toasts to be kept alive indefinitely by repeated hovering and desyncing the progress bar from the dismiss timer
 - **Loader progress interval leak** — `PixelLoader.simulateProgress()` stored its `setInterval` in a local variable that `destroy()` couldn't reach. Early destroy left an orphaned timer calling methods on removed DOM elements
@@ -827,6 +938,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.21.0] — 2026-02-19
 
 ### Added
+
 - **Amethyst Code hero reveal** — Full-screen cinematic intro for the Purple Reign portfolio showcase. A metallic purple glitch effect (CSS `clip-path` + chromatic split pseudo-elements in gold and purple) fractures on scroll entry, then resolves to reveal the "PURPLE REIGN" title with a breathing glow. Tagline types in with a blinking caret. Scroll hint fades in after the sequence completes
 - **GPU-friendly glitch animation** — Uses `clip-path: inset()` with `steps(1)` timing for hard-cut glitch frames, keeping all animations compositor-friendly (transforms, opacity, clip-path)
 - **Three-state reveal machine** — Hero transitions through idle → entered (glitch plays) → resolved (breathing glow), managed via IntersectionObserver + class toggling
@@ -838,6 +950,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.20.0] — 2026-02-19
 
 ### Added
+
 - **Forcefield reveal on portfolio chapters** — Chapters start blurred with a translucent purple veil (`::after` pseudo-element) that dissipates when the chapter scrolls into view via IntersectionObserver, evoking a Stark-lab forcefield powering down
 - **Gilded title shimmer** — Chapter titles use `background-clip: text` with a gold gradient band that sweeps across once on reveal, creating a brief cinematic gold flash before settling back to white
 - **Enhanced side accent animation** — The left-edge accent line expands and gains a colored glow when its chapter enters the viewport
@@ -849,6 +962,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.19.1] — 2026-02-19
 
 ### Fixed
+
 - **Portfolio observer leak on rapid close** — `openPortfolio()` defers IntersectionObserver setup via `requestAnimationFrame`, but if the window was closed before the rAF callback fired, `onClose` disconnected the observers first, then the rAF re-activated them by calling `.observe()` on disconnected instances. These zombie observers would persist with no way to disconnect. Added a `closed` guard flag checked before observer setup
 - **`createLazyWindow` error path now uses `Sanitize.setHTML()`** — The error handler previously set structural HTML via raw `innerHTML`, bypassing the DOMPurify defense-in-depth layer added in v3.18.1. Error message content was already escaped via `Sanitize.text()`, but the surrounding HTML template was not routed through `Sanitize.setHTML()` like all other DOM injection paths
 
@@ -859,6 +973,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.19.0] — 2026-02-18
 
 ### Changed
+
 - **Lightbox listener lifecycle refactored** — Document-level `keydown`, `mousemove`, and `mouseup` listeners are now attached only while the lightbox is open and detached on close. Previously these three listeners persisted for the entire page session, running handler checks on every keypress and mouse movement even when the lightbox was closed. Uses stable bound method references (`_boundKeydown`, `_boundMousemove`, `_boundMouseup`) created once during `initEvents()` for clean `addEventListener`/`removeEventListener` pairing
 - **`createLazyWindow` error handling** — Dynamic `import()` failures now display a styled error message inside the window content area instead of silently leaving the window empty. Error text is sanitized through `Sanitize.text()` to prevent injection from crafted error messages
 - **Removed duplicate `initEvents` JSDoc comment** in `lightbox.js` — zoom/pan state declarations now have their own descriptive comment block
@@ -870,6 +985,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.18.1] — 2026-02-18
 
 ### Security
+
 - **localStorage poisoning hardened across State module** — `setTheme()` and `setCursorTrailType()` now validate values against explicit allowlists before writing to `data-theme` attributes or emitting to CSS. Previously, a poisoned localStorage entry (e.g. from a temporary XSS) could inject arbitrary values into DOM attributes that persist across page loads. Both `init()` loaders also validate on read
 - **`interactionIntensity` bounds-checked on load** — `parseInt()` result is now verified with `Number.isFinite()` and clamped to 0–100, preventing NaN propagation from corrupted localStorage
 - **Data loader path traversal blocked** — `data-loader.js` now validates fetch keys through `Sanitize.safeKey()` before constructing `data/${key}` URLs. Blocks `../../etc/passwd`, `.env`, and protocol-prefixed strings that could escape the `data/` directory
@@ -880,6 +996,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 - **GitHub dashboard defense-in-depth** — `container.innerHTML = html` replaced with `Sanitize.setHTML(container, html)` to run the full assembled HTML through DOMPurify as a safety net, rather than relying solely on per-field escaping
 
 ### Added
+
 - 10 new tests for `Sanitize.allowlist()` — covers valid values, invalid values, non-string input, and case sensitivity
 - 7 new tests for `Sanitize.safeKey()` — covers valid filenames, path traversal, protocol handlers, special characters, and falsy input
 
@@ -892,11 +1009,13 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.18.0] — 2026-02-18
 
 ### Added
+
 - **Purple Reign cinematic project showcase** — Featured projects now display as full-height scroll-snap chapters inside the Portfolio window instead of a 2-column card grid. Each project is a "chapter" with staggered scroll-triggered reveal animations (via `IntersectionObserver`), a purple/gold accent system, and dot navigation on the right edge for quick jumping between projects. The design evokes a luxury lookbook — Prince's Purple Rain meets Tony Stark's lab
 - **Scroll-snap chapter navigation** — Dot indicators on the right edge track the active chapter and allow click-to-jump navigation
 - **Staggered entrance animations** — Chapter index, title, description, tech badges, and links animate in sequentially as each chapter scrolls into view
 
 ### Changed
+
 - Portfolio window title updated from `FEATURED_PROJECTS` to `PURPLE REIGN // FEATURED`
 - Project accent colors shifted from cyberpunk neons to a purple/violet/gold palette (`#8b5cf6`, `#c084fc`, `#a78bfa`, `#d4af37`, `#7c3aed`) to match the cinematic theme
 - Portfolio window dimensions adjusted from 680×620 to 640×560 to emphasize vertical scroll immersion
@@ -906,12 +1025,14 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.17.1] — 2026-02-18
 
 ### Security
+
 - **Admin save paths now sanitize URLs** — `saveProjects()` and `saveMedia()` write user-supplied `demo`, `repo`, media `url`, and `poster` fields through `Sanitize.url()` before persisting to localStorage. Previously, only the backup import path sanitized URLs; the manual save path wrote raw form input, allowing `javascript:` or `data:` URI injection via the admin panel that would execute when rendered in project cards or media vault
 - **Theme color import validates hex format** — imported `themeColors` from backup JSON are now parsed and each value validated through `Sanitize.hexColor()` (strict `#RGB`/`#RRGGBB`/`#RRGGBBAA` regex). Previously accepted any string, enabling CSS injection payloads like `url(javascript:...)` or `expression()` when applied to CSS custom properties via `setProperty()`
 - **Added `Sanitize.hexColor()` validator** — allowlist-based hex color validator that accepts only `#` + 3/4/6/8 hex digits. Returns a safe fallback for any non-matching input. Used by admin theme import to sanitize color values before they reach `document.documentElement.style.setProperty()`
 - **`saveJSON()` handles QuotaExceededError** — `localStorage.setItem` throws when storage is full; the shared helper now catches the error, logs it, and returns `false` instead of crashing the caller. Prevents silent data loss when quota is exhausted
 
 ### Added
+
 - 7 new tests for `Sanitize.hexColor()` — covers 6-digit, 3-digit, 8-digit hex acceptance, CSS injection payloads (`url()`, `expression()`, property breakout), named colors/rgb/hsl rejection, falsy input with custom fallback, and missing `#` prefix
 
 **Test count**: 219 across 13 suites (up from 212)
@@ -923,6 +1044,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.17.0] — 2026-02-17
 
 ### Changed
+
 - **Unified lazy-window pattern for Skills, GitHub, and Terminal** — `openSkills()` (30 lines → 13), `openGitHubCenter()` (18 lines → 13), and `openTerminal()` (18 lines → 11) now use the shared `createLazyWindow()` helper instead of manually creating containers, querying `.window-content`, and wiring dynamic imports. Eliminates 3 copies of the same lazy-load boilerplate
 - **Extended `createLazyWindow()` API** — added `onLoad` callback for object-API modules (`.init()/.render()/.stop()` pattern), `containerClass` for CSS class assignment, and `windowOptions` spread for pass-through window config (e.g. `transitionType`). The existing `exportName` convention used by 5 other windows is unchanged
 
@@ -933,12 +1055,14 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.16.7] — 2026-02-17
 
 ### Security
+
 - **Added `Sanitize.url()` method** — allowlist-based URL validator that permits only `http(s)` and relative paths. Blocks `javascript:`, `data:`, `vbscript:`, `blob:`, and control-char-obfuscated protocol variants. Used during backup import to prevent stored XSS via crafted URLs in project/media JSON
 - **Admin Dashboard import hardens URL fields** — all `demo`, `repo`, media `url`, and `poster` fields in imported backup JSON are now validated through `Sanitize.url()` before being written to localStorage. Previously, a malicious backup file could inject `javascript:` URIs that would execute when rendered in the admin panel or media vault
 - **Admin tab renders routed through `Sanitize.setHTML()`** — all 5 admin tabs (desktop, projects, media, theme, data) and folder icon list now use DOMPurify-backed `Sanitize.setHTML()` instead of bare `innerHTML`. Defense-in-depth: catches any future template injection if dynamic data is interpolated without escaping
 - **Startmenu shutdown uses safe DOM API** — replaced `document.body.innerHTML = ''` and `innerHTML = '<h1>...'` with `while(firstChild) remove()` + `createElement`/`textContent`. Eliminates the innerHTML pattern on `document.body` entirely
 
 ### Added
+
 - 11 new security tests for `Sanitize.url()` — covers https/http allow, relative paths, javascript: block, control-char obfuscation, data:/vbscript:/blob: block, falsy input, whitespace trim (212 total tests)
 
 **Files Modified**: `js/sanitize.js`, `js/admin.js`, `js/startmenu.js`, `tests/sanitize.test.js`, `README.md`, `CHANGELOG.md`, `package.json`
@@ -948,6 +1072,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.16.6] — 2026-02-17
 
 ### Changed
+
 - **DOCUMENTATION.md modernized from v2.56 to v3.16.6** — the main user guide was frozen at November 2025 (Phase 3 era) while the codebase grew from 10 modules to 44. Updated Quick Start from "open index.html" to Vite-based `npm run dev` workflow. Added complete Desktop Apps reference table covering all 20 apps. Added Keyboard Shortcuts & Easter Eggs section with command palette, toast notifications, and all hidden triggers. Replaced stale 10-file structure with current 44-module architecture summary. Fixed Deployment section to include `npm run build` and Vite output. Updated Admin Dashboard access instructions (now console-only via `Admin.open()`). Removed dead link to deleted `FEATURE_VERIFICATION.md`. Updated Related Documentation table with current doc set including EASTER_EGGS_GUIDE.md. Added Development Commands reference
 
 **Files Modified**: `DOCUMENTATION.md`, `README.md`, `CHANGELOG.md`, `package.json`
@@ -957,6 +1082,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.16.5] — 2026-02-17
 
 ### Fixed
+
 - **Toast notification infinite loop on eviction** — `dismissToast()` removed entries from the queue asynchronously (inside `animationend` callback), but the `while (queue.length >= MAX_VISIBLE)` eviction loop checked synchronously. When 4+ toasts were queued rapidly (e.g. toggling settings), the loop spun forever, freezing the browser. Fixed by splicing the queue synchronously before starting the exit animation
 - **Toast hover timer leak** — clearing the auto-dismiss timer on `mouseenter` worked, but the replacement timer created on `mouseleave` was never stored. Subsequent hovers couldn't cancel it, causing toasts to dismiss while the user was still reading them. Timer ID now tracked on the entry object and cleared consistently
 - **Toast double-dismiss race condition** — the close button, auto-timer, and hover-leave timer could all call `dismissToast()` on the same entry, causing double-splice and orphaned DOM nodes. Added `dismissed` idempotency guard
@@ -968,11 +1094,13 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.16.4] — 2026-02-17
 
 ### Security
+
 - **Tabnapping prevention on `target="_blank"` links** — 4 anchor tags in `desktop.js` (contact social links, project demo/repo links) were missing `rel="noopener noreferrer"`, allowing opened pages to access `window.opener` and potentially redirect the portfolio. Fixed by adding the attribute to all 4 instances. The `openExternal()` helper already handles this for programmatic opens, but these HTML-interpolated links were missed
 - **GitHub API response shape validation** — `github.js` now validates that API responses have expected `user.login` (string), `repos` (array of objects with `name`), and `events` (array) before rendering or caching. Corrupted localStorage cache is auto-purged on validation failure. Mirrors the weather widget validation pattern from v3.16.2
 - **Contact form input length limits** — Added `maxlength` attributes to name (100), email (254 per RFC 5321), and message (2000) fields to prevent excessively long `mailto:` URI construction that could crash browsers or be used for abuse
 
 ### Added
+
 - **GitHub validation test suite** (`tests/github.test.js`) — 7 tests covering `validateResponse()`: valid shape acceptance, missing/null user, non-string login, non-array repos, non-array events, invalid repo entries, and null repo entries
 
 **Test count**: 201 across 13 suites (up from 194 across 12)
@@ -984,6 +1112,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.16.3] — 2026-02-16
 
 ### Added
+
 - **Desktop utilities test suite** (`tests/desktop-utils.test.js`) — 23 new tests covering `el()` DOM factory, `Sanitize.html()` DOMPurify-absent fallback, `Sanitize.setHTML()` null safety and content replacement, advanced `Sanitize.attr()` XSS vectors (carriage return obfuscation, mid-string javascript:, data: with script keyword), and `createLazyWindow` closure pattern (cleanup lifecycle, pre-load close safety)
 - Total test count: 194 across 12 suites (up from 171 across 11)
 
@@ -994,6 +1123,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.16.2] — 2026-02-16
 
 ### Security
+
 - **CSP `connect-src` updated** — Added `https://api.open-meteo.com` to Content-Security-Policy. Weather widget fetches were being silently blocked in production by the restrictive CSP that only allowed `'self'` and `api.github.com`
 - **Permissions-Policy `geolocation` unlocked for same-origin** — Changed from `geolocation=()` (deny all) to `geolocation=(self)`. The weather widget's `navigator.geolocation.getCurrentPosition()` was being denied by the site's own security headers
 - **`Sanitize.attr()` blocks `data:image/svg+xml` XSS** — SVG data URIs can embed `<script>` and `onload` handlers for script execution. Now blocks any `data:` URI containing `svg` alongside existing `javascript:`, `vbscript:`, and `data:text/html` blocks
@@ -1003,13 +1133,14 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 **Files Modified**: `vercel.json`, `js/sanitize.js`, `js/weather.js`, `tests/sanitize.test.js`, `package.json`, `README.md`, `CHANGELOG.md`
 
-> *"The art of war teaches us not to rely on the likelihood of the enemy not coming, but on our own readiness to receive him."* — Sun Tzu
+> _"The art of war teaches us not to rely on the likelihood of the enemy not coming, but on our own readiness to receive him."_ — Sun Tzu
 
 ---
 
 ## [3.16.1] — 2026-02-16
 
 ### Fixed
+
 - **Calculator keyboard listener stealing keystrokes globally** — the `keydown` handler on `document` fired regardless of which window was focused or whether the user was typing in a text field (command palette, sticky notes, terminal, contact form). Now checks: (1) event target is not an input/textarea/contenteditable, and (2) the calculator window has the `.active` class. Keyboard shortcuts only fire when the calculator is the foreground window and no text field is focused.
 
 **Files Modified**: `js/calculator.js`, `package.json`, `README.md`, `CHANGELOG.md`
@@ -1019,6 +1150,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.16.0] — 2026-02-16
 
 ### Added
+
 - **WEATHER desktop app** — Live weather widget using browser geolocation and Open-Meteo API (free, no API key). Displays current temperature, feels-like, humidity, wind speed, weather condition with WMO code emoji mapping, and 3-day forecast cards. Graceful error handling for denied/unavailable geolocation with user-friendly messages. Cyberpunk glass UI with cyan temperature glow, magenta forecast accents, and green stat highlights. Lazy-loaded via `createLazyWindow` pattern — zero bytes until opened
 - New desktop icon `WEATHER` with custom sun/cloud/rain gradient SVG icon in Column 4 (Extras)
 - New files: `js/weather.js`, `css/weather.css`, `public/assets/weather.svg`
@@ -1031,6 +1163,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.15.0] — 2026-02-16
 
 ### Added
+
 - **CALC.exe desktop app** — Cyberpunk glass calculator with full arithmetic (add, subtract, multiply, divide), percentage, sign toggle, backspace, and expression chaining. Keyboard input support (0-9, operators, Enter, Backspace, Escape). Magenta-accented operator keys, green action keys, cyan display with neon glow. Lazy-loaded via `createLazyWindow` pattern — zero bytes until opened
 - New desktop icon `CALC.exe` with custom gradient SVG icon in Column 4 (Extras)
 - New files: `js/calculator.js`, `css/calculator.css`, `public/assets/calculator.svg`
@@ -1043,6 +1176,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.14.0] — 2026-02-16
 
 ### Changed
+
 - **Extracted `el()` DOM helper** to `dom-helpers.js` — removes identical 5-line function duplicated in `sticky-notes.js` and `pomodoro-timer.js`, consolidating it alongside existing shared utilities (`loadJSON`, `saveJSON`, `downloadJSON`, `animateCounter`)
 - **Introduced `createLazyWindow()` helper** in `desktop.js` — replaces 3 copy-pasted lazy-load window patterns (System Monitor, Sticky Notes, Pomodoro Timer) with a single config-driven function. Each method shrinks from 18 lines to 6 lines
 - Future lazy-loaded window apps now require only a 6-line config call instead of duplicating the full pattern
@@ -1054,6 +1188,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.13.0] — 2026-02-15
 
 ### Added
+
 - **FOCUS_TIMER desktop app** — Pomodoro timer with canvas-rendered neon ring, start/pause/reset controls, 3 duration presets (25/5, 50/10, 90/20 min), session counter, total focus time stats, and localStorage persistence. Lazy-loaded module following sticky-notes architecture pattern. Toast notifications on session complete via existing Notify system
 - New desktop icon `FOCUS_TIMER` with custom cyberpunk SVG icon in Column 4 (Extras)
 - New files: `js/pomodoro-timer.js`, `css/pomodoro-timer.css`, `public/assets/pomodoro-timer.svg`
@@ -1066,6 +1201,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.12.2] — 2026-02-15
 
 ### Changed
+
 - **README elevated to portfolio-grade v3** — added stylesheets badge, quick stats blockquote (41 modules · 21 stylesheets · 168 tests · 17 apps · 10 headers · 0 deps), Project Health table with test/security/a11y/perf/lint/bundle metrics, linked author name to GitHub profile, added missing docs to Documentation table (EASTER_EGGS_GUIDE.md, docs/GLOSSARY.md), fixed 5 stale values (test count 157→168, architecture tree 159→168, docs module count 38→41, license version v3.12.0→v3.12.1, test command count)
 
 **Files Modified**: `README.md`, `CHANGELOG.md`, `package.json`
@@ -1075,11 +1211,13 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.12.1] — 2026-02-14
 
 ### Security
+
 - **Hardened `Sanitize.attr()` against protocol obfuscation** — now strips ASCII control characters (tabs, newlines, null bytes) before checking URI schemes, blocking bypass vectors like `java\tscript:`. Also blocks `vbscript:` and `data:text/html` payloads.
 - **Added URL allowlist to `openExternal()`** — only `http://` and `https://` URLs are now permitted. Blocks `javascript:`, `data:`, `vbscript:`, and any non-HTTP protocol from being opened via `window.open()`. Prevents open-redirect and XSS-via-navigation from attacker-controlled data (e.g. GitHub API responses).
 - **Added `upgrade-insecure-requests` to CSP** — forces all HTTP subresource requests to HTTPS, closing mixed-content downgrade vectors.
 
 ### Added
+
 - **9 new security tests** — 6 for `openExternal()` URL validation (javascript:, data:, vbscript:, null/empty, tab-obfuscated, http:// allowlist) and 3 for `Sanitize.attr()` (vbscript:, data:text/html, control-char obfuscation).
 
 **Test count**: 159 → 168 (9 new tests)
@@ -1089,10 +1227,12 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.12.0] — 2026-02-14
 
 ### Changed
+
 - **Extracted `downloadJSON()` helper into `dom-helpers.js`** — replaces 6 identical stringify→Blob→anchor→click→revoke sequences in `admin.js` (exportProjects, exportMedia, exportAll, exportDesktopOnly, exportProjectsOnly, exportMediaOnly) with a single reusable utility. Each 7-line block reduced to a 1-line call.
 - **Replaced manual localStorage try/catch in `admin.js` `loadAllData()`** — the 8-line try/catch + JSON.parse block for loading desktop items now uses the existing `loadJSON()` helper (created in v3.7.0 for exactly this purpose, but this callsite was missed).
 
 ### Added
+
 - **2 new tests** for `downloadJSON()` in `tests/dom-helpers.test.js` — covers anchor creation + click trigger, filename assignment, and objectURL cleanup.
 
 **Test count**: 157 → 159 (2 new tests)
@@ -1104,6 +1244,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.11.0] — 2026-02-14
 
 ### Added
+
 - **Sticky Notes app** (`js/sticky-notes.js`, `css/sticky-notes.css`) — persistent note-taking utility with localStorage auto-save. Create, edit, and delete notes in a responsive card grid. 5 cyberpunk color themes (cyber, neon, pink, gold, purple) cycle per note via color dot button. Notes persist across sessions with debounced save (400ms). Delete animation, empty state, contenteditable body with placeholder text, and timestamp display. Lazy-loaded module with cleanup function.
 - **Sticky Notes SVG icon** (`assets/sticky-notes.svg`) — layered note cards with pencil accent, matching existing cyberpunk icon style
 - **Desktop icon grid updated** — 17 icons (was 16), NOTES added to Column 4 (Extras). localStorage key bumped to `desktop_layout_v4` to force layout reset for existing users.
@@ -1117,6 +1258,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.10.1] — 2026-02-14
 
 ### Security
+
 - **Sanitized window content innerHTML** — `WindowManager.create()` now routes all string `content` through `Sanitize.setHTML()` instead of raw `innerHTML`, closing a defense-in-depth XSS gap where future callers could pass tainted HTML into window bodies
 - **Sanitized window icon innerHTML** — titlebar and taskbar icon rendering in `windows.js` now uses `Sanitize.setHTML()` to filter SVG/HTML icon strings that could originate from localStorage-overridden desktop items
 - **Sanitized start menu item rendering** — replaced `innerHTML` interpolation of `item.icon` and `item.label` in `startmenu.js` with DOM API (`textContent` + `Sanitize.setHTML`), preventing XSS from localStorage-poisoned desktop item configs
@@ -1130,6 +1272,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.10.0] — 2026-02-13
 
 ### Added
+
 - **Keyboard shortcuts overlay** (`js/shortcuts-overlay.js`, `css/shortcuts-overlay.css`) — press `?` to toggle a glassmorphism panel showing all keyboard shortcuts and hidden easter eggs, organized into 3 categories: Navigation (6 shortcuts), System Toggles (4 shortcuts), and Easter Eggs (6 secrets). Platform-aware key labels (⌘ on Mac, Alt on Windows). Dismisses via Escape, `?` again, or backdrop click. Skips activation when typing in inputs/textareas. Mobile-responsive single-column layout at ≤600px.
 
 **Files Created**: `js/shortcuts-overlay.js`, `css/shortcuts-overlay.css`
@@ -1141,6 +1284,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.9.3] — 2026-02-13
 
 ### Fixed
+
 - **Vite dual-import warning eliminated** — `warp.js` statically imported `fx.js` while `main.js` dynamically imported it, preventing Vite from code-splitting `fx.js` into its own chunk. Replaced static import with `window.__FX` reference (already set by `main.js` during boot). FX now loads on-demand as its own 3.44 kB chunk.
 - **18 → 0 ESLint warnings** — cleaned all remaining lint issues across 11 files: 3 catch variables prefixed with `_`, 6 unused callback parameters prefixed with `_`, 5 dead variables removed (`translateMatch`, `relX`/`relY`, `velocity`, `t0` ×2), and 1 orphaned `bounds` assignment cleaned up.
 
@@ -1153,6 +1297,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.9.2] — 2026-02-13
 
 ### Fixed
+
 - **Dead imports in `login.js`** — removed unused `AudioFX` and `destroyGalaxyBackground` imports left over from earlier refactors. The static `galaxy-background.js` import was defeating Vite's code-splitting; converted to dynamic `import()` so the 12.8 kB galaxy shader now loads on-demand instead of blocking initial page load.
 - **Dead code in `desktop.js`** — removed unused `defaultTab`/`category` params from legacy `openMedia()` and unused `win` capture in `openSystemMonitor()`.
 - **Dead code in `github.js`** — removed unused `mainLang` variable; replaced inline `onclick` handler (bypasses CSP, fails in bundled builds) with DOM `addEventListener` using dynamic `import()` to avoid circular dependency.
@@ -1168,6 +1313,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.9.1] — 2026-02-13
 
 ### Added
+
 - **Smoke test suite** (`tests/smoke.test.js`) — 27 integration tests covering the 4 critical user flows most likely to break during refactors: homepage DOM structure (7 tests verifying lock screen, desktop, dock, top bar, ARIA landmarks), router navigation dispatch (8 tests verifying all 5 route→opener mappings plus XSS/null path blocking), contact form lifecycle (5 tests covering required fields, FormData capture, mailto URI construction, reset, and preventDefault), and responsive breakpoints (7 tests covering mobile detection, body class injection, 768px stylesheet, viewport meta creation/dedup, and hover-disable rules).
 
 **Test count**: 130 → 157 (27 new tests)
@@ -1181,10 +1327,12 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.9.0] — 2026-02-13
 
 ### Added
+
 - **Toast notification system** (`js/notifications.js`, `css/notifications.css`) — non-blocking notification queue with 4 types (success, error, warning, info), auto-dismiss progress bar, hover-to-pause, click-to-dismiss, max 4 visible with oldest eviction, `aria-live` polite region for screen reader support, `prefers-reduced-motion` respect, and mobile-responsive bottom positioning.
 - **Settings toggle feedback** — keyboard shortcuts (`Cmd+C`, `Cmd+S`, `Cmd+I` on Mac / `Alt+` on Windows) now show a toast confirming the toggle state (e.g. "Cursor trail ON").
 
 ### Changed
+
 - **Easter eggs unified with toast system** — replaced 50+ lines of inline `showNotification()` with hardcoded CSS and DOM construction in `easter-eggs.js` with the shared `Notify` module. All 7 easter egg notifications (418 teapot, 404, system info, Konami code, rapid clicks, idle warning, PlayStation mode) now use the polished toast UI with progress bars and consistent styling.
 
 **Files Created**: `js/notifications.js`, `css/notifications.css`
@@ -1196,6 +1344,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.8.4] — 2026-02-12
 
 ### Changed
+
 - **Refactored `state.js` boolean toggle system** — replaced 9 hand-written setter/toggle method pairs and 10 repetitive `localStorage.getItem` blocks with a data-driven `BOOLEAN_TOGGLES` registry. A single loop now generates `setXEnabled()`, `toggleX()`, and `init()` loading for all boolean properties. Reduces ~96 lines of copy-pasted code to ~62 lines of declarative configuration. Public API is unchanged — all existing callers (`State.toggleFx()`, `State.fxEnabled`, etc.) work identically. Adding a new boolean toggle now requires 1 line in the registry instead of 8+ lines of methods.
 
 **Files Modified**: `js/state.js`, `package.json`, `README.md`, `CHANGELOG.md`
@@ -1205,6 +1354,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.8.3] — 2026-02-12
 
 ### Added
+
 - **Command Palette test suite** (`tests/command-palette.test.js`) — 22 tests covering init/buildCommands (DOM creation, label sanitization), open/close lifecycle, fuzzy search filtering (case-insensitive substring, empty query, no matches), filterAndRender (empty state, role=option items, default selection), keyboard navigation (ArrowDown/ArrowUp wrap-around, empty list safety), executeSelected (action invocation, palette close, system toggle dispatch), and ARIA attribute verification (role=dialog, role=listbox, aria-label)
 - **Mobile detection test suite** (`tests/mobile.test.js`) — 11 tests covering `isMobile()` detection matrix (iPhone/Android/iPad user agents, desktop rejection, touch+small screen combo, touch+large screen laptop rejection), `ensureViewportMeta()` (creation when missing, no-duplicate guard), and `applyMobileOptimizations()` (body class, hover-disable stylesheet injection, mobile layout stylesheet injection)
 
@@ -1219,6 +1369,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.8.2] — 2026-02-12
 
 ### Changed
+
 - **Architecture docs modernized to v3.8.2** — `docs/ARCHITECTURE.md` was stuck at v2.56 (November 2025, 17 modules) while the codebase had grown to 38 modules, 18 CSS files, and 8 test suites. Updated module categories from 6 → 9 with complete tables for all 38 modules including the interactions subsystem, shared utilities layer (sanitize, dom-helpers, data-loader, focus-trap, modal, loader), application windows (terminal, github, system-monitor), and 3D/VFX modules (galaxy-background, mahoraga-wheel). Rewrote architecture diagram to show the new Shared Utilities Layer. Updated dependency graph with lazy-loading annotations, init sequence with current boot flow, and key files reference table.
 - **Documentation index updated** (`docs/README.md`) — fixed 4 dead links to deleted `FEATURE_VERIFICATION.md`, updated file tree from 17 JS / 5 CSS to 38 JS / 18 CSS / 8 test suites, bumped version references from v2.56 to v3.8.2.
 
@@ -1229,6 +1380,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.8.1] — 2026-02-12
 
 ### Fixed
+
 - **Skills Universe event listener leak** — `mousedown` and `mousemove` listeners on the canvas were registered with anonymous functions in `init()` but never removed in `stop()`, causing listeners to accumulate each time the Skills window was opened and closed. Now stores bound references for all four listeners (mousedown, mousemove, mouseup, resize) and removes them all on teardown.
 - **Skills Universe spring physics NaN crash** — spring force calculation divided by `dist` without a zero-guard, unlike the repulsion code. Two connected nodes at identical coordinates produced `NaN` forces that propagated to all nodes, collapsing the entire graph. Added `dist === 0` guard matching the existing repulsion pattern.
 - **Skills Universe missing resize handler** — canvas dimensions were set once at init and never updated. Resizing the browser or Skills window left nodes rendering outside the visible area or clipped. Added `window.resize` listener that reflows the canvas to its parent container dimensions.
@@ -1241,6 +1393,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.8.0] — 2026-02-12
 
 ### Added
+
 - **Portfolio featured projects window** (`PORTFOLIO` desktop icon) — curated showcase of 5 hero projects (Passion Agent, Vibe Coder, Portfolio OS, Culture Drop HQ, FCPXML MCP Server) with rich cards, color-coded tech stack badges, live demo buttons, and source links. Includes "VIEW ALL 18 PROJECTS" bridge to the full Applications catalog.
 - **Portfolio CSS** (`css/portfolio.css`) — responsive 2-column grid cards with hover glow effects, accent color custom properties, featured card spanning full width, and cyberpunk-styled badge/link components.
 - **Portfolio SVG icon** (`assets/portfolio.svg`) — 4-panel grid icon matching the project showcase concept.
@@ -1255,6 +1408,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.7.1] — 2026-02-12
 
 ### Changed
+
 - **README elevated to portfolio-grade v2** — added prominent "Try the Live Demo" CTA above the fold, expanded Desktop Icons table from 10-row feature summary to accurate 15-icon reference with Type column (Window/External/Lightbox), added prerequisites to Quick Start (Node 18+, npm 9+), consolidated duplicate Scripts section into a unified Development section with tooling context, improved Documentation table descriptions, added source repo link to footer
 - **Fixed stale version strings** — `index.html` title and top-bar version were stuck at `v3.3.0` since the content overhaul in Phase 3; updated both to `v3.7.1`
 
@@ -1265,10 +1419,12 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.7.0] — 2026-02-12
 
 ### Changed
+
 - **Extracted `loadJSON`/`saveJSON` storage helpers** into `dom-helpers.js` — replaces 6 inconsistent `try/catch` + `JSON.parse(localStorage.getItem(...))` patterns across `desktop.js` (3 sites), `github.js` (2 sites), `admin.js` (1 site), and `state.js` (1 site) with a single, tested utility. Error handling is now uniform: parse failures silently return the fallback value instead of varying between removing the key, logging an error, or swallowing silently.
 - **Fixed `window` event listener memory leak in `skills.js`** — `window.addEventListener('mouseup', ...)` was registered with a new anonymous function on every `init()` call but never removed in `stop()`, causing listeners to stack each time the Skills window was opened and closed. Now stores a bound reference and removes it on teardown.
 
 ### Added
+
 - **6 new tests** for `loadJSON()` and `saveJSON()` in `tests/dom-helpers.test.js` — covers valid JSON, missing keys, corrupted data fallback, default null, overwrite, and serialization
 
 **Test count**: 91 → 97 (6 new tests)
@@ -1280,6 +1436,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.6.5] — 2026-02-12
 
 ### Changed
+
 - **README elevated to portfolio-grade** — added shields.io stat badges (version, tests, modules, frameworks, license), fixed stale module count (37→38 reflecting all JS files including warp.js, glyphs.js, audiofx.js), expanded architecture tree from partial (18 modules + ellipsis) to complete (all 38 modules + all 17 stylesheets with descriptions), and added "Why No Frameworks?" section articulating the vanilla JS constraint as a deliberate architectural demonstration
 
 **Files Modified**: `README.md`, `CHANGELOG.md`, `package.json`
@@ -1289,6 +1446,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.6.4] — 2026-02-12
 
 ### Added
+
 - **DOM helpers test suite** (`tests/dom-helpers.test.js`) — 7 tests covering `openExternal()` (noopener/noreferrer enforcement, URL passthrough) and `animateCounter()` (completion, intermediate values, edge cases, cancellation)
 - **Modal dialog test suite** (`tests/modal.test.js`) — 15 tests covering `init()` (container creation, idempotency), `_createDismiss()` (focus release, resolve values), `prompt()` (title/message rendering, focus trapping, confirm/cancel/overlay clicks, Enter/Escape keys), and `alert()` (OK-only rendering, dismiss lifecycle, focus trap cleanup)
 
@@ -1303,6 +1461,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.6.3] — 2026-02-12
 
 ### Changed
+
 - **Lightbox focus trap unified with shared utility** — replaced 25-line inline `handleTabFocus()` method with the same `trapFocus()` from `focus-trap.js` already used by modal, login, welcome, and tour modules. Eliminates DRY violation, fixes inconsistent focusable selector (`[href]` → `a[href]`), and properly cleans up the keydown listener on close.
 
 **Files Modified**: `js/lightbox.js`, `package.json`, `README.md`, `CHANGELOG.md`
@@ -1312,11 +1471,13 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.6.2] — 2026-02-12
 
 ### Security
+
 - **Hardened video embed IDs** — YouTube IDs now validated against `/^[a-zA-Z0-9_-]{11}$/` and Vimeo IDs against `/^[0-9]{6,11}$/` before interpolation into iframe `src` URLs; invalid IDs are blocked with a visible error placeholder instead of creating a potentially malicious iframe
 - **Sandboxed video iframes** — all YouTube and Vimeo embeds now carry `sandbox="allow-scripts allow-same-origin allow-presentation"`, preventing top-navigation hijacking, popup abuse, and form submission from embedded content
 - **Null-guard on embed creation** — `createYouTubeEmbed()` and `createVimeoEmbed()` return a safe placeholder element when passed a null ID (fail-closed)
 
 ### Added
+
 - **Lightbox security test suite** (`tests/lightbox.test.js`) — 14 tests covering YouTube ID validation (valid formats, path traversal, XSS payloads, oversized IDs), Vimeo ID validation (numeric-only, path traversal), MP4 fallback, and iframe sandbox token verification
 
 **Test count**: 55 → 69 (14 new tests)
@@ -1330,6 +1491,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.6.1] — 2026-02-12
 
 ### Changed
+
 - **README overhauled for portfolio-grade presentation** — added project stat badges (37 modules, 17 stylesheets, 55 tests, 0 framework deps), Keyboard Shortcuts reference table with all 9 shortcuts/easter eggs, expanded architecture tree showing all 7 interaction modules with descriptions, fixed stale CSS count (16→17), added per-test-file counts, and added footer navigation links to live demo, changelog, and architecture docs
 
 **Files Modified**: `README.md`
@@ -1339,6 +1501,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.6.0] — 2026-02-11
 
 ### Added
+
 - **System Monitor app** (`SYS_MONITOR`) — real-time performance dashboard showing live FPS graph, JS heap usage, DOM node count, active window count, session uptime, page load time, CPU cores, network type, and platform info. Uses `performance.memory`, `performance.getEntriesByType`, `navigator.connection`, and RAF-based FPS measurement with a 70-sample rolling graph.
 - **System Monitor icon** — new SVG desktop icon (`assets/system-monitor.svg`) in the Utilities row
 - **System Monitor CSS** — dedicated `css/system-monitor.css` with gauge bars, canvas graph, and cyberpunk diagnostic styling
@@ -1346,6 +1509,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 **Files Created**: `js/system-monitor.js`, `css/system-monitor.css`, `assets/system-monitor.svg`
 
 ### Changed
+
 - **Extracted `dom-helpers.js` shared utility module** — centralizes `openExternal()` and `animateCounter()` that were duplicated across `desktop.js` and `github.js`
 - **Hardened all external link opens** — 6 bare `window.open(url, '_blank')` calls in `desktop.js` replaced with `openExternal()` which adds `noopener,noreferrer` to prevent tabnapping; `github.js` also unified through the same helper
 - **DRYed modal cleanup logic** — extracted `_createDismiss()` in `modal.js` to eliminate identical 6-line cleanup closures duplicated between `prompt()` and `alert()`
@@ -1360,6 +1524,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.5.2] — 2026-02-11
 
 ### Added
+
 - **Data-loader test suite** (`tests/data-loader.test.js`) — 9 tests covering localStorage overrides, fetch fallbacks, in-memory caching, cache invalidation, and malformed JSON resilience
 - **Router test suite** (`tests/router.test.js`) — 12 tests covering path validation security (blocks `javascript:`, `data:`, null, non-slash paths), route dispatching, custom route registration, and unknown-route handling
 - **Focus-trap test suite** (`tests/focus-trap.test.js`) — 7 tests covering Tab wrap-around, Shift+Tab reverse cycling, disabled element exclusion, cleanup function, and empty-container safety
@@ -1373,6 +1538,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.5.1] — 2026-02-11
 
 ### Fixed
+
 - **Clock interval memory leak** — `Login.lock()` never cleared the clock `setInterval`, causing intervals to stack on every lock/unlock cycle; now clears before recreating
 - **Window inertia RAF leak** — `WindowManager.close()` didn't cancel in-flight `requestAnimationFrame` from drag-inertia physics, causing RAF loops to reference detached DOM elements; now cancels on close
 - **Lightbox pan state bleed** — closing the lightbox mid-pan (ESC while dragging a zoomed image) left `panning: true`, causing the next lightbox to drift on mouse move; now resets all zoom/pan state on close
@@ -1385,6 +1551,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.5.0] — 2026-02-11
 
 ### Changed
+
 - **Extracted centralized data-loader module** (`js/data-loader.js`) — replaces 4 copy-pasted fetch-or-localStorage blocks across `desktop.js` (3x) and `admin.js` (1x) with shared `loadMedia()` and `loadProjects()` functions
 - **In-memory caching** — multiple callers requesting the same data share a single fetch promise, eliminating redundant network requests
 - **Cache invalidation** — admin save/import operations now call `invalidateData()` so subsequent loads reflect changes
@@ -1398,6 +1565,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.4.1] — 2026-02-11
 
 ### Changed
+
 - **README.md rewritten** as portfolio-grade documentation — restructured from changelog-dump to recruiter-scannable reference with centered hero, Quick Start in the first 25 lines, architecture tree, tech stack table, and categorized feature sections (was 256 lines of version history before features)
 - Moved all version-specific release notes out of README into CHANGELOG where they belong
 
@@ -1408,6 +1576,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.4.0] — 2026-02-11
 
 ### Added
+
 - **Command Palette** (`Cmd+K` / `Ctrl+K`): Spotlight-style fuzzy-search launcher that provides instant keyboard access to all 14 desktop apps and 4 system toggles (theme, cursor trail, sound, interactions)
 - Full keyboard navigation — arrow keys, Enter to execute, Escape to dismiss, click-outside to close
 - Cyberpunk glass UI with frosted overlay, color-coded dot indicators, and monospace input styling
@@ -1422,6 +1591,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.3.2] — 2026-02-11
 
 ### Security
+
 - Replaced innerHTML interpolation with DOM API (textContent/createElement) in `loader.js`, `windows.js` breadcrumbs, `easter-eggs.js` notifications, and `micro-interactions.js` loading states — eliminates XSS vectors from interpolated strings
 - Sanitize fetched SVG content through DOMPurify in `cursor-trail.js` before innerHTML insertion — blocks embedded `<script>`, `onload`, and event-handler payloads in SVG files
 - Tightened CSP `img-src` from wildcard `https:` to explicit GitHub asset domains (`avatars.githubusercontent.com`, `raw.githubusercontent.com`) — prevents image-based data exfiltration via tracking pixels
@@ -1432,6 +1602,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [3.3.1] — 2026-02-10
 
 ### Security
+
 - Wrapped unprotected `JSON.parse` calls in `github.js` and `desktop.js` with try/catch to prevent crashes from corrupted localStorage data
 - Added allowlist-based path validation to `Router.navigate()` — blocks `javascript:`, `data:`, and non-path strings
 - Hardened wallpaper URL validation in `state.js` — allowlists only safe raster `data:` image types (png, jpeg, gif, webp), blocking `data:image/svg+xml` which can contain scripts
@@ -1442,6 +1613,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## v3.3.0 — Content & Visual Overhaul (February 11, 2026)
 
 ### About Me Rewrite
+
 - **NAME**: Changed from "DareDev256" to "James Olusoga (DareDev256)"
 - **ROLE**: Changed from "Developer • Creator • Visionary" to "AI Solutions Engineer • Creative Technologist"
 - **LOCATION**: Added "Toronto, Canada" (was "Building the future")
@@ -1449,6 +1621,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 - **Skills grid**: Color-coded by category (cyan: languages, purple: AI/ML, green: frameworks, amber: infra)
 
 ### Galaxy Theme Unification
+
 - **Top bar brand text**: Shifted from gold metallic gradient to cobalt/platinum blue gradient
 - **Logo wheel**: Added galaxy hue-rotate filter
 - **Dock**: Deeper background (0.55 opacity), gradient top-edge glow line, galaxy-tinted separator
@@ -1456,6 +1629,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 - **All HUD brackets**: Recolored to galaxy cobalt blue
 
 ### SEO & Meta Tags
+
 - **Open Graph tags**: og:type, og:title, og:description, og:url, og:site_name
 - **Twitter card**: summary_large_image with title and description
 - **Canonical URL**: https://jamesdare.com
@@ -1464,6 +1638,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 - **Meta description**: Rewritten to highlight AI/ML, MCP servers, autonomous agents
 
 ### Project Data Integrity
+
 - **Cross-referenced** all repos against GitHub API (only 16 public repos)
 - **Removed dead repo links**: Passion Agent, Culture Drop HQ, Casper TNG, RAW.exe, Pixel Art LoRA, Portfolio OS
 - **Added missing repo links**: Contract Translator, PulseMap, Tdots Portfolio, IMG Gen Prompts
@@ -1471,12 +1646,14 @@ This changelog documents the evolutionary development of Passion OS from initial
 - **17 verified projects** (down from 19 — removed 3 with non-public repos and no demo, added accuracy)
 
 ### Bug Fixes
+
 - **LinkedIn URL**: Desktop icon and Contact window now link to actual profile (was just linkedin.com)
 - **Contact form email**: Now sends to real email address (was your-email@example.com)
 - **Lock screen role text**: Updated to match About Me ("AI SOLUTIONS ENGINEER • CREATIVE TECHNOLOGIST")
 - **Version sync**: All instances updated from v3.2.1 → v3.3.0
 
 ### Maintenance
+
 - **CSS cache busting**: All 15 stylesheet links bumped from ?v=3.3 to ?v=3.4 for galaxy.css
 
 ---
@@ -2199,15 +2376,15 @@ You're on the latest version!
 
 | Version | Date     | Phase   | Key Features                                     |
 | ------- | -------- | ------- | ------------------------------------------------ |
-| 3.2.0   | Feb 2026 | Minor   | Icon reorder, 18-project showcase, Orbitron font  |
-| 3.1.2   | Feb 2026 | Patch   | MMBN cyberspace grid background                   |
-| 3.1.1   | Feb 2026 | Patch   | Desktop wheel quality, galaxy boot background     |
+| 3.2.0   | Feb 2026 | Minor   | Icon reorder, 18-project showcase, Orbitron font |
+| 3.1.2   | Feb 2026 | Patch   | MMBN cyberspace grid background                  |
+| 3.1.1   | Feb 2026 | Patch   | Desktop wheel quality, galaxy boot background    |
 | 3.1     | Feb 2026 | Phase 5 | Security audit, perf, a11y, 27 tests             |
-| 3.0     | Jan 2026 | Phase 4 | Visual overhaul, easter eggs, desktop reorder     |
-| 2.56    | Nov 2025 | Phase 3 | Admin Dashboard, Routing, Mobile, Enhanced UI     |
-| 2.45    | Oct 2025 | Phase 2 | Photo filters, Wallpapers, Video embeds           |
-| 2.30    | Sep 2025 | Phase 1 | Core OS, Windows, Desktop, Login                  |
-| 1.00    | Aug 2025 | Alpha   | Initial prototype                                 |
+| 3.0     | Jan 2026 | Phase 4 | Visual overhaul, easter eggs, desktop reorder    |
+| 2.56    | Nov 2025 | Phase 3 | Admin Dashboard, Routing, Mobile, Enhanced UI    |
+| 2.45    | Oct 2025 | Phase 2 | Photo filters, Wallpapers, Video embeds          |
+| 2.30    | Sep 2025 | Phase 1 | Core OS, Windows, Desktop, Login                 |
+| 1.00    | Aug 2025 | Alpha   | Initial prototype                                |
 
 ---
 

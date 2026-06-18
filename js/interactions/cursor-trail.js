@@ -30,7 +30,7 @@ export const CursorTrail = {
         { path: '/assets/cursor/ps-x.svg', color: '#00f0ff' },
         { path: '/assets/cursor/ps-circle.svg', color: '#ff00aa' },
         { path: '/assets/cursor/ps-triangle.svg', color: '#00ff88' },
-        { path: '/assets/cursor/ps-square.svg', color: '#ffaa00' }
+        { path: '/assets/cursor/ps-square.svg', color: '#ffaa00' },
     ],
 
     // Performance
@@ -41,7 +41,9 @@ export const CursorTrail = {
         console.log('[CursorTrail] Initialized');
 
         // Check for mobile
-        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+        );
 
         // Check for reduced motion preference
         this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -92,7 +94,7 @@ export const CursorTrail = {
                 svgContainer: svgContainer,
                 inUse: false,
                 birthTime: 0,
-                animation: null
+                animation: null,
             });
         }
     },
@@ -203,19 +205,22 @@ export const CursorTrail = {
         const startRotation = Math.random() * 360;
         const endRotation = startRotation + (Math.random() > 0.5 ? 360 : -360);
 
-        particle.animation = particle.element.animate([
+        particle.animation = particle.element.animate(
+            [
+                {
+                    opacity: 0.9,
+                    transform: `translate(-50%, -50%) scale(1.2) rotate(${startRotation}deg)`,
+                },
+                {
+                    opacity: 0,
+                    transform: `translate(-50%, -50%) scale(0.8) rotate(${endRotation}deg)`,
+                },
+            ],
             {
-                opacity: 0.9,
-                transform: `translate(-50%, -50%) scale(1.2) rotate(${startRotation}deg)`
-            },
-            {
-                opacity: 0,
-                transform: `translate(-50%, -50%) scale(0.8) rotate(${endRotation}deg)`
+                duration: this.particleLifetime,
+                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             }
-        ], {
-            duration: this.particleLifetime,
-            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-        });
+        );
 
         particle.animation.onfinish = () => {
             particle.inUse = false;
@@ -227,7 +232,7 @@ export const CursorTrail = {
      * Update all active particles
      */
     updateParticles(timestamp) {
-        this.particlePool.forEach(particle => {
+        this.particlePool.forEach((particle) => {
             if (!particle.inUse) return;
 
             // Check if particle lifetime exceeded
@@ -284,7 +289,7 @@ export const CursorTrail = {
      * Clear all particles
      */
     clearParticles() {
-        this.particlePool.forEach(particle => {
+        this.particlePool.forEach((particle) => {
             particle.inUse = false;
             particle.element.style.opacity = '0';
             if (particle.animation) {
@@ -311,7 +316,7 @@ export const CursorTrail = {
      * Get stats
      */
     getStats() {
-        const activeParticles = this.particlePool.filter(p => p.inUse).length;
+        const activeParticles = this.particlePool.filter((p) => p.inUse).length;
 
         return {
             enabled: this.enabled,
@@ -320,7 +325,7 @@ export const CursorTrail = {
             maxParticles: this.maxParticles,
             spawnDistance: this.spawnDistance,
             isMobile: this.isMobile,
-            prefersReducedMotion: this.prefersReducedMotion
+            prefersReducedMotion: this.prefersReducedMotion,
         };
-    }
+    },
 };

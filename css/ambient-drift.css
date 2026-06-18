@@ -11,5 +11,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .ambient-drift-canvas { display: none; }
+    .ambient-drift-canvas {
+        display: none;
+    }
 }

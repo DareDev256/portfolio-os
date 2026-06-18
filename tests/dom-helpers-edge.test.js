@@ -1,5 +1,12 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { el, animateCounter, saveJSON, openExternal, isElementVisible, isInViewport } from '../js/dom-helpers.js';
+import {
+    el,
+    animateCounter,
+    saveJSON,
+    openExternal,
+    isElementVisible,
+    isInViewport,
+} from '../js/dom-helpers.js';
 
 describe('el() — DOM element factory', () => {
     it('creates element with correct tag', () => {
@@ -196,7 +203,14 @@ describe('isInViewport() — viewport intersection check', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
         // Mock getBoundingClientRect for jsdom
-        div.getBoundingClientRect = () => ({ top: 10, left: 10, bottom: 100, right: 100, width: 90, height: 90 });
+        div.getBoundingClientRect = () => ({
+            top: 10,
+            left: 10,
+            bottom: 100,
+            right: 100,
+            width: 90,
+            height: 90,
+        });
         expect(isInViewport(div)).toBe(true);
         document.body.removeChild(div);
     });
@@ -204,7 +218,14 @@ describe('isInViewport() — viewport intersection check', () => {
     it('returns false when element is above viewport', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
-        div.getBoundingClientRect = () => ({ top: -200, left: 10, bottom: -100, right: 100, width: 90, height: 100 });
+        div.getBoundingClientRect = () => ({
+            top: -200,
+            left: 10,
+            bottom: -100,
+            right: 100,
+            width: 90,
+            height: 100,
+        });
         expect(isInViewport(div)).toBe(false);
         document.body.removeChild(div);
     });
@@ -212,7 +233,14 @@ describe('isInViewport() — viewport intersection check', () => {
     it('returns false when element is below viewport', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
-        div.getBoundingClientRect = () => ({ top: 2000, left: 10, bottom: 2100, right: 100, width: 90, height: 100 });
+        div.getBoundingClientRect = () => ({
+            top: 2000,
+            left: 10,
+            bottom: 2100,
+            right: 100,
+            width: 90,
+            height: 100,
+        });
         expect(isInViewport(div)).toBe(false);
         document.body.removeChild(div);
     });
@@ -221,7 +249,14 @@ describe('isInViewport() — viewport intersection check', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
         // Top edge is above viewport, but bottom is inside
-        div.getBoundingClientRect = () => ({ top: -50, left: 10, bottom: 50, right: 100, width: 90, height: 100 });
+        div.getBoundingClientRect = () => ({
+            top: -50,
+            left: 10,
+            bottom: 50,
+            right: 100,
+            width: 90,
+            height: 100,
+        });
         expect(isInViewport(div)).toBe(true);
         document.body.removeChild(div);
     });

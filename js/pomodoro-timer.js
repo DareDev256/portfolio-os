@@ -86,7 +86,10 @@ export function renderPomodoroTimer(container) {
     const ctx = canvas.getContext('2d');
 
     function drawRing(progress) {
-        const cx = 100, cy = 100, r = 88, lw = 5;
+        const cx = 100,
+            cy = 100,
+            r = 88,
+            lw = 5;
         ctx.clearRect(0, 0, 200, 200);
 
         // Track
@@ -155,20 +158,30 @@ export function renderPomodoroTimer(container) {
         running = false;
         startBtn.textContent = '▶ START';
         startBtn.classList.remove('pomo-btn-pause');
-        if (intervalId) { clearInterval(intervalId); intervalId = null; }
+        if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+        }
     }
 
     function notify(msg) {
         // Use the toast system if available
-        import('./notifications.js').then(({ Notify }) => {
-            Notify.success(msg, 5000);
-        }).catch(() => {});
+        import('./notifications.js')
+            .then(({ Notify }) => {
+                Notify.success(msg, 5000);
+            })
+            .catch(() => {});
     }
 
-    function save() { saveJSON(KEY, state); }
+    function save() {
+        saveJSON(KEY, state);
+    }
 
-    startBtn.addEventListener('click', () => running ? stop() : start());
-    resetBtn.addEventListener('click', () => { stop(); setPhase('work'); });
+    startBtn.addEventListener('click', () => (running ? stop() : start()));
+    resetBtn.addEventListener('click', () => {
+        stop();
+        setPhase('work');
+    });
 
     // Initial render
     drawRing(1);

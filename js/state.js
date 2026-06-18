@@ -15,16 +15,16 @@ import { Sanitize } from './sanitize.js';
  */
 const BOOLEAN_TOGGLES = [
     // FX layer
-    { prop: 'fxEnabled',              defaultVal: false, event: 'fx' },
-    { prop: 'auroraEnabled',          defaultVal: false, event: 'aurora' },
-    { prop: 'glyphsEnabled',          defaultVal: true,  event: 'glyphs' },
-    { prop: 'soundEnabled',           defaultVal: true,  event: 'sound' },
+    { prop: 'fxEnabled', defaultVal: false, event: 'fx' },
+    { prop: 'auroraEnabled', defaultVal: false, event: 'aurora' },
+    { prop: 'glyphsEnabled', defaultVal: true, event: 'glyphs' },
+    { prop: 'soundEnabled', defaultVal: true, event: 'sound' },
     // Interaction engine
-    { prop: 'interactionsEnabled',    defaultVal: true,  event: 'interactions' },
+    { prop: 'interactionsEnabled', defaultVal: true, event: 'interactions' },
     { prop: 'microInteractionsEnabled', defaultVal: true, event: null },
-    { prop: 'cursorReactiveEnabled',  defaultVal: true,  event: null },
-    { prop: 'cursorTrailEnabled',     defaultVal: false, event: 'cursorTrail' },
-    { prop: 'easterEggsEnabled',      defaultVal: true,  event: null },
+    { prop: 'cursorReactiveEnabled', defaultVal: true, event: null },
+    { prop: 'cursorTrailEnabled', defaultVal: false, event: 'cursorTrail' },
+    { prop: 'easterEggsEnabled', defaultVal: true, event: null },
 ];
 
 export const State = {
@@ -100,12 +100,18 @@ export const State = {
         // Non-boolean persisted settings — validated against allowlists
         const savedTrailType = localStorage.getItem('cursorTrailType');
         if (savedTrailType) {
-            this.cursorTrailType = Sanitize.allowlist(savedTrailType, this.VALID_TRAIL_TYPES, 'chakra');
+            this.cursorTrailType = Sanitize.allowlist(
+                savedTrailType,
+                this.VALID_TRAIL_TYPES,
+                'chakra'
+            );
         }
         const savedIntensity = localStorage.getItem('interactionIntensity');
         if (savedIntensity !== null) {
             const parsed = parseInt(savedIntensity, 10);
-            this.interactionIntensity = Number.isFinite(parsed) ? Math.max(0, Math.min(100, parsed)) : 100;
+            this.interactionIntensity = Number.isFinite(parsed)
+                ? Math.max(0, Math.min(100, parsed))
+                : 100;
         }
 
         // Load window states
@@ -154,7 +160,7 @@ export const State = {
         // Gradient tokens — validate key against allowlist
         if (input.startsWith('gradient:')) {
             const key = input.slice(9);
-            return (key in this.VALID_GRADIENTS) ? input : '';
+            return key in this.VALID_GRADIENTS ? input : '';
         }
 
         // Strip control chars that hide protocol (tab, newline, null)
@@ -165,8 +171,13 @@ export const State = {
         // Safe data:image/ URIs — strict MIME allowlist (no svg+xml, no text/html)
         const lower = stripped.toLowerCase();
         if (lower.startsWith('data:image/')) {
-            const SAFE_MIMES = ['data:image/png', 'data:image/jpeg', 'data:image/gif', 'data:image/webp'];
-            if (SAFE_MIMES.some(m => lower.startsWith(m))) return stripped;
+            const SAFE_MIMES = [
+                'data:image/png',
+                'data:image/jpeg',
+                'data:image/gif',
+                'data:image/webp',
+            ];
+            if (SAFE_MIMES.some((m) => lower.startsWith(m))) return stripped;
             return ''; // Blocks svg+xml (can contain <script>), and any unknown image type
         }
 
@@ -258,7 +269,7 @@ export const State = {
      */
     _normalizeZIndices() {
         const wins = Array.from(this.windows.values())
-            .filter(w => w.element)
+            .filter((w) => w.element)
             .sort((a, b) => {
                 const za = parseInt(a.element.style.zIndex, 10) || 0;
                 const zb = parseInt(b.element.style.zIndex, 10) || 0;

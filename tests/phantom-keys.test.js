@@ -7,16 +7,11 @@
 import { describe, it, expect } from 'vitest';
 
 /* ── Constants (mirrored from phantom-keys.js) ── */
-const MAX_ACTIVE  = 6;
+const MAX_ACTIVE = 6;
 const COOLDOWN_MS = 60;
-const FONT_SIZE   = 28;
+const FONT_SIZE = 28;
 
-const PALETTE = [
-    '#d4af37',
-    '#f5d76e',
-    '#8b5cf6',
-    'rgba(139,92,246,.7)',
-];
+const PALETTE = ['#d4af37', '#f5d76e', '#8b5cf6', 'rgba(139,92,246,.7)'];
 
 /* ── Re-implemented pure logic ── */
 

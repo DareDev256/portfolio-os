@@ -15,7 +15,9 @@ document.addEventListener('visibilitychange', () => {
 });
 
 /** @returns {boolean} True when the tab is backgrounded */
-export function isPageHidden() { return _pageHidden; }
+export function isPageHidden() {
+    return _pageHidden;
+}
 
 /**
  * Subscribe to page visibility changes with separate hide/show callbacks.
@@ -26,9 +28,13 @@ export function isPageHidden() { return _pageHidden; }
  * @returns {() => void} Unsubscribe function (call in destroy/cleanup)
  */
 export function onVisibilityChange(onHide, onShow) {
-    const handler = (hidden) => { hidden ? onHide() : onShow(); };
+    const handler = (hidden) => {
+        hidden ? onHide() : onShow();
+    };
     _visibilitySubs.add(handler);
-    return () => { _visibilitySubs.delete(handler); };
+    return () => {
+        _visibilitySubs.delete(handler);
+    };
 }
 
 /* ── Reduced Motion ── */
@@ -59,9 +65,7 @@ export function shouldSkipDesktopEffects() {
  * @returns {Element}
  */
 export function createDecorativeEl(tag, className, namespace) {
-    const el = namespace
-        ? document.createElementNS(namespace, tag)
-        : document.createElement(tag);
+    const el = namespace ? document.createElementNS(namespace, tag) : document.createElement(tag);
     // SVG elements have a read-only className (SVGAnimatedString);
     // use setAttribute('class', ...) which works for both HTML and SVG.
     if (className) el.setAttribute('class', className);
@@ -128,7 +132,9 @@ export function loadBool(key, fallback = true) {
 export function saveBool(key, value) {
     try {
         localStorage.setItem(key, value ? '1' : '0');
-    } catch { /* quota exceeded — non-critical */ }
+    } catch {
+        /* quota exceeded — non-critical */
+    }
 }
 
 /**
@@ -290,7 +296,7 @@ export function createRevealSystem({ selector, activeClass, threshold = 0.15, on
                     }
                 }
             },
-            { root, threshold },
+            { root, threshold }
         );
     }
 
@@ -394,21 +400,21 @@ export function hexAlpha(opacity) {
 const WINDOW_PRESETS = {
     materialize: {
         initial: { opacity: '0', transform: 'scale(0.8)', filter: 'blur(10px)' },
-        target:  { opacity: '1', transform: 'scale(1)',   filter: 'blur(0px)' },
+        target: { opacity: '1', transform: 'scale(1)', filter: 'blur(0px)' },
         transition: 'all var(--duration-slow) var(--ease-spring)',
         delay: 400,
         deferred: true, // apply target in rAF for browser to paint initial state
     },
     dematerialize: {
         initial: null, // no initial styles — starts from current state
-        target:  { opacity: '0', transform: 'scale(0.9)', filter: 'blur(5px)' },
+        target: { opacity: '0', transform: 'scale(0.9)', filter: 'blur(5px)' },
         transition: 'all var(--duration-slow) var(--ease-snap)',
         delay: 300,
         deferred: false,
     },
     minimize: {
         initial: null,
-        target:  { opacity: '0' }, // transform set dynamically
+        target: { opacity: '0' }, // transform set dynamically
         transition: 'all var(--duration-slow) var(--ease-decel)',
         delay: 350,
         deferred: false,
@@ -455,8 +461,8 @@ export function transitionWindow(windowElement, preset, callback, overrides) {
  * pulse-grid.js, and referenced via CSS vars in neural-link.js.
  */
 export const PALETTE = {
-    GOLD:     { r: 212, g: 175, b: 55 },
-    AMETHYST: { r: 139, g: 92,  b: 246 },
+    GOLD: { r: 212, g: 175, b: 55 },
+    AMETHYST: { r: 139, g: 92, b: 246 },
 };
 
 /* ── Desktop Canvas Bootstrap ── */
@@ -471,8 +477,14 @@ export const PALETTE = {
  */
 export function createPointerTracker() {
     const mouse = { x: -9999, y: -9999 };
-    const onMove  = (e) => { mouse.x = e.clientX; mouse.y = e.clientY; };
-    const onLeave = ()  => { mouse.x = -9999; mouse.y = -9999; };
+    const onMove = (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    };
+    const onLeave = () => {
+        mouse.x = -9999;
+        mouse.y = -9999;
+    };
     document.addEventListener('pointermove', onMove);
     document.addEventListener('pointerleave', onLeave);
     return {
@@ -538,13 +550,17 @@ export function resizeCanvasDPR(canvas, ctx) {
  * @param {number}  [opts.zIndex]              - Optional z-index override
  * @param {object}  [opts.contextOptions]      - getContext options (e.g. { alpha: true })
  */
-export function bootstrapCanvasEffect(mod, storageKey, {
-    defaultEnabled = true,
-    minInterval = 33.3,
-    canvasClass = 'fx-canvas',
-    zIndex,
-    contextOptions,
-} = {}) {
+export function bootstrapCanvasEffect(
+    mod,
+    storageKey,
+    {
+        defaultEnabled = true,
+        minInterval = 33.3,
+        canvasClass = 'fx-canvas',
+        zIndex,
+        contextOptions,
+    } = {}
+) {
     mod.enabled = loadBool(storageKey, defaultEnabled);
 
     mod.canvas = document.createElement('canvas');
@@ -598,17 +614,29 @@ export function createThrottledLoop(callback, { isEnabled, minInterval = 33.3 } 
     function tick() {
         rafId = 0;
         if (isEnabled && !isEnabled()) return;
-        if (isPageHidden()) { rafId = requestAnimationFrame(tick); return; }
+        if (isPageHidden()) {
+            rafId = requestAnimationFrame(tick);
+            return;
+        }
         const now = performance.now();
-        if (now - lastFrame < minInterval) { rafId = requestAnimationFrame(tick); return; }
+        if (now - lastFrame < minInterval) {
+            rafId = requestAnimationFrame(tick);
+            return;
+        }
         lastFrame = now;
         callback();
         rafId = requestAnimationFrame(tick);
     }
 
     return {
-        start() { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(tick); },
-        stop()  { cancelAnimationFrame(rafId); rafId = 0; },
+        start() {
+            cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(tick);
+        },
+        stop() {
+            cancelAnimationFrame(rafId);
+            rafId = 0;
+        },
     };
 }
 

@@ -109,7 +109,9 @@ describe('WindowManager.create()', () => {
     });
 
     it('applies saved maximized state on creation', () => {
-        State.windowStates = { 'max-win': { x: 50, y: 50, width: 400, height: 300, maximized: true } };
+        State.windowStates = {
+            'max-win': { x: 50, y: 50, width: 400, height: 300, maximized: true },
+        };
         createTestWindow({ id: 'max-win' });
         const el = document.getElementById('window-max-win');
         expect(el.classList.contains('maximized')).toBe(true);
@@ -313,7 +315,9 @@ describe('WindowManager.close()', () => {
     });
 
     it('handles onClose callback that throws', () => {
-        const onClose = vi.fn(() => { throw new Error('boom'); });
+        const onClose = vi.fn(() => {
+            throw new Error('boom');
+        });
         const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
         createTestWindow({ onClose });
         // Should not throw — error is caught internally

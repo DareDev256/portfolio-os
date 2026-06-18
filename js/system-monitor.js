@@ -104,7 +104,10 @@ export function renderSystemMonitor(container) {
         ctx.strokeStyle = 'rgba(0,240,255,0.08)';
         ctx.lineWidth = 0.5;
         for (let y = 0; y < h; y += 20) {
-            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(w, y);
+            ctx.stroke();
         }
 
         // FPS line
@@ -145,9 +148,20 @@ export function renderSystemMonitor(container) {
 
         // Gauge metrics
         let gauges = '';
-        gauges += createGauge('FPS', currentFps, 120, currentFps > 50 ? '#00ff88' : currentFps > 25 ? '#ffaa00' : '#ff0066');
+        gauges += createGauge(
+            'FPS',
+            currentFps,
+            120,
+            currentFps > 50 ? '#00ff88' : currentFps > 25 ? '#ffaa00' : '#ff0066'
+        );
         if (mem) {
-            gauges += createGauge('HEAP', heapUsed / 1048576, heapLimit / 1048576, '#00f0ff', ' MB');
+            gauges += createGauge(
+                'HEAP',
+                heapUsed / 1048576,
+                heapLimit / 1048576,
+                '#00f0ff',
+                ' MB'
+            );
         }
         gauges += createGauge('WINDOWS', windows.length, 12, '#ff00aa');
         gauges += createGauge('DOM', document.querySelectorAll('*').length, 3000, '#aa00ff');

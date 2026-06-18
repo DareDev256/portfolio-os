@@ -57,7 +57,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 The admin dashboard is hidden from the UI for security. Access it from the browser console:
 
 ```javascript
-Admin.open()
+Admin.open();
 ```
 
 This opens a visual editor for desktop items, projects, media, and themes.
@@ -79,28 +79,28 @@ Direct code editing for developers:
 
 Passion OS ships with **21 desktop applications**, each launched from the icon grid. Apps are lazy-loaded — zero bytes until opened.
 
-| App | Description |
-|-----|-------------|
-| **ABOUT_ME.exe** | Bio, role, location, color-coded skills grid |
-| **RESUME** | PDF viewer with download button |
-| **CONNECT** | Contact form with validation and input length limits |
-| **LINKEDIN** | Opens LinkedIn profile (external) |
-| **SKILLS_MATRIX** | Interactive force-directed skills graph (spring physics, drag nodes) |
-| **GITHUB_OPS** | Live GitHub API integration with response validation |
-| **PORTFOLIO** | Curated 5-project showcase with tech badges and live demo links |
-| **APPLICATIONS** | 17 real projects across 4 categories with DEPLOYED/SOURCE badges |
-| **DEV_TERMINAL** | Fake terminal with 18 commands (`neofetch`, `cowsay`, `matrix`, etc.) |
-| **Vibe_Coder.exe** | Browser-based game (external deployed project) |
-| **IMG_GEN.ai** | AI image generation tool (external deployed project) |
-| **TYPEMASTER** | Typing speed game (external deployed project) |
-| **SHOWCASE.mp4** | Featured video in lightbox viewer |
-| **MUSIC_VIDEOS** | Music video portfolio (external) |
-| **SETTINGS** | Theme, wallpaper, sound, cursor trail toggles |
-| **NOTES** | Sticky notes with 5 color themes, localStorage persistence, auto-save |
-| **FOCUS_TIMER** | Pomodoro timer with canvas ring, 3 presets (25/50/90 min), session stats |
-| **CALC.exe** | Calculator with keyboard input, expression chaining, glass UI |
-| **WEATHER** | Live weather via Open-Meteo API with geolocation and 3-day forecast |
-| **SYS_MONITOR** | Live FPS graph, heap usage, DOM count, network info, uptime |
+| App                | Description                                                              |
+| ------------------ | ------------------------------------------------------------------------ |
+| **ABOUT_ME.exe**   | Bio, role, location, color-coded skills grid                             |
+| **RESUME**         | PDF viewer with download button                                          |
+| **CONNECT**        | Contact form with validation and input length limits                     |
+| **LINKEDIN**       | Opens LinkedIn profile (external)                                        |
+| **SKILLS_MATRIX**  | Interactive force-directed skills graph (spring physics, drag nodes)     |
+| **GITHUB_OPS**     | Live GitHub API integration with response validation                     |
+| **PORTFOLIO**      | Curated 5-project showcase with tech badges and live demo links          |
+| **APPLICATIONS**   | 17 real projects across 4 categories with DEPLOYED/SOURCE badges         |
+| **DEV_TERMINAL**   | Fake terminal with 18 commands (`neofetch`, `cowsay`, `matrix`, etc.)    |
+| **Vibe_Coder.exe** | Browser-based game (external deployed project)                           |
+| **IMG_GEN.ai**     | AI image generation tool (external deployed project)                     |
+| **TYPEMASTER**     | Typing speed game (external deployed project)                            |
+| **SHOWCASE.mp4**   | Featured video in lightbox viewer                                        |
+| **MUSIC_VIDEOS**   | Music video portfolio (external)                                         |
+| **SETTINGS**       | Theme, wallpaper, sound, cursor trail toggles                            |
+| **NOTES**          | Sticky notes with 5 color themes, localStorage persistence, auto-save    |
+| **FOCUS_TIMER**    | Pomodoro timer with canvas ring, 3 presets (25/50/90 min), session stats |
+| **CALC.exe**       | Calculator with keyboard input, expression chaining, glass UI            |
+| **WEATHER**        | Live weather via Open-Meteo API with geolocation and 3-day forecast      |
+| **SYS_MONITOR**    | Live FPS graph, heap usage, DOM count, network info, uptime              |
 
 ### Adding a New Desktop App
 
@@ -129,18 +129,18 @@ This pattern handles import, cleanup lifecycle, and pre-load close safety automa
 
 ## Keyboard Shortcuts & Easter Eggs
 
-| Shortcut | Action |
-|----------|--------|
-| `?` | Show keyboard shortcuts overlay |
-| `Cmd+K` / `Ctrl+K` | Open command palette (fuzzy-search across all apps) |
-| `ESC` | Close active overlay (priority: modal > lightbox > tour > window) |
-| `Arrow Left` / `Arrow Right` | Navigate lightbox images |
-| `Tab` / `Shift+Tab` | Cycle focus within trapped overlays |
-| `Arrow Up` / `Arrow Down` + `Enter` | Navigate and select in command palette |
-| `Ctrl+Shift+V` | System info easter egg |
-| `Up Up Down Down Left Right Left Right B A` | Konami code |
-| Triple-click desktop | Glitch pulse effect |
-| Type `418` | I'm a teapot |
+| Shortcut                                    | Action                                                            |
+| ------------------------------------------- | ----------------------------------------------------------------- |
+| `?`                                         | Show keyboard shortcuts overlay                                   |
+| `Cmd+K` / `Ctrl+K`                          | Open command palette (fuzzy-search across all apps)               |
+| `ESC`                                       | Close active overlay (priority: modal > lightbox > tour > window) |
+| `Arrow Left` / `Arrow Right`                | Navigate lightbox images                                          |
+| `Tab` / `Shift+Tab`                         | Cycle focus within trapped overlays                               |
+| `Arrow Up` / `Arrow Down` + `Enter`         | Navigate and select in command palette                            |
+| `Ctrl+Shift+V`                              | System info easter egg                                            |
+| `Up Up Down Down Left Right Left Right B A` | Konami code                                                       |
+| Triple-click desktop                        | Glitch pulse effect                                               |
+| Type `418`                                  | I'm a teapot                                                      |
 
 ### Toast Notifications
 
@@ -880,14 +880,14 @@ location.reload();
 
 ### Related Documentation
 
-| Document | Description |
-|----------|-------------|
-| [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) | No-code content editor (console-only) |
-| [EASTER_EGGS_GUIDE.md](EASTER_EGGS_GUIDE.md) | All hidden easter eggs and secret interactions |
-| [CHANGELOG.md](CHANGELOG.md) | Full version history from v1.0 to present |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture — all 44 modules, dependency graph, init sequence |
-| [docs/GLOSSARY.md](docs/GLOSSARY.md) | Terminology and codebase glossary |
-| [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | 50+ common issues and solutions |
+| Document                                             | Description                                                           |
+| ---------------------------------------------------- | --------------------------------------------------------------------- |
+| [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) | No-code content editor (console-only)                                 |
+| [EASTER_EGGS_GUIDE.md](EASTER_EGGS_GUIDE.md)         | All hidden easter eggs and secret interactions                        |
+| [CHANGELOG.md](CHANGELOG.md)                         | Full version history from v1.0 to present                             |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)         | System architecture — all 44 modules, dependency graph, init sequence |
+| [docs/GLOSSARY.md](docs/GLOSSARY.md)                 | Terminology and codebase glossary                                     |
+| [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)   | 50+ common issues and solutions                                       |
 
 ### Browser Support
 

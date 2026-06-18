@@ -119,11 +119,15 @@ describe('State._validateWallpaperUrl()', () => {
     });
 
     it('allows http/https URLs via Sanitize.url()', () => {
-        expect(State._validateWallpaperUrl('https://example.com/bg.jpg')).toBe('https://example.com/bg.jpg');
+        expect(State._validateWallpaperUrl('https://example.com/bg.jpg')).toBe(
+            'https://example.com/bg.jpg'
+        );
     });
 
     it('allows relative asset paths', () => {
-        expect(State._validateWallpaperUrl('assets/wallpapers/default.jpg')).toBe('assets/wallpapers/default.jpg');
+        expect(State._validateWallpaperUrl('assets/wallpapers/default.jpg')).toBe(
+            'assets/wallpapers/default.jpg'
+        );
     });
 
     it('allows valid gradient tokens', () => {
@@ -139,7 +143,7 @@ describe('State._validateWallpaperUrl()', () => {
     });
 
     it('strips control characters before validation', () => {
-        expect(State._validateWallpaperUrl("java\tscript:alert(1)")).toBe('');
+        expect(State._validateWallpaperUrl('java\tscript:alert(1)')).toBe('');
     });
 });
 
@@ -164,7 +168,7 @@ describe('State.applyWallpaper()', () => {
     });
 
     it('strips dangerous characters from URLs (defense-in-depth)', () => {
-        State.applyWallpaper("testinject");
+        State.applyWallpaper('testinject');
         const val = document.documentElement.style.getPropertyValue('--wallpaper-url');
         expect(val).toContain('testinject');
     });
@@ -200,7 +204,13 @@ describe('State window registry', () => {
 describe('State._emit()', () => {
     it('dispatches CustomEvent on document', () => {
         let received = null;
-        document.addEventListener('state:test', (e) => { received = e.detail; }, { once: true });
+        document.addEventListener(
+            'state:test',
+            (e) => {
+                received = e.detail;
+            },
+            { once: true }
+        );
         State._emit('test', { value: 42 });
         expect(received).toEqual({ value: 42 });
     });

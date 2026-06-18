@@ -114,12 +114,17 @@ self.addEventListener('fetch', (e) => {
         e.respondWith(
             (async () => {
                 const cached = await caches.match(e.request);
-                return cached || fetch(e.request).then(res => {
-                    if (isCacheable(res)) {
-                        const cache = caches.open(CACHE_NAME).then(c => c.put(e.request, res.clone()));
-                    }
-                    return res;
-                });
+                return (
+                    cached ||
+                    fetch(e.request).then((res) => {
+                        if (isCacheable(res)) {
+                            const cache = caches
+                                .open(CACHE_NAME)
+                                .then((c) => c.put(e.request, res.clone()));
+                        }
+                        return res;
+                    })
+                );
             })()
         );
         return;

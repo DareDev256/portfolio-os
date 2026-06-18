@@ -17,10 +17,10 @@ type: research
 
 ## The Players
 
-| Person | Anthropic Role | Cursor Offer | Outcome |
-|--------|---------------|-------------|---------|
-| **Boris Cherny** | Lead Engineer, Claude Code | Chief Architect & Head of Engineering | Returned to Anthropic within 2 weeks |
-| **Cat Wu** | Product Manager, Claude Code | Head of Product | Returned to Anthropic within 2 weeks |
+| Person           | Anthropic Role               | Cursor Offer                          | Outcome                              |
+| ---------------- | ---------------------------- | ------------------------------------- | ------------------------------------ |
+| **Boris Cherny** | Lead Engineer, Claude Code   | Chief Architect & Head of Engineering | Returned to Anthropic within 2 weeks |
+| **Cat Wu**       | Product Manager, Claude Code | Head of Product                       | Returned to Anthropic within 2 weeks |
 
 Source: [Techmeme](https://www.techmeme.com/250716/p33) · [The Information](https://www.theinformation.com/briefings/anthropic-hires-back-two-coding-ai-leaders-cursor-developer-anysphere) · [aibase.com](https://www.aibase.com/news/19428)
 
@@ -40,7 +40,7 @@ The speed of the reversal turned it into an industry spectacle. One observer com
 
 ### 1. Cursor Validated Claude Code by Trying to Gut It
 
-Anysphere didn't hire two random engineers. They targeted the architect and the product mind behind the specific product eating their market from the inside. Cursor *runs on Anthropic's models* — it's one of Anthropic's largest customers. The poach was an attempt to absorb the brain of the product that was making their own wrapper increasingly redundant.
+Anysphere didn't hire two random engineers. They targeted the architect and the product mind behind the specific product eating their market from the inside. Cursor _runs on Anthropic's models_ — it's one of Anthropic's largest customers. The poach was an attempt to absorb the brain of the product that was making their own wrapper increasingly redundant.
 
 The subtext: if your biggest customer needs to hire your lead engineer to compete, your product is the moat — not theirs.
 
@@ -62,7 +62,7 @@ Context: at the time of the boomerang, investors were circling Anthropic at $100
 
 This incident is the sharpest illustration of the "wrapper vs. platform" tension in AI tooling:
 
-- **Cursor** builds a polished IDE experience *on top of* Anthropic's models
+- **Cursor** builds a polished IDE experience _on top of_ Anthropic's models
 - **Claude Code** is the model company's own first-party coding agent
 - When the model improves, Claude Code improves for free. Cursor has to re-integrate, re-test, re-ship
 
@@ -80,5 +80,5 @@ For anyone building on top of a model provider's capabilities: the platform can 
 
 ---
 
-*Filed under: competitive intelligence, AI tooling dynamics, talent market signals*
-*Relevance: 75 — industry context for understanding Claude Code's positioning*
+_Filed under: competitive intelligence, AI tooling dynamics, talent market signals_
+_Relevance: 75 — industry context for understanding Claude Code's positioning_

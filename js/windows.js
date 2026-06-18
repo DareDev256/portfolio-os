@@ -23,7 +23,12 @@ export const WindowManager = {
             if (e.key !== 'Escape') return;
             // Higher-priority overlays handle their own ESC first
             if (document.querySelector('.modal-overlay.active')) return;
-            if (document.querySelector('.lightbox-overlay.active, .lightbox-overlay[style*="display: flex"]')) return;
+            if (
+                document.querySelector(
+                    '.lightbox-overlay.active, .lightbox-overlay[style*="display: flex"]'
+                )
+            )
+                return;
             if (document.querySelector('.tour-overlay.active')) return;
             if (this.activeWindow) {
                 this.close(this.activeWindow.id);
@@ -36,7 +41,18 @@ export const WindowManager = {
      * @param {Object} options - Window configuration
      */
     create(options) {
-        const { id, title, icon, content, width = 600, height = 400, x = null, y = null, transitionType = 'pop', onClose = null } = options;
+        const {
+            id,
+            title,
+            icon,
+            content,
+            width = 600,
+            height = 400,
+            x = null,
+            y = null,
+            transitionType = 'pop',
+            onClose = null,
+        } = options;
 
         // Check if window already exists
         if (State.getWindow(id)) {
@@ -275,8 +291,10 @@ export const WindowManager = {
     initDragging(windowObj, titlebar) {
         let isDragging = false;
         let startX, startY, initialX, initialY;
-        let velocityX = 0, velocityY = 0;
-        let lastX = 0, lastY = 0;
+        let velocityX = 0,
+            velocityY = 0;
+        let lastX = 0,
+            lastY = 0;
         let lastTime = 0;
 
         // Magnetic snap settings
@@ -324,8 +342,8 @@ export const WindowManager = {
 
             // Calculate velocity
             if (dt > 0) {
-                velocityX = (e.clientX - lastX) / dt * 16; // Normalize to ~60fps
-                velocityY = (e.clientY - lastY) / dt * 16;
+                velocityX = ((e.clientX - lastX) / dt) * 16; // Normalize to ~60fps
+                velocityY = ((e.clientY - lastY) / dt) * 16;
             }
 
             lastX = e.clientX;
@@ -355,7 +373,10 @@ export const WindowManager = {
             const snapped = applyMagneticSnap(windowObj);
 
             // If not snapped, apply inertia
-            if (!snapped && (Math.abs(velocityX) > MIN_VELOCITY || Math.abs(velocityY) > MIN_VELOCITY)) {
+            if (
+                !snapped &&
+                (Math.abs(velocityX) > MIN_VELOCITY || Math.abs(velocityY) > MIN_VELOCITY)
+            ) {
                 applyInertia(windowObj, velocityX, velocityY);
             } else {
                 State.saveWindowStates();
@@ -379,19 +400,22 @@ export const WindowManager = {
             }
 
             // Snap to top edge
-            if (win.y < SNAP_THRESHOLD + 40) { // Account for top bar
+            if (win.y < SNAP_THRESHOLD + 40) {
+                // Account for top bar
                 win.y = 40 + SNAP_MARGIN;
                 snapped = true;
             }
             // Snap to bottom edge (above dock)
-            else if (win.y + win.height > vh - SNAP_THRESHOLD - 80) { // Account for dock
+            else if (win.y + win.height > vh - SNAP_THRESHOLD - 80) {
+                // Account for dock
                 win.y = vh - win.height - 80 - SNAP_MARGIN;
                 snapped = true;
             }
 
             if (snapped) {
                 // Animate to snapped position with a subtle bounce
-                win.element.style.transition = 'left 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                win.element.style.transition =
+                    'left 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
                 win.element.style.left = `${win.x}px`;
                 win.element.style.top = `${win.y}px`;
 
@@ -425,10 +449,12 @@ export const WindowManager = {
                     vx = -vx * BOUNCE_FACTOR;
                 }
 
-                if (win.y <= 40) { // Top bar
+                if (win.y <= 40) {
+                    // Top bar
                     win.y = 40;
                     vy = -vy * BOUNCE_FACTOR;
-                } else if (win.y + win.height >= vh - 80) { // Dock
+                } else if (win.y + win.height >= vh - 80) {
+                    // Dock
                     win.y = vh - win.height - 80;
                     vy = -vy * BOUNCE_FACTOR;
                 }
@@ -657,7 +683,11 @@ export const WindowManager = {
 
         // Run cleanup callback before closing
         if (typeof windowObj.onClose === 'function') {
-            try { windowObj.onClose(); } catch (e) { console.error('onClose error:', e); }
+            try {
+                windowObj.onClose();
+            } catch (e) {
+                console.error('onClose error:', e);
+            }
         }
 
         // Add glitch closing animation

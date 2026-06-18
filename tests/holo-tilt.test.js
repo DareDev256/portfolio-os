@@ -20,8 +20,17 @@ function makeCard() {
     const card = document.createElement('div');
     card.className = 'project-card';
     Object.defineProperty(card, 'getBoundingClientRect', {
-        value: () => ({ left: 100, top: 100, width: 200, height: 160,
-                        right: 300, bottom: 260, x: 100, y: 100, toJSON() {} }),
+        value: () => ({
+            left: 100,
+            top: 100,
+            width: 200,
+            height: 160,
+            right: 300,
+            bottom: 260,
+            x: 100,
+            y: 100,
+            toJSON() {},
+        }),
     });
     // Add children — mimics blueprint overlay, title, description
     const overlay = document.createElement('div');
@@ -35,9 +44,12 @@ function makeCard() {
 }
 
 function fireLeave(target, relatedTarget) {
-    target.dispatchEvent(new MouseEvent('mouseleave', {
-        bubbles: false, relatedTarget,
-    }));
+    target.dispatchEvent(
+        new MouseEvent('mouseleave', {
+            bubbles: false,
+            relatedTarget,
+        })
+    );
 }
 
 describe('HoloTilt', () => {
@@ -57,7 +69,7 @@ describe('HoloTilt', () => {
 
         // Move cursor to card area — target a child so closest() walks up
         card.querySelector('.project-title').dispatchEvent(
-            new MouseEvent('mousemove', { clientX: 200, clientY: 180, bubbles: true }),
+            new MouseEvent('mousemove', { clientX: 200, clientY: 180, bubbles: true })
         );
 
         expect(card.style.transform).toContain('perspective');
@@ -71,7 +83,7 @@ describe('HoloTilt', () => {
 
         // Activate card
         card.querySelector('.project-title').dispatchEvent(
-            new MouseEvent('mousemove', { clientX: 200, clientY: 180, bubbles: true }),
+            new MouseEvent('mousemove', { clientX: 200, clientY: 180, bubbles: true })
         );
         expect(card.style.transform).toContain('perspective');
 
@@ -91,7 +103,7 @@ describe('HoloTilt', () => {
 
         // Activate card via mousemove on overlay
         overlay.dispatchEvent(
-            new MouseEvent('mousemove', { clientX: 200, clientY: 180, bubbles: true }),
+            new MouseEvent('mousemove', { clientX: 200, clientY: 180, bubbles: true })
         );
         expect(card.style.transform).toContain('perspective');
 
@@ -108,7 +120,7 @@ describe('HoloTilt', () => {
         HoloTilt.init();
 
         card.querySelector('.project-title').dispatchEvent(
-            new MouseEvent('mousemove', { clientX: 200, clientY: 180, bubbles: true }),
+            new MouseEvent('mousemove', { clientX: 200, clientY: 180, bubbles: true })
         );
 
         // mouseleave with null relatedTarget = cursor left the window
@@ -124,7 +136,7 @@ describe('HoloTilt', () => {
 
         // Activate card
         card.querySelector('.project-title').dispatchEvent(
-            new MouseEvent('mousemove', { clientX: 200, clientY: 180, bubbles: true }),
+            new MouseEvent('mousemove', { clientX: 200, clientY: 180, bubbles: true })
         );
         expect(HoloTilt._activeCard).toBe(card);
 
@@ -144,7 +156,7 @@ describe('HoloTilt', () => {
 
         // init() should bail before adding any listeners
         const holoListeners = addSpy.mock.calls.filter(
-            ([type]) => type === 'mousemove' || type === 'mouseleave',
+            ([type]) => type === 'mousemove' || type === 'mouseleave'
         );
         expect(holoListeners).toHaveLength(0);
         addSpy.mockRestore();
@@ -155,7 +167,7 @@ describe('HoloTilt', () => {
         HoloTilt.init();
 
         card.dispatchEvent(
-            new MouseEvent('mousemove', { clientX: 150, clientY: 130, bubbles: true }),
+            new MouseEvent('mousemove', { clientX: 150, clientY: 130, bubbles: true })
         );
 
         // lx = clientX - rect.left = 150 - 100 = 50
@@ -171,13 +183,13 @@ describe('HoloTilt', () => {
 
         // Activate
         card.dispatchEvent(
-            new MouseEvent('mousemove', { clientX: 200, clientY: 180, bubbles: true }),
+            new MouseEvent('mousemove', { clientX: 200, clientY: 180, bubbles: true })
         );
         expect(card.style.transform).toContain('perspective');
 
         // mousemove on body (outside any card)
         document.body.dispatchEvent(
-            new MouseEvent('mousemove', { clientX: 500, clientY: 500, bubbles: true }),
+            new MouseEvent('mousemove', { clientX: 500, clientY: 500, bubbles: true })
         );
 
         expect(card.style.transform).toBe('');

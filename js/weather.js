@@ -6,14 +6,29 @@ import { el, fetchWithTimeout } from './dom-helpers.js';
  */
 
 const WMO_CODES = {
-    0: ['Clear Sky', '☀️'], 1: ['Mostly Clear', '🌤'], 2: ['Partly Cloudy', '⛅'],
-    3: ['Overcast', '☁️'], 45: ['Foggy', '🌫'], 48: ['Rime Fog', '🌫'],
-    51: ['Light Drizzle', '🌦'], 53: ['Drizzle', '🌦'], 55: ['Dense Drizzle', '🌧'],
-    61: ['Light Rain', '🌧'], 63: ['Rain', '🌧'], 65: ['Heavy Rain', '🌧'],
-    71: ['Light Snow', '🌨'], 73: ['Snow', '❄️'], 75: ['Heavy Snow', '❄️'],
-    80: ['Rain Showers', '🌦'], 81: ['Moderate Showers', '🌧'], 82: ['Violent Showers', '⛈'],
-    85: ['Snow Showers', '🌨'], 86: ['Heavy Snow Showers', '❄️'],
-    95: ['Thunderstorm', '⛈'], 96: ['Hail Storm', '⛈'], 99: ['Severe Hail', '⛈'],
+    0: ['Clear Sky', '☀️'],
+    1: ['Mostly Clear', '🌤'],
+    2: ['Partly Cloudy', '⛅'],
+    3: ['Overcast', '☁️'],
+    45: ['Foggy', '🌫'],
+    48: ['Rime Fog', '🌫'],
+    51: ['Light Drizzle', '🌦'],
+    53: ['Drizzle', '🌦'],
+    55: ['Dense Drizzle', '🌧'],
+    61: ['Light Rain', '🌧'],
+    63: ['Rain', '🌧'],
+    65: ['Heavy Rain', '🌧'],
+    71: ['Light Snow', '🌨'],
+    73: ['Snow', '❄️'],
+    75: ['Heavy Snow', '❄️'],
+    80: ['Rain Showers', '🌦'],
+    81: ['Moderate Showers', '🌧'],
+    82: ['Violent Showers', '⛈'],
+    85: ['Snow Showers', '🌨'],
+    86: ['Heavy Snow Showers', '❄️'],
+    95: ['Thunderstorm', '⛈'],
+    96: ['Hail Storm', '⛈'],
+    99: ['Severe Hail', '⛈'],
 };
 
 function describeWMO(code) {
@@ -27,7 +42,8 @@ function describeWMO(code) {
 function validateWeatherData(data) {
     if (!data || typeof data !== 'object') return false;
     const c = data.current;
-    if (!c || typeof c.temperature_2m !== 'number' || typeof c.weather_code !== 'number') return false;
+    if (!c || typeof c.temperature_2m !== 'number' || typeof c.weather_code !== 'number')
+        return false;
     const d = data.daily;
     if (!d || !Array.isArray(d.time) || d.time.length < 3) return false;
     if (!Array.isArray(d.temperature_2m_max) || !Array.isArray(d.temperature_2m_min)) return false;
@@ -40,7 +56,8 @@ async function fetchWeather(lat, lon) {
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
         throw new Error('Invalid coordinates');
     }
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+    const url =
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
         '&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m' +
         '&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto&forecast_days=3';
     const res = await fetchWithTimeout(url, { timeout: 8000 });
@@ -81,14 +98,22 @@ export function renderWeather(container) {
             const errWrap = el('div', 'weather-error');
             errWrap.appendChild(el('div', 'weather-error-icon', '📡'));
             errWrap.appendChild(el('div', 'weather-error-title', 'Location Unavailable'));
-            errWrap.appendChild(el('div', 'weather-error-msg',
-                err.code === 1 ? 'Permission denied — enable location access to use weather.'
-                    : 'Could not determine your location. Check your connection.'));
+            errWrap.appendChild(
+                el(
+                    'div',
+                    'weather-error-msg',
+                    err.code === 1
+                        ? 'Permission denied — enable location access to use weather.'
+                        : 'Could not determine your location. Check your connection.'
+                )
+            );
             wrap.appendChild(errWrap);
         }
     })();
 
-    return () => { aborted = true; };
+    return () => {
+        aborted = true;
+    };
 }
 
 function renderData(wrap, data) {

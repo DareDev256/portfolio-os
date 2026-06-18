@@ -24,7 +24,9 @@ Object.defineProperty(window, 'matchMedia', {
 // ResizeObserver stub — stores callback for manual triggering
 let resizeObserverCb;
 globalThis.ResizeObserver = class {
-    constructor(cb) { resizeObserverCb = cb; }
+    constructor(cb) {
+        resizeObserverCb = cb;
+    }
     observe() {}
     disconnect() {}
     unobserve() {}
@@ -33,13 +35,18 @@ globalThis.ResizeObserver = class {
 // MutationObserver stub — stores callback for manual triggering
 let mutationCb;
 globalThis.MutationObserver = class {
-    constructor(cb) { mutationCb = cb; }
+    constructor(cb) {
+        mutationCb = cb;
+    }
     observe() {}
     disconnect() {}
 };
 
 // rAF stub — executes synchronously
-vi.stubGlobal('requestAnimationFrame', (cb) => { cb(performance.now()); return 1; });
+vi.stubGlobal('requestAnimationFrame', (cb) => {
+    cb(performance.now());
+    return 1;
+});
 
 const { VoidScroll } = await import('../js/void-scroll.js');
 
@@ -50,7 +57,7 @@ function makeScrollable(scrollH = 500, clientH = 200, scrollTop = 0) {
     Object.defineProperties(el, {
         scrollHeight: { get: () => scrollH, configurable: true },
         clientHeight: { get: () => clientH, configurable: true },
-        scrollTop:    { get: () => scrollTop, set: () => {}, configurable: true },
+        scrollTop: { get: () => scrollTop, set: () => {}, configurable: true },
     });
     document.body.appendChild(el);
     return el;
@@ -160,9 +167,11 @@ describe('VoidScroll', () => {
         VoidScroll.init();
         // Simulate MutationObserver firing for a new window
         const newEl = makeScrollable(600, 300);
-        mutationCb([{
-            addedNodes: [newEl],
-        }]);
+        mutationCb([
+            {
+                addedNodes: [newEl],
+            },
+        ]);
         expect(newEl.querySelector('.void-scroll-progress')).not.toBeNull();
     });
 
@@ -174,7 +183,7 @@ describe('VoidScroll', () => {
         Object.defineProperties(child, {
             scrollHeight: { get: () => 800, configurable: true },
             clientHeight: { get: () => 300, configurable: true },
-            scrollTop:    { get: () => 0, configurable: true },
+            scrollTop: { get: () => 0, configurable: true },
         });
         wrapper.appendChild(child);
         document.body.appendChild(wrapper);

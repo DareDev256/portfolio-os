@@ -24,36 +24,36 @@ export const Tour = {
             title: 'Welcome to My Portfolio',
             description: 'This is an interactive desktop experience. Let me show you around!',
             target: null,
-            position: 'center'
+            position: 'center',
         },
         {
             id: 'about',
             title: 'About Me',
             description: 'Start here to learn about who I am, my background, and what drives me.',
             target: '[data-icon-id="about"]',
-            position: 'right'
+            position: 'right',
         },
         {
             id: 'dock',
             title: 'The Dock',
             description: 'Quick access to key apps - just like macOS. Click any icon to launch.',
             target: '.taskbar.dock-style',
-            position: 'top'
+            position: 'top',
         },
         {
             id: 'resume',
             title: 'Resume',
             description: 'View my professional experience, skills, and download my resume.',
             target: '[data-icon-id="resume"]',
-            position: 'right'
+            position: 'right',
         },
         {
             id: 'applications',
             title: 'Applications',
             description: 'Check out my projects and live demos. This is where the real work lives!',
             target: '[data-icon-id="applications"]',
-            position: 'left'
-        }
+            position: 'left',
+        },
     ],
 
     /**
@@ -106,7 +106,13 @@ export const Tour = {
         // Programmatic image error handling — replaces inline onerror (CSP-safe)
         const avatarImg = this.overlay.querySelector('.tour-passion-row .passion-avatar');
         if (avatarImg) {
-            avatarImg.addEventListener('error', () => { avatarImg.style.display = 'none'; }, { once: true });
+            avatarImg.addEventListener(
+                'error',
+                () => {
+                    avatarImg.style.display = 'none';
+                },
+                { once: true }
+            );
         }
 
         // Get references
@@ -137,7 +143,8 @@ export const Tour = {
         this.currentStep = index;
 
         // Update tooltip content
-        this.tooltip.querySelector('.tour-step-indicator').textContent = `${index + 1} of ${this.steps.length}`;
+        this.tooltip.querySelector('.tour-step-indicator').textContent =
+            `${index + 1} of ${this.steps.length}`;
         this.tooltip.querySelector('.tour-title').textContent = step.title;
         this.tooltip.querySelector('.tour-description').textContent = step.description;
 
@@ -186,18 +193,18 @@ export const Tour = {
         switch (tooltipPosition) {
             case 'right':
                 tooltipX = rect.right + 20;
-                tooltipY = rect.top + (rect.height / 2) - (tooltipRect.height / 2);
+                tooltipY = rect.top + rect.height / 2 - tooltipRect.height / 2;
                 break;
             case 'left':
                 tooltipX = rect.left - tooltipRect.width - 20;
-                tooltipY = rect.top + (rect.height / 2) - (tooltipRect.height / 2);
+                tooltipY = rect.top + rect.height / 2 - tooltipRect.height / 2;
                 break;
             case 'top':
-                tooltipX = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+                tooltipX = rect.left + rect.width / 2 - tooltipRect.width / 2;
                 tooltipY = rect.top - tooltipRect.height - 20;
                 break;
             case 'bottom':
-                tooltipX = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+                tooltipX = rect.left + rect.width / 2 - tooltipRect.width / 2;
                 tooltipY = rect.bottom + 20;
                 break;
             default:
@@ -251,7 +258,7 @@ export const Tour = {
         }
 
         // Remove any highlights
-        document.querySelectorAll('.tour-highlight').forEach(el => {
+        document.querySelectorAll('.tour-highlight').forEach((el) => {
             el.classList.remove('tour-highlight');
         });
 
@@ -265,5 +272,5 @@ export const Tour = {
             this.tooltip = null;
             this.isActive = false;
         }, 300);
-    }
+    },
 };

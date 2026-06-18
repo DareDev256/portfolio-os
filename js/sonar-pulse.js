@@ -7,9 +7,9 @@
 
 import { shouldSkipDesktopEffects } from './dom-helpers.js';
 
-const RING_COUNT   = 3;
-const LIFETIME_MS  = 1600;
-const SECTOR_TAGS  = ['SECTOR CLEAR', 'SIGNAL NOMINAL', 'FIELD STABLE', 'GRID LOCKED', 'PING OK'];
+const RING_COUNT = 3;
+const LIFETIME_MS = 1600;
+const SECTOR_TAGS = ['SECTOR CLEAR', 'SIGNAL NOMINAL', 'FIELD STABLE', 'GRID LOCKED', 'PING OK'];
 
 let _cooldown = false;
 
@@ -20,12 +20,14 @@ function randomTag() {
 function spawn(x, y) {
     if (_cooldown) return;
     _cooldown = true;
-    setTimeout(() => { _cooldown = false; }, 320);   // debounce rapid clicks
+    setTimeout(() => {
+        _cooldown = false;
+    }, 320); // debounce rapid clicks
 
     const wrap = document.createElement('div');
     wrap.className = 'sonar-pulse';
     wrap.style.left = `${x}px`;
-    wrap.style.top  = `${y}px`;
+    wrap.style.top = `${y}px`;
 
     // Concentric rings — alternate gold / amethyst
     for (let i = 0; i < RING_COUNT; i++) {
@@ -51,9 +53,11 @@ function spawn(x, y) {
 
 function isDesktopSurface(target) {
     if (!target) return false;
-    return target.id === 'desktop'
-        || target.classList.contains('desktop-icons')
-        || target.classList.contains('bg-wheel-container');
+    return (
+        target.id === 'desktop' ||
+        target.classList.contains('desktop-icons') ||
+        target.classList.contains('bg-wheel-container')
+    );
 }
 
 export const SonarPulse = {

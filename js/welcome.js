@@ -88,11 +88,15 @@ export const Welcome = {
         // Programmatic image error handling — replaces inline onerror (CSP-safe)
         const avatarImg = overlay.querySelector('.passion-avatar-container img');
         if (avatarImg) {
-            avatarImg.addEventListener('error', () => {
-                avatarImg.style.display = 'none';
-                const fallback = avatarImg.nextElementSibling;
-                if (fallback) fallback.style.display = 'flex';
-            }, { once: true });
+            avatarImg.addEventListener(
+                'error',
+                () => {
+                    avatarImg.style.display = 'none';
+                    const fallback = avatarImg.nextElementSibling;
+                    if (fallback) fallback.style.display = 'flex';
+                },
+                { once: true }
+            );
         }
 
         // Animate in
@@ -136,5 +140,5 @@ export const Welcome = {
      */
     reset() {
         localStorage.removeItem('hasSeenWelcome');
-    }
+    },
 };

@@ -49,14 +49,18 @@ function inject(contentEl) {
 
     // Scroll handler — updates bar width
     let ticking = false;
-    contentEl.addEventListener('scroll', () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-            updateBar(contentEl, bar);
-            ticking = false;
-        });
-    }, { passive: true });
+    contentEl.addEventListener(
+        'scroll',
+        () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                updateBar(contentEl, bar);
+                ticking = false;
+            });
+        },
+        { passive: true }
+    );
 
     // Initial state
     updateBar(contentEl, bar);

@@ -133,7 +133,8 @@ describe('Lightbox — Privacy-Enhanced Embeds', () => {
 
 describe('Admin — YouTube ID Regex Hardening', () => {
     // The admin regex must enforce the same 11-char alphanumeric constraint as lightbox
-    const ADMIN_REGEX = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[&?/]|$)/;
+    const ADMIN_REGEX =
+        /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[&?/]|$)/;
 
     it('extracts valid 11-char YouTube ID', () => {
         const match = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'.match(ADMIN_REGEX);

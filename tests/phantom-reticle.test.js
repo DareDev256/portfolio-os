@@ -71,8 +71,8 @@ describe('PhantomReticle — Spring Physics', () => {
 
     it('works with negative coordinates', () => {
         const result = simulateSpring({ x: -300, y: -150 }, 100);
-        expect(Math.abs(result.rx - (-300))).toBeLessThan(0.1);
-        expect(Math.abs(result.ry - (-150))).toBeLessThan(0.1);
+        expect(Math.abs(result.rx - -300)).toBeLessThan(0.1);
+        expect(Math.abs(result.ry - -150)).toBeLessThan(0.1);
     });
 });
 

@@ -9,15 +9,15 @@ import { describe, it, expect } from 'vitest';
 import { PALETTE } from '../js/dom-helpers.js';
 
 /* ── Constants (mirrored from ambient-drift.js) ── */
-const ORB_COUNT      = 7;
-const ORB_MIN_R      = 3;
-const ORB_MAX_R      = 7;
-const DRIFT_SPEED    = 0.15;
-const REPEL_RADIUS   = 180;
+const ORB_COUNT = 7;
+const ORB_MIN_R = 3;
+const ORB_MAX_R = 7;
+const DRIFT_SPEED = 0.15;
+const REPEL_RADIUS = 180;
 const REPEL_STRENGTH = 2.5;
-const FADE_EDGE      = 60;
-const GOLD           = PALETTE.GOLD;
-const AMETHYST       = PALETTE.AMETHYST;
+const FADE_EDGE = 60;
+const GOLD = PALETTE.GOLD;
+const AMETHYST = PALETTE.AMETHYST;
 
 /* ── Re-implemented pure logic from ambient-drift.js ── */
 function noise2d(x, y) {
@@ -26,20 +26,26 @@ function noise2d(x, y) {
 }
 
 function smoothNoise(x, y) {
-    const ix = Math.floor(x), iy = Math.floor(y);
-    const fx = x - ix, fy = y - iy;
+    const ix = Math.floor(x),
+        iy = Math.floor(y);
+    const fx = x - ix,
+        fy = y - iy;
     const sx = fx * fx * (3 - 2 * fx);
     const sy = fy * fy * (3 - 2 * fy);
-    const a = noise2d(ix, iy), b = noise2d(ix + 1, iy);
-    const c = noise2d(ix, iy + 1), d = noise2d(ix + 1, iy + 1);
+    const a = noise2d(ix, iy),
+        b = noise2d(ix + 1, iy);
+    const c = noise2d(ix, iy + 1),
+        d = noise2d(ix + 1, iy + 1);
     return a + (b - a) * sx + (c - a) * sy + (a - b - c + d) * sx * sy;
 }
 
 function createOrb(i) {
-    const w = 1920, h = 1080;
+    const w = 1920,
+        h = 1080;
     const isGold = i % 2 === 0;
     return {
-        x: Math.random() * w, y: Math.random() * h,
+        x: Math.random() * w,
+        y: Math.random() * h,
         r: ORB_MIN_R + Math.random() * (ORB_MAX_R - ORB_MIN_R),
         color: isGold ? GOLD : AMETHYST,
         phase: Math.random() * 1000,
@@ -49,7 +55,8 @@ function createOrb(i) {
 }
 
 function computeRepulsion(orbX, orbY, mouseX, mouseY) {
-    const dx = orbX - mouseX, dy = orbY - mouseY;
+    const dx = orbX - mouseX,
+        dy = orbY - mouseY;
     const dist = Math.sqrt(dx * dx + dy * dy);
     if (dist >= REPEL_RADIUS || dist === 0) return { fx: 0, fy: 0 };
     const force = (1 - dist / REPEL_RADIUS) * REPEL_STRENGTH;
@@ -57,7 +64,7 @@ function computeRepulsion(orbX, orbY, mouseX, mouseY) {
 }
 
 function wrapOrb(val, max) {
-    if (val < -40)     return max + 20;
+    if (val < -40) return max + 20;
     if (val > max + 40) return -20;
     return val;
 }
@@ -148,22 +155,22 @@ describe('Ambient Drift — Cursor Repulsion', () => {
     });
 
     it('force decays linearly with distance', () => {
-        const close = computeRepulsion(100, 100, 150, 100);  // 50px away
-        const far   = computeRepulsion(100, 100, 200, 100);  // 100px away
+        const close = computeRepulsion(100, 100, 150, 100); // 50px away
+        const far = computeRepulsion(100, 100, 200, 100); // 100px away
         expect(Math.abs(close.fx)).toBeGreaterThan(Math.abs(far.fx));
     });
 });
 
 describe('Ambient Drift — Viewport Wrapping', () => {
-    it('wraps past left edge', ()  => expect(wrapOrb(-41, 1920)).toBe(1940));
+    it('wraps past left edge', () => expect(wrapOrb(-41, 1920)).toBe(1940));
     it('wraps past right edge', () => expect(wrapOrb(1961, 1920)).toBe(-20));
-    it('stays within bounds', ()   => expect(wrapOrb(500, 1920)).toBe(500));
+    it('stays within bounds', () => expect(wrapOrb(500, 1920)).toBe(500));
     it('boundary threshold: exactly -40 stays', () => expect(wrapOrb(-40, 1920)).toBe(-40));
 });
 
 describe('Ambient Drift — Edge Fade', () => {
     it('fully bright at center', () => expect(computeEdgeFade(500, 500, 1920, 1080)).toBe(1));
-    it('zero at edge',           () => expect(computeEdgeFade(0, 500, 1920, 1080)).toBe(0));
+    it('zero at edge', () => expect(computeEdgeFade(0, 500, 1920, 1080)).toBe(0));
     it('half-fade at FADE_EDGE/2', () => {
         expect(computeEdgeFade(30, 500, 1920, 1080)).toBeCloseTo(0.5, 5);
     });

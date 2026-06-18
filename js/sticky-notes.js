@@ -39,7 +39,10 @@ function renderNote(note, grid, save, onDelete) {
     delBtn.title = 'Delete note';
     delBtn.addEventListener('click', () => {
         card.classList.add('sticky-note-removing');
-        setTimeout(() => { card.remove(); onDelete(note.id); }, 200);
+        setTimeout(() => {
+            card.remove();
+            onDelete(note.id);
+        }, 200);
     });
 
     header.append(colorBtn, delBtn);
@@ -54,16 +57,30 @@ function renderNote(note, grid, save, onDelete) {
     let timer = null;
     body.addEventListener('input', () => {
         clearTimeout(timer);
-        timer = setTimeout(() => { note.text = body.textContent; note.updated = Date.now(); save(); }, 400);
+        timer = setTimeout(() => {
+            note.text = body.textContent;
+            note.updated = Date.now();
+            save();
+        }, 400);
     });
     body.addEventListener('blur', () => {
-        if (timer) { clearTimeout(timer); note.text = body.textContent; note.updated = Date.now(); save(); timer = null; }
+        if (timer) {
+            clearTimeout(timer);
+            note.text = body.textContent;
+            note.updated = Date.now();
+            save();
+            timer = null;
+        }
     });
 
     const time = el('div', 'sticky-note-time');
     time.style.color = color.border;
-    time.textContent = new Date(note.updated || note.created)
-        .toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    time.textContent = new Date(note.updated || note.created).toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+    });
 
     card.append(header, body, time);
     grid.appendChild(card);
@@ -87,11 +104,13 @@ export function renderStickyNotes(container) {
 
     function refresh() {
         grid.innerHTML = '';
-        notes.forEach((n) => renderNote(n, grid, save, (id) => {
-            notes = notes.filter((x) => x.id !== id);
-            save();
-            refresh();
-        }));
+        notes.forEach((n) =>
+            renderNote(n, grid, save, (id) => {
+                notes = notes.filter((x) => x.id !== id);
+                save();
+                refresh();
+            })
+        );
         countEl.textContent = `${notes.length} note${notes.length !== 1 ? 's' : ''}`;
         empty.style.display = notes.length ? 'none' : '';
         grid.style.display = notes.length ? '' : 'none';

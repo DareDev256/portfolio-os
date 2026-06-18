@@ -10,8 +10,9 @@
 .cipher-resolved {
     color: var(--gold, #d4af37) !important;
     text-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
-    transition: color 0.6s var(--ease-decel, ease-out),
-                text-shadow 0.8s var(--ease-decel, ease-out);
+    transition:
+        color 0.6s var(--ease-decel, ease-out),
+        text-shadow 0.8s var(--ease-decel, ease-out);
 }
 
 /* Scan line — vertical gold bar sweeping left-to-right inside .cv-pre */
@@ -29,8 +30,9 @@
         var(--gold, #d4af37) 80%,
         transparent 100%
     );
-    box-shadow: 0 0 8px rgba(212, 175, 55, 0.5),
-                0 0 20px rgba(212, 175, 55, 0.15);
+    box-shadow:
+        0 0 8px rgba(212, 175, 55, 0.5),
+        0 0 20px rgba(212, 175, 55, 0.15);
     opacity: 0;
     pointer-events: none;
     z-index: 2;
@@ -40,8 +42,9 @@
 .cipher-scan--active {
     opacity: 1;
     left: 100%;
-    transition: left 0.6s var(--ease-decel, cubic-bezier(0, 0, 0.2, 1)),
-                opacity 0.3s ease-out 0.5s;
+    transition:
+        left 0.6s var(--ease-decel, cubic-bezier(0, 0, 0.2, 1)),
+        opacity 0.3s ease-out 0.5s;
 }
 
 /* Subtle ambient glow on the entire code block during decode */
@@ -56,5 +59,7 @@
         color: inherit !important;
         text-shadow: none !important;
     }
-    .cipher-scan { display: none; }
+    .cipher-scan {
+        display: none;
+    }
 }

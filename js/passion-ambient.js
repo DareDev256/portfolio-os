@@ -6,7 +6,7 @@
 import { PassionLive } from './passion-live.js';
 
 const TOAST_COOLDOWN = 30_000; // 30 seconds between toasts
-const IDLE_TIMEOUT = 60_000;   // 60 seconds before idle trigger
+const IDLE_TIMEOUT = 60_000; // 60 seconds before idle trigger
 const DISMISSED_KEY = 'passion_ambient_dismissed';
 
 let lastToastTime = 0;
@@ -16,27 +16,30 @@ let initialized = false;
 
 // Triggers mapped to window opens (matched by window ID)
 const WINDOW_TRIGGERS = {
-    portfolio:    "Oh, checking out the portfolio? James put his best work front and center.",
-    applications: "The applications showcase — real projects, real code. No fluff.",
-    contact:      "Want to reach James? He's pretty responsive on email.",
-    about:        "Getting to know the person behind the code. Good call.",
-    skills:       "The skills matrix — James keeps this one updated. It's legit.",
-    github:       "GitHub Ops — where the commit history tells the real story.",
-    resume:       "Smart move. The resume has all the details you need.",
+    portfolio: 'Oh, checking out the portfolio? James put his best work front and center.',
+    applications: 'The applications showcase — real projects, real code. No fluff.',
+    contact: "Want to reach James? He's pretty responsive on email.",
+    about: 'Getting to know the person behind the code. Good call.',
+    skills: "The skills matrix — James keeps this one updated. It's legit.",
+    github: 'GitHub Ops — where the commit history tells the real story.',
+    resume: 'Smart move. The resume has all the details you need.',
 };
 
 const IDLE_MESSAGES = [
-    "Still here? Want me to show you something cool?",
-    "Taking it all in? I respect that.",
-    "Need a tour? Just click the ◈ button in the dock.",
+    'Still here? Want me to show you something cool?',
+    'Taking it all in? I respect that.',
+    'Need a tour? Just click the ◈ button in the dock.',
 ];
 
-const SCROLL_BOTTOM_MESSAGE = "You made it to the bottom! That's dedication. Want to connect with James?";
+const SCROLL_BOTTOM_MESSAGE =
+    "You made it to the bottom! That's dedication. Want to connect with James?";
 
 function getDismissed() {
     try {
         return JSON.parse(sessionStorage.getItem(DISMISSED_KEY) || '{}');
-    } catch { return {}; }
+    } catch {
+        return {};
+    }
 }
 
 function setDismissed(key) {
@@ -44,7 +47,9 @@ function setDismissed(key) {
         const dismissed = getDismissed();
         dismissed[key] = true;
         sessionStorage.setItem(DISMISSED_KEY, JSON.stringify(dismissed));
-    } catch { /* non-critical */ }
+    } catch {
+        /* non-critical */
+    }
 }
 
 function isDismissed(key) {
@@ -144,14 +149,18 @@ export function initAmbientPresence() {
 
     // Scroll-to-bottom detection (approximate)
     let scrollTriggered = false;
-    window.addEventListener('scroll', () => {
-        if (scrollTriggered) return;
-        const scrollY = window.scrollY || document.documentElement.scrollTop;
-        const docHeight = document.documentElement.scrollHeight;
-        const viewHeight = window.innerHeight;
-        if (scrollY + viewHeight >= docHeight - 50) {
-            scrollTriggered = true;
-            showToast(SCROLL_BOTTOM_MESSAGE, 'scroll_bottom');
-        }
-    }, { passive: true });
+    window.addEventListener(
+        'scroll',
+        () => {
+            if (scrollTriggered) return;
+            const scrollY = window.scrollY || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight;
+            const viewHeight = window.innerHeight;
+            if (scrollY + viewHeight >= docHeight - 50) {
+                scrollTriggered = true;
+                showToast(SCROLL_BOTTOM_MESSAGE, 'scroll_bottom');
+            }
+        },
+        { passive: true }
+    );
 }

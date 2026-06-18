@@ -11,7 +11,9 @@
     transition: opacity 0.3s var(--ease-decel);
 }
 
-.purple-haze.active { opacity: 1; }
+.purple-haze.active {
+    opacity: 1;
+}
 
 /* ── Curtain panels ──────────────────────────────────────────── */
 .ph-panel {
@@ -44,10 +46,8 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: repeating-conic-gradient(
-        rgba(139, 92, 246, 0.03) 0% 25%,
-        transparent 0% 50%
-    ) 0 0 / 4px 4px;
+    background: repeating-conic-gradient(rgba(139, 92, 246, 0.03) 0% 25%, transparent 0% 50%) 0 0 /
+        4px 4px;
     mix-blend-mode: overlay;
 }
 
@@ -71,8 +71,9 @@
         0 0 30px var(--gold-dim),
         0 0 60px rgba(212, 175, 55, 0.2),
         0 0 4px var(--amethyst-dim);
-    transition: transform 0.6s var(--ease-decel),
-                opacity 0.4s var(--ease-accel) 0.7s;
+    transition:
+        transform 0.6s var(--ease-decel),
+        opacity 0.4s var(--ease-accel) 0.7s;
     z-index: 1;
 }
 
@@ -91,8 +92,9 @@
         rgba(139, 92, 246, 0.08) 40%,
         transparent 70%
     );
-    transition: transform 0.8s var(--ease-decel),
-                opacity 0.5s var(--ease-accel) 0.6s;
+    transition:
+        transform 0.8s var(--ease-decel),
+        opacity 0.5s var(--ease-accel) 0.6s;
 }
 
 /* ── Reveal animation states ─────────────────────────────────── */
@@ -142,8 +144,12 @@
     transition: opacity 0.4s var(--ease-decel) 0.1s;
 }
 
-.ph-panel--top::after { bottom: 0; }
-.ph-panel--bottom::after { top: 0; }
+.ph-panel--top::after {
+    bottom: 0;
+}
+.ph-panel--bottom::after {
+    top: 0;
+}
 
 .purple-haze.active .ph-panel--top::after,
 .purple-haze.active .ph-panel--bottom::after {

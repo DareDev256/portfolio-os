@@ -88,8 +88,14 @@ export function render(container) {
         Sanitize.setHTML(container, buildContent());
 
         // Programmatic image error handling — replaces inline onerror (CSP-safe)
-        container.querySelectorAll('.passion-avatar').forEach(img => {
-            img.addEventListener('error', () => { img.style.display = 'none'; }, { once: true });
+        container.querySelectorAll('.passion-avatar').forEach((img) => {
+            img.addEventListener(
+                'error',
+                () => {
+                    img.style.display = 'none';
+                },
+                { once: true }
+            );
         });
 
         const refreshBtn = container.querySelector('#passionChatRefresh');

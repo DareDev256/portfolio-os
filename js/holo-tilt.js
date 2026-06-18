@@ -6,8 +6,8 @@
 import { prefersReducedMotion } from './dom-helpers.js';
 
 const SELECTOR = '.project-card';
-const MAX_TILT = 8;           // degrees
-const LIGHT_RADIUS = 260;     // px — holographic spotlight size
+const MAX_TILT = 8; // degrees
+const LIGHT_RADIUS = 260; // px — holographic spotlight size
 const TRANSITION_OUT = 'transform 0.5s var(--ease-decel), --holo-opacity 0.3s';
 
 export const HoloTilt = {

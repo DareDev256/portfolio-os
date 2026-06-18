@@ -4,14 +4,20 @@
  */
 
 const TOKEN_RULES = [
-    ['comment',  /\/\/[^\n]*/],
-    ['string',   /'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`/],
-    ['keyword',  /\b(?:const|let|var|function|return|if|else|for|while|class|export|import|from|async|await|new|this|throw|try|catch)\b/],
-    ['builtin',  /\b(?:console|document|window|Array|Object|Promise|Math|JSON|null|undefined|true|false)\b/],
-    ['number',   /\b\d+(?:\.\d+)?\b/],
+    ['comment', /\/\/[^\n]*/],
+    ['string', /'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`/],
+    [
+        'keyword',
+        /\b(?:const|let|var|function|return|if|else|for|while|class|export|import|from|async|await|new|this|throw|try|catch)\b/,
+    ],
+    [
+        'builtin',
+        /\b(?:console|document|window|Array|Object|Promise|Math|JSON|null|undefined|true|false)\b/,
+    ],
+    ['number', /\b\d+(?:\.\d+)?\b/],
     ['operator', /[=!<>]=?|[+\-*/%]|\.\.\.|=>|&&|\|\|/],
-    ['punct',    /[{}()[\];,.:]/],
-    ['fn',       /\b[a-zA-Z_$]\w*(?=\s*\()/],
+    ['punct', /[{}()[\];,.:]/],
+    ['fn', /\b[a-zA-Z_$]\w*(?=\s*\()/],
 ];
 
 function buildMasterRegex() {

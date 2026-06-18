@@ -13,7 +13,7 @@ const MAX_INPUT_LENGTH = 500_000;
 
 /** @param {string} s @returns {string} */
 function clampLength(s) {
-    return (typeof s === 'string' && s.length > MAX_INPUT_LENGTH) ? s.slice(0, MAX_INPUT_LENGTH) : s;
+    return typeof s === 'string' && s.length > MAX_INPUT_LENGTH ? s.slice(0, MAX_INPUT_LENGTH) : s;
 }
 
 export const Sanitize = {
@@ -31,22 +31,67 @@ export const Sanitize = {
 
         return DOMPurify.sanitize(clampLength(dirty), {
             ALLOWED_TAGS: [
-                'div', 'span', 'p', 'br', 'strong', 'em', 'u', 'a', 'img',
-                'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-                'button', 'label',
-                'table', 'thead', 'tbody', 'tr', 'th', 'td',
-                'svg', 'path', 'circle', 'rect'
+                'div',
+                'span',
+                'p',
+                'br',
+                'strong',
+                'em',
+                'u',
+                'a',
+                'img',
+                'ul',
+                'ol',
+                'li',
+                'h1',
+                'h2',
+                'h3',
+                'h4',
+                'h5',
+                'h6',
+                'button',
+                'label',
+                'table',
+                'thead',
+                'tbody',
+                'tr',
+                'th',
+                'td',
+                'svg',
+                'path',
+                'circle',
+                'rect',
             ],
             ALLOWED_ATTR: [
-                'href', 'src', 'alt', 'title', 'class', 'id',
-                'data-*', 'role', 'aria-*', 'type', 'value', 'placeholder',
-                'width', 'height',
-                'viewBox', 'fill', 'd', 'cx', 'cy', 'r', 'x', 'y', 'rx', 'ry',
-                'preserveAspectRatio'
+                'href',
+                'src',
+                'alt',
+                'title',
+                'class',
+                'id',
+                'data-*',
+                'role',
+                'aria-*',
+                'type',
+                'value',
+                'placeholder',
+                'width',
+                'height',
+                'viewBox',
+                'fill',
+                'd',
+                'cx',
+                'cy',
+                'r',
+                'x',
+                'y',
+                'rx',
+                'ry',
+                'preserveAspectRatio',
             ],
             ALLOW_DATA_ATTR: true,
             ALLOW_ARIA_ATTR: true,
-            ...config
+            ...config,
         });
     },
 
@@ -103,8 +148,13 @@ export const Sanitize = {
         // svg+xml is excluded — SVG can contain <script>, onload handlers, and
         // foreignObject with arbitrary HTML. Only allow known-safe bitmap formats.
         if (lower.startsWith('data:')) {
-            const SAFE_DATA_MIMES = ['data:image/png', 'data:image/jpeg', 'data:image/gif', 'data:image/webp'];
-            if (!SAFE_DATA_MIMES.some(m => lower.startsWith(m))) return '';
+            const SAFE_DATA_MIMES = [
+                'data:image/png',
+                'data:image/jpeg',
+                'data:image/gif',
+                'data:image/webp',
+            ];
+            if (!SAFE_DATA_MIMES.some((m) => lower.startsWith(m))) return '';
         }
 
         // Return the stripped value — NOT the original.
@@ -218,9 +268,13 @@ export const Sanitize = {
         //   __defineGetter__, __defineSetter__ — legacy property mutation
         //   __lookupGetter__, __lookupSetter__ — legacy property introspection
         const BLOCKED = new Set([
-            '__proto__', 'constructor', 'prototype',
-            '__defineGetter__', '__defineSetter__',
-            '__lookupGetter__', '__lookupSetter__',
+            '__proto__',
+            'constructor',
+            'prototype',
+            '__defineGetter__',
+            '__defineSetter__',
+            '__lookupGetter__',
+            '__lookupSetter__',
         ]);
         for (const key of Object.keys(obj)) {
             if (BLOCKED.has(key)) {
@@ -230,7 +284,7 @@ export const Sanitize = {
             }
         }
         return obj;
-    }
+    },
 };
 
 // Make available globally for non-module scripts

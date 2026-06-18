@@ -17,7 +17,7 @@
     fill: none;
     opacity: 1;
     filter: drop-shadow(0 0 4px var(--gold-dim, rgba(212, 175, 55, 0.5)))
-            drop-shadow(0 0 8px var(--amethyst-dim, rgba(139, 92, 246, 0.35)));
+        drop-shadow(0 0 8px var(--amethyst-dim, rgba(139, 92, 246, 0.35)));
 }
 
 /* Reduced-motion: disable the draw animation, show lines instantly */

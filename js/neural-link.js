@@ -10,10 +10,15 @@
  * reduced-motion.
  */
 
-import { shouldSkipDesktopEffects, prefersReducedMotion, createDecorativeEl, getElementCenter } from './dom-helpers.js';
+import {
+    shouldSkipDesktopEffects,
+    prefersReducedMotion,
+    createDecorativeEl,
+    getElementCenter,
+} from './dom-helpers.js';
 
 const MAX_LINKS = 3;
-const MAX_DISTANCE = 400;        // px — skip icons further than this
+const MAX_DISTANCE = 400; // px — skip icons further than this
 const DRAW_DURATION_MS = 350;
 const FADE_DURATION_MS = 280;
 
@@ -98,10 +103,13 @@ function onIconEnter(e) {
 
     // Compute distances to all other icons, sort, take closest
     const neighbors = allIcons
-        .filter(ic => ic !== icon)
-        .map(ic => ({ el: ic, pt: getElementCenter(ic.querySelector('.desktop-icon-box') || ic) }))
-        .map(n => ({ ...n, d: dist(origin, n.pt) }))
-        .filter(n => n.d < MAX_DISTANCE)
+        .filter((ic) => ic !== icon)
+        .map((ic) => ({
+            el: ic,
+            pt: getElementCenter(ic.querySelector('.desktop-icon-box') || ic),
+        }))
+        .map((n) => ({ ...n, d: dist(origin, n.pt) }))
+        .filter((n) => n.d < MAX_DISTANCE)
         .sort((a, b) => a.d - b.d)
         .slice(0, MAX_LINKS);
 

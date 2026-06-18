@@ -107,7 +107,7 @@ function showToast(type, message, duration = 4000) {
         if (entry.timerId) {
             clearTimeout(entry.timerId);
             entry.timerId = null;
-            remaining -= (Date.now() - timerStart);
+            remaining -= Date.now() - timerStart;
             if (remaining < 0) remaining = 0;
         }
         progress.style.animationPlayState = 'paused';

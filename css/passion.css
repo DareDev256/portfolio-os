@@ -31,8 +31,17 @@
 }
 
 @keyframes passionAvatarPulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), 0 0 40px rgba(0, 240, 255, 0.2); }
-    50% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.6), 0 0 60px rgba(0, 240, 255, 0.3); }
+    0%,
+    100% {
+        box-shadow:
+            0 0 20px rgba(0, 240, 255, 0.4),
+            0 0 40px rgba(0, 240, 255, 0.2);
+    }
+    50% {
+        box-shadow:
+            0 0 30px rgba(0, 240, 255, 0.6),
+            0 0 60px rgba(0, 240, 255, 0.3);
+    }
 }
 
 /* ── Speech Bubble with Typing Effect ───────────────────────────────── */
@@ -75,7 +84,9 @@
 }
 
 @keyframes passionBlink {
-    50% { opacity: 0; }
+    50% {
+        opacity: 0;
+    }
 }
 
 /* ── Live Status Indicator (bottom-right corner) ────────────────────── */
@@ -117,8 +128,13 @@
 }
 
 @keyframes passionDotPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
 }
 
 .passion-status-label {
@@ -357,7 +373,9 @@
     z-index: 850;
     animation: passionToastIn 0.4s var(--ease-spring);
     cursor: pointer;
-    transition: opacity var(--transition-medium), transform var(--transition-medium);
+    transition:
+        opacity var(--transition-medium),
+        transform var(--transition-medium);
 }
 
 .passion-toast.dismissing {

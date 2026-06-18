@@ -33,7 +33,18 @@ import { initDockMagnify } from './dock-magnify.js';
  * @param {string} [opts.containerClass] - CSS class for the content container
  * @param {Object} [opts.windowOptions] - Extra options merged into WindowManager.create call
  */
-function createLazyWindow({ id, title, icon, width, height, load, exportName, onLoad, containerClass, windowOptions }) {
+function createLazyWindow({
+    id,
+    title,
+    icon,
+    width,
+    height,
+    load,
+    exportName,
+    onLoad,
+    containerClass,
+    windowOptions,
+}) {
     let cleanup = null;
     let closed = false;
     const content = document.createElement('div');
@@ -54,14 +65,19 @@ function createLazyWindow({ id, title, icon, width, height, load, exportName, on
         ...windowOptions,
     });
 
-    load().then((mod) => {
-        if (closed) return; // Window closed before module loaded — skip render to avoid orphaned timers
-        cleanup = onLoad ? onLoad(mod, content) : mod[exportName](content);
-    }).catch((err) => {
-        if (closed) return;
-        console.error(`[LazyWindow] Failed to load module for "${id}":`, err);
-        Sanitize.setHTML(content, `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ff4444;font-family:monospace;font-size:13px;padding:20px;text-align:center;">Failed to load module.<br><span style="opacity:0.5;font-size:11px;">${Sanitize.text(err.message || String(err))}</span></div>`);
-    });
+    load()
+        .then((mod) => {
+            if (closed) return; // Window closed before module loaded — skip render to avoid orphaned timers
+            cleanup = onLoad ? onLoad(mod, content) : mod[exportName](content);
+        })
+        .catch((err) => {
+            if (closed) return;
+            console.error(`[LazyWindow] Failed to load module for "${id}":`, err);
+            Sanitize.setHTML(
+                content,
+                `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ff4444;font-family:monospace;font-size:13px;padding:20px;text-align:center;">Failed to load module.<br><span style="opacity:0.5;font-size:11px;">${Sanitize.text(err.message || String(err))}</span></div>`
+            );
+        });
 }
 
 /**
@@ -297,7 +313,7 @@ export const Desktop = {
 
         // Hook window creation for easter egg tracking
         const originalCreate = WindowManager.create.bind(WindowManager);
-        WindowManager.create = function(...args) {
+        WindowManager.create = function (...args) {
             const result = originalCreate(...args);
             const eggs = window.__InteractionEngine?.easterEggs;
             if (!eggs) return result;
@@ -315,7 +331,7 @@ export const Desktop = {
             if (eggs.windowsOpened === 10 && typeof eggs.showNotification === 'function') {
                 eggs.showNotification(
                     '🤯 WINDOW OVERLOAD',
-                    'You\'re really testing my limits here. Impressive.',
+                    "You're really testing my limits here. Impressive.",
                     'warning',
                     4000
                 );
@@ -388,7 +404,7 @@ export const Desktop = {
         const dockIds = ['about', 'portfolio', 'applications', 'terminal'];
 
         dockIds.forEach((id, index) => {
-            const item = this.DESKTOP_ITEMS.find(i => i.id === id);
+            const item = this.DESKTOP_ITEMS.find((i) => i.id === id);
             if (item) {
                 const btn = document.createElement('button');
                 btn.className = 'dock-icon';
@@ -478,7 +494,7 @@ export const Desktop = {
             // Fallback: grid from top-left
             const col = index % 4;
             const row = Math.floor(index / 4);
-            return { x: 40 + (col * iconSpacingX), y: topAreaY + (row * iconSpacingY) };
+            return { x: 40 + col * iconSpacingX, y: topAreaY + row * iconSpacingY };
         };
 
         this.DESKTOP_ITEMS.forEach((item, index) => {
@@ -605,7 +621,7 @@ export const Desktop = {
                     const currentLayout = loadJSON('desktop_layout_v4', {});
                     currentLayout[id] = {
                         x: parseInt(element.style.left),
-                        y: parseInt(element.style.top)
+                        y: parseInt(element.style.top),
                     };
                     saveJSON('desktop_layout_v4', currentLayout);
 
@@ -699,11 +715,31 @@ export const Desktop = {
      */
     showContextMenu(x, y) {
         this._renderContextMenu(x, y, [
-            { icon: 'M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z', label: 'Next Wallpaper', action: () => this.changeWallpaper() },
-            { icon: 'M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z', label: 'Random Wallpaper', action: () => this.randomWallpaper() },
-            { icon: 'M12 6V3L8 7l4 4V8c2.76 0 5 2.24 5 5 0 2.21-1.79 4-4 4H7v2h6c3.87 0 7-3.13 7-7s-3.13-7-7-7z', label: 'Reset to Default', action: () => State.resetWallpaper() },
-            { icon: 'M2 12h20v2H2zM2 7h20v2H2zM2 17h20v2H2z', label: 'Apply Grey Gradient', action: () => State.setWallpaper('gradient:grey-ombre') },
-            { icon: 'M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z', label: 'Toggle Theme', action: () => State.toggleTheme() },
+            {
+                icon: 'M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z',
+                label: 'Next Wallpaper',
+                action: () => this.changeWallpaper(),
+            },
+            {
+                icon: 'M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z',
+                label: 'Random Wallpaper',
+                action: () => this.randomWallpaper(),
+            },
+            {
+                icon: 'M12 6V3L8 7l4 4V8c2.76 0 5 2.24 5 5 0 2.21-1.79 4-4 4H7v2h6c3.87 0 7-3.13 7-7s-3.13-7-7-7z',
+                label: 'Reset to Default',
+                action: () => State.resetWallpaper(),
+            },
+            {
+                icon: 'M2 12h20v2H2zM2 7h20v2H2zM2 17h20v2H2z',
+                label: 'Apply Grey Gradient',
+                action: () => State.setWallpaper('gradient:grey-ombre'),
+            },
+            {
+                icon: 'M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z',
+                label: 'Toggle Theme',
+                action: () => State.toggleTheme(),
+            },
         ]);
     },
 
@@ -712,8 +748,16 @@ export const Desktop = {
      */
     showIconContextMenu(x, y, item) {
         this._renderContextMenu(x, y, [
-            { icon: 'M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z', label: `Open ${item.label}`, action: () => item.action() },
-            { icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z', label: 'Properties', action: () => this.showIconProperties(item) },
+            {
+                icon: 'M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z',
+                label: `Open ${item.label}`,
+                action: () => item.action(),
+            },
+            {
+                icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z',
+                label: 'Properties',
+                action: () => this.showIconProperties(item),
+            },
         ]);
     },
 
@@ -848,7 +892,9 @@ export const Desktop = {
             height: 500,
             windowOptions: { transitionType: 'console' },
             load: () => import('./terminal.js'),
-            onLoad: ({ Terminal }, container) => { Terminal.init(container); },
+            onLoad: ({ Terminal }, container) => {
+                Terminal.init(container);
+            },
         });
     },
 
@@ -858,7 +904,9 @@ export const Desktop = {
         const videos = media.videos || [];
 
         // Find the featured video (first one with category 'Featured' or just the first one)
-        const featured = videos.find(v => v.category === 'Featured' || v.title.includes('Showcase')) || videos[0];
+        const featured =
+            videos.find((v) => v.category === 'Featured' || v.title.includes('Showcase')) ||
+            videos[0];
 
         if (featured?.url) {
             window.open(featured.url, '_blank', 'noopener,noreferrer');
@@ -871,7 +919,7 @@ export const Desktop = {
     renderMediaFolders(container, media) {
         container.innerHTML = '';
         const folders = ['Real Estate', 'Cars', 'Music Videos'];
-        const protectedFolders = { 'Real Estate': '1234', 'Cars': '1234' };
+        const protectedFolders = { 'Real Estate': '1234', Cars: '1234' };
 
         const header = document.createElement('div');
         header.className = 'window-section-header scroll-reveal';
@@ -888,8 +936,9 @@ export const Desktop = {
 
             // Find a thumbnail (first image/video in category)
             let thumb = null;
-            if (media.images) thumb = media.images.find(i => i.category === folderName)?.url;
-            if (!thumb && media.videos) thumb = media.videos.find(v => v.category === folderName)?.poster;
+            if (media.images) thumb = media.images.find((i) => i.category === folderName)?.url;
+            if (!thumb && media.videos)
+                thumb = media.videos.find((v) => v.category === folderName)?.poster;
 
             // Add lock icon if protected
             const isLocked = !!protectedFolders[folderName];
@@ -911,10 +960,14 @@ export const Desktop = {
             } else if (!isLocked) {
                 // Fallback defaults if no custom icon set and no thumbnail
                 if (!customIcon || customIcon === '📁') {
-                    if (folderName === 'Music Videos') html = `<div class="media-folder-icon">🎵</div>`;
-                    else if (folderName === 'Real Estate') html = `<div class="media-folder-icon">🏠</div>`;
-                    else if (folderName === 'Cars') html = `<div class="media-folder-icon">🏎️</div>`;
-                    else if (folderName === 'Archive') html = `<div class="media-folder-icon">📦</div>`;
+                    if (folderName === 'Music Videos')
+                        html = `<div class="media-folder-icon">🎵</div>`;
+                    else if (folderName === 'Real Estate')
+                        html = `<div class="media-folder-icon">🏠</div>`;
+                    else if (folderName === 'Cars')
+                        html = `<div class="media-folder-icon">🏎️</div>`;
+                    else if (folderName === 'Archive')
+                        html = `<div class="media-folder-icon">📦</div>`;
                 }
             }
 
@@ -927,14 +980,19 @@ export const Desktop = {
             // Add click handler
             folderDiv.addEventListener('click', async () => {
                 if (isLocked) {
-                    const pass = await Modal.prompt('Restricted Access', `Enter password for ${folderName}:`);
+                    const pass = await Modal.prompt(
+                        'Restricted Access',
+                        `Enter password for ${folderName}:`
+                    );
                     if (pass === protectedFolders[folderName]) {
                         this.navigateToMediaContent(container, media, folderName, 'images');
                     } else if (pass !== null) {
                         await Modal.alert('Access Denied', 'Incorrect password. Access denied.');
                     }
                 } else {
-                    const defaultTab = ['Real Estate', 'Cars', 'Music Videos'].includes(folderName) ? 'videos' : 'images';
+                    const defaultTab = ['Real Estate', 'Cars', 'Music Videos'].includes(folderName)
+                        ? 'videos'
+                        : 'images';
                     this.navigateToMediaContent(container, media, folderName, defaultTab);
                 }
             });
@@ -950,7 +1008,7 @@ export const Desktop = {
         // Push navigation state
         WindowManager.pushNavigation('media', {
             label: 'Vault',
-            callback: () => this.renderMediaFolders(container, media)
+            callback: () => this.renderMediaFolders(container, media),
         });
 
         // Update title
@@ -961,8 +1019,8 @@ export const Desktop = {
         }
 
         // Filter content
-        const images = (media.images || []).filter(img => img.category === category);
-        const videos = (media.videos || []).filter(vid => vid.category === category);
+        const images = (media.images || []).filter((img) => img.category === category);
+        const videos = (media.videos || []).filter((vid) => vid.category === category);
 
         container.innerHTML = '';
 
@@ -983,10 +1041,12 @@ export const Desktop = {
             grid.className = 'photos-grid';
 
             if (images.length === 0) {
-                grid.innerHTML = '<div style="color: #888; padding: 20px; grid-column: span 3; text-align: center;">No images in this category.</div>';
+                grid.innerHTML =
+                    '<div style="color: #888; padding: 20px; grid-column: span 3; text-align: center;">No images in this category.</div>';
             } else {
                 // Show loading state first
-                grid.innerHTML = '<div class="loading-spinner" style="grid-column: span 3; text-align: center; padding: 40px;"><div class="spinner"></div><p style="color: var(--neon-cyan); margin-top: 20px;">Loading images...</p></div>';
+                grid.innerHTML =
+                    '<div class="loading-spinner" style="grid-column: span 3; text-align: center; padding: 40px;"><div class="spinner"></div><p style="color: var(--neon-cyan); margin-top: 20px;">Loading images...</p></div>';
 
                 body.innerHTML = '';
                 body.appendChild(grid);
@@ -996,18 +1056,21 @@ export const Desktop = {
                     grid.innerHTML = '';
 
                     // Create a single observer for all items
-                    const observer = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                const img = entry.target.querySelector('img');
-                                if (img && img.dataset.src) {
-                                    img.src = img.dataset.src;
-                                    img.removeAttribute('data-src');
-                                    observer.unobserve(entry.target);
+                    const observer = new IntersectionObserver(
+                        (entries) => {
+                            entries.forEach((entry) => {
+                                if (entry.isIntersecting) {
+                                    const img = entry.target.querySelector('img');
+                                    if (img && img.dataset.src) {
+                                        img.src = img.dataset.src;
+                                        img.removeAttribute('data-src');
+                                        observer.unobserve(entry.target);
+                                    }
                                 }
-                            }
-                        });
-                    }, { rootMargin: '50px' });
+                            });
+                        },
+                        { rootMargin: '50px' }
+                    );
 
                     images.forEach((photo, index) => {
                         const item = document.createElement('div');
@@ -1015,7 +1078,9 @@ export const Desktop = {
 
                         // Create image element with lazy loading
                         const img = document.createElement('img');
-                        const src = photo.url.startsWith('http') ? `${photo.url}?w=300&h=300&fit=crop` : photo.url;
+                        const src = photo.url.startsWith('http')
+                            ? `${photo.url}?w=300&h=300&fit=crop`
+                            : photo.url;
 
                         img.alt = photo.caption || 'Image';
                         img.loading = 'lazy';
@@ -1058,7 +1123,7 @@ export const Desktop = {
         tabs.addEventListener('click', (e) => {
             const btn = e.target.closest('.filter-tag');
             if (!btn) return;
-            tabs.querySelectorAll('.filter-tag').forEach(el => el.classList.remove('active'));
+            tabs.querySelectorAll('.filter-tag').forEach((el) => el.classList.remove('active'));
             btn.classList.add('active');
             if (btn.dataset.tab === 'images') renderImages();
             else renderVideos();
@@ -1131,7 +1196,8 @@ export const Desktop = {
         if (!content.parentElement.querySelector('.view-controls')) {
             const controls = document.createElement('div');
             controls.className = 'view-controls';
-            controls.style.cssText = 'display:flex; gap:10px; margin-bottom:15px; justify-content:flex-end;';
+            controls.style.cssText =
+                'display:flex; gap:10px; margin-bottom:15px; justify-content:flex-end;';
             controls.innerHTML = `
                 <button class="view-btn active" data-mode="grid" title="Grid View">⊞</button>
                 <button class="view-btn" data-mode="list" title="List View">≡</button>
@@ -1140,7 +1206,9 @@ export const Desktop = {
 
             controls.addEventListener('click', (e) => {
                 if (e.target.classList.contains('view-btn')) {
-                    controls.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    controls
+                        .querySelectorAll('.view-btn')
+                        .forEach((b) => b.classList.remove('active'));
                     e.target.classList.add('active');
                     content.dataset.mode = e.target.dataset.mode;
                     this.renderVideosList(videos, content, e.target.dataset.mode);
@@ -1156,7 +1224,8 @@ export const Desktop = {
         content.innerHTML = '';
 
         if (videos.length === 0) {
-            content.innerHTML = '<div style="padding: 20px; text-align: center; color: rgba(255,255,255,0.5);">No videos available</div>';
+            content.innerHTML =
+                '<div style="padding: 20px; text-align: center; color: rgba(255,255,255,0.5);">No videos available</div>';
             return;
         }
 
@@ -1168,7 +1237,7 @@ export const Desktop = {
             let poster = video.poster;
             if (!poster && !video.generatedPoster) {
                 poster = null;
-                this.captureVideoFrame(video.url).then(dataUrl => {
+                this.captureVideoFrame(video.url).then((dataUrl) => {
                     if (dataUrl) {
                         video.generatedPoster = dataUrl;
                         const thumb = item.querySelector('.video-thumb');
@@ -1179,8 +1248,12 @@ export const Desktop = {
                 poster = video.generatedPoster;
             }
 
-            const bgStyle = poster ? `background-image:url('${Sanitize.url(poster)}')` : 'background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;';
-            const contentHtml = poster ? '' : '<span style="font-size: 40px; opacity: 0.5;">🎬</span>';
+            const bgStyle = poster
+                ? `background-image:url('${Sanitize.url(poster)}')`
+                : 'background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;';
+            const contentHtml = poster
+                ? ''
+                : '<span style="font-size: 40px; opacity: 0.5;">🎬</span>';
 
             if (mode === 'list') {
                 item.innerHTML = `
@@ -1203,7 +1276,7 @@ export const Desktop = {
 
                 // Load actual duration asynchronously
                 if (!video.url.includes('youtube') && !video.url.includes('vimeo')) {
-                    this.getVideoDuration(video.url).then(duration => {
+                    this.getVideoDuration(video.url).then((duration) => {
                         const durationEl = item.querySelector('.video-duration');
                         if (durationEl) durationEl.textContent = duration;
                     });
@@ -1214,8 +1287,6 @@ export const Desktop = {
             content.appendChild(item);
         }
     },
-
-
 
     /**
      * Legacy openMedia (kept for compatibility but unused by new flow)
@@ -1277,7 +1348,10 @@ export const Desktop = {
                 desc: '24/7 autonomous AI code improvement system. Analyzes repos, spawns Claude Code sessions, submits PRs, and learns from merge/reject patterns.',
                 tech: ['Node.js', 'Claude Code', 'MCP', 'SQLite'],
                 accent: '#8b5cf6',
-                snippet: { lang: 'js', code: `const cycle = async () => {\n  const repos = await scanRepos();\n  for (const repo of repos) {\n    const session = await claude.spawn(repo);\n    const pr = await session.submit();\n    await feedback.record(pr.outcome);\n  }\n};` },
+                snippet: {
+                    lang: 'js',
+                    code: `const cycle = async () => {\n  const repos = await scanRepos();\n  for (const repo of repos) {\n    const session = await claude.spawn(repo);\n    const pr = await session.submit();\n    await feedback.record(pr.outcome);\n  }\n};`,
+                },
             },
             {
                 name: 'VIBE_CODER',
@@ -1286,7 +1360,10 @@ export const Desktop = {
                 accent: '#c084fc',
                 demo: 'https://daredev256.github.io/vibe-coder/',
                 repo: 'https://github.com/DareDev256/vibe-coder',
-                snippet: { lang: 'js', code: `class Weapon extends Phaser.GameObjects.Sprite {\n  fire(target) {\n    const bullet = this.pool.get();\n    bullet.launch(this.x, this.y, target);\n    this.scene.sound.play('fire');\n  }\n}` },
+                snippet: {
+                    lang: 'js',
+                    code: `class Weapon extends Phaser.GameObjects.Sprite {\n  fire(target) {\n    const bullet = this.pool.get();\n    bullet.launch(this.x, this.y, target);\n    this.scene.sound.play('fire');\n  }\n}`,
+                },
             },
             {
                 name: 'PORTFOLIO_OS',
@@ -1294,14 +1371,20 @@ export const Desktop = {
                 tech: ['JavaScript', 'Three.js', 'CSS3', 'Vite'],
                 accent: '#a78bfa',
                 demo: 'https://jamesdare.com',
-                snippet: { lang: 'js', code: `WindowManager.create({\n  id: 'terminal',\n  title: 'TERMINAL',\n  icon: '▸',\n  content: container,\n  width: 640,\n  height: 400,\n});` },
+                snippet: {
+                    lang: 'js',
+                    code: `WindowManager.create({\n  id: 'terminal',\n  title: 'TERMINAL',\n  icon: '▸',\n  content: container,\n  width: 640,\n  height: 400,\n});`,
+                },
             },
             {
                 name: 'CULTURE_DROP_HQ',
                 desc: 'Operations dashboard for Toronto hip-hop media. Manage content, artists, and releases.',
                 tech: ['React', 'Node.js', 'MongoDB', 'Tailwind'],
                 accent: '#d4af37',
-                snippet: { lang: 'jsx', code: `const Dashboard = () => (\n  <Layout sidebar={<ArtistNav />}>\n    <ContentGrid filter={useFilter()} />\n    <ReleaseTimeline data={releases} />\n  </Layout>\n);` },
+                snippet: {
+                    lang: 'jsx',
+                    code: `const Dashboard = () => (\n  <Layout sidebar={<ArtistNav />}>\n    <ContentGrid filter={useFilter()} />\n    <ReleaseTimeline data={releases} />\n  </Layout>\n);`,
+                },
             },
             {
                 name: 'FCPXML_MCP_SERVER',
@@ -1309,7 +1392,10 @@ export const Desktop = {
                 tech: ['Python', 'Claude AI', 'MCP', 'XML'],
                 accent: '#7c3aed',
                 repo: 'https://github.com/DareDev256/fcpxml-mcp-server',
-                snippet: { lang: 'python', code: `@server.tool("cut_clip")\nasync def cut_clip(timeline, tc_in, tc_out):\n    clip = timeline.find_clip_at(tc_in)\n    return clip.split(tc_in, tc_out)` },
+                snippet: {
+                    lang: 'python',
+                    code: `@server.tool("cut_clip")\nasync def cut_clip(timeline, tc_in, tc_out):\n    clip = timeline.find_clip_at(tc_in)\n    return clip.split(tc_in, tc_out)`,
+                },
             },
         ];
 
@@ -1400,7 +1486,7 @@ export const Desktop = {
             const techRow = document.createElement('div');
             techRow.className = 'reign-chapter__tech reign-reveal';
             techRow.dataset.delay = '3';
-            project.tech.forEach(t => {
+            project.tech.forEach((t) => {
                 const badge = document.createElement('span');
                 badge.className = 'reign-badge';
                 badge.textContent = t;
@@ -1441,7 +1527,11 @@ export const Desktop = {
             });
 
             if (project.snippet) {
-                const viewer = createCodeViewer({ code: project.snippet.code, lang: project.snippet.lang, accent: project.accent });
+                const viewer = createCodeViewer({
+                    code: project.snippet.code,
+                    lang: project.snippet.lang,
+                    accent: project.accent,
+                });
                 viewer.classList.add('reign-reveal');
                 viewer.dataset.delay = '4';
                 links.dataset.delay = '5';
@@ -1487,34 +1577,41 @@ export const Desktop = {
 
         // IntersectionObserver for scroll-triggered reveals + active dot
         const revealObserver = new IntersectionObserver(
-            entries => entries.forEach(e => {
-                if (e.isIntersecting) e.target.classList.add('reign-reveal--visible');
-            }),
-            { root: scroll, threshold: 0.2 },
+            (entries) =>
+                entries.forEach((e) => {
+                    if (e.isIntersecting) e.target.classList.add('reign-reveal--visible');
+                }),
+            { root: scroll, threshold: 0.2 }
         );
 
         const chapterObserver = new IntersectionObserver(
-            entries => entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('reign-chapter--entered');
-                    const idx = [...scroll.querySelectorAll('.reign-chapter')].indexOf(e.target);
-                    dots.forEach((d, j) => d.classList.toggle('reign-nav__dot--active', j === idx));
-                }
-            }),
-            { root: scroll, threshold: 0.5 },
+            (entries) =>
+                entries.forEach((e) => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('reign-chapter--entered');
+                        const idx = [...scroll.querySelectorAll('.reign-chapter')].indexOf(
+                            e.target
+                        );
+                        dots.forEach((d, j) =>
+                            d.classList.toggle('reign-nav__dot--active', j === idx)
+                        );
+                    }
+                }),
+            { root: scroll, threshold: 0.5 }
         );
 
         // Hero reveal observer — glitch resolves on entry
         const heroObserver = new IntersectionObserver(
-            entries => entries.forEach(e => {
-                if (e.isIntersecting) {
-                    hero.classList.add('reign-hero--entered');
-                    // Swap to resolved state after glitch finishes
-                    setTimeout(() => hero.classList.add('reign-hero--resolved'), 1400);
-                    heroObserver.disconnect();
-                }
-            }),
-            { root: scroll, threshold: 0.5 },
+            (entries) =>
+                entries.forEach((e) => {
+                    if (e.isIntersecting) {
+                        hero.classList.add('reign-hero--entered');
+                        // Swap to resolved state after glitch finishes
+                        setTimeout(() => hero.classList.add('reign-hero--resolved'), 1400);
+                        heroObserver.disconnect();
+                    }
+                }),
+            { root: scroll, threshold: 0.5 }
         );
 
         let closed = false;
@@ -1544,8 +1641,8 @@ export const Desktop = {
         requestAnimationFrame(() => {
             if (closed) return; // window closed before rAF fired — skip to avoid re-activating disconnected observers
             heroObserver.observe(hero);
-            scroll.querySelectorAll('.reign-reveal').forEach(el => revealObserver.observe(el));
-            scroll.querySelectorAll('.reign-chapter').forEach(ch => chapterObserver.observe(ch));
+            scroll.querySelectorAll('.reign-reveal').forEach((el) => revealObserver.observe(el));
+            scroll.querySelectorAll('.reign-chapter').forEach((ch) => chapterObserver.observe(ch));
         });
 
         WindowManager.create({
@@ -1574,75 +1671,240 @@ export const Desktop = {
                 name: 'Hackathon',
                 color: '#cc785c',
                 apps: [
-                    { name: 'SECOND_OPINION', desc: 'Multi-agent medical second-opinion AI — verifier loop, prompt-cache discipline, $5.55/case transparency. Cerebral Valley × Anthropic "Built with Opus 4.7" hackathon, Apr 2026 — 1 of ~500 submissions across ~20K eligible applicants.', status: 'live', link: 'https://second-opinion-eta.vercel.app/sample' },
+                    {
+                        name: 'SECOND_OPINION',
+                        desc: 'Multi-agent medical second-opinion AI — verifier loop, prompt-cache discipline, $5.55/case transparency. Cerebral Valley × Anthropic "Built with Opus 4.7" hackathon, Apr 2026 — 1 of ~500 submissions across ~20K eligible applicants.',
+                        status: 'live',
+                        link: 'https://second-opinion-eta.vercel.app/sample',
+                    },
                 ],
             },
             {
                 name: 'Passion Ecosystem',
                 color: '#d4af37',
                 apps: [
-                    { name: 'PASSION_FRAMEWORK', desc: 'Autonomous AI agent framework \u2014 92 modules, 3 LLM backends, runs 24/7', status: 'live', link: 'https://github.com/DareDev256/passion-framework' },
-                    { name: 'PASSION_SITE', desc: 'Live AI agent presence \u2014 passion.jamesdare.com', status: 'live', link: 'https://passion.jamesdare.com' },
-                    { name: 'PASSION_MEMORY', desc: 'Shared brain MCP server \u2014 somatic markers, session handoffs, feedback loops', status: 'private', link: '' },
-                    { name: 'PACT_DASHBOARD', desc: 'Real-time HUD \u2014 101 components, 60 API routes, live metrics, task history', status: 'private', link: '' },
-                    { name: 'PASSION_LEARNING', desc: '6 educational AI games \u2014 Prompt Craft, Token Prophet, Hallucination Hunter, more', status: 'live', link: 'https://github.com/DareDev256/passion-learning-suite' },
+                    {
+                        name: 'PASSION_FRAMEWORK',
+                        desc: 'Autonomous AI agent framework \u2014 92 modules, 3 LLM backends, runs 24/7',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/passion-framework',
+                    },
+                    {
+                        name: 'PASSION_SITE',
+                        desc: 'Live AI agent presence \u2014 passion.jamesdare.com',
+                        status: 'live',
+                        link: 'https://passion.jamesdare.com',
+                    },
+                    {
+                        name: 'PASSION_MEMORY',
+                        desc: 'Shared brain MCP server \u2014 somatic markers, session handoffs, feedback loops',
+                        status: 'private',
+                        link: '',
+                    },
+                    {
+                        name: 'PACT_DASHBOARD',
+                        desc: 'Real-time HUD \u2014 101 components, 60 API routes, live metrics, task history',
+                        status: 'private',
+                        link: '',
+                    },
+                    {
+                        name: 'PASSION_LEARNING',
+                        desc: '6 educational AI games \u2014 Prompt Craft, Token Prophet, Hallucination Hunter, more',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/passion-learning-suite',
+                    },
                 ],
             },
             {
                 name: 'AI & Engineering',
                 color: '#00f0ff',
                 apps: [
-                    { name: 'FCPXML_MCP', desc: 'First AI-powered MCP server for Final Cut Pro XML editing', status: 'live', link: 'https://github.com/DareDev256/fcpxml-mcp-server' },
-                    { name: 'RAG_CITATIONS', desc: 'RAG pipeline with source attribution for verifiable AI responses', status: 'live', link: 'https://github.com/DareDev256/rag-system-with-citations' },
-                    { name: 'LLM_EVAL', desc: 'LLM evaluation harness \u2014 rule-based, semantic, LLM-as-judge scoring', status: 'live', link: 'https://github.com/DareDev256/llm-evaluation-harness' },
-                    { name: 'VECTOR_SEARCH', desc: 'Semantic vector vs BM25 keyword search \u2014 embedding tradeoffs', status: 'live', link: 'https://github.com/DareDev256/vector-vs-keyword-search' },
-                    { name: 'CONTRACT_TRANSLATOR', desc: 'Upload any legal contract \u2014 plain-English clause-by-clause breakdown', status: 'live', link: 'https://contract-translator.vercel.app' },
-                    { name: 'IMG_PROMPT_GEN', desc: 'Structured prompt builder for Nano Banana, Veo3, DALL-E, Kling, Sora', status: 'live', link: 'https://github.com/DareDev256/Ultimate-Image-Video-Prompt-Generator' },
+                    {
+                        name: 'FCPXML_MCP',
+                        desc: 'First AI-powered MCP server for Final Cut Pro XML editing',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/fcpxml-mcp-server',
+                    },
+                    {
+                        name: 'RAG_CITATIONS',
+                        desc: 'RAG pipeline with source attribution for verifiable AI responses',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/rag-system-with-citations',
+                    },
+                    {
+                        name: 'LLM_EVAL',
+                        desc: 'LLM evaluation harness \u2014 rule-based, semantic, LLM-as-judge scoring',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/llm-evaluation-harness',
+                    },
+                    {
+                        name: 'VECTOR_SEARCH',
+                        desc: 'Semantic vector vs BM25 keyword search \u2014 embedding tradeoffs',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/vector-vs-keyword-search',
+                    },
+                    {
+                        name: 'CONTRACT_TRANSLATOR',
+                        desc: 'Upload any legal contract \u2014 plain-English clause-by-clause breakdown',
+                        status: 'live',
+                        link: 'https://contract-translator.vercel.app',
+                    },
+                    {
+                        name: 'IMG_PROMPT_GEN',
+                        desc: 'Structured prompt builder for Nano Banana, Veo3, DALL-E, Kling, Sora',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/Ultimate-Image-Video-Prompt-Generator',
+                    },
                 ],
             },
             {
                 name: 'Client Websites',
                 color: '#ff00aa',
                 apps: [
-                    { name: 'EDSON_LEGAL', desc: 'Law firm website \u2014 practice areas, consultations, professional trust', status: 'live', link: 'https://www.edsonlegal.com/' },
-                    { name: 'MUSTHAVEFRENCHIES', desc: 'Premium French Bulldog breeder \u2014 CMS, puppy listings, admin panel', status: 'live', link: 'https://musthavefrenchies.com' },
-                    { name: 'SAVV4X', desc: 'Toronto rapper \u2014 artist portfolio, music links, events', status: 'live', link: 'https://savv4x.com' },
-                    { name: 'SYREN_EFFECT', desc: 'Twitch streamer & content creator \u2014 Discord integration, media gallery', status: 'live', link: 'https://syreneffect.com' },
-                    { name: 'TDOTS_PORTFOLIO', desc: 'Synthwave 3D music video portfolio for TdotsSolutionsz', status: 'live', link: 'https://tdotssolutionsz-portfolio.vercel.app' },
+                    {
+                        name: 'EDSON_LEGAL',
+                        desc: 'Law firm website \u2014 practice areas, consultations, professional trust',
+                        status: 'live',
+                        link: 'https://www.edsonlegal.com/',
+                    },
+                    {
+                        name: 'MUSTHAVEFRENCHIES',
+                        desc: 'Premium French Bulldog breeder \u2014 CMS, puppy listings, admin panel',
+                        status: 'live',
+                        link: 'https://musthavefrenchies.com',
+                    },
+                    {
+                        name: 'SAVV4X',
+                        desc: 'Toronto rapper \u2014 artist portfolio, music links, events',
+                        status: 'live',
+                        link: 'https://savv4x.com',
+                    },
+                    {
+                        name: 'SYREN_EFFECT',
+                        desc: 'Twitch streamer & content creator \u2014 Discord integration, media gallery',
+                        status: 'live',
+                        link: 'https://syreneffect.com',
+                    },
+                    {
+                        name: 'TDOTS_PORTFOLIO',
+                        desc: 'Synthwave 3D music video portfolio for TdotsSolutionsz',
+                        status: 'live',
+                        link: 'https://tdotssolutionsz-portfolio.vercel.app',
+                    },
                 ],
             },
             {
                 name: 'Full-Stack Applications',
                 color: '#ff4444',
                 apps: [
-                    { name: 'LETSTRADE', desc: 'Real-time options scanner + dashboard \u2014 35+ API routes, AI copilot, auto-trader', status: 'private', link: '' },
-                    { name: 'TORONTO_CITY_PULSE', desc: '3D city intelligence \u2014 11 live data layers, celestial clock, search, fly-in', status: 'live', link: 'https://github.com/DareDev256/toronto-parking-viz' },
-                    { name: 'PULSEMAP', desc: 'Real-time global disease surveillance \u2014 weather radar for outbreaks', status: 'live', link: 'https://pulsemap-three.vercel.app' },
-                    { name: 'MUSIC_TIME_MACHINE', desc: 'Music intelligence dashboard \u2014 Spotify, YouTube, Billboard, Genius', status: 'live', link: 'https://github.com/DareDev256/music-time-machine' },
-                    { name: 'POOLCAST', desc: 'AI underwriting platform for creator asset-backed securities', status: 'private', link: '' },
-                    { name: 'LOCKEDIN', desc: 'One-tap connection card \u2014 action router with Follow, Connect, DM, Book, Pay', status: 'live', link: 'https://github.com/DareDev256/lockedin' },
+                    {
+                        name: 'LETSTRADE',
+                        desc: 'Real-time options scanner + dashboard \u2014 35+ API routes, AI copilot, auto-trader',
+                        status: 'private',
+                        link: '',
+                    },
+                    {
+                        name: 'TORONTO_CITY_PULSE',
+                        desc: '3D city intelligence \u2014 11 live data layers, celestial clock, search, fly-in',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/toronto-parking-viz',
+                    },
+                    {
+                        name: 'PULSEMAP',
+                        desc: 'Real-time global disease surveillance \u2014 weather radar for outbreaks',
+                        status: 'live',
+                        link: 'https://pulsemap-three.vercel.app',
+                    },
+                    {
+                        name: 'MUSIC_TIME_MACHINE',
+                        desc: 'Music intelligence dashboard \u2014 Spotify, YouTube, Billboard, Genius',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/music-time-machine',
+                    },
+                    {
+                        name: 'POOLCAST',
+                        desc: 'AI underwriting platform for creator asset-backed securities',
+                        status: 'private',
+                        link: '',
+                    },
+                    {
+                        name: 'LOCKEDIN',
+                        desc: 'One-tap connection card \u2014 action router with Follow, Connect, DM, Book, Pay',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/lockedin',
+                    },
                 ],
             },
             {
                 name: 'Creative & Interactive',
                 color: '#aa00ff',
                 apps: [
-                    { name: 'PASSION_INTERACTIVE', desc: 'AR gesture/voice OS \u2014 hand tracking controls all projects and databases', status: 'private', link: '' },
-                    { name: 'HAND_PLAYGROUND', desc: 'Hand-tracking gesture lab \u2014 7 exercises with MediaPipe + Canvas 2D', status: 'live', link: 'https://github.com/DareDev256/hand-playground' },
-                    { name: 'PORTFOLIO_OS', desc: 'This cyberpunk desktop OS \u2014 46 vanilla JS modules, Three.js, zero frameworks', status: 'private', link: '' },
-                    { name: 'PRIVACY_SHIELD', desc: 'Defensive OSINT tool \u2014 find your digital footprint, remove from data brokers', status: 'private', link: '' },
-                    { name: 'VEHICLE_TRACKER', desc: 'Dealership detailing hour tracker \u2014 Streamlit + SQLite/Supabase', status: 'live', link: 'https://github.com/DareDev256/Vehicle-Hour-Tracker' },
+                    {
+                        name: 'PASSION_INTERACTIVE',
+                        desc: 'AR gesture/voice OS \u2014 hand tracking controls all projects and databases',
+                        status: 'private',
+                        link: '',
+                    },
+                    {
+                        name: 'HAND_PLAYGROUND',
+                        desc: 'Hand-tracking gesture lab \u2014 7 exercises with MediaPipe + Canvas 2D',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/hand-playground',
+                    },
+                    {
+                        name: 'PORTFOLIO_OS',
+                        desc: 'This cyberpunk desktop OS \u2014 46 vanilla JS modules, Three.js, zero frameworks',
+                        status: 'private',
+                        link: '',
+                    },
+                    {
+                        name: 'PRIVACY_SHIELD',
+                        desc: 'Defensive OSINT tool \u2014 find your digital footprint, remove from data brokers',
+                        status: 'private',
+                        link: '',
+                    },
+                    {
+                        name: 'VEHICLE_TRACKER',
+                        desc: 'Dealership detailing hour tracker \u2014 Streamlit + SQLite/Supabase',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/Vehicle-Hour-Tracker',
+                    },
                 ],
             },
             {
                 name: 'Games & Experiments',
                 color: '#00ff88',
                 apps: [
-                    { name: 'VIBE_CODER', desc: 'Vampire survivors-style idle game powered by coding', status: 'live', link: 'https://daredev256.github.io/vibe-coder' },
-                    { name: 'WHATS_POPPIN', desc: 'Bubble pop game with cultural sauce \u2014 match, combo, dominate', status: 'live', link: 'https://github.com/DareDev256/whats-poppin' },
-                    { name: 'TYPEMASTER', desc: 'Customizable typing game \u2014 fork and add your own curriculum', status: 'live', link: 'https://github.com/DareDev256/typemaster-template' },
-                    { name: 'RED_TEAM_ARENA', desc: 'Break the AI \u2014 learn prompt injection through ethical challenges', status: 'live', link: 'https://github.com/DareDev256/red-team-arena' },
-                    { name: 'NIN_WIKI', desc: 'AI-assisted Nin Online Wiki with approval workflows', status: 'private', link: '' },
+                    {
+                        name: 'VIBE_CODER',
+                        desc: 'Vampire survivors-style idle game powered by coding',
+                        status: 'live',
+                        link: 'https://daredev256.github.io/vibe-coder',
+                    },
+                    {
+                        name: 'WHATS_POPPIN',
+                        desc: 'Bubble pop game with cultural sauce \u2014 match, combo, dominate',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/whats-poppin',
+                    },
+                    {
+                        name: 'TYPEMASTER',
+                        desc: 'Customizable typing game \u2014 fork and add your own curriculum',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/typemaster-template',
+                    },
+                    {
+                        name: 'RED_TEAM_ARENA',
+                        desc: 'Break the AI \u2014 learn prompt injection through ethical challenges',
+                        status: 'live',
+                        link: 'https://github.com/DareDev256/red-team-arena',
+                    },
+                    {
+                        name: 'NIN_WIKI',
+                        desc: 'AI-assisted Nin Online Wiki with approval workflows',
+                        status: 'private',
+                        link: '',
+                    },
                 ],
             },
         ];
@@ -1681,7 +1943,11 @@ export const Desktop = {
 
                 const isLive = app.status === 'live';
                 const isPrivate = app.status === 'private';
-                const badgeClass = isLive ? 'app-status-badge--live' : isPrivate ? 'app-status-badge--private' : 'app-status-badge--source';
+                const badgeClass = isLive
+                    ? 'app-status-badge--live'
+                    : isPrivate
+                      ? 'app-status-badge--private'
+                      : 'app-status-badge--source';
                 const badgeText = isLive ? 'DEPLOYED' : isPrivate ? 'PRIVATE' : 'SOURCE';
 
                 const appInfo = document.createElement('div');
@@ -1771,13 +2037,12 @@ export const Desktop = {
             const filtered =
                 filterTag === 'all' ? projects : projects.filter((p) => p.tags.includes(filterTag));
             grid.innerHTML = filtered
-                .map(
-                    (project, index) => {
-                        const status = project.demo ? 'LIVE' : 'ARCHIVED';
-                        const statusClass = project.demo ? '' : 'lab-notes__status--archived';
-                        const tagList = (project.tags || []).map(t => Sanitize.text(t)).join(' · ');
-                        const techCount = project.tech ? project.tech.length : 0;
-                        return `
+                .map((project, index) => {
+                    const status = project.demo ? 'LIVE' : 'ARCHIVED';
+                    const statusClass = project.demo ? '' : 'lab-notes__status--archived';
+                    const tagList = (project.tags || []).map((t) => Sanitize.text(t)).join(' · ');
+                    const techCount = project.tech ? project.tech.length : 0;
+                    return `
                 <div class="project-card project-card--expandable project-card--blueprint scroll-reveal" data-reveal-delay="${Math.min(index % 6, 5)}">
                     <div class="blueprint-overlay" aria-hidden="true">
                         <div class="bp-corner bp-corner--tl"></div>
@@ -1812,8 +2077,7 @@ export const Desktop = {
                     </div>
                 </div>
             `;
-                    }
-                )
+                })
                 .join('');
         };
 
@@ -1827,7 +2091,7 @@ export const Desktop = {
             const notes = card.querySelector('.lab-notes');
             const isOpen = notes.classList.contains('lab-notes--open');
             // Close any other open panels first
-            grid.querySelectorAll('.lab-notes--open').forEach(n => {
+            grid.querySelectorAll('.lab-notes--open').forEach((n) => {
                 n.classList.remove('lab-notes--open');
                 n.closest('.project-card')?.classList.remove('project-card--expanded');
             });
@@ -1890,16 +2154,16 @@ export const Desktop = {
      */
     openResume() {
         const RESUME_STATS = [
-            { icon: '📅', target: 5,   label: 'Years Experience' },
-            { icon: '💼', target: 50,  label: 'Projects Completed' },
-            { icon: '⭐', target: 15,  label: 'Key Skills' },
+            { icon: '📅', target: 5, label: 'Years Experience' },
+            { icon: '💼', target: 50, label: 'Projects Completed' },
+            { icon: '⭐', target: 15, label: 'Key Skills' },
             { icon: '🏆', target: 100, label: 'Commits This Month' },
         ];
         const CORE_SKILLS = [
             { name: 'JavaScript / TypeScript', pct: 95 },
-            { name: 'React / Vue / Svelte',    pct: 90 },
-            { name: 'Node.js / Python',         pct: 85 },
-            { name: 'UI/UX Design',             pct: 80 },
+            { name: 'React / Vue / Svelte', pct: 90 },
+            { name: 'Node.js / Python', pct: 85 },
+            { name: 'UI/UX Design', pct: 80 },
         ];
 
         const content = document.createElement('div');
@@ -1914,23 +2178,27 @@ export const Desktop = {
                 </div>
             </div>
             <div class="resume-stats-grid">
-                ${RESUME_STATS.map(s => `
+                ${RESUME_STATS.map(
+                    (s) => `
                     <div class="resume-stat-card">
                         <div class="stat-icon">${s.icon}</div>
                         <div class="stat-value" data-target="${s.target}">0</div>
                         <div class="stat-label">${Sanitize.text(s.label)}</div>
                     </div>
-                `).join('')}
+                `
+                ).join('')}
             </div>
             <div class="resume-skills">
                 <h3>CORE COMPETENCIES</h3>
                 <div class="skill-bars">
-                    ${CORE_SKILLS.map(s => `
+                    ${CORE_SKILLS.map(
+                        (s) => `
                         <div class="skill-bar">
                             <div class="skill-info"><span>${Sanitize.text(s.name)}</span><span>${s.pct}%</span></div>
                             <div class="skill-progress"><div class="skill-fill" style="width:${s.pct}%"></div></div>
                         </div>
-                    `).join('')}
+                    `
+                    ).join('')}
                 </div>
             </div>
             <div class="resume-actions">
@@ -1950,7 +2218,7 @@ export const Desktop = {
 
         // Animate counters on load
         setTimeout(() => {
-            content.querySelectorAll('.stat-value').forEach(el => {
+            content.querySelectorAll('.stat-value').forEach((el) => {
                 const target = parseInt(el.dataset.target);
                 this.animateCounter(el, target, 1500);
             });
@@ -2000,18 +2268,18 @@ export const Desktop = {
      */
     openAbout() {
         const ABOUT_SKILLS = [
-            { name: 'Python',          color: '#00f0ff' },
-            { name: 'TypeScript',      color: '#00f0ff' },
-            { name: 'JavaScript',      color: '#00f0ff' },
-            { name: 'LLM / RAG',      color: '#aa00ff' },
-            { name: 'AI Agents',       color: '#aa00ff' },
-            { name: 'MCP Protocol',    color: '#aa00ff' },
+            { name: 'Python', color: '#00f0ff' },
+            { name: 'TypeScript', color: '#00f0ff' },
+            { name: 'JavaScript', color: '#00f0ff' },
+            { name: 'LLM / RAG', color: '#aa00ff' },
+            { name: 'AI Agents', color: '#aa00ff' },
+            { name: 'MCP Protocol', color: '#aa00ff' },
             { name: 'React / Next.js', color: '#00ff88' },
-            { name: 'Node.js',         color: '#00ff88' },
+            { name: 'Node.js', color: '#00ff88' },
             { name: 'Three.js / WebGL', color: '#00ff88' },
-            { name: 'Supabase / SQL',  color: '#ffaa00' },
-            { name: 'Git / CI-CD',     color: '#ffaa00' },
-            { name: 'Vercel / Cloud',  color: '#ffaa00' },
+            { name: 'Supabase / SQL', color: '#ffaa00' },
+            { name: 'Git / CI-CD', color: '#ffaa00' },
+            { name: 'Vercel / Cloud', color: '#ffaa00' },
         ];
 
         /* Auric signature — SVG monogram drawn on scroll */
@@ -2082,7 +2350,7 @@ export const Desktop = {
                     <div class="gauntlet-divider"></div>
                 </div>
                 <div class="gauntlet-reveal about-skills-grid" data-gauntlet-delay="2">
-                    ${ABOUT_SKILLS.map(s => `<div class="about-skill-badge" style="--badge-color:${s.color}">${Sanitize.text(s.name)}</div>`).join('')}
+                    ${ABOUT_SKILLS.map((s) => `<div class="about-skill-badge" style="--badge-color:${s.color}">${Sanitize.text(s.name)}</div>`).join('')}
                 </div>
                 <div class="gauntlet-reveal" data-gauntlet-delay="3">
                     <div class="gauntlet-text" style="margin-top:16px">
@@ -2171,7 +2439,9 @@ export const Desktop = {
 
             // Initialize Pixel Loader
             new PixelLoader({
-                container: document.getElementById('window-contact').querySelector('.window-content'),
+                container: document
+                    .getElementById('window-contact')
+                    .querySelector('.window-content'),
                 type: 'sending',
                 message: 'ENCRYPTING & TRANSMITTING...',
                 onComplete: () => {
@@ -2180,7 +2450,7 @@ export const Desktop = {
                     const body = encodeURIComponent(`From: ${name}\nEmail: ${email}\n\n${message}`);
                     window.location.href = `mailto:tdotssolutionsz@gmail.com?subject=${subject}&body=${body}`;
                     form.reset();
-                }
+                },
             });
         };
 
@@ -2280,20 +2550,36 @@ export const Desktop = {
         content.querySelector('#idleMinutes').value = Math.round(State.idleTime / 60000) || 2;
 
         // Bind changes
-        content.querySelector('#fxEnabled').addEventListener('change', (e) => State.setFxEnabled(e.target.checked));
-        content.querySelector('#soundEnabled').addEventListener('change', (e) => State.setSoundEnabled(e.target.checked));
+        content
+            .querySelector('#fxEnabled')
+            .addEventListener('change', (e) => State.setFxEnabled(e.target.checked));
+        content
+            .querySelector('#soundEnabled')
+            .addEventListener('change', (e) => State.setSoundEnabled(e.target.checked));
         content.querySelector('#idleMinutes').addEventListener('change', (e) => {
             const m = Math.max(1, Math.min(60, parseInt(e.target.value || '2', 10)));
             State.idleTime = m * 60000;
         });
 
         // Quick tool launchers
-        content.querySelector('#openCalc').addEventListener('click', () => Desktop.openCalculator());
-        content.querySelector('#openWeather').addEventListener('click', () => Desktop.openWeather());
-        content.querySelector('#openSysmon').addEventListener('click', () => Desktop.openSystemMonitor());
-        content.querySelector('#openPomodoro').addEventListener('click', () => Desktop.openPomodoroTimer());
-        content.querySelector('#openTrophies').addEventListener('click', () => Desktop.openTrophies());
-        content.querySelector('#openNotes').addEventListener('click', () => Desktop.openStickyNotes());
+        content
+            .querySelector('#openCalc')
+            .addEventListener('click', () => Desktop.openCalculator());
+        content
+            .querySelector('#openWeather')
+            .addEventListener('click', () => Desktop.openWeather());
+        content
+            .querySelector('#openSysmon')
+            .addEventListener('click', () => Desktop.openSystemMonitor());
+        content
+            .querySelector('#openPomodoro')
+            .addEventListener('click', () => Desktop.openPomodoroTimer());
+        content
+            .querySelector('#openTrophies')
+            .addEventListener('click', () => Desktop.openTrophies());
+        content
+            .querySelector('#openNotes')
+            .addEventListener('click', () => Desktop.openStickyNotes());
 
         // Admin panel accessible via console: import('./admin.js').then(m => m.Admin.open())
     },
@@ -2301,44 +2587,64 @@ export const Desktop = {
     /** Open System Monitor — real-time performance dashboard */
     openSystemMonitor() {
         createLazyWindow({
-            id: 'sysmon', title: 'SYS_MONITOR // DIAGNOSTICS', icon: '📊',
-            width: 480, height: 520,
-            load: () => import('./system-monitor.js'), exportName: 'renderSystemMonitor',
+            id: 'sysmon',
+            title: 'SYS_MONITOR // DIAGNOSTICS',
+            icon: '📊',
+            width: 480,
+            height: 520,
+            load: () => import('./system-monitor.js'),
+            exportName: 'renderSystemMonitor',
         });
     },
 
     /** Open Sticky Notes — persistent note-taking utility */
     openStickyNotes() {
         createLazyWindow({
-            id: 'sticky-notes', title: 'NOTES // STICKY', icon: '📝',
-            width: 520, height: 440,
-            load: () => import('./sticky-notes.js'), exportName: 'renderStickyNotes',
+            id: 'sticky-notes',
+            title: 'NOTES // STICKY',
+            icon: '📝',
+            width: 520,
+            height: 440,
+            load: () => import('./sticky-notes.js'),
+            exportName: 'renderStickyNotes',
         });
     },
 
     /** Open Pomodoro Timer — focus session utility with work/break cycles */
     openPomodoroTimer() {
         createLazyWindow({
-            id: 'pomodoro', title: 'FOCUS_TIMER // POMODORO', icon: '⏱',
-            width: 320, height: 440,
-            load: () => import('./pomodoro-timer.js'), exportName: 'renderPomodoroTimer',
+            id: 'pomodoro',
+            title: 'FOCUS_TIMER // POMODORO',
+            icon: '⏱',
+            width: 320,
+            height: 440,
+            load: () => import('./pomodoro-timer.js'),
+            exportName: 'renderPomodoroTimer',
         });
     },
 
     openCalculator() {
         createLazyWindow({
-            id: 'calculator', title: 'CALC.exe // CALCULATOR', icon: '🧮',
-            width: 280, height: 400,
-            load: () => import('./calculator.js'), exportName: 'renderCalculator',
+            id: 'calculator',
+            title: 'CALC.exe // CALCULATOR',
+            icon: '🧮',
+            width: 280,
+            height: 400,
+            load: () => import('./calculator.js'),
+            exportName: 'renderCalculator',
         });
     },
 
     /** Open Weather — live weather widget with geolocation */
     openWeather() {
         createLazyWindow({
-            id: 'weather', title: 'WEATHER // LIVE', icon: '🌤',
-            width: 340, height: 420,
-            load: () => import('./weather.js'), exportName: 'renderWeather',
+            id: 'weather',
+            title: 'WEATHER // LIVE',
+            icon: '🌤',
+            width: 340,
+            height: 420,
+            load: () => import('./weather.js'),
+            exportName: 'renderWeather',
         });
     },
 
@@ -2482,9 +2788,9 @@ export const Desktop = {
         `;
         desktop.appendChild(watermark);
 
-        const text = "SOLUTIONS";
+        const text = 'SOLUTIONS';
         let i = 0;
-        watermark.textContent = "";
+        watermark.textContent = '';
 
         const type = () => {
             if (i < text.length) {
@@ -2494,8 +2800,8 @@ export const Desktop = {
             } else {
                 // Add blinking cursor at the end
                 const cursor = document.createElement('span');
-                cursor.textContent = "_";
-                cursor.style.animation = "blink 1s infinite";
+                cursor.textContent = '_';
+                cursor.style.animation = 'blink 1s infinite';
                 watermark.appendChild(cursor);
 
                 // Add blink keyframes if not exists
@@ -2523,7 +2829,8 @@ export const Desktop = {
                 title: 'WEBSITE DESIGN & DEVELOPMENT',
                 icon: '◈',
                 color: '#00f0ff',
-                description: 'Custom-built websites tailored to your brand. From single-page landing sites to full multi-page experiences, designed for speed, mobile responsiveness, and conversion.',
+                description:
+                    'Custom-built websites tailored to your brand. From single-page landing sites to full multi-page experiences, designed for speed, mobile responsiveness, and conversion.',
                 features: [
                     'Custom design from scratch (no templates)',
                     'Mobile-first responsive development',
@@ -2538,7 +2845,8 @@ export const Desktop = {
                 title: 'E-COMMERCE & ONLINE STORES',
                 icon: '⬡',
                 color: '#ff00aa',
-                description: 'Full online store setup with product pages, shopping cart, checkout, and payment processing. Built on modern frameworks for speed and reliability.',
+                description:
+                    'Full online store setup with product pages, shopping cart, checkout, and payment processing. Built on modern frameworks for speed and reliability.',
                 features: [
                     'Product catalog & inventory management',
                     'Stripe / payment gateway integration',
@@ -2553,7 +2861,8 @@ export const Desktop = {
                 title: 'BRANDING & VISUAL IDENTITY',
                 icon: '◉',
                 color: '#aa00ff',
-                description: 'Logo design, color palettes, typography, and brand guidelines. Everything you need to look professional and consistent across all platforms.',
+                description:
+                    'Logo design, color palettes, typography, and brand guidelines. Everything you need to look professional and consistent across all platforms.',
                 features: [
                     'Logo design (3 concepts, unlimited revisions)',
                     'Color palette & typography selection',
@@ -2568,7 +2877,8 @@ export const Desktop = {
                 title: 'PHOTOGRAPHY & VIDEOGRAPHY',
                 icon: '▶',
                 color: '#ff3366',
-                description: 'Professional photography and video production for businesses, artists, and events. From product shoots to music videos and promotional content.',
+                description:
+                    'Professional photography and video production for businesses, artists, and events. From product shoots to music videos and promotional content.',
                 features: [
                     'Music video production (concept to delivery)',
                     'Product & food photography',
@@ -2583,7 +2893,8 @@ export const Desktop = {
                 title: 'AI & AUTOMATION SOLUTIONS',
                 icon: '\u27C1',
                 color: '#00ff88',
-                description: 'Custom AI integrations, chatbots, workflow automation, and intelligent systems. From simple automations to full autonomous agent platforms.',
+                description:
+                    'Custom AI integrations, chatbots, workflow automation, and intelligent systems. From simple automations to full autonomous agent platforms.',
                 features: [
                     'AI chatbots & customer support agents',
                     'Workflow automation & integrations',
@@ -2598,7 +2909,8 @@ export const Desktop = {
                 title: 'CREATIVE DIRECTION & CONSULTING',
                 icon: '\u2726',
                 color: '#d4af37',
-                description: 'Strategic creative direction for brands, campaigns, and digital presence. From concept development to execution oversight.',
+                description:
+                    'Strategic creative direction for brands, campaigns, and digital presence. From concept development to execution oversight.',
                 features: [
                     'Brand strategy & positioning',
                     'Campaign concept development',
@@ -2645,65 +2957,226 @@ export const Desktop = {
         content.className = 'services-content';
 
         const CLIENT_WORK = [
-            { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff', thumb: '/thumbnails/edsonlegal.jpg' },
-            { name: 'BetMetrics.ca', type: 'Sports Analytics', url: 'https://betmetrics.ca', color: '#ff4444', thumb: '/thumbnails/betmetrics.jpg' },
-            { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies.com', color: '#d4a574', thumb: '/thumbnails/musthavefrenchies.jpg' },
-            { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x.com', color: '#ff3366', thumb: '/thumbnails/savv4x.jpg' },
-            { name: 'The Syren Effect', type: 'Content Creator', url: 'https://syreneffect.com', color: '#aa00ff', thumb: '/thumbnails/syreneffect.jpg' },
+            {
+                name: 'Edson Legal',
+                type: 'Law Firm',
+                url: 'https://www.edsonlegal.com/',
+                color: '#00f0ff',
+                thumb: '/thumbnails/edsonlegal.jpg',
+            },
+            {
+                name: 'BetMetrics.ca',
+                type: 'Sports Analytics',
+                url: 'https://betmetrics.ca',
+                color: '#ff4444',
+                thumb: '/thumbnails/betmetrics.jpg',
+            },
+            {
+                name: 'MustHaveFrenchies',
+                type: 'Pet Breeder',
+                url: 'https://musthavefrenchies.com',
+                color: '#d4a574',
+                thumb: '/thumbnails/musthavefrenchies.jpg',
+            },
+            {
+                name: 'SAVV4X — Problem Child',
+                type: 'Music Artist',
+                url: 'https://savv4x.com',
+                color: '#ff3366',
+                thumb: '/thumbnails/savv4x.jpg',
+            },
+            {
+                name: 'The Syren Effect',
+                type: 'Content Creator',
+                url: 'https://syreneffect.com',
+                color: '#aa00ff',
+                thumb: '/thumbnails/syreneffect.jpg',
+            },
         ];
 
         // SVG icon helper — thin line art, cyberpunk style
-        const svg = (d, vb = '0 0 24 24') => `<svg viewBox="${vb}" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+        const svg = (d, vb = '0 0 24 24') =>
+            `<svg viewBox="${vb}" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 
         const DEMOS = [
             // Ordered by design impact — strongest first
-            { name: 'Fitness & Gym', url: 'https://tdots-demo-fitness.vercel.app', live: true,
-              icon: svg('<path d="M6.5 6.5l11 11M21 3l-5.5 5.5M3 21l5.5-5.5M14 7l-1.5-1.5L7 11l1.5 1.5M17 13l-1.5-1.5L10 17l1.5 1.5"/>') },
-            { name: 'Pet Services', url: 'https://tdots-demo-pet.vercel.app', live: true,
-              icon: svg('<path d="M12 21c-1.5 0-5-2.5-5-6.5C7 11 9 9 12 7c3 2 5 4 5 7.5 0 4-3.5 6.5-5 6.5z"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="6" r="2"/><circle cx="5" cy="11" r="1.5"/><circle cx="19" cy="11" r="1.5"/>') },
-            { name: 'Food Truck', url: 'https://tdots-demo-food-truck.vercel.app', live: true,
-              icon: svg('<rect x="1" y="10" width="22" height="8" rx="2"/><path d="M5 10V6a2 2 0 012-2h6l4 6M5 18v2M19 18v2"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/>') },
-            { name: 'Restaurant & Bar', url: 'https://tdots-demo-restaurant.vercel.app', live: true,
-              icon: svg('<path d="M3 11h18M5 11V6a2 2 0 012-2h10a2 2 0 012 2v5M7 11v9h10v-9M12 4v7M12 14v3"/>') },
-            { name: 'Cannabis', url: 'https://tdots-demo-cannabis.vercel.app', live: true,
-              icon: svg('<path d="M12 22V12M12 12C12 12 7 10 5 5c3 0 5.5 2 7 4M12 12c0 0 5-2 7-7-3 0-5.5 2-7 4M12 12C12 8 10 4 8 2c0 3 2 6 4 8M12 12c0-4 2-8 4-10 0 3-2 6-4 8"/>') },
-            { name: 'Nails & Beauty', url: 'https://tdots-demo-beauty.vercel.app', live: true,
-              icon: svg('<path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/>') },
-            { name: 'Barbershop & Salon', url: 'https://tdots-demo-barbershop.vercel.app', live: true,
-              icon: svg('<circle cx="12" cy="7" r="3"/><path d="M5 21v-2a4 4 0 014-4h6a4 4 0 014 4v2"/><path d="M15 3l2 4M9 3L7 7"/>') },
-            { name: 'Wedding & Events', url: 'https://tdots-demo-events.vercel.app', live: true,
-              icon: svg('<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/>') },
-            { name: 'Daycare', url: 'https://tdots-demo-daycare.vercel.app', live: true,
-              icon: svg('<circle cx="12" cy="8" r="4"/><path d="M6 21v-1a6 6 0 016-6 6 6 0 016 6v1"/><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/>') },
-            { name: 'Cleaning — PRISTINE', url: 'https://tdots-demo-cleaning.vercel.app', live: true,
-              icon: svg('<path d="M12 2v6M8.5 8.5L12 12M15.5 8.5L12 12M12 12v10M8 22h8"/><circle cx="12" cy="5" r="3"/>') },
-            { name: 'Medical & Dental', url: 'https://tdots-demo-medical.vercel.app', live: true,
-              icon: svg('<path d="M12 6v12M6 12h12"/><rect x="3" y="3" width="18" height="18" rx="3"/>') },
-            { name: 'Moving & Transport', url: 'https://tdots-demo-moving.vercel.app', live: true,
-              icon: svg('<rect x="1" y="10" width="22" height="8" rx="2"/><path d="M5 10V6a2 2 0 012-2h6l4 6M5 18v2M19 18v2"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/>') },
-            { name: 'Contractor & Trades', url: 'https://tdots-demo-contractor.vercel.app', live: true,
-              icon: svg('<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.2a2 2 0 01-2.83 0l-.1-.1a2 2 0 010-2.83l6.83-6.73A6 6 0 016.3 2.53l3.77 3.77z"/>') },
-            { name: 'Cleaning — BLANC', url: 'https://tdots-demo-cleaning-premium.vercel.app', live: true,
-              icon: svg('<path d="M12 2v6M8.5 8.5L12 12M15.5 8.5L12 12M12 12v10M8 22h8"/><circle cx="12" cy="5" r="3"/>') },
-            { name: 'Solo / Starter', url: 'https://tdots-demo-starter.vercel.app', live: true,
-              icon: svg('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>') },
-            { name: 'Auto Detailing', url: '#', live: false,
-              icon: svg('<path d="M5 17h14M6 17l1-5h10l1 5M8 12l1-4h6l1 4"/><circle cx="8" cy="17" r="1.5"/><circle cx="16" cy="17" r="1.5"/>') },
-            { name: 'Car Dealership', url: '#', live: false,
-              icon: svg('<path d="M5 17h14M6 17l1.5-6h9L18 17M9 11l.5-4h5l.5 4"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/><path d="M3 17h2M19 17h2"/>') },
-            { name: 'Law Firm', url: '#', live: false,
-              icon: svg('<path d="M12 2L3 7h18zM5 7v10M19 7v10M3 17h18M3 21h18"/><path d="M8 7v10M12 7v10M16 7v10"/>') },
-            { name: 'Real Estate', url: '#', live: false,
-              icon: svg('<path d="M3 21h18M5 21V10l7-7 7 7v11"/><rect x="9" y="14" width="6" height="7"/><path d="M9 10h6"/>') },
-            { name: 'Immigration', url: '#', live: false,
-              icon: svg('<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 014 10 15 15 0 01-4 10 15 15 0 01-4-10A15 15 0 0112 2z"/>') },
-            { name: 'Construction', url: '#', live: false,
-              icon: svg('<path d="M2 20h20M4 20V10l4-4M20 20V10l-4-4M8 6h8M6 10h12"/><path d="M10 20v-6h4v6"/>') },
-            { name: 'Tattoo & Piercing', url: '#', live: false,
-              icon: svg('<path d="M12 19l-1-6-5-1 12-8-8 12-1-5z"/>') },
+            {
+                name: 'Fitness & Gym',
+                url: 'https://tdots-demo-fitness.vercel.app',
+                live: true,
+                icon: svg(
+                    '<path d="M6.5 6.5l11 11M21 3l-5.5 5.5M3 21l5.5-5.5M14 7l-1.5-1.5L7 11l1.5 1.5M17 13l-1.5-1.5L10 17l1.5 1.5"/>'
+                ),
+            },
+            {
+                name: 'Pet Services',
+                url: 'https://tdots-demo-pet.vercel.app',
+                live: true,
+                icon: svg(
+                    '<path d="M12 21c-1.5 0-5-2.5-5-6.5C7 11 9 9 12 7c3 2 5 4 5 7.5 0 4-3.5 6.5-5 6.5z"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="6" r="2"/><circle cx="5" cy="11" r="1.5"/><circle cx="19" cy="11" r="1.5"/>'
+                ),
+            },
+            {
+                name: 'Food Truck',
+                url: 'https://tdots-demo-food-truck.vercel.app',
+                live: true,
+                icon: svg(
+                    '<rect x="1" y="10" width="22" height="8" rx="2"/><path d="M5 10V6a2 2 0 012-2h6l4 6M5 18v2M19 18v2"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/>'
+                ),
+            },
+            {
+                name: 'Restaurant & Bar',
+                url: 'https://tdots-demo-restaurant.vercel.app',
+                live: true,
+                icon: svg(
+                    '<path d="M3 11h18M5 11V6a2 2 0 012-2h10a2 2 0 012 2v5M7 11v9h10v-9M12 4v7M12 14v3"/>'
+                ),
+            },
+            {
+                name: 'Cannabis',
+                url: 'https://tdots-demo-cannabis.vercel.app',
+                live: true,
+                icon: svg(
+                    '<path d="M12 22V12M12 12C12 12 7 10 5 5c3 0 5.5 2 7 4M12 12c0 0 5-2 7-7-3 0-5.5 2-7 4M12 12C12 8 10 4 8 2c0 3 2 6 4 8M12 12c0-4 2-8 4-10 0 3-2 6-4 8"/>'
+                ),
+            },
+            {
+                name: 'Nails & Beauty',
+                url: 'https://tdots-demo-beauty.vercel.app',
+                live: true,
+                icon: svg(
+                    '<path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/>'
+                ),
+            },
+            {
+                name: 'Barbershop & Salon',
+                url: 'https://tdots-demo-barbershop.vercel.app',
+                live: true,
+                icon: svg(
+                    '<circle cx="12" cy="7" r="3"/><path d="M5 21v-2a4 4 0 014-4h6a4 4 0 014 4v2"/><path d="M15 3l2 4M9 3L7 7"/>'
+                ),
+            },
+            {
+                name: 'Wedding & Events',
+                url: 'https://tdots-demo-events.vercel.app',
+                live: true,
+                icon: svg(
+                    '<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/>'
+                ),
+            },
+            {
+                name: 'Daycare',
+                url: 'https://tdots-demo-daycare.vercel.app',
+                live: true,
+                icon: svg(
+                    '<circle cx="12" cy="8" r="4"/><path d="M6 21v-1a6 6 0 016-6 6 6 0 016 6v1"/><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/>'
+                ),
+            },
+            {
+                name: 'Cleaning — PRISTINE',
+                url: 'https://tdots-demo-cleaning.vercel.app',
+                live: true,
+                icon: svg(
+                    '<path d="M12 2v6M8.5 8.5L12 12M15.5 8.5L12 12M12 12v10M8 22h8"/><circle cx="12" cy="5" r="3"/>'
+                ),
+            },
+            {
+                name: 'Medical & Dental',
+                url: 'https://tdots-demo-medical.vercel.app',
+                live: true,
+                icon: svg(
+                    '<path d="M12 6v12M6 12h12"/><rect x="3" y="3" width="18" height="18" rx="3"/>'
+                ),
+            },
+            {
+                name: 'Moving & Transport',
+                url: 'https://tdots-demo-moving.vercel.app',
+                live: true,
+                icon: svg(
+                    '<rect x="1" y="10" width="22" height="8" rx="2"/><path d="M5 10V6a2 2 0 012-2h6l4 6M5 18v2M19 18v2"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/>'
+                ),
+            },
+            {
+                name: 'Contractor & Trades',
+                url: 'https://tdots-demo-contractor.vercel.app',
+                live: true,
+                icon: svg(
+                    '<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.2a2 2 0 01-2.83 0l-.1-.1a2 2 0 010-2.83l6.83-6.73A6 6 0 016.3 2.53l3.77 3.77z"/>'
+                ),
+            },
+            {
+                name: 'Cleaning — BLANC',
+                url: 'https://tdots-demo-cleaning-premium.vercel.app',
+                live: true,
+                icon: svg(
+                    '<path d="M12 2v6M8.5 8.5L12 12M15.5 8.5L12 12M12 12v10M8 22h8"/><circle cx="12" cy="5" r="3"/>'
+                ),
+            },
+            {
+                name: 'Solo / Starter',
+                url: 'https://tdots-demo-starter.vercel.app',
+                live: true,
+                icon: svg(
+                    '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>'
+                ),
+            },
+            {
+                name: 'Auto Detailing',
+                url: '#',
+                live: false,
+                icon: svg(
+                    '<path d="M5 17h14M6 17l1-5h10l1 5M8 12l1-4h6l1 4"/><circle cx="8" cy="17" r="1.5"/><circle cx="16" cy="17" r="1.5"/>'
+                ),
+            },
+            {
+                name: 'Car Dealership',
+                url: '#',
+                live: false,
+                icon: svg(
+                    '<path d="M5 17h14M6 17l1.5-6h9L18 17M9 11l.5-4h5l.5 4"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/><path d="M3 17h2M19 17h2"/>'
+                ),
+            },
+            {
+                name: 'Law Firm',
+                url: '#',
+                live: false,
+                icon: svg(
+                    '<path d="M12 2L3 7h18zM5 7v10M19 7v10M3 17h18M3 21h18"/><path d="M8 7v10M12 7v10M16 7v10"/>'
+                ),
+            },
+            {
+                name: 'Real Estate',
+                url: '#',
+                live: false,
+                icon: svg(
+                    '<path d="M3 21h18M5 21V10l7-7 7 7v11"/><rect x="9" y="14" width="6" height="7"/><path d="M9 10h6"/>'
+                ),
+            },
+            {
+                name: 'Immigration',
+                url: '#',
+                live: false,
+                icon: svg(
+                    '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 014 10 15 15 0 01-4 10 15 15 0 01-4-10A15 15 0 0112 2z"/>'
+                ),
+            },
+            {
+                name: 'Construction',
+                url: '#',
+                live: false,
+                icon: svg(
+                    '<path d="M2 20h20M4 20V10l4-4M20 20V10l-4-4M8 6h8M6 10h12"/><path d="M10 20v-6h4v6"/>'
+                ),
+            },
+            {
+                name: 'Tattoo & Piercing',
+                url: '#',
+                live: false,
+                icon: svg('<path d="M12 19l-1-6-5-1 12-8-8 12-1-5z"/>'),
+            },
         ];
 
-        const liveCount = DEMOS.filter(d => d.live).length;
+        const liveCount = DEMOS.filter((d) => d.live).length;
 
         content.innerHTML = `
             <div class="services-hero scroll-reveal" data-reveal="scale">
@@ -2721,7 +3194,8 @@ export const Desktop = {
                 <div class="window-section-header purple scroll-reveal" data-reveal="fade-left" data-reveal-delay="1">◈ SERVICES</div>
 
                 <div class="services-grid">
-                    ${SERVICES.map((s, i) => `
+                    ${SERVICES.map(
+                        (s, i) => `
                         <div class="service-card scroll-reveal" data-reveal="fade-up" data-reveal-delay="${Math.min(i + 2, 6)}" style="--card-color: ${s.color}">
                             <div class="service-card-header">
                                 <span class="service-card-icon" style="color: ${s.color}">${s.icon}</span>
@@ -2729,21 +3203,23 @@ export const Desktop = {
                             </div>
                             <p class="service-card-desc">${Sanitize.text(s.description)}</p>
                             <ul class="service-card-features">
-                                ${s.features.map(f => `<li>${Sanitize.text(f)}</li>`).join('')}
+                                ${s.features.map((f) => `<li>${Sanitize.text(f)}</li>`).join('')}
                             </ul>
                             <div class="service-card-price">
                                 <span class="service-price-amount">${Sanitize.text(s.price)}</span>
                                 <span class="service-price-note">${Sanitize.text(s.priceNote)}</span>
                             </div>
                         </div>
-                    `).join('')}
+                    `
+                    ).join('')}
                 </div>
 
                 <div class="window-section-header green scroll-reveal" data-reveal="fade-right" style="margin-top: 35px;">◈ MONTHLY RETAINERS</div>
                 <p class="services-retainer-intro scroll-reveal" data-reveal-delay="1">Keep your site running, updated, and growing without the hassle.</p>
 
                 <div class="retainer-grid">
-                    ${RETAINERS.map((r, i) => `
+                    ${RETAINERS.map(
+                        (r, i) => `
                         <div class="retainer-card scroll-reveal" data-reveal="clip-up" data-reveal-delay="${Math.min(i + 2, 6)}" style="--card-color: ${r.color}">
                             <div class="retainer-tier">${Sanitize.text(r.tier)}</div>
                             <div class="retainer-price">
@@ -2751,17 +3227,19 @@ export const Desktop = {
                                 <span class="retainer-price-period">${Sanitize.text(r.period)}</span>
                             </div>
                             <ul class="retainer-features">
-                                ${r.features.map(f => `<li>${Sanitize.text(f)}</li>`).join('')}
+                                ${r.features.map((f) => `<li>${Sanitize.text(f)}</li>`).join('')}
                             </ul>
                         </div>
-                    `).join('')}
+                    `
+                    ).join('')}
                 </div>
             </div>
 
             <div class="svc-panel" id="svc-panel-clients">
                 <div class="window-section-header orange scroll-reveal" data-reveal="fade-left" data-reveal-delay="1">\u25B6 CLIENT WORK</div>
                 <div class="portfolio-thumb-grid scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
-                    ${CLIENT_WORK.map(c => `
+                    ${CLIENT_WORK.map(
+                        (c) => `
                         <a href="${Sanitize.text(c.url)}" target="_blank" rel="noopener" class="portfolio-thumb-card" style="text-decoration:none;color:inherit;">
                             <div class="portfolio-thumb-img" style="background-image:url('${c.thumb}')">
                                 <span class="portfolio-thumb-badge" style="background:${c.color};color:#000;">LIVE</span>
@@ -2771,13 +3249,14 @@ export const Desktop = {
                                 <span class="portfolio-thumb-type">${Sanitize.text(c.type)}</span>
                             </div>
                         </a>
-                    `).join('')}
+                    `
+                    ).join('')}
                 </div>
 
                 <div class="window-section-header cyan scroll-reveal" data-reveal="fade-right" style="margin-top: 25px;">\u25C8 INDUSTRY DEMOS <span style="opacity:0.4;font-size:9px;margin-left:8px;">${liveCount} LIVE / ${DEMOS.length} TOTAL</span></div>
                 <p class="services-retainer-intro scroll-reveal" data-reveal-delay="1">Click any live demo to preview. Each site is a unique custom build.</p>
                 <div class="portfolio-thumb-grid portfolio-thumb-grid--demos scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
-                    ${DEMOS.map(d => {
+                    ${DEMOS.map((d) => {
                         const thumbMap = {
                             'Restaurant & Bar': '/thumbnails/demo-restaurant.jpg',
                             'Barbershop & Salon': '/thumbnails/demo-barbershop.jpg',
@@ -2788,20 +3267,22 @@ export const Desktop = {
                             'Fitness & Gym': '/thumbnails/demo-fitness.jpg',
                             'Nails & Beauty': '/thumbnails/demo-beauty.jpg',
                             'Pet Services': '/thumbnails/demo-pet.jpg',
-                            'Daycare': '/thumbnails/demo-daycare.jpg',
+                            Daycare: '/thumbnails/demo-daycare.jpg',
                             'Wedding & Events': '/thumbnails/demo-events.jpg',
                             'Moving & Transport': '/thumbnails/demo-moving.jpg',
                             'Medical & Dental': '/thumbnails/demo-medical.jpg',
-                            'Cannabis': '/thumbnails/demo-cannabis.jpg',
+                            Cannabis: '/thumbnails/demo-cannabis.jpg',
                             'Food Truck': '/thumbnails/demo-food-truck.jpg',
                         };
                         const thumb = thumbMap[d.name] || '';
                         return `
                         <a href="${d.live ? Sanitize.text(d.url) : '#'}" ${d.live ? 'target="_blank" rel="noopener"' : ''} class="portfolio-thumb-card ${d.live ? '' : 'portfolio-thumb-card--soon'}" style="text-decoration:none;color:inherit;">
                             <div class="portfolio-thumb-img ${d.live ? '' : 'portfolio-thumb-img--soon'}" ${thumb ? `style="background-image:url('${thumb}')"` : ''}>
-                                ${d.live
-                                    ? '<span class="portfolio-thumb-badge" style="background:#4ade80;color:#000;">LIVE</span>'
-                                    : '<span class="portfolio-thumb-badge portfolio-thumb-badge--soon">SOON</span>'}
+                                ${
+                                    d.live
+                                        ? '<span class="portfolio-thumb-badge" style="background:#4ade80;color:#000;">LIVE</span>'
+                                        : '<span class="portfolio-thumb-badge portfolio-thumb-badge--soon">SOON</span>'
+                                }
                                 ${!d.live ? '<span class="portfolio-thumb-icon">' + d.icon + '</span>' : ''}
                             </div>
                             <div class="portfolio-thumb-info">
@@ -2828,10 +3309,10 @@ export const Desktop = {
         `;
 
         // Tab switching
-        content.querySelectorAll('.svc-tab').forEach(tab => {
+        content.querySelectorAll('.svc-tab').forEach((tab) => {
             tab.addEventListener('click', () => {
-                content.querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
-                content.querySelectorAll('.svc-panel').forEach(p => p.classList.remove('active'));
+                content.querySelectorAll('.svc-tab').forEach((t) => t.classList.remove('active'));
+                content.querySelectorAll('.svc-panel').forEach((p) => p.classList.remove('active'));
                 tab.classList.add('active');
                 content.querySelector(`#svc-panel-${tab.dataset.tab}`).classList.add('active');
             });
@@ -2860,18 +3341,63 @@ export const Desktop = {
      */
     openPortfolio() {
         const CLIENT_WORK = [
-            { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff' },
-            { name: 'BetMetrics.ca', type: 'Sports Analytics', url: 'https://betmetrics.ca', color: '#ff4444' },
-            { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies.com', color: '#d4a574' },
-            { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x.com', color: '#ff3366' },
-            { name: 'The Syren Effect', type: 'Content Creator', url: 'https://syreneffect.com', color: '#aa00ff' },
+            {
+                name: 'Edson Legal',
+                type: 'Law Firm',
+                url: 'https://www.edsonlegal.com/',
+                color: '#00f0ff',
+            },
+            {
+                name: 'BetMetrics.ca',
+                type: 'Sports Analytics',
+                url: 'https://betmetrics.ca',
+                color: '#ff4444',
+            },
+            {
+                name: 'MustHaveFrenchies',
+                type: 'Pet Breeder',
+                url: 'https://musthavefrenchies.com',
+                color: '#d4a574',
+            },
+            {
+                name: 'SAVV4X — Problem Child',
+                type: 'Music Artist',
+                url: 'https://savv4x.com',
+                color: '#ff3366',
+            },
+            {
+                name: 'The Syren Effect',
+                type: 'Content Creator',
+                url: 'https://syreneffect.com',
+                color: '#aa00ff',
+            },
         ];
 
         const DEMOS = [
-            { name: 'Restaurant & Bar', url: 'https://tdots-demo-restaurant.vercel.app', live: true, icon: '🍽' },
-            { name: 'Barbershop & Salon', url: 'https://tdots-demo-barbershop.vercel.app', live: true, icon: '✂' },
-            { name: 'Contractor & Trades', url: 'https://tdots-demo-contractor.vercel.app', live: true, icon: '🔧' },
-            { name: 'Solo / Starter', url: 'https://tdots-demo-starter.vercel.app', live: true, icon: '◈' },
+            {
+                name: 'Restaurant & Bar',
+                url: 'https://tdots-demo-restaurant.vercel.app',
+                live: true,
+                icon: '🍽',
+            },
+            {
+                name: 'Barbershop & Salon',
+                url: 'https://tdots-demo-barbershop.vercel.app',
+                live: true,
+                icon: '✂',
+            },
+            {
+                name: 'Contractor & Trades',
+                url: 'https://tdots-demo-contractor.vercel.app',
+                live: true,
+                icon: '🔧',
+            },
+            {
+                name: 'Solo / Starter',
+                url: 'https://tdots-demo-starter.vercel.app',
+                live: true,
+                icon: '◈',
+            },
             { name: 'Auto Detailing', url: '#', live: false, icon: '🚗' },
             { name: 'Fitness & Gym', url: '#', live: false, icon: '💪' },
             { name: 'Nails, Lashes & Beauty', url: '#', live: false, icon: '💅' },
@@ -2893,7 +3419,7 @@ export const Desktop = {
         const content = document.createElement('div');
         content.className = 'services-content';
 
-        const liveCount = DEMOS.filter(d => d.live).length;
+        const liveCount = DEMOS.filter((d) => d.live).length;
         const totalCount = DEMOS.length;
 
         content.innerHTML = `
@@ -2905,7 +3431,8 @@ export const Desktop = {
 
             <div class="window-section-header orange scroll-reveal" data-reveal="fade-left" data-reveal-delay="1" style="margin-top: 30px;">▶ CLIENT WORK</div>
             <div class="portfolio-clients scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
-                ${CLIENT_WORK.map(c => `
+                ${CLIENT_WORK.map(
+                    (c) => `
                     <a href="${Sanitize.text(c.url)}" target="_blank" rel="noopener" class="portfolio-client-item" style="text-decoration:none;color:inherit;--client-color:${c.color}">
                         <span class="portfolio-client-dot" style="background:${c.color};box-shadow:0 0 8px ${c.color};"></span>
                         <div class="portfolio-client-info">
@@ -2915,20 +3442,23 @@ export const Desktop = {
                         <span class="portfolio-client-live">LIVE</span>
                         <span class="portfolio-client-arrow">↗</span>
                     </a>
-                `).join('')}
+                `
+                ).join('')}
             </div>
 
             <div class="window-section-header cyan scroll-reveal" data-reveal="fade-right" style="margin-top: 35px;">◈ INDUSTRY DEMOS <span style="opacity:0.4;font-size:9px;margin-left:8px;">${liveCount} LIVE / ${totalCount} TOTAL</span></div>
             <p class="services-retainer-intro scroll-reveal" data-reveal-delay="1">Click any live demo to preview. Each site is a unique design built for that industry.</p>
 
             <div class="portfolio-demos-grid scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
-                ${DEMOS.map(d => `
+                ${DEMOS.map(
+                    (d) => `
                     <a href="${d.live ? Sanitize.text(d.url) : '#'}" ${d.live ? 'target="_blank" rel="noopener"' : ''} class="portfolio-demo-card ${d.live ? 'portfolio-demo-live' : 'portfolio-demo-soon'}" style="text-decoration:none;color:inherit;">
                         <span class="portfolio-demo-icon">${d.icon}</span>
                         <span class="portfolio-demo-name">${Sanitize.text(d.name)}</span>
                         <span class="portfolio-demo-status">${d.live ? '● LIVE' : '○ SOON'}</span>
                     </a>
-                `).join('')}
+                `
+                ).join('')}
             </div>
 
             <div class="services-cta scroll-reveal" data-reveal="scale" data-reveal-delay="1">
@@ -2960,5 +3490,5 @@ export const Desktop = {
      */
     playStartupSound() {
         // Disabled by user request ("second noise after login")
-    }
+    },
 };

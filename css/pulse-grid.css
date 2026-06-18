@@ -10,5 +10,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .pulse-grid-canvas { display: none; }
+    .pulse-grid-canvas {
+        display: none;
+    }
 }

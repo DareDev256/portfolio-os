@@ -15,7 +15,7 @@ export class GalaxyBackground {
             nebulaSpeed: options.nebulaSpeed || 0.0003,
             starDriftSpeed: options.starDriftSpeed || 0.0003,
             mouseInfluence: options.mouseInfluence || 0.02,
-            ...options
+            ...options,
         };
 
         this.mouse = { x: 0, y: 0 };
@@ -40,7 +40,7 @@ export class GalaxyBackground {
         this.renderer = new THREE.WebGLRenderer({
             antialias: false,
             alpha: true,
-            powerPreference: 'low-power'
+            powerPreference: 'low-power',
         });
         this.renderer.setSize(rect.width, rect.height);
         this.renderer.setPixelRatio(1); // Background doesn't need retina
@@ -78,10 +78,12 @@ export class GalaxyBackground {
             uniforms: {
                 uTime: { value: 0 },
                 uMouse: { value: new THREE.Vector2(0, 0) },
-                uResolution: { value: new THREE.Vector2(
-                    this.container.offsetWidth,
-                    this.container.offsetHeight
-                )}
+                uResolution: {
+                    value: new THREE.Vector2(
+                        this.container.offsetWidth,
+                        this.container.offsetHeight
+                    ),
+                },
             },
             vertexShader: `
                 varying vec2 vUv;
@@ -210,7 +212,7 @@ export class GalaxyBackground {
                 }
             `,
             transparent: false,
-            depthWrite: false
+            depthWrite: false,
         });
 
         this.nebulaMesh = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
@@ -266,7 +268,7 @@ export class GalaxyBackground {
         const starMaterial = new THREE.ShaderMaterial({
             uniforms: {
                 uTime: { value: 0 },
-                uPixelRatio: { value: this.renderer.getPixelRatio() }
+                uPixelRatio: { value: this.renderer.getPixelRatio() },
             },
             vertexShader: `
                 attribute float size;
@@ -312,7 +314,7 @@ export class GalaxyBackground {
             `,
             transparent: true,
             blending: THREE.AdditiveBlending,
-            depthWrite: false
+            depthWrite: false,
         });
 
         this.stars = new THREE.Points(starGeometry, starMaterial);
@@ -347,7 +349,7 @@ export class GalaxyBackground {
         // Visibility change — uses shared listener, returns unsubscribe fn
         this._unsubVisibility = onVisibilityChange(
             () => this.stop(),
-            () => this.start(),
+            () => this.start()
         );
 
         window.addEventListener('mousemove', this.onMouseMove);
@@ -378,7 +380,8 @@ export class GalaxyBackground {
 
         // Update nebula
         if (this.nebulaMesh) {
-            this.nebulaMesh.material.uniforms.uTime.value = this.time * this.options.nebulaSpeed * 1000;
+            this.nebulaMesh.material.uniforms.uTime.value =
+                this.time * this.options.nebulaSpeed * 1000;
             this.nebulaMesh.material.uniforms.uMouse.value.set(this.mouse.x, this.mouse.y);
         }
 
@@ -392,8 +395,8 @@ export class GalaxyBackground {
 
             for (let i = 0; i < positions.length; i += 3) {
                 // Drift with wrap-around
-                positions[i] = ((this.starPositions[i] + drift) % 2 + 2) % 2 - 1;
-                positions[i + 1] = ((this.starPositions[i + 1] + drift * 0.7) % 2 + 2) % 2 - 1;
+                positions[i] = ((((this.starPositions[i] + drift) % 2) + 2) % 2) - 1;
+                positions[i + 1] = ((((this.starPositions[i + 1] + drift * 0.7) % 2) + 2) % 2) - 1;
 
                 // Subtle parallax based on depth
                 const depth = this.starPositions[i + 2];

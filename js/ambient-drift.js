@@ -19,23 +19,23 @@ import {
 } from './dom-helpers.js';
 
 /* ── Tuning ────────────────────────────────── */
-const ORB_COUNT       = 7;
-const ORB_MIN_R       = 3;
-const ORB_MAX_R       = 7;
-const DRIFT_SPEED     = 0.15;      // base px/frame
-const NOISE_SCALE     = 0.0008;    // frequency of directional wander
-const REPEL_RADIUS    = 180;       // px — cursor influence zone
-const REPEL_STRENGTH  = 2.5;       // max push-back px/frame
-const GLOW_RADIUS_MUL = 8;        // radialGradient outer stop = r * MUL
-const FADE_EDGE       = 60;        // px — orbs fade near viewport edges
+const ORB_COUNT = 7;
+const ORB_MIN_R = 3;
+const ORB_MAX_R = 7;
+const DRIFT_SPEED = 0.15; // base px/frame
+const NOISE_SCALE = 0.0008; // frequency of directional wander
+const REPEL_RADIUS = 180; // px — cursor influence zone
+const REPEL_STRENGTH = 2.5; // max push-back px/frame
+const GLOW_RADIUS_MUL = 8; // radialGradient outer stop = r * MUL
+const FADE_EDGE = 60; // px — orbs fade near viewport edges
 
-const GOLD     = PALETTE.GOLD;
+const GOLD = PALETTE.GOLD;
 const AMETHYST = PALETTE.AMETHYST;
 
 /* ── State ─────────────────────────────────── */
 let ctx;
 let orbs = [];
-let pointer;    // initialized in init()
+let pointer; // initialized in init()
 let rafId = 0;
 let visible = true;
 let time = 0;
@@ -45,15 +45,19 @@ const FRAME_INTERVAL = 50; // ~20fps — ambient effect doesn't need 60fps
 /* ── Cheap pseudo-noise (no dependency) ────── */
 function noise2d(x, y) {
     const n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
-    return n - Math.floor(n);           // 0-1
+    return n - Math.floor(n); // 0-1
 }
 function smoothNoise(x, y) {
-    const ix = Math.floor(x), iy = Math.floor(y);
-    const fx = x - ix, fy = y - iy;
-    const sx = fx * fx * (3 - 2 * fx);  // smoothstep
+    const ix = Math.floor(x),
+        iy = Math.floor(y);
+    const fx = x - ix,
+        fy = y - iy;
+    const sx = fx * fx * (3 - 2 * fx); // smoothstep
     const sy = fy * fy * (3 - 2 * fy);
-    const a = noise2d(ix, iy), b = noise2d(ix + 1, iy);
-    const c = noise2d(ix, iy + 1), d = noise2d(ix + 1, iy + 1);
+    const a = noise2d(ix, iy),
+        b = noise2d(ix + 1, iy);
+    const c = noise2d(ix, iy + 1),
+        d = noise2d(ix + 1, iy + 1);
     return a + (b - a) * sx + (c - a) * sy + (a - b - c + d) * sx * sy;
 }
 
@@ -68,7 +72,7 @@ function createOrb(i) {
         y: Math.random() * h,
         r: ORB_MIN_R + Math.random() * (ORB_MAX_R - ORB_MIN_R),
         color,
-        phase: Math.random() * 1000,     // noise phase offset
+        phase: Math.random() * 1000, // noise phase offset
         speed: DRIFT_SPEED * (0.6 + Math.random() * 0.8),
         pulse: 0.7 + Math.random() * 0.3, // brightness variance
     };
@@ -104,9 +108,9 @@ function update() {
         }
 
         // Wrap around viewport edges with margin
-        if (orb.x < -40)  orb.x = w + 20;
+        if (orb.x < -40) orb.x = w + 20;
         if (orb.x > w + 40) orb.x = -20;
-        if (orb.y < -40)  orb.y = h + 20;
+        if (orb.y < -40) orb.y = h + 20;
         if (orb.y > h + 40) orb.y = -20;
 
         // Slow pulsing brightness
@@ -134,10 +138,10 @@ function draw() {
         const outerR = orb.r * GLOW_RADIUS_MUL;
 
         const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, outerR);
-        grad.addColorStop(0,   `rgba(${r}, ${g}, ${b}, ${alpha})`);
+        grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${alpha})`);
         grad.addColorStop(0.15, `rgba(${r}, ${g}, ${b}, ${alpha * 0.6})`);
         grad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, ${alpha * 0.15})`);
-        grad.addColorStop(1,   `rgba(${r}, ${g}, ${b}, 0)`);
+        grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
 
         ctx.fillStyle = grad;
         ctx.beginPath();
@@ -173,8 +177,13 @@ export const AmbientDrift = {
         spawnOrbs();
 
         onVisibilityChange(
-            () => { visible = false; },
-            () => { visible = true; start(); },
+            () => {
+                visible = false;
+            },
+            () => {
+                visible = true;
+                start();
+            }
         );
 
         start();

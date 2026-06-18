@@ -81,10 +81,14 @@ function spawnWhisper() {
     activeCount++;
 
     // Self-cleanup after animation completes
-    el.addEventListener('animationend', () => {
-        el.remove();
-        activeCount--;
-    }, { once: true });
+    el.addEventListener(
+        'animationend',
+        () => {
+            el.remove();
+            activeCount--;
+        },
+        { once: true }
+    );
 }
 
 export const Whispers = {
@@ -110,8 +114,13 @@ export const Whispers = {
 
         // Pause when tab hidden — uses shared visibility listener
         unsubVisibility = onVisibilityChange(
-            () => { clearInterval(spawnTimer); spawnTimer = null; },
-            () => { if (!spawnTimer) spawnTimer = setInterval(spawnWhisper, SPAWN_INTERVAL); },
+            () => {
+                clearInterval(spawnTimer);
+                spawnTimer = null;
+            },
+            () => {
+                if (!spawnTimer) spawnTimer = setInterval(spawnWhisper, SPAWN_INTERVAL);
+            }
         );
     },
 

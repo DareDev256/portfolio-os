@@ -102,9 +102,9 @@ const ACHIEVEMENTS = [
 ];
 
 // ── State ────────────────────────────────────────────────────────────
-let unlocked = {};         // { achievementId: timestamp }
-let windowsOpened = {};    // { windowId: true } — unique windows this session
-let recentWindows = [];    // timestamps of recent window opens for speed tracking
+let unlocked = {}; // { achievementId: timestamp }
+let windowsOpened = {}; // { windowId: true } — unique windows this session
+let recentWindows = []; // timestamps of recent window opens for speed tracking
 let listeners = new Set();
 let initialized = false;
 
@@ -113,13 +113,17 @@ function load() {
     try {
         const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
         unlocked = data.unlocked || {};
-    } catch { unlocked = {}; }
+    } catch {
+        unlocked = {};
+    }
 }
 
 function save() {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({ unlocked }));
-    } catch { /* quota exceeded, non-critical */ }
+    } catch {
+        /* quota exceeded, non-critical */
+    }
 }
 
 // ── Notification ─────────────────────────────────────────────────────
@@ -171,7 +175,7 @@ function showUnlockPopup(achievement) {
 function unlock(id) {
     if (unlocked[id]) return false; // Already unlocked
 
-    const achievement = ACHIEVEMENTS.find(a => a.id === id);
+    const achievement = ACHIEVEMENTS.find((a) => a.id === id);
     if (!achievement) return false;
 
     unlocked[id] = Date.now();
@@ -186,8 +190,8 @@ function unlock(id) {
 
 function checkCompletionist() {
     if (unlocked.completionist) return;
-    const otherIds = ACHIEVEMENTS.filter(a => a.id !== 'completionist').map(a => a.id);
-    if (otherIds.every(id => unlocked[id])) {
+    const otherIds = ACHIEVEMENTS.filter((a) => a.id !== 'completionist').map((a) => a.id);
+    if (otherIds.every((id) => unlocked[id])) {
         // Small delay so the previous popup clears
         setTimeout(() => unlock('completionist'), 2000);
     }
@@ -202,7 +206,7 @@ function onWindowOpen(windowId) {
     // Track timing for speed demon
     const now = Date.now();
     recentWindows.push(now);
-    recentWindows = recentWindows.filter(t => now - t < 30_000);
+    recentWindows = recentWindows.filter((t) => now - t < 30_000);
 
     // Explorer: 3 unique windows
     if (uniqueCount >= 3) unlock('explorer');
@@ -218,7 +222,7 @@ function onWindowOpen(windowId) {
 
     // Due diligence: resume + about + skills
     const due = ['resume', 'about', 'skills'];
-    if (due.every(id => windowsOpened[id])) unlock('due_diligence');
+    if (due.every((id) => windowsOpened[id])) unlock('due_diligence');
 
     // Speed demon: 5 windows in 30 seconds
     if (recentWindows.length >= 5) unlock('speed_demon');
@@ -241,7 +245,11 @@ function onBootComplete() {
 // ── Change Listeners ─────────────────────────────────────────────────
 function notifyListeners() {
     for (const fn of listeners) {
-        try { fn(); } catch { /* non-critical */ }
+        try {
+            fn();
+        } catch {
+            /* non-critical */
+        }
     }
 }
 
@@ -270,7 +278,7 @@ export const Achievements = {
 
     /** Get all achievement definitions with unlock status */
     getAll() {
-        return ACHIEVEMENTS.map(a => ({
+        return ACHIEVEMENTS.map((a) => ({
             ...a,
             unlocked: !!unlocked[a.id],
             unlockedAt: unlocked[a.id] || null,
@@ -280,7 +288,7 @@ export const Achievements = {
     /** Get count of unlocked achievements */
     getProgress() {
         const total = ACHIEVEMENTS.length;
-        const done = ACHIEVEMENTS.filter(a => unlocked[a.id]).length;
+        const done = ACHIEVEMENTS.filter((a) => unlocked[a.id]).length;
         return { done, total, percent: Math.round((done / total) * 100) };
     },
 

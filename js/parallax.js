@@ -15,20 +15,20 @@ import { isElementVisible, prefersReducedMotion } from './dom-helpers.js';
  * sz = scroll-parallax multiplier (px shift per unit of scroll)
  * Negative sz pulls layers *toward* the viewer on scroll-down.    */
 const LOCK_LAYERS = [
-    { sel: '.grid-background',    z: 0.015, sz:  40 },
-    { sel: '.intro-watermark',    z: 0.035, sz: -25 },
-    { sel: '.intro-title-block',  z: 0.020, sz: -50 },
-    { sel: '.intro-identity',     z: 0.012, sz: -70 },
+    { sel: '.grid-background', z: 0.015, sz: 40 },
+    { sel: '.intro-watermark', z: 0.035, sz: -25 },
+    { sel: '.intro-title-block', z: 0.02, sz: -50 },
+    { sel: '.intro-identity', z: 0.012, sz: -70 },
 ];
 
 const BG_WHEEL_SEL = '.bg-wheel-container';
-const LERP        = 0.08;  // Mouse smoothing — lower = silkier
-const SCROLL_LERP = 0.06;  // Scroll smoothing — extra silk for cinematic feel
-const DRIFT_AMP   = 0.003; // Ambient drift amplitude (fraction of viewport)
-const DRIFT_SPEED  = 0.0004; // Ambient oscillation speed
-const SCROLL_CLAMP = 1;    // Max normalized scroll accumulator (±1)
+const LERP = 0.08; // Mouse smoothing — lower = silkier
+const SCROLL_LERP = 0.06; // Scroll smoothing — extra silk for cinematic feel
+const DRIFT_AMP = 0.003; // Ambient drift amplitude (fraction of viewport)
+const DRIFT_SPEED = 0.0004; // Ambient oscillation speed
+const SCROLL_CLAMP = 1; // Max normalized scroll accumulator (±1)
 const SCROLL_DECAY = 0.97; // Scroll momentum decay per frame (0–1)
-const SCROLL_SENS  = 0.003; // Wheel deltaY → normalized scroll conversion
+const SCROLL_SENS = 0.003; // Wheel deltaY → normalized scroll conversion
 
 /** Linearly interpolate toward target */
 function lerp(current, target, factor) {
@@ -46,9 +46,9 @@ export const Parallax = {
     _mouseY: 0,
     _currX: 0,
     _currY: 0,
-    _scrollTarget: 0,    // Raw scroll accumulator (wheel-driven)
-    _scrollCurr: 0,      // Smoothed scroll value
-    _windowShift: 0,     // Desktop window-content scroll
+    _scrollTarget: 0, // Raw scroll accumulator (wheel-driven)
+    _scrollCurr: 0, // Smoothed scroll value
+    _windowShift: 0, // Desktop window-content scroll
     _windowShiftCurr: 0,
     _active: false,
     _lockEls: [],
@@ -70,29 +70,38 @@ export const Parallax = {
     },
 
     _cacheLockElements() {
-        this._lockEls = LOCK_LAYERS.map(layer => ({
+        this._lockEls = LOCK_LAYERS.map((layer) => ({
             ...layer,
             el: document.querySelector(layer.sel),
-        })).filter(l => l.el);
+        })).filter((l) => l.el);
     },
 
     _bindMouse() {
-        document.addEventListener('mousemove', (e) => {
-            this._mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-            this._mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-        }, { passive: true });
+        document.addEventListener(
+            'mousemove',
+            (e) => {
+                this._mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                this._mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            },
+            { passive: true }
+        );
     },
 
     /** Wheel events on lock screen → vertical depth separation */
     _bindLockWheel() {
         const lockEl = document.getElementById('lockScreen');
         if (!lockEl) return;
-        lockEl.addEventListener('wheel', (e) => {
-            this._scrollTarget = clamp(
-                this._scrollTarget + e.deltaY * SCROLL_SENS,
-                -SCROLL_CLAMP, SCROLL_CLAMP,
-            );
-        }, { passive: true });
+        lockEl.addEventListener(
+            'wheel',
+            (e) => {
+                this._scrollTarget = clamp(
+                    this._scrollTarget + e.deltaY * SCROLL_SENS,
+                    -SCROLL_CLAMP,
+                    SCROLL_CLAMP
+                );
+            },
+            { passive: true }
+        );
     },
 
     _bindWindowScroll() {
@@ -109,7 +118,7 @@ export const Parallax = {
             const targets = node.matches?.('.window-content')
                 ? [node]
                 : Array.from(node.querySelectorAll?.('.window-content') || []);
-            targets.forEach(wc => {
+            targets.forEach((wc) => {
                 if (!wc.__parallaxBound) {
                     wc.addEventListener('scroll', handler, { passive: true });
                     wc.__parallaxBound = true;
@@ -117,7 +126,7 @@ export const Parallax = {
             });
         };
 
-        document.querySelectorAll('.window-content').forEach(wc => {
+        document.querySelectorAll('.window-content').forEach((wc) => {
             wc.addEventListener('scroll', handler, { passive: true });
             wc.__parallaxBound = true;
         });
@@ -169,8 +178,7 @@ export const Parallax = {
             const scrollY = this._windowShiftCurr * -30;
             const mouseX = (this._currX + driftX) * 8;
             const mouseY = (this._currY + driftY) * 8;
-            this._bgWheel.style.translate =
-                `calc(-50% + ${mouseX.toFixed(1)}px) calc(-50% + ${(scrollY + mouseY).toFixed(1)}px)`;
+            this._bgWheel.style.translate = `calc(-50% + ${mouseX.toFixed(1)}px) calc(-50% + ${(scrollY + mouseY).toFixed(1)}px)`;
         }
 
         this._raf = requestAnimationFrame(() => this._tick());
@@ -180,7 +188,9 @@ export const Parallax = {
         this._active = false;
         if (this._raf) cancelAnimationFrame(this._raf);
         if (this._observer) this._observer.disconnect();
-        this._lockEls.forEach(({ el }) => { el.style.translate = ''; });
+        this._lockEls.forEach(({ el }) => {
+            el.style.translate = '';
+        });
         if (this._bgWheel) this._bgWheel.style.translate = '';
     },
 };

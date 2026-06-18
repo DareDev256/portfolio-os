@@ -85,79 +85,79 @@ Passion OS consists of **38 JavaScript modules** organized into 9 functional cat
 
 #### 1. Core System (4 modules)
 
-| Module | File          | Purpose                                  |
-| ------ | ------------- | ---------------------------------------- |
+| Module | File          | Purpose                                       |
+| ------ | ------------- | --------------------------------------------- |
 | Main   | `js/main.js`  | Entry point, orchestrates boot, lazy-loads FX |
-| State  | `js/state.js` | localStorage persistence + CustomEvent bus |
-| Login  | `js/login.js` | Lock screen + 3D wheel init              |
-| Boot   | `js/boot.js`  | Cinematic boot sequence                  |
+| State  | `js/state.js` | localStorage persistence + CustomEvent bus    |
+| Login  | `js/login.js` | Lock screen + 3D wheel init                   |
+| Boot   | `js/boot.js`  | Cinematic boot sequence                       |
 
 #### 2. Desktop Environment (3 modules)
 
-| Module  | File            | Purpose                                |
-| ------- | --------------- | -------------------------------------- |
+| Module  | File            | Purpose                                 |
+| ------- | --------------- | --------------------------------------- |
 | Desktop | `js/desktop.js` | Icon grid, context menus, app launchers |
-| Windows | `js/windows.js` | Window manager (drag, resize, z-index) |
-| Router  | `js/router.js`  | History API deep-linkable routing      |
+| Windows | `js/windows.js` | Window manager (drag, resize, z-index)  |
+| Router  | `js/router.js`  | History API deep-linkable routing       |
 
-#### 3. Shared Utilities (6 modules) — *added v3.1–v3.7*
+#### 3. Shared Utilities (6 modules) — _added v3.1–v3.7_
 
-| Module      | File                 | Purpose                                          |
-| ----------- | -------------------- | ------------------------------------------------ |
-| Sanitize    | `js/sanitize.js`     | DOMPurify wrapper for all innerHTML              |
-| DOM Helpers | `js/dom-helpers.js`  | `openExternal`, `animateCounter`, `loadJSON`, `saveJSON` |
-| Data Loader | `js/data-loader.js`  | Centralized JSON fetcher with in-memory caching  |
-| Focus Trap  | `js/focus-trap.js`   | WCAG focus trapping (Tab/Shift+Tab cycling)      |
-| Modal       | `js/modal.js`        | Prompt/alert dialogs with focus trapping         |
-| Loader      | `js/loader.js`       | DOM-safe loading states                          |
+| Module      | File                | Purpose                                                  |
+| ----------- | ------------------- | -------------------------------------------------------- |
+| Sanitize    | `js/sanitize.js`    | DOMPurify wrapper for all innerHTML                      |
+| DOM Helpers | `js/dom-helpers.js` | `openExternal`, `animateCounter`, `loadJSON`, `saveJSON` |
+| Data Loader | `js/data-loader.js` | Centralized JSON fetcher with in-memory caching          |
+| Focus Trap  | `js/focus-trap.js`  | WCAG focus trapping (Tab/Shift+Tab cycling)              |
+| Modal       | `js/modal.js`       | Prompt/alert dialogs with focus trapping                 |
+| Loader      | `js/loader.js`      | DOM-safe loading states                                  |
 
 #### 4. UI Components (6 modules)
 
-| Module          | File                     | Purpose                                      |
-| --------------- | ------------------------ | -------------------------------------------- |
-| Command Palette | `js/command-palette.js`  | Cmd+K fuzzy-search launcher                  |
-| Lightbox        | `js/lightbox.js`         | Image/video viewer (YouTube, Vimeo, MP4)     |
-| Start Menu      | `js/startmenu.js`        | Start menu + system tray                     |
-| Skills          | `js/skills.js`           | Interactive skills force-graph visualization |
-| Welcome         | `js/welcome.js`          | First-visit welcome overlay                  |
-| Tour            | `js/tour.js`             | Interactive guided tour                      |
+| Module          | File                    | Purpose                                      |
+| --------------- | ----------------------- | -------------------------------------------- |
+| Command Palette | `js/command-palette.js` | Cmd+K fuzzy-search launcher                  |
+| Lightbox        | `js/lightbox.js`        | Image/video viewer (YouTube, Vimeo, MP4)     |
+| Start Menu      | `js/startmenu.js`       | Start menu + system tray                     |
+| Skills          | `js/skills.js`          | Interactive skills force-graph visualization |
+| Welcome         | `js/welcome.js`         | First-visit welcome overlay                  |
+| Tour            | `js/tour.js`            | Interactive guided tour                      |
 
-#### 5. Application Windows (3 modules) — *added v3.3–v3.6*
+#### 5. Application Windows (3 modules) — _added v3.3–v3.6_
 
-| Module         | File                     | Purpose                                     |
-| -------------- | ------------------------ | ------------------------------------------- |
-| Terminal       | `js/terminal.js`         | Dev terminal with 18 sass commands           |
-| GitHub         | `js/github.js`           | Live GitHub API integration                  |
-| System Monitor | `js/system-monitor.js`   | Live FPS graph, heap, DOM count dashboard    |
+| Module         | File                   | Purpose                                   |
+| -------------- | ---------------------- | ----------------------------------------- |
+| Terminal       | `js/terminal.js`       | Dev terminal with 18 sass commands        |
+| GitHub         | `js/github.js`         | Live GitHub API integration               |
+| System Monitor | `js/system-monitor.js` | Live FPS graph, heap, DOM count dashboard |
 
 #### 6. 3D / Visual Effects (6 modules)
 
-| Module          | File                       | Purpose                                          |
-| --------------- | -------------------------- | ------------------------------------------------ |
-| Galaxy BG       | `js/galaxy-background.js`  | Three.js MMBN cyberspace grid                    |
-| Mahoraga Wheel  | `js/mahoraga-wheel-3d.js`  | Three.js 3D wheel (60fps desktop / 30fps mobile) |
-| Aurora          | `js/aurora.js`             | Aurora visual effects (~24fps throttled)         |
-| FX              | `js/fx.js`                 | Visual FX layer (~30fps throttled)               |
-| Glyphs          | `js/glyphs.js`             | Glyph rendering system                           |
-| Warp            | `js/warp.js`               | Warp tunnel transition effect                    |
+| Module         | File                      | Purpose                                          |
+| -------------- | ------------------------- | ------------------------------------------------ |
+| Galaxy BG      | `js/galaxy-background.js` | Three.js MMBN cyberspace grid                    |
+| Mahoraga Wheel | `js/mahoraga-wheel-3d.js` | Three.js 3D wheel (60fps desktop / 30fps mobile) |
+| Aurora         | `js/aurora.js`            | Aurora visual effects (~24fps throttled)         |
+| FX             | `js/fx.js`                | Visual FX layer (~30fps throttled)               |
+| Glyphs         | `js/glyphs.js`            | Glyph rendering system                           |
+| Warp           | `js/warp.js`              | Warp tunnel transition effect                    |
 
 #### 7. Interactions Subsystem (7 modules)
 
-| Module            | File                               | Purpose                        |
-| ----------------- | ---------------------------------- | ------------------------------ |
-| Engine            | `js/interactions/engine.js`        | Orchestrator (30fps throttled) |
-| Cursor Trail      | `js/interactions/cursor-trail.js`  | Particle cursor effects        |
-| Cursor Tracker    | `js/interactions/cursor-tracker.js`| Mouse position tracking        |
-| Cursor Reactive   | `js/interactions/cursor-reactive.js`| Reactive cursor animations    |
-| Sound Manager     | `js/interactions/sound-manager.js` | UI sound effects               |
-| Easter Eggs       | `js/interactions/easter-eggs.js`   | Konami, 418, glitch pulse      |
-| Micro-Interactions| `js/interactions/micro-interactions.js` | Hover/click micro-animations |
+| Module             | File                                    | Purpose                        |
+| ------------------ | --------------------------------------- | ------------------------------ |
+| Engine             | `js/interactions/engine.js`             | Orchestrator (30fps throttled) |
+| Cursor Trail       | `js/interactions/cursor-trail.js`       | Particle cursor effects        |
+| Cursor Tracker     | `js/interactions/cursor-tracker.js`     | Mouse position tracking        |
+| Cursor Reactive    | `js/interactions/cursor-reactive.js`    | Reactive cursor animations     |
+| Sound Manager      | `js/interactions/sound-manager.js`      | UI sound effects               |
+| Easter Eggs        | `js/interactions/easter-eggs.js`        | Konami, 418, glitch pulse      |
+| Micro-Interactions | `js/interactions/micro-interactions.js` | Hover/click micro-animations   |
 
 #### 8. Enhanced Features (2 modules)
 
-| Module | File           | Purpose                           |
-| ------ | -------------- | --------------------------------- |
-| Admin  | `js/admin.js`  | No-code content editor (console-only) |
+| Module | File           | Purpose                                |
+| ------ | -------------- | -------------------------------------- |
+| Admin  | `js/admin.js`  | No-code content editor (console-only)  |
 | Mobile | `js/mobile.js` | Touch detection + responsive injection |
 
 #### 9. Audio (1 module)
@@ -168,16 +168,16 @@ Passion OS consists of **38 JavaScript modules** organized into 9 functional cat
 
 #### Test Suites (8 files, 97 tests)
 
-| Suite           | File                         | Tests | Covers                              |
-| --------------- | ---------------------------- | ----- | ----------------------------------- |
-| Sanitize        | `tests/sanitize.test.js`     | 12    | XSS sanitization                    |
-| State           | `tests/state.test.js`        | 15    | State persistence + events          |
-| Data Loader     | `tests/data-loader.test.js`  | 9     | JSON fetch + cache                  |
-| Router          | `tests/router.test.js`       | 12    | Path validation + routing           |
-| Focus Trap      | `tests/focus-trap.test.js`   | 7     | Tab cycling + cleanup               |
-| Lightbox        | `tests/lightbox.test.js`     | 14    | Video ID validation + sandbox       |
-| DOM Helpers     | `tests/dom-helpers.test.js`  | 13    | openExternal, animateCounter, JSON  |
-| Modal           | `tests/modal.test.js`        | 15    | Dialog init, dismiss, prompt, alert |
+| Suite       | File                        | Tests | Covers                              |
+| ----------- | --------------------------- | ----- | ----------------------------------- |
+| Sanitize    | `tests/sanitize.test.js`    | 12    | XSS sanitization                    |
+| State       | `tests/state.test.js`       | 15    | State persistence + events          |
+| Data Loader | `tests/data-loader.test.js` | 9     | JSON fetch + cache                  |
+| Router      | `tests/router.test.js`      | 12    | Path validation + routing           |
+| Focus Trap  | `tests/focus-trap.test.js`  | 7     | Tab cycling + cleanup               |
+| Lightbox    | `tests/lightbox.test.js`    | 14    | Video ID validation + sandbox       |
+| DOM Helpers | `tests/dom-helpers.test.js` | 13    | openExternal, animateCounter, JSON  |
+| Modal       | `tests/modal.test.js`       | 15    | Dialog init, dismiss, prompt, alert |
 
 ---
 
@@ -283,18 +283,18 @@ See README.md for the complete annotated architecture tree with all 38 JS module
 
 ### Key Files Reference
 
-| File Path                 | Purpose                     | Primary Exports         |
-| ------------------------- | --------------------------- | ----------------------- |
-| `js/main.js`              | Entry point                 | `init()` function       |
-| `js/state.js`             | State + CustomEvent bus     | `State` object          |
-| `js/desktop.js`           | Desktop controller          | `Desktop` object        |
-| `js/windows.js`           | Window manager              | `WindowManager` object  |
-| `js/sanitize.js`          | DOMPurify wrapper           | `sanitizeHTML()`        |
-| `js/dom-helpers.js`       | Shared DOM utilities        | `openExternal`, `loadJSON`, `saveJSON` |
-| `js/data-loader.js`       | Centralized JSON fetch+cache| `loadData`, `loadMedia`, `loadProjects` |
-| `js/focus-trap.js`        | WCAG focus trapping         | `trapFocus(container)`  |
-| `js/command-palette.js`   | Cmd+K launcher              | `CommandPalette` object |
-| `js/interactions/engine.js`| Interaction orchestrator   | `InteractionEngine` object |
+| File Path                   | Purpose                      | Primary Exports                         |
+| --------------------------- | ---------------------------- | --------------------------------------- |
+| `js/main.js`                | Entry point                  | `init()` function                       |
+| `js/state.js`               | State + CustomEvent bus      | `State` object                          |
+| `js/desktop.js`             | Desktop controller           | `Desktop` object                        |
+| `js/windows.js`             | Window manager               | `WindowManager` object                  |
+| `js/sanitize.js`            | DOMPurify wrapper            | `sanitizeHTML()`                        |
+| `js/dom-helpers.js`         | Shared DOM utilities         | `openExternal`, `loadJSON`, `saveJSON`  |
+| `js/data-loader.js`         | Centralized JSON fetch+cache | `loadData`, `loadMedia`, `loadProjects` |
+| `js/focus-trap.js`          | WCAG focus trapping          | `trapFocus(container)`                  |
+| `js/command-palette.js`     | Cmd+K launcher               | `CommandPalette` object                 |
+| `js/interactions/engine.js` | Interaction orchestrator     | `InteractionEngine` object              |
 
 ---
 
@@ -503,6 +503,7 @@ main.js
 ```
 
 Lazy-loaded on window open (not imported at boot):
+
 - `terminal.js` — loaded when DEV_TERMINAL opened
 - `github.js` — loaded when GITHUB_OPS opened
 - `skills.js` — loaded when SKILLS_MATRIX opened

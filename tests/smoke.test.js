@@ -253,7 +253,10 @@ describe('Responsive smoke — mobile detection and style injection', () => {
     it('isMobile returns false for desktop user agent + wide screen', async () => {
         const origUA = navigator.userAgent;
         const origWidth = window.innerWidth;
-        Object.defineProperty(navigator, 'userAgent', { value: 'Mozilla/5.0 (Macintosh)', configurable: true });
+        Object.defineProperty(navigator, 'userAgent', {
+            value: 'Mozilla/5.0 (Macintosh)',
+            configurable: true,
+        });
         Object.defineProperty(window, 'innerWidth', { value: 1440, configurable: true });
         Object.defineProperty(window, 'ontouchstart', { value: undefined, configurable: true });
         Object.defineProperty(navigator, 'maxTouchPoints', { value: 0, configurable: true });

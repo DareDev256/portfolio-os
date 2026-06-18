@@ -259,7 +259,7 @@
         grid-template-columns: 1fr;
     }
 
-    .settings-card[style*="grid-column: span 2"] {
+    .settings-card[style*='grid-column: span 2'] {
         grid-column: span 1 !important;
     }
 
@@ -416,7 +416,9 @@
 
     /* Faster transitions for touch */
     .window {
-        transition: transform 0.2s ease, opacity 0.2s ease;
+        transition:
+            transform 0.2s ease,
+            opacity 0.2s ease;
     }
 
     /* Disable window dragging on touch (always fullscreen) */

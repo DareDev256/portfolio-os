@@ -60,8 +60,14 @@ export const Lightbox = {
         this.closeBtn.addEventListener('click', () => this.close());
 
         // Navigation buttons
-        this.prevBtn.addEventListener('click', (e) => { e.stopPropagation(); this.prev(); });
-        this.nextBtn.addEventListener('click', (e) => { e.stopPropagation(); this.next(); });
+        this.prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.prev();
+        });
+        this.nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.next();
+        });
 
         // Overlay click to close
         this.container
@@ -95,11 +101,22 @@ export const Lightbox = {
     /** Keyboard handler — only active while lightbox is open */
     _handleKeydown(e) {
         switch (e.key) {
-            case 'Escape':    this.close();    break;
-            case 'ArrowLeft': this.prev();     break;
-            case 'ArrowRight': this.next();    break;
-            case '+': case '=': this.zoom(0.1);  break;
-            case '-':           this.zoom(-0.1); break;
+            case 'Escape':
+                this.close();
+                break;
+            case 'ArrowLeft':
+                this.prev();
+                break;
+            case 'ArrowRight':
+                this.next();
+                break;
+            case '+':
+            case '=':
+                this.zoom(0.1);
+                break;
+            case '-':
+                this.zoom(-0.1);
+                break;
         }
     },
 
@@ -221,7 +238,8 @@ export const Lightbox = {
             if (!safeUrl) {
                 const blocked = document.createElement('div');
                 blocked.textContent = 'Blocked: invalid video URL';
-                blocked.style.cssText = 'color:#ff4444;display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:var(--font-mono,monospace);font-size:0.85rem;';
+                blocked.style.cssText =
+                    'color:#ff4444;display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:var(--font-mono,monospace);font-size:0.85rem;';
                 content.appendChild(blocked);
             } else {
                 const video = document.createElement('video');
@@ -405,7 +423,8 @@ export const Lightbox = {
         const iframe = document.createElement('iframe');
         iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
         iframe.frameBorder = '0';
-        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allow =
+            'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
         iframe.allowFullscreen = true;
         iframe.style.width = '100%';
         iframe.style.height = '100%';
@@ -433,7 +452,8 @@ export const Lightbox = {
     _blockedEmbedPlaceholder(provider) {
         const el = document.createElement('div');
         el.textContent = `Invalid ${provider} video URL`;
-        el.style.cssText = 'color:#ff4444;display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:monospace;';
+        el.style.cssText =
+            'color:#ff4444;display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:monospace;';
         return el;
-    }
+    },
 };

@@ -77,7 +77,7 @@ export const CursorReactive = {
             }
 
             // Calculate proximity factor (0-1, 1 = at center, 0 = at threshold)
-            const proximity = Math.max(0, 1 - (distance / this.proximityThreshold));
+            const proximity = Math.max(0, 1 - distance / this.proximityThreshold);
 
             // Apply effects based on element type and configuration
             const effects = data.config.effects || [];
@@ -120,12 +120,11 @@ export const CursorReactive = {
         this.registeredElements.forEach((data, element) => {
             if (!data.bounds) return;
 
-            const inViewport = (
+            const inViewport =
                 data.bounds.bottom >= 0 &&
                 data.bounds.right >= 0 &&
                 data.bounds.top <= viewportHeight &&
-                data.bounds.left <= viewportWidth
-            );
+                data.bounds.left <= viewportWidth;
 
             if (inViewport) {
                 this.viewportElements.add(element);
@@ -215,7 +214,8 @@ export const CursorReactive = {
         // Apply magnetic pull
         if (pullX !== 0 || pullY !== 0) {
             const currentTransform = element.style.transform || '';
-            element.style.transform = currentTransform.replace(/translate\([^)]+\)/, '') +
+            element.style.transform =
+                currentTransform.replace(/translate\([^)]+\)/, '') +
                 ` translate(${pullX}px, ${pullY}px)`;
         }
     },
@@ -251,7 +251,7 @@ export const CursorReactive = {
         const color = data.config.color || '#00f0ff';
         const baseBlur = 10;
         const maxBlur = 30;
-        const blur = baseBlur + (proximity * (maxBlur - baseBlur)) * this.intensityMultiplier;
+        const blur = baseBlur + proximity * (maxBlur - baseBlur) * this.intensityMultiplier;
 
         element.style.transition = 'box-shadow var(--transition-fast)';
         element.style.boxShadow = `
@@ -287,11 +287,12 @@ export const CursorReactive = {
             return;
         }
 
-        const scale = 1 + (proximity * 0.1 * this.intensityMultiplier); // max 1.1x
+        const scale = 1 + proximity * 0.1 * this.intensityMultiplier; // max 1.1x
         const wobble = Math.sin(Date.now() / 200) * proximity * 2; // subtle wobble
         const color = data.config.color || '#00f0ff';
 
-        element.style.transition = 'transform var(--transition-medium), box-shadow var(--transition-medium)';
+        element.style.transition =
+            'transform var(--transition-medium), box-shadow var(--transition-medium)';
         element.style.transform = `scale(${scale}) rotate(${wobble}deg)`;
         element.style.boxShadow = `
             0 0 ${proximity * 20}px ${color}${hexAlpha(proximity * 0.5)}
@@ -311,7 +312,11 @@ export const CursorReactive = {
     resetElement(element, data) {
         const effects = data.config.effects || [];
 
-        if (effects.includes('tilt') || effects.includes('magnetic-attract') || effects.includes('wake')) {
+        if (
+            effects.includes('tilt') ||
+            effects.includes('magnetic-attract') ||
+            effects.includes('wake')
+        ) {
             element.style.transition = 'transform var(--transition-slow)';
             element.style.transform = '';
         }
@@ -332,7 +337,7 @@ export const CursorReactive = {
             centerX: 0,
             centerY: 0,
             isVisible: true,
-            lastBoundsUpdate: 0
+            lastBoundsUpdate: 0,
         });
     },
 
@@ -359,7 +364,7 @@ export const CursorReactive = {
         return {
             registeredElements: this.registeredElements.size,
             viewportElements: this.viewportElements.size,
-            intensity: this.intensityMultiplier
+            intensity: this.intensityMultiplier,
         };
-    }
+    },
 };

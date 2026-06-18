@@ -51,8 +51,9 @@ export const GlitchText = {
                 }
                 // Text content changed on an existing title
                 if (m.type === 'characterData' || m.type === 'childList') {
-                    const title = m.target.closest?.(TITLE_SELECTOR)
-                        || m.target.parentElement?.closest?.(TITLE_SELECTOR);
+                    const title =
+                        m.target.closest?.(TITLE_SELECTOR) ||
+                        m.target.parentElement?.closest?.(TITLE_SELECTOR);
                     if (title) syncText(title);
                 }
             }

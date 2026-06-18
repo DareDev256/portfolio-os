@@ -188,7 +188,9 @@ describe('Sanitize.allowlist()', () => {
     });
 
     it('returns fallback for values not in the allowlist', () => {
-        expect(Sanitize.allowlist('evil" onload=alert(1)', ['light', 'dark'], 'light')).toBe('light');
+        expect(Sanitize.allowlist('evil" onload=alert(1)', ['light', 'dark'], 'light')).toBe(
+            'light'
+        );
         expect(Sanitize.allowlist('custom', ['light', 'dark'], 'light')).toBe('light');
     });
 

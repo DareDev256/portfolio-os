@@ -9,19 +9,20 @@ import { describe, it, expect } from 'vitest';
 import { PALETTE } from '../js/dom-helpers.js';
 
 /* ── Constants (mirrored from cosmic-dust.js) ── */
-const DUST_COUNT    = 50;
-const DUST_MIN_R    = 0.4;
-const DUST_MAX_R    = 1.4;
-const DRIFT_SPEED   = 0.08;
+const DUST_COUNT = 50;
+const DUST_MIN_R = 0.4;
+const DUST_MAX_R = 1.4;
+const DRIFT_SPEED = 0.08;
 const TWINKLE_SPEED = 0.012;
-const FLARE_DECAY   = 0.92;
-const FADE_EDGE     = 40;
-const GOLD          = PALETTE.GOLD;
-const AMETHYST      = PALETTE.AMETHYST;
+const FLARE_DECAY = 0.92;
+const FADE_EDGE = 40;
+const GOLD = PALETTE.GOLD;
+const AMETHYST = PALETTE.AMETHYST;
 
 /* ── Re-implemented pure logic from cosmic-dust.js ── */
 function createParticle() {
-    const w = 1920, h = 1080;
+    const w = 1920,
+        h = 1080;
     const isGold = Math.random() < 0.4;
     return {
         x: Math.random() * w,
@@ -49,7 +50,7 @@ function computeEdgeFade(px, py, w, h) {
 }
 
 function wrapCoord(val, max) {
-    if (val < -20)     return max + 10;
+    if (val < -20) return max + 10;
     if (val > max + 20) return -10;
     return val;
 }
@@ -122,7 +123,7 @@ describe('Cosmic Dust — Edge Fade', () => {
     });
 
     it('fades from both edges symmetrically', () => {
-        const left  = computeEdgeFade(10, 500, 1920, 1080);
+        const left = computeEdgeFade(10, 500, 1920, 1080);
         const right = computeEdgeFade(1910, 500, 1920, 1080);
         expect(left).toBeCloseTo(right, 5);
     });

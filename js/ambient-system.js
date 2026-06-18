@@ -23,11 +23,13 @@ function nextCpu() {
     const baseline = 14;
     const drift = (Math.random() - 0.5) * 6;
     const gravity = (baseline - cpu) * 0.08;
-    const spike = Math.random() < 0.06 ? (15 + Math.random() * 25) : 0;
+    const spike = Math.random() < 0.06 ? 15 + Math.random() * 25 : 0;
     cpu = Math.max(3, Math.min(97, cpu + drift + gravity + spike));
     if (spike > 0) {
         // Spike decays over next few ticks via gravity
-        setTimeout(() => { cpu = Math.max(cpu - spike * 0.6, baseline); }, TICK_MS * 2);
+        setTimeout(() => {
+            cpu = Math.max(cpu - spike * 0.6, baseline);
+        }, TICK_MS * 2);
     }
     return Math.round(cpu);
 }
@@ -111,7 +113,9 @@ function trackVisit() {
     try {
         visits = parseInt(localStorage.getItem(VISITS_KEY) || '0', 10) + 1;
         localStorage.setItem(VISITS_KEY, String(visits));
-    } catch { /* private browsing */ }
+    } catch {
+        /* private browsing */
+    }
     return visits;
 }
 

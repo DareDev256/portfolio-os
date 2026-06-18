@@ -7,21 +7,21 @@
 
 import { shouldSkipDesktopEffects } from './dom-helpers.js';
 
-const LIFETIME_MS  = 900;
-const MAX_ACTIVE   = 6;
-const COOLDOWN_MS  = 60;
-const FONT_SIZE    = 28;
+const LIFETIME_MS = 900;
+const MAX_ACTIVE = 6;
+const COOLDOWN_MS = 60;
+const FONT_SIZE = 28;
 
 /** Characters currently animating — pool-limit prevents GPU overload */
 let _activeCount = 0;
-let _lastSpawn   = 0;
+let _lastSpawn = 0;
 
 /** Hex strings for the two-tone glow palette */
 const PALETTE = [
-    '#d4af37',            // gold
-    '#f5d76e',            // gold-light
-    '#8b5cf6',            // amethyst
-    'rgba(139,92,246,.7)' // amethyst-dim
+    '#d4af37', // gold
+    '#f5d76e', // gold-light
+    '#8b5cf6', // amethyst
+    'rgba(139,92,246,.7)', // amethyst-dim
 ];
 
 function pickColor() {

@@ -12,7 +12,9 @@
     backdrop-filter: blur(6px);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 180ms ease, visibility 180ms ease;
+    transition:
+        opacity 180ms ease,
+        visibility 180ms ease;
 }
 
 .cmd-palette-overlay.active {

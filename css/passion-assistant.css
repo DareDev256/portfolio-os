@@ -5,7 +5,10 @@
     bottom: 80px; /* Above dock */
     right: 20px;
     z-index: 10000;
-    font-family: 'Inter', -apple-system, sans-serif;
+    font-family:
+        'Inter',
+        -apple-system,
+        sans-serif;
 }
 
 /* Floating Bubble — chat icon with notification dot */
@@ -54,8 +57,14 @@
     animation: pa-notify-pulse 2s ease-in-out infinite;
 }
 @keyframes pa-notify-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); box-shadow: 0 0 8px rgba(255, 51, 102, 0.5); }
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+        box-shadow: 0 0 8px rgba(255, 51, 102, 0.5);
+    }
 }
 /* Tooltip label */
 .pa-bubble-label {
@@ -99,7 +108,9 @@
     transform: translateY(20px) scale(0.95);
     pointer-events: none;
     transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(170, 0, 255, 0.05);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        0 0 60px rgba(170, 0, 255, 0.05);
 }
 .pa-panel--open {
     opacity: 1;
@@ -168,9 +179,16 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(170, 0, 255, 0.2) transparent;
 }
-.pa-messages::-webkit-scrollbar { width: 4px; }
-.pa-messages::-webkit-scrollbar-track { background: transparent; }
-.pa-messages::-webkit-scrollbar-thumb { background: rgba(170, 0, 255, 0.2); border-radius: 4px; }
+.pa-messages::-webkit-scrollbar {
+    width: 4px;
+}
+.pa-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+.pa-messages::-webkit-scrollbar-thumb {
+    background: rgba(170, 0, 255, 0.2);
+    border-radius: 4px;
+}
 
 .pa-msg {
     max-width: 85%;
@@ -200,8 +218,14 @@
 }
 
 @keyframes pa-fade-in {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Typing indicator */
@@ -216,11 +240,21 @@
     color: rgba(170, 0, 255, 0.5);
     animation: pa-dot-bounce 1.4s infinite;
 }
-.pa-dots span:nth-child(2) { animation-delay: 0.2s; }
-.pa-dots span:nth-child(3) { animation-delay: 0.4s; }
+.pa-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.pa-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
 @keyframes pa-dot-bounce {
-    0%, 80%, 100% { opacity: 0.3; }
-    40% { opacity: 1; }
+    0%,
+    80%,
+    100% {
+        opacity: 0.3;
+    }
+    40% {
+        opacity: 1;
+    }
 }
 
 /* Quick Actions */
@@ -307,9 +341,26 @@
 
 /* Mobile */
 @media (max-width: 480px) {
-    .pa-widget { bottom: 70px; right: 12px; }
-    .pa-panel { width: calc(100vw - 24px); right: 0; bottom: 56px; max-height: 65vh; }
-    .pa-bubble { width: 42px; height: 42px; border-radius: 12px; }
-    .pa-bubble-icon { width: 18px; height: 18px; }
-    .pa-bubble-label { display: none; }
+    .pa-widget {
+        bottom: 70px;
+        right: 12px;
+    }
+    .pa-panel {
+        width: calc(100vw - 24px);
+        right: 0;
+        bottom: 56px;
+        max-height: 65vh;
+    }
+    .pa-bubble {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+    }
+    .pa-bubble-icon {
+        width: 18px;
+        height: 18px;
+    }
+    .pa-bubble-label {
+        display: none;
+    }
 }

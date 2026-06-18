@@ -245,7 +245,7 @@ export const Login = {
         if (!stage) return;
 
         // Cancel all pending timeouts
-        this._cinematicTimeouts.forEach(id => clearTimeout(id));
+        this._cinematicTimeouts.forEach((id) => clearTimeout(id));
         this._cinematicTimeouts = [];
 
         // Cancel typewriter
@@ -336,7 +336,11 @@ export const Login = {
             // Enter key handler (only after cinematic is done)
             // Store reference so it can be removed after login completes
             this._enterKeyHandler = (e) => {
-                if (e.key === 'Enter' && this._cinematicDone && !this.lockScreen.classList.contains('hidden')) {
+                if (
+                    e.key === 'Enter' &&
+                    this._cinematicDone &&
+                    !this.lockScreen.classList.contains('hidden')
+                ) {
                     this.startBootSequence();
                 }
             };
@@ -533,7 +537,7 @@ export const Login = {
         document.dispatchEvent(new CustomEvent('passion:boot-complete'));
 
         // Passion Assistant — floating chat widget
-        import('./passion-assistant.js').then(m => m.initPassionAssistant()).catch(() => {});
+        import('./passion-assistant.js').then((m) => m.initPassionAssistant()).catch(() => {});
 
         // Start idle timer
         this.startIdleTimer();
@@ -585,7 +589,11 @@ export const Login = {
         // Re-attach Enter key handler for the lock screen
         if (!this._enterKeyHandler) {
             this._enterKeyHandler = (e) => {
-                if (e.key === 'Enter' && this._cinematicDone && !this.lockScreen.classList.contains('hidden')) {
+                if (
+                    e.key === 'Enter' &&
+                    this._cinematicDone &&
+                    !this.lockScreen.classList.contains('hidden')
+                ) {
                     this.startBootSequence();
                 }
             };

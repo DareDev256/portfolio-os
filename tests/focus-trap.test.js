@@ -3,7 +3,7 @@ import { trapFocus } from '../js/focus-trap.js';
 
 function makeContainer(...elements) {
     const div = document.createElement('div');
-    elements.forEach(el => div.appendChild(el));
+    elements.forEach((el) => div.appendChild(el));
     document.body.appendChild(div);
     return div;
 }

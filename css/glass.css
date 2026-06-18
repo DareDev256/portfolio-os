@@ -111,8 +111,12 @@
 }
 
 @keyframes holo-line-shift {
-    0% { background-position: 0% 0; }
-    100% { background-position: 200% 0; }
+    0% {
+        background-position: 0% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
 }
 
 /* --- HUD Corner Brackets --- */
@@ -208,8 +212,15 @@
 }
 
 @keyframes hud-marker-pulse {
-    0%, 100% { opacity: 0.5; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.3); }
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.3);
+    }
 }
 
 /* --- HUD Scan Ring (for icon/element hover) --- */
@@ -271,14 +282,32 @@
 }
 
 /* Ring rotation animations at different speeds */
-@keyframes orbit-cw-slow { to { transform: translate(-50%, -50%) rotate(360deg); } }
-@keyframes orbit-ccw-slow { to { transform: translate(-50%, -50%) rotate(-360deg); } }
-@keyframes orbit-cw-fast { to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes orbit-cw-slow {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+@keyframes orbit-ccw-slow {
+    to {
+        transform: translate(-50%, -50%) rotate(-360deg);
+    }
+}
+@keyframes orbit-cw-fast {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
 
 /* Slowed down to reduce composite cost */
-.hud-orbit-ring--cw-slow { animation: orbit-cw-slow 120s linear infinite; }
-.hud-orbit-ring--ccw-slow { animation: orbit-ccw-slow 90s linear infinite; }
-.hud-orbit-ring--cw-fast { animation: orbit-cw-fast 60s linear infinite; }
+.hud-orbit-ring--cw-slow {
+    animation: orbit-cw-slow 120s linear infinite;
+}
+.hud-orbit-ring--ccw-slow {
+    animation: orbit-ccw-slow 90s linear infinite;
+}
+.hud-orbit-ring--cw-fast {
+    animation: orbit-cw-fast 60s linear infinite;
+}
 
 /* Ring tick marks (compass-style) */
 .hud-orbit-ring--ticks {
@@ -292,11 +321,7 @@
         transparent calc(100% - 2px),
         #fff calc(100% - 2px)
     );
-    mask: radial-gradient(
-        farthest-side,
-        transparent calc(100% - 2px),
-        #fff calc(100% - 2px)
-    );
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #fff calc(100% - 2px));
 }
 
 /* --- HUD Data Readout --- */
@@ -337,11 +362,21 @@
     /* hud-bar-dance removed — animating height triggers layout reflow */
 }
 
-.hud-mini-bar:nth-child(1) { height: 40%; }
-.hud-mini-bar:nth-child(2) { height: 70%; }
-.hud-mini-bar:nth-child(3) { height: 100%; }
-.hud-mini-bar:nth-child(4) { height: 55%; }
-.hud-mini-bar:nth-child(5) { height: 85%; }
+.hud-mini-bar:nth-child(1) {
+    height: 40%;
+}
+.hud-mini-bar:nth-child(2) {
+    height: 70%;
+}
+.hud-mini-bar:nth-child(3) {
+    height: 100%;
+}
+.hud-mini-bar:nth-child(4) {
+    height: 55%;
+}
+.hud-mini-bar:nth-child(5) {
+    height: 85%;
+}
 
 /* --- Inner Energy Glow --- */
 .energy-glow {
@@ -357,18 +392,15 @@
     width: 120%;
     height: 120%;
     transform: translate(-50%, -50%);
-    background: radial-gradient(
-        ellipse at center,
-        rgba(0, 240, 255, 0.03) 0%,
-        transparent 70%
-    );
+    background: radial-gradient(ellipse at center, rgba(0, 240, 255, 0.03) 0%, transparent 70%);
     pointer-events: none;
     animation: energy-pulse 12s ease-in-out infinite;
     z-index: 0;
 }
 
 @keyframes energy-pulse {
-    0%, 100% {
+    0%,
+    100% {
         opacity: 0.5;
         transform: translate(-50%, -50%) scale(1);
     }
@@ -440,12 +472,7 @@
     left: -100%;
     width: 50%;
     height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.06),
-        transparent
-    );
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
     animation: glass-materialize 0.6s ease-out forwards;
     pointer-events: none;
     z-index: 10;
@@ -460,9 +487,7 @@
 
 /* Applied via JS - mouse tracking sets these custom properties */
 .tilt-3d:hover {
-    transform: perspective(800px)
-        rotateX(var(--tilt-x, 0deg))
-        rotateY(var(--tilt-y, 0deg))
+    transform: perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))
         scale3d(1.05, 1.05, 1.05);
 }
 
@@ -474,11 +499,7 @@
     left: 10%;
     width: 80%;
     height: 20px;
-    background: radial-gradient(
-        ellipse at center,
-        rgba(0, 240, 255, 0.2) 0%,
-        transparent 70%
-    );
+    background: radial-gradient(ellipse at center, rgba(0, 240, 255, 0.2) 0%, transparent 70%);
     border-radius: 50%;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -501,8 +522,8 @@
     transform-origin: bottom;
     opacity: 0.12;
     filter: blur(2px);
-    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
-    mask-image: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
     pointer-events: none;
 }
 

@@ -16,19 +16,19 @@ import {
 } from '../js/dom-helpers.js';
 
 describe('hexAlpha() — opacity to hex conversion', () => {
-    it('converts 1.0 to "ff"',    () => expect(hexAlpha(1)).toBe('ff'));
-    it('converts 0 to "00"',      () => expect(hexAlpha(0)).toBe('00'));
-    it('converts 0.5 to ~"7f"',   () => expect(hexAlpha(0.5)).toBe('7f'));
-    it('clamps above 1 to "ff"',  () => expect(hexAlpha(1.5)).toBe('ff'));
-    it('clamps below 0 to "00"',  () => expect(hexAlpha(-0.3)).toBe('00'));
-    it('pads single-digit hex',   () => expect(hexAlpha(0.01)).toBe('02'));
+    it('converts 1.0 to "ff"', () => expect(hexAlpha(1)).toBe('ff'));
+    it('converts 0 to "00"', () => expect(hexAlpha(0)).toBe('00'));
+    it('converts 0.5 to ~"7f"', () => expect(hexAlpha(0.5)).toBe('7f'));
+    it('clamps above 1 to "ff"', () => expect(hexAlpha(1.5)).toBe('ff'));
+    it('clamps below 0 to "00"', () => expect(hexAlpha(-0.3)).toBe('00'));
+    it('pads single-digit hex', () => expect(hexAlpha(0.01)).toBe('02'));
 });
 
 describe('loadBool() / saveBool() — localStorage boolean flags', () => {
     beforeEach(() => localStorage.clear());
 
     it('returns fallback when key is absent', () => {
-        expect(loadBool('missing')).toBe(true);   // default fallback
+        expect(loadBool('missing')).toBe(true); // default fallback
         expect(loadBool('missing', false)).toBe(false);
     });
 
@@ -56,7 +56,9 @@ describe('loadBool() / saveBool() — localStorage boolean flags', () => {
 
     it('saveBool handles quota exceeded gracefully', () => {
         const orig = localStorage.setItem;
-        localStorage.setItem = () => { throw new DOMException('quota', 'QuotaExceededError'); };
+        localStorage.setItem = () => {
+            throw new DOMException('quota', 'QuotaExceededError');
+        };
         expect(() => saveBool('full', true)).not.toThrow();
         localStorage.setItem = orig;
     });
@@ -123,7 +125,9 @@ describe('fetchWithTimeout() — timeout & abort', () => {
         // rely on real event-loop scheduling that fake timers can't drive
         vi.spyOn(globalThis, 'fetch').mockImplementation((_, opts) => {
             return new Promise((_, reject) => {
-                opts.signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')));
+                opts.signal.addEventListener('abort', () =>
+                    reject(new DOMException('aborted', 'AbortError'))
+                );
             });
         });
 

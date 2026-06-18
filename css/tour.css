@@ -48,7 +48,8 @@
 }
 
 @keyframes tourPulse {
-    0%, 100% {
+    0%,
+    100% {
         transform: scale(1);
         opacity: 0.5;
     }
@@ -190,7 +191,8 @@
 }
 
 @keyframes tourTargetPulse {
-    0%, 100% {
+    0%,
+    100% {
         filter: drop-shadow(0 0 10px var(--neon-cyan));
     }
     50% {

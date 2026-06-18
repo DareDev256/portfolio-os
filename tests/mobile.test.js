@@ -10,7 +10,10 @@ describe('Mobile.isMobile()', () => {
     afterEach(() => {
         // Restore originals
         Object.defineProperty(navigator, 'userAgent', { value: originalUA, configurable: true });
-        Object.defineProperty(navigator, 'maxTouchPoints', { value: originalMaxTP, configurable: true });
+        Object.defineProperty(navigator, 'maxTouchPoints', {
+            value: originalMaxTP,
+            configurable: true,
+        });
         delete window.ontouchstart;
         // Reset innerWidth
         Object.defineProperty(window, 'innerWidth', { value: 1024, configurable: true });
@@ -73,7 +76,7 @@ describe('Mobile.isMobile()', () => {
 
 describe('Mobile.ensureViewportMeta()', () => {
     beforeEach(() => {
-        document.querySelectorAll('meta[name="viewport"]').forEach(el => el.remove());
+        document.querySelectorAll('meta[name="viewport"]').forEach((el) => el.remove());
     });
 
     it('creates viewport meta tag when missing', () => {
@@ -98,9 +101,9 @@ describe('Mobile.ensureViewportMeta()', () => {
 describe('Mobile.applyMobileOptimizations()', () => {
     beforeEach(() => {
         document.body.classList.remove('mobile-device');
-        document.querySelectorAll('meta[name="viewport"]').forEach(el => el.remove());
+        document.querySelectorAll('meta[name="viewport"]').forEach((el) => el.remove());
         // Remove injected styles from previous runs
-        document.querySelectorAll('style').forEach(el => el.remove());
+        document.querySelectorAll('style').forEach((el) => el.remove());
     });
 
     it('adds mobile-device class to body', () => {
@@ -111,14 +114,14 @@ describe('Mobile.applyMobileOptimizations()', () => {
     it('injects hover-disable stylesheet', () => {
         Mobile.applyMobileOptimizations();
         const styles = [...document.querySelectorAll('style')];
-        const hoverStyle = styles.find(s => s.textContent.includes('hover: none'));
+        const hoverStyle = styles.find((s) => s.textContent.includes('hover: none'));
         expect(hoverStyle).not.toBeUndefined();
     });
 
     it('injects mobile layout stylesheet', () => {
         Mobile.applyMobileOptimizations();
         const styles = [...document.querySelectorAll('style')];
-        const mobileStyle = styles.find(s => s.textContent.includes('max-width: 768px'));
+        const mobileStyle = styles.find((s) => s.textContent.includes('max-width: 768px'));
         expect(mobileStyle).not.toBeUndefined();
     });
 });

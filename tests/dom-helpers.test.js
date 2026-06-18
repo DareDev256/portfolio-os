@@ -1,5 +1,11 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { openExternal, animateCounter, loadJSON, saveJSON, downloadJSON } from '../js/dom-helpers.js';
+import {
+    openExternal,
+    animateCounter,
+    loadJSON,
+    saveJSON,
+    downloadJSON,
+} from '../js/dom-helpers.js';
 
 describe('openExternal()', () => {
     let openSpy;
@@ -59,11 +65,7 @@ describe('openExternal()', () => {
 
     it('allows http:// URLs', () => {
         openExternal('http://example.com');
-        expect(openSpy).toHaveBeenCalledWith(
-            'http://example.com',
-            '_blank',
-            'noopener,noreferrer'
-        );
+        expect(openSpy).toHaveBeenCalledWith('http://example.com', '_blank', 'noopener,noreferrer');
     });
 });
 
@@ -150,8 +152,12 @@ describe('downloadJSON()', () => {
     it('creates a blob anchor and triggers download', () => {
         const clickSpy = vi.fn();
         const createSpy = vi.spyOn(document, 'createElement').mockReturnValue({
-            set href(v) { this._href = v; },
-            get href() { return this._href; },
+            set href(v) {
+                this._href = v;
+            },
+            get href() {
+                return this._href;
+            },
             download: '',
             click: clickSpy,
         });

@@ -13,7 +13,7 @@ export const Terminal = {
         'resume.json': 'ACCESS_DENIED: Try "cat resume.txt" or contact for PDF.',
         'secrets.env': 'nice_try_buddy=true',
         'skills.log': 'Use "sys scan" to view technical capabilities.',
-        'config.yml': 'env: production\nvisuals: ultra\nmode: enterprise'
+        'config.yml': 'env: production\nvisuals: ultra\nmode: enterprise',
     },
 
     init(container) {
@@ -101,7 +101,9 @@ export const Terminal = {
         this.historyIndex = -1;
 
         // Echo
-        this.printHTML(`<span class="term-prompt">daredev256@passion-os:~$</span> ${Sanitize.text(cmdRaw)}`);
+        this.printHTML(
+            `<span class="term-prompt">daredev256@passion-os:~$</span> ${Sanitize.text(cmdRaw)}`
+        );
 
         const parts = cmdRaw.split(' ');
         const cmd = parts[0].toLowerCase();
@@ -139,7 +141,10 @@ export const Terminal = {
                 } else if (Object.hasOwn(this.fileSystem, args[0])) {
                     this.println(this.fileSystem[args[0]]);
                 } else {
-                    this.println(`cat: ${Sanitize.text(args[0])}: No such file or directory`, 'term-error');
+                    this.println(
+                        `cat: ${Sanitize.text(args[0])}: No such file or directory`,
+                        'term-error'
+                    );
                 }
                 break;
 
@@ -159,7 +164,8 @@ export const Terminal = {
 
             default: {
                 // Check for easter egg sass responses (use full command for multi-word commands)
-                const sassResponse = window.__InteractionEngine?.easterEggs?.getTerminalSass(cmdRaw);
+                const sassResponse =
+                    window.__InteractionEngine?.easterEggs?.getTerminalSass(cmdRaw);
                 if (sassResponse) {
                     this.println(sassResponse);
                 } else {
@@ -177,12 +183,12 @@ export const Terminal = {
             'Tests Passed (142/142) ✔',
             'Pushing to Production...',
             'Verifying Health Checks...',
-            'DEPLOYMENT SUCCESSFUL 🚀'
+            'DEPLOYMENT SUCCESSFUL 🚀',
         ];
 
         for (const step of steps) {
             this.println(step, 'term-dim');
-            await new Promise(r => setTimeout(r, 600));
+            await new Promise((r) => setTimeout(r, 600));
         }
     },
 
@@ -193,13 +199,13 @@ export const Terminal = {
             'Checking React Component Tree....... OK',
             'Verifying Server-Side Physics....... OK',
             'Testing Database Connectivity....... OK',
-            'Evaluating UI/UX Heuristics......... 100%'
+            'Evaluating UI/UX Heuristics......... 100%',
         ];
 
         for (const skill of skills) {
-            await new Promise(r => setTimeout(r, 400));
+            await new Promise((r) => setTimeout(r, 400));
             this.println(skill);
         }
         this.println('SYSTEM INTEGRITY: MAXIMUM', 'term-green');
-    }
+    },
 };

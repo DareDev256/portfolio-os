@@ -21,9 +21,9 @@ function spawnEcho(windowEl) {
     const rect = windowEl.getBoundingClientRect();
 
     const echo = createDecorativeEl('div', 'spectral-echo');
-    echo.style.left   = `${rect.left}px`;
-    echo.style.top    = `${rect.top}px`;
-    echo.style.width  = `${rect.width}px`;
+    echo.style.left = `${rect.left}px`;
+    echo.style.top = `${rect.top}px`;
+    echo.style.width = `${rect.width}px`;
     echo.style.height = `${rect.height}px`;
 
     document.body.appendChild(echo);

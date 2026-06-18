@@ -41,7 +41,7 @@ export const MicroInteractions = {
             document.body.appendChild(particle);
             this.particlePool.push({
                 element: particle,
-                inUse: false
+                inUse: false,
             });
         }
     },
@@ -146,13 +146,16 @@ export const MicroInteractions = {
         element.appendChild(ripple);
 
         // Animate ripple
-        const animation = ripple.animate([
-            { width: '0px', height: '0px', opacity: 0.8 },
-            { width: `${maxRadius * 2}px`, height: `${maxRadius * 2}px`, opacity: 0 }
-        ], {
-            duration: 600,
-            easing: 'ease-out'
-        });
+        const animation = ripple.animate(
+            [
+                { width: '0px', height: '0px', opacity: 0.8 },
+                { width: `${maxRadius * 2}px`, height: `${maxRadius * 2}px`, opacity: 0 },
+            ],
+            {
+                duration: 600,
+                easing: 'ease-out',
+            }
+        );
 
         animation.onfinish = () => {
             ripple.remove();
@@ -203,19 +206,22 @@ export const MicroInteractions = {
             particle.element.style.top = `${y}px`;
             particle.element.style.background = particleColor;
 
-            const animation = particle.element.animate([
+            const animation = particle.element.animate(
+                [
+                    {
+                        transform: 'translate(0, 0) scale(1)',
+                        opacity: 1,
+                    },
+                    {
+                        transform: `translate(${endX - x}px, ${endY - y}px) scale(0.5)`,
+                        opacity: 0,
+                    },
+                ],
                 {
-                    transform: 'translate(0, 0) scale(1)',
-                    opacity: 1
-                },
-                {
-                    transform: `translate(${endX - x}px, ${endY - y}px) scale(0.5)`,
-                    opacity: 0
+                    duration: 400 + Math.random() * 200,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                 }
-            ], {
-                duration: 400 + Math.random() * 200,
-                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-            });
+            );
 
             animation.onfinish = () => {
                 particle.inUse = false;
@@ -240,7 +246,7 @@ export const MicroInteractions = {
 
         this.registeredElements.set(element, {
             config,
-            animations: new Set()
+            animations: new Set(),
         });
     },
 
@@ -292,7 +298,7 @@ export const MicroInteractions = {
      */
     update(_timestamp, _deltaTime) {
         // Clean up finished animations
-        this.activeAnimations.forEach(anim => {
+        this.activeAnimations.forEach((anim) => {
             if (anim.playState === 'finished') {
                 this.activeAnimations.delete(anim);
             }
@@ -306,7 +312,7 @@ export const MicroInteractions = {
         const data = this.registeredElements.get(element);
         if (data) {
             // Cancel any active animations for this element
-            data.animations.forEach(anim => anim.cancel());
+            data.animations.forEach((anim) => anim.cancel());
             this.registeredElements.delete(element);
         }
     },
@@ -334,8 +340,10 @@ export const MicroInteractions = {
 
         const scaleX = targetRect.width / windowRect.width;
         const scaleY = targetRect.height / windowRect.height;
-        const translateX = targetRect.left - windowRect.left + (targetRect.width / 2) - (windowRect.width / 2);
-        const translateY = targetRect.top - windowRect.top + (targetRect.height / 2) - (windowRect.height / 2);
+        const translateX =
+            targetRect.left - windowRect.left + targetRect.width / 2 - windowRect.width / 2;
+        const translateY =
+            targetRect.top - windowRect.top + targetRect.height / 2 - windowRect.height / 2;
 
         transitionWindow(windowElement, 'minimize', callback, {
             transform: `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`,
@@ -380,7 +388,7 @@ export const MicroInteractions = {
         return {
             registeredElements: this.registeredElements.size,
             activeAnimations: this.activeAnimations.size,
-            particlePoolUsage: this.particlePool.filter(p => p.inUse).length
+            particlePoolUsage: this.particlePool.filter((p) => p.inUse).length,
         };
-    }
+    },
 };

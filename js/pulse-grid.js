@@ -8,22 +8,31 @@
  * Canvas-based for performance. Desktop-only, respects reduced-motion.
  */
 
-import { shouldSkipDesktopEffects, isPageHidden, onVisibilityChange, initDesktopCanvas, createPointerTracker, PALETTE } from './dom-helpers.js';
+import {
+    shouldSkipDesktopEffects,
+    isPageHidden,
+    onVisibilityChange,
+    initDesktopCanvas,
+    createPointerTracker,
+    PALETTE,
+} from './dom-helpers.js';
 
-const CELL_SIZE = 72;          // px per grid cell
-const GLOW_RADIUS = 180;       // px — how far the glow reaches from cursor
-const LINE_ALPHA_BASE = 0.04;  // grid line opacity when unlit
-const LINE_ALPHA_PEAK = 0.35;  // grid line opacity at cursor center
-const FILL_ALPHA_PEAK = 0.08;  // cell fill opacity at cursor center
+const CELL_SIZE = 72; // px per grid cell
+const GLOW_RADIUS = 180; // px — how far the glow reaches from cursor
+const LINE_ALPHA_BASE = 0.04; // grid line opacity when unlit
+const LINE_ALPHA_PEAK = 0.35; // grid line opacity at cursor center
+const FILL_ALPHA_PEAK = 0.08; // cell fill opacity at cursor center
 const GOLD = PALETTE.GOLD;
 const AMETHYST = PALETTE.AMETHYST;
 
 let ctx = null;
-let pointer = null;    // initialized in init()
+let pointer = null; // initialized in init()
 let rafId = 0;
 let visible = true;
 
-function lerp(a, b, t) { return a + (b - a) * t; }
+function lerp(a, b, t) {
+    return a + (b - a) * t;
+}
 
 /** Mix gold→amethyst based on distance ratio (0 = gold at center, 1 = amethyst at edge) */
 function colorAt(t) {
@@ -33,7 +42,6 @@ function colorAt(t) {
         b: lerp(GOLD.b, AMETHYST.b, t),
     };
 }
-
 
 function draw() {
     const w = window.innerWidth;
@@ -53,8 +61,8 @@ function draw() {
             const dist = Math.hypot(dx, dy);
 
             if (dist < GLOW_RADIUS) {
-                const t = dist / GLOW_RADIUS;          // 0 at cursor, 1 at edge
-                const intensity = 1 - t * t;           // quadratic falloff
+                const t = dist / GLOW_RADIUS; // 0 at cursor, 1 at edge
+                const intensity = 1 - t * t; // quadratic falloff
                 const c = colorAt(t);
                 const alpha = FILL_ALPHA_PEAK * intensity;
 
@@ -68,7 +76,7 @@ function draw() {
     for (let col = 0; col <= cols; col++) {
         const x = col * CELL_SIZE;
         const dist = Math.abs(pointer.mouse.x - x);
-        const proximity = dist < GLOW_RADIUS ? 1 - (dist / GLOW_RADIUS) : 0;
+        const proximity = dist < GLOW_RADIUS ? 1 - dist / GLOW_RADIUS : 0;
         const alpha = LINE_ALPHA_BASE + (LINE_ALPHA_PEAK - LINE_ALPHA_BASE) * proximity;
         const c = colorAt(1 - proximity);
 
@@ -84,7 +92,7 @@ function draw() {
     for (let row = 0; row <= rows; row++) {
         const y = row * CELL_SIZE;
         const dist = Math.abs(pointer.mouse.y - y);
-        const proximity = dist < GLOW_RADIUS ? 1 - (dist / GLOW_RADIUS) : 0;
+        const proximity = dist < GLOW_RADIUS ? 1 - dist / GLOW_RADIUS : 0;
         const alpha = LINE_ALPHA_BASE + (LINE_ALPHA_PEAK - LINE_ALPHA_BASE) * proximity;
         const c = colorAt(1 - proximity);
 
@@ -119,8 +127,13 @@ export const PulseGrid = {
         document.addEventListener('pointerleave', scheduleFrame);
 
         onVisibilityChange(
-            () => { visible = false; },
-            () => { visible = true; scheduleFrame(); },
+            () => {
+                visible = false;
+            },
+            () => {
+                visible = true;
+                scheduleFrame();
+            }
         );
 
         // Initial draw with no cursor — faint ambient grid

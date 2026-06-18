@@ -12,7 +12,10 @@
     border: 1px solid rgba(0, 240, 255, 0.12);
     border-radius: 6px;
     padding: 16px;
-    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    transition:
+        border-color 0.25s,
+        box-shadow 0.25s,
+        transform 0.25s;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -20,8 +23,9 @@
 
 .portfolio-card:hover {
     border-color: var(--card-accent, var(--gold-dim, rgba(212, 175, 55, 0.5)));
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
-                0 0 12px var(--card-glow, rgba(212, 175, 55, 0.08));
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        0 0 12px var(--card-glow, rgba(212, 175, 55, 0.08));
     transform: translateY(-2px);
 }
 
@@ -36,7 +40,9 @@
     font-weight: 700;
     letter-spacing: 1.5px;
     color: var(--card-accent, #00f0ff);
-    transition: color 0.3s ease-out, text-shadow 0.3s ease-out;
+    transition:
+        color 0.3s ease-out,
+        text-shadow 0.3s ease-out;
 }
 
 .portfolio-card:hover .portfolio-card__title {
@@ -91,7 +97,9 @@
         text-shadow 0.35s ease-out;
     text-decoration: none;
     text-transform: uppercase;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
 .portfolio-link:hover {
@@ -120,37 +128,91 @@
         0 0 18px rgba(0, 255, 136, 0.25);
 }
 
-
 /* ─── Amethyst Code: Hero Reveal ─── */
 /* Glitch-to-clarity intro for the Purple Reign showcase */
 
 @keyframes amethyst-glitch {
-    0%   { clip-path: inset(40% 0 60% 0); transform: translate(-2px, 1px); }
-    10%  { clip-path: inset(10% 0 80% 0); transform: translate(1px, -1px); }
-    20%  { clip-path: inset(70% 0 5% 0);  transform: translate(-1px, 2px); }
-    30%  { clip-path: inset(25% 0 50% 0);  transform: translate(2px, 0); }
-    40%  { clip-path: inset(55% 0 20% 0);  transform: translate(0, -2px); }
-    50%  { clip-path: inset(5% 0 70% 0);   transform: translate(-1px, 1px); }
-    60%  { clip-path: inset(80% 0 10% 0);  transform: translate(1px, 0); }
-    70%  { clip-path: inset(15% 0 60% 0);  transform: translate(0, 1px); }
-    80%  { clip-path: inset(45% 0 30% 0);  transform: translate(-1px, -1px); }
-    90%  { clip-path: inset(0 0 0 0);       transform: translate(0); }
-    100% { clip-path: inset(0 0 0 0);       transform: translate(0); }
+    0% {
+        clip-path: inset(40% 0 60% 0);
+        transform: translate(-2px, 1px);
+    }
+    10% {
+        clip-path: inset(10% 0 80% 0);
+        transform: translate(1px, -1px);
+    }
+    20% {
+        clip-path: inset(70% 0 5% 0);
+        transform: translate(-1px, 2px);
+    }
+    30% {
+        clip-path: inset(25% 0 50% 0);
+        transform: translate(2px, 0);
+    }
+    40% {
+        clip-path: inset(55% 0 20% 0);
+        transform: translate(0, -2px);
+    }
+    50% {
+        clip-path: inset(5% 0 70% 0);
+        transform: translate(-1px, 1px);
+    }
+    60% {
+        clip-path: inset(80% 0 10% 0);
+        transform: translate(1px, 0);
+    }
+    70% {
+        clip-path: inset(15% 0 60% 0);
+        transform: translate(0, 1px);
+    }
+    80% {
+        clip-path: inset(45% 0 30% 0);
+        transform: translate(-1px, -1px);
+    }
+    90% {
+        clip-path: inset(0 0 0 0);
+        transform: translate(0);
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+        transform: translate(0);
+    }
 }
 
 @keyframes amethyst-resolve {
-    from { opacity: 0; filter: blur(6px); transform: scale(1.04); }
-    to   { opacity: 1; filter: blur(0);   transform: scale(1); }
+    from {
+        opacity: 0;
+        filter: blur(6px);
+        transform: scale(1.04);
+    }
+    to {
+        opacity: 1;
+        filter: blur(0);
+        transform: scale(1);
+    }
 }
 
 @keyframes amethyst-glow-pulse {
-    0%, 100% { text-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 60px rgba(139, 92, 246, 0.15); }
-    50%      { text-shadow: 0 0 30px rgba(139, 92, 246, 0.6), 0 0 80px rgba(139, 92, 246, 0.25); }
+    0%,
+    100% {
+        text-shadow:
+            0 0 20px rgba(139, 92, 246, 0.4),
+            0 0 60px rgba(139, 92, 246, 0.15);
+    }
+    50% {
+        text-shadow:
+            0 0 30px rgba(139, 92, 246, 0.6),
+            0 0 80px rgba(139, 92, 246, 0.25);
+    }
 }
 
 @keyframes amethyst-caret {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: 0; }
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
 }
 
 .reign-hero {
@@ -172,7 +234,9 @@
     letter-spacing: 6px;
     text-transform: uppercase;
     color: #e2d6ff;
-    text-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 60px rgba(139, 92, 246, 0.15);
+    text-shadow:
+        0 0 20px rgba(139, 92, 246, 0.4),
+        0 0 60px rgba(139, 92, 246, 0.15);
     position: relative;
     opacity: 0;
 }
@@ -233,7 +297,9 @@
     margin-top: 18px;
     opacity: 0;
     transform: translateY(10px);
-    transition: opacity 0.6s ease-out 1.2s, transform 0.6s ease-out 1.2s;
+    transition:
+        opacity 0.6s ease-out 1.2s,
+        transform 0.6s ease-out 1.2s;
 }
 
 .reign-hero--entered .reign-hero__tagline {
@@ -293,7 +359,9 @@
     width: 2px;
     background: var(--reign-accent, #8b5cf6);
     opacity: 0.4;
-    transition: opacity 0.6s ease-out, height 0.6s ease-out;
+    transition:
+        opacity 0.6s ease-out,
+        height 0.6s ease-out;
 }
 
 .reign-chapter:hover::before {
@@ -366,7 +434,9 @@
         border-color 0.35s cubic-bezier(0.645, 0.045, 0.355, 1),
         text-shadow 0.35s ease-out;
     text-transform: uppercase;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
     position: relative;
 }
 
@@ -467,8 +537,12 @@
 /* Gold shimmer sweep on chapter titles, activated by scroll */
 
 @keyframes reign-shimmer {
-    0%   { background-position: -200% center; }
-    100% { background-position: 200% center; }
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
 }
 
 .reign-chapter__title {
@@ -497,7 +571,9 @@
 .reign-reveal {
     opacity: 0;
     transform: translateY(18px);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    transition:
+        opacity 0.5s ease-out,
+        transform 0.5s ease-out;
 }
 
 .reign-reveal--visible {
@@ -506,10 +582,18 @@
 }
 
 /* Staggered delays for child elements */
-.reign-reveal[data-delay="1"] { transition-delay: 0.08s; }
-.reign-reveal[data-delay="2"] { transition-delay: 0.16s; }
-.reign-reveal[data-delay="3"] { transition-delay: 0.24s; }
-.reign-reveal[data-delay="4"] { transition-delay: 0.32s; }
+.reign-reveal[data-delay='1'] {
+    transition-delay: 0.08s;
+}
+.reign-reveal[data-delay='2'] {
+    transition-delay: 0.16s;
+}
+.reign-reveal[data-delay='3'] {
+    transition-delay: 0.24s;
+}
+.reign-reveal[data-delay='4'] {
+    transition-delay: 0.32s;
+}
 
 /* Progress dots on the right edge */
 .reign-nav {
@@ -530,7 +614,10 @@
     background: rgba(139, 92, 246, 0.25);
     border: 1px solid rgba(139, 92, 246, 0.4);
     cursor: pointer;
-    transition: background 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    transition:
+        background 0.3s ease-out,
+        transform 0.3s ease-out,
+        box-shadow 0.3s ease-out;
     padding: 0;
 }
 
@@ -580,49 +667,123 @@
 }
 
 /* 8-face diamond: top 4 + bottom 4, obsidian surface with amethyst edge glow */
-.reign-core__face:nth-child(1) { background: linear-gradient(180deg, #1a1225 10%, #0d0a14 90%); transform: rotateY(0deg) rotateX(35deg) translateZ(42px); }
-.reign-core__face:nth-child(2) { background: linear-gradient(180deg, #1e1430 10%, #0d0a14 90%); transform: rotateY(90deg) rotateX(35deg) translateZ(42px); }
-.reign-core__face:nth-child(3) { background: linear-gradient(180deg, #1a1225 10%, #0d0a14 90%); transform: rotateY(180deg) rotateX(35deg) translateZ(42px); }
-.reign-core__face:nth-child(4) { background: linear-gradient(180deg, #1e1430 10%, #0d0a14 90%); transform: rotateY(270deg) rotateX(35deg) translateZ(42px); }
-.reign-core__face:nth-child(5) { background: linear-gradient(0deg, #1a1225 10%, #0d0a14 90%); transform: rotateY(0deg) rotateX(-35deg) translateZ(42px) scaleY(-1); }
-.reign-core__face:nth-child(6) { background: linear-gradient(0deg, #1e1430 10%, #0d0a14 90%); transform: rotateY(90deg) rotateX(-35deg) translateZ(42px) scaleY(-1); }
-.reign-core__face:nth-child(7) { background: linear-gradient(0deg, #1a1225 10%, #0d0a14 90%); transform: rotateY(180deg) rotateX(-35deg) translateZ(42px) scaleY(-1); }
-.reign-core__face:nth-child(8) { background: linear-gradient(0deg, #1e1430 10%, #0d0a14 90%); transform: rotateY(270deg) rotateX(-35deg) translateZ(42px) scaleY(-1); }
+.reign-core__face:nth-child(1) {
+    background: linear-gradient(180deg, #1a1225 10%, #0d0a14 90%);
+    transform: rotateY(0deg) rotateX(35deg) translateZ(42px);
+}
+.reign-core__face:nth-child(2) {
+    background: linear-gradient(180deg, #1e1430 10%, #0d0a14 90%);
+    transform: rotateY(90deg) rotateX(35deg) translateZ(42px);
+}
+.reign-core__face:nth-child(3) {
+    background: linear-gradient(180deg, #1a1225 10%, #0d0a14 90%);
+    transform: rotateY(180deg) rotateX(35deg) translateZ(42px);
+}
+.reign-core__face:nth-child(4) {
+    background: linear-gradient(180deg, #1e1430 10%, #0d0a14 90%);
+    transform: rotateY(270deg) rotateX(35deg) translateZ(42px);
+}
+.reign-core__face:nth-child(5) {
+    background: linear-gradient(0deg, #1a1225 10%, #0d0a14 90%);
+    transform: rotateY(0deg) rotateX(-35deg) translateZ(42px) scaleY(-1);
+}
+.reign-core__face:nth-child(6) {
+    background: linear-gradient(0deg, #1e1430 10%, #0d0a14 90%);
+    transform: rotateY(90deg) rotateX(-35deg) translateZ(42px) scaleY(-1);
+}
+.reign-core__face:nth-child(7) {
+    background: linear-gradient(0deg, #1a1225 10%, #0d0a14 90%);
+    transform: rotateY(180deg) rotateX(-35deg) translateZ(42px) scaleY(-1);
+}
+.reign-core__face:nth-child(8) {
+    background: linear-gradient(0deg, #1e1430 10%, #0d0a14 90%);
+    transform: rotateY(270deg) rotateX(-35deg) translateZ(42px) scaleY(-1);
+}
 
 /* Amethyst inner glow */
 .reign-core__glow {
     position: absolute;
     inset: 15%;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.35) 0%, rgba(139, 92, 246, 0.08) 50%, transparent 70%);
+    background: radial-gradient(
+        circle,
+        rgba(139, 92, 246, 0.35) 0%,
+        rgba(139, 92, 246, 0.08) 50%,
+        transparent 70%
+    );
     animation: core-pulse 3s ease-in-out infinite;
     z-index: -1;
 }
 
 @keyframes core-idle {
-    from { transform: translate(-50%, -50%) rotateX(-20deg) rotateY(45deg); }
-    to   { transform: translate(-50%, -50%) rotateX(-20deg) rotateY(405deg); }
+    from {
+        transform: translate(-50%, -50%) rotateX(-20deg) rotateY(45deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotateX(-20deg) rotateY(405deg);
+    }
 }
 
 @keyframes core-pulse {
-    0%, 100% { opacity: 0.6; transform: scale(1); }
-    50%      { opacity: 1; transform: scale(1.15); }
+    0%,
+    100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
 }
 
 /* Fracture state — faces fly outward and fade */
-.reign-core--fracturing .reign-core__face:nth-child(1) { transform: rotateY(10deg) rotateX(35deg) translateZ(140px) translateY(-60px); opacity: 0; filter: blur(2px); }
-.reign-core--fracturing .reign-core__face:nth-child(2) { transform: rotateY(100deg) rotateX(45deg) translateZ(130px) translateX(50px); opacity: 0; filter: blur(2px); }
-.reign-core--fracturing .reign-core__face:nth-child(3) { transform: rotateY(190deg) rotateX(25deg) translateZ(150px) translateY(-40px); opacity: 0; filter: blur(2px); }
-.reign-core--fracturing .reign-core__face:nth-child(4) { transform: rotateY(280deg) rotateX(40deg) translateZ(120px) translateX(-50px); opacity: 0; filter: blur(2px); }
-.reign-core--fracturing .reign-core__face:nth-child(5) { transform: rotateY(-10deg) rotateX(-45deg) translateZ(135px) translateY(60px); opacity: 0; filter: blur(2px); }
-.reign-core--fracturing .reign-core__face:nth-child(6) { transform: rotateY(80deg) rotateX(-35deg) translateZ(145px) translateX(40px); opacity: 0; filter: blur(2px); }
-.reign-core--fracturing .reign-core__face:nth-child(7) { transform: rotateY(170deg) rotateX(-50deg) translateZ(125px) translateY(50px); opacity: 0; filter: blur(2px); }
-.reign-core--fracturing .reign-core__face:nth-child(8) { transform: rotateY(260deg) rotateX(-30deg) translateZ(155px) translateX(-45px); opacity: 0; filter: blur(2px); }
+.reign-core--fracturing .reign-core__face:nth-child(1) {
+    transform: rotateY(10deg) rotateX(35deg) translateZ(140px) translateY(-60px);
+    opacity: 0;
+    filter: blur(2px);
+}
+.reign-core--fracturing .reign-core__face:nth-child(2) {
+    transform: rotateY(100deg) rotateX(45deg) translateZ(130px) translateX(50px);
+    opacity: 0;
+    filter: blur(2px);
+}
+.reign-core--fracturing .reign-core__face:nth-child(3) {
+    transform: rotateY(190deg) rotateX(25deg) translateZ(150px) translateY(-40px);
+    opacity: 0;
+    filter: blur(2px);
+}
+.reign-core--fracturing .reign-core__face:nth-child(4) {
+    transform: rotateY(280deg) rotateX(40deg) translateZ(120px) translateX(-50px);
+    opacity: 0;
+    filter: blur(2px);
+}
+.reign-core--fracturing .reign-core__face:nth-child(5) {
+    transform: rotateY(-10deg) rotateX(-45deg) translateZ(135px) translateY(60px);
+    opacity: 0;
+    filter: blur(2px);
+}
+.reign-core--fracturing .reign-core__face:nth-child(6) {
+    transform: rotateY(80deg) rotateX(-35deg) translateZ(145px) translateX(40px);
+    opacity: 0;
+    filter: blur(2px);
+}
+.reign-core--fracturing .reign-core__face:nth-child(7) {
+    transform: rotateY(170deg) rotateX(-50deg) translateZ(125px) translateY(50px);
+    opacity: 0;
+    filter: blur(2px);
+}
+.reign-core--fracturing .reign-core__face:nth-child(8) {
+    transform: rotateY(260deg) rotateX(-30deg) translateZ(155px) translateX(-45px);
+    opacity: 0;
+    filter: blur(2px);
+}
 
 .reign-core--fracturing .reign-core__glow {
     opacity: 0;
     transform: scale(2.5);
-    transition: opacity 0.6s ease-out, transform 0.8s ease-out;
+    transition:
+        opacity 0.6s ease-out,
+        transform 0.8s ease-out;
 }
 
 .reign-core--fracturing {
@@ -678,7 +839,9 @@
     background: rgba(139, 92, 246, 0.08);
     border: 1px solid rgba(139, 92, 246, 0.15);
     opacity: 0;
-    transition: opacity 0.5s var(--ease-decel, ease-out), transform 0.5s var(--ease-decel, ease-out);
+    transition:
+        opacity 0.5s var(--ease-decel, ease-out),
+        transform 0.5s var(--ease-decel, ease-out);
 }
 
 .reign-chapter:hover .catalyst-aura::after {
@@ -688,9 +851,15 @@
 
 /* Geometric border trace — accent line draws itself on hover */
 @keyframes catalyst-trace {
-    0%   { clip-path: inset(0 100% 100% 0); }
-    50%  { clip-path: inset(0 0 100% 0); }
-    100% { clip-path: inset(0 0 0 0); }
+    0% {
+        clip-path: inset(0 100% 100% 0);
+    }
+    50% {
+        clip-path: inset(0 0 100% 0);
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
 }
 
 .reign-chapter .catalyst-border {
@@ -710,13 +879,19 @@
 
 /* Accent line intensifies with aura active */
 .reign-chapter:hover::before {
-    box-shadow: 0 0 10px var(--reign-accent, #8b5cf6), 0 0 3px var(--gold-dim, rgba(212, 175, 55, 0.3));
+    box-shadow:
+        0 0 10px var(--reign-accent, #8b5cf6),
+        0 0 3px var(--gold-dim, rgba(212, 175, 55, 0.3));
 }
 
 /* Chapter title gets gold underline sweep on hover */
 @keyframes catalyst-underline {
-    from { transform: scaleX(0); }
-    to   { transform: scaleX(1); }
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
 }
 
 .reign-chapter__title::after {
@@ -724,7 +899,12 @@
     display: block;
     height: 1px;
     margin-top: 6px;
-    background: linear-gradient(90deg, var(--gold, #d4af37), var(--reign-accent, #8b5cf6), transparent);
+    background: linear-gradient(
+        90deg,
+        var(--gold, #d4af37),
+        var(--reign-accent, #8b5cf6),
+        transparent
+    );
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.6s var(--ease-decel, ease-out);
@@ -748,20 +928,20 @@
     will-change: opacity, transform, filter;
 }
 
-.scroll-reveal[data-reveal="fade-left"] {
+.scroll-reveal[data-reveal='fade-left'] {
     transform: translateX(-18px) translateY(0);
 }
 
-.scroll-reveal[data-reveal="scale"] {
+.scroll-reveal[data-reveal='scale'] {
     transform: scale(0.92);
     filter: blur(3px);
 }
 
-.scroll-reveal[data-reveal="fade-right"] {
+.scroll-reveal[data-reveal='fade-right'] {
     transform: translateX(18px) translateY(0);
 }
 
-.scroll-reveal[data-reveal="clip-up"] {
+.scroll-reveal[data-reveal='clip-up'] {
     transform: translateY(0);
     filter: blur(0);
     clip-path: inset(100% 0 0 0);
@@ -770,7 +950,7 @@
         clip-path 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.scroll-reveal[data-reveal="clip-up"].scroll-reveal--visible {
+.scroll-reveal[data-reveal='clip-up'].scroll-reveal--visible {
     clip-path: inset(0 0 0 0);
 }
 
@@ -788,9 +968,17 @@
 }
 
 @keyframes gold-line-sweep {
-    0%   { width: 0; opacity: 0; }
-    50%  { opacity: 0.8; }
-    100% { width: 60%; opacity: 0.3; }
+    0% {
+        width: 0;
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        width: 60%;
+        opacity: 0.3;
+    }
 }
 
 .scroll-reveal--visible {
@@ -800,12 +988,24 @@
 }
 
 /* Staggered cascade — each sibling waits 80ms longer */
-.scroll-reveal[data-reveal-delay="1"] { transition-delay: 0.08s; }
-.scroll-reveal[data-reveal-delay="2"] { transition-delay: 0.16s; }
-.scroll-reveal[data-reveal-delay="3"] { transition-delay: 0.24s; }
-.scroll-reveal[data-reveal-delay="4"] { transition-delay: 0.32s; }
-.scroll-reveal[data-reveal-delay="5"] { transition-delay: 0.40s; }
-.scroll-reveal[data-reveal-delay="6"] { transition-delay: 0.48s; }
+.scroll-reveal[data-reveal-delay='1'] {
+    transition-delay: 0.08s;
+}
+.scroll-reveal[data-reveal-delay='2'] {
+    transition-delay: 0.16s;
+}
+.scroll-reveal[data-reveal-delay='3'] {
+    transition-delay: 0.24s;
+}
+.scroll-reveal[data-reveal-delay='4'] {
+    transition-delay: 0.32s;
+}
+.scroll-reveal[data-reveal-delay='5'] {
+    transition-delay: 0.4s;
+}
+.scroll-reveal[data-reveal-delay='6'] {
+    transition-delay: 0.48s;
+}
 
 /* Amethyst edge glow on reveal — subtle purple line flash */
 .scroll-reveal--visible.project-card::before {
@@ -822,9 +1022,19 @@
 }
 
 @keyframes reveal-accent {
-    0%   { opacity: 0; height: 0; top: 50%; }
-    60%  { opacity: 0.7; }
-    100% { opacity: 0.25; height: 80%; top: 10%; }
+    0% {
+        opacity: 0;
+        height: 0;
+        top: 50%;
+    }
+    60% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 0.25;
+        height: 80%;
+        top: 10%;
+    }
 }
 
 /* ─── Opulent Interface: Reduced Motion ─── */
@@ -842,12 +1052,24 @@
     .portfolio-link:hover {
         letter-spacing: 1px;
     }
-    .reign-core { animation: none !important; }
-    .reign-core__face { transition-duration: 0s !important; }
-    .reign-core__glow { animation: none !important; }
-    .catalyst-aura { display: none !important; }
-    .catalyst-border { display: none !important; }
-    .reign-chapter__title::after { transition: none !important; }
+    .reign-core {
+        animation: none !important;
+    }
+    .reign-core__face {
+        transition-duration: 0s !important;
+    }
+    .reign-core__glow {
+        animation: none !important;
+    }
+    .catalyst-aura {
+        display: none !important;
+    }
+    .catalyst-border {
+        display: none !important;
+    }
+    .reign-chapter__title::after {
+        transition: none !important;
+    }
     .scroll-reveal {
         opacity: 1 !important;
         transform: none !important;
@@ -855,6 +1077,12 @@
         clip-path: none !important;
         transition: none !important;
     }
-    .scroll-reveal--visible.project-card::before { animation: none !important; display: none; }
-    .scroll-reveal--visible.service-card::after { animation: none !important; display: none; }
+    .scroll-reveal--visible.project-card::before {
+        animation: none !important;
+        display: none;
+    }
+    .scroll-reveal--visible.service-card::after {
+        animation: none !important;
+        display: none;
+    }
 }

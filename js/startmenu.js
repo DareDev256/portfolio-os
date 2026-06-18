@@ -91,7 +91,9 @@ export const StartMenu = {
         const systemOptions = [
             { label: 'Restart System', icon: '↻', action: () => window.location.reload() },
             {
-                label: 'Shut Down', icon: '⏻', action: () => {
+                label: 'Shut Down',
+                icon: '⏻',
+                action: () => {
                     // Clear DOM safely without innerHTML to prevent XSS patterns
                     while (document.body.firstChild) document.body.firstChild.remove();
                     document.body.style.background = 'black';
@@ -106,11 +108,11 @@ export const StartMenu = {
                     const p = document.createElement('p');
                     p.textContent = 'It is now safe to turn off your computer.';
                     document.body.append(h1, p);
-                }
-            }
+                },
+            },
         ];
 
-        systemOptions.forEach(opt => {
+        systemOptions.forEach((opt) => {
             const item = document.createElement('button');
             item.className = 'start-menu-item';
             item.textContent = opt.icon + ' ';

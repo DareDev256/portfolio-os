@@ -33,8 +33,9 @@
     /* Dashed border for that tech scanner feel */
     border-style: dashed;
     border-spacing: 4px;
-    transition: border-color var(--duration-normal, 250ms) var(--ease-decel, ease-out),
-                opacity var(--duration-normal, 250ms) var(--ease-decel, ease-out);
+    transition:
+        border-color var(--duration-normal, 250ms) var(--ease-decel, ease-out),
+        opacity var(--duration-normal, 250ms) var(--ease-decel, ease-out);
 }
 
 /* ── Center Dot — sharp focus point ── */
@@ -48,8 +49,9 @@
     background: var(--gold, #d4af37);
     border-radius: 50%;
     box-shadow: 0 0 6px var(--gold-dim, rgba(212, 175, 55, 0.5));
-    transition: background var(--duration-normal, 250ms) var(--ease-decel, ease-out),
-                box-shadow var(--duration-normal, 250ms) var(--ease-decel, ease-out);
+    transition:
+        background var(--duration-normal, 250ms) var(--ease-decel, ease-out),
+        box-shadow var(--duration-normal, 250ms) var(--ease-decel, ease-out);
 }
 
 /* ── Crosshairs — thin lines through center ── */
@@ -57,8 +59,9 @@
     position: absolute;
     background: var(--gold, #d4af37);
     opacity: 0.4;
-    transition: background var(--duration-normal, 250ms) var(--ease-decel, ease-out),
-                opacity var(--duration-normal, 250ms) var(--ease-decel, ease-out);
+    transition:
+        background var(--duration-normal, 250ms) var(--ease-decel, ease-out),
+        opacity var(--duration-normal, 250ms) var(--ease-decel, ease-out);
 }
 
 .pr-h {
@@ -114,7 +117,9 @@
 
 /* ── Animations ── */
 @keyframes pr-spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes pr-click-pulse {
@@ -130,10 +135,14 @@
 
 /* ── Respect reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
-    .phantom-reticle { display: none; }
+    .phantom-reticle {
+        display: none;
+    }
 }
 
 /* ── Hide on touch devices (no cursor) ── */
 @media (hover: none) {
-    .phantom-reticle { display: none; }
+    .phantom-reticle {
+        display: none;
+    }
 }

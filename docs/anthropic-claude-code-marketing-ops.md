@@ -24,10 +24,10 @@ Source: [izanami.dev](https://izanami.dev/post/b56cafbc-4d8d-477a-8629-b5ef70282
 
 **Architecture detail** — Claude Code spawns **specialized sub-agents**: one constrained to 30-char headlines, another to 90-char descriptions. This division prevents the failure mode where a single agent juggling multiple character limits produces sloppy output.
 
-| Metric | Before | After |
-|--------|--------|-------|
-| Time per batch | 2 hours | 15 minutes |
-| Output format | Manual paste | CSV ready for Google Ads upload |
+| Metric         | Before       | After                           |
+| -------------- | ------------ | ------------------------------- |
+| Time per batch | 2 hours      | 15 minutes                      |
+| Output format  | Manual paste | CSV ready for Google Ads upload |
 
 ### 2. Figma Plugin — Batch Ad Creative
 
@@ -35,11 +35,11 @@ Source: [izanami.dev](https://izanami.dev/post/b56cafbc-4d8d-477a-8629-b5ef70282
 
 **Solution**: A custom Figma plugin built entirely through Claude Code in ~45 minutes. It auto-detects template frames, swaps headline and description text, and generates up to 100 variations per run.
 
-| Metric | Before | After |
-|--------|--------|-------|
-| Per-batch processing | Hours | 0.5 seconds |
-| Creative volume | ~10 variants | 100+ variants |
-| Productivity multiplier | — | **10×** |
+| Metric                  | Before       | After         |
+| ----------------------- | ------------ | ------------- |
+| Per-batch processing    | Hours        | 0.5 seconds   |
+| Creative volume         | ~10 variants | 100+ variants |
+| Productivity multiplier | —            | **10×**       |
 
 ### 3. Meta Ads MCP Server
 
@@ -67,14 +67,14 @@ This eliminates context-switching entirely — campaign analysis happens in the 
 
 ## Broader Impact Across Anthropic Marketing
 
-| Team | Result |
-|------|--------|
-| **Growth Marketing** | 1 person = multi-person team output |
-| **Influencer Marketing** | 100+ hours freed monthly |
-| **Customer Marketing** | Case study drafts: 2.5 hrs → 30 min |
-| **Digital Marketing** | 5× YoY productivity increase |
-| **Product Marketing** | 5–10 hrs saved per product launch |
-| **Partner Marketing** | Trade show prep time cut 40% |
+| Team                     | Result                              |
+| ------------------------ | ----------------------------------- |
+| **Growth Marketing**     | 1 person = multi-person team output |
+| **Influencer Marketing** | 100+ hours freed monthly            |
+| **Customer Marketing**   | Case study drafts: 2.5 hrs → 30 min |
+| **Digital Marketing**    | 5× YoY productivity increase        |
+| **Product Marketing**    | 5–10 hrs saved per product launch   |
+| **Partner Marketing**    | Trade show prep time cut 40%        |
 
 ---
 
@@ -86,4 +86,4 @@ The tooling pattern (slash commands → specialized agents → structured output
 
 ---
 
-*Researched 2026-02-21 · Sources: [izanami.dev](https://izanami.dev/post/b56cafbc-4d8d-477a-8629-b5ef70282f2b), [Anthropic Blog](https://claude.com/blog/how-anthropic-uses-claude-marketing)*
+_Researched 2026-02-21 · Sources: [izanami.dev](https://izanami.dev/post/b56cafbc-4d8d-477a-8629-b5ef70282f2b), [Anthropic Blog](https://claude.com/blog/how-anthropic-uses-claude-marketing)_

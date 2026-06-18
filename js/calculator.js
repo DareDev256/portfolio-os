@@ -35,8 +35,7 @@ export function renderCalculator(container) {
     const pad = el('div', 'calc-pad');
 
     function updateDisplay() {
-        readout.textContent = display.length > 12
-            ? parseFloat(display).toExponential(6) : display;
+        readout.textContent = display.length > 12 ? parseFloat(display).toExponential(6) : display;
     }
 
     function compute() {
@@ -45,15 +44,22 @@ export function renderCalculator(container) {
         const b = parseFloat(display);
         let result;
         switch (op) {
-            case '+': result = a + b; break;
-            case '-': result = a - b; break;
-            case '*': result = a * b; break;
-            case '/': result = b === 0 ? 'ERR' : a / b; break;
-            default: return;
+            case '+':
+                result = a + b;
+                break;
+            case '-':
+                result = a - b;
+                break;
+            case '*':
+                result = a * b;
+                break;
+            case '/':
+                result = b === 0 ? 'ERR' : a / b;
+                break;
+            default:
+                return;
         }
-        display = result === 'ERR' ? 'ERR' : String(
-            Math.round(result * 1e10) / 1e10
-        );
+        display = result === 'ERR' ? 'ERR' : String(Math.round(result * 1e10) / 1e10);
         prev = null;
         op = null;
         fresh = true;
@@ -63,21 +69,32 @@ export function renderCalculator(container) {
         if (display === 'ERR' && key !== 'C') return;
 
         if (key >= '0' && key <= '9') {
-            if (fresh) { display = key; fresh = false; }
-            else { display = display === '0' ? key : display + key; }
+            if (fresh) {
+                display = key;
+                fresh = false;
+            } else {
+                display = display === '0' ? key : display + key;
+            }
             updateDisplay();
             return;
         }
 
         if (key === '.') {
-            if (fresh) { display = '0.'; fresh = false; }
-            else if (!display.includes('.')) { display += '.'; }
+            if (fresh) {
+                display = '0.';
+                fresh = false;
+            } else if (!display.includes('.')) {
+                display += '.';
+            }
             updateDisplay();
             return;
         }
 
         if (key === 'C') {
-            display = '0'; prev = null; op = null; fresh = true;
+            display = '0';
+            prev = null;
+            op = null;
+            fresh = true;
             expr.textContent = '';
             updateDisplay();
             return;
@@ -112,7 +129,7 @@ export function renderCalculator(container) {
             prev = display;
             op = opChar;
             fresh = true;
-            expr.textContent = `${prev} ${key.length === 1 ? Object.keys(OPS).find(k => OPS[k] === opChar) || key : key}`;
+            expr.textContent = `${prev} ${key.length === 1 ? Object.keys(OPS).find((k) => OPS[k] === opChar) || key : key}`;
             return;
         }
 
@@ -126,11 +143,12 @@ export function renderCalculator(container) {
     }
 
     // Build buttons
-    KEYS.forEach(row => {
-        row.forEach(key => {
+    KEYS.forEach((row) => {
+        row.forEach((key) => {
             const isOp = key in OPS || key === '=';
             const isAction = ['C', '±', '%', '⌫'].includes(key);
-            const cls = 'calc-key' +
+            const cls =
+                'calc-key' +
                 (isOp ? ' calc-key-op' : '') +
                 (isAction ? ' calc-key-action' : '') +
                 (key === '=' ? ' calc-key-eq' : '');
@@ -162,5 +180,7 @@ export function renderCalculator(container) {
 
     document.addEventListener('keydown', onKeyDown);
 
-    return () => { document.removeEventListener('keydown', onKeyDown); };
+    return () => {
+        document.removeEventListener('keydown', onKeyDown);
+    };
 }

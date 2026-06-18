@@ -10,9 +10,14 @@
     backdrop-filter: blur(6px);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 180ms ease, visibility 180ms ease;
+    transition:
+        opacity 180ms ease,
+        visibility 180ms ease;
 }
-.shortcuts-overlay.active { opacity: 1; visibility: visible; }
+.shortcuts-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
 
 .shortcuts-panel {
     width: min(720px, 92vw);
@@ -21,13 +26,17 @@
     background: rgba(10, 10, 25, 0.92);
     border: 1px solid rgba(0, 240, 255, 0.18);
     border-radius: var(--glass-radius, 12px);
-    box-shadow: 0 0 40px rgba(0, 240, 255, 0.12), 0 24px 64px rgba(0, 0, 0, 0.6),
+    box-shadow:
+        0 0 40px rgba(0, 240, 255, 0.12),
+        0 24px 64px rgba(0, 0, 0, 0.6),
         inset 0 1px 0 rgba(255, 255, 255, 0.04);
     padding: 28px 32px 24px;
     transform: translateY(-12px) scale(0.97);
     transition: transform 180ms var(--ease-spring);
 }
-.shortcuts-overlay.active .shortcuts-panel { transform: translateY(0) scale(1); }
+.shortcuts-overlay.active .shortcuts-panel {
+    transform: translateY(0) scale(1);
+}
 
 .shortcuts-header {
     display: flex;
@@ -76,7 +85,11 @@
     gap: 12px;
     padding: 6px 0;
 }
-.shortcut-keys { display: flex; gap: 4px; flex-shrink: 0; }
+.shortcut-keys {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
 .shortcut-keys kbd {
     font-family: var(--font-mono, monospace);
     font-size: 11px;
@@ -97,13 +110,26 @@
     text-align: right;
 }
 
-.shortcuts-panel::-webkit-scrollbar { width: 4px; }
-.shortcuts-panel::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.15); border-radius: 4px; }
+.shortcuts-panel::-webkit-scrollbar {
+    width: 4px;
+}
+.shortcuts-panel::-webkit-scrollbar-thumb {
+    background: rgba(0, 240, 255, 0.15);
+    border-radius: 4px;
+}
 
 @media (prefers-reduced-motion: reduce) {
-    .shortcuts-overlay, .shortcuts-panel { transition: none; }
+    .shortcuts-overlay,
+    .shortcuts-panel {
+        transition: none;
+    }
 }
 @media (max-width: 600px) {
-    .shortcuts-panel { padding: 20px 16px; }
-    .shortcuts-grid { grid-template-columns: 1fr; gap: 20px; }
+    .shortcuts-panel {
+        padding: 20px 16px;
+    }
+    .shortcuts-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 }

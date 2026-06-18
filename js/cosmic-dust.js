@@ -18,17 +18,17 @@ import {
 } from './dom-helpers.js';
 
 /* ── Tuning ────────────────────────────────── */
-const DUST_COUNT      = 50;
-const DUST_MIN_R      = 0.4;
-const DUST_MAX_R      = 1.4;
-const DRIFT_SPEED     = 0.08;       // very slow base drift
-const TWINKLE_SPEED   = 0.012;      // oscillation rate for alpha
-const FLARE_CHANCE    = 0.002;      // per-particle per-frame chance of a bright flare
-const FLARE_DECAY     = 0.92;       // flare fades by this multiplier per frame
-const FLARE_RADIUS    = 12;         // px — glow around a flaring particle
-const FADE_EDGE       = 40;         // px — particles dim near viewport edges
+const DUST_COUNT = 50;
+const DUST_MIN_R = 0.4;
+const DUST_MAX_R = 1.4;
+const DRIFT_SPEED = 0.08; // very slow base drift
+const TWINKLE_SPEED = 0.012; // oscillation rate for alpha
+const FLARE_CHANCE = 0.002; // per-particle per-frame chance of a bright flare
+const FLARE_DECAY = 0.92; // flare fades by this multiplier per frame
+const FLARE_RADIUS = 12; // px — glow around a flaring particle
+const FADE_EDGE = 40; // px — particles dim near viewport edges
 
-const GOLD     = PALETTE.GOLD;
+const GOLD = PALETTE.GOLD;
 const AMETHYST = PALETTE.AMETHYST;
 
 /* ── State ─────────────────────────────────── */
@@ -50,10 +50,10 @@ function createParticle(i) {
         y: Math.random() * h,
         r: DUST_MIN_R + Math.random() * (DUST_MAX_R - DUST_MIN_R),
         color: isGold ? GOLD : AMETHYST,
-        phase: Math.random() * Math.PI * 2,    // twinkle offset
+        phase: Math.random() * Math.PI * 2, // twinkle offset
         driftAngle: Math.random() * Math.PI * 2,
         speed: DRIFT_SPEED * (0.3 + Math.random() * 1.0),
-        flare: 0,  // 0 = no flare, 1 = full flare brightness
+        flare: 0, // 0 = no flare, 1 = full flare brightness
     };
 }
 
@@ -85,9 +85,9 @@ function update() {
         else p.flare = 0;
 
         // Wrap around viewport
-        if (p.x < -20)    p.x = w + 10;
+        if (p.x < -20) p.x = w + 10;
         if (p.x > w + 20) p.x = -10;
-        if (p.y < -20)    p.y = h + 10;
+        if (p.y < -20) p.y = h + 10;
         if (p.y > h + 20) p.y = -10;
     }
 }
@@ -117,9 +117,9 @@ function draw() {
         if (p.flare > 0.05) {
             const flareAlpha = p.flare * edgeFade * 0.4;
             const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, FLARE_RADIUS);
-            grad.addColorStop(0,   `rgba(${r}, ${g}, ${b}, ${flareAlpha})`);
+            grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${flareAlpha})`);
             grad.addColorStop(0.3, `rgba(${r}, ${g}, ${b}, ${flareAlpha * 0.3})`);
-            grad.addColorStop(1,   `rgba(${r}, ${g}, ${b}, 0)`);
+            grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
             ctx.fillStyle = grad;
             ctx.beginPath();
             ctx.arc(p.x, p.y, FLARE_RADIUS, 0, Math.PI * 2);
@@ -160,8 +160,13 @@ export const CosmicDust = {
         spawnParticles();
 
         onVisibilityChange(
-            () => { visible = false; },
-            () => { visible = true; start(); },
+            () => {
+                visible = false;
+            },
+            () => {
+                visible = true;
+                start();
+            }
         );
 
         start();

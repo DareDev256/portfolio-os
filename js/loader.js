@@ -24,7 +24,7 @@ export class PixelLoader {
                     [1, 1, 1, 1, 1, 1, 1, 1],
                     [0, 1, 1, 0, 0, 1, 1, 0],
                     [0, 1, 0, 0, 0, 0, 1, 0],
-                    [0, 0, 0, 0, 0, 0, 0, 0]
+                    [0, 0, 0, 0, 0, 0, 0, 0],
                 ],
                 [
                     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -34,8 +34,8 @@ export class PixelLoader {
                     [1, 1, 1, 1, 1, 1, 1, 1],
                     [0, 1, 1, 0, 0, 1, 1, 0],
                     [0, 0, 1, 0, 0, 1, 0, 0],
-                    [0, 0, 0, 0, 0, 0, 0, 0]
-                ]
+                    [0, 0, 0, 0, 0, 0, 0, 0],
+                ],
             ],
             sending: [
                 [
@@ -46,7 +46,7 @@ export class PixelLoader {
                     [1, 1, 1, 1, 1, 1, 1, 1],
                     [0, 1, 0, 1, 1, 0, 1, 0],
                     [0, 0, 0, 1, 1, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0, 0, 0]
+                    [0, 0, 0, 0, 0, 0, 0, 0],
                 ],
                 [
                     [0, 0, 0, 1, 1, 0, 0, 0],
@@ -56,8 +56,8 @@ export class PixelLoader {
                     [0, 1, 0, 1, 1, 0, 1, 0],
                     [0, 0, 0, 1, 1, 0, 0, 0],
                     [0, 0, 0, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0, 0, 0]
-                ]
+                    [0, 0, 0, 0, 0, 0, 0, 0],
+                ],
             ],
             success: [
                 [
@@ -68,7 +68,7 @@ export class PixelLoader {
                     [1, 1, 1, 1, 1, 1, 1, 1],
                     [0, 0, 1, 0, 0, 1, 0, 0],
                     [0, 1, 0, 1, 1, 0, 1, 0],
-                    [1, 0, 0, 0, 0, 0, 0, 1]
+                    [1, 0, 0, 0, 0, 0, 0, 1],
                 ],
                 [
                     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -78,9 +78,9 @@ export class PixelLoader {
                     [1, 1, 1, 1, 1, 1, 1, 1],
                     [0, 0, 1, 0, 0, 1, 0, 0],
                     [0, 1, 0, 1, 1, 0, 1, 0],
-                    [0, 1, 0, 0, 0, 0, 1, 0]
-                ]
-            ]
+                    [0, 1, 0, 0, 0, 0, 1, 0],
+                ],
+            ],
         };
 
         this.init();
@@ -190,8 +190,8 @@ export class PixelLoader {
         const currentFrames = this.frames[this.type] || this.frames.idle;
         const frameData = currentFrames[this.frame];
 
-        frameData.forEach(row => {
-            row.forEach(pixel => {
+        frameData.forEach((row) => {
+            row.forEach((pixel) => {
                 const div = document.createElement('div');
                 div.className = `pixel ${pixel ? `c-${pixel}` : ''}`;
                 grid.appendChild(div);

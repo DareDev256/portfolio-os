@@ -20,18 +20,46 @@ export const CommandPalette = {
     },
 
     buildCommands() {
-        const desktopCmds = Desktop.DESKTOP_ITEMS.map(item => ({
+        const desktopCmds = Desktop.DESKTOP_ITEMS.map((item) => ({
             id: item.id,
-            label: item.label.replace(/_/g, ' ').replace('.exe', '').replace('.ai', '').replace('.mp4', ''),
+            label: item.label
+                .replace(/_/g, ' ')
+                .replace('.exe', '')
+                .replace('.ai', '')
+                .replace('.mp4', ''),
             hint: 'Open',
             color: item.color,
             action: item.action,
         }));
         const systemCmds = [
-            { id: 'sys-theme', label: 'Toggle Theme', hint: 'System', color: '#00f0ff', action: () => State.toggleTheme() },
-            { id: 'sys-cursor', label: 'Toggle Cursor Trail', hint: 'System', color: '#aa00ff', action: () => State.toggleCursorTrail() },
-            { id: 'sys-sound', label: 'Toggle Sound', hint: 'System', color: '#00ff88', action: () => State.toggleSound() },
-            { id: 'sys-interactions', label: 'Toggle Interactions', hint: 'System', color: '#ff00aa', action: () => State.toggleInteractions() },
+            {
+                id: 'sys-theme',
+                label: 'Toggle Theme',
+                hint: 'System',
+                color: '#00f0ff',
+                action: () => State.toggleTheme(),
+            },
+            {
+                id: 'sys-cursor',
+                label: 'Toggle Cursor Trail',
+                hint: 'System',
+                color: '#aa00ff',
+                action: () => State.toggleCursorTrail(),
+            },
+            {
+                id: 'sys-sound',
+                label: 'Toggle Sound',
+                hint: 'System',
+                color: '#00ff88',
+                action: () => State.toggleSound(),
+            },
+            {
+                id: 'sys-interactions',
+                label: 'Toggle Interactions',
+                hint: 'System',
+                color: '#ff00aa',
+                action: () => State.toggleInteractions(),
+            },
         ];
         this.commands = [...desktopCmds, ...systemCmds];
     },
@@ -78,12 +106,23 @@ export const CommandPalette = {
 
         input.addEventListener('input', () => this.filterAndRender());
         input.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown') { e.preventDefault(); this.moveSelection(1); }
-            else if (e.key === 'ArrowUp') { e.preventDefault(); this.moveSelection(-1); }
-            else if (e.key === 'Enter') { e.preventDefault(); this.executeSelected(); }
-            else if (e.key === 'Escape') { e.preventDefault(); this.close(); }
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                this.moveSelection(1);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                this.moveSelection(-1);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                this.executeSelected();
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                this.close();
+            }
         });
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) this.close(); });
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) this.close();
+        });
     },
 
     bindGlobalShortcut() {
@@ -116,7 +155,7 @@ export const CommandPalette = {
     getFiltered() {
         const query = this.input.value.toLowerCase().trim();
         return query
-            ? this.commands.filter(cmd => cmd.label.toLowerCase().includes(query))
+            ? this.commands.filter((cmd) => cmd.label.toLowerCase().includes(query))
             : this.commands;
     },
 
@@ -152,8 +191,14 @@ export const CommandPalette = {
             hint.textContent = cmd.hint;
 
             li.append(dot, label, hint);
-            li.addEventListener('click', () => { this.selectedIndex = i; this.executeSelected(); });
-            li.addEventListener('mouseenter', () => { this.selectedIndex = i; this.highlightSelected(); });
+            li.addEventListener('click', () => {
+                this.selectedIndex = i;
+                this.executeSelected();
+            });
+            li.addEventListener('mouseenter', () => {
+                this.selectedIndex = i;
+                this.highlightSelected();
+            });
             this.list.appendChild(li);
         });
     },
@@ -167,12 +212,16 @@ export const CommandPalette = {
     },
 
     highlightSelected() {
-        this.list.querySelectorAll('.cmd-palette-item').forEach((el, i) =>
-            el.classList.toggle('selected', i === this.selectedIndex));
+        this.list
+            .querySelectorAll('.cmd-palette-item')
+            .forEach((el, i) => el.classList.toggle('selected', i === this.selectedIndex));
     },
 
     executeSelected() {
         const cmd = this.getFiltered()[this.selectedIndex];
-        if (cmd) { this.close(); cmd.action(); }
+        if (cmd) {
+            this.close();
+            cmd.action();
+        }
     },
 };

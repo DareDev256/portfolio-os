@@ -6,10 +6,10 @@
  * magnification effect. Uses CSS transforms for GPU-accelerated rendering.
  */
 
-const BASE_SCALE  = 1;
-const MAX_SCALE   = 1.55;
-const SPREAD      = 120;   // px — how far the magnification reaches
-const LIFT_PX     = 14;    // max upward shift at peak magnification
+const BASE_SCALE = 1;
+const MAX_SCALE = 1.55;
+const SPREAD = 120; // px — how far the magnification reaches
+const LIFT_PX = 14; // max upward shift at peak magnification
 
 // σ² for Gaussian: controls the "bell" width
 const SIGMA_SQ = (SPREAD * SPREAD) / 4.5;

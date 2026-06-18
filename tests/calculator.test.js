@@ -15,7 +15,10 @@ const { renderCalculator } = await import('../js/calculator.js');
 function clickKey(container, label) {
     const buttons = container.querySelectorAll('button');
     for (const btn of buttons) {
-        if (btn.textContent === label) { btn.click(); return; }
+        if (btn.textContent === label) {
+            btn.click();
+            return;
+        }
     }
     throw new Error(`Key "${label}" not found`);
 }

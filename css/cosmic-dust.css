@@ -11,5 +11,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .cosmic-dust-canvas { display: none; }
+    .cosmic-dust-canvas {
+        display: none;
+    }
 }

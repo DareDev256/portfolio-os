@@ -119,9 +119,10 @@ export function render(container) {
 
         const hint = document.createElement('span');
         hint.className = 'trophy-footer-hint';
-        hint.textContent = percent === 100
-            ? 'All achievements unlocked. You are an absolute legend.'
-            : 'Explore the desktop to unlock achievements.';
+        hint.textContent =
+            percent === 100
+                ? 'All achievements unlocked. You are an absolute legend.'
+                : 'Explore the desktop to unlock achievements.';
 
         const resetBtn = document.createElement('button');
         resetBtn.className = 'trophy-reset-btn';

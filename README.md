@@ -70,7 +70,7 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 - **Glitch Text** — Hover over any window title and watch controlled chromatic aberration fire: amethyst and gold ghost layers slice through the text via `clip-path` insets, shifting left/right in stepped keyframes before resolving cleanly. MutationObserver auto-wires new windows, keeps `data-text` synced on breadcrumb navigation. Pure CSS animation, JS only for attribute wiring. Respects `prefers-reduced-motion`.
 - **Spectral Echo** — Window materialization burst. When a window opens, a gold border outline expands outward from the window bounds with amethyst corner crosshairs and a scanning light band, then fades — like a holographic interface powering up in Stark's lab. Complements the glitch-close animation symmetrically (open = energy burst, close = glitch disintegration). MutationObserver auto-wires to all windows. One-shot CSS animation, single disposable div, zero JS overhead after spawn. Respects `prefers-reduced-motion`.
 - **Phantom Reticle** — A spring-physics HUD targeting reticle that follows the cursor with elastic easing. A dashed gold ring with crosshairs smoothly tracks movement, then "locks on" to interactive elements (dock items, icons, buttons) by snapping to their center, scaling proportionally, and shifting from gold to amethyst. Clicks trigger an expanding pulse ring. DOM-light (5 elements), GPU-composited with `mix-blend-mode: screen`. Respects `prefers-reduced-motion`.
-- **Cipher Decode** — Code-viewer panels don't just appear — they *materialize*. When a `.cv-panel` scrolls into view, every syntax token scrambles through hex/glyph noise before resolving left-to-right in a wavefront pattern, while a gold scan line sweeps across the code block. Characters flash gold on resolve before settling to their syntax color. IntersectionObserver-triggered, MutationObserver auto-wires dynamically added panels. Respects `prefers-reduced-motion`.
+- **Cipher Decode** — Code-viewer panels don't just appear — they _materialize_. When a `.cv-panel` scrolls into view, every syntax token scrambles through hex/glyph noise before resolving left-to-right in a wavefront pattern, while a gold scan line sweeps across the code block. Characters flash gold on resolve before settling to their syntax color. IntersectionObserver-triggered, MutationObserver auto-wires dynamically added panels. Respects `prefers-reduced-motion`.
 - **Neural Link** — Hover over a desktop icon and watch luminous energy lines trace to its nearest neighbors — like neural pathways firing in a cybernetic brain. Lines draw themselves with a gold→amethyst gradient using `stroke-dashoffset` animation, glow with dual drop-shadow halos (gold + amethyst), and fade smoothly on hover end. SVG overlay layer, MutationObserver for dynamic icons. Respects `prefers-reduced-motion`.
 - **Pulse Grid** — A reactive ambient floor grid overlays the desktop surface. Faint geometric lines become visible as the cursor approaches — nearby cells illuminate with a gold→amethyst radial glow using quadratic distance falloff. Like walking through Stark's lab with a light-up floor. Canvas-based (zero layout thrash), redraws only on cursor movement via single `requestAnimationFrame`. Pauses when tab hidden. Desktop-only, respects `prefers-reduced-motion`.
 - **Ambient Drift** — Luminous floating orbs drift across the desktop in slow organic paths driven by smoothed noise. 7 gold & amethyst spheres pulse gently in brightness and repel from the cursor — like dust motes catching light in a darkened lab. Canvas-based with additive `screen` blend mode, edge-fade for seamless wrapping. Pauses when tab hidden. Desktop-only, respects `prefers-reduced-motion`.
@@ -87,29 +87,29 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 ### Desktop Icons (21)
 
-| Icon | Type | What It Does |
-|------|------|-------------|
-| **ABOUT_ME.exe** | Window | Bio, role, location, color-coded skills grid |
-| **RESUME** | Window | PDF viewer |
-| **CONNECT** | Window | Contact form with validation |
-| **LINKEDIN** | External | Opens LinkedIn profile |
-| **SKILLS_MATRIX** | Window | Interactive skills visualization |
-| **GITHUB_OPS** | Window | Live GitHub API integration |
-| **PORTFOLIO** | Window | Curated 5-project featured showcase with tech badges, live demo links, and rich cards |
-| **APPLICATIONS** | Window | 33 real projects across 7 categories with DEPLOYED/SOURCE badges, Lab Notes click-to-reveal diagnostics, and classified dossier declassification reveals (scan-line sweep + ACCESS GRANTED stamp). Top category surfaces hackathon submissions and other selected credentials. |
-| **DEV_TERMINAL** | Window | Fake terminal with 18 sass commands (`neofetch`, `cowsay`, `matrix`...) |
-| **Vibe_Coder.exe** | External | Browser-based game — deployed project link |
-| **IMG_GEN.ai** | External | AI image generation tool — deployed project link |
-| **TYPEMASTER** | External | Typing speed game — deployed project link |
-| **SHOWCASE.mp4** | Lightbox | Featured video showcase |
-| **MUSIC_VIDEOS** | External | Music video portfolio |
-| **SETTINGS** | Window | Theme, wallpaper, sound, cursor trail toggles |
-| **NOTES** | Window | Sticky notes with 5 color themes, localStorage persistence, auto-save |
-| **FOCUS_TIMER** | Window | Pomodoro timer with canvas ring, 3 presets (25/50/90 min), session stats |
-| **CALC.exe** | Window | Cyberpunk calculator with keyboard input, expression chaining, glass UI |
-| **WEATHER** | Window | Live weather with geolocation, current conditions, 3-day forecast via Open-Meteo |
-| **SYS_MONITOR** | Window | Live FPS graph, heap usage, DOM count, network info, uptime |
-| **TROPHIES.exe** | Window | Achievement system — 10 unlockable trophies for exploring the OS (explorer, speed demon, night owl, completionist...) |
+| Icon               | Type     | What It Does                                                                                                                                                                                                                                                                   |
+| ------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **ABOUT_ME.exe**   | Window   | Bio, role, location, color-coded skills grid                                                                                                                                                                                                                                   |
+| **RESUME**         | Window   | PDF viewer                                                                                                                                                                                                                                                                     |
+| **CONNECT**        | Window   | Contact form with validation                                                                                                                                                                                                                                                   |
+| **LINKEDIN**       | External | Opens LinkedIn profile                                                                                                                                                                                                                                                         |
+| **SKILLS_MATRIX**  | Window   | Interactive skills visualization                                                                                                                                                                                                                                               |
+| **GITHUB_OPS**     | Window   | Live GitHub API integration                                                                                                                                                                                                                                                    |
+| **PORTFOLIO**      | Window   | Curated 5-project featured showcase with tech badges, live demo links, and rich cards                                                                                                                                                                                          |
+| **APPLICATIONS**   | Window   | 33 real projects across 7 categories with DEPLOYED/SOURCE badges, Lab Notes click-to-reveal diagnostics, and classified dossier declassification reveals (scan-line sweep + ACCESS GRANTED stamp). Top category surfaces hackathon submissions and other selected credentials. |
+| **DEV_TERMINAL**   | Window   | Fake terminal with 18 sass commands (`neofetch`, `cowsay`, `matrix`...)                                                                                                                                                                                                        |
+| **Vibe_Coder.exe** | External | Browser-based game — deployed project link                                                                                                                                                                                                                                     |
+| **IMG_GEN.ai**     | External | AI image generation tool — deployed project link                                                                                                                                                                                                                               |
+| **TYPEMASTER**     | External | Typing speed game — deployed project link                                                                                                                                                                                                                                      |
+| **SHOWCASE.mp4**   | Lightbox | Featured video showcase                                                                                                                                                                                                                                                        |
+| **MUSIC_VIDEOS**   | External | Music video portfolio                                                                                                                                                                                                                                                          |
+| **SETTINGS**       | Window   | Theme, wallpaper, sound, cursor trail toggles                                                                                                                                                                                                                                  |
+| **NOTES**          | Window   | Sticky notes with 5 color themes, localStorage persistence, auto-save                                                                                                                                                                                                          |
+| **FOCUS_TIMER**    | Window   | Pomodoro timer with canvas ring, 3 presets (25/50/90 min), session stats                                                                                                                                                                                                       |
+| **CALC.exe**       | Window   | Cyberpunk calculator with keyboard input, expression chaining, glass UI                                                                                                                                                                                                        |
+| **WEATHER**        | Window   | Live weather with geolocation, current conditions, 3-day forecast via Open-Meteo                                                                                                                                                                                               |
+| **SYS_MONITOR**    | Window   | Live FPS graph, heap usage, DOM count, network info, uptime                                                                                                                                                                                                                    |
+| **TROPHIES.exe**   | Window   | Achievement system — 10 unlockable trophies for exploring the OS (explorer, speed demon, night owl, completionist...)                                                                                                                                                          |
 
 ### Security (Hardened Across v3.1–v3.57.2)
 
@@ -161,29 +161,29 @@ Open `http://localhost:5173`. Click the lock screen to enter.
 
 ### Keyboard Shortcuts
 
-| Shortcut | Action |
-|----------|--------|
-| `?` | Show keyboard shortcuts overlay |
-| `Cmd+K` / `Ctrl+K` | Open command palette |
-| `ESC` | Close active overlay (priority: modal > lightbox > tour > window) |
-| `←` `→` | Navigate lightbox images |
-| `Tab` / `Shift+Tab` | Cycle focus within trapped overlays |
-| `↑↓` `Enter` | Navigate and select in command palette |
-| `Ctrl+Shift+V` | System info easter egg |
-| `↑↑↓↓←→←→BA` | Konami code easter egg |
-| Triple-click desktop | Glitch pulse effect |
-| Type `418` | I'm a teapot |
+| Shortcut             | Action                                                            |
+| -------------------- | ----------------------------------------------------------------- |
+| `?`                  | Show keyboard shortcuts overlay                                   |
+| `Cmd+K` / `Ctrl+K`   | Open command palette                                              |
+| `ESC`                | Close active overlay (priority: modal > lightbox > tour > window) |
+| `←` `→`              | Navigate lightbox images                                          |
+| `Tab` / `Shift+Tab`  | Cycle focus within trapped overlays                               |
+| `↑↓` `Enter`         | Navigate and select in command palette                            |
+| `Ctrl+Shift+V`       | System info easter egg                                            |
+| `↑↑↓↓←→←→BA`         | Konami code easter egg                                            |
+| Triple-click desktop | Glitch pulse effect                                               |
+| Type `418`           | I'm a teapot                                                      |
 
 ## Project Health
 
-| Metric | Value |
-|--------|-------|
-| **Test Coverage** | 607 tests across 33 files (vitest + jsdom) |
-| **Security** | DOMPurify on all innerHTML, 10 HTTP headers, CSP, SRI |
+| Metric            | Value                                                     |
+| ----------------- | --------------------------------------------------------- |
+| **Test Coverage** | 607 tests across 33 files (vitest + jsdom)                |
+| **Security**      | DOMPurify on all innerHTML, 10 HTTP headers, CSP, SRI     |
 | **Accessibility** | WCAG focus trapping, aria-live, skip-link, reduced-motion |
-| **Performance** | Lazy-loaded modules, RAF pausing, 30fps-throttled FX |
-| **Lint** | 0 ESLint warnings, Prettier-formatted |
-| **Bundle** | 132 kB main chunk, code-split lazy modules |
+| **Performance**   | Lazy-loaded modules, RAF pausing, 30fps-throttled FX      |
+| **Lint**          | 0 ESLint warnings, Prettier-formatted                     |
+| **Bundle**        | 132 kB main chunk, code-split lazy modules                |
 
 ## Deep Dive: 3D Icon Tilt (`icon-tilt.js`)
 
@@ -203,19 +203,19 @@ Every icon tracks its center relative to the viewport. On `mousemove`, the curso
 
 These normalized values drive two things:
 
-1. **Tilt angles** — `rotateY(nx × 18°)` and `rotateX(−ny × 18°)`. The Y-axis tracks horizontal movement, X-axis tracks vertical (inverted so the icon tilts *toward* the cursor, not away).
-2. **Light bloom position** — The `::before` pseudo-element renders a `radial-gradient` spotlight. Its center shifts *opposite* to the tilt (`50% + n × 30%`), simulating overhead lighting — when the icon tilts left, the light appears to come from the right. This sells the 3D illusion.
+1. **Tilt angles** — `rotateY(nx × 18°)` and `rotateX(−ny × 18°)`. The Y-axis tracks horizontal movement, X-axis tracks vertical (inverted so the icon tilts _toward_ the cursor, not away).
+2. **Light bloom position** — The `::before` pseudo-element renders a `radial-gradient` spotlight. Its center shifts _opposite_ to the tilt (`50% + n × 30%`), simulating overhead lighting — when the icon tilts left, the light appears to come from the right. This sells the 3D illusion.
 
 ### CSS Architecture
 
 The JS never touches `transform` directly. Instead it writes four CSS custom properties:
 
-| Property | Default | Range | Purpose |
-|----------|---------|-------|---------|
-| `--tilt-x` | `0deg` | ±18° | X-axis rotation |
-| `--tilt-y` | `0deg` | ±18° | Y-axis rotation |
-| `--bloom-x` | `50%` | 20–80% | Light bloom horizontal |
-| `--bloom-y` | `50%` | 20–80% | Light bloom vertical |
+| Property    | Default | Range  | Purpose                |
+| ----------- | ------- | ------ | ---------------------- |
+| `--tilt-x`  | `0deg`  | ±18°   | X-axis rotation        |
+| `--tilt-y`  | `0deg`  | ±18°   | Y-axis rotation        |
+| `--bloom-x` | `50%`   | 20–80% | Light bloom horizontal |
+| `--bloom-y` | `50%`   | 20–80% | Light bloom vertical   |
 
 CSS consumes them via `transform: perspective(600px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y))` on `.desktop-icon-box`, and `radial-gradient(circle at var(--bloom-x) var(--bloom-y), ...)` on the `::before` pseudo-element. This separation means the effect is entirely CSS-removable — delete the custom properties and the icons fall back to flat, zero-breakage.
 
@@ -232,11 +232,11 @@ The module checks `prefers-reduced-motion: reduce` at init and listens for live 
 
 ### Files
 
-| File | Role |
-|------|------|
-| `js/icon-tilt.js` | Mouse tracking, coordinate math, custom property writes |
+| File                       | Role                                                      |
+| -------------------------- | --------------------------------------------------------- |
+| `js/icon-tilt.js`          | Mouse tracking, coordinate math, custom property writes   |
 | `css/styles.css:1068–1111` | `.desktop-icon-box` transform + `::before` bloom gradient |
-| `css/glass.css:464–465` | Glass system integration (tilt vars in glass transforms) |
+| `css/glass.css:464–465`    | Glass system integration (tilt vars in glass transforms)  |
 
 ---
 
@@ -399,16 +399,16 @@ tests/                              # 607 vitest tests across 33 files
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| **Core** | HTML5, CSS3 (custom properties, glassmorphism), JavaScript ES6 modules |
-| **3D** | Three.js (galaxy background, Mahoraga wheel) |
-| **Security** | DOMPurify 3.0.8 (SRI), 10 Vercel security headers |
-| **Build** | Vite 7.x |
-| **Test** | Vitest 4.x, jsdom |
-| **Lint** | ESLint 9.x, Prettier |
-| **Deploy** | Vercel (SPA routing, security headers) |
-| **Fonts** | Tomorrow, Orbitron, JetBrains Mono (Google Fonts) |
+| Layer        | Technology                                                             |
+| ------------ | ---------------------------------------------------------------------- |
+| **Core**     | HTML5, CSS3 (custom properties, glassmorphism), JavaScript ES6 modules |
+| **3D**       | Three.js (galaxy background, Mahoraga wheel)                           |
+| **Security** | DOMPurify 3.0.8 (SRI), 10 Vercel security headers                      |
+| **Build**    | Vite 7.x                                                               |
+| **Test**     | Vitest 4.x, jsdom                                                      |
+| **Lint**     | ESLint 9.x, Prettier                                                   |
+| **Deploy**   | Vercel (SPA routing, security headers)                                 |
+| **Fonts**    | Tomorrow, Orbitron, JetBrains Mono (Google Fonts)                      |
 
 **Zero framework dependencies.** Vanilla JavaScript core — Three.js for 3D, DOMPurify for XSS protection.
 
@@ -450,6 +450,7 @@ vercel --prod
 ```
 
 The project ships with a `vercel.json` that configures:
+
 - **SPA rewrites** — all routes fall through to `index.html` for client-side routing
 - **12 security headers** — CSP, HSTS (2-year preload), X-Frame-Options, COOP, COEP, CORP, Permissions-Policy, DNS prefetch control, download options, and cross-domain policies
 - **Service Worker cache control** — `no-cache` on `sw.js` to prevent stale worker versions
@@ -476,18 +477,18 @@ npm run preview    # Serve dist/ on localhost:4173
 
 ## Documentation
 
-| Document | Description |
-|----------|-------------|
-| [DOCUMENTATION.md](DOCUMENTATION.md) | Complete user guide — 20 desktop apps, keyboard shortcuts, customization, deployment |
-| [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) | No-code content editor (console-only) |
-| [EASTER_EGGS_GUIDE.md](EASTER_EGGS_GUIDE.md) | All hidden easter eggs and secret interactions |
-| [CHANGELOG.md](CHANGELOG.md) | Full version history from v1.0 to present |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture — all 76 modules, dependency graph, init sequence |
-| [docs/GLOSSARY.md](docs/GLOSSARY.md) | Terminology and codebase glossary |
-| [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Common issues and solutions |
-| [docs/anthropic-claude-code-marketing-ops.md](docs/anthropic-claude-code-marketing-ops.md) | Case study: Anthropic's marketing team using Claude Code for ad ops |
-| [docs/research-bloomberg-terminal-analogy.md](docs/research-bloomberg-terminal-analogy.md) | Bloomberg Terminal analogy for AI-assisted development |
-| [docs/research-cursor-poach-boomerang.md](docs/research-cursor-poach-boomerang.md) | Cursor poached Claude Code's leads; Anthropic hired them back in 14 days |
+| Document                                                                                   | Description                                                                          |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| [DOCUMENTATION.md](DOCUMENTATION.md)                                                       | Complete user guide — 20 desktop apps, keyboard shortcuts, customization, deployment |
+| [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md)                                       | No-code content editor (console-only)                                                |
+| [EASTER_EGGS_GUIDE.md](EASTER_EGGS_GUIDE.md)                                               | All hidden easter eggs and secret interactions                                       |
+| [CHANGELOG.md](CHANGELOG.md)                                                               | Full version history from v1.0 to present                                            |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)                                               | System architecture — all 76 modules, dependency graph, init sequence                |
+| [docs/GLOSSARY.md](docs/GLOSSARY.md)                                                       | Terminology and codebase glossary                                                    |
+| [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)                                         | Common issues and solutions                                                          |
+| [docs/anthropic-claude-code-marketing-ops.md](docs/anthropic-claude-code-marketing-ops.md) | Case study: Anthropic's marketing team using Claude Code for ad ops                  |
+| [docs/research-bloomberg-terminal-analogy.md](docs/research-bloomberg-terminal-analogy.md) | Bloomberg Terminal analogy for AI-assisted development                               |
+| [docs/research-cursor-poach-boomerang.md](docs/research-cursor-poach-boomerang.md)         | Cursor poached Claude Code's leads; Anthropic hired them back in 14 days             |
 
 ## License
 

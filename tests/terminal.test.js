@@ -24,18 +24,24 @@ function parseCommand(cmdRaw) {
 
 function resolveCommand(cmd, args) {
     switch (cmd) {
-        case 'help':    return { action: 'help' };
-        case 'clear':   return { action: 'clear' };
-        case 'whoami':  return { action: 'print', text: 'root (just kidding, you are a visitor)' };
-        case 'ls':      return { action: 'print', text: Object.keys(fileSystem).join('  ') };
+        case 'help':
+            return { action: 'help' };
+        case 'clear':
+            return { action: 'clear' };
+        case 'whoami':
+            return { action: 'print', text: 'root (just kidding, you are a visitor)' };
+        case 'ls':
+            return { action: 'print', text: Object.keys(fileSystem).join('  ') };
         case 'cat':
             if (!args[0]) return { action: 'print', text: 'Usage: cat [filename]' };
             if (fileSystem[args[0]]) return { action: 'print', text: fileSystem[args[0]] };
             return { action: 'error', text: `cat: ${args[0]}: No such file or directory` };
         case 'sys':
             return args[0] === 'scan' ? { action: 'scan' } : { action: 'sysinfo' };
-        case 'deploy':  return { action: 'deploy' };
-        default:        return { action: 'unknown', text: `Command not found: ${cmd}` };
+        case 'deploy':
+            return { action: 'deploy' };
+        default:
+            return { action: 'unknown', text: `Command not found: ${cmd}` };
     }
 }
 
@@ -44,18 +50,26 @@ function createHistory() {
     const history = [];
     let index = -1;
     return {
-        push(cmd) { history.push(cmd); index = -1; },
+        push(cmd) {
+            history.push(cmd);
+            index = -1;
+        },
         up() {
             if (history.length === 0) return '';
             index = Math.min(index + 1, history.length - 1);
             return history[history.length - 1 - index];
         },
         down() {
-            if (index > 0) { index--; return history[history.length - 1 - index]; }
+            if (index > 0) {
+                index--;
+                return history[history.length - 1 - index];
+            }
             index = -1;
             return '';
         },
-        get index() { return index; },
+        get index() {
+            return index;
+        },
     };
 }
 

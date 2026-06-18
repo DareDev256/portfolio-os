@@ -7,12 +7,19 @@
 }
 
 @keyframes arc-orbit {
-    to { --arc-angle: 360deg; }
+    to {
+        --arc-angle: 360deg;
+    }
 }
 
 @keyframes arc-pulse {
-    0%, 100% { opacity: 0.5; }
-    50%      { opacity: 1; }
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
 }
 
 .window.active .window-titlebar::before {
@@ -76,18 +83,36 @@
     animation: arc-pulse 2.4s ease-in-out infinite;
 }
 
-.arc-reactor-node--tl { top: -2px;    left: -2px; }
-.arc-reactor-node--tr { top: -2px;    right: -2px; }
-.arc-reactor-node--bl { bottom: -2px; left: -2px; }
-.arc-reactor-node--br { bottom: -2px; right: -2px; }
+.arc-reactor-node--tl {
+    top: -2px;
+    left: -2px;
+}
+.arc-reactor-node--tr {
+    top: -2px;
+    right: -2px;
+}
+.arc-reactor-node--bl {
+    bottom: -2px;
+    left: -2px;
+}
+.arc-reactor-node--br {
+    bottom: -2px;
+    right: -2px;
+}
 
 .window.active.arc-reactor-on .arc-reactor-node {
     opacity: 1;
 }
 
-.arc-reactor-node--tr { animation-delay: 0.6s; }
-.arc-reactor-node--bl { animation-delay: 1.2s; }
-.arc-reactor-node--br { animation-delay: 1.8s; }
+.arc-reactor-node--tr {
+    animation-delay: 0.6s;
+}
+.arc-reactor-node--bl {
+    animation-delay: 1.2s;
+}
+.arc-reactor-node--br {
+    animation-delay: 1.8s;
+}
 
 @media (prefers-reduced-motion: reduce) {
     .window.active .window-titlebar::before {

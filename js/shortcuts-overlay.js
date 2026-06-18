@@ -16,28 +16,40 @@ export const ShortcutsOverlay = {
         const mod = isMac ? '⌘' : 'Alt';
 
         const sections = [
-            { title: 'Navigation', color: '#00f0ff', shortcuts: [
-                { keys: [isMac ? '⌘' : 'Ctrl', 'K'], desc: 'Open command palette' },
-                { keys: ['Esc'], desc: 'Close active overlay' },
-                { keys: ['↑', '↓'], desc: 'Navigate palette / menus' },
-                { keys: ['Enter'], desc: 'Execute selected command' },
-                { keys: ['←', '→'], desc: 'Navigate lightbox images' },
-                { keys: ['Tab'], desc: 'Cycle focus in overlays' },
-            ]},
-            { title: 'System Toggles', color: '#b388ff', shortcuts: [
-                { keys: [mod, 'C'], desc: 'Toggle cursor trail' },
-                { keys: [mod, 'S'], desc: 'Toggle sound' },
-                { keys: [mod, 'I'], desc: 'Toggle interactions' },
-                { keys: [mod, 'P'], desc: 'Open control panel' },
-            ]},
-            { title: 'Easter Eggs', color: '#ff6e40', shortcuts: [
-                { keys: ['↑↑↓↓←→←→BA'], desc: 'Konami code — PlayStation mode' },
-                { keys: ['Ctrl', 'Shift', 'V'], desc: 'System info popup' },
-                { keys: ['418'], desc: 'I\'m a teapot' },
-                { keys: ['404'], desc: 'Not found... or is it?' },
-                { keys: ['3×click desktop'], desc: 'Glitch pulse effect' },
-                { keys: ['10× rapid click'], desc: 'Decaf suggestion' },
-            ]},
+            {
+                title: 'Navigation',
+                color: '#00f0ff',
+                shortcuts: [
+                    { keys: [isMac ? '⌘' : 'Ctrl', 'K'], desc: 'Open command palette' },
+                    { keys: ['Esc'], desc: 'Close active overlay' },
+                    { keys: ['↑', '↓'], desc: 'Navigate palette / menus' },
+                    { keys: ['Enter'], desc: 'Execute selected command' },
+                    { keys: ['←', '→'], desc: 'Navigate lightbox images' },
+                    { keys: ['Tab'], desc: 'Cycle focus in overlays' },
+                ],
+            },
+            {
+                title: 'System Toggles',
+                color: '#b388ff',
+                shortcuts: [
+                    { keys: [mod, 'C'], desc: 'Toggle cursor trail' },
+                    { keys: [mod, 'S'], desc: 'Toggle sound' },
+                    { keys: [mod, 'I'], desc: 'Toggle interactions' },
+                    { keys: [mod, 'P'], desc: 'Open control panel' },
+                ],
+            },
+            {
+                title: 'Easter Eggs',
+                color: '#ff6e40',
+                shortcuts: [
+                    { keys: ['↑↑↓↓←→←→BA'], desc: 'Konami code — PlayStation mode' },
+                    { keys: ['Ctrl', 'Shift', 'V'], desc: 'System info popup' },
+                    { keys: ['418'], desc: "I'm a teapot" },
+                    { keys: ['404'], desc: 'Not found... or is it?' },
+                    { keys: ['3×click desktop'], desc: 'Glitch pulse effect' },
+                    { keys: ['10× rapid click'], desc: 'Decaf suggestion' },
+                ],
+            },
         ];
 
         const overlay = document.createElement('div');
@@ -94,15 +106,24 @@ export const ShortcutsOverlay = {
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
         this.overlay = overlay;
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) this.close(); });
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) this.close();
+        });
     },
 
     bindShortcut() {
         document.addEventListener('keydown', (e) => {
             const tag = e.target.tagName;
             if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable) return;
-            if (e.key === '?') { e.preventDefault(); this.visible ? this.close() : this.open(); }
-            if (e.key === 'Escape' && this.visible) { e.preventDefault(); e.stopPropagation(); this.close(); }
+            if (e.key === '?') {
+                e.preventDefault();
+                this.visible ? this.close() : this.open();
+            }
+            if (e.key === 'Escape' && this.visible) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.close();
+            }
         });
     },
 

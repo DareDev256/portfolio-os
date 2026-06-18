@@ -28,7 +28,7 @@ describe('CommandPalette', () => {
     beforeEach(() => {
         vi.clearAllMocks();
         // Remove any previous DOM
-        document.querySelectorAll('.cmd-palette-overlay').forEach(el => el.remove());
+        document.querySelectorAll('.cmd-palette-overlay').forEach((el) => el.remove());
         // Reset internal state
         CommandPalette.overlay = null;
         CommandPalette.input = null;
@@ -41,7 +41,7 @@ describe('CommandPalette', () => {
     });
 
     afterEach(() => {
-        document.querySelectorAll('.cmd-palette-overlay').forEach(el => el.remove());
+        document.querySelectorAll('.cmd-palette-overlay').forEach((el) => el.remove());
     });
 
     describe('init + buildCommands', () => {
@@ -57,7 +57,7 @@ describe('CommandPalette', () => {
         });
 
         it('strips underscores and file extensions from labels', () => {
-            const labels = CommandPalette.commands.map(c => c.label);
+            const labels = CommandPalette.commands.map((c) => c.label);
             expect(labels).toContain('ABOUT ME');
             expect(labels).toContain('DEV TERMINAL');
             expect(labels).not.toContain('ABOUT_ME.exe');

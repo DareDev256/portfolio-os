@@ -18,7 +18,8 @@ export class MahoragaWheel3D {
         this.adaptationTimer = 0;
         this.prefersReducedMotion = prefersReducedMotion();
         this._lastRenderTime = 0;
-        this._isMobile = ('ontouchstart' in window || navigator.maxTouchPoints > 0) && window.innerWidth <= 768;
+        this._isMobile =
+            ('ontouchstart' in window || navigator.maxTouchPoints > 0) && window.innerWidth <= 768;
 
         this.init();
     }
@@ -36,7 +37,7 @@ export class MahoragaWheel3D {
         this.renderer = new THREE.WebGLRenderer({
             antialias: !this._isMobile,
             alpha: true,
-            powerPreference: this._isMobile ? 'low-power' : 'high-performance'
+            powerPreference: this._isMobile ? 'low-power' : 'high-performance',
         });
         this.renderer.setSize(this.size, this.size);
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, this._isMobile ? 1.5 : 2));
@@ -81,7 +82,7 @@ export class MahoragaWheel3D {
             roughness: 0.2,
             emissive: 0x3f3f46,
             emissiveIntensity: 0.15,
-            side: THREE.DoubleSide
+            side: THREE.DoubleSide,
         });
 
         const spokeMat = new THREE.MeshStandardMaterial({
@@ -89,7 +90,7 @@ export class MahoragaWheel3D {
             metalness: 0.88,
             roughness: 0.25,
             emissive: 0x2c2c35,
-            emissiveIntensity: 0.12
+            emissiveIntensity: 0.12,
         });
 
         const orbMat = new THREE.MeshStandardMaterial({
@@ -98,7 +99,7 @@ export class MahoragaWheel3D {
             roughness: 0.12,
             emissive: 0x52525b,
             emissiveIntensity: 0.2,
-            envMapIntensity: 1.5
+            envMapIntensity: 1.5,
         });
 
         const hubMat = new THREE.MeshStandardMaterial({
@@ -106,14 +107,11 @@ export class MahoragaWheel3D {
             metalness: 0.92,
             roughness: 0.18,
             emissive: 0x44444d,
-            emissiveIntensity: 0.18
+            emissiveIntensity: 0.18,
         });
 
         // --- Outer Ring (Torus) — reduced segments ---
-        const outerRing = new THREE.Mesh(
-            new THREE.TorusGeometry(2.0, 0.08, 12, 48),
-            ringMat
-        );
+        const outerRing = new THREE.Mesh(new THREE.TorusGeometry(2.0, 0.08, 12, 48), ringMat);
         this.wheelGroup.add(outerRing);
 
         // Inner ring
@@ -166,25 +164,16 @@ export class MahoragaWheel3D {
 
         // --- Central Hub --- (reduced segments)
         // Outer hub disc
-        const hubOuter = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.55, 0.55, 0.12, 24),
-            hubMat
-        );
+        const hubOuter = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.12, 24), hubMat);
         hubOuter.rotation.x = Math.PI / 2;
         this.wheelGroup.add(hubOuter);
 
         // Inner hub ring
-        const hubRing = new THREE.Mesh(
-            new THREE.TorusGeometry(0.4, 0.03, 8, 24),
-            ringMat
-        );
+        const hubRing = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.03, 8, 24), ringMat);
         this.wheelGroup.add(hubRing);
 
         // Core sphere
-        const core = new THREE.Mesh(
-            new THREE.SphereGeometry(0.2, 16, 16),
-            orbMat.clone()
-        );
+        const core = new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 16), orbMat.clone());
         core.material.emissiveIntensity = 0.35;
         this.wheelGroup.add(core);
 
@@ -192,16 +181,10 @@ export class MahoragaWheel3D {
         const crossMat = new THREE.MeshBasicMaterial({
             color: 0xfafafa,
             transparent: true,
-            opacity: 0.6
+            opacity: 0.6,
         });
-        const crossH = new THREE.Mesh(
-            new THREE.BoxGeometry(0.6, 0.025, 0.025),
-            crossMat
-        );
-        const crossV = new THREE.Mesh(
-            new THREE.BoxGeometry(0.025, 0.6, 0.025),
-            crossMat
-        );
+        const crossH = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.025, 0.025), crossMat);
+        const crossV = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.6, 0.025), crossMat);
         this.wheelGroup.add(crossH);
         this.wheelGroup.add(crossV);
     }
@@ -241,7 +224,7 @@ export class MahoragaWheel3D {
     animate() {
         if (!this.isRunning) return;
         this.rafId = requestAnimationFrame(() => this.animate());
-        if (isPageHidden()) return;  // skip frame when hidden
+        if (isPageHidden()) return; // skip frame when hidden
 
         // 60fps on desktop (16ms), 30fps on mobile (32ms)
         const now = performance.now();
@@ -281,11 +264,11 @@ export class MahoragaWheel3D {
     destroy() {
         this.stop();
         this.renderer.dispose();
-        this.scene.traverse(obj => {
+        this.scene.traverse((obj) => {
             if (obj.geometry) obj.geometry.dispose();
             if (obj.material) {
                 if (Array.isArray(obj.material)) {
-                    obj.material.forEach(m => m.dispose());
+                    obj.material.forEach((m) => m.dispose());
                 } else {
                     obj.material.dispose();
                 }

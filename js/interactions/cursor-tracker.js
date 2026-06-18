@@ -46,9 +46,15 @@ export const CursorTracker = {
         this.boundHandlers.handleMouseLeave = this.handleMouseLeave.bind(this);
 
         // Add event listeners
-        document.addEventListener('mousemove', this.boundHandlers.handleMouseMove, { passive: true });
-        document.addEventListener('mouseenter', this.boundHandlers.handleMouseEnter, { passive: true });
-        document.addEventListener('mouseleave', this.boundHandlers.handleMouseLeave, { passive: true });
+        document.addEventListener('mousemove', this.boundHandlers.handleMouseMove, {
+            passive: true,
+        });
+        document.addEventListener('mouseenter', this.boundHandlers.handleMouseEnter, {
+            passive: true,
+        });
+        document.addEventListener('mouseleave', this.boundHandlers.handleMouseLeave, {
+            passive: true,
+        });
 
         console.log('[CursorTracker] Initialized');
     },
@@ -182,7 +188,7 @@ export const CursorTracker = {
     getProximityToElement(element, maxDistance = 100) {
         const distance = this.getDistanceToElement(element);
         if (distance >= maxDistance) return 0;
-        return 1 - (distance / maxDistance);
+        return 1 - distance / maxDistance;
     },
 
     /**
@@ -201,7 +207,7 @@ export const CursorTracker = {
 
         return {
             x: Math.max(-1, Math.min(1, relX)),
-            y: Math.max(-1, Math.min(1, relY))
+            y: Math.max(-1, Math.min(1, relY)),
         };
     },
 

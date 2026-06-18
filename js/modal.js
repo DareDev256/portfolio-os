@@ -139,5 +139,5 @@ export const Modal = {
 
             setTimeout(() => confirmBtn.focus(), 100);
         });
-    }
+    },
 };

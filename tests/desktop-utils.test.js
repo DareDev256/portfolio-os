@@ -176,7 +176,9 @@ describe('createLazyWindow pattern', () => {
         // Replicate createLazyWindow's closure pattern exactly:
         // cleanup starts null, gets set after dynamic import resolves
         let cleanup = null;
-        const onClose = () => { if (cleanup) cleanup(); };
+        const onClose = () => {
+            if (cleanup) cleanup();
+        };
 
         // Before module loads — close should be safe (no-op)
         onClose();
@@ -192,7 +194,9 @@ describe('createLazyWindow pattern', () => {
 
     it('onClose is safe when module returns no cleanup', () => {
         let cleanup = null;
-        const onClose = () => { if (cleanup) cleanup(); };
+        const onClose = () => {
+            if (cleanup) cleanup();
+        };
 
         // Module didn't return a cleanup function
         cleanup = undefined;

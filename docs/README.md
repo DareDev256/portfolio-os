@@ -55,10 +55,10 @@ Complete documentation for **Passion OS v3.8.2** - a vanilla JavaScript portfoli
 
 ### Research & Analysis (docs/)
 
-| Document                                                                           | Purpose                                   | Audience       | Size       |
-| ---------------------------------------------------------------------------------- | ----------------------------------------- | -------------- | ---------- |
-| [research-bloomberg-terminal-analogy.md](research-bloomberg-terminal-analogy.md)    | Bloomberg Terminal ↔ AI coding tools thesis | Everyone       | ~120 lines |
-| [anthropic-claude-code-marketing-ops.md](anthropic-claude-code-marketing-ops.md)    | Anthropic marketing team case study        | Everyone       | ~80 lines  |
+| Document                                                                         | Purpose                                     | Audience | Size       |
+| -------------------------------------------------------------------------------- | ------------------------------------------- | -------- | ---------- |
+| [research-bloomberg-terminal-analogy.md](research-bloomberg-terminal-analogy.md) | Bloomberg Terminal ↔ AI coding tools thesis | Everyone | ~120 lines |
+| [anthropic-claude-code-marketing-ops.md](anthropic-claude-code-marketing-ops.md) | Anthropic marketing team case study         | Everyone | ~80 lines  |
 
 ### Archive (docs/archive/)
 
@@ -134,13 +134,13 @@ All documentation follows AI-friendly standards:
 
 **Key files for context:**
 
-| File                                     | Contains                              | Primary Use                      |
-| ---------------------------------------- | ------------------------------------- | -------------------------------- |
-| [ARCHITECTURE.md](ARCHITECTURE.md)       | System design, module map, data flow  | Understand codebase structure    |
-| [DOCUMENTATION.md](../DOCUMENTATION.md)  | Usage patterns, customization points  | Help users customize             |
-| [CHANGELOG.md](../CHANGELOG.md)          | Implementation history, code changes  | See what exists and how it works |
-| [GLOSSARY.md](GLOSSARY.md)               | Term definitions, file references     | Standardize vocabulary           |
-| [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Common errors, solutions              | Debug issues                     |
+| File                                     | Contains                             | Primary Use                      |
+| ---------------------------------------- | ------------------------------------ | -------------------------------- |
+| [ARCHITECTURE.md](ARCHITECTURE.md)       | System design, module map, data flow | Understand codebase structure    |
+| [DOCUMENTATION.md](../DOCUMENTATION.md)  | Usage patterns, customization points | Help users customize             |
+| [CHANGELOG.md](../CHANGELOG.md)          | Implementation history, code changes | See what exists and how it works |
+| [GLOSSARY.md](GLOSSARY.md)               | Term definitions, file references    | Standardize vocabulary           |
+| [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Common errors, solutions             | Debug issues                     |
 
 **Code location index:**
 
