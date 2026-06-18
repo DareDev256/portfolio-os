@@ -50,3 +50,4 @@ GIT_PUSH_INSTRUCTIONS.md
 EASTER_EGGS_GUIDE.md
 .vercel
 .env*.local
+coverage/
