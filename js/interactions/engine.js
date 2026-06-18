@@ -63,15 +63,10 @@ export const InteractionEngine = {
 
     async _doInit(startLoop) {
 
-        console.log('[InteractionEngine] Initializing...');
-
         // Check for reduced motion preference — only gates the animation loop,
         // not event-driven modules like easter eggs
         const prefersReducedMotion = this.settings.respectReducedMotion &&
             window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) {
-            console.log('[InteractionEngine] Reduced motion — loop disabled, event-driven features active');
-        }
 
         // Check hardware capabilities (warn but don't block — user preference takes priority)
         if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
@@ -103,7 +98,6 @@ export const InteractionEngine = {
         this._modulesLoaded = true;
         this._initPromise = null;
         this.isEnabled = true;
-        console.log('[InteractionEngine] Module loading complete');
 
         // Start the animation loop only if requested and motion is allowed
         if (startLoop && !prefersReducedMotion) {
@@ -129,8 +123,6 @@ export const InteractionEngine = {
                 () => this.start(),
             );
         }
-
-        console.log('[InteractionEngine] Animation loop started');
     },
 
     /**
@@ -144,8 +136,6 @@ export const InteractionEngine = {
             cancelAnimationFrame(this.rafId);
             this.rafId = null;
         }
-
-        console.log('[InteractionEngine] Animation loop stopped');
     },
 
     /**
@@ -296,8 +286,6 @@ export const InteractionEngine = {
         if (finalConfig.effects.includes('tilt') || finalConfig.effects.includes('magnetic-edges') || finalConfig.effects.includes('ambient-glow')) {
             this.cursorReactive?.registerElement(element, finalConfig);
         }
-
-        console.log('[InteractionEngine] Registered element:', element, finalConfig);
     },
 
     /**
@@ -315,8 +303,6 @@ export const InteractionEngine = {
 
         // Remove from registry
         this.registeredElements.delete(element);
-
-        console.log('[InteractionEngine] Unregistered element:', element);
     },
 
     /**
