@@ -1183,23 +1183,23 @@ export const Desktop = {
             const contentHtml = poster ? '' : '<span style="font-size: 40px; opacity: 0.5;">🎬</span>';
 
             if (mode === 'list') {
-                item.innerHTML = Sanitize.html(`
+                item.innerHTML = `
                     <div class="video-thumb-small" style="${bgStyle}; width: 80px; height: 45px; background-size: cover;">${contentHtml}</div>
                     <div class="video-info">
                         <div class="video-title">${Sanitize.text(video.title)}</div>
                         <div class="video-meta">Video • ${video.url.includes('youtube') ? 'YouTube' : 'Local'}</div>
                     </div>
                     <div class="video-action">▶</div>
-                `);
+                `;
             } else {
-                item.innerHTML = Sanitize.html(`
+                item.innerHTML = `
                     <div class="video-thumb" style="${bgStyle}">
                         ${contentHtml}
                         <div class="video-play-icon">▶</div>
                         <div class="video-duration">--:--</div>
                     </div>
                     <div class="video-title">${Sanitize.text(video.title)}</div>
-                `);
+                `;
 
                 // Load actual duration asynchronously
                 if (!video.url.includes('youtube') && !video.url.includes('vimeo')) {
