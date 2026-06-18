@@ -20,6 +20,24 @@ import { ScrollReveal } from './scroll-reveal.js';
 import { ensureGalaxy } from './galaxy-init.js';
 import { Achievements } from './achievements.js';
 import { Gauntlet } from './gauntlet.js';
+import { inject } from '@vercel/analytics';
+
+/* ── Analytics ─────────────────────────────────────────────────────
+ * Vercel Web Analytics: cookieless, always-on unique-visitor tracking.
+ * GA4: activates only when VITE_GA_ID is set in Vercel env (dormant
+ * until you create the property + paste the G-XXXX id there).        */
+inject();
+const GA_ID = import.meta.env.VITE_GA_ID;
+if (GA_ID) {
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA_ID);
+}
 
 /* ── Keyboard shortcut table ───────────────────────────────────────
  * key → { toggle, label } — looked up on (Cmd|Alt)+key press.     */
