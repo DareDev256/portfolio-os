@@ -622,13 +622,10 @@ export function createThrottledLoop(callback, { isEnabled, minInterval = 33.3 } 
  */
 export function animateCounter(element, target, duration = 1500) {
     let start = 0;
-    let ticks = 0;
-    const totalTicks = duration / 16;
-    const increment = target / totalTicks;
+    const increment = target / (duration / 16);
     const timer = setInterval(() => {
         start += increment;
-        ticks++;
-        if (ticks >= totalTicks) {
+        if (start >= target) {
             element.textContent = target;
             clearInterval(timer);
         } else {
