@@ -129,12 +129,16 @@ export const Sanitize = {
         // eslint-disable-next-line no-control-regex
         const stripped = url.replace(/[\x00-\x1f\x7f]/g, '').trim();
         if (!stripped) return '';
-        // Allow relative paths (start with / or alphanumeric)
-        if (/^\/[\w./-]*$/.test(stripped) || /^[\w][\w./-]*$/.test(stripped)) return stripped;
-        // Allow only http(s) absolute URLs
-        if (/^https?:\/\//i.test(stripped)) return stripped;
-        // Block everything else (javascript:, data:, vbscript:, blob:, etc.)
-        return '';
+        try {
+            const parsed = new URL(stripped, 'http://dummy-base.local');
+            if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+                return '';
+            }
+        } catch (_e) {
+            return '';
+        }
+
+        return stripped.replace(/'/g, '%27').replace(/"/g, '%22').replace(/</g, '%3C').replace(/>/g, '%3E');
     },
 
     /**
