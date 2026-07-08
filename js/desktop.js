@@ -2645,10 +2645,13 @@ export const Desktop = {
         content.className = 'services-content';
 
         const CLIENT_WORK = [
+            { name: 'ShopBayHQ', type: 'Auto Shop SaaS — 3D Holo Lot', url: 'https://app.shopbayhq.com', color: '#dc2626', thumb: '/thumbnails/shopbayhq.jpg' },
             { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff', thumb: '/thumbnails/edsonlegal.jpg' },
             { name: 'BetMetrics.ca', type: 'Sports Analytics', url: 'https://betmetrics.ca', color: '#ff4444', thumb: '/thumbnails/betmetrics.jpg' },
-            { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies.com', color: '#d4a574', thumb: '/thumbnails/musthavefrenchies.jpg' },
+            { name: 'KMONEY — The Vault', type: 'Drill Artist — WebGL', url: 'https://officialkmoney.com', color: '#1db954', thumb: '/thumbnails/kmoney.jpg' },
+            { name: '100BandPlan — The Blueprint', type: 'Drill Artist', url: 'https://100bandplan.com', color: '#3ba7ff', thumb: '/thumbnails/100bandplan.jpg' },
             { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x.com', color: '#ff3366', thumb: '/thumbnails/savv4x.jpg' },
+            { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies.com', color: '#d4a574', thumb: '/thumbnails/musthavefrenchies.jpg' },
             { name: 'The Syren Effect', type: 'Content Creator', url: 'https://syreneffect.com', color: '#aa00ff', thumb: '/thumbnails/syreneffect.jpg' },
         ];
 
@@ -2860,10 +2863,13 @@ export const Desktop = {
      */
     openPortfolio() {
         const CLIENT_WORK = [
+            { name: 'ShopBayHQ', type: 'Auto Shop SaaS — 3D Holo Lot', url: 'https://app.shopbayhq.com', color: '#dc2626' },
             { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff' },
             { name: 'BetMetrics.ca', type: 'Sports Analytics', url: 'https://betmetrics.ca', color: '#ff4444' },
-            { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies.com', color: '#d4a574' },
+            { name: 'KMONEY — The Vault', type: 'Drill Artist — WebGL', url: 'https://officialkmoney.com', color: '#1db954' },
+            { name: '100BandPlan — The Blueprint', type: 'Drill Artist', url: 'https://100bandplan.com', color: '#3ba7ff' },
             { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x.com', color: '#ff3366' },
+            { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies.com', color: '#d4a574' },
             { name: 'The Syren Effect', type: 'Content Creator', url: 'https://syreneffect.com', color: '#aa00ff' },
         ];
 

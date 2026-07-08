@@ -112,6 +112,22 @@
         "repo": "https://github.com/DareDev256/savv4x-website"
     },
     {
+        "title": "KMONEY — The Vault",
+        "description": "Official site for Toronto drill artist Kmoney (MG4L). Immersive Three.js WebGL bank-vault: scroll to turn the camera as the catalogue hangs as gold- and platinum-framed art on a safe-deposit wall, with per-song audio previews and in-site video lightbox.",
+        "tech": ["Three.js", "WebGL", "JavaScript", "Vercel"],
+        "tags": ["Web", "Creative"],
+        "demo": "https://officialkmoney.com",
+        "repo": null
+    },
+    {
+        "title": "100BandPlan — The Blueprint",
+        "description": "Official site for Toronto drill artist 100BandPlan. A blueprint drafting-table concept: the plan unfolds and photo/video frames drop and lay onto it, centered on THE MARKET (Casper TNG feat. 100BP, platinum) with an in-site video lightbox.",
+        "tech": ["JavaScript", "CSS3", "HTML5", "Vercel"],
+        "tags": ["Web", "Creative"],
+        "demo": "https://100bandplan.com",
+        "repo": null
+    },
+    {
         "title": "WhyG35.com",
         "description": "Official website for Toronto rapper WhyG 35 (Big Boss El Neato). Music, videos, and artist showcase.",
         "tech": ["Next.js", "React", "Tailwind CSS", "Framer Motion"],
