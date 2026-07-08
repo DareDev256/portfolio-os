@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.72.0
-last_updated: 2026-06-08
+version: 3.73.0
+last_updated: 2026-07-08
 
 ---
 
@@ -15,6 +15,18 @@ last_updated: 2026-06-08
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.73.0] — 2026-07-08
+
+### Added
+- **Two Toronto drill-artist client sites** added to the portfolio (`public/data/projects.json`): **KMONEY — The Vault** (`officialkmoney.com`, Three.js WebGL bank-vault) and **100BandPlan — The Blueprint** (`100bandplan.com`, blueprint drafting-table). Both tagged `["Web", "Creative"]`, bringing the Applications showcase to 20 projects.
+- **KMONEY + 100BandPlan in the Services/Portfolio CLIENT_WORK grids** (`js/desktop.js`, both `openServices` thumbnailed strip and `openPortfolio` list) with new 640×400 thumbnails `public/thumbnails/kmoney.jpg` + `100bandplan.jpg`. Grid order set to: row 1 ShopBayHQ/Edson/BetMetrics, row 2 KMONEY/100BandPlan/SAVV4X, row 3 MustHaveFrenchies/Syren.
+
+### Changed
+- Carried forward prior uncommitted **ShopBayHQ** client-work addition (`index.html` SEO block, both `CLIENT_WORK` arrays, `passion-assistant.js` clients list) + `public/thumbnails/shopbayhq.jpg`.
+- Merged 12 upstream automated PRs (test coverage, refactors, and the `Sanitize.url()` hardening fix #12).
 
 ---
 
