@@ -9,11 +9,10 @@ export const MicroInteractions = {
     registeredElements: new Map(),
     activeAnimations: new Set(),
     particlePool: [],
+    particleIndex: 0,
     maxParticles: 100,
 
     init() {
-        console.log('[MicroInteractions] Initialized');
-
         // Pre-create particle pool
         this.createParticlePool();
 
@@ -46,10 +45,15 @@ export const MicroInteractions = {
     },
 
     /**
-     * Get an available particle from the pool
+     * Get an available particle from the pool (round-robin O(1) amortized)
      */
     getParticle() {
-        return this.particlePool.find(p => !p.inUse);
+        for (let i = 0; i < this.maxParticles; i++) {
+            const particle = this.particlePool[this.particleIndex];
+            this.particleIndex = (this.particleIndex + 1) % this.maxParticles;
+            if (!particle.inUse) return particle;
+        }
+        return undefined;
     },
 
     /**

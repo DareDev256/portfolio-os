@@ -152,4 +152,98 @@ describe('Calculator', () => {
         expect(typeof cleanup).toBe('function');
         expect(() => cleanup()).not.toThrow();
     });
+
+    it('formats large numbers using exponential notation', () => {
+        // Exceed 12 digits (MAX_DIGITS)
+        clickKey(container, '1');
+        for(let i=0; i<12; i++) {
+            clickKey(container, '0');
+        }
+        clickKey(container, '×');
+        clickKey(container, '1');
+        clickKey(container, '0');
+        clickKey(container, '=');
+
+        expect(readout(container)).toMatch(/^1\.0+e\+13$/);
+    });
+
+    it('performs normal division', () => {
+        clickKey(container, '6');
+        clickKey(container, '÷');
+        clickKey(container, '2');
+        clickKey(container, '=');
+        expect(readout(container)).toBe('3');
+    });
+
+    it('handles keyboard input for digits and operators', () => {
+        container.classList.add('window', 'active'); // Faking the window and active classes to avoid reparenting container
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '1' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '+' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '2' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+        expect(readout(container)).toBe('3');
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        expect(readout(container)).toBe('0');
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '5' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace' }));
+        expect(readout(container)).toBe('0');
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '4' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '*' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '5' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '=' }));
+        expect(readout(container)).toBe('20');
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '-' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '1' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '0' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+        expect(readout(container)).toBe('10');
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '/' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '2' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+        expect(readout(container)).toBe('5');
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '5' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '.' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '5' }));
+        expect(readout(container)).toBe('5.5');
+    });
+
+    it('ignores keyboard input in input or textarea', () => {
+        const input = document.createElement('input');
+        document.body.appendChild(input);
+
+        const event = new KeyboardEvent('keydown', { key: '3' });
+        Object.defineProperty(event, 'target', { value: input });
+        document.dispatchEvent(event);
+
+        expect(readout(container)).toBe('0');
+
+        const textarea = document.createElement('textarea');
+        const event2 = new KeyboardEvent('keydown', { key: '4' });
+        Object.defineProperty(event2, 'target', { value: textarea });
+        document.dispatchEvent(event2);
+
+        expect(readout(container)).toBe('0');
+
+        const editable = document.createElement('div');
+        Object.defineProperty(editable, "isContentEditable", { value: true });
+        const event3 = new KeyboardEvent('keydown', { key: '5' });
+        Object.defineProperty(event3, 'target', { value: editable });
+        document.dispatchEvent(event3);
+
+        expect(readout(container)).toBe('0');
+    });
+
+    it('ignores keyboard input when not active window', () => {
+        container.classList.add('window'); // inactive window
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: '7' }));
+        expect(readout(container)).toBe('0');
+    });
 });

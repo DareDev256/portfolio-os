@@ -78,6 +78,39 @@ describe('loadData()', () => {
         const result = await loadData('test.json', 'safe');
         expect(result).toBe('safe');
     });
+
+    it('returns fallback and warns when key is unsafe', async () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+        const result = await loadData('../unsafe.json', 'safe');
+        expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('[DataLoader] Blocked unsafe key: ../unsafe.json'));
+        expect(result).toBe('safe');
+    });
+});
+
+describe('invalidateData()', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        vi.restoreAllMocks();
+    });
+
+    it('removes data from the cache', async () => {
+        const spy = vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+            ok: true,
+            json: () => Promise.resolve({ v: 1 }),
+        });
+        await loadData('invalidate-test.json');
+        expect(spy).toHaveBeenCalledTimes(1);
+
+        invalidateData('invalidate-test.json');
+
+        spy.mockResolvedValue({
+            ok: true,
+            json: () => Promise.resolve({ v: 2 }),
+        });
+        const result = await loadData('invalidate-test.json');
+        expect(result).toEqual({ v: 2 });
+        expect(spy).toHaveBeenCalledTimes(2);
+    });
 });
 
 describe('loadMedia()', () => {
@@ -93,6 +126,17 @@ describe('loadMedia()', () => {
         const result = await loadMedia();
         expect(result).toEqual({ images: [], videos: [] });
     });
+
+    it('fetches and returns media data on success', async () => {
+        const payload = { images: [{ url: 'test.jpg' }], videos: [] };
+        const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+            ok: true,
+            json: () => Promise.resolve(payload),
+        });
+        const result = await loadMedia();
+        expect(result).toEqual(payload);
+        expect(fetchSpy).toHaveBeenCalledWith('data/media.json', expect.any(Object));
+    });
 });
 
 describe('loadProjects()', () => {
@@ -107,5 +151,16 @@ describe('loadProjects()', () => {
         vi.spyOn(console, 'warn').mockImplementation(() => {});
         const result = await loadProjects();
         expect(result).toEqual([]);
+    });
+
+    it('fetches and returns projects data on success', async () => {
+        const payload = [{ name: 'Test Project' }];
+        const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+            ok: true,
+            json: () => Promise.resolve(payload),
+        });
+        const result = await loadProjects();
+        expect(result).toEqual(payload);
+        expect(fetchSpy).toHaveBeenCalledWith('data/projects.json', expect.any(Object));
     });
 });

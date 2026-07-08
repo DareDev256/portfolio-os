@@ -89,6 +89,13 @@ export const Desktop = {
     // Row 2: linkedin, github, skills, terminal
     // Row 3: passion, image-generator, portfolio-videos, contact
     // Row 4: typemaster, settings
+    getItem(id) {
+        if (!this._itemsMap) {
+            this._itemsMap = new Map(this.DESKTOP_ITEMS.map(item => [item.id, item]));
+        }
+        return this._itemsMap.get(id);
+    },
+
     DESKTOP_ITEMS: [
         // Row 1 — First impression
         {
@@ -388,7 +395,7 @@ export const Desktop = {
         const dockIds = ['about', 'portfolio', 'applications', 'terminal'];
 
         dockIds.forEach((id, index) => {
-            const item = this.DESKTOP_ITEMS.find(i => i.id === id);
+            const item = this.getItem(id);
             if (item) {
                 const btn = document.createElement('button');
                 btn.className = 'dock-icon';
@@ -1854,7 +1861,7 @@ export const Desktop = {
         WindowManager.create({
             id: 'applications',
             title: 'Applications',
-            icon: this.DESKTOP_ITEMS.find((i) => i.id === 'applications').icon,
+            icon: this.getItem('applications').icon,
             content,
             width: 800,
             height: 600,
@@ -2187,7 +2194,7 @@ export const Desktop = {
         WindowManager.create({
             id: 'contact',
             title: 'SECURE_CHANNEL // CONNECT',
-            icon: this.DESKTOP_ITEMS.find((i) => i.id === 'contact').icon,
+            icon: this.getItem('contact').icon,
             content,
             width: 500,
             height: 650,
@@ -2268,7 +2275,7 @@ export const Desktop = {
         WindowManager.create({
             id: 'settings',
             title: 'Settings',
-            icon: this.DESKTOP_ITEMS.find((i) => i.id === 'settings').icon,
+            icon: this.getItem('settings').icon,
             content,
             width: 650,
             height: 480,
