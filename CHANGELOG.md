@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.73.0
+version: 3.73.1
 last_updated: 2026-07-08
 
 ---
@@ -15,6 +15,13 @@ last_updated: 2026-07-08
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.73.1] — 2026-07-08
+
+### Fixed
+- **Project count reconciled** — the "VIEW ALL PROJECTS →" footer button in the featured showcase now reads **20** (was hardcoded 18) to match the 20 entries in `projects.json` after the KMONEY + 100BandPlan additions.
 
 ---
 

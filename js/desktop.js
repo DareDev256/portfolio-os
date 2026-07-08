@@ -1472,7 +1472,7 @@ export const Desktop = {
         const allBtn = document.createElement('button');
         allBtn.className = 'reign-link';
         allBtn.style.setProperty('--reign-accent', '#8b5cf6');
-        allBtn.textContent = 'VIEW ALL 18 PROJECTS →';
+        allBtn.textContent = 'VIEW ALL 20 PROJECTS →';
         allBtn.addEventListener('click', () => {
             WindowManager.close('portfolio');
             setTimeout(() => this.openApplicationsShowcase(), 250);
