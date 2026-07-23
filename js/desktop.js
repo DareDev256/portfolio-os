@@ -1312,7 +1312,7 @@ export const Desktop = {
             },
             {
                 name: 'FCPXML_MCP_SERVER',
-                desc: 'AI-powered MCP server for Final Cut Pro XML. Automate timeline editing with natural language.',
+                desc: 'MCP server for Final Cut Pro XML. Automate timeline editing with natural language.',
                 tech: ['Python', 'Claude AI', 'MCP', 'XML'],
                 accent: '#7c3aed',
                 repo: 'https://github.com/DareDev256/fcpxml-mcp-server',
@@ -1599,7 +1599,7 @@ export const Desktop = {
                 name: 'AI & Engineering',
                 color: '#00f0ff',
                 apps: [
-                    { name: 'FCPXML_MCP', desc: 'First AI-powered MCP server for Final Cut Pro XML editing', status: 'live', link: 'https://github.com/DareDev256/fcpxml-mcp-server' },
+                    { name: 'FCPXML_MCP', desc: 'First MCP server for Final Cut Pro XML editing', status: 'live', link: 'https://github.com/DareDev256/fcpxml-mcp-server' },
                     { name: 'RAG_CITATIONS', desc: 'RAG pipeline with source attribution for verifiable AI responses', status: 'live', link: 'https://github.com/DareDev256/rag-system-with-citations' },
                     { name: 'LLM_EVAL', desc: 'LLM evaluation harness \u2014 rule-based, semantic, LLM-as-judge scoring', status: 'live', link: 'https://github.com/DareDev256/llm-evaluation-harness' },
                     { name: 'VECTOR_SEARCH', desc: 'Semantic vector vs BM25 keyword search \u2014 embedding tradeoffs', status: 'live', link: 'https://github.com/DareDev256/vector-vs-keyword-search' },
