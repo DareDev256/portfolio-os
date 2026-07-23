@@ -81,7 +81,7 @@
     },
     {
         "title": "FCPXML MCP Server",
-        "description": "AI-powered MCP server for Final Cut Pro XML editing. Automate timeline manipulation with natural language.",
+        "description": "MCP server for Final Cut Pro XML editing. Automate timeline manipulation with natural language.",
         "tech": ["Python", "Claude AI", "MCP", "XML"],
         "tags": ["AI", "Tools"],
         "demo": null,
@@ -97,7 +97,7 @@
     },
     {
         "title": "Viral Clone",
-        "description": "Telegram bot that clones viral TikTok content and auto-publishes across platforms. AI-powered content curation with queue management.",
+        "description": "Telegram bot that clones viral TikTok content and auto-publishes across platforms. Automated content curation with queue management.",
         "tech": ["TypeScript", "grammY", "SQLite", "BullMQ"],
         "tags": ["AI", "Tools"],
         "demo": null,
