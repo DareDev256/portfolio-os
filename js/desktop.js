@@ -1276,6 +1276,15 @@ export const Desktop = {
 
     /**
      * Open Portfolio — curated featured project showcase
+     *
+     * DEAD CODE. `openPortfolio` is defined TWICE on this object (see the
+     * second definition further down, near openServices). In an object literal
+     * the last key wins, so THIS method never runs — the one below does, with
+     * its own CLIENT_WORK list. eslint catches it as `no-dupe-keys`.
+     *
+     * Edits made here have no effect on the site. Either delete this block or
+     * merge it into the live one; until then, keep the two data lists in sync
+     * so whichever survives is correct.
      */
     openPortfolio() {
         const featured = [
@@ -1612,10 +1621,11 @@ export const Desktop = {
                 color: '#ff00aa',
                 apps: [
                     { name: 'EDSON_LEGAL', desc: 'Law firm website \u2014 practice areas, consultations, professional trust', status: 'live', link: 'https://www.edsonlegal.com/' },
+                    { name: 'NIRVANADESHAUN', desc: 'Custom home builder, Metro Atlanta \u2014 editorial identity, build gallery, enquiry funnel', status: 'live', link: 'https://nirvanadeshaunbuilds.com' },
                     { name: 'MUSTHAVEFRENCHIES', desc: 'Premium French Bulldog breeder \u2014 CMS, puppy listings, admin panel', status: 'live', link: 'https://musthavefrenchies.com' },
                     { name: 'SAVV4X', desc: 'Toronto rapper \u2014 artist portfolio, music links, events', status: 'live', link: 'https://savv4x.com' },
                     { name: 'SYREN_EFFECT', desc: 'Twitch streamer & content creator \u2014 Discord integration, media gallery', status: 'live', link: 'https://syreneffect.com' },
-                    { name: 'TDOTS_PORTFOLIO', desc: 'Synthwave 3D music video portfolio for TdotsSolutionsz', status: 'live', link: 'https://tdotssolutionsz-portfolio.vercel.app' },
+                    { name: 'TDOTS_PORTFOLIO', desc: 'Scroll-cinema music video portfolio for TdotsSolutionsz \u2014 101 films, 54 artists', status: 'live', link: 'https://tdotssolutionsz.com' },
                 ],
             },
             {
@@ -2655,6 +2665,7 @@ export const Desktop = {
             { name: 'ShopBayHQ', type: 'Auto Shop SaaS — 3D Holo Lot', url: 'https://app.shopbayhq.com', color: '#dc2626', thumb: '/thumbnails/shopbayhq.jpg' },
             { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff', thumb: '/thumbnails/edsonlegal.jpg' },
             { name: 'BetMetrics.ca', type: 'Sports Analytics', url: 'https://betmetrics.ca', color: '#ff4444', thumb: '/thumbnails/betmetrics.jpg' },
+            { name: 'NirvanaDeshaun', type: 'Custom Home Builder — Atlanta', url: 'https://nirvanadeshaunbuilds.com', color: '#8aa899', thumb: '/thumbnails/nirvanadeshaun.jpg' },
             { name: 'KMONEY — The Vault', type: 'Drill Artist — WebGL', url: 'https://officialkmoney.com', color: '#1db954', thumb: '/thumbnails/kmoney.jpg' },
             { name: '100BandPlan — The Blueprint', type: 'Drill Artist', url: 'https://100bandplan.com', color: '#3ba7ff', thumb: '/thumbnails/100bandplan.jpg' },
             { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x.com', color: '#ff3366', thumb: '/thumbnails/savv4x.jpg' },
@@ -2873,6 +2884,7 @@ export const Desktop = {
             { name: 'ShopBayHQ', type: 'Auto Shop SaaS — 3D Holo Lot', url: 'https://app.shopbayhq.com', color: '#dc2626' },
             { name: 'Edson Legal', type: 'Law Firm', url: 'https://www.edsonlegal.com/', color: '#00f0ff' },
             { name: 'BetMetrics.ca', type: 'Sports Analytics', url: 'https://betmetrics.ca', color: '#ff4444' },
+            { name: 'NirvanaDeshaun', type: 'Custom Home Builder — Atlanta', url: 'https://nirvanadeshaunbuilds.com', color: '#8aa899' },
             { name: 'KMONEY — The Vault', type: 'Drill Artist — WebGL', url: 'https://officialkmoney.com', color: '#1db954' },
             { name: '100BandPlan — The Blueprint', type: 'Drill Artist', url: 'https://100bandplan.com', color: '#3ba7ff' },
             { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x.com', color: '#ff3366' },

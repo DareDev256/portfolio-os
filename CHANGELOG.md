@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.73.1
-last_updated: 2026-07-08
+version: 3.74.0
+last_updated: 2026-07-31
 
 ---
 
@@ -15,6 +15,21 @@ last_updated: 2026-07-08
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [3.74.0] — 2026-07-31
+
+### Added
+- **NirvanaDeshaun Custom Builds** — custom home builder in Metro Atlanta, live at [nirvanadeshaunbuilds.com](https://nirvanadeshaunbuilds.com). Added to the `/services` PORTFOLIO tab (`CLIENT_WORK`, placed with the business clients after BetMetrics) and to the portfolio window's client list. Thumbnail `public/thumbnails/nirvanadeshaun.jpg` cut to the existing 640x400 spec.
+
+### Fixed
+- **`TDOTS_PORTFOLIO` pointed at a raw preview URL** — `tdotssolutionsz-portfolio.vercel.app` instead of the real domain. Now `tdotssolutionsz.com`, with a description matching what the site currently is (scroll-cinema, 101 films, 54 artists) rather than the retired synthwave build.
+
+### Documented
+- **`openPortfolio()` is defined TWICE on the Desktop object** (`js/desktop.js` ~1280 and ~2884) and eslint has been reporting it as `no-dupe-keys`. In an object literal the last key wins, so the first definition — several hundred lines including its own client list — is dead code that never runs. This was not theoretical: the first pass of this change edited the dead list and would have shipped a client addition that never rendered.
+
+  The live definition now carries the new entry, and the dead one is marked with a comment explaining why editing it does nothing. **Not deleted** — removing a block that size is a separate change that deserves its own diff.
 
 ---
 
