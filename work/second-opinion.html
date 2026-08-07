@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Second Opinion · Case Study · James Olusoga</title>
+<meta name="description" content="Case study: a 5-agent healthcare AI verifier loop with prompt-cached corpus and green/yellow/red verdict gating. Built at Cerebral Valley × Anthropic, April 2026.">
+<link rel="canonical" href="https://jamesdare.com/work/second-opinion.html">
+<link rel="icon" type="image/svg+xml" href="/assets/mahoraga-wheel.svg">
+<link rel="stylesheet" href="/work/work.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-back" href="/work/">← /work</a>
+    <div class="nav-links">
+      <a href="/">jamesdare.com</a>
+      <a href="https://github.com/DareDev256/second-opinion">Repo</a>
+      <a href="mailto:tdotssolutionsz@gmail.com">Email</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section class="case-hero">
+    <div class="breadcrumb"><a href="/work/">Work</a> / Second Opinion</div>
+    <h1>Second Opinion</h1>
+    <p class="tagline">A 5-agent healthcare AI verifier loop — three specialists in parallel, a synthesizer, and a verifier that fact-checks every claim against a 52-source clinical corpus before output.</p>
+    <div class="quick-links">
+      <a href="https://github.com/DareDev256/second-opinion">Repo →</a>
+      <a href="https://github.com/DareDev256/second-opinion#readme">Architecture (README)</a>
+    </div>
+  </section>
+
+  <div class="kvs">
+    <div class="kv"><div class="k">Status</div><div class="v">Shipped at Cerebral Valley × Anthropic hackathon, April 2026 · Open source</div></div>
+    <div class="kv"><div class="k">Role</div><div class="v">Solo build — architecture, agents, corpus curation, UI</div></div>
+    <div class="kv"><div class="k">Audience</div><div class="v">Clinical staff handing off a complex chronic-condition patient</div></div>
+    <div class="kv"><div class="k">Stack</div><div class="v">Next.js 16, React 19, Anthropic SDK, Claude Opus 4.7, prompt caching, NDJSON streaming</div></div>
+  </div>
+
+  <section class="case-section">
+    <h2>The problem</h2>
+    <p>A patient walks into a specialist appointment with a chronic, multi-system condition. The clinician has 12 minutes. The chart is 40 pages. Most of what matters is buried in clinical notes the patient never saw and didn't write.</p>
+    <p>Generic LLM "summarize this chart" prompts confidently invent supporting evidence, paraphrase clinical guidelines into something subtly wrong, and never tell the clinician when they're uncertain. In healthcare, that failure mode isn't acceptable. The system needs to be honest about what it doesn't know.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>The architecture</h2>
+    <pre><code>              Patient chart (input)
+                       │
+        ┌──────────────┼──────────────┐
+        │              │              │
+  ┌─────▼────┐  ┌──────▼─────┐  ┌────▼─────┐
+  │ Specialist│  │ Specialist │  │Specialist│
+  │     A     │  │     B      │  │    C     │
+  └─────┬────┘  └──────┬─────┘  └────┬─────┘
+        │              │              │
+        └──────────────┼──────────────┘
+                       │
+                ┌──────▼──────┐
+                │ Synthesizer │
+                └──────┬──────┘
+                       │
+                ┌──────▼──────┐
+                │  Verifier   │ ← fact-checks every claim against
+                │             │   52-source clinical corpus
+                └──────┬──────┘
+                       │
+              ┌────────▼────────┐
+              │ GREEN / YELLOW / │
+              │ RED verdict gate │
+              └────────┬────────┘
+                       │
+                  Output to user</code></pre>
+
+    <h3>Three specialists in parallel, not sequential</h3>
+    <p>Sequential agent chains feel architecturally clean but kill latency. Parallel calls cost N× tokens but ~1× wall-clock time. With prompt caching on the corpus, the marginal cost is small. With sequential chains, you're paying N× <em>time</em> — which kills the demo and any real-time use case.</p>
+
+    <h3>The verifier reads the corpus, not the synthesizer</h3>
+    <p>Critical. If the verifier just re-reads the synthesizer's output and asks "does this sound right?", it's a glorified hallucination check. The verifier has to do its own retrieval against the same ground-truth corpus the specialists drew from, and confirm every load-bearing claim is supported.</p>
+
+    <h3>The verdict gate</h3>
+    <ul>
+      <li><strong>GREEN</strong> — every claim is supported in the corpus. Ship to user.</li>
+      <li><strong>YELLOW</strong> — most claims supported, one or two are inferential. Ship with the inferential claim flagged inline and a "Verify this" CTA.</li>
+      <li><strong>RED</strong> — a claim contradicts the corpus, or the verifier can't find supporting evidence for a high-stakes claim. Do not ship. Surface "We can't safely answer this — escalate to a clinician."</li>
+    </ul>
+  </section>
+
+  <section class="case-section">
+    <h2>Key decisions + gotchas</h2>
+
+    <h3>Prompt caching makes the economics work</h3>
+    <p>Five agents per request, each reading the 32.5K-token clinical corpus, would be unviable without Anthropic's prompt caching. With <code>cache_control: { type: "ephemeral" }</code> on the corpus block:</p>
+    <ul>
+      <li>Input tokens (uncached): ~32.5K × full rate</li>
+      <li>Input tokens (cached): ~32.5K × ~10% of full rate</li>
+      <li>Practical cost: difference between ~$0.50/request and ~$0.05/request at production volume</li>
+    </ul>
+    <div class="callout warn">
+      <strong>Gotcha:</strong> the cached block must be at the <em>top</em> of the messages array. Put user input above the corpus and you invalidate the cache on every request. Ephemeral cache TTL is ~5 minutes — plan for it.
+    </div>
+
+    <h3>The first verifier I built was useless</h3>
+    <p>Same model, same corpus access, slightly different system prompt. It kept agreeing with the synthesizer because they were thinking about it the same way. Fix: change the <em>prompt frame</em> to adversarial — "find the weakest claim, find the unsourced claim, find the contradiction." Different mode, same model, much better verifier.</p>
+
+    <h3>YELLOW state has to look visibly different</h3>
+    <p>Without a different visual treatment, clinicians habituate to ignoring the verdict. The YELLOW inferred-claim inline flag has to be unmissable but not alarmist; the RED block has to feel like a hard stop, not a suggestion.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>Outcomes</h2>
+    <ul>
+      <li>Shipped at <strong>Cerebral Valley × Anthropic "Built with Claude Opus 4.7" hackathon</strong>, April 2026 — open source.</li>
+      <li>Latency: parallel architecture cut end-to-end response from ~22s (sequential) to ~7s.</li>
+      <li>Cost: prompt caching delivered ~90% input-cost reduction on warm calls.</li>
+      <li>Corpus built initially for adenomyosis — expanding to fibroids, endometriosis, Hashimoto's, long COVID, lupus, POTS.</li>
+    </ul>
+  </section>
+
+  <section class="case-section">
+    <h2>What I'd build next</h2>
+    <ul>
+      <li><strong>Claim-level citation linkage.</strong> Each claim in the brief becomes a clickable link to the source paragraph, with the verifier's confidence score inline.</li>
+      <li><strong>Specialist routing, not parallel-all.</strong> A router model picks the right 2–3 specialists per chart instead of always running all three. Cuts cost and latency further.</li>
+      <li><strong>Real eval suite.</strong> Today the only eval is "Claude verifies Claude." In production: a labeled dataset where domain experts mark claims as supported / unsupported, and the verifier's GREEN/YELLOW/RED verdicts are scored against the labels weekly.</li>
+      <li><strong>Cross-corpus checking.</strong> A 52-source corpus is a beachhead, not a foundation. Production pulls from current clinical guidelines + peer-reviewed updates; verifier detects corpus staleness.</li>
+    </ul>
+  </section>
+
+  <div class="cta">
+    <h3>Building something where confidence calibration matters?</h3>
+    <p>I'm available for AI Engineer / Forward-Deployed Engineer roles where the system has to be right, not just plausible.</p>
+    <a href="mailto:tdotssolutionsz@gmail.com">Email me</a>
+    <a href="/work/">More work</a>
+  </div>
+
+</main>
+
+<footer class="footer">
+  James Olusoga · Toronto · <a href="/">jamesdare.com</a> · <a href="https://github.com/DareDev256">GitHub</a> · <a href="https://linkedin.com/in/james-olusoga">LinkedIn</a>
+</footer>
+
+</body>
+</html>

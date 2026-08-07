@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Passion (ecosystem) · Case Study · James Olusoga</title>
+<meta name="description" content="Case study: an autonomous AI agent ecosystem running 24/7 across two machines — Passion Agent (130+ modules), PACT Dashboard, and Passion Memory MCP server.">
+<link rel="canonical" href="https://jamesdare.com/work/passion.html">
+<link rel="icon" type="image/svg+xml" href="/assets/mahoraga-wheel.svg">
+<link rel="stylesheet" href="/work/work.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-back" href="/work/">← /work</a>
+    <div class="nav-links">
+      <a href="/">jamesdare.com</a>
+      <a href="mailto:tdotssolutionsz@gmail.com">Email</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section class="case-hero">
+    <div class="breadcrumb"><a href="/work/">Work</a> / Passion (ecosystem)</div>
+    <h1>Passion (ecosystem)</h1>
+    <p class="tagline">An autonomous AI system running 24/7 across two machines — Passion Agent (the engine), PACT Dashboard (the control room), and Passion Memory MCP (the persistent brain). Built solo over 18 months as a research vehicle for production agent patterns.</p>
+  </section>
+
+  <div class="kvs">
+    <div class="kv"><div class="k">Status</div><div class="v">Running 24/7 since 2024 · Continuous deployment to MacBook Pro + Mac Mini</div></div>
+    <div class="kv"><div class="k">Role</div><div class="v">Sole architect and operator — agent loop, dashboard, MCP server, infra</div></div>
+    <div class="kv"><div class="k">Scale</div><div class="v">Passion Agent v4.84 · 130+ modules · 100K+ LOC · PACT Dashboard v0.80+ · 121 components</div></div>
+    <div class="kv"><div class="k">Stack</div><div class="v">Node.js, Claude / Gemini / DeepSeek APIs, Discord.js, Next.js 16, React 19, TanStack Query, Bun, SQLite, PM2, launchd</div></div>
+  </div>
+
+  <section class="case-section">
+    <h2>Why I built it</h2>
+    <p>I wanted to know what an autonomous AI agent looks like when you take it seriously as software — versioned, observable, restart-safe, cost-traced, with durable state across crashes and a memory layer that survives sessions. Most agent demos are a single jupyter notebook. Production agents are a system. Passion is the system I built to find out what that means.</p>
+    <p>It runs 24/7 on a Mac Mini (always-on agent ops) and syncs with a MacBook Pro (interactive control) over Tailscale + Syncthing. It autonomously discovers, scores, tailors, and applies for AI engineering roles on my behalf — but the job pipeline is the use case, not the point. The point is the architecture.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>The three pieces</h2>
+
+    <h3>Passion Agent — the engine</h3>
+    <ul>
+      <li><strong>Goal-driven KPI engine</strong> — every loop iteration asks "what KPI moves most for the lowest cost?" and picks the next action accordingly.</li>
+      <li><strong>Adaptive scheduling</strong> — backs off when API quota or rate limits tighten; bursts when costs and limits permit.</li>
+      <li><strong>Durable execution checkpoints</strong> — every long-running task writes intermediate state to SQLite. On crash/restart, the agent resumes from the last checkpoint, not from scratch.</li>
+      <li><strong>Per-call cost tracing</strong> — every model call is logged with input/output tokens, cached-vs-uncached split, and rolled up to per-task and per-day budgets.</li>
+      <li><strong>6-stage career pipeline</strong> — discover → score → tailor → apply → track → learn. Each stage is a separate module with its own retry/idempotency contract.</li>
+    </ul>
+
+    <h3>PACT Dashboard — the control room</h3>
+    <ul>
+      <li><strong>Real-time command terminal</strong> — Web Terminal (PTY shell) inside the browser, with full access to the agent's host machine.</li>
+      <li><strong>121 React components</strong> across 10 tabs — task list, cost ledger, memory browser, KPI charts, error timeline, deployment console.</li>
+      <li><strong>76 API routes + 81 React Query hooks</strong> — every dashboard view is a query against a backend route, cached + invalidated cleanly.</li>
+      <li><strong>Web Push notifications</strong> — agent surfaces decisions that need human approval through VAPID push, not email.</li>
+      <li><strong>STT voice input</strong> — Web Speech API for command-by-voice when I'm not at the keyboard.</li>
+    </ul>
+
+    <h3>Passion Memory MCP — the persistent brain</h3>
+    <ul>
+      <li><strong>Knowledge graph</strong> — entities, relationships, edges built from observed interactions and explicit save commands.</li>
+      <li><strong>Vector embeddings</strong> for semantic recall across hundreds of stored memories.</li>
+      <li><strong>Somatic markers</strong> (Damasio) and <strong>narrative identity</strong> (Bruner) — research-derived structures for tagging memories with emotional valence and biographical coherence.</li>
+      <li><strong>Cross-session handoff</strong> — every Claude Code session loads the relevant slice of memory at start and saves a checkpoint at end. No cold starts.</li>
+      <li>Exposed as an MCP server — any Claude-compatible surface can call <code>memory_store</code>, <code>memory_recall</code>, <code>session_save</code>, etc. as tools.</li>
+    </ul>
+  </section>
+
+  <section class="case-section">
+    <h2>Patterns I'd carry to a job tomorrow</h2>
+    <ul>
+      <li><strong>Durable checkpoints &gt; idempotency</strong> in long-running agent tasks. Idempotency is "safe to retry"; checkpoints are "resume from where you crashed." Both matter, but checkpoints are what makes a 6-hour task survivable.</li>
+      <li><strong>Cost tracing has to be per-call, not per-day</strong>. If a single ill-formed prompt blows your day's budget at 4am, you need to know which prompt and which input — not just the line item on the bill.</li>
+      <li><strong>Memory is multi-typed.</strong> Treating every "fact" as the same kind of memory makes everything worse. User profile facts, project state, feedback corrections, and external references all have different retrieval and update patterns.</li>
+      <li><strong>The control room matters as much as the engine.</strong> An agent without a dashboard is a black box you stop trusting. The dashboard is the thing that makes the agent feel <em>operable</em>, not just <em>running</em>.</li>
+      <li><strong>MCP is a real production pattern.</strong> Wrapping the agent's tools as an MCP server makes them reusable across surfaces — Claude Desktop, Claude Code, custom clients — and forces clean tool schema design.</li>
+    </ul>
+  </section>
+
+  <section class="case-section">
+    <h2>Honest tradeoffs</h2>
+    <ul>
+      <li>Passion is solo-built. It works well for one operator (me) and has not been hardened for multi-tenant use. If I were rebuilding for a team, I'd start with the same agent loop pattern but invest much earlier in role-based access, audit logging, and per-user budget caps.</li>
+      <li>The dashboard is feature-rich because it's my daily driver. A v1 production dashboard would be 20% of these features.</li>
+      <li>The memory layer is opinionated — somatic markers and narrative identity are pulled from cognitive science, not from a standard agent framework. That's intentional but means it's not drop-in compatible with LangGraph / CrewAI / etc.</li>
+    </ul>
+  </section>
+
+  <div class="cta">
+    <h3>Want someone who's built production agent infra solo and can do it for your team?</h3>
+    <p>I'm available for AI Engineer / Forward-Deployed Engineer roles where the system has to keep running while the founder sleeps.</p>
+    <a href="mailto:tdotssolutionsz@gmail.com">Email me</a>
+    <a href="/work/">More work</a>
+  </div>
+
+</main>
+
+<footer class="footer">
+  James Olusoga · Toronto · <a href="/">jamesdare.com</a> · <a href="https://github.com/DareDev256">GitHub</a> · <a href="https://linkedin.com/in/james-olusoga">LinkedIn</a>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sandy Chain-Recall · Case Study · James Olusoga</title>
+<meta name="description" content="Case study: cross-property hospitality AI memory layer with Claude tool use + custom-cloned voice agents. Built in 8 hours at the Hospitality 2030 hackathon, Rosewood Sand Hill.">
+<link rel="canonical" href="https://jamesdare.com/work/sandy-chain-recall.html">
+<link rel="icon" type="image/svg+xml" href="/assets/mahoraga-wheel.svg">
+<link rel="stylesheet" href="/work/work.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-back" href="/work/">← /work</a>
+    <div class="nav-links">
+      <a href="/">jamesdare.com</a>
+      <a href="https://chain-recall.vercel.app">Live demo</a>
+      <a href="https://github.com/DareDev256/chain-recall">Repo</a>
+      <a href="mailto:tdotssolutionsz@gmail.com">Email</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section class="case-hero">
+    <div class="breadcrumb"><a href="/work/">Work</a> / Sandy Chain-Recall</div>
+    <h1>Sandy Chain-Recall</h1>
+    <p class="tagline">Recognition, without asking. The silent institutional memory of a luxury hotel chain — when a member walks into <em>any</em> property, even one they've never visited, front-of-house staff is briefed on who they are, what they prefer, and how to treat them. The AI is invisible to the guest.</p>
+    <div class="quick-links">
+      <a href="https://chain-recall.vercel.app">Live demo →</a>
+      <a href="https://github.com/DareDev256/chain-recall">Repo</a>
+      <a href="https://github.com/DareDev256/chain-recall#readme">Architecture (README)</a>
+    </div>
+  </section>
+
+  <div class="kvs">
+    <div class="kv"><div class="k">Status</div><div class="v">Shipped at Hospitality 2030 hackathon, Rosewood Sand Hill, May 16, 2026 · Open source</div></div>
+    <div class="kv"><div class="k">Role</div><div class="v">Architecture, data layer, Claude composer, API routes, audio integration, deployment</div></div>
+    <div class="kv"><div class="k">Team</div><div class="v">Built with Joshua Dare (brand, demo flow, customer discovery)</div></div>
+    <div class="kv"><div class="k">Build time</div><div class="v">8 hours · 45+ atomic commits</div></div>
+    <div class="kv"><div class="k">Audience</div><div class="v">Front-of-house staff at a luxury hotel chain (concierge, bell captain, manager)</div></div>
+    <div class="kv"><div class="k">Stack</div><div class="v">Next.js 16, Claude Opus 4.7 (tool use), ElevenLabs Turbo + Multilingual v2, SSE, mock Oracle OPERA adapter</div></div>
+  </div>
+
+  <section class="case-section">
+    <h2>The pitch</h2>
+    <p>Your luxury hotel chain already pays for Oracle OPERA. Your front desk already enters every preference, allergy, complaint, amenity request. You are simply not using that data at the moment of arrival. <strong>Sandy Chain-Recall is the AI layer that unlocks the data you already own.</strong></p>
+    <p>We demo it deployed against the chain we'd target first: Rosewood Hotels &amp; Resorts — 38 properties, 23 countries, all OPERA-backed via Hapi. Three real properties anchor the demo: Rosewood Hong Kong, Rosewood Sand Hill, Rosewood London.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>Architecture</h2>
+    <pre><code>QR scan  →  POST /api/arrive
+                    │
+                    ├──→ publish "computing" event (eventBus)
+                    │
+                    ├──→ compose(): Claude reads guest profile
+                    │    via tool use (get_guest_history),
+                    │    writes 12-section structured brief
+                    │
+                    └──→ publish "brief" event
+                                 │
+                  GET /api/stream (SSE) ───→ /staff tablet
+                                                  │
+                                                  ├──→ render brief + chime
+                                                  └──→ Whisper button →
+                                                       /api/whisper →
+                                                       ElevenLabs Turbo
+                                                       (Sandy + Hill voices)</code></pre>
+
+    <h3>The composer is a tool-use agent, not a template</h3>
+    <p>The composer is Claude Opus 4.7 with a single tool: <code>get_guest_history(guestId)</code>. The system prompt enforces a 12-section brief schema (arrival intel · accessibility · prep actions · amenity replenishment · suggested questions · local suggestions · discretion flags · emotional context · etc.). The model calls the tool, reads the cross-property history, and writes structured prose under each section. Compared to a templated assembly pipeline, the tool-use approach produces briefs that weigh conflicting preferences and surface non-obvious connections (e.g., the guest is a HK regular but had one bad London stay — that context matters at Sand Hill).</p>
+
+    <h3>The Oracle OPERA boundary is a real production seam</h3>
+    <p><code>lib/sources/opera.ts</code> is the integration boundary. Today it points at a seed corpus of fictional guests for the demo. In production, it's the OHIP REST client. The composer doesn't know which is which — that's the whole point.</p>
+
+    <h3>SSE for live tablet wake</h3>
+    <p>When the guest scans the QR (or, in production, hits a BLE beacon or valet license-plate camera), an event publishes on an in-memory pub/sub bus, and an SSE connection pushes the computing → brief state transitions to the staff tablet. Loading skeleton + audio chime sells the magic. In production: Redis pub/sub.</p>
+
+    <h3>ElevenLabs earpiece, not guest-facing TTS</h3>
+    <p>The AI is invisible to the guest. The voice layer is staff-side: a butler-timbre audio brief whispers to the bell captain's headset as the guest approaches. <strong>Never</strong> voice TO the guest. Custom-cloned Sandy + Hill duo voices via ElevenLabs Turbo + Multilingual v2 — 5-language guest-greeting samples for the staff to use.</p>
+
+    <h3>Wifi parachute</h3>
+    <p>Every demo guest × property combo has a hand-tuned cached brief. If the Claude API errors or takes &gt; 6s, we fall back to the cached brief silently. The demo never breaks. In production: graceful degradation with audit logging.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>Privacy &amp; compliance scaffolding</h2>
+    <ul>
+      <li><strong>GDPR Art. 17 / CCPA §1798.105</strong> cited verbatim in the privacy opt-out flow — the demo shows a guest exercising their right to be forgotten.</li>
+      <li>Per-property opt-out plumbed end-to-end.</li>
+      <li>Every memory carries a ledger: which property created it, which staff member, which interaction. Auditable on guest request.</li>
+      <li>Data residency designed-in (EU stays don't leave EU); SOC 2 Type II target by production month 6.</li>
+    </ul>
+  </section>
+
+  <section class="case-section">
+    <h2>What I'd build next (production v1, ~4–6 weeks)</h2>
+    <ul>
+      <li><strong>Presence detection beyond QR</strong> — BLE beacons at property entry, license-plate recognition at valet, member-app geofence + opt-in foreground notification, staff walk-in fallback.</li>
+      <li><strong>Memory layer</strong> — Postgres + pgvector against Hapi's OPERA event stream. Decay + conflict resolution (90-day relevance half-life; contradicting facts surface for human review). Source-grounded composition.</li>
+      <li><strong>MCP server wrapper</strong> — composer becomes an MCP server so Claude Desktop, the Rosewood app, or any Claude-powered surface can call <code>get_guest_history</code> and <code>compose_brief</code> as tools. Per-property + per-staff-role tool surface scoping.</li>
+      <li><strong>Staff role permissions</strong> — concierge sees the full brief, housekeeping sees only room-prep details, F&amp;B sees only dietary + drink preferences. Audit log on every read.</li>
+      <li><strong>Quality loop</strong> — staff one-tap feedback after each interaction ("useful / partial / wrong"); wrong-flagged briefs retrain retrieval ranking; weekly GM digest.</li>
+    </ul>
+  </section>
+
+  <div class="cta">
+    <h3>Building customer-facing AI that has to ship in days, not quarters?</h3>
+    <p>I'm available for Forward-Deployed Engineer / AI Engineer roles where you need a working customer demo by Friday.</p>
+    <a href="mailto:tdotssolutionsz@gmail.com">Email me</a>
+    <a href="/work/">More work</a>
+  </div>
+
+</main>
+
+<footer class="footer">
+  James Olusoga · Toronto · <a href="/">jamesdare.com</a> · <a href="https://github.com/DareDev256">GitHub</a> · <a href="https://linkedin.com/in/james-olusoga">LinkedIn</a>
+</footer>
+
+</body>
+</html>
