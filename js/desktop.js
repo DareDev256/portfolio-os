@@ -2669,7 +2669,7 @@ export const Desktop = {
             { name: 'KMONEY — The Vault', type: 'Drill Artist — WebGL', url: 'https://officialkmoney.com', color: '#1db954', thumb: '/thumbnails/kmoney.jpg' },
             { name: '100BandPlan — The Blueprint', type: 'Drill Artist', url: 'https://100bandplan.com', color: '#3ba7ff', thumb: '/thumbnails/100bandplan.jpg' },
             { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x.com', color: '#ff3366', thumb: '/thumbnails/savv4x.jpg' },
-            { name: 'Street Bud — The Block After Dark', type: 'Recording Artist — Atlanta — WebGL', url: 'https://streetbud.vercel.app', color: '#ff9d2f', thumb: '/thumbnails/streetbud.jpg' },
+            { name: 'Street Bud — The Block After Dark', type: 'Recording Artist — Atlanta — WebGL', url: 'https://officialstreetbud.com', color: '#ff9d2f', thumb: '/thumbnails/streetbud.jpg' },
             { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies.com', color: '#d4a574', thumb: '/thumbnails/musthavefrenchies.jpg' },
             { name: 'The Syren Effect', type: 'Content Creator', url: 'https://syreneffect.com', color: '#aa00ff', thumb: '/thumbnails/syreneffect.jpg' },
         ];
@@ -2889,7 +2889,7 @@ export const Desktop = {
             { name: 'KMONEY — The Vault', type: 'Drill Artist — WebGL', url: 'https://officialkmoney.com', color: '#1db954' },
             { name: '100BandPlan — The Blueprint', type: 'Drill Artist', url: 'https://100bandplan.com', color: '#3ba7ff' },
             { name: 'SAVV4X — Problem Child', type: 'Music Artist', url: 'https://savv4x.com', color: '#ff3366' },
-            { name: 'Street Bud — The Block After Dark', type: 'Recording Artist — Atlanta — WebGL', url: 'https://streetbud.vercel.app', color: '#ff9d2f' },
+            { name: 'Street Bud — The Block After Dark', type: 'Recording Artist — Atlanta — WebGL', url: 'https://officialstreetbud.com', color: '#ff9d2f' },
             { name: 'MustHaveFrenchies', type: 'Pet Breeder', url: 'https://musthavefrenchies.com', color: '#d4a574' },
             { name: 'The Syren Effect', type: 'Content Creator', url: 'https://syreneffect.com', color: '#aa00ff' },
         ];
