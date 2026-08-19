@@ -1646,7 +1646,7 @@ export const Desktop = {
             </div>
             <div class="resume-actions">
                 <button class="cyber-button" id="viewResumeBtn">📄 VIEW FULL RESUME</button>
-                <a href="resume/resume.pdf" download class="cyber-button secondary">⬇ DOWNLOAD PDF</a>
+                <a href="resume/JamesOlusoga-AI-Engineer.pdf" download class="cyber-button secondary">⬇ DOWNLOAD PDF</a>
             </div>
         `;
 
@@ -1689,7 +1689,7 @@ export const Desktop = {
                     viewer.className = 'resume-viewer';
                     viewer.style.height = '100%';
                     viewer.innerHTML = `
-                        <iframe src="resume/resume.pdf" type="application/pdf" referrerpolicy="no-referrer" loading="lazy" style="width:100%;height:100%;border:0"></iframe>
+                        <iframe src="resume/JamesOlusoga-AI-Engineer.pdf" type="application/pdf" referrerpolicy="no-referrer" loading="lazy" style="width:100%;height:100%;border:0"></iframe>
                     `;
 
                     // Clear and append

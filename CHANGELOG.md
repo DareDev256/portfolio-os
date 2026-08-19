@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 3.75.0
+version: 3.76.0
 last_updated: 2026-08-18
 
 ---
@@ -17,6 +17,23 @@ last_updated: 2026-08-18
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.76.0] — 2026-08-18
+
+### Fixed
+
+- **The RESUME button and its inline PDF viewer both 404'd in production.**
+  Both pointed at `resume/resume.pdf`, which sits at the repo root — Vite only
+  copies `public/`, so the file was never deployed. It was also five months
+  stale (March 10) and differed from both current resumes. Repointed at
+  `resume/JamesOlusoga-AI-Engineer.pdf`, which is deployed, and the root
+  `resume/` directory is now untracked and gitignored.
+
+### Changed
+
+- Refreshed `public/resume/` PDFs from the 2026-08 builds, which carry live
+  figures (87 stars, 1,337 tests, ~1,600 PyPI installs/month) rather than the
+  July numbers that understated them.
 
 ## [3.75.0] — 2026-08-18
 

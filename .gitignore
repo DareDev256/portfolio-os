@@ -51,3 +51,8 @@ EASTER_EGGS_GUIDE.md
 .vercel
 .env*.local
 coverage/
+
+# Superseded root-level resume. Vite only copies public/, so this file was never
+# deployed — the site's RESUME button 404'd while pointing at it. The live PDFs
+# are public/resume/*.pdf, built from ~/Documents/Career/Resumes/_sources/.
+/resume/
