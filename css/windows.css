@@ -835,6 +835,30 @@
     animation: blueprint-scanline 0.7s ease-out 0.35s forwards;
 }
 
+/* Project tech chips.
+   `.tech-tag` had no rule anywhere in the stylesheet, so the spans rendered
+   as adjacent inline text with no separator — every card read as one run-on
+   word ("PythonClaude AIMCPXML"). Flex + gap is what the markup always
+   assumed. */
+.project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.tech-tag {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 3px;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    color: var(--text-secondary, rgba(255, 255, 255, 0.72));
+    background: rgba(255, 255, 255, 0.04);
+    white-space: nowrap;
+}
+
 /* Content resolves after blueprint trace completes */
 .project-card--blueprint .project-title,
 .project-card--blueprint .project-description,

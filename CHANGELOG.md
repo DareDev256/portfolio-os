@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.74.0
-last_updated: 2026-07-31
+version: 3.75.0
+last_updated: 2026-08-18
 
 ---
 
@@ -17,6 +17,42 @@ last_updated: 2026-07-31
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [3.75.0] — 2026-08-18
+
+### Fixed
+
+- **9 of 21 projects rendered as ARCHIVED, including the most-adopted one.**
+  Status was derived solely from whether a project had a `demo` URL, so
+  anything shipped as a library or CLI rather than a hosted page was labelled
+  dead. FCPXML MCP Server — 87 stars and roughly 1,600 installs a month — was
+  one of them. Projects now carry an explicit `status`; the demo heuristic is
+  only the fallback. Logic extracted to `js/project-status.js` with regression
+  tests that fail on the exact original data shape.
+- **Three dead GitHub links.** `/work` linked the FCP server at
+  `DareDev256/fcpxml-mcp`, which is a hard 404, and the Applications grid
+  linked two repos that are private and 404 for every visitor. The private
+  ones lost their button rather than the project; making those repos public is
+  a separate call.
+- **Tech chips ran together on every card.** `.tech-tag` had no rule anywhere
+  in the stylesheet, so the spans rendered as adjacent inline text —
+  "PythonClaude AIMCPXML". Added flex + gap and chip styling.
+- **Stale figures on the `/work` FCP card** understated it by roughly half:
+  44 stars (really 87) and 571 tests (really 1,337).
+
+### Added
+
+- `Traction` row in project lab-notes, rendered from an optional `metrics`
+  field, so shipped projects can show adoption rather than only a stack count.
+- `demoLabel` override, so a link to a package index reads "View on PyPI"
+  instead of "View Demo".
+
+### Removed
+
+- Dead duplicate `openPortfolio()` (307 lines). It was the first of two
+  definitions on the same object literal, so the last key won and this one had
+  never run; it was already commented as dead code and was the site's only
+  `no-dupe-keys` lint error.
 
 ## [3.74.0] — 2026-07-31
 

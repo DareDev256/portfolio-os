@@ -6,8 +6,8 @@ import { PixelLoader } from './loader.js';
 // SkillsUniverse, GitHub, Terminal loaded dynamically at point-of-use (P5)
 import { Sanitize } from './sanitize.js';
 import { loadMedia, loadProjects } from './data-loader.js';
+import { deriveStatus, statusClass as projectStatusClass } from './project-status.js';
 import { openExternal, animateCounter, loadJSON, saveJSON } from './dom-helpers.js';
-import { createCodeViewer } from './code-viewer.js';
 import { PassionLive } from './passion-live.js';
 import { initAmbientPresence } from './passion-ambient.js';
 import { AmbientSystem } from './ambient-system.js';
@@ -1275,313 +1275,6 @@ export const Desktop = {
     },
 
     /**
-     * Open Portfolio — curated featured project showcase
-     *
-     * DEAD CODE. `openPortfolio` is defined TWICE on this object (see the
-     * second definition further down, near openServices). In an object literal
-     * the last key wins, so THIS method never runs — the one below does, with
-     * its own CLIENT_WORK list. eslint catches it as `no-dupe-keys`.
-     *
-     * Edits made here have no effect on the site. Either delete this block or
-     * merge it into the live one; until then, keep the two data lists in sync
-     * so whichever survives is correct.
-     */
-    openPortfolio() {
-        const featured = [
-            {
-                name: 'PASSION_AGENT',
-                desc: '24/7 autonomous AI code improvement system. Analyzes repos, spawns Claude Code sessions, submits PRs, and learns from merge/reject patterns.',
-                tech: ['Node.js', 'Claude Code', 'MCP', 'SQLite'],
-                accent: '#8b5cf6',
-                snippet: { lang: 'js', code: `const cycle = async () => {\n  const repos = await scanRepos();\n  for (const repo of repos) {\n    const session = await claude.spawn(repo);\n    const pr = await session.submit();\n    await feedback.record(pr.outcome);\n  }\n};` },
-            },
-            {
-                name: 'VIBE_CODER',
-                desc: 'Vampire survivors-style idle game. 18 enemy types, 4 bosses, 26 weapons, Claude Code integration.',
-                tech: ['Phaser 3', 'JavaScript', 'Vite', 'Web Audio'],
-                accent: '#c084fc',
-                demo: 'https://daredev256.github.io/vibe-coder/',
-                repo: 'https://github.com/DareDev256/vibe-coder',
-                snippet: { lang: 'js', code: `class Weapon extends Phaser.GameObjects.Sprite {\n  fire(target) {\n    const bullet = this.pool.get();\n    bullet.launch(this.x, this.y, target);\n    this.scene.sound.play('fire');\n  }\n}` },
-            },
-            {
-                name: 'PORTFOLIO_OS',
-                desc: 'This cyberpunk desktop OS. 44 vanilla JS modules, Three.js galaxy, draggable windows, zero frameworks.',
-                tech: ['JavaScript', 'Three.js', 'CSS3', 'Vite'],
-                accent: '#a78bfa',
-                demo: 'https://jamesdare.com',
-                snippet: { lang: 'js', code: `WindowManager.create({\n  id: 'terminal',\n  title: 'TERMINAL',\n  icon: '▸',\n  content: container,\n  width: 640,\n  height: 400,\n});` },
-            },
-            {
-                name: 'CULTURE_DROP_HQ',
-                desc: 'Operations dashboard for Toronto hip-hop media. Manage content, artists, and releases.',
-                tech: ['React', 'Node.js', 'MongoDB', 'Tailwind'],
-                accent: '#d4af37',
-                snippet: { lang: 'jsx', code: `const Dashboard = () => (\n  <Layout sidebar={<ArtistNav />}>\n    <ContentGrid filter={useFilter()} />\n    <ReleaseTimeline data={releases} />\n  </Layout>\n);` },
-            },
-            {
-                name: 'FCPXML_MCP_SERVER',
-                desc: 'MCP server for Final Cut Pro XML. Automate timeline editing with natural language.',
-                tech: ['Python', 'Claude AI', 'MCP', 'XML'],
-                accent: '#7c3aed',
-                repo: 'https://github.com/DareDev256/fcpxml-mcp-server',
-                snippet: { lang: 'python', code: `@server.tool("cut_clip")\nasync def cut_clip(timeline, tc_in, tc_out):\n    clip = timeline.find_clip_at(tc_in)\n    return clip.split(tc_in, tc_out)` },
-            },
-        ];
-
-        const wrapper = document.createElement('div');
-        wrapper.style.cssText = 'height:100%; position:relative;';
-
-        // Cinematic scroll container
-        const scroll = document.createElement('div');
-        scroll.className = 'reign-scroll';
-
-        // Dot navigation
-        const nav = document.createElement('div');
-        nav.className = 'reign-nav';
-        const dots = [];
-
-        // ── Amethyst Code: Hero Reveal ──
-        const hero = document.createElement('div');
-        hero.className = 'reign-hero';
-
-        const heroTitle = document.createElement('div');
-        heroTitle.className = 'reign-hero__title';
-        heroTitle.dataset.text = 'PURPLE REIGN';
-        heroTitle.textContent = 'PURPLE REIGN';
-
-        const heroTag = document.createElement('div');
-        heroTag.className = 'reign-hero__tagline';
-        heroTag.textContent = 'FEATURED // PROJECTS';
-
-        const scrollHint = document.createElement('div');
-        scrollHint.className = 'reign-hero__scroll-hint';
-        scrollHint.textContent = '↓ SCROLL';
-
-        // ── Ascending Core: 3D Crystal ──
-        const core = document.createElement('div');
-        core.className = 'reign-core';
-        const coreGlow = document.createElement('div');
-        coreGlow.className = 'reign-core__glow';
-        core.appendChild(coreGlow);
-        for (let f = 0; f < 8; f++) {
-            const face = document.createElement('div');
-            face.className = 'reign-core__face';
-            core.appendChild(face);
-        }
-
-        // ── Amethyst Aperture: cinematic iris reveal with identity ──
-        const iris = document.createElement('div');
-        iris.className = 'aperture-iris';
-
-        const identity = document.createElement('div');
-        identity.className = 'aperture-identity';
-
-        const name = document.createElement('div');
-        name.className = 'aperture-name';
-        name.textContent = 'JAMES OLUSOGA';
-
-        const divider = document.createElement('div');
-        divider.className = 'aperture-divider';
-
-        const role = document.createElement('div');
-        role.className = 'aperture-role';
-        role.textContent = 'AI SOLUTIONS ENGINEER \u2022 CREATIVE TECHNOLOGIST';
-
-        identity.append(name, divider, role);
-        hero.append(iris, core, identity, heroTitle, heroTag, scrollHint);
-        scroll.appendChild(hero);
-
-        featured.forEach((project, i) => {
-            const chapter = document.createElement('div');
-            chapter.className = 'reign-chapter';
-            chapter.style.setProperty('--reign-accent', project.accent);
-            chapter.style.setProperty('--reign-glow', `${project.accent}4d`);
-
-            const idx = document.createElement('div');
-            idx.className = 'reign-chapter__index reign-reveal';
-            idx.dataset.delay = '0';
-            idx.textContent = `chapter ${String(i + 1).padStart(2, '0')} / ${String(featured.length).padStart(2, '0')}`;
-
-            const title = document.createElement('div');
-            title.className = 'reign-chapter__title reign-reveal';
-            title.dataset.delay = '1';
-            title.textContent = project.name;
-
-            const desc = document.createElement('div');
-            desc.className = 'reign-chapter__desc reign-reveal';
-            desc.dataset.delay = '2';
-            desc.textContent = project.desc;
-
-            const techRow = document.createElement('div');
-            techRow.className = 'reign-chapter__tech reign-reveal';
-            techRow.dataset.delay = '3';
-            project.tech.forEach(t => {
-                const badge = document.createElement('span');
-                badge.className = 'reign-badge';
-                badge.textContent = t;
-                techRow.appendChild(badge);
-            });
-
-            const links = document.createElement('div');
-            links.className = 'reign-chapter__links reign-reveal';
-            links.dataset.delay = '4';
-
-            if (project.demo) {
-                const demoBtn = document.createElement('button');
-                demoBtn.className = 'reign-link reign-link--live';
-                demoBtn.textContent = 'LIVE DEMO';
-                demoBtn.addEventListener('click', () => openExternal(project.demo));
-                links.appendChild(demoBtn);
-            }
-            if (project.repo) {
-                const repoBtn = document.createElement('button');
-                repoBtn.className = 'reign-link';
-                repoBtn.textContent = 'SOURCE';
-                repoBtn.addEventListener('click', () => openExternal(project.repo));
-                links.appendChild(repoBtn);
-            }
-
-            // Catalyst Aura — interactive glow layers
-            const aura = document.createElement('div');
-            aura.className = 'catalyst-aura';
-            const border = document.createElement('div');
-            border.className = 'catalyst-border';
-            chapter.append(aura, border);
-
-            // Mouse tracking for radial glow
-            chapter.addEventListener('mousemove', (e) => {
-                const rect = chapter.getBoundingClientRect();
-                chapter.style.setProperty('--mx', `${e.clientX - rect.left}px`);
-                chapter.style.setProperty('--my', `${e.clientY - rect.top}px`);
-            });
-
-            if (project.snippet) {
-                const viewer = createCodeViewer({ code: project.snippet.code, lang: project.snippet.lang, accent: project.accent });
-                viewer.classList.add('reign-reveal');
-                viewer.dataset.delay = '4';
-                links.dataset.delay = '5';
-                chapter.append(idx, title, desc, techRow, viewer, links);
-            } else {
-                chapter.append(idx, title, desc, techRow, links);
-            }
-            scroll.appendChild(chapter);
-
-            // Nav dot
-            const dot = document.createElement('button');
-            dot.className = 'reign-nav__dot';
-            dot.addEventListener('click', () => chapter.scrollIntoView({ behavior: 'smooth' }));
-            nav.appendChild(dot);
-            dots.push(dot);
-        });
-
-        // Footer chapter — link to full list
-        const footerChapter = document.createElement('div');
-        footerChapter.className = 'reign-footer';
-        const allBtn = document.createElement('button');
-        allBtn.className = 'reign-link';
-        allBtn.style.setProperty('--reign-accent', '#8b5cf6');
-        allBtn.textContent = 'VIEW ALL 20 PROJECTS →';
-        allBtn.addEventListener('click', () => {
-            WindowManager.close('portfolio');
-            setTimeout(() => this.openApplicationsShowcase(), 250);
-        });
-        footerChapter.appendChild(allBtn);
-        scroll.appendChild(footerChapter);
-
-        wrapper.append(scroll, nav);
-
-        // ── Obsidian Veil: monolith fracture overlay ──
-        const veil = document.createElement('div');
-        veil.className = 'obsidian-veil';
-        for (let s = 0; s < 6; s++) {
-            const shard = document.createElement('div');
-            shard.className = 'obsidian-shard';
-            veil.appendChild(shard);
-        }
-        wrapper.appendChild(veil);
-
-        // IntersectionObserver for scroll-triggered reveals + active dot
-        const revealObserver = new IntersectionObserver(
-            entries => entries.forEach(e => {
-                if (e.isIntersecting) e.target.classList.add('reign-reveal--visible');
-            }),
-            { root: scroll, threshold: 0.2 },
-        );
-
-        const chapterObserver = new IntersectionObserver(
-            entries => entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('reign-chapter--entered');
-                    const idx = [...scroll.querySelectorAll('.reign-chapter')].indexOf(e.target);
-                    dots.forEach((d, j) => d.classList.toggle('reign-nav__dot--active', j === idx));
-                }
-            }),
-            { root: scroll, threshold: 0.5 },
-        );
-
-        // Hero reveal observer — glitch resolves on entry
-        const heroObserver = new IntersectionObserver(
-            entries => entries.forEach(e => {
-                if (e.isIntersecting) {
-                    hero.classList.add('reign-hero--entered');
-                    // Swap to resolved state after glitch finishes
-                    setTimeout(() => hero.classList.add('reign-hero--resolved'), 1400);
-                    heroObserver.disconnect();
-                }
-            }),
-            { root: scroll, threshold: 0.5 },
-        );
-
-        let closed = false;
-
-        // Ascending Core: fracture crystal when scrolling past hero
-        const onScrollFracture = () => {
-            if (closed) return;
-            const heroH = hero.offsetHeight || 1;
-            const progress = Math.min(scroll.scrollTop / (heroH * 0.6), 1);
-            if (progress > 0.3 && !core.classList.contains('reign-core--fracturing')) {
-                core.classList.add('reign-core--fracturing');
-            } else if (progress <= 0.2 && core.classList.contains('reign-core--fracturing')) {
-                core.classList.remove('reign-core--fracturing');
-            }
-            // Obsidian Veil — two-phase fracture reveal
-            if (progress > 0.5 && !veil.classList.contains('obsidian-veil--glowing')) {
-                veil.classList.add('obsidian-veil--glowing');
-            }
-            if (progress > 0.7 && !veil.classList.contains('obsidian-veil--fractured')) {
-                veil.classList.add('obsidian-veil--fractured');
-                setTimeout(() => veil.classList.add('obsidian-veil--dismissed'), 1500);
-            }
-        };
-        scroll.addEventListener('scroll', onScrollFracture, { passive: true });
-
-        // Defer observer setup to after DOM attachment
-        requestAnimationFrame(() => {
-            if (closed) return; // window closed before rAF fired — skip to avoid re-activating disconnected observers
-            heroObserver.observe(hero);
-            scroll.querySelectorAll('.reign-reveal').forEach(el => revealObserver.observe(el));
-            scroll.querySelectorAll('.reign-chapter').forEach(ch => chapterObserver.observe(ch));
-        });
-
-        WindowManager.create({
-            id: 'portfolio',
-            title: 'PURPLE REIGN // FEATURED',
-            icon: '◈',
-            content: wrapper,
-            width: 640,
-            height: 560,
-            onClose: () => {
-                closed = true;
-                heroObserver.disconnect();
-                revealObserver.disconnect();
-                chapterObserver.disconnect();
-                scroll.removeEventListener('scroll', onScrollFracture);
-            },
-        });
-    },
-
-    /**
      * Open Applications window (React-style showcase)
      */
     openApplicationsShowcase() {
@@ -1790,8 +1483,8 @@ export const Desktop = {
             grid.innerHTML = filtered
                 .map(
                     (project, index) => {
-                        const status = project.demo ? 'LIVE' : 'ARCHIVED';
-                        const statusClass = project.demo ? '' : 'lab-notes__status--archived';
+                        const status = deriveStatus(project);
+                        const statusClass = projectStatusClass(project);
                         const tagList = (project.tags || []).map(t => Sanitize.text(t)).join(' · ');
                         const techCount = project.tech ? project.tech.length : 0;
                         return `
@@ -1821,10 +1514,11 @@ export const Desktop = {
                             <span class="lab-notes__label">Stack</span>
                             <span class="lab-notes__value">${techCount} technologies</span>
                         </div>
+                        ${project.metrics ? `<div class="lab-notes__row"><span class="lab-notes__label">Traction</span><span class="lab-notes__value">${Sanitize.text(project.metrics)}</span></div>` : ''}
                         ${tagList ? `<div class="lab-notes__row"><span class="lab-notes__label">Class</span><span class="lab-notes__value">${tagList}</span></div>` : ''}
                     </div>
                     <div class="project-links">
-                        ${project.demo ? `<a href="${Sanitize.url(project.demo)}" target="_blank" rel="noopener noreferrer" class="project-link">View Demo</a>` : ''}
+                        ${project.demo ? `<a href="${Sanitize.url(project.demo)}" target="_blank" rel="noopener noreferrer" class="project-link">${Sanitize.text(project.demoLabel || 'View Demo')}</a>` : ''}
                         ${project.repo ? `<a href="${Sanitize.url(project.repo)}" target="_blank" rel="noopener noreferrer" class="project-link secondary">GitHub</a>` : ''}
                     </div>
                 </div>
