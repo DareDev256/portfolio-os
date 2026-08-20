@@ -85,7 +85,9 @@
         if (!img || !img.complete || !img.naturalWidth) return;
         const luma = meanLuma(img);
         if (!luma) return;
-        const factor = Math.min(1, Math.max(0.34, TARGET_LUMA / luma));
+        // Floor 0.20, not 0.34: a light editorial site (nirvanadeshaunbuilds is
+        // cream below the fold) needs far more pull-down than any film frame did.
+        const factor = Math.min(1, Math.max(0.2, TARGET_LUMA / luma));
         plate.style.setProperty('--plate-exposure', factor.toFixed(3));
         plate.dataset.exposed = '1';
     }

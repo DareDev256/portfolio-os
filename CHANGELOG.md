@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.1.0
+version: 4.2.0
 last_updated: 2026-08-20
 
 ---
@@ -17,6 +17,52 @@ last_updated: 2026-08-20
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.2.0] — 2026-08-20
+
+The reel goes from six plates to nine, and the roster leads it.
+
+### Added
+
+- **NirvanaDeshaun opens the reel** — not a scroll of the site but its own loader
+  video, `assets/video/intro-build.mp4`, pulled and run full-bleed. It is a drone
+  build-progression: foundation forms, poured slab, finished house. Trapped in the
+  site's 780x520 loader plate it reads as nothing; full-bleed it is the widest
+  range signal on the page, an Atlanta custom-home build sitting behind a Toronto
+  AI-engineer headline.
+- **tdotssolutionsz.com as plate two**, spanning MUSIC VIDEOS into WEB DESIGN. That
+  section shows KMONEY, SAVV4X, THE SYREN and 100BANDPLAN in browser chrome, so a
+  single plate carries the client roster — a better answer than five more plates.
+- **savv4x.com**, pinned above LATEST DROP.
+- Nine plates total, front-loaded: nirvana, tdots, Masicka, streetbud, Casper,
+  kmoney, No Cap, 100bandplan, savv4x. Six BUILT, three DIRECTED.
+
+### Changed
+
+- **Exposure floor dropped from 0.34 to 0.20.** A light editorial site needs far
+  more pull-down than any film frame did; nirvanadeshaunbuilds is cream below the
+  fold and daylight drone footage above it. Measured panel-area luma across all
+  nine now spans 20 to 62.
+- Service-worker precache points at the nirvana poster, the new first plate.
+
+### Not included, and why
+
+- **syreneffect.com** — its ENTER gate could not be clicked; the locator resolved
+  but the click ate its full timeout, meaning the button is covered. Third failure
+  on that site, so it was dropped rather than chased. Separately, at 1440x900 its
+  CRT panel fills about 12% of the frame on black, which would read as an empty
+  plate even if the click landed.
+- **shopbayhq.com** — currently serving "ShopBayHQ is paused". Nothing to film
+  until it is restored.
+
+### Verified
+
+- All nine plates hold their own class and credit through a scripted pass, with
+  the reel's own scheduler neutralised first. An earlier sheet showed plate 0
+  rendering plate 1's content — that was the harness racing the live rotation, not
+  the page; `track.mjs` had already measured 0 plate/credit mismatches across 90
+  live samples. 645 tests green, ESLint unchanged at its 18-problem baseline, zero
+  page errors and zero 4xx.
 
 ## [4.1.0] — 2026-08-20
 
