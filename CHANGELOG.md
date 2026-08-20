@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.2.0
+version: 4.3.0
 last_updated: 2026-08-20
 
 ---
@@ -17,6 +17,30 @@ last_updated: 2026-08-20
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.3.0] — 2026-08-20
+
+fcp-mcp-server was missing from the page, and it is the only artifact here that
+strangers validated rather than James describing his own work.
+
+### Added
+
+- **GATE 03 — fcp-mcp-server.** 90 stars, 18 forks, MIT, PyPI `fcp-mcp-server`
+  v0.16.0, 1,928 installs in the last month. Every figure re-derived from the
+  GitHub and PyPI APIs on 2026-08-20, not copied from a resume — the same
+  package's star count has previously been claimed as 50+, 70, 73 and 74 while
+  the real number was 87.
+- **An ADOPTED row in the status panel**, above DIRECTED. The panel could show
+  scale (63 repos, 92 modules) and reach (25M views) but nothing that a third
+  party had signed off on; adoption is the one number a screener cannot discount
+  as self-reported.
+
+### Changed
+
+- Gate strip `minmax` from 280px to 230px. At 280 a fifth card wrapped onto a row
+  of its own, which reads as a layout accident rather than a separation. Five now
+  fit across at 1440 and 1920, two rows at 1100, three at 760, no overflow at any
+  width.
 
 ## [4.2.0] — 2026-08-20
 

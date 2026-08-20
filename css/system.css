@@ -547,6 +547,9 @@ button:focus-visible {
 .rw4 {
     animation-delay: 1.42s;
 }
+.rw5 {
+    animation-delay: 1.51s;
+}
 
 @keyframes rowIn {
     from {
@@ -1050,8 +1053,10 @@ button:focus-visible {
     position: relative;
     padding: 0 var(--sys-gut) 70px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 18px;
+    /* 230px, not 280: at 280 a fifth card wraps to a row of its own and reads as
+       a layout accident rather than a separation. Five fit across at 1440. */
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
 }
 
 .gate-card {
@@ -1101,6 +1106,11 @@ button:focus-visible {
     color: #fff;
     margin: 0 0 8px;
     text-transform: uppercase;
+}
+
+.gate-card p strong {
+    color: var(--sys-gold);
+    font-weight: 400;
 }
 
 .gate-card p {
