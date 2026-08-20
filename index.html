@@ -164,12 +164,13 @@
                 <h2 class="sect-title rv d1" id="sys-h">Passion Agent</h2>
                 <p class="lede rv d2">
                     92 modules across a 63-repository registry. Three services hold on a Mac
-                    Mini and 52 scheduled jobs report into Discord without being asked. A gold
-                    pulse marks an edge the agent moved data down in this snapshot.
+                    Mini, and 59 scheduled jobs across both machines report into Discord without
+                    being asked. A gold pulse marks an edge the agent moved data down in this
+                    snapshot.
                 </p>
 
                 <div class="graph-wrap rv d3">
-                    <svg viewBox="0 0 760 640" role="img" aria-label="Node graph: a central core connected to seven module groups and eighteen repositories, with activity highlighted on the nin-wiki-flow branch.">
+                    <svg viewBox="0 0 760 640" role="img" aria-label="Node graph of the Passion Agent registry: a central core connected to seven named repositories — passion-dashboard, betmetrics, fcp-mcp-server, daredev-reel, poultry-poc, second-opinion and slvling — each fanning out to further repos, with activity highlighted on the nin-wiki-flow branch.">
                         <g stroke="rgba(111,211,255,0.16)" stroke-width="1" fill="none">
                             <path d="M380 320 L200 176" /><path d="M380 320 L556 172" /><path d="M380 320 L172 340" /><path d="M380 320 L596 356" />
                             <path d="M380 320 L236 486" /><path d="M380 320 L520 492" /><path d="M380 320 L384 132" /><path d="M380 320 L376 524" />
@@ -203,14 +204,21 @@
                         <circle class="t-ring2" cx="380" cy="320" r="30" fill="none" stroke="rgba(111,211,255,0.55)" stroke-width="1" />
                         <circle cx="380" cy="320" r="34" fill="#061020" stroke="#6fd3ff" stroke-width="2" />
                         <circle class="t-core" cx="380" cy="320" r="9" fill="#b5ecff" />
+                        <text x="200" y="210" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">passion-dashboard</text>
+                        <text x="556" y="206" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">betmetrics</text>
+                        <text x="172" y="374" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">fcp-mcp-server</text>
+                        <text x="236" y="520" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">daredev-reel</text>
+                        <text x="520" y="526" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">poultry-poc</text>
+                        <text x="384" y="166" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">second-opinion</text>
+                        <text x="376" y="558" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">slvling</text>
                         <text x="380" y="384" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1.6">CORE</text>
                         <text x="596" y="406" text-anchor="middle" fill="#ffd76a" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1.6">nin-wiki-flow</text>
                     </svg>
                 </div>
 
                 <div class="legend rv d4">
-                    <span><i class="grp" aria-hidden="true"></i>MODULE GROUP</span>
-                    <span><i class="repo" aria-hidden="true"></i>REPOSITORY</span>
+                    <span><i class="grp" aria-hidden="true"></i>NAMED REPOSITORY</span>
+                    <span><i class="repo" aria-hidden="true"></i>REGISTRY ENTRY</span>
                     <span><i class="act" aria-hidden="true"></i>ACTIVITY IN SNAPSHOT</span>
                 </div>
             </div>
@@ -222,7 +230,7 @@
                         <div class="rv d1"><span class="k">dashboard:3000</span><span class="up">UP</span></div>
                         <div class="rv d2"><span class="k">brain:7777</span><span class="up">UP</span></div>
                         <div class="rv d3"><span class="k">letstrade:8420</span><span class="up">UP</span></div>
-                        <div class="rv d4"><span class="k">scheduled jobs</span><span>52 registered</span></div>
+                        <div class="rv d4"><span class="k">scheduled jobs</span><span>59 registered</span></div>
                     </div>
                 </div>
 
@@ -262,66 +270,234 @@
                 <h2 class="sect-title rv d1" id="gates-h">Work that had something on the line</h2>
             </div>
 
-            <article class="gate" aria-labelledby="gate-betmetrics">
-                <div class="scan" aria-hidden="true"></div>
-
-                <div class="gate-shot rv slide">
-                    <img src="/assets/system/betmetrics.jpg" alt="The BetMetrics live odds board, showing matchups and prices across sportsbooks." loading="lazy" />
+            <div class="gate-cycler" id="gate-cycler">
+                <div class="gate" data-gate-stage>
+                <div class="gate-shot">
+                    <img src="/assets/system/gates/betmetrics.jpg" alt="The BetMetrics live odds board, showing matchups and prices across sportsbooks." loading="lazy" />
                     <div class="fade" aria-hidden="true"></div>
                 </div>
 
                 <div class="gate-body">
-                    <div class="gate-head rv">
+                    <div class="gate-head">
                         <div class="rank" aria-hidden="true">A</div>
                         <div>
                             <div class="tag">GATE 01 · CLEARED</div>
-                            <h3 id="gate-betmetrics">BetMetrics</h3>
+                            <h3>BetMetrics</h3>
                         </div>
                     </div>
 
-                    <p class="rv d1">A sports-betting analytics product with real users and real money, where one mis-scoped query pays out the wrong person.</p>
+                    <p>A sports-betting analytics product with real users and real money, where one mis-scoped query pays out the wrong person.</p>
 
-                    <div class="decision rv d2">
+                    <div class="decision">
                         <div class="tag">THE DECISION</div>
                         <p>Every money-adjacent file marked protected. No change to prize eligibility ships without explicit human sign-off, enforced by a pre-commit gate rather than a convention.</p>
                     </div>
 
-                    <div class="figs rv d3">
+                    <div class="figs">
                         <div><div class="n">v0.59</div><div class="cap">SHIPPED TO PROD</div></div>
                         <div><div class="n cyan">0</div><div class="cap">PAYOUT INCIDENTS</div></div>
                         <div><div class="n gold">2×</div><div class="cap">SCOPE EXPANSIONS</div></div>
                     </div>
 
-                    <div class="gate-foot rv d4">
+                    <div class="gate-foot">
                         <a class="btn" href="https://betmetrics.ca" rel="noopener">SEE IT LIVE →</a>
                         <span class="stack">NEXT.JS · CONVEX · CLERK · VERCEL &nbsp;·&nbsp; LIVE AT BETMETRICS.CA</span>
                     </div>
                 </div>
-            </article>
+                </div>
+
+                <div class="gate-tabs" role="tablist" aria-label="Selected work">
+                    <button type="button" class="gate-tab on" data-gate-tab role="tab" aria-selected="true" tabindex="0"><span class="num">01</span><span class="nm">BetMetrics</span></button>
+                    <button type="button" class="gate-tab" data-gate-tab role="tab" aria-selected="false" tabindex="-1"><span class="num">02</span><span class="nm">fcp-mcp-server</span></button>
+                    <button type="button" class="gate-tab" data-gate-tab role="tab" aria-selected="false" tabindex="-1"><span class="num">03</span><span class="nm">Second Opinion</span></button>
+                    <button type="button" class="gate-tab" data-gate-tab role="tab" aria-selected="false" tabindex="-1"><span class="num">04</span><span class="nm">Passion Agent</span></button>
+                    <button type="button" class="gate-tab" data-gate-tab role="tab" aria-selected="false" tabindex="-1"><span class="num">05</span><span class="nm">101 Films</span></button>
+                </div>
+            <template data-gate="betmetrics">
+                <div class="gate-shot">
+                    <img src="/assets/system/gates/betmetrics.jpg" alt="The BetMetrics live odds board, showing matchups and prices across sportsbooks." loading="lazy" />
+                    <div class="fade" aria-hidden="true"></div>
+                </div>
+
+                <div class="gate-body">
+                    <div class="gate-head">
+                        <div class="rank" aria-hidden="true">A</div>
+                        <div>
+                            <div class="tag">GATE 01 · CLEARED</div>
+                            <h3>BetMetrics</h3>
+                        </div>
+                    </div>
+
+                    <p>A sports-betting analytics product with real users and real money, where one mis-scoped query pays out the wrong person.</p>
+
+                    <div class="decision">
+                        <div class="tag">THE DECISION</div>
+                        <p>Every money-adjacent file marked protected. No change to prize eligibility ships without explicit human sign-off, enforced by a pre-commit gate rather than a convention.</p>
+                    </div>
+
+                    <div class="figs">
+                        <div><div class="n">v0.59</div><div class="cap">SHIPPED TO PROD</div></div>
+                        <div><div class="n cyan">0</div><div class="cap">PAYOUT INCIDENTS</div></div>
+                        <div><div class="n gold">2×</div><div class="cap">SCOPE EXPANSIONS</div></div>
+                    </div>
+
+                    <div class="gate-foot">
+                        <a class="btn" href="https://betmetrics.ca" rel="noopener">SEE IT LIVE →</a>
+                        <span class="stack">NEXT.JS · CONVEX · CLERK · VERCEL &nbsp;·&nbsp; LIVE AT BETMETRICS.CA</span>
+                    </div>
+                </div>
+            </template>
+            <template data-gate="fcp">
+                <div class="gate-shot">
+                    <img src="/assets/system/gates/fcp.jpg" alt="The fcp-mcp-server repository on GitHub, showing 90 stars and 18 forks." loading="lazy" />
+                    <div class="fade" aria-hidden="true"></div>
+                </div>
+
+                <div class="gate-body">
+                    <div class="gate-head">
+                        <div class="rank" aria-hidden="true">A</div>
+                        <div>
+                            <div class="tag">GATE 02 · CLEARED</div>
+                            <h3>fcp-mcp-server</h3>
+                        </div>
+                    </div>
+
+                    <p>An MCP server that drives Final Cut Pro from natural language — 7 grouped tools over 62 underlying operations, shipped to PyPI under MIT.</p>
+
+                    <div class="decision">
+                        <div class="tag">THE DECISION</div>
+                        <p>Strangers adopted it, which is the one kind of proof I cannot write myself. So the numbers on this page come from the GitHub and PyPI APIs, not from a resume that has claimed this same count as 50+, 70, 73 and 74.</p>
+                    </div>
+
+                    <div class="figs">
+                        <div><div class="n gold">90</div><div class="cap">GITHUB STARS</div></div>
+                        <div><div class="n">18</div><div class="cap">FORKS</div></div>
+                        <div><div class="n cyan">1,928</div><div class="cap">INSTALLS / MONTH</div></div>
+                    </div>
+
+                    <div class="gate-foot">
+                        <a class="btn" href="https://github.com/DareDev256/fcp-mcp-server" rel="noopener">READ THE SOURCE ↗</a>
+                        <span class="stack">PYTHON · MCP · FCPXML &nbsp;·&nbsp; PYPI FCP-MCP-SERVER v0.16.0</span>
+                    </div>
+                </div>
+            </template>
+            <template data-gate="second-opinion">
+                <div class="gate-shot">
+                    <img src="/assets/system/gates/second-opinion.jpg" alt="Second Opinion — an evidence-grounded appointment brief generator for adenomyosis patients." loading="lazy" />
+                    <div class="fade" aria-hidden="true"></div>
+                </div>
+
+                <div class="gate-body">
+                    <div class="gate-head">
+                        <div class="rank" aria-hidden="true">A</div>
+                        <div>
+                            <div class="tag">GATE 03 · CLEARED</div>
+                            <h3>Second Opinion</h3>
+                        </div>
+                    </div>
+
+                    <p>An evidence-grounded appointment brief for adenomyosis patients, built in a hackathon weekend. It reads the current literature and hands the patient something a specialist will actually read.</p>
+
+                    <div class="decision">
+                        <div class="tag">THE DECISION</div>
+                        <p>Nothing reaches the brief without a citation. A medical tool that cannot show its source is worse than no tool, so retrieval failure renders as a gap the patient can see rather than as confident prose.</p>
+                    </div>
+
+                    <div class="figs">
+                        <div><div class="n">30s</div><div class="cap">TO A FULL BRIEF</div></div>
+                        <div><div class="n cyan">51</div><div class="cap">SOURCES CITED</div></div>
+                        <div><div class="n gold">1 in 3</div><div class="cap">WOMEN IT IS FOR</div></div>
+                    </div>
+
+                    <div class="gate-foot">
+                        <a class="btn" href="https://second-opinion-eta.vercel.app" rel="noopener">OPEN THE DEMO →</a>
+                        <span class="stack">NEXT.JS · RAG · VERCEL &nbsp;·&nbsp; REPO PRIVATE, DEMO OPEN</span>
+                    </div>
+                </div>
+            </template>
+            <template data-gate="passion">
+                <div class="gate-shot">
+                    <img src="/assets/system/gates/passion-agent.jpg" alt="Passion OS, the desktop environment that fronts the Passion Agent system." loading="lazy" />
+                    <div class="fade" aria-hidden="true"></div>
+                </div>
+
+                <div class="gate-body">
+                    <div class="gate-head">
+                        <div class="rank" aria-hidden="true">A</div>
+                        <div>
+                            <div class="tag">GATE 04 · CLEARED</div>
+                            <h3>Passion Agent</h3>
+                        </div>
+                    </div>
+
+                    <p>An agent that manages a 63-repository registry, ships its own scheduled work overnight, and files what it did. The desktop above is its front end, running with zero framework dependencies.</p>
+
+                    <div class="decision">
+                        <div class="tag">THE DECISION</div>
+                        <p>It reports to Discord whether or not anyone is watching. An autonomous system that only surfaces its work when asked is a system nobody audits, so every scheduled job narrates itself.</p>
+                    </div>
+
+                    <div class="figs">
+                        <div><div class="n">92</div><div class="cap">MODULES</div></div>
+                        <div><div class="n cyan">67K</div><div class="cap">LINES, FIRST-PARTY</div></div>
+                        <div><div class="n gold">63</div><div class="cap">REPOS MANAGED</div></div>
+                    </div>
+
+                    <div class="gate-foot">
+                        <a class="btn" href="/os">OPEN THE DESKTOP →</a>
+                        <span class="stack">VANILLA JS · NODE · LAUNCHD · PM2 &nbsp;·&nbsp; RUNS ON A MAC MINI</span>
+                    </div>
+                </div>
+            </template>
+            <template data-gate="films">
+                <div class="gate-shot">
+                    <img src="/assets/system/gates/films.jpg" alt="TdotsSolutionsz — the film and web catalogue, showing client work in browser chrome." loading="lazy" />
+                    <div class="fade" aria-hidden="true"></div>
+                </div>
+
+                <div class="gate-body">
+                    <div class="gate-head">
+                        <div class="rank" aria-hidden="true">B</div>
+                        <div>
+                            <div class="tag">GATE 05 · CLEARED</div>
+                            <h3>101 Films</h3>
+                        </div>
+                    </div>
+
+                    <p>Fourteen years directing music video. 54 artists, 25,332,774 views, and the reason the engineering work has clients at all — Street Bud, KMoney and 100BandPlan all came through the music first.</p>
+
+                    <div class="decision">
+                        <div class="tag">THE DECISION</div>
+                        <p>The film is the credibility and the site is the product. Keeping them on one domain let the catalogue sell the build work without a pitch deck.</p>
+                    </div>
+
+                    <div class="figs">
+                        <div><div class="n">101</div><div class="cap">FILMS DIRECTED</div></div>
+                        <div><div class="n cyan">54</div><div class="cap">ARTISTS</div></div>
+                        <div><div class="n gold">25.3M</div><div class="cap">VIEWS</div></div>
+                    </div>
+
+                    <div class="gate-foot">
+                        <a class="btn" href="https://tdotssolutionsz.com" rel="noopener">SEE THE CATALOGUE ↗</a>
+                        <span class="stack">DIRECTION · EDIT · COLOUR &nbsp;·&nbsp; LIVE AT TDOTSSOLUTIONSZ.COM</span>
+                    </div>
+                </div>
+            </template>
+            </div>
 
             <div class="gate-strip">
-                <a class="gate-card rv d1" href="/os">
-                    <div class="rk">GATE 02 · A</div>
-                    <h4>Passion Agent</h4>
-                    <p>An agent that manages a 63-repository registry, ships its own scheduled work, and files what it did. 92 modules, 67K lines of first-party code.</p>
+                <a class="gate-card rv d1" href="https://ninonline.fandom.com" rel="noopener">
+                    <div class="rk">ALSO SHIPPED</div>
+                    <h4>Fandom Flow</h4>
+                    <p>A corpus-to-MediaWiki pipeline running two live game wikis — <strong>Nin Online</strong> and <strong>Ninjora</strong>. 509 pages authored, roughly 1,600 edits, every page render-verified before it is written.</p>
                 </a>
-                <a class="gate-card rv d2" href="https://github.com/DareDev256/fcpxml-mcp-server" rel="noopener">
-                    <div class="rk">GATE 03 · A</div>
-                    <h4>fcp-mcp-server</h4>
-                    <p>An MCP server that drives Final Cut Pro from natural language — 7 grouped tools over 62 operations. MIT, on PyPI, and the only thing here strangers validated: <strong>90 stars · 18 forks · 1,928 installs a month</strong>.</p>
+                <a class="gate-card rv d2" href="https://poultry-poc.vercel.app" rel="noopener">
+                    <div class="rk">ALSO SHIPPED</div>
+                    <h4>Poultry diagnostics</h4>
+                    <p>A retrieval system over veterinary literature that answers salmonella and flock-health questions with its sources attached. Built with a working poultry vet, not from a dataset.</p>
                 </a>
-                <a class="gate-card rv d3" href="https://ninonline.fandom.com" rel="noopener">
-                    <div class="rk">GATE 04 · A</div>
-                    <h4>Wiki pipeline</h4>
-                    <p>A corpus-to-MediaWiki pipeline that authored and published 396 pages across two game wikis — roughly 1,600 edits, render-verified before every write.</p>
-                </a>
-                <a class="gate-card rv d4" href="https://tdotssolutionsz.com" rel="noopener">
-                    <div class="rk">GATE 05 · B</div>
-                    <h4>101 Films</h4>
-                    <p>Fourteen years directing music video. 54 artists, 25,332,774 views. The reason the engineering work has clients at all.</p>
-                </a>
-                <div class="gate-card rv d5 is-wip">
-                    <div class="rk">GATE 06 · IN PROGRESS</div>
+                <div class="gate-card rv d3 is-wip">
+                    <div class="rk">IN PROGRESS</div>
                     <h4>sixjutsu</h4>
                     <p>A real-time multiplayer ninja game — Phaser client, Colyseus server, six jutsu slots and no respec. Built to find out where a game engine stops behaving like a web app.</p>
                 </div>
@@ -360,6 +536,7 @@
 
     <script type="module" src="/js/system-landing.js"></script>
     <script type="module" src="/js/hero-reel.js"></script>
+    <script type="module" src="/js/gate-cycler.js"></script>
 </body>
 
 </html>

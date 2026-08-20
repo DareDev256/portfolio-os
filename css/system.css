@@ -886,6 +886,9 @@ button:focus-visible {
 .gate-shot img {
     width: 100%;
     display: block;
+    /* Case-study shots must stay legible, so this is a nudge into the palette,
+       not the hard grade the full-bleed hero plates get. */
+    filter: saturate(0.9) brightness(0.93);
     border: 1px solid rgba(90, 190, 255, 0.34);
     box-shadow: -40px 50px 130px rgba(0, 0, 0, 0.85);
 }
@@ -1119,6 +1122,107 @@ button:focus-visible {
     line-height: 1.7;
     color: var(--sys-muted);
     margin: 0;
+}
+
+
+/* ---------- gate cycler ----------
+ * One expanded case study at a time, with the selector doubling as the index.
+ * The stage animates on swap; the tabs never move, so the eye keeps its place.
+ */
+
+.gate-cycler {
+    position: relative;
+}
+
+.gate-cycler .gate {
+    min-height: 520px;
+}
+
+[data-gate-stage].swap .gate-shot {
+    animation: gateShot 0.85s var(--sys-expo) both;
+}
+
+[data-gate-stage].swap .gate-body > * {
+    animation: gateIn 0.6s var(--sys-back) both;
+}
+
+[data-gate-stage].swap .gate-body > *:nth-child(1) { animation-delay: 0.04s; }
+[data-gate-stage].swap .gate-body > *:nth-child(2) { animation-delay: 0.11s; }
+[data-gate-stage].swap .gate-body > *:nth-child(3) { animation-delay: 0.18s; }
+[data-gate-stage].swap .gate-body > *:nth-child(4) { animation-delay: 0.25s; }
+[data-gate-stage].swap .gate-body > *:nth-child(5) { animation-delay: 0.32s; }
+
+@keyframes gateShot {
+    from { opacity: 0; transform: translateX(44px) scale(1.02); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes gateIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.gate-tabs {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 var(--sys-gut) 8px;
+}
+
+.gate-tab {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    min-height: 44px;
+    padding: 0 16px;
+    background: transparent;
+    border: 1px solid var(--sys-hair);
+    color: var(--sys-muted);
+    font-family: var(--sys-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+        border-color 0.26s var(--sys-cubic),
+        color 0.26s var(--sys-cubic),
+        background 0.26s var(--sys-cubic);
+}
+
+.gate-tab:hover {
+    border-color: var(--sys-cyan);
+    color: var(--sys-text);
+}
+
+.gate-tab .num {
+    color: var(--sys-cyan);
+    font-weight: 700;
+}
+
+.gate-tab.on {
+    border-color: var(--sys-cyan);
+    background: rgba(40, 120, 220, 0.14);
+    color: #fff;
+}
+
+.gate-tab.on .num {
+    color: var(--sys-gold);
+}
+
+@media (max-width: 720px) {
+    .gate-tab .nm { display: none; }
+    .gate-tab { padding: 0 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-gate-stage].swap .gate-shot,
+    [data-gate-stage].swap .gate-body > * {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
 }
 
 /* ---------- contact ---------- */

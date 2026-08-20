@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.3.0
+version: 4.4.0
 last_updated: 2026-08-20
 
 ---
@@ -17,6 +17,51 @@ last_updated: 2026-08-20
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.4.0] — 2026-08-20
+
+The work section stopped being one project. The snapshot graph stopped being
+decoration.
+
+### Added
+
+- **The work section is a cycler.** Five expanded case studies — BetMetrics,
+  fcp-mcp-server, Second Opinion, Passion Agent, 101 Films — each with its own
+  screenshot, decision and three figures, rotating on a 9s hold with a tab strip
+  that doubles as the index. It previously argued exactly one project and demoted
+  everything else to a card. `js/gate-cycler.js`.
+  Copy lives in `<template>` elements in the markup rather than in the module, so
+  it stays reviewable in the HTML and a crawler still reads all five.
+- **Second Opinion** as GATE 03. Links the live demo, not the repo — the repo is
+  private, and a private link 404s for every visitor who isn't James.
+- **Poultry diagnostics** in the compact strip.
+
+### Changed
+
+- **Wiki pipeline renamed Fandom Flow**, and it now names both wikis it runs —
+  Nin Online and Ninjora — rather than saying "two game wikis".
+- **The snapshot graph names its repositories.** Seven anonymous circles became
+  passion-dashboard, betmetrics, fcp-mcp-server, daredev-reel, poultry-poc,
+  second-opinion and slvling. The legend follows: "module group" was never true,
+  they are repositories. The graph now carries information instead of texture.
+- **Corrected a claim about the wrong machine.** The lede said "Three services
+  hold on a Mac Mini and 52 scheduled jobs report into Discord", which read as 52
+  jobs on the Mini. Measured: 7 `com.daredev` jobs on the Mini, 52 on the
+  MacBook. Now "59 scheduled jobs across both machines", and the services rail
+  agrees.
+- Case-study screenshots get a light grade so a white product page sits in the
+  palette without becoming unreadable — a nudge, not the hard grade the
+  full-bleed hero plates take.
+
+### Infrastructure
+
+- **`passion-api.jamesdare.com` is back up**, verified 200 on `/health` three
+  times. Its own tunnel (`4a402870`) was registered in Cloudflare but its
+  credentials JSON was gone, which is why it had zero connections and served 530.
+  Rather than re-issue it, the hostname now rides the already-running `shopbayhq`
+  tunnel as a second ingress rule — one tunnel carries many hostnames, and a
+  second launchd job is just another thing to die quietly. This unblocks the live
+  NOW BUILDING panel.
 
 ## [4.3.0] — 2026-08-20
 
