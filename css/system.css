@@ -1239,7 +1239,11 @@ button:focus-visible {
 
 /* ---------- responsive ---------- */
 
-@media (max-width: 1180px) {
+/* 1360, not 1180. Between those widths the 452px status panel leaves the copy
+ * column ~650px, and a 105px condensed headline breaks to FOUR lines there —
+ * "I BUILD / SYSTEMS / THAT RUN / WITHOUT ME." Caught by recording the page at
+ * 1280 rather than testing only the two viewports the artboards were drawn at. */
+@media (max-width: 1360px) {
     .hero-grid {
         grid-template-columns: minmax(0, 1fr);
         gap: 36px;

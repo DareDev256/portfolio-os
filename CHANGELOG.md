@@ -70,6 +70,15 @@ DIRECTED, then a site he BUILT, three of each.
 - Service-worker precache points at the reel's first poster instead of the deleted
   plate.
 
+### Fixed (4.1.1)
+
+- **The headline broke to four lines between 1180px and 1360px.** The 452px status
+  panel left the copy column ~650px, which a 105px condensed face cannot hold.
+  Found by recording the page and stepping the frames, not by testing the two
+  viewports the artboards were drawn at. The single-column breakpoint moved from
+  1180 to 1360; measured line counts are now 3 / 3 / 2 / 2 / 2 / 3 across
+  1920 / 1440 / 1360 / 1280 / 1100 / 390 with no horizontal overflow at any width.
+
 ### Verified
 
 - Full six-plate rotation cycles and wraps in order with zero plate/credit
