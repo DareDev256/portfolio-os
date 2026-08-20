@@ -10,7 +10,7 @@ const MAX_CACHE_ENTRIES = 150; // Prevent unbounded cache growth
 const PRECACHE = [
     '/',
     '/index.html',
-    '/assets/system/plate.jpg',
+    '/assets/system/reel/u3O5PKN9vCQ.jpg',
     '/assets/mahoraga-wheel.svg',
     '/assets/wallpapers/default.jpg',
 ];

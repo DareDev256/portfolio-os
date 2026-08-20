@@ -255,14 +255,56 @@ button:focus-visible {
     overflow: hidden;
 }
 
-.hero .plate {
+/* ---------- hero reel ----------
+ * Six plates stacked; one is-on at a time. Each holds a poster and, on capable
+ * clients, a muted clip that fades in over it. The crossfade SETTLES — no slow
+ * pan. A continuous drift is tdotssolutionsz's motion signature; borrowing it
+ * here is the exact convergence the divergence record at the top forbids.
+ */
+
+.plate-stack {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    animation: plateIn 2.6s var(--sys-expo) forwards;
+}
+
+.plate {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: scale(1.04);
+    transition:
+        opacity 1.15s var(--sys-expo),
+        transform 1.15s var(--sys-expo);
+}
+
+.plate.is-on {
+    opacity: 1;
+    transform: none;
+}
+
+.plate img,
+.plate video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: saturate(0.78) brightness(0.72) contrast(1.04);
-    animation: plateIn 2.6s var(--sys-expo) forwards;
+    /* --plate-exposure is metered per plate off its own poster in js/hero-reel.js.
+       Absent JS it stays 1 and this is the old fixed grade. */
+    filter: saturate(0.78) brightness(calc(0.72 * var(--plate-exposure, 1))) contrast(1.04);
+}
+
+/* The clip sits on its own poster and only reveals once frames are running, so a
+   blocked or stalled video degrades to the still instead of flashing black. */
+.plate video {
+    opacity: 0;
+    transition: opacity 0.55s var(--sys-cubic);
+}
+
+.plate video.on {
+    opacity: 1;
 }
 
 @keyframes plateIn {
@@ -274,6 +316,42 @@ button:focus-visible {
         transform: scale(1);
         opacity: 1;
     }
+}
+
+.reel-credit {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4em;
+    margin: 22px 0 0;
+    font-family: var(--sys-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sys-muted);
+}
+
+.reel-credit [data-reel-kind] {
+    color: var(--sys-cyan);
+    font-weight: 700;
+}
+
+.reel-credit [data-reel-who] {
+    color: var(--sys-cyan-pale);
+}
+
+.reel-credit [data-reel-meta] {
+    color: var(--sys-gold);
+}
+
+.reel-credit .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sys-gold);
+    box-shadow: 0 0 8px var(--sys-gold);
+    flex-shrink: 0;
+    animation: blink 2.4s steps(1) infinite;
 }
 
 .hero .wash {
@@ -993,6 +1071,21 @@ button:focus-visible {
     transform: translateY(-3px);
 }
 
+/* An unshipped gate still earns a card, but it must not look clickable. */
+.gate-card.is-wip {
+    border-style: dashed;
+    border-color: rgba(90, 190, 255, 0.28);
+}
+
+.gate-card.is-wip:hover {
+    transform: none;
+    border-color: rgba(90, 190, 255, 0.28);
+}
+
+.gate-card.is-wip .rk {
+    color: var(--sys-muted);
+}
+
 .gate-card .rk {
     font-family: var(--sys-mono);
     font-size: 10px;
@@ -1243,7 +1336,7 @@ button:focus-visible {
         scroll-behavior: auto;
     }
 
-    .plate,
+    .plate-stack,
     .line,
     .panel,
     .panel-rows .row,
@@ -1259,6 +1352,23 @@ button:focus-visible {
     .panel {
         clip-path: none !important;
         filter: none !important;
+    }
+
+    /* Freeze the reel on its first plate. Un-hiding ALL of them would leave the
+       last plate on top while the credit line still names the first. */
+    .plate {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+        opacity: 0 !important;
+    }
+
+    .plate.is-on {
+        opacity: 1 !important;
+    }
+
+    .reel-credit .dot {
+        animation: none !important;
     }
 
     .t-ring1,

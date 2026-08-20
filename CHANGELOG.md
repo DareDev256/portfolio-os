@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.0.0
+version: 4.1.0
 last_updated: 2026-08-20
 
 ---
@@ -17,6 +17,65 @@ last_updated: 2026-08-20
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.1.0] — 2026-08-20
+
+The hero is no longer a photograph of a street. It is a six-plate reel of James's
+own work, alternating the two lanes the page argues for: a music video he
+DIRECTED, then a site he BUILT, three of each.
+
+### Added
+
+- **`js/hero-reel.js`** — six stacked plates, each a 1280px poster plus a 6-second
+  muted clip on capable clients. The poster always paints first; video is attached
+  1.2s after `load` so it can never become or delay the LCP element. Phones,
+  metered connections and `prefers-reduced-motion` get stills or a single frozen
+  plate, never a download.
+- **Adaptive per-plate exposure.** Six clips shot by six different people ran mean
+  luma 36 to 111 across the status-panel area — a single hardcoded `brightness()`
+  either mudded the dark ones or let the bright ones wash out the panel and
+  flatten the headline. Each plate is now metered off its own poster against a
+  target of 48 and given a `--plate-exposure` factor (darken only; brightening a
+  dark frame just amplifies compression noise). Measured spread fell from 75 to 32.
+- **Three site clips captured from the live sites** — officialstreetbud.com,
+  officialkmoney.com, 100bandplan.com. Frame-stepped Playwright, never
+  `recordVideo` (it only scales DOWN), reusing the shot list and `driftIn` easing
+  from `~/dev/daredev-reel`.
+- **A fifth gate card for sixjutsu**, marked IN PROGRESS and deliberately not a
+  link. It is a portrait phone game; cropped into a full-bleed landscape hero it
+  reads as a stretched screenshot, so it gets a card instead of a plate.
+- The credit line under the headline names the plate and switches label with the
+  lane — `DIRECTED · MASICKA — EVERYTHING MI WANT · 5,741,613 VIEWS` /
+  `BUILT · KMONEY — OFFICIALKMONEY.COM · X2 PLATINUM · 33M VIEWS`.
+
+### Fixed
+
+- **A `WORLDSTARHIPHOP.COM` watermark was burned into the King Louie clip.** Found
+  by sweeping the bottom quarter of all six clips at three timestamps each, not by
+  watching one frame. Cropped out rather than dropping a 2.7M-view credit — though
+  that clip was later cut from the reel anyway.
+- **Two of the three client sites carry track titles that cannot appear on a
+  hiring page** — profanity panels on officialstreetbud.com at scroll fractions
+  ~0.55 and ~0.73, and an N-word track title on officialkmoney.com at ~0.45. Beats
+  are pinned to safe ranges (streetbud 0.00–0.095, kmoney 0.16–0.28) and those
+  ranges are documented in the capture script. Do not re-derive them casually.
+- **100bandplan.com's lower half is two white streaming embeds** that blow out
+  under the hero grade; its capture is cropped to the top 740px of the frame.
+
+### Changed
+
+- Films trimmed from six to three (Masicka, Casper TNG, Street Bud) to make room
+  for the site lane. King Louie, Robin Banks and Purple x BG clips removed from the
+  repo along with the now-unreferenced `assets/system/plate.jpg`.
+- Service-worker precache points at the reel's first poster instead of the deleted
+  plate.
+
+### Verified
+
+- Full six-plate rotation cycles and wraps in order with zero plate/credit
+  mismatches over 45s; zero page errors, zero 4xx, zero broken images on both
+  routes. Mobile confirmed to attach no video at all. 645 tests green, ESLint
+  unchanged at its 18-problem baseline.
 
 ## [4.0.0] — 2026-08-20
 
