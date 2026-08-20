@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 3.76.0
-last_updated: 2026-08-18
+version: 4.0.0
+last_updated: 2026-08-20
 
 ---
 
@@ -17,6 +17,64 @@ last_updated: 2026-08-18
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.0.0] — 2026-08-20
+
+The site is now two surfaces. `/` is a hiring page; the Passion OS desktop that
+used to own `/` moved intact to `/os`. Nothing was deleted.
+
+### Added
+
+- **`/` — THE SYSTEM, a recruiter-facing landing page.** Built from the approved
+  2026-08-19 design canvas (4 artboards). Hero with status panel, a Passion Agent
+  system snapshot with node graph and service/log rails, one expanded case study
+  (BetMetrics) plus three compact gates, and a contact block. New files:
+  `index.html`, `css/system.css`, `js/system-landing.js`.
+  Visual register lifted from `~/dev/slvling` — cyan `#6fd3ff`, gold `#ffd76a`,
+  cooled ground `#04080f`, 15px corner brackets, 3px scanline, outExpo/outBack/
+  outCubic easings. `css/system.css` carries the divergence record that keeps this
+  surface from converging with tdotssolutionsz.com.
+- **`vite.config.js`** with two rollup inputs. Vite's single-entry default would
+  have emitted the landing page and silently dropped the entire OS.
+
+### Changed
+
+- **Passion OS moved from `/` to `/os`** (`index.html` → `os/index.html`). Its
+  canonical URL, `og:url` and `<title>` follow it.
+- **`vercel.json` rewrites are now scoped.** `/os` and `/os/*` reach the OS
+  router; everything but `/resume/*` falls through to the landing page.
+- **`public/sitemap.xml` lists only real URLs** (`/` and `/os`). It previously
+  advertised `/services`, `/about`, `/work` and `/contact` — Passion OS
+  client-side routes that now all rewrite to the same landing document, i.e.
+  five declared duplicates of one page.
+- Client services and the client roster are no longer this site's job; they live
+  on tdotssolutionsz.com.
+
+### Fixed
+
+Four bugs surfaced by rendering the built output rather than reading the diff:
+
+- **Scroll reveals could strand a whole section at `opacity: 0`.** A plain
+  IntersectionObserver never fires for content you have already scrolled past, so
+  jumping to `#contact` and scrolling back up showed blank sections. The observer
+  root is now extended upward so anything above the viewport counts as visible.
+- **The OS style-recovery fallback misfired on every production build.** It looked
+  for stylesheets named `styles.css`/`windows.css`, but a build bundles them into
+  `/assets/os-<hash>.css`, so Safe Mode activated against a correctly styled page.
+  Harmless at `/`; at `/os` its relative `css/*.css` injections 404'd. Detection now
+  matches the built bundle, and the fallback paths are absolute.
+- **Three `mahoraga-wheel.svg` references and two wallpaper paths were relative**,
+  resolving to `/os/assets/...` and 404ing once the OS moved off the root.
+- **The service worker's precache list could never install.** `cache.addAll`
+  rejects atomically and the list named `/css/*.css`, which exists only in the dev
+  tree. Trimmed to paths that exist in `dist/`. Note the worker is still not
+  deployed — `sw.js` sits at the repo root, which Vite does not copy.
+
+### Verified
+
+- 645 tests across 38 files, green. ESLint unchanged at its 18-problem baseline.
+- Both routes rendered at 1440×900 and 390×844 with zero page errors and zero 4xx
+  after the fixes; every `.rv` element confirmed revealed on a full scroll pass.
 
 ## [3.76.0] — 2026-08-18
 

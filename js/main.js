@@ -133,13 +133,22 @@ async function init() {
 /* ── Style recovery ────────────────────────────────────────────────
  * Detects missing critical stylesheets (Vite HMR race, bad cache)
  * and force-injects them as a recovery fallback.                   */
-const CRITICAL_STYLES = ['css/reset.css', 'css/variables.css', 'css/styles.css', 'css/windows.css', 'css/modal.css', 'css/loading.css'];
+// Absolute, not relative. The OS now serves from /os, where a relative
+// 'css/reset.css' resolves to /os/css/reset.css and 404s.
+const CRITICAL_STYLES = ['/css/reset.css', '/css/variables.css', '/css/styles.css', '/css/windows.css', '/css/modal.css', '/css/loading.css'];
 
 function recoverStyles() {
     setTimeout(() => {
+        // A production build bundles every stylesheet into /assets/os-<hash>.css,
+        // so matching on the source filenames alone reported "styles missing" on
+        // every deployed page and fired Safe Mode against a perfectly styled OS.
         const hasOurStyles = Array.from(document.styleSheets).some(sheet => {
-            try { return sheet.href && (sheet.href.includes('styles.css') || sheet.href.includes('windows.css')); }
-            catch { return false; }
+            try {
+                if (!sheet.href) return false;
+                const url = new URL(sheet.href, window.location.href);
+                if (url.origin !== window.location.origin) return false;
+                return /styles\.css|windows\.css|^\/assets\//.test(url.pathname);
+            } catch { return false; }
         });
         if (hasOurStyles) return;
 

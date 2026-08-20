@@ -232,7 +232,7 @@ export const State = {
 
     /** Reset wallpaper to default image */
     resetWallpaper() {
-        this.setWallpaper('assets/wallpapers/default.jpg');
+        this.setWallpaper('/assets/wallpapers/default.jpg');
     },
 
     /**

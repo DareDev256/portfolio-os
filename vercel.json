@@ -1,7 +1,15 @@
 {
     "rewrites": [
         {
-            "source": "/((?!resume/).*)",
+            "source": "/os",
+            "destination": "/os/index.html"
+        },
+        {
+            "source": "/os/(.*)",
+            "destination": "/os/index.html"
+        },
+        {
+            "source": "/((?!resume/|os$|os/).*)",
             "destination": "/index.html"
         }
     ],

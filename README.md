@@ -4,12 +4,12 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v3.72.0-00f0ff?style=flat-square&labelColor=0d0d0d)
-![Tests](https://img.shields.io/badge/607_tests-00e676?style=flat-square&labelColor=0d0d0d)
+![Version](https://img.shields.io/badge/v4.0.0-00f0ff?style=flat-square&labelColor=0d0d0d)
+![Tests](https://img.shields.io/badge/645_tests-00e676?style=flat-square&labelColor=0d0d0d)
 ![Modules](https://img.shields.io/badge/76_modules-b388ff?style=flat-square&labelColor=0d0d0d)
 ![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
 
-**[▸ ENTER THE LIVE DEMO](https://jamesdare.com)**
+**[▸ ENTER THE LIVE DEMO](https://jamesdare.com/os)**
 
 </div>
 
@@ -20,6 +20,20 @@ A fully interactive desktop environment — draggable windows, GPU-composited gl
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
 > `76 modules` · `50 stylesheets` · `607 tests / 33 files` · `21 desktop apps` · `0 dependencies`
+
+## Two Surfaces
+
+Since v4.0.0 this repository builds **two** independent pages from one Vite config:
+
+| Route | Entry | What it is |
+|---|---|---|
+| `/` | `index.html` + `css/system.css` | **THE SYSTEM** — the hiring surface. A static scrolling page: status panel, Passion Agent snapshot, cleared gates, contact. No framework, no OS code. |
+| `/os` | `os/index.html` + `js/main.js` | **Passion OS** — the desktop environment this README documents. Everything below describes this surface. |
+
+The two are deliberately kept apart in type, palette, layout skeleton and motion
+signature; `css/system.css` carries the divergence record at the top of the file.
+Client services and the client roster live on
+[tdotssolutionsz.com](https://tdotssolutionsz.com), not here.
 
 ## Quick Start
 
@@ -32,7 +46,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`. Click the lock screen to enter.
+Open `http://localhost:5173` for the hiring surface, or `http://localhost:5173/os/` for the desktop. Click the lock screen to enter the OS.
 
 ## What You're Looking At
 
@@ -450,7 +464,7 @@ vercel --prod
 ```
 
 The project ships with a `vercel.json` that configures:
-- **SPA rewrites** — all routes fall through to `index.html` for client-side routing
+- **Scoped rewrites** — `/os` and `/os/*` fall through to `os/index.html` for the OS router; everything except `/resume/*` falls through to the landing page at `index.html`
 - **12 security headers** — CSP, HSTS (2-year preload), X-Frame-Options, COOP, COEP, CORP, Permissions-Policy, DNS prefetch control, download options, and cross-domain policies
 - **Service Worker cache control** — `no-cache` on `sw.js` to prevent stale worker versions
 - **Data endpoint caching** — 5-minute `Cache-Control` with `stale-while-revalidate` on `/data/*`

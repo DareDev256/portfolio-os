@@ -1,22 +1,17 @@
 // Service Worker (F) – pre-cache + hardened runtime cache
-const CACHE_NAME = 'portfolio-os-v9';
+const CACHE_NAME = 'portfolio-os-v10';
 const MAX_CACHE_ENTRIES = 150; // Prevent unbounded cache growth
+
+/* Every entry here must exist in the PRODUCTION build. `cache.addAll` rejects
+ * atomically: one 404 and the whole install fails, leaving the site with no
+ * service worker at all. The previous list precached /css/*.css, which only
+ * exists in the dev tree — Vite bundles it into /assets/ — so the worker had
+ * been failing to install on every deploy. */
 const PRECACHE = [
     '/',
     '/index.html',
-    '/css/reset.css',
-    '/css/variables.css',
-    '/css/styles.css',
-    '/css/windows.css',
-    '/css/glass.css',
-    '/css/galaxy.css',
-    '/css/modal.css',
-    '/css/loading.css',
-    '/css/welcome.css',
-    '/css/tour.css',
-    '/css/interactions.css',
-    '/css/mobile.css',
-    '/css/accessibility.css',
+    '/assets/system/plate.jpg',
+    '/assets/mahoraga-wheel.svg',
     '/assets/wallpapers/default.jpg',
 ];
 

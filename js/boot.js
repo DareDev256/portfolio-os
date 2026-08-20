@@ -62,7 +62,7 @@ export const Boot = {
             const src =
                 typeof State.wallpaper === 'string' && !State.wallpaper.startsWith('gradient:')
                     ? State.wallpaper
-                    : 'assets/wallpapers/default.jpg';
+                    : '/assets/wallpapers/default.jpg';
             const img = new Image();
             img.onload = () => resolve();
             img.onerror = () => resolve();
