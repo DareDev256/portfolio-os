@@ -42,9 +42,18 @@
     const conn = navigator.connection || {};
     const thin = Boolean(conn.saveData) || /(^|-)2g$/.test(conn.effectiveType || '');
 
-    // Video only where it is actually wanted: a pointer-driven, wide, unmetered
-    // client. A phone on cellular gets the stills and nothing else.
-    const allowVideo = !reduced && !thin && mq('(min-width: 900px)') && mq('(hover: hover)');
+    /* Video anywhere the connection can carry it.
+     *
+     * This used to also require (min-width: 900px) and (hover: hover), which
+     * meant every phone fell through to stills — the reel just sat there as a
+     * slideshow on the device most visitors actually arrive on. Width and
+     * pointer type say nothing about whether video is wanted; they were a proxy
+     * for "probably metered", and Save-Data plus effectiveType measure that
+     * directly.
+     *
+     * Cost is bounded already: only the current plate and the next one are ever
+     * attached, so this is two clips in flight, not ten. */
+    const allowVideo = !reduced && !thin;
 
     const STILL_HOLD = 5200;
 
