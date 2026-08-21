@@ -9,7 +9,9 @@
  * roughly LIMIT x live instances, and a cold start resets counters. That
  * reliably stops one IP hammering, runaway concurrency, and a single instance
  * grinding all day. It is NOT a hard cross-instance wall — that needs Upstash or
- * KV, which is a follow-up, not something to add unprompted.
+ * KV, which is a follow-up, not something to add unprompted. It lives in
+ * ./_limit.js because /api/draft spends too, and two endpoints with two
+ * private counters would be two budgets.
  *
  * The account also has a hard $25/month spend limit set in the Anthropic console
  * with auto-reload OFF, which is the real backstop under all of this.
@@ -17,6 +19,7 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { guardReply } from './_guard.js';
+import { checkAndReserve, release, clientIp, used, PER_IP_MAX } from './_limit.js';
 
 /* Haiku by default. The task is a three-sentence answer from a fixed fact list —
  * there is no reasoning here for a larger model to do, and a visitor cannot tell
@@ -25,74 +28,6 @@ import { guardReply } from './_guard.js';
  * CHAT_MODEL=claude-opus-5 in Vercel to flip it; nothing else changes. */
 const MODEL = process.env.CHAT_MODEL || 'claude-haiku-4-5';
 const MAX_TOKENS = Number(process.env.CHAT_MAX_TOKENS || 400);
-
-// James's number: ten prompts per visitor.
-const PER_IP_MAX = Number(process.env.RL_PER_IP_MAX || 10);
-const PER_IP_WINDOW_MS = Number(process.env.RL_WINDOW_MS || 6 * 60 * 60 * 1000);
-const MAX_CONCURRENT = Number(process.env.RL_MAX_CONCURRENT || 3);
-const DAILY_MAX = Number(process.env.RL_DAILY_MAX || 400);
-const MAX_CHARS = 600;
-
-const buckets = new Map();
-let concurrent = 0;
-let day = new Date().getUTCDate();
-let dayCount = 0;
-
-/* Fails safe: no forwarded-for header means everyone shares one bucket, which
- * throttles rather than bypasses. The reverse — a per-request unique id — would
- * hand an attacker a fresh allowance on every call. */
-function clientIp(req) {
-    const fwd = req.headers['x-forwarded-for'];
-    if (!fwd) return 'unknown';
-    return String(fwd).split(',')[0].trim() || 'unknown';
-}
-
-function checkAndReserve(ip) {
-    const now = Date.now();
-
-    const today = new Date().getUTCDate();
-    if (today !== day) {
-        day = today;
-        dayCount = 0;
-    }
-    if (dayCount >= DAILY_MAX) {
-        return { ok: false, status: 429, reason: 'Daily limit reached. Try tomorrow, or just email me — dev@jamesdare.com.' };
-    }
-
-    if (concurrent >= MAX_CONCURRENT) {
-        return { ok: false, status: 429, retryAfter: 5, reason: 'Busy right now. Give it a few seconds.' };
-    }
-
-    const bucket = buckets.get(ip);
-    if (!bucket || now - bucket.start > PER_IP_WINDOW_MS) {
-        buckets.set(ip, { start: now, count: 1 });
-    } else {
-        if (bucket.count >= PER_IP_MAX) {
-            return {
-                ok: false,
-                status: 429,
-                retryAfter: Math.ceil((bucket.start + PER_IP_WINDOW_MS - now) / 1000),
-                reason: `That is ${PER_IP_MAX} questions — the demo's limit. Email dev@jamesdare.com and you get the real thing, which is me.`,
-            };
-        }
-        bucket.count += 1;
-    }
-
-    // Keep the map from growing without bound on a long-lived instance.
-    if (buckets.size > 5000) {
-        for (const [key, value] of buckets) {
-            if (now - value.start > PER_IP_WINDOW_MS) buckets.delete(key);
-        }
-    }
-
-    concurrent += 1;
-    dayCount += 1;
-    return { ok: true };
-}
-
-function release() {
-    concurrent = Math.max(0, concurrent - 1);
-}
 
 const SYSTEM = `You are THE SYSTEM, the status-window interface on jamesdare.com — the personal site of James Olusoga, an AI Solutions Engineer in Toronto.
 
@@ -178,7 +113,7 @@ export default async function handler(req, res) {
         return res.status(200).json({
             reply: text,
             guarded: blocked || undefined,
-            remaining: Math.max(0, PER_IP_MAX - (buckets.get(clientIp(req))?.count ?? 0)),
+            remaining: Math.max(0, PER_IP_MAX - used(clientIp(req))),
         });
     } catch (error) {
         const status = error && error.status;

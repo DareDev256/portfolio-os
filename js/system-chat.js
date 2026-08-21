@@ -122,6 +122,30 @@
         return `mailto:${MAIL}?subject=${subject}&body=${body}`;
     }
 
+    /* Ask the server to compose the email, but never block on it: the link is
+     * created with the plain mailto already set, and only upgraded if the draft
+     * comes back. A slow or dead endpoint costs the visitor nothing — the button
+     * works from the first paint. */
+    async function upgradeToDraft(anchor, text) {
+        try {
+            const res = await fetch('/api/draft', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text, history: history.slice(-6) }),
+            });
+            if (!res.ok) return;
+            const data = await res.json();
+            if (!data || !data.body) return;
+            anchor.href =
+                'mailto:' + MAIL +
+                '?subject=' + encodeURIComponent(data.subject || 'Enquiry from jamesdare.com') +
+                '&body=' + encodeURIComponent(data.body);
+            anchor.dataset.drafted = '1';
+        } catch {
+            // Keep the plain mailto. Silence is the correct failure here.
+        }
+    }
+
     function sendRow(text) {
         const row = document.createElement('div');
         row.className = 'msg-actions';
@@ -131,6 +155,7 @@
         mail.href = mailtoFor(text);
         mail.textContent = 'SEND IT TO JAMES';
         row.appendChild(mail);
+        upgradeToDraft(mail, text);
 
         const copy = document.createElement('button');
         copy.type = 'button';

@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 4.9.0
-last_updated: 2026-08-20
+version: 4.12.0
+last_updated: 2026-08-21
 
 ---
 
@@ -17,6 +17,40 @@ last_updated: 2026-08-20
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.12.0] - 2026-08-21
+
+### Added
+- **BetMetrics plate in the hero reel.** The odds feed is down, so the plate is the
+  casino — provably-fair blackjack and the live TABLE ACTION feed. That is
+  self-contained game logic which never read the odds feed, so nothing on the
+  plate is mocked or stale.
+- `POST /api/draft` — composes a real subject line and body for the SEND IT TO
+  JAMES button. It previously pasted the visitor's raw question into a mailto
+  under a generic subject.
+- `api/_limit.js` — the rate limiter, extracted from `chat.js` and now shared by
+  both paid routes. Two endpoints with two private counters would have been two
+  budgets.
+- Edson Legal plate, captured 08-20 but never wired into the stack.
+
+### Changed
+- Plate order is now Nirvana → Edson → BetMetrics → ShopBayHQ → Nin Online Wiki →
+  Ninjora Wiki → KMoney → 100BandPlan → Tdots → Street Bud.
+- **Both wiki plates rebuilt as three beats:** the game site with its background
+  video actually playing, then the wiki, then RawBOT's own public profile.
+  The previous version pushed in on a still frame of the game site, which missed
+  the entire point — the hero on ninonline.com is live gameplay.
+- Wiki halves regraded from `brightness=-0.20` to `+0.045`. They read as a black
+  hole next to the game footage.
+- Ninjora's middle beat moved from the hub card grid to the Bestiary: the hub
+  cards have no thumbnails on the wiki, and empty tiles read as broken images.
+
+### Verified
+- RawBOT: **5,632 edits** on Nin Online (public profile), **713** on Ninjora.
+  Ranked #1 on Nin Online by achievement points — NOT by edit count, where
+  another user leads with 7,918.
+- Fandom now gates `Special:Contributions` behind login for anonymous visitors;
+  the public `User:RawBOT` profile carries the same number and was used instead.
 
 ## [4.9.0] — 2026-08-20
 
