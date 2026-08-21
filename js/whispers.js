@@ -15,7 +15,7 @@ const FRAGMENTS = [
     'NEURAL_LINK :: active',
     'AES-256 ✓ encrypted',
     'λ passion.resolve()',
-    '▸ 47 repos monitored',
+    '▸ 63 repos monitored',
     'UPLINK :: 12ms latency',
     'HEAP :: 1.4 GB allocated',
     '◈ DAREDEV256 :: online',

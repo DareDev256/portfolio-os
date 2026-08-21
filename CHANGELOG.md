@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.8.0
+version: 4.9.0
 last_updated: 2026-08-20
 
 ---
@@ -17,6 +17,44 @@ last_updated: 2026-08-20
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.9.0] — 2026-08-20
+
+### Added
+
+- **Edson Legal opens the reel, with a generated intro.** The site is a dated
+  WordPress build pending a redesign, so a plain screenshot would have been the
+  weakest frame in a reel of best work. Instead the plate is a three-beat
+  sequence generated with Gemini — a closed leather law book under a brass lamp,
+  the same book opening, then light blowing out of the pages — cross-dissolved
+  and then white-wiped straight into the site, which is graded down to sit with
+  every other plate. The generated frames were edited from the first so the lamp,
+  desk and shelves stay continuous rather than being three unrelated images.
+
+### Changed
+
+- **Plate order, to James's sequence:** Edson Legal, NirvanaDeshaun, ShopBayHQ,
+  KMoney, 100BandPlan, TdotsSolutionsz, Masicka, Street Bud, Casper TNG, No Cap,
+  SAVV4X. KMoney's vault-opening intro now lands before any music video, and
+  100BandPlan lands before the TdotsSolutionsz plate, so the build work is
+  established before the film work starts. Eleven plates.
+- **Nine client sites became ten** with Edson Legal counted — corrected in the
+  status panel, the client-sites gate copy and figure, the page description and
+  the chat endpoint's fact list, so no surface still says nine.
+
+### Fixed — the OS was quoting numbers the 2026-08-18 audit disproved
+
+- `109K` lines of code → **67K** (the 109K figure counted vendored site-packages)
+- `47` managed repos → **63**
+- `47 repos monitored` in the ambient whispers → **63**
+- `6 client sites live` in the assistant's greeting → **10**
+
+### Added — a way out of the OS
+
+- **`← THE SYSTEM` in the Passion OS top bar.** The OS is a side room off
+  jamesdare.com and its only exit was the browser back button. It renders in the
+  landing page's own register rather than as browser chrome, so it reads as the
+  same system.
 
 ## [4.8.0] — 2026-08-20
 

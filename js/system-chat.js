@@ -37,7 +37,7 @@
         {
             q: 'What have you actually shipped?',
             a: [
-                'An open-source MCP server for Final Cut Pro — 90 stars, on PyPI, about 1,900 installs a month. A sports-betting analytics product with real money moving through it. Nine client sites live right now.',
+                'An open-source MCP server for Final Cut Pro — 90 stars, on PyPI, about 1,900 installs a month. A sports-betting analytics product with real money moving through it. Ten client sites live right now.',
                 'And 101 music videos across 54 artists, 25,332,774 views. Everything on this page links to the running thing, not a case study about it.',
             ],
             cta: { label: 'SEE THE WORK', href: '#gates' },

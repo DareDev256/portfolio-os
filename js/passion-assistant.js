@@ -49,7 +49,7 @@ const INTENTS = [
 const RESPONSES = {
     greeting: () => pickRandom([
         `Hey! I'm Passion, James's AI assistant. He just shipped BetMetrics.ca — a full sports analytics platform. I can tell you about our services, show our work, or book a consultation. What brings you here?`,
-        `Welcome! I'm Passion. James has been busy — 6 client sites live, 20+ industry demos in the works. Looking for web design, branding, AI, or something else?`,
+        `Welcome! I'm Passion. James has been busy — 10 client sites live, 20+ industry demos in the works. Looking for web design, branding, AI, or something else?`,
         `Hey there! James is currently building AR gesture interfaces and an autonomous AI framework. Want to see what he can build for you?`,
     ]),
 

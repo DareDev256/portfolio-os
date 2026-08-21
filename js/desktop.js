@@ -1772,11 +1772,11 @@ export const Desktop = {
                         <span class="gauntlet-stat__label">Modules</span>
                     </div>
                     <div class="gauntlet-stat">
-                        <span class="gauntlet-stat__value">109K</span>
+                        <span class="gauntlet-stat__value">67K</span>
                         <span class="gauntlet-stat__label">Lines of Code</span>
                     </div>
                     <div class="gauntlet-stat">
-                        <span class="gauntlet-stat__value">47</span>
+                        <span class="gauntlet-stat__value">63</span>
                         <span class="gauntlet-stat__label">Managed Repos</span>
                     </div>
                 </div>

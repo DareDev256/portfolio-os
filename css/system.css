@@ -1791,3 +1791,46 @@ button:focus-visible {
         transition: none !important;
     }
 }
+
+/* ---------- the way out of the OS ----------
+ * Lives in the OS top bar, not on the landing page, but it is the landing
+ * page's register — it should read as the same system, not as a browser chrome
+ * afterthought.
+ */
+
+.top-bar-exit {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-left: 14px;
+    padding: 0 12px;
+    height: 26px;
+    border: 1px solid rgba(90, 190, 255, 0.45);
+    background: rgba(40, 120, 220, 0.12);
+    color: #b5ecff;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+        border-color 0.24s ease,
+        background 0.24s ease,
+        color 0.24s ease;
+}
+
+.top-bar-exit:hover {
+    border-color: #6fd3ff;
+    background: rgba(40, 120, 220, 0.24);
+    color: #fff;
+}
+
+.top-bar-exit:focus-visible {
+    outline: 2px solid #6fd3ff;
+    outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+    .top-bar-exit span[aria-hidden] + * { display: none; }
+    .top-bar-exit { padding: 0 9px; margin-left: 8px; }
+}
