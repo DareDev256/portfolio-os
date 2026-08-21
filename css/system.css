@@ -1310,6 +1310,230 @@ button:focus-visible {
     gap: 20px;
 }
 
+
+/* ---------- ask the system ----------
+ * Status-window skin, form behaviour. Nothing here requires knowing what a
+ * terminal is: every route is a tap, the input is labelled in plain words, and
+ * a typed sentence is always valid.
+ */
+
+.chat {
+    margin: 8px auto 34px;
+    max-width: 640px;
+    text-align: left;
+}
+
+.chat-thread {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px 20px 6px;
+    max-height: 340px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+.chat .msg {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    animation: msgIn 0.42s var(--sys-back) both;
+}
+
+@keyframes msgIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.chat .msg .who {
+    font-family: var(--sys-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.26em;
+    color: var(--sys-cyan);
+}
+
+.chat .msg p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--sys-text);
+}
+
+.chat .msg.you {
+    align-items: flex-end;
+}
+
+.chat .msg.you p {
+    background: rgba(40, 120, 220, 0.16);
+    border: 1px solid var(--sys-hair);
+    padding: 9px 14px;
+    max-width: 84%;
+    color: var(--sys-cyan-pale);
+    font-family: var(--sys-mono);
+    font-size: 13px;
+}
+
+.chat .msg-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 2px 0 4px;
+}
+
+.chat-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 14px 20px 4px;
+}
+
+.chip {
+    font-family: var(--sys-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--sys-cyan-pale);
+    background: transparent;
+    border: 1px solid var(--sys-hair);
+    padding: 0 14px;
+    min-height: 40px;
+    cursor: pointer;
+    transition:
+        border-color 0.24s var(--sys-cubic),
+        background 0.24s var(--sys-cubic),
+        color 0.24s var(--sys-cubic);
+}
+
+.chip:hover {
+    border-color: var(--sys-cyan);
+    background: rgba(40, 120, 220, 0.14);
+    color: #fff;
+}
+
+.chat-form {
+    padding: 12px 20px 18px;
+    border-top: 1px solid var(--sys-hair);
+    margin-top: 12px;
+}
+
+.chat-label {
+    display: block;
+    font-family: var(--sys-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sys-muted);
+    margin-bottom: 9px;
+}
+
+.chat-row {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 14px;
+    background: rgba(4, 10, 22, 0.7);
+    border: 1px solid var(--sys-hair);
+    color: var(--sys-text);
+    font-family: var(--sys-body, var(--sys-display));
+    font-size: 15px;
+    letter-spacing: 0.02em;
+}
+
+.chat-input::placeholder {
+    color: rgba(127, 155, 184, 0.7);
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: var(--sys-cyan);
+}
+
+.chat-form .btn {
+    flex-shrink: 0;
+}
+
+@media (max-width: 560px) {
+    .chat-row { flex-direction: column; }
+    .chat-form .btn { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chat .msg { animation: none !important; }
+    .chat-thread { scroll-behavior: auto; }
+}
+
+
+/* ---------- fourth-wall notice ----------
+ * Bottom-right status window. Once a visit, after a real dwell, dismissible,
+ * and it never covers the chat on a phone.
+ */
+
+.sys-notice {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 40;
+    width: min(360px, calc(100vw - 40px));
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    transition:
+        opacity 0.4s var(--sys-expo),
+        transform 0.4s var(--sys-expo);
+}
+
+.sys-notice.on {
+    opacity: 1;
+    transform: none;
+}
+
+.sys-notice-body {
+    padding: 16px 18px 4px;
+}
+
+.sys-notice-body p {
+    margin: 0 0 8px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--sys-text);
+}
+
+.sys-notice-body p.dim {
+    color: var(--sys-muted);
+    font-size: 12.5px;
+}
+
+.sys-notice-foot {
+    display: flex;
+    gap: 8px;
+    padding: 8px 18px 18px;
+}
+
+.sys-notice-foot .btn {
+    font-size: 10px;
+    padding: 0 14px;
+}
+
+@media (max-width: 560px) {
+    .sys-notice {
+        right: 12px;
+        left: 12px;
+        bottom: 12px;
+        width: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sys-notice {
+        transition: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
 /* ---------- scroll reveal ---------- */
 
 .rv {

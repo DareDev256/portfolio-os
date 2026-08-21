@@ -4,4 +4,4 @@
  * HTML references (title, top bar) are synced manually on bumps
  * but login.js, boot sequence, and typewriter all read this constant.
  */
-export const VERSION = '4.4.1';
+export const VERSION = '4.5.0';

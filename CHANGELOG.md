@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.4.1
+version: 4.5.0
 last_updated: 2026-08-20
 
 ---
@@ -17,6 +17,36 @@ last_updated: 2026-08-20
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.5.0] — 2026-08-20
+
+### Added
+
+- **ASK THE SYSTEM** — the contact block is now a guided conversation in the
+  status-window register. `js/system-chat.js`.
+  The brief set the constraint: it has to welcome someone who has never opened a
+  terminal. So it *looks* like the status window and *behaves* like a form — no
+  blinking cursor, no syntax, four tappable questions with real written answers,
+  and a labelled free-text field where any sentence is valid. It does not pretend
+  to be an AI; free text composes a pre-filled email, with the address offered for
+  copying because managed browsers block `mailto:` and the clipboard alike.
+- **GATE 05 — Client sites.** Nine live builds named individually. Previously the
+  web work was folded into "101 Films", where nobody could see it; the page
+  claimed "9 client sites" in the status panel and then never showed them.
+- **The fourth-wall notice.** One status window, once per session, only after 75
+  seconds of active dwell AND a scroll past the hero, and never while someone is
+  typing in the chat. It reports the visitor's real session time against the seven
+  seconds a recruiter usually spends — the joke only works because the number is
+  measured. `js/system-notice.js`.
+- **Prompt Generator** in the compact strip — the second-most-starred public repo,
+  live at prompts.tdotssolutionsz.com.
+
+### Changed
+
+- **101 Films is now GATE 06 and covers direction only.** It carries a frame from
+  Masicka rather than the TdotsSolutionsz catalogue screenshot, which now belongs
+  to the client-sites gate, and its decision line says the real thing: every web
+  client arrived through a video, which is why there has never been a cold email.
 
 ## [4.4.1] — 2026-08-20
 
