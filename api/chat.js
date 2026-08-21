@@ -147,16 +147,21 @@ export default async function handler(req, res) {
             .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_CHARS) }));
         messages.push({ role: 'user', content: message });
 
-        const client = new Anthropic();
-        const response = await client.messages.create({
+        /* effort is NOT universal. It errors on Haiku 4.5 and Sonnet 4.5 — only
+         * the Opus 4.5+ / Sonnet 5 / Fable tier accepts it. Sending it to Haiku
+         * returns a 400, which this handler was turning into an opaque 502.
+         * Send it only where it is supported. */
+        const supportsEffort = /opus|sonnet-5|fable/.test(MODEL);
+        const request = {
             model: MODEL,
             max_tokens: MAX_TOKENS,
-            // Low effort is right for a short factual answer, and it is the
-            // honest lever for cost — not swapping to a weaker model.
-            output_config: { effort: 'low' },
             system: SYSTEM,
             messages,
-        });
+        };
+        if (supportsEffort) request.output_config = { effort: 'low' };
+
+        const client = new Anthropic();
+        const response = await client.messages.create(request);
 
         if (response.stop_reason === 'refusal') {
             return res.status(200).json({ reply: 'That one is outside what this window covers. Email dev@jamesdare.com and James will answer it himself.' });
@@ -180,8 +185,13 @@ export default async function handler(req, res) {
         if (status === 429) {
             return res.status(429).json({ error: 'Rate limited upstream. Try again shortly.', limited: true });
         }
-        // Never leak provider errors to a visitor.
-        return res.status(502).json({ error: 'The live window failed. Email dev@jamesdare.com — that always works.' });
+        /* Never leak provider errors to a visitor, but do surface enough to
+         * diagnose from outside — an opaque 502 cost a deploy cycle finding that
+         * `effort` is rejected on Haiku. `code` carries the upstream status only. */
+        return res.status(502).json({
+            error: 'The live window failed. Email dev@jamesdare.com — that always works.',
+            code: status || 'unknown',
+        });
     } finally {
         release();
     }
