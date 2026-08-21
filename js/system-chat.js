@@ -116,64 +116,116 @@
         thread.appendChild(row);
     }
 
-    function mailtoFor(text) {
-        const subject = encodeURIComponent('From jamesdare.com');
-        const body = encodeURIComponent(`${text}\n\n—\nSent from jamesdare.com`);
-        return `mailto:${MAIL}?subject=${subject}&body=${body}`;
+    function mailtoFor(subject, body) {
+        return (
+            'mailto:' + MAIL +
+            '?subject=' + encodeURIComponent(subject) +
+            '&body=' + encodeURIComponent(body)
+        );
     }
 
-    /* Ask the server to compose the email, but never block on it: the link is
-     * created with the plain mailto already set, and only upgraded if the draft
-     * comes back. A slow or dead endpoint costs the visitor nothing — the button
-     * works from the first paint. */
-    async function upgradeToDraft(anchor, text) {
-        try {
-            const res = await fetch('/api/draft', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: text, history: history.slice(-6) }),
-            });
-            if (!res.ok) return;
-            const data = await res.json();
-            if (!data || !data.body) return;
-            anchor.href =
-                'mailto:' + MAIL +
-                '?subject=' + encodeURIComponent(data.subject || 'Enquiry from jamesdare.com') +
-                '&body=' + encodeURIComponent(data.body);
-            anchor.dataset.drafted = '1';
-        } catch {
-            // Keep the plain mailto. Silence is the correct failure here.
-        }
+    /* Gmail's web compose. A mailto: is a dead click for anyone whose browser
+     * has no registered mail handler, which on desktop Chrome is most people —
+     * nothing opens, nothing errors, the button just does nothing. That is the
+     * exact failure this row exists to avoid, so the email is never ONLY behind
+     * a mailto. */
+    function gmailFor(subject, body) {
+        return (
+            'https://mail.google.com/mail/?view=cm&fs=1' +
+            '&to=' + encodeURIComponent(MAIL) +
+            '&su=' + encodeURIComponent(subject) +
+            '&body=' + encodeURIComponent(body)
+        );
+    }
+
+    function defaultDraft(text) {
+        return {
+            subject: 'Enquiry from jamesdare.com',
+            body: `${text}\n\n— sent from jamesdare.com`,
+        };
     }
 
     function sendRow(text) {
+        const wrap = document.createElement('div');
+        wrap.className = 'msg-send';
+
+        // The composed email, on screen. Even if every button fails, the visitor
+        // can read it, select it and send it themselves.
+        const preview = document.createElement('div');
+        preview.className = 'send-preview';
+        const subjLine = document.createElement('p');
+        subjLine.className = 'send-subject';
+        const bodyLine = document.createElement('p');
+        bodyLine.className = 'send-body';
+        preview.appendChild(subjLine);
+        preview.appendChild(bodyLine);
+        wrap.appendChild(preview);
+
         const row = document.createElement('div');
         row.className = 'msg-actions';
 
-        const mail = document.createElement('a');
-        mail.className = 'btn gold';
-        mail.href = mailtoFor(text);
-        mail.textContent = 'SEND IT TO JAMES';
-        row.appendChild(mail);
-        upgradeToDraft(mail, text);
+        const gmail = document.createElement('a');
+        gmail.className = 'btn gold';
+        gmail.target = '_blank';
+        gmail.rel = 'noopener';
+        gmail.textContent = 'SEND IT TO JAMES';
+        row.appendChild(gmail);
 
         const copy = document.createElement('button');
         copy.type = 'button';
         copy.className = 'btn ghost';
-        copy.textContent = 'COPY THE ADDRESS';
-        copy.addEventListener('click', async () => {
-            try {
-                await navigator.clipboard.writeText(MAIL);
-                copy.textContent = 'COPIED — ' + MAIL;
-            } catch {
-                // Clipboard is blocked in plenty of managed browsers; show the
-                // address instead of failing silently.
-                copy.textContent = MAIL;
-            }
-        });
+        copy.textContent = 'COPY THE EMAIL';
         row.appendChild(copy);
 
-        thread.appendChild(row);
+        const mail = document.createElement('a');
+        mail.className = 'btn ghost';
+        mail.textContent = 'OPEN IN MAIL APP';
+        row.appendChild(mail);
+
+        wrap.appendChild(row);
+        thread.appendChild(wrap);
+
+        let draft = defaultDraft(text);
+
+        function paint() {
+            subjLine.textContent = 'Subject: ' + draft.subject;
+            bodyLine.textContent = draft.body;
+            gmail.href = gmailFor(draft.subject, draft.body);
+            mail.href = mailtoFor(draft.subject, draft.body);
+        }
+        paint();
+
+        copy.addEventListener('click', async () => {
+            const full = `To: ${MAIL}\nSubject: ${draft.subject}\n\n${draft.body}`;
+            try {
+                await navigator.clipboard.writeText(full);
+                copy.textContent = 'COPIED';
+            } catch {
+                // Clipboard is blocked in plenty of managed browsers. The email
+                // is already on screen, so say so rather than failing silently.
+                copy.textContent = 'SELECT IT ABOVE';
+            }
+        });
+
+        /* Upgrade to the written version when it lands. Never block on it: every
+         * button above is already wired to a working draft. */
+        (async () => {
+            try {
+                const res = await fetch('/api/draft', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text, history: history.slice(-6) }),
+                });
+                if (!res.ok) return;
+                const data = await res.json();
+                if (!data || !data.body) return;
+                draft = { subject: data.subject || draft.subject, body: data.body };
+                paint();
+                scrollThread();
+            } catch {
+                // Keep the plain version.
+            }
+        })();
     }
 
     function scrollThread() {

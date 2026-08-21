@@ -1430,6 +1430,46 @@ button:focus-visible {
     margin: 2px 0 4px;
 }
 
+/* The composed email, shown before it is sent. The buttons can all fail — no
+ * mail handler, a blocked popup, a locked-down clipboard — and the visitor can
+ * still read the message and send it themselves. That is the point of putting
+ * it on screen rather than hiding it behind a mailto. */
+.chat .msg-send {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 6px 0 4px;
+    max-width: 92%;
+}
+
+.chat .send-preview {
+    border: 1px solid var(--sys-hair);
+    border-left: 2px solid var(--sys-gold);
+    background: rgba(255, 215, 106, 0.04);
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.chat .send-subject {
+    margin: 0;
+    font-family: var(--sys-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sys-gold);
+}
+
+.chat .send-body {
+    margin: 0;
+    font-family: var(--sys-mono);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--sys-cyan-pale);
+    white-space: pre-wrap;
+}
+
 .chat-chips {
     display: flex;
     flex-wrap: wrap;
