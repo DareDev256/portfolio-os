@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="James Olusoga">
+  <!-- The status window, shrunk to a tab.
+       π for 3/14 — the birthday, and Einstein's. The four corner brackets are the
+       site's own motif, and at 16px they are what makes this readable as a mark
+       rather than a letter: bracket, glyph, bracket. Cyan on the same #04080f
+       ground the page sits on. -->
+  <rect width="64" height="64" fill="#04080f"/>
+  <g fill="none" stroke="#b5ecff" stroke-width="4" stroke-linecap="square">
+    <path d="M6 18V6h12"/>
+    <path d="M46 6h12v12"/>
+    <path d="M58 46v12H46"/>
+    <path d="M18 58H6V46"/>
+  </g>
+  <text x="32" y="45"
+        font-family="'JetBrains Mono','SF Mono',ui-monospace,monospace"
+        font-size="34" font-weight="700" fill="#6fd3ff"
+        text-anchor="middle">&#960;</text>
+</svg>
