@@ -16,8 +16,14 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
+import { guardReply } from './_guard.js';
 
-const MODEL = process.env.CHAT_MODEL || 'claude-opus-5';
+/* Haiku by default. The task is a three-sentence answer from a fixed fact list —
+ * there is no reasoning here for a larger model to do, and a visitor cannot tell
+ * which model wrote three sentences. What they CAN tell is a dead chat box,
+ * which is what happens when the month's budget goes in week two. Set
+ * CHAT_MODEL=claude-opus-5 in Vercel to flip it; nothing else changes. */
+const MODEL = process.env.CHAT_MODEL || 'claude-haiku-4-5';
 const MAX_TOKENS = Number(process.env.CHAT_MAX_TOKENS || 400);
 
 // James's number: ten prompts per visitor.
@@ -156,14 +162,17 @@ export default async function handler(req, res) {
             return res.status(200).json({ reply: 'That one is outside what this window covers. Email dev@jamesdare.com and James will answer it himself.' });
         }
 
-        const reply = response.content
+        const raw = response.content
             .filter((block) => block.type === 'text')
             .map((block) => block.text)
-            .join(' ')
-            .trim();
+            .join(' ');
+
+        // Runs regardless of what the model was persuaded to say.
+        const { text, blocked } = guardReply(raw);
 
         return res.status(200).json({
-            reply: reply || 'No answer came back. Email dev@jamesdare.com.',
+            reply: text,
+            guarded: blocked || undefined,
             remaining: Math.max(0, PER_IP_MAX - (buckets.get(clientIp(req))?.count ?? 0)),
         });
     } catch (error) {

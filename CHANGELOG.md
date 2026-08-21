@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.6.0
+version: 4.6.1
 last_updated: 2026-08-20
 
 ---
@@ -17,6 +17,34 @@ last_updated: 2026-08-20
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.6.1] — 2026-08-20
+
+Hardening the chat before the key goes in. A system prompt is a request, not a
+control — everything added here runs AFTER the model, so it holds whether or not
+the model was talked out of its instructions.
+
+### Added
+
+- **`api/_guard.js` — a deterministic output guard.** Four rules, each covering a
+  failure that would attach to James's name in a screenshot: any currency figure,
+  a pay word sitting near a number, the window claiming to BE James, and
+  availability or delivery promises. Any hit replaces the whole reply with the
+  email line. Plus a link allowlist (foreign URLs stripped, so an injected link
+  cannot be emitted) and a 700-character trim on sentence boundaries.
+  Verified 9/9 rule cases, the allowlist keeping github and dropping a foreign
+  host, and the trim.
+- **A disclosure line under the panel** — answers are generated, capped at ten,
+  nothing typed is stored, and anything that matters comes from James directly.
+
+### Changed
+
+- **Default model is now `claude-haiku-4-5`.** The task is three sentences from a
+  fixed fact list; there is no reasoning for a larger model to do and a visitor
+  cannot tell which model wrote them. What a visitor CAN tell is a dead chat box,
+  which is what a month's budget spent in week two looks like. Roughly 4x the
+  visitors per dollar. `CHAT_MODEL=claude-opus-5` flips it back with no code
+  change.
 
 ## [4.6.0] — 2026-08-20
 
