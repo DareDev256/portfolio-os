@@ -59,6 +59,35 @@
     const reduced =
         window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    /* Free text goes to a real model at /api/chat, capped at ten per visitor.
+     * If that endpoint is missing, rate-limited or broken, the panel falls back
+     * to composing an email — the visitor must never hit a dead end because a
+     * paid API had a bad night. */
+    const history = [];
+    let liveDown = false;
+
+    async function askLive(text) {
+        if (liveDown) return null;
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text, history: history.slice(-6) }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                // A limit is a real answer worth showing; anything else is ours to hide.
+                if (data.limited && data.error) return { reply: data.error, done: true };
+                liveDown = true;
+                return null;
+            }
+            return { reply: data.reply, remaining: data.remaining };
+        } catch {
+            liveDown = true;
+            return null;
+        }
+    }
+
     function bubble(kind, text) {
         const el = document.createElement('div');
         el.className = `msg ${kind}`;
@@ -159,7 +188,7 @@
         chips.appendChild(chip);
     });
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const text = input.value.trim();
         if (!text) {
@@ -169,6 +198,22 @@
         bubble('you', text);
         input.value = '';
         scrollThread();
+
+        const thinking = bubble('sys', 'Thinking…');
+        thinking.classList.add('pending');
+
+        const live = await askLive(text);
+        thinking.remove();
+
+        if (live && live.reply) {
+            history.push({ role: 'user', content: text });
+            history.push({ role: 'assistant', content: live.reply });
+            bubble('sys', live.reply);
+            if (!live.done) sendRow(text);
+            scrollThread();
+            return;
+        }
+
         say(
             [
                 'Got it. That goes to me directly — no form queue, no CRM.',
@@ -180,5 +225,5 @@
     });
 
     // Opening line, written once on load so the panel is never an empty box.
-    bubble('sys', 'Ask me anything about the work, or tell me what you need built. Tap one to start.');
+    bubble('sys', 'Ask me anything about the work, or tell me what you need built. Tap one to start, or just type — a real model answers, ten questions per visitor.');
 })();

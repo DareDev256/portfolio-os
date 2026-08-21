@@ -22,4 +22,13 @@ export default [
             'no-console': 'off',
         },
     },
+
+    // api/ runs on Vercel's Node runtime, not in the browser.
+    {
+        files: ['api/**/*.js'],
+        languageOptions: {
+            globals: { ...globals.node },
+            sourceType: 'module',
+        },
+    },
 ];

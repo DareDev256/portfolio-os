@@ -1359,6 +1359,11 @@ button:focus-visible {
     color: var(--sys-text);
 }
 
+.chat .msg.pending p {
+    color: var(--sys-muted);
+    font-style: italic;
+}
+
 .chat .msg.you {
     align-items: flex-end;
 }

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.5.0
+version: 4.6.0
 last_updated: 2026-08-20
 
 ---
@@ -17,6 +17,37 @@ last_updated: 2026-08-20
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.6.0] — 2026-08-20
+
+### Added
+
+- **`POST /api/chat` — a real model behind ASK THE SYSTEM.** Ten questions per
+  visitor, `claude-opus-5` at `effort: low` with `max_tokens: 400`, a system
+  prompt that carries only verified facts and is told to refuse rather than guess
+  a number, a rate, or a client detail.
+
+  The spend cap is the feature. The limiter reserves BEFORE the body is parsed
+  (a rejected caller never costs a buffer) and before any model call (never costs
+  tokens), with a per-IP window, a concurrency ceiling of 3 and a daily ceiling of
+  400. Verified by exercising the handler directly: the 11th request from one IP
+  flips to 429, a second IP keeps its own allowance, GET is 405.
+
+  Honest limit: the counters are in-memory, so the real ceiling is roughly
+  `limit × live instances` and a cold start resets them. It stops single-IP
+  hammering, runaway concurrency and one instance grinding all day — it is not a
+  hard cross-instance wall. The account's own $25/month cap with auto-reload off
+  is the real backstop. A cross-instance cap needs Upstash; that is a follow-up.
+
+- The chat degrades to composing an email whenever the endpoint is missing,
+  rate-limited or broken, so a visitor can never hit a dead end because a paid API
+  had a bad night. Until `ANTHROPIC_API_KEY` is set in Vercel it runs entirely on
+  that path.
+
+### Note
+
+`api/**` gets Node globals in `eslint.config.js` — it runs on Vercel's runtime,
+not in the browser, and was throwing seven `process is not defined` errors.
 
 ## [4.5.0] — 2026-08-20
 
