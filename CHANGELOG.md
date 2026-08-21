@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.6.1
+version: 4.7.0
 last_updated: 2026-08-20
 
 ---
@@ -17,6 +17,17 @@ last_updated: 2026-08-20
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.7.0] — 2026-08-20
+
+### Added
+
+- **ShopBayHQ joins the hero reel** as the fourth plate, now that it is live
+  again. Its landing page is a scroll-scrub — position drives the animation — so
+  the capture is frame-stepped from 0.00 to 0.36, which runs the whole narrative
+  (Audi rings, "Every car", "Every bay", "Nothing lost", into the holographic 3D
+  lot) and stops before the feature grid and pricing.
+  Ten plates now, verified cycling in order with zero credit mismatches.
 
 ## [4.6.1] — 2026-08-20
 
