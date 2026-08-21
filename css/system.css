@@ -1225,6 +1225,51 @@ button:focus-visible {
     }
 }
 
+
+/* One line crossing the panel when the readout changes. Once, then gone. */
+[data-gate-stage] {
+    position: relative;
+}
+
+[data-gate-stage].sweep::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    z-index: 6;
+    pointer-events: none;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(111, 211, 255, 0.9) 22%,
+        rgba(255, 215, 106, 0.9) 50%,
+        rgba(111, 211, 255, 0.9) 78%,
+        transparent
+    );
+    box-shadow: 0 0 18px rgba(111, 211, 255, 0.55);
+    animation: gateSweep 0.9s var(--sys-cubic) 1 both;
+}
+
+@keyframes gateSweep {
+    from { transform: translateY(0); opacity: 0; }
+    12%  { opacity: 1; }
+    to   { transform: translateY(520px); opacity: 0; }
+}
+
+.figs .n {
+    font-variant-numeric: tabular-nums;
+}
+
+.panel-rows .row span {
+    font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-gate-stage].sweep::after { animation: none !important; opacity: 0 !important; }
+}
+
 /* ---------- contact ---------- */
 
 .contact {

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.7.0
+version: 4.8.0
 last_updated: 2026-08-20
 
 ---
@@ -17,6 +17,42 @@ last_updated: 2026-08-20
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.8.0] — 2026-08-20
+
+### Fixed
+
+- **Client sites and 101 Films were showing the same picture.** Both pulled from
+  the TdotsSolutionsz capture. They now take opposite ends of that same scroll:
+  101 Films gets the MUSIC VIDEOS card field, client sites gets WEB DESIGN with
+  KMoney, SAVV4X, The Syren Effect and 100BandPlan in browser chrome. The gate
+  about films shows films; the gate about sites shows sites.
+
+### Added
+
+- **`js/system-fx.js` — count-up on every figure.** The page's argument is that
+  its numbers are derived rather than claimed, so having them tick up like a
+  readout being taken is the one flourish that says something true. 90 landing on
+  90 reads as measurement; 90 sitting there reads as a claim. Runs on the hero
+  status panel and on every gate swap, and always lands on the exact original
+  string rather than a rounding of it — a failure shows the real number.
+- **A scan sweep when a gate swaps** — one line crossing the new panel, once,
+  marking the moment the readout changed.
+- **`shopbayhq` in the registry graph**, top right, clear of the wiki labels.
+- **Passion OS in the primary nav.** It was reachable only from a gate, the
+  snapshot rail and the footer — none of which a visitor scanning the header
+  would find.
+
+### Changed
+
+- **ShopBayHQ moves to plate two**, ahead of the TdotsSolutionsz plate, so the
+  reel opens on two real businesses before any film appears. Its clip is re-shot
+  from the 3D holographic lot — the Audi R8, Porsche 911, E-Tron GT, G63 and BMW
+  X on their scan rings — rather than the Audi hood, and trimmed to 5s so it
+  never reaches the stats bar.
+- The client-sites gate CTA opens shopbayhq.com.
+- The `ShopBayHQ` GitHub repo's description said "Tracker Pro V3". The repo name
+  was already right; only the description was stale.
 
 ## [4.7.0] — 2026-08-20
 
