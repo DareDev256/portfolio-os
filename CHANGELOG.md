@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.4.0
+version: 4.4.1
 last_updated: 2026-08-20
 
 ---
@@ -17,6 +17,24 @@ last_updated: 2026-08-20
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.4.1] — 2026-08-20
+
+### Fixed
+
+- **The graph still said `nin-wiki-flow`.** The gate card had been renamed to
+  Fandom Flow but the map had not, so the page contradicted itself. The gold node
+  now reads `fandom-flow` and branches into two named endpoints, **Nin Online
+  Wiki** and **Ninjora Wiki**, which is what that pipeline actually does — the two
+  wikis were previously anonymous grey dots.
+- The directory was renamed to match, `~/dev/nin-wiki-flow` → `~/dev/fandom-flow`,
+  because a map that names repositories has to name the one that exists. A symlink
+  at the old path keeps anything unmigrated working, and 12 files across the skills
+  and utilities were repointed.
+- **The wiki labels clipped** to "Nin Onlin" and "Ninjora Wi" — they sit at x=692
+  and x=700 with `text-anchor="start"`, past the old 760-wide viewBox. Widened to
+  850. All 11 labels now measured inside the box.
+- The snapshot log's source line follows the rename: `fandom-flow · ninjora`.
 
 ## [4.4.0] — 2026-08-20
 
