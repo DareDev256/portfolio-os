@@ -124,16 +124,30 @@
         );
     }
 
-    /* Gmail's web compose. A mailto: is a dead click for anyone whose browser
-     * has no registered mail handler, which on desktop Chrome is most people —
-     * nothing opens, nothing errors, the button just does nothing. That is the
-     * exact failure this row exists to avoid, so the email is never ONLY behind
-     * a mailto. */
+    /* Web compose, per provider. A mailto: is a dead click for anyone whose
+     * browser has no registered mail handler — nothing opens, nothing errors,
+     * the button just does nothing — so the email is never ONLY behind one.
+     *
+     * There is NO reliable way to detect a visitor's mail provider from a page,
+     * and guessing is how the mailto problem repeats at smaller scale: send an
+     * Outlook user to Gmail and they hit a Google sign-in wall instead of a
+     * compose window. So the buttons are LABELLED with where they go and the
+     * visitor picks. Gmail and Outlook together cover most people; copy and the
+     * mail app cover the rest, and the email is printed above regardless. */
     function gmailFor(subject, body) {
         return (
             'https://mail.google.com/mail/?view=cm&fs=1' +
             '&to=' + encodeURIComponent(MAIL) +
             '&su=' + encodeURIComponent(subject) +
+            '&body=' + encodeURIComponent(body)
+        );
+    }
+
+    function outlookFor(subject, body) {
+        return (
+            'https://outlook.live.com/mail/0/deeplink/compose' +
+            '?to=' + encodeURIComponent(MAIL) +
+            '&subject=' + encodeURIComponent(subject) +
             '&body=' + encodeURIComponent(body)
         );
     }
@@ -168,8 +182,15 @@
         gmail.className = 'btn gold';
         gmail.target = '_blank';
         gmail.rel = 'noopener';
-        gmail.textContent = 'SEND IT TO JAMES';
+        gmail.textContent = 'SEND VIA GMAIL';
         row.appendChild(gmail);
+
+        const outlook = document.createElement('a');
+        outlook.className = 'btn ghost';
+        outlook.target = '_blank';
+        outlook.rel = 'noopener';
+        outlook.textContent = 'VIA OUTLOOK';
+        row.appendChild(outlook);
 
         const copy = document.createElement('button');
         copy.type = 'button';
@@ -179,7 +200,7 @@
 
         const mail = document.createElement('a');
         mail.className = 'btn ghost';
-        mail.textContent = 'OPEN IN MAIL APP';
+        mail.textContent = 'MAIL APP';
         row.appendChild(mail);
 
         wrap.appendChild(row);
@@ -191,6 +212,7 @@
             subjLine.textContent = 'Subject: ' + draft.subject;
             bodyLine.textContent = draft.body;
             gmail.href = gmailFor(draft.subject, draft.body);
+            outlook.href = outlookFor(draft.subject, draft.body);
             mail.href = mailtoFor(draft.subject, draft.body);
         }
         paint();
