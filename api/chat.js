@@ -29,6 +29,9 @@ import { checkAndReserve, release, clientIp, used, PER_IP_MAX } from './_limit.j
 const MODEL = process.env.CHAT_MODEL || 'claude-haiku-4-5';
 const MAX_TOKENS = Number(process.env.CHAT_MAX_TOKENS || 400);
 
+// Ceiling on any single message, inbound or replayed from history.
+const MAX_CHARS = 600;
+
 const SYSTEM = `You are THE SYSTEM, the status-window interface on jamesdare.com — the personal site of James Olusoga, an AI Solutions Engineer in Toronto.
 
 You are talking to a visitor. Most of them are recruiters, hiring managers, or someone who wants a website built. Assume no technical background unless they show one.
