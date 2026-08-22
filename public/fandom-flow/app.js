@@ -80,7 +80,7 @@
   // Staleness is the one thing this page must never hide: a dead cron would
   // otherwise leave it quietly asserting a streak with old data.
   var f = document.getElementById('freshness');
-  var gen = "2026-08-22 13:18 UTC".replace(' UTC', 'Z').replace(' ', 'T');
+  var gen = "2026-08-22 13:28 UTC".replace(' UTC', 'Z').replace(' ', 'T');
   var days = (Date.now() - Date.parse(gen)) / 86400000;
   if (f && days > 2) {
     f.innerHTML = '<span class="stale">STALE - last built ' + Math.floor(days) +
@@ -92,5 +92,14 @@
     if (el) el.classList.add('gone');
     openView('ninonline');
   }
-  if (reduce) { boot(); } else { setTimeout(boot, 900); }
+  // The overlay covers the rail, so a click during boot is swallowed and the
+  // view resets. Let any click or key skip straight through it.
+  var t = null;
+  function skip(){ if (t) { clearTimeout(t); t = null; } boot(); }
+  if (reduce) { boot(); } else {
+    t = setTimeout(boot, 900);
+    var b = document.getElementById('boot');
+    if (b) b.addEventListener('click', skip);
+    document.addEventListener('keydown', skip, { once: true });
+  }
 })();

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.13.0
+version: 4.14.0
 last_updated: 2026-08-22
 
 ---
@@ -17,6 +17,20 @@ last_updated: 2026-08-22
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.14.0] - 2026-08-22
+
+### Added
+- `/fandom-flow` Constraints tab now reports a **live guard test suite** rather
+  than a list of claims. `test_guards.py` attacks each safety constraint with an
+  input designed to slip past it; the guard passes only by refusing. 11/11 at
+  time of writing, including a control case — a correctly-declared edit that
+  must still apply, so a suite that refused everything could not pass.
+- The suite runs from the 09:00 cron, and a constraint that stops refusing
+  raises a red Discord alert. Mutation-tested: disabling one guard drops the
+  score to 10/11 and fires the alert.
+- The boot overlay can be dismissed with a click or a keypress instead of
+  waiting out its timer.
 
 ## [4.13.0] - 2026-08-22
 
