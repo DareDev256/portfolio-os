@@ -18,6 +18,16 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [4.19.1] - 2026-08-22
+
+### Fixed
+- The patch-gap scanner reported things as uncovered when the wiki simply names
+  them differently. `Hosoku (Clothing Shop)`, `Keldo & Leno Bosses` were all
+  flagged while pages named Hosoku, Keldo and Leno already existed. It now
+  checks title variants - parentheticals stripped, `&`/`and` split, trailing
+  category words dropped - before calling anything a gap. 12 candidates -> 10,
+  and three duplicates avoided.
+
 ## [4.21.1] - 2026-08-22
 
 ### Fixed
