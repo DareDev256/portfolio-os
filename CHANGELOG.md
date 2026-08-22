@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.14.2
+version: 4.19.0
 last_updated: 2026-08-22
 
 ---
@@ -17,6 +17,28 @@ last_updated: 2026-08-22
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.19.0] - 2026-08-22
+
+### Added
+- **COLD OPEN plate in the hero reel** — twelfth plate, and the first one that is
+  not a client site. `data-kind="ENGINE"`, crediting
+  `github.com/DareDev256/coldopen`: open source, it generated shortiieraw.com,
+  and it passed a blind A/B twice.
+- Clip is the studio's Palette step in motion — reading a colour off the
+  artist's own release artwork and citing it to the record it came from.
+  1280x800, 24fps, silent, 6.3s, matching every other plate's spec.
+
+### Notes
+- First cut of the clip ran the whole flow (name -> confirm -> evidence ->
+  palette) at 2.15x. It was wrong for this surface: at plate scale, behind a
+  dark hero, body copy is noise. Re-cut to the palette reveal alone, where a
+  large colour dot, four swatches and a cover strip stay legible small. The
+  screenshot is what showed this; the numbers all looked fine.
+- The splice is anchored on the first plate's full block, not on
+  `<div class="plate`, which prefix-matches `plate-stack` and ate the container
+  on a previous edit. Tag balance asserted before and after: 216 -> 217 open,
+  216 -> 217 close, `plate-stack` still singular, 12 plates in dist.
 
 ## [4.18.0] - 2026-08-22
 
