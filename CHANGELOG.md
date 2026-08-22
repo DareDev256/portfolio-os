@@ -21,6 +21,19 @@ This changelog documents the evolutionary development of Passion OS from initial
 ## [4.19.0] - 2026-08-22
 
 ### Added
+- The agent can now find its own work. `patch_gap.py` reads Nin Online's
+  official consolidated patch notes, extracts things the notes say were added,
+  and asks the live wiki whether each has a page or is mentioned anywhere. What
+  survives is content the game shipped that the wiki never absorbed.
+- New `Agent -> Backlog` tab listing those candidates with the exact patch line
+  and version each came from. They are labelled candidates and never enter
+  `queue.jsonl` without a human promoting them.
+- The scan runs from the cron only when the notes file is newer than the last
+  result, since re-scanning static input costs ~60 API calls for nothing.
+
+## [4.19.0] - 2026-08-22
+
+### Added
 - **COLD OPEN plate in the hero reel** — twelfth plate, and the first one that is
   not a client site. `data-kind="ENGINE"`, crediting
   `github.com/DareDev256/coldopen`: open source, it generated shortiieraw.com,
