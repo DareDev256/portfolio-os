@@ -12,6 +12,7 @@ export default defineConfig({
             input: {
                 main: resolve(import.meta.dirname, 'index.html'),
                 os: resolve(import.meta.dirname, 'os/index.html'),
+                coldopen: resolve(import.meta.dirname, 'coldopen/index.html'),
             },
         },
     },

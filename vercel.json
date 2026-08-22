@@ -1,85 +1,93 @@
 {
-    "rewrites": [
+  "rewrites": [
+    {
+      "source": "/os",
+      "destination": "/os/index.html"
+    },
+    {
+      "source": "/os/(.*)",
+      "destination": "/os/index.html"
+    },
+    {
+      "source": "/coldopen",
+      "destination": "/coldopen/index.html"
+    },
+    {
+      "source": "/coldopen/(.*)",
+      "destination": "/coldopen/index.html"
+    },
+    {
+      "source": "/((?!resume/|fandom-flow|os$|os/|coldopen$|coldopen/).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
         {
-            "source": "/os",
-            "destination": "/os/index.html"
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://cdn.jsdelivr.net/npm/dompurify@3.0.8/ https://cdn.jsdelivr.net/npm/three@0.170.0/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://avatars.githubusercontent.com https://raw.githubusercontent.com https://img.youtube.com data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.github.com https://api.open-meteo.com https://passion-api.jamesdare.com https://fonts.googleapis.com https://fonts.gstatic.com; media-src 'self'; worker-src 'self'; manifest-src 'self'; frame-src 'self' https://www.youtube-nocookie.com https://player.vimeo.com; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
         },
         {
-            "source": "/os/(.*)",
-            "destination": "/os/index.html"
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
         },
         {
-            "source": "/((?!resume/|fandom-flow|os$|os/).*)",
-            "destination": "/index.html"
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), accelerometer=(), autoplay=(self \"https://www.youtube-nocookie.com\" \"https://player.vimeo.com\"), encrypted-media=(self \"https://www.youtube-nocookie.com\"), gyroscope=(), magnetometer=(), midi=(), payment=(), picture-in-picture=(self \"https://www.youtube-nocookie.com\" \"https://player.vimeo.com\"), usb=(), interest-cohort=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "X-Permitted-Cross-Domain-Policies",
+          "value": "none"
+        },
+        {
+          "key": "X-DNS-Prefetch-Control",
+          "value": "off"
+        },
+        {
+          "key": "X-Download-Options",
+          "value": "noopen"
         }
-    ],
-    "headers": [
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
         {
-            "source": "/(.*)",
-            "headers": [
-                {
-                    "key": "Content-Security-Policy",
-                    "value": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://cdn.jsdelivr.net/npm/dompurify@3.0.8/ https://cdn.jsdelivr.net/npm/three@0.170.0/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://avatars.githubusercontent.com https://raw.githubusercontent.com https://img.youtube.com data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.github.com https://api.open-meteo.com https://passion-api.jamesdare.com https://fonts.googleapis.com https://fonts.gstatic.com; media-src 'self'; worker-src 'self'; manifest-src 'self'; frame-src 'self' https://www.youtube-nocookie.com https://player.vimeo.com; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
-                },
-                {
-                    "key": "X-Frame-Options",
-                    "value": "SAMEORIGIN"
-                },
-                {
-                    "key": "X-Content-Type-Options",
-                    "value": "nosniff"
-                },
-                {
-                    "key": "Referrer-Policy",
-                    "value": "strict-origin-when-cross-origin"
-                },
-                {
-                    "key": "Permissions-Policy",
-                    "value": "camera=(), microphone=(), geolocation=(), accelerometer=(), autoplay=(self \"https://www.youtube-nocookie.com\" \"https://player.vimeo.com\"), encrypted-media=(self \"https://www.youtube-nocookie.com\"), gyroscope=(), magnetometer=(), midi=(), payment=(), picture-in-picture=(self \"https://www.youtube-nocookie.com\" \"https://player.vimeo.com\"), usb=(), interest-cohort=()"
-                },
-                {
-                    "key": "Strict-Transport-Security",
-                    "value": "max-age=63072000; includeSubDomains; preload"
-                },
-                {
-                    "key": "X-Permitted-Cross-Domain-Policies",
-                    "value": "none"
-                },
-                {
-                    "key": "X-DNS-Prefetch-Control",
-                    "value": "off"
-                },
-                {
-                    "key": "X-Download-Options",
-                    "value": "noopen"
-                }
-            ]
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
         },
         {
-            "source": "/sw.js",
-            "headers": [
-                {
-                    "key": "Cache-Control",
-                    "value": "no-cache, no-store, must-revalidate"
-                },
-                {
-                    "key": "Service-Worker-Allowed",
-                    "value": "/"
-                }
-            ]
-        },
-        {
-            "source": "/data/(.*)",
-            "headers": [
-                {
-                    "key": "Cache-Control",
-                    "value": "public, max-age=300, stale-while-revalidate=60"
-                },
-                {
-                    "key": "X-Content-Type-Options",
-                    "value": "nosniff"
-                }
-            ]
+          "key": "Service-Worker-Allowed",
+          "value": "/"
         }
-    ]
+      ]
+    },
+    {
+      "source": "/data/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, stale-while-revalidate=60"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
+  ]
 }
