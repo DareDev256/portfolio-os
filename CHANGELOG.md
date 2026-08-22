@@ -18,6 +18,24 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [4.17.0] - 2026-08-22
+
+### Added
+- Each wiki panel on `/fandom-flow` now carries a looping clip of that game
+  running on its own homepage, reusing the reel captures already in
+  `assets/system/reel/`. The poster frame is inlined as a data URI, so the same
+  markup works on jamesdare.com (where the mp4 is same-origin and plays) and in
+  the Claude artifact (where CSP blocks it and the frame shows instead).
+- Only the visible panel's clip is loaded and played; switching panels pauses
+  the other and strips its autoplay attribute.
+
+### Changed
+- The Kinsen Quarters queue grew from 17 to 22 entries. Five more pages carry
+  the retired name and appeared in neither `backlinks` nor `exturlusage`,
+  because MediaWiki indexes a same-domain raw URL as neither an internal nor an
+  external link: Daimyo, Gambling, Tanzaku Bar, Tanzaku Castle and Tanzaku
+  Hospital, 12 further occurrences.
+
 ## [4.16.0] - 2026-08-22
 
 ### Added

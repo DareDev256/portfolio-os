@@ -39,6 +39,21 @@
   }
 
   function activate(pane){
+    // Only the visible panel's clip should exist on the network. Two 2MB videos
+    // autoplaying behind display:none is bandwidth nobody asked for.
+    document.querySelectorAll('video').forEach(function(v){
+      if (pane.contains(v)) return;
+      try { v.pause(); v.removeAttribute('autoplay'); } catch (e) {}
+    });
+    pane.querySelectorAll('video').forEach(function(v){
+      try {
+        if (!v.dataset.loaded) { v.load(); v.dataset.loaded = '1'; }
+        var p = v.play();
+        // Autoplay is refused in background tabs and under some settings. The
+        // poster is already showing, so a rejection needs no handling.
+        if (p && p.catch) p.catch(function(){});
+      } catch (e) {}
+    });
     pane.querySelectorAll('[data-count]').forEach(countUp);
     pane.querySelectorAll('.gauge i').forEach(function(g){
       g.style.width = '0';
@@ -90,7 +105,7 @@
   // Staleness is the one thing this page must never hide: a dead cron would
   // otherwise leave it quietly asserting a streak with old data.
   var f = document.getElementById('freshness');
-  var gen = "2026-08-22 16:25 UTC".replace(' UTC', 'Z').replace(' ', 'T');
+  var gen = "2026-08-22 16:53 UTC".replace(' UTC', 'Z').replace(' ', 'T');
   var days = (Date.now() - Date.parse(gen)) / 86400000;
   if (f && days > 2) {
     f.innerHTML = '<span class="stale">STALE - last built ' + Math.floor(days) +
