@@ -9,7 +9,7 @@
             "destination": "/os/index.html"
         },
         {
-            "source": "/((?!resume/|os$|os/).*)",
+            "source": "/((?!resume/|fandom-flow|os$|os/).*)",
             "destination": "/index.html"
         }
     ],

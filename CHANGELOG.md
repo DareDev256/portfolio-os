@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 4.12.0
-last_updated: 2026-08-21
+version: 4.13.0
+last_updated: 2026-08-22
 
 ---
 
@@ -17,6 +17,26 @@ last_updated: 2026-08-21
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.13.0] - 2026-08-22
+
+### Added
+- `/fandom-flow` — a live operations console for the two Fandom wikis the agent
+  maintains. Tabbed system surface: per-wiki status, activity log with real diff
+  links, the 14-day daily-quest counter, the pending edit queue, and an Agent
+  view covering the kill switch, pipeline, constraints and provenance.
+- Generated, not authored: `passion-cron/nin-wiki-streak/portfolio/fetch_data.py`
+  reads both wikis' MediaWiki APIs and `build_page.py` renders the page. The
+  daily cron regenerates it, so no figure on the page is hand-maintained.
+- Script is emitted as a same-origin `app.js` rather than inline, because the
+  site's CSP is `script-src 'self'` with no `'unsafe-inline'` — an inline block
+  is silently refused and every tab would die with no build error.
+
+### Changed
+- The Fandom Flow gate card now links to `/fandom-flow` instead of the bare
+  Nin Online wiki, and no longer carries a hardcoded edit count that drifts
+  daily. The exact figure lives on the linked page, where it is regenerated.
+- `vercel.json` — `fandom-flow` added to the SPA-rewrite exception list.
 
 ## [4.12.0] - 2026-08-21
 
