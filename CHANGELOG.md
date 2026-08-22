@@ -18,6 +18,29 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [4.15.0] - 2026-08-22
+
+### Added
+- `/fandom-flow` now links out to every destination a visitor might want, per
+  wiki: the wiki itself, the game's own site, its Discord, and for Ninjora the
+  play client and community forums. Every URL was resolved live before shipping.
+- Each wiki names its developer (Hitspark Interactive, Pixel Pirate) so the page
+  cannot be misread as claiming the games.
+- A back link to jamesdare.com, for anyone arriving from a shared link.
+- `/fandom-flow` added to sitemap.xml.
+
+### Changed
+- The kill-switch panel now reads the control page's real protection level from
+  the API and describes itself accordingly, so the copy cannot drift from the
+  truth when the level changes.
+- The revert metric is now scoped to **article space** and excludes self-reverts.
+  A bot-control page edited and restored by the bot itself is tagged
+  `mw-reverted` by MediaWiki, which rendered on the page as "1 edit reverted by
+  humans" when no human had rejected anything.
+- The two wiki plates on the homepage no longer carry hardcoded edit and
+  screenshot counts, which drifted daily. Precision lives on /fandom-flow, where
+  it is regenerated.
+
 ## [4.14.2] - 2026-08-22
 
 ### Fixed
