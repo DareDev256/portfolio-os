@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.14.0
+version: 4.14.1
 last_updated: 2026-08-22
 
 ---
@@ -17,6 +17,15 @@ last_updated: 2026-08-22
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.14.1] - 2026-08-22
+
+### Fixed
+- `/fandom-flow` hung on its boot screen in production. The script tag used a
+  relative `./app.js`, which at `/fandom-flow` (no trailing slash) resolves to
+  `/app.js`, hits the SPA rewrite and returns `index.html` instead of a script.
+  Absolute `/fandom-flow/app.js` now. It worked in local testing only because
+  the local URL carried the trailing slash the deployed link does not.
 
 ## [4.14.0] - 2026-08-22
 
