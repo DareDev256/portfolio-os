@@ -18,6 +18,18 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [4.18.0] - 2026-08-22
+
+### Changed
+- The panel clips are now animated WebP in an `<img>` rather than an mp4 in a
+  `<video>`. A video element could only ever show a still inside the Claude
+  artifact, because that CSP blocks media from external hosts and a relative
+  mp4 path has nothing to resolve against; `img-src` permits `data:`, so one
+  animated image moves on both surfaces. 720x232, 12fps, ~75 frames, looping.
+  jamesdare.com references cacheable `.webp` files; the artifact inlines them.
+- `Status` is now the first sub-tab and the default pane for each wiki, ahead of
+  `Daily Quest`.
+
 ## [4.17.0] - 2026-08-22
 
 ### Added
