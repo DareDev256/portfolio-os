@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.14.1
+version: 4.14.2
 last_updated: 2026-08-22
 
 ---
@@ -17,6 +17,16 @@ last_updated: 2026-08-22
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.14.2] - 2026-08-22
+
+### Fixed
+- `/fandom-flow` counters could freeze mid-count and display a number that was
+  simply wrong. `requestAnimationFrame` is suspended in a background tab, so a
+  page opened via "open link in new tab" stalled the animation partway and left
+  the intermediate value on screen permanently. Observed live: the streak
+  counter read `1` while its own `data-count` was `2`. Counters now snap to the
+  true value on a timer regardless of whether the animation ever completes.
 
 ## [4.14.1] - 2026-08-22
 

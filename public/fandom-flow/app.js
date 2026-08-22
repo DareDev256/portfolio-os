@@ -12,20 +12,30 @@
     if (isNaN(target)) return;
     var suffix = el.dataset.suffix || '';
     if (reduce) { el.textContent = target.toLocaleString() + suffix; return; }
-    var dur = 620, t0 = null;
-    function step(t){
-      if (t0 === null) t0 = t;
-      var p = Math.min((t - t0) / dur, 1);
-      var v = Math.round(target * (1 - Math.pow(1 - p, 3)));
-      el.textContent = v.toLocaleString();
-      if (p === 1 && suffix) {
+    var dur = 620, t0 = null, done = false;
+    function finish(){
+      if (done) return;
+      done = true;
+      el.textContent = target.toLocaleString();
+      if (suffix) {
         var sp = document.createElement('span');
         sp.className = 'sfx'; sp.textContent = suffix; el.appendChild(sp);
       }
-      if (p < 1) requestAnimationFrame(step);
+    }
+    function step(t){
+      if (done) return;
+      if (t0 === null) t0 = t;
+      var p = Math.min((t - t0) / dur, 1);
+      if (p >= 1) { finish(); return; }
+      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString();
+      requestAnimationFrame(step);
     }
     el.textContent = '0';
     requestAnimationFrame(step);
+    // rAF does not run in a background tab, so the loop can suspend partway and
+    // leave a WRONG number on screen forever. Opening a link in a new tab is
+    // exactly that case. This snaps to the true value regardless.
+    setTimeout(finish, dur + 120);
   }
 
   function activate(pane){
