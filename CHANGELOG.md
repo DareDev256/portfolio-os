@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.21.0
+version: 4.21.1
 last_updated: 2026-08-22
 
 ---
@@ -17,6 +17,17 @@ last_updated: 2026-08-22
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.21.1] - 2026-08-22
+
+### Fixed
+- `/coldopen` claimed 100bandplan.com was "hand-built by someone else". James
+  built it. The source note in the engine repo says only "100bandplan.com is
+  hand-built" — the authorship was invented in the page copy, on the page whose
+  whole argument is that the engine cannot print a claim it has not sourced.
+  Now reads "Two sites in production, both mine", and keeps the point that
+  actually matters: the engine did not generate that site, which is the harder
+  case, and it patched a release into it without breaking the markup.
 
 ## [4.21.0] - 2026-08-22
 
