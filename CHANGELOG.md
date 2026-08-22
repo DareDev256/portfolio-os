@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.19.0
+version: 4.21.0
 last_updated: 2026-08-22
 
 ---
@@ -18,20 +18,43 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
-## [4.19.0] - 2026-08-22
+## [4.21.0] - 2026-08-22
+
+### Fixed
+- **No gate screenshot had ever rendered on this site.** `.gate-shot` is
+  absolutely positioned and takes its height from the image inside it, while
+  that image was `loading="lazy"` with no intrinsic dimensions. Zero height
+  means the lazy heuristic never fires, so the image never loads, so it never
+  gets height. Every gate ran with its right half empty. Confirmed on
+  production with the cache bypassed before being called a bug. Fixed by giving
+  all 8 gate images their real width/height and switching them to `eager` —
+  only one gate is ever in the DOM, the other six are inert `<template>`
+  content, so this loads one image and not seven.
 
 ### Added
-- The agent can now find its own work. `patch_gap.py` reads Nin Online's
-  official consolidated patch notes, extracts things the notes say were added,
-  and asks the live wiki whether each has a page or is mentioned anywhere. What
-  survives is content the game shipped that the wiki never absorbed.
-- New `Agent -> Backlog` tab listing those candidates with the exact patch line
-  and version each came from. They are labelled candidates and never enter
-  `queue.jsonl` without a human promoting them.
-- The scan runs from the cron only when the notes file is newer than the last
-  result, since re-scanning static input costs ~60 API calls for nothing.
+- **COLD OPEN as GATE 07 · CLEARED** — template, tab and shot. 2 sites live /
+  0 unsourced figures / 2× blind A/B passed, all checkable.
+- **`/coldopen`** — a method page on its own route, wired as a third vite entry
+  and excluded from the SPA catch-all rewrite.
 
-## [4.19.0] - 2026-08-22
+### Changed
+- COLD OPEN's hero plate moves from position 2 to 12, last in the reel.
+- System snapshot corrected against measurements taken today: 92 → **98
+  modules**, 67K → **66K LOC** (66,217 counted), 59 → **54 scheduled jobs**
+  (47 loaded locally + 7 on the Mini), snapshot date 08-20 → 08-22.
+- The "63-repository registry" and "63 repos / 43 active" figures are LEFT
+  ALONE — neither traces to any source on disk. GitHub reports 87 repos, 54
+  pushed in the last 90 days. Locate the registry before printing a number for it.
+
+### Notes
+- v4.19.0 was claimed twice: the `patch_gap` entry below already held it when
+  the COLD OPEN plate shipped under the same number. That plate entry is
+  renumbered to 4.20.0 here and this release is 4.21.0.
+- Every page-local class on `/coldopen` collided with `system.css`, which the
+  page links. The stat grid silently inherited `display:flex; gap:44px` from the
+  gate component. All page classes are `co-` prefixed now.
+
+## [4.20.0] - 2026-08-22
 
 ### Added
 - **COLD OPEN plate in the hero reel** — twelfth plate, and the first one that is
@@ -52,6 +75,19 @@ This changelog documents the evolutionary development of Passion OS from initial
   `<div class="plate`, which prefix-matches `plate-stack` and ate the container
   on a previous edit. Tag balance asserted before and after: 216 -> 217 open,
   216 -> 217 close, `plate-stack` still singular, 12 plates in dist.
+
+## [4.19.0] - 2026-08-22
+
+### Added
+- The agent can now find its own work. `patch_gap.py` reads Nin Online's
+  official consolidated patch notes, extracts things the notes say were added,
+  and asks the live wiki whether each has a page or is mentioned anywhere. What
+  survives is content the game shipped that the wiki never absorbed.
+- New `Agent -> Backlog` tab listing those candidates with the exact patch line
+  and version each came from. They are labelled candidates and never enter
+  `queue.jsonl` without a human promoting them.
+- The scan runs from the cron only when the notes file is newer than the last
+  result, since re-scanning static input costs ~60 API calls for nothing.
 
 ## [4.18.0] - 2026-08-22
 
