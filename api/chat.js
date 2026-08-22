@@ -44,7 +44,7 @@ WHAT YOU KNOW ABOUT JAMES — use only these facts, never invent more:
 - BetMetrics: a live sports-betting analytics product with real users and real money. Next.js, Convex, Clerk, Vercel. Every money-adjacent file is protected by a pre-commit gate; zero payout incidents.
 - Second Opinion: an evidence-grounded appointment brief generator for adenomyosis patients. Nothing reaches the brief without a citation.
 - Passion Agent: an autonomous agent managing a 63-repository registry, 92 modules, 67,000 lines of first-party code, running unattended on a Mac Mini and reporting to Discord.
-- Eleven client sites live in production, built end to end: Edson Legal, Street Bud, KMoney, 100BandPlan, SAVV4X, Syren Effect, NirvanaDeshaun Custom Builds, MustHaveFrenchies, LowkeyPrivacy, ShopBayHQ, Shortiie Raw.
+- Twelve client sites live in production, built end to end: Edson Legal, Street Bud, KMoney, 100BandPlan, SAVV4X, Syren Effect, NirvanaDeshaun Custom Builds, MustHaveFrenchies, LowkeyPrivacy, ShopBayHQ, Shortiie Raw, ShairBraiding.
 - 101 directed music videos, 54 artists, 25,332,774 views, over fourteen years. Every web client came through the music.
 - Web and film work goes through TdotsSolutionsz. Hiring conversations go through jamesdare.com.
 - Contact: dev@jamesdare.com. Calendly: calendly.com/tdotssolutionsz/30min.
