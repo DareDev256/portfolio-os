@@ -18,6 +18,14 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [4.15.1] - 2026-08-22
+
+### Added
+- Nin Online's panel now also links its Steam page, official YouTube channel and
+  X account, taken from the game's own site rather than assumed. Ninjora
+  publishes only a Discord invite, so its row stays at wiki / game / play /
+  forums / Discord.
+
 ## [4.15.0] - 2026-08-22
 
 ### Added
