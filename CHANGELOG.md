@@ -18,6 +18,12 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [4.20.1] - 2026-08-22
+
+### Changed
+- Regenerated from live wiki data after the Ninjora contest result and both
+  navigation rebuilds.
+
 ## [4.20.0] - 2026-08-22
 
 ### Changed
