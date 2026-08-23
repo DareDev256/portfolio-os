@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.21.1
+version: 4.22.0
 last_updated: 2026-08-22
 
 ---
@@ -18,20 +18,7 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
-## [4.20.1] - 2026-08-22
-
-### Changed
-- Regenerated from live wiki data after the Ninjora contest result and both
-  navigation rebuilds.
-
-## [4.20.0] - 2026-08-22
-
-### Changed
-- The activity log is now grouped by UTC date with sticky day headers, the way
-  the wikis' own Special:RecentChanges reads, instead of a flat list of relative
-  times. Same clock the streak is counted on.
-
-## [4.19.1] - 2026-08-22
+## [4.22.0] - 2026-08-22
 
 ### Fixed
 - The patch-gap scanner reported things as uncovered when the wiki simply names
@@ -40,6 +27,15 @@ This changelog documents the evolutionary development of Passion OS from initial
   checks title variants - parentheticals stripped, `&`/`and` split, trailing
   category words dropped - before calling anything a gap. 12 candidates -> 10,
   and three duplicates avoided.
+
+### Changed
+- The activity log is now grouped by UTC date with sticky day headers, the way
+  the wikis' own Special:RecentChanges reads, instead of a flat list of relative
+  times. Same clock the streak is counted on.
+
+### Changed
+- Regenerated from live wiki data after the Ninjora contest result and both
+  navigation rebuilds.
 
 ## [4.21.1] - 2026-08-22
 
