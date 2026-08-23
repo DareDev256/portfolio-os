@@ -18,6 +18,13 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [4.20.0] - 2026-08-22
+
+### Changed
+- The activity log is now grouped by UTC date with sticky day headers, the way
+  the wikis' own Special:RecentChanges reads, instead of a flat list of relative
+  times. Same clock the streak is counted on.
+
 ## [4.19.1] - 2026-08-22
 
 ### Fixed
