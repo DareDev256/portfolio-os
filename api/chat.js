@@ -32,35 +32,60 @@ const MAX_TOKENS = Number(process.env.CHAT_MAX_TOKENS || 400);
 // Ceiling on any single message, inbound or replayed from history.
 const MAX_CHARS = 600;
 
-const SYSTEM = `You are THE SYSTEM, the status-window interface on jamesdare.com — the personal site of James Olusoga, an AI Solutions Engineer in Toronto.
+/* The fact list below used to hardcode "90 GitHub stars, 18 forks, about 1,928
+ * installs" — all three wrong by the time anyone read them, and this endpoint
+ * SPEAKS them to recruiters. A stale number on the page is a drift bug; a model
+ * confidently reciting it in conversation is worse, because the visitor cannot
+ * see it was written months ago.
+ *
+ * Read from the same generated file the page uses. If it cannot be read the
+ * numbers are OMITTED rather than guessed — the model is told to send them to
+ * the email instead, which is the honest failure. */
+/* Personas live in ./_personas.js so both voices share ONE fact list built from
+ * the generated figures.json. Two prompts with two copies of the facts is two
+ * things to update, and one of them drifts — which is exactly how "90 stars"
+ * survived in this file while the page said 94. */
+import { resolvePersona } from './_personas.js';
 
-You are talking to a visitor. Most of them are recruiters, hiring managers, or someone who wants a website built. Assume no technical background unless they show one.
+/* passion.jamesdare.com calls this endpoint cross-origin. An explicit allowlist,
+ * never a wildcard: this endpoint spends money, so anyone who can call it can
+ * spend it. A '*' here would let any site on the internet bill his Anthropic
+ * account through a browser. */
+const ALLOWED_ORIGINS = new Set([
+    'https://jamesdare.com',
+    'https://www.jamesdare.com',
+    'https://passion.jamesdare.com',
+]);
 
-VOICE: calm, direct, dry. Short sentences. No exclamation marks, no emoji, no sales language, no "I'd love to". Never call anything "exciting" or "amazing". You are a terminal readout that happens to be polite.
-
-WHAT YOU KNOW ABOUT JAMES — use only these facts, never invent more:
-- Open to AI Solutions Engineer, Solutions Architect and Forward Deployed Engineer roles. Toronto or remote. Reply is usually same-day.
-- fcp-mcp-server: an open-source MCP server that drives Final Cut Pro from natural language. 90 GitHub stars, 18 forks, MIT, on PyPI as fcp-mcp-server, about 1,928 installs a month. 7 grouped tools over 62 operations.
-- BetMetrics: a live sports-betting analytics product with real users and real money. Next.js, Convex, Clerk, Vercel. Every money-adjacent file is protected by a pre-commit gate; zero payout incidents.
-- Second Opinion: an evidence-grounded appointment brief generator for adenomyosis patients. Nothing reaches the brief without a citation.
-- Passion Agent: an autonomous agent managing a 63-repository registry, 92 modules, 67,000 lines of first-party code, running unattended on a Mac Mini and reporting to Discord.
-- Twelve client sites live in production, built end to end: Edson Legal, Street Bud, KMoney, 100BandPlan, SAVV4X, Syren Effect, NirvanaDeshaun Custom Builds, MustHaveFrenchies, LowkeyPrivacy, ShopBayHQ, Shortiie Raw, ShairBraiding.
-- 101 directed music videos, 54 artists, 25,332,774 views, over fourteen years. Every web client came through the music.
-- Web and film work goes through TdotsSolutionsz. Hiring conversations go through jamesdare.com.
-- Contact: dev@jamesdare.com. Calendly: calendly.com/tdotssolutionsz/30min.
-
-RULES:
-- Answer in at most 3 short sentences. Brevity is the product here.
-- If you do not know something, say so and point them at dev@jamesdare.com. Never guess a number, a rate, a date, or a client detail.
-- Never state a salary, day rate or project price. Say those are worth a conversation and give the email.
-- If asked something unrelated to James, his work, or hiring him, say that is outside what this window covers, in one sentence, and offer the email.
-- Never claim to be James. You are the interface. If they want James, the email and the Calendly link are how.
-- Never output code, markdown, links as markdown, or lists. Plain sentences only.`;
+function applyCors(req, res) {
+    const origin = req.headers.origin;
+    if (origin && ALLOWED_ORIGINS.has(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Vary', 'Origin');
+        res.setHeader('Access-Control-Allow-Headers', 'content-type');
+        res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+        res.setHeader('Access-Control-Max-Age', '86400');
+        return true;
+    }
+    return false;
+}
 
 export default async function handler(req, res) {
+    const corsOk = applyCors(req, res);
+
+    // Preflight is answered BEFORE the rate limiter — a browser's OPTIONS is not
+    // a user message, and charging it against the visitor's ten-message budget
+    // would halve every cross-origin conversation.
+    if (req.method === 'OPTIONS') return res.status(corsOk ? 204 : 403).end();
+
     if (req.method !== 'POST') {
         res.setHeader('Allow', 'POST');
         return res.status(405).json({ error: 'POST only.' });
+    }
+
+    // A cross-origin POST from an origin not on the list is refused outright.
+    if (req.headers.origin && !corsOk) {
+        return res.status(403).json({ error: 'Origin not allowed.' });
     }
 
     // Reserve before parsing the body and before any model call.
@@ -79,6 +104,11 @@ export default async function handler(req, res) {
         const message = String(body.message || '').trim().slice(0, MAX_CHARS);
         if (!message) return res.status(400).json({ error: 'Say something first.' });
 
+        // Persona picks the VOICE only. Both share one fact list and one set of
+        // hard rules, so an unknown value falling back to `system` is safe —
+        // it is the stricter of the two.
+        const persona = resolvePersona(body.persona);
+
         const history = Array.isArray(body.history) ? body.history.slice(-6) : [];
         const messages = history
             .filter((m) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
@@ -89,11 +119,15 @@ export default async function handler(req, res) {
          * the Opus 4.5+ / Sonnet 5 / Fable tier accepts it. Sending it to Haiku
          * returns a 400, which this handler was turning into an opaque 502.
          * Send it only where it is supported. */
-        const supportsEffort = /opus|sonnet-5|fable/.test(MODEL);
+        // Read the PERSONA's model, not the module default — Passion runs a
+        // higher tier than THE SYSTEM, and the effort test has to follow the
+        // model actually being sent or it goes back to 400ing on Haiku.
+        const model = persona.model || MODEL;
+        const supportsEffort = /opus|sonnet-5|fable/.test(model);
         const request = {
-            model: MODEL,
+            model,
             max_tokens: MAX_TOKENS,
-            system: SYSTEM,
+            system: persona.prompt,
             messages,
         };
         if (supportsEffort) request.output_config = { effort: 'low' };

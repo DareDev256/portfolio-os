@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-08-24T15:01:27.151Z",
+  "figures": {
+    "stars": 94,
+    "forks": 19,
+    "installs": "2,107",
+    "repos": 91,
+    "modules": 97,
+    "loc": "61K",
+    "jobs": 59,
+    "reposPublic": 24,
+    "reposArchived": 5
+  },
+  "definitions": {
+    "stars": "GitHub stargazers on DareDev256/fcp-mcp-server, live at build time",
+    "forks": "GitHub forks of DareDev256/fcp-mcp-server, live at build time",
+    "installs": "PyPI downloads of fcp-mcp-server in the last 30 days, via pypistats",
+    "repos": "gh repo list DareDev256, all visibilities",
+    "modules": "top-level *.mjs in passion-agent",
+    "loc": "all first-party .mjs, excluding node_modules and test dirs",
+    "jobs": "com.daredev.* loaded on both machines",
+    "reposPublic": "public, non-archived repositories",
+    "reposArchived": "archived repositories, excluded from active counts"
+  },
+  "manual": {
+    "clientSites": {
+      "value": 12,
+      "asOf": "2026-08-24",
+      "note": "deployed client sites, counted by hand"
+    },
+    "directedViews": {
+      "value": "25,332,774",
+      "asOf": "2026-08-24",
+      "note": "sum of public view counts on directed films"
+    }
+  }
+}

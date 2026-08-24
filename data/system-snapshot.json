@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-08-23T13:30:07Z",
+  "repos": 91,
+  "scheduledJobs": { "total": 59, "macbook": 51, "macMini": 8 },
+  "modules": 97,
+  "linesOfCode": 60795,
+  "definitions": {
+    "modules": "top-level *.mjs in passion-agent",
+    "linesOfCode": "all first-party .mjs, excluding node_modules and test dirs",
+    "repos": "gh repo list DareDev256, all visibilities",
+    "scheduledJobs": "com.daredev.* loaded on both machines"
+  }
+}

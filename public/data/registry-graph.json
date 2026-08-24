@@ -1,0 +1,167 @@
+{
+  "generatedAt": "2026-08-24T14:53:40.182Z",
+  "source": "gh repo list DareDev256 --limit 300 (all visibilities, archived excluded)",
+  "totals": {
+    "repos": 91,
+    "active": 86,
+    "archived": 5,
+    "namedOnGraph": 14
+  },
+  "definitions": {
+    "radius": "sqrt of repository disk usage, normalised to the largest named repo",
+    "heat": "0 to 1 by recency of last push — 1 is today, 0 is 90 days or older",
+    "unnamed": "registry entries drawn but not labelled — every private repository plus the public ones past the display cap; the count is real, the placement is not",
+    "private": "private repositories are counted and never named",
+    "archived": "excluded from the graph but still counted in totals.repos"
+  },
+  "core": {
+    "id": "passion-agent",
+    "label": "CORE",
+    "r": 26,
+    "blurb": "Autonomous AI code agent with Discord bot — thinks, improves repos, notifies via Discord",
+    "pushedAt": "2026-08-23"
+  },
+  "nodes": [
+    {
+      "id": "syreneffect-site",
+      "r": 11.04,
+      "heat": 1,
+      "ageDays": 0,
+      "pushedAt": "2026-08-24",
+      "lang": "TypeScript",
+      "private": false,
+      "blurb": "THE SYREN EFFECT — Content creator & Twitch streamer site. Next.js 16 + Tailwind."
+    },
+    {
+      "id": "portfolio-os",
+      "r": 15.67,
+      "heat": 0.989,
+      "ageDays": 1,
+      "pushedAt": "2026-08-23",
+      "lang": "JavaScript",
+      "private": false,
+      "blurb": "Zero-dependency cyberpunk desktop OS portfolio — draggable windows, GPU glass effects, Three.js, 20 apps, 46 vanilla JS modules. No frameworks, no runtime deps."
+    },
+    {
+      "id": "coldopen",
+      "r": 8.95,
+      "heat": 0.989,
+      "ageDays": 1,
+      "pushedAt": "2026-08-22",
+      "lang": "TypeScript",
+      "private": false,
+      "blurb": "Artist websites as named worlds, not templates. Extracts the premise, derives type/colour/motion from it, and refuses to print a number it cannot source. Two blind judges couldn't pick the generated site."
+    },
+    {
+      "id": "passion-learning-suite",
+      "r": 7.86,
+      "heat": 0.989,
+      "ageDays": 1,
+      "pushedAt": "2026-08-23",
+      "lang": "TypeScript",
+      "private": false,
+      "blurb": "6 web-based educational games teaching Gen AI concepts through gameplay — Prompt Craft, Token Prophet, Hallucination Hunter, Bias Buster, Tool Match, Red Team Arena. Next.js + FSRS spaced repetition + PWA-ready."
+    },
+    {
+      "id": "DareDev256",
+      "r": 7.84,
+      "heat": 0.989,
+      "ageDays": 1,
+      "pushedAt": "2026-08-23",
+      "lang": null,
+      "private": false,
+      "blurb": "Creative Technologist | AI Product Builder | Former Music Video Director  I directed 350+ music videos for artists like Chief Keef, Migos, and Masicka. Built KushdUp Filmsz and sold the platform to 6ixBuzz (now 3M+ followers). Earned a gold record. Pioneered cross-connections between the Canadian and US hip-hop scenes."
+    },
+    {
+      "id": "fcp-mcp-server",
+      "r": 8.56,
+      "heat": 0.944,
+      "ageDays": 5,
+      "pushedAt": "2026-08-19",
+      "lang": "Python",
+      "private": false,
+      "blurb": "🎬 The first AI-powered MCP server for Final Cut Pro XML. Control your edits with natural language."
+    },
+    {
+      "id": "tdotssolutionsz-portfolio",
+      "r": 22,
+      "heat": 0.922,
+      "ageDays": 7,
+      "pushedAt": "2026-08-17",
+      "lang": "JavaScript",
+      "private": false,
+      "blurb": "Music video portfolio for TdotsSolutionsz"
+    },
+    {
+      "id": "Ultimate-Image-Video-Prompt-Generator",
+      "r": 19.85,
+      "heat": 0.911,
+      "ageDays": 8,
+      "pushedAt": "2026-08-16",
+      "lang": "TypeScript",
+      "private": false,
+      "blurb": "AI prompt engineering tool for image/video generation — structured prompt builder for Nano Banana , Veo3 , DALL-E, Kling 01, Sora workflows"
+    },
+    {
+      "id": "perfectpixel-studio",
+      "r": 14.47,
+      "heat": 0.833,
+      "ageDays": 15,
+      "pushedAt": "2026-08-09",
+      "lang": "Go",
+      "private": false,
+      "blurb": "AI-powered animation sprite studio — generate character sprite sheets with 8 directions and 100+ actions from a single text prompt (Wails + Go + React)"
+    },
+    {
+      "id": "clickfix-defense-kit",
+      "r": 7.62,
+      "heat": 0.711,
+      "ageDays": 26,
+      "pushedAt": "2026-07-29",
+      "lang": "Shell",
+      "private": false,
+      "blurb": "macOS anti-infostealer toolkit — born from a real ClickFix attack. Blocks curl|sh paste attacks, audits your secret blast-radius, and more. Defensive-use only."
+    },
+    {
+      "id": "lockedin",
+      "r": 11.2,
+      "heat": 0.689,
+      "ageDays": 28,
+      "pushedAt": "2026-07-27",
+      "lang": "JavaScript",
+      "private": false,
+      "blurb": "LockedIn — One-tap connection card. Action router with Follow All, Connect (vCard), DM, Book, Pay modes. Not a Linktree clone — an action protocol."
+    },
+    {
+      "id": "buildright",
+      "r": 8.93,
+      "heat": 0.689,
+      "ageDays": 28,
+      "pushedAt": "2026-07-27",
+      "lang": "TypeScript",
+      "private": false,
+      "blurb": "Duolingo-style mobile learning app for home building in Georgia. Built with React Native, Expo, and react-native-reanimated."
+    },
+    {
+      "id": "toronto-parking-viz",
+      "r": 8.23,
+      "heat": 0.689,
+      "ageDays": 28,
+      "pushedAt": "2026-07-27",
+      "lang": "TypeScript",
+      "private": false,
+      "blurb": "Interactive 3D timelapse of parking ticket activity across Toronto. Built with deck.gl, MapLibre, and Toronto Open Data."
+    },
+    {
+      "id": "whats-poppin",
+      "r": 8.09,
+      "heat": 0.689,
+      "ageDays": 28,
+      "pushedAt": "2026-07-27",
+      "lang": "JavaScript",
+      "private": false,
+      "blurb": "Bubble pop game with cultural sauce — match, combo, dominate"
+    }
+  ],
+  "unnamed": 71
+}

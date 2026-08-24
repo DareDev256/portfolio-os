@@ -5,11 +5,14 @@
  * whole visual language for `/`; it shares nothing with the Passion OS at /os.
  *
  * DIVERGENCE RECORD — this surface must not converge with tdotssolutionsz.com.
- *   jamesdare  Barlow Condensed / JetBrains Mono · cyan #6fd3ff + gold #ffd76a
+ *   jamesdare  Saira var / Inter / JetBrains Mono · cyan #6fd3ff + gold #ffd76a
  *              · cooled ground #04080f · holo-window skeleton · SNAP motion
  *   tdots      Anton / Archivo / — · orange #e85d34 · warmed ground #0b0a09
  *              · 3D card-cloud skeleton · CONTINUOUS DRIFT motion
- * Four axes, opposite values. Do not borrow across.
+ * Four axes, opposite values. Do not borrow across. Saira was chosen partly
+ * BECAUSE tdots already owns Archivo — the two surfaces must not converge on a
+ * face. 2026-08-24: display moved Barlow Condensed -> Saira for its live wdth
+ * axis, and prose moved off the condensed face onto Inter entirely.
  */
 
 :root {
@@ -26,8 +29,21 @@
     --sys-hair: rgba(90, 190, 255, 0.22);
     --sys-glow: rgba(30, 100, 200, 0.1);
 
-    --sys-display: 'Avenir Next Condensed', 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    /* THREE FACES, THREE JOBS. Never mix the roles.
+     *   display — headlines only. Saira, variable on wdth 50-125 + wght 100-900.
+     *             The kinetic-type module animates BOTH axes; swapping in a static
+     *             face silently kills every reveal (they degrade to opacity fades).
+     *   prose   — body copy only. Inter. Condensed faces are a headline tool; using
+     *             one for paragraphs is what read as "sloppy" before 2026-08-24.
+     *   mono    — labels, figures, stamps. Tracking lives HERE and nowhere else.
+     * No system font may sit ahead of a webfont in these stacks. */
+    --sys-display: 'Saira', 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --sys-prose: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --sys-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    /* Saira's resting proportion. 68 sits where Barlow Condensed did, so the
+     * silhouette of the page is unchanged — what is new is that it can move. */
+    --sys-wdth: 68;
 
     /* outExpo · outBack · outCubic — verbatim from motion/frame.html */
     --sys-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -51,10 +67,59 @@ body.system {
     margin: 0;
     background: var(--sys-ground);
     color: var(--sys-text);
-    font-family: var(--sys-display);
-    letter-spacing: 0.04em;
+    /* Prose is the DEFAULT, display is opt-in. The inverse of this — a condensed
+     * display face inherited by every paragraph on the page — was the single
+     * largest thing making the type read as amateur. */
+    font-family: var(--sys-prose);
+    /* letter-spacing: 0.04em used to live here. Positive tracking on lowercase
+     * prose is the classic amateur tell: it fights the face's own fitting and
+     * reads as spaced-out rather than designed. Tracking is now applied ONLY to
+     * uppercase mono labels, which is the one place it belongs. Do not restore. */
+    letter-spacing: normal;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
     overflow-x: hidden;
+}
+
+/* ---------- display type ----------
+ * Every headline opts in here. font-variation-settings (not font-weight and not
+ * font-stretch) is the animation target — it is the only one of the three that
+ * interpolates smoothly across both axes at once. */
+.hero h1,
+.gate-head h3,
+h2 {
+    font-family: var(--sys-display);
+    font-variation-settings:
+        'wdth' var(--sys-wdth),
+        'wght' 700;
+}
+
+/* The hero is the one place the face runs lighter — at 118px, 700 is a slab.
+ * 600 keeps the counters open. This mirrors optical sizing by hand. */
+.hero h1 {
+    font-variation-settings:
+        'wdth' var(--sys-wdth),
+        'wght' 600;
+}
+
+/* ---------- prose ----------
+ * Inter carries an optical-size axis; let it use it. Paragraphs get a balanced
+ * last line rather than an orphan, and headings get `balance` so a two-word
+ * ragged tail never dangles under a full line. */
+.gate-body > p,
+.decision p,
+.contact .lede,
+p.prose {
+    font-family: var(--sys-prose);
+    font-optical-sizing: auto;
+    letter-spacing: -0.005em;
+    text-wrap: pretty;
+}
+
+h2,
+.hero h1,
+.gate-head h3 {
+    text-wrap: balance;
 }
 
 a {
@@ -171,7 +236,7 @@ button:focus-visible {
 .sect-title {
     font-size: clamp(30px, 4vw, 42px);
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.005em;
     margin: 0 0 14px;
     color: #fff;
     text-transform: uppercase;
@@ -384,7 +449,10 @@ button:focus-visible {
     font-size: clamp(46px, 8.2vw, 118px);
     line-height: 0.9;
     font-weight: 600;
-    letter-spacing: 0.005em;
+    /* Optical compensation, not a preference: tracking that reads as correct at
+     * 16px is visibly loose at 118px, because the gaps scale with the glyphs but
+     * the eye's tolerance does not. Every display size on this page tightens. */
+    letter-spacing: -0.022em;
     margin: 0 0 44px;
     color: #fff;
     text-transform: uppercase;
@@ -619,93 +687,220 @@ button:focus-visible {
 }
 
 .graph-wrap {
+    position: relative;
     margin: 26px auto 0;
-    max-width: 780px;
+    max-width: 900px;
 }
 
 .graph-wrap svg {
     width: 100%;
     height: auto;
     display: block;
+    overflow: visible;
 }
 
-.t-core {
-    animation: tcore 3.6s ease-in-out infinite;
+/* ---------- registry graph ----------
+ * Positions come from the solver in js/registry-graph.js; everything visual
+ * lives here. The JS writes only geometry and one --heat per node, so the
+ * palette cannot drift out of the token set. */
+
+.rg-edge {
+    stroke: rgba(111, 211, 255, 0.16);
+    stroke-width: 1;
+    fill: none;
 }
 
-@keyframes tcore {
+.rg-dot {
+    fill: rgba(217, 242, 255, 0.26);
+}
+
+/* Heat is days-since-push, 1 = today. It rides the SAME cyan the rest of the
+ * surface uses — a second hue here would read as a category, implying repos
+ * come in two kinds when the only difference is when they were last touched. */
+.rg-disc {
+    fill: #061020;
+    stroke: rgba(111, 211, 255, calc(0.28 + 0.62 * var(--heat, 0)));
+    stroke-width: calc(1.2 + 1.1 * var(--heat, 0));
+    transition:
+        stroke 0.3s var(--sys-cubic),
+        fill 0.3s var(--sys-cubic);
+}
+
+.rg-hit {
+    fill: transparent;
+    /* The hit target is deliberately larger than the disc — a 7px node is a
+     * 14px target, which is under every pointer-size guideline there is. */
+    cursor: pointer;
+}
+
+.rg-label {
+    font-family: var(--sys-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.9px;
+    fill: var(--sys-muted);
+    pointer-events: none;
+    transition: fill 0.3s var(--sys-cubic);
+    /* NO text-anchor HERE. In SVG, a CSS declaration beats a presentation
+     * attribute of the same name, so `text-anchor: middle` in this rule
+     * silently overrode every setAttribute('text-anchor', ...) the renderer
+     * made — the side labels computed correctly and then drew centred anyway,
+     * with nothing in the console. js/registry-graph.js owns this property. */
+}
+
+.rg-label-core {
+    font-size: 11px;
+    letter-spacing: 1.6px;
+    text-anchor: middle;
+}
+
+.rg-core-disc {
+    fill: #061020;
+    stroke: var(--sys-cyan);
+    stroke-width: 2;
+}
+
+.rg-core-dot {
+    fill: var(--sys-cyan-pale);
+    animation: rgCore 2.6s var(--sys-cubic) infinite;
+}
+
+.rg-core-ring {
+    fill: none;
+    stroke: rgba(111, 211, 255, 0.45);
+    stroke-width: 1;
+    animation: rgRing 3.4s var(--sys-expo) infinite;
+}
+
+@keyframes rgCore {
     0%,
     100% {
-        r: 9;
         opacity: 1;
     }
     50% {
-        r: 11;
-        opacity: 0.82;
+        opacity: 0.45;
     }
 }
 
-.t-ring1,
-.t-ring2 {
-    transform-origin: 380px 320px;
-    animation: tring 4.4s var(--sys-expo) infinite;
-}
-
-.t-ring2 {
-    animation-delay: 1.4s;
-}
-
-@keyframes tring {
-    from {
-        transform: scale(0.35);
-        opacity: 0.65;
+@keyframes rgRing {
+    0% {
+        opacity: 0.7;
+        transform: scale(0.86);
     }
-    to {
-        transform: scale(1.9);
-        opacity: 0;
-    }
-}
-
-.t-pulse {
-    stroke-dasharray: 22 240;
-    animation: tpulse 2.9s linear infinite;
-}
-
-.p2 {
-    animation-delay: 0.55s;
-}
-.p3 {
-    animation-delay: 1.2s;
-}
-.p4 {
-    animation-delay: 1.75s;
-}
-.p5 {
-    animation-delay: 2.3s;
-}
-
-@keyframes tpulse {
-    from {
-        stroke-dashoffset: 262;
-    }
-    to {
-        stroke-dashoffset: 0;
-    }
-}
-
-.t-hot {
-    animation: thot 2.4s ease-in-out infinite;
-}
-
-@keyframes thot {
-    0%,
+    70%,
     100% {
-        opacity: 0.55;
-        r: 24;
+        opacity: 0;
+        transform: scale(1.28);
     }
-    50% {
-        opacity: 0.12;
-        r: 34;
+}
+
+.rg-core-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+/* The dispatch pulse — the agent reaching a repo. */
+.rg-pulse {
+    fill: var(--sys-gold);
+}
+
+.rg-node.is-hit .rg-disc {
+    stroke: var(--sys-gold);
+    fill: rgba(255, 215, 106, 0.14);
+}
+
+.rg-node.is-hit .rg-label {
+    fill: var(--sys-gold);
+}
+
+/* Hover/focus: lift the one, drop the rest. Dimming is on the SVG root rather
+ * than on each sibling, so the cost is one class toggle instead of ~85. */
+.rg-nodes,
+.rg-halo,
+.rg-edges {
+    transition: opacity 0.35s var(--sys-cubic);
+}
+
+.is-focus .rg-halo,
+.is-focus .rg-edges {
+    opacity: 0.3;
+}
+
+.is-focus .rg-node {
+    opacity: 0.32;
+    transition: opacity 0.35s var(--sys-cubic);
+}
+
+.is-focus .rg-node.is-on {
+    opacity: 1;
+}
+
+.rg-node.is-on .rg-disc {
+    stroke: var(--sys-cyan-pale);
+    stroke-width: 2.4;
+    fill: rgba(111, 211, 255, 0.16);
+}
+
+.rg-node.is-on .rg-label {
+    fill: #fff;
+}
+
+.rg-node:focus {
+    outline: none;
+}
+
+.rg-node:focus-visible .rg-disc {
+    stroke: var(--sys-gold);
+    stroke-width: 2.6;
+}
+
+/* Readout — fills the dead centre-right the old static graph left empty. */
+.rg-readout {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    max-width: 268px;
+    padding: 14px 16px;
+    border-left: 2px solid var(--sys-cyan);
+    background: linear-gradient(90deg, rgba(6, 14, 32, 0.92), rgba(6, 14, 32, 0));
+    pointer-events: none;
+}
+
+.rg-r-name {
+    font-family: var(--sys-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--sys-cyan-pale);
+}
+
+.rg-r-blurb {
+    font-family: var(--sys-prose);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--sys-dim);
+    margin-top: 6px;
+    text-wrap: pretty;
+}
+
+.rg-r-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin-top: 9px;
+    font-family: var(--sys-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--sys-muted);
+}
+
+@media (max-width: 720px) {
+    /* Stacked under the graph on phones. Overlaying it there covers the nodes,
+     * and there is no hover to drive it anyway. */
+    .rg-readout {
+        position: static;
+        max-width: none;
+        margin-top: 18px;
+        background: none;
     }
 }
 
@@ -945,7 +1140,7 @@ button:focus-visible {
     text-transform: uppercase;
     font-size: clamp(38px, 5vw, 62px);
     font-weight: 700;
-    letter-spacing: 0.03em;
+    letter-spacing: -0.015em;
     margin: 0;
     color: #fff;
     line-height: 1;
@@ -1301,7 +1496,7 @@ button:focus-visible {
 .contact h2 {
     font-size: clamp(34px, 6vw, 62px);
     font-weight: 700;
-    letter-spacing: 0.03em;
+    letter-spacing: -0.015em;
     margin: 0 0 18px;
     color: #fff;
     text-transform: uppercase;
@@ -1675,6 +1870,120 @@ button:focus-visible {
     transform: none;
 }
 
+/* ---------- kinetic type ----------
+ * Three effects, all driven off Saira's wdth/wght axes. The rule that makes
+ * this read as designed rather than as an effect: the type never animates
+ * POSITION alone. It always arrives by getting WIDER, so the movement reads as
+ * the letterforms resolving into place rather than a div sliding.
+ *
+ * Every keyframe pair below lists the SAME axes in the SAME order. Drop an axis
+ * from one side and the browser silently stops interpolating and snaps instead
+ * — the animation appears to "not work" with no error anywhere. */
+
+/* -- 1. Masked line rise (hero) -- */
+.kt-line {
+    display: block;
+    overflow: hidden;
+    /* Descenders and the full stop sit below the baseline; without this the
+     * mask shears them off at rest, not just mid-animation. */
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+}
+
+.kt-in {
+    display: block;
+    transform: translateY(112%);
+    font-variation-settings:
+        'wdth' 50,
+        'wght' 400;
+    animation:
+        ktRise 1.15s var(--sys-expo) forwards,
+        ktWiden 1.15s var(--sys-expo) forwards;
+    animation-delay: var(--kt-d, 0.5s);
+    will-change: transform, font-variation-settings;
+}
+
+@media (min-width: 721px) {
+    .kt-in {
+        white-space: nowrap;
+    }
+}
+
+.kt-line:nth-child(1) .kt-in {
+    --kt-d: 0.5s;
+}
+.kt-line:nth-child(2) .kt-in {
+    --kt-d: 0.62s;
+}
+.kt-line:nth-child(3) .kt-in {
+    --kt-d: 0.74s;
+}
+
+@keyframes ktRise {
+    from {
+        transform: translateY(112%);
+    }
+    to {
+        transform: none;
+    }
+}
+
+@keyframes ktWiden {
+    from {
+        font-variation-settings:
+            'wdth' 50,
+            'wght' 400;
+    }
+    to {
+        font-variation-settings:
+            'wdth' var(--sys-wdth),
+            'wght' 600;
+    }
+}
+
+/* The animation owns the axes while it runs; once it lands, hand them back to
+ * the static rule so a later hover or resize does not snap the type. */
+.kt-in.kt-settled {
+    animation: none;
+    transform: none;
+    font-variation-settings:
+        'wdth' var(--sys-wdth),
+        'wght' 600;
+    will-change: auto;
+}
+
+/* -- 2. Scroll-scrubbed width (section + gate headings) --
+ * The JS writes --kt-p (0 to 1) as the heading crosses the viewport. */
+[data-kt-scrub] {
+    font-variation-settings:
+        'wdth' calc(46 + (var(--sys-wdth) - 46) * var(--kt-p, 1)),
+        'wght' calc(300 + 400 * var(--kt-p, 1));
+    /* Tracking closes as the width opens — two signals, one gesture. */
+    letter-spacing: calc(0.14em - 0.11em * var(--kt-p, 1));
+}
+
+/* -- 3. Cursor proximity weight --
+ * Split characters. Each carries its own --kt-w, written per frame by the JS. */
+/* A heading can carry BOTH scrub and proximity. The char is the deepest element,
+ * so its declaration is the one that renders — it must therefore compute the
+ * scrub width itself rather than let the parent's rule stand. --kt-p inherits
+ * down from the scrubbed parent, so one expression serves both effects; writing
+ * a flat `'wdth' var(--sys-wdth)` here instead silently cancels the scrub on
+ * every heading that has both, with nothing in the console to say so. */
+.kt-char {
+    display: inline-block;
+    font-variation-settings:
+        'wdth' calc(46 + (var(--sys-wdth) - 46) * var(--kt-p, 1)),
+        'wght' var(--kt-w, 700);
+    transition: font-variation-settings 0.18s var(--sys-cubic);
+}
+
+.kt-char.kt-space {
+    /* An inline-block space collapses. Give it explicit width or the headline
+     * loses every gap between words the moment it is split. */
+    width: 0.28em;
+}
+
 /* ---------- responsive ---------- */
 
 /* 1360, not 1180. Between those widths the 452px status panel leaves the copy
@@ -1761,11 +2070,20 @@ button:focus-visible {
  */
 
 @media (max-width: 640px) {
-    /* A 760-unit node graph squeezed under 380px is illegible texture, not a
-       diagram. The lede, services and log carry the section on their own. */
-    .graph-wrap,
+    /* The graph used to be `display: none` here, with the note "a 760-unit node
+     * graph squeezed under 380px is illegible texture". That was true of the old
+     * hand-placed SVG, which had a fixed 14-node ring and no way to adapt. The
+     * solver does adapt: js/registry-graph.js drops to 6 labelled nodes and a
+     * portrait viewBox under 640px, so the diagram stays readable instead of
+     * disappearing. Hiding the one piece of live evidence in the section from
+     * every phone visitor was the wrong trade. */
+    .graph-wrap {
+        margin-top: 18px;
+    }
+
     .legend {
-        display: none;
+        gap: 10px 18px;
+        font-size: 9px;
     }
 
     .snapshot-main {
@@ -1784,11 +2102,23 @@ button:focus-visible {
     .panel-rows .row,
     .caret,
     .scan,
-    .t-core,
-    .t-hot {
+    .rg-core-dot,
+    .kt-in {
         animation: none !important;
         opacity: 1 !important;
         transform: none !important;
+    }
+
+    /* Reduced motion is a DESIGN VARIANT, not an off switch: the type still
+     * arrives at its resolved width and weight, it just does not travel to get
+     * there. Leaving .kt-in un-handled would strand every headline at wdth 50 —
+     * the animation's FROM state — which is a broken page, not a calm one. */
+    .kt-in,
+    [data-kt-scrub] {
+        font-variation-settings:
+            'wdth' var(--sys-wdth),
+            'wght' 600 !important;
+        letter-spacing: 0.03em !important;
     }
 
     .panel {
@@ -1813,15 +2143,16 @@ button:focus-visible {
         animation: none !important;
     }
 
-    .t-ring1,
-    .t-ring2,
-    .t-pulse {
+    /* The core's expanding ring and the dispatch pulse are the two purely
+     * decorative motions in the graph; they carry no information the static
+     * layout does not already show, so they are the correct things to drop.
+     * The graph itself still renders — js/registry-graph.js checks the same
+     * media query and places every node at its solved position immediately,
+     * skipping the settle rather than skipping the layout. */
+    .rg-core-ring,
+    .rg-pulse {
         animation: none !important;
         opacity: 0 !important;
-    }
-
-    .t-pulse {
-        stroke-dasharray: none !important;
     }
 
     .rv,
@@ -1873,4 +2204,37 @@ button:focus-visible {
 @media (max-width: 720px) {
     .top-bar-exit span[aria-hidden] + * { display: none; }
     .top-bar-exit { padding: 0 9px; margin-left: 8px; }
+}
+
+.legend .legend-src {
+    color: rgba(127, 168, 201, 0.6);
+}
+
+.legend .legend-src code {
+    font-family: var(--sys-mono);
+    color: var(--sys-muted);
+}
+
+/* Ghost variant — the second CTA in a gate foot. Same size and rhythm as .btn
+ * so the pair reads as two doors, but outlined rather than filled: the desktop
+ * is the primary artifact and the live dashboard is the supporting one. Two
+ * filled buttons side by side would make the visitor choose before they know
+ * the difference. */
+.btn.ghost {
+    color: var(--sys-cyan);
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--sys-edge);
+}
+
+.btn.ghost:hover {
+    color: var(--sys-ground);
+    background: var(--sys-cyan-pale);
+}
+
+.aside-foot a + a {
+    margin-top: 8px;
+}
+
+.aside-foot .stamp {
+    line-height: 1.7;
 }

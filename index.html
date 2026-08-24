@@ -10,7 +10,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TG10CNCMJY"></script>
 
     <title>James Olusoga | AI Solutions Engineer — Toronto</title>
-    <meta name="description" content="James Olusoga — AI Solutions Engineer in Toronto. Fourteen years shipping to real audiences: an autonomous agent running 98 modules across a 63-repository registry, a live sports-betting analytics product, twelve client sites, and 25 million views of directed film." />
+    <meta name="description" content="James Olusoga — AI Solutions Engineer in Toronto. Fourteen years shipping to real audiences: an autonomous agent running 97 modules across a 91-repository registry, a live sports-betting analytics product, twelve client sites, and 25 million views of directed film." />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon-system.svg" />
     <link rel="canonical" href="https://jamesdare.com" />
 
@@ -44,7 +44,7 @@
       "sameAs": [
         "https://linkedin.com/in/james-olusoga",
         "https://github.com/DareDev256",
-        "https://x.com/DareDev256"
+        "https://x.com/TdotsSolutionsz"
       ],
       "knowsAbout": ["AI Engineering", "Agent Infrastructure", "Full Stack Development", "Retrieval Augmented Generation", "Sports Analytics", "Music Video Direction"],
       "seeks": { "@type": "Demand", "name": "AI Solutions Engineer roles" }
@@ -54,7 +54,12 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <!-- Three faces, three jobs, zero OS drift. Saira carries a live wdth 50-125 and
+         wght 100-900 axis — the display type is ANIMATED on those axes, so a static
+         face (Barlow Condensed) cannot replace it. Inter is prose only. Mono is labels.
+         No system font sits ahead of a webfont in any stack: 'Avenir Next Condensed'
+         used to, which meant Mac visitors and Windows visitors read two different sites. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=JetBrains+Mono:wght@400;700&family=Saira:wdth,wght@50..125,100..900&display=swap" rel="stylesheet" />
 
     <link rel="stylesheet" href="/css/system.css" />
 
@@ -76,6 +81,7 @@
         <nav class="sys-nav" aria-label="Primary">
             <a href="#gates">WORK</a>
             <a href="#system">SYSTEM</a>
+            <a href="/passion">PASSION</a>
             <a href="/os">OS</a>
             <a href="/resume/JamesOlusoga-AI-Engineer.pdf">RESUME</a>
             <a class="cta" href="#contact">CONTACT</a>
@@ -130,7 +136,15 @@
             <div class="hero-grid">
                 <div class="hero-copy">
                     <p class="eyebrow line l1">AI SOLUTIONS ENGINEER &nbsp;·&nbsp; TORONTO</p>
-                    <h1 id="hero-h" class="line l2">I build systems that run <span class="gold">without me.</span></h1>
+                    <!-- Line breaks are authored, not left to the wrap. Each line rises
+                         out of its own mask and widens on Saira's wdth axis as it lands.
+                         Keep the aria-label: split markup reads as fragments to a screen
+                         reader otherwise. -->
+                    <h1 id="hero-h" class="line l2" aria-label="I build systems that run without me.">
+                        <span class="kt-line" aria-hidden="true"><span class="kt-in">I build systems</span></span>
+                        <span class="kt-line" aria-hidden="true"><span class="kt-in">that run</span></span>
+                        <span class="kt-line" aria-hidden="true"><span class="kt-in gold">without me.</span></span>
+                    </h1>
                     <p class="hero-sub line l3">
                         Fourteen years shipping to real audiences.<br />
                         First directing music video, now engineering<br />
@@ -152,11 +166,11 @@
                         <span class="stamp">SNAPSHOT 08&#8226;20<span class="caret" aria-hidden="true">&#9612;</span></span>
                     </div>
                     <div class="panel-rows">
-                        <div class="row rw1"><span class="k">REGISTRY</span><span>63 repos <span class="sub">/ 43 active</span></span></div>
-                        <div class="row rw2"><span class="k">SCALE</span><span>98 modules · 66K LOC</span></div>
-                        <div class="row rw3"><span class="k">DEPLOYED</span><span>12 client sites</span></div>
-                        <div class="row rw4"><span class="k">ADOPTED</span><span>90 stars <span class="sub">· 1,928 installs/mo</span></span></div>
-                        <div class="row rw5"><span class="k">DIRECTED</span><span class="gold">25,332,774 views</span></div>
+                        <div class="row rw1"><span class="k">REGISTRY</span><span><span data-fig="repos">&#8212;</span> repos <span class="sub">/ <span data-fig="active">&#8212;</span> active</span></span></div>
+                        <div class="row rw2"><span class="k">SCALE</span><span><span data-fig="modules">&#8212;</span> modules &#183; <span data-fig="loc">&#8212;</span> LOC</span></div>
+                        <div class="row rw3"><span class="k">DEPLOYED</span><span><span data-fig="clientSites">&#8212;</span> client sites</span></div>
+                        <div class="row rw4"><span class="k">ADOPTED</span><span><span data-fig="stars">&#8212;</span> stars <span class="sub">&#183; <span data-fig="installs">&#8212;</span> installs/mo</span></span></div>
+                        <div class="row rw5"><span class="k">DIRECTED</span><span class="gold"><span data-fig="directedViews">&#8212;</span> views</span></div>
                     </div>
                     <a class="panel-foot" href="#contact">
                         <span>OPEN TO ROLES</span><span aria-hidden="true">ENTER →</span>
@@ -171,70 +185,36 @@
 
             <div class="snapshot-main">
                 <p class="eyebrow rv">SYSTEM SNAPSHOT</p>
-                <h2 class="sect-title rv d1" id="sys-h">Passion Agent</h2>
+                <h2 class="sect-title rv d1" id="sys-h" data-kt-scrub>Passion Agent</h2>
                 <p class="lede rv d2">
-                    98 modules across a 63-repository registry. Three services hold on a Mac
-                    Mini, and 54 scheduled jobs across both machines report into Discord without
+                    <span data-fig="modules">&#8212;</span> modules across a <span data-fig="repos">&#8212;</span>-repository registry. Three services hold on a Mac
+                    Mini, and 59 scheduled jobs across both machines report into Discord without
                     being asked. A gold pulse marks an edge the agent moved data down in this
                     snapshot.
                 </p>
 
                 <div class="graph-wrap rv d3">
-                    <svg viewBox="0 0 850 640" role="img" aria-label="Node graph of the Passion Agent registry: a central core connected to seven named repositories — passion-dashboard, betmetrics, fcp-mcp-server, daredev-reel, shopbayhq, second-opinion and slvling — each fanning out to further repos, with activity highlighted on the fandom-flow branch, which runs the Nin Online and Ninjora wikis.">
-                        <g stroke="rgba(111,211,255,0.16)" stroke-width="1" fill="none">
-                            <path d="M380 320 L200 176" /><path d="M380 320 L556 172" /><path d="M380 320 L172 340" /><path d="M380 320 L596 356" />
-                            <path d="M380 320 L236 486" /><path d="M380 320 L520 492" /><path d="M380 320 L384 132" /><path d="M380 320 L376 524" /><path d="M380 320 L740 210" /><path d="M740 210 L822 152" /><path d="M740 210 L818 266" />
-                            <path d="M200 176 L120 100" /><path d="M200 176 L256 84" /><path d="M200 176 L108 214" />
-                            <path d="M556 172 L640 104" /><path d="M556 172 L636 224" /><path d="M556 172 L500 88" />
-                            <path d="M172 340 L76 300" /><path d="M172 340 L84 400" /><path d="M596 356 L692 318" /><path d="M596 356 L684 412" />
-                            <path d="M236 486 L152 546" /><path d="M236 486 L268 588" /><path d="M520 492 L604 552" /><path d="M520 492 L484 590" />
-                            <path d="M384 132 L320 62" /><path d="M384 132 L452 60" /><path d="M376 524 L332 604" /><path d="M376 524 L440 600" />
-                        </g>
-                        <g stroke="#b5ecff" stroke-width="1.6" fill="none" stroke-linecap="round">
-                            <path class="t-pulse" d="M380 320 L596 356" />
-                            <path class="t-pulse p2" d="M380 320 L200 176" />
-                            <path class="t-pulse p3" d="M380 320 L376 524" />
-                            <path class="t-pulse p4" d="M380 320 L556 172" />
-                            <path class="t-pulse p5" d="M380 320 L172 340" />
-                        </g>
-                        <g fill="#061020" stroke="rgba(111,211,255,0.5)" stroke-width="1.5">
-                            <circle cx="200" cy="176" r="17" /><circle cx="556" cy="172" r="17" /><circle cx="172" cy="340" r="17" />
-                            <circle cx="236" cy="486" r="17" /><circle cx="520" cy="492" r="17" /><circle cx="384" cy="132" r="17" /><circle cx="376" cy="524" r="17" /><circle cx="740" cy="210" r="17" />
-                        </g>
-                        <g fill="rgba(217,242,255,0.3)">
-                            <circle cx="120" cy="100" r="5" /><circle cx="256" cy="84" r="5" /><circle cx="108" cy="214" r="5" />
-                            <circle cx="640" cy="104" r="5" /><circle cx="636" cy="224" r="5" /><circle cx="500" cy="88" r="5" />
-                            <circle cx="76" cy="300" r="5" /><circle cx="84" cy="400" r="5" />
-                            <circle cx="152" cy="546" r="5" /><circle cx="268" cy="588" r="5" /><circle cx="604" cy="552" r="5" /><circle cx="484" cy="590" r="5" />
-                            <circle cx="320" cy="62" r="5" /><circle cx="452" cy="60" r="5" /><circle cx="332" cy="604" r="5" /><circle cx="440" cy="600" r="5" /><circle cx="822" cy="152" r="5" /><circle cx="818" cy="266" r="5" />
-                        </g>
-                        <circle cx="692" cy="318" r="6.5" fill="#0a1526" stroke="#b5ecff" stroke-width="1.4" />
-                        <circle cx="684" cy="412" r="6.5" fill="#0a1526" stroke="#b5ecff" stroke-width="1.4" />
-                        <circle class="t-hot" cx="596" cy="356" r="24" fill="none" stroke="#ffd76a" stroke-width="1.5" />
-                        <circle cx="596" cy="356" r="17" fill="#ffd76a" />
-                        <circle class="t-ring1" cx="380" cy="320" r="30" fill="none" stroke="rgba(111,211,255,0.55)" stroke-width="1" />
-                        <circle class="t-ring2" cx="380" cy="320" r="30" fill="none" stroke="rgba(111,211,255,0.55)" stroke-width="1" />
-                        <circle cx="380" cy="320" r="34" fill="#061020" stroke="#6fd3ff" stroke-width="2" />
-                        <circle class="t-core" cx="380" cy="320" r="9" fill="#b5ecff" />
-                        <text x="200" y="210" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">passion-dashboard</text>
-                        <text x="556" y="206" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">betmetrics</text>
-                        <text x="172" y="374" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">fcp-mcp-server</text>
-                        <text x="236" y="520" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">daredev-reel</text>
-                        <text x="520" y="526" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">shopbayhq</text>
-                        <text x="384" y="166" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">second-opinion</text>
-                        <text x="740" y="244" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">portfolio-os</text>
-                        <text x="376" y="558" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="0.9">slvling</text>
-                        <text x="380" y="384" text-anchor="middle" fill="#7fa8c9" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1.6">CORE</text>
-                        <text x="596" y="406" text-anchor="middle" fill="#ffd76a" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1.6">fandom-flow</text>
-                        <text x="700" y="304" text-anchor="start" fill="#b5ecff" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.8">Nin Online Wiki</text>
-                        <text x="692" y="428" text-anchor="start" fill="#b5ecff" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.8">Ninjora Wiki</text>
-                    </svg>
+                    <!-- Filled by js/registry-graph.js from /data/registry-graph.json,
+                         which tools/build-registry-graph.mjs generates from `gh repo list`.
+                         aria-hidden because the same facts are in the readout and the
+                         repo list below, in text a screen reader can actually use. -->
+                    <svg id="registry-graph" viewBox="0 0 850 640" aria-hidden="true"></svg>
+
+                    <div class="rg-readout" id="rg-readout" aria-live="polite">
+                        <div class="rg-r-name" data-rg="name">passion-agent</div>
+                        <div class="rg-r-blurb" data-rg="blurb">&#8212;</div>
+                        <div class="rg-r-meta">
+                            <span data-rg="pushed">&#8212;</span>
+                            <span data-rg="lang">&#8212;</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="legend rv d4">
-                    <span><i class="grp" aria-hidden="true"></i>NAMED REPOSITORY</span>
-                    <span><i class="repo" aria-hidden="true"></i>REGISTRY ENTRY</span>
-                    <span><i class="act" aria-hidden="true"></i>ACTIVITY IN SNAPSHOT</span>
+                    <span><i class="grp" aria-hidden="true"></i>SIZE = REPO ON DISK</span>
+                    <span><i class="act" aria-hidden="true"></i>BRIGHTNESS = PUSHED RECENTLY</span>
+                    <span><i class="repo" aria-hidden="true"></i>UNLABELLED REGISTRY ENTRY</span>
+                    <span class="legend-src">GENERATED FROM <code>gh repo list</code></span>
                 </div>
             </div>
 
@@ -272,8 +252,9 @@
                 </div>
 
                 <div class="aside-foot">
-                    <a href="/os">OPEN THE DESKTOP ↗</a>
-                    <div class="stamp">SNAPSHOT TAKEN 2026&#8226;08&#8226;22 · STATIC</div>
+                    <a href="/passion">OPEN THE LIVE DASHBOARD &#8594;</a>
+                    <a href="/os">OPEN THE DESKTOP &#8599;</a>
+                    <div class="stamp">DASHBOARD: LIVE &#183; DEMO DATA<br />DESKTOP: SNAPSHOT 2026&#8226;08&#8226;23 &#183; STATIC</div>
                 </div>
             </aside>
         </section>
@@ -282,7 +263,7 @@
         <section class="gates" id="gates" aria-labelledby="gates-h">
             <div class="gate-lead">
                 <p class="eyebrow rv">CLEARED GATES</p>
-                <h2 class="sect-title rv d1" id="gates-h">Work that had something on the line</h2>
+                <h2 class="sect-title rv d1" id="gates-h" data-kt-scrub>Work that had something on the line</h2>
             </div>
 
             <div class="gate-cycler" id="gate-cycler">
@@ -297,7 +278,7 @@
                         <div class="rank" aria-hidden="true">A</div>
                         <div>
                             <div class="tag">GATE 01 · CLEARED</div>
-                            <h3>BetMetrics</h3>
+                            <h3 data-kt-scrub data-kt-proximity="200">BetMetrics</h3>
                         </div>
                     </div>
 
@@ -341,7 +322,7 @@
                         <div class="rank" aria-hidden="true">A</div>
                         <div>
                             <div class="tag">GATE 01 · CLEARED</div>
-                            <h3>BetMetrics</h3>
+                            <h3 data-kt-scrub data-kt-proximity="200">BetMetrics</h3>
                         </div>
                     </div>
 
@@ -366,7 +347,7 @@
             </template>
             <template data-gate="fcp">
                 <div class="gate-shot">
-                    <img src="/assets/system/gates/fcp.jpg" alt="The fcp-mcp-server repository on GitHub, showing 90 stars and 18 forks." loading="eager" decoding="async" fetchpriority="low" width="1200" height="666" />
+                    <img src="/assets/system/gates/fcp.jpg" alt="The fcp-mcp-server repository on GitHub." loading="eager" decoding="async" fetchpriority="low" width="1200" height="666" />
                     <div class="fade" aria-hidden="true"></div>
                 </div>
 
@@ -375,7 +356,7 @@
                         <div class="rank" aria-hidden="true">A</div>
                         <div>
                             <div class="tag">GATE 02 · CLEARED</div>
-                            <h3>fcp-mcp-server</h3>
+                            <h3 data-kt-scrub data-kt-proximity="200">fcp-mcp-server</h3>
                         </div>
                     </div>
 
@@ -387,9 +368,9 @@
                     </div>
 
                     <div class="figs">
-                        <div><div class="n gold">90</div><div class="cap">GITHUB STARS</div></div>
-                        <div><div class="n">18</div><div class="cap">FORKS</div></div>
-                        <div><div class="n cyan">1,928</div><div class="cap">INSTALLS / MONTH</div></div>
+                        <div><div class="n gold" data-fig="stars">&#8212;</div><div class="cap">GITHUB STARS</div></div>
+                        <div><div class="n" data-fig="forks">&#8212;</div><div class="cap">FORKS</div></div>
+                        <div><div class="n cyan" data-fig="installs">&#8212;</div><div class="cap">INSTALLS / MONTH</div></div>
                     </div>
 
                     <div class="gate-foot">
@@ -409,7 +390,7 @@
                         <div class="rank" aria-hidden="true">A</div>
                         <div>
                             <div class="tag">GATE 03 · CLEARED</div>
-                            <h3>Second Opinion</h3>
+                            <h3 data-kt-scrub data-kt-proximity="200">Second Opinion</h3>
                         </div>
                     </div>
 
@@ -434,7 +415,7 @@
             </template>
             <template data-gate="passion">
                 <div class="gate-shot">
-                    <img src="/assets/system/gates/passion-agent.jpg" alt="Passion OS, the desktop environment that fronts the Passion Agent system." loading="eager" decoding="async" fetchpriority="low" width="1200" height="666" />
+                    <img src="/assets/system/gates/passion-dashboard.jpg" alt="The Passion Agent operator dashboard: producer tiles reporting their own freshness, and a workflow run rendered as an execution graph." loading="eager" decoding="async" fetchpriority="low" width="1200" height="666" />
                     <div class="fade" aria-hidden="true"></div>
                 </div>
 
@@ -443,26 +424,37 @@
                         <div class="rank" aria-hidden="true">A</div>
                         <div>
                             <div class="tag">GATE 04 · CLEARED</div>
-                            <h3>Passion Agent</h3>
+                            <h3 data-kt-scrub data-kt-proximity="200">Passion Agent</h3>
                         </div>
                     </div>
 
-                    <p>An agent that manages a 63-repository registry, ships its own scheduled work overnight, and files what it did. The desktop above is its front end, running with zero framework dependencies.</p>
+                    <p>An agent that manages a <span data-fig="repos">&#8212;</span>-repository registry, ships its own scheduled work overnight, and files what it did. The dashboard above is its operator surface: every tile names the producer behind it and stamps when that producer last wrote.</p>
 
                     <div class="decision">
                         <div class="tag">THE DECISION</div>
                         <p>It reports to Discord whether or not anyone is watching. An autonomous system that only surfaces its work when asked is a system nobody audits, so every scheduled job narrates itself.</p>
                     </div>
 
+                    <!-- Figures are filled from /data/system-snapshot.json by
+                         js/system-figures.js. Hardcoded, this block read 92 modules /
+                         67K lines / 63 repos while the lede two sections up read 97 and
+                         91 off the same generated file — three numbers for modules and
+                         three for lines on one page. The `title` on each carries the
+                         snapshot's own definition of what the number counts. -->
                     <div class="figs">
-                        <div><div class="n">92</div><div class="cap">MODULES</div></div>
-                        <div><div class="n cyan">67K</div><div class="cap">LINES, FIRST-PARTY</div></div>
-                        <div><div class="n gold">63</div><div class="cap">REPOS MANAGED</div></div>
+                        <div><div class="n" data-fig="modules">&#8212;</div><div class="cap">MODULES</div></div>
+                        <div><div class="n cyan" data-fig="loc">&#8212;</div><div class="cap">LINES, FIRST-PARTY</div></div>
+                        <div><div class="n gold" data-fig="repos">&#8212;</div><div class="cap">REPOS IN REGISTRY</div></div>
                     </div>
 
                     <div class="gate-foot">
-                        <a class="btn" href="/os">OPEN THE DESKTOP →</a>
-                        <span class="stack">VANILLA JS · NODE · LAUNCHD · PM2 &nbsp;·&nbsp; RUNS ON A MAC MINI</span>
+                        <!-- The primary CTA must match the SCREENSHOT above it. When the
+                             image was Passion OS this was /os; the image is now the
+                             dashboard, so the dashboard takes the filled button and the
+                             desktop keeps a door as the second, separate artifact. -->
+                        <a class="btn" href="/passion">OPEN THE LIVE DASHBOARD &#8594;</a>
+                        <a class="btn ghost" href="/os">OPEN THE DESKTOP &#8594;</a>
+                        <span class="stack">NEXT.JS &#183; REACT &#183; TYPESCRIPT &nbsp;&#183;&nbsp; AGENT RUNS ON A MAC MINI</span>
                     </div>
                 </div>
             </template>
@@ -477,11 +469,11 @@
                         <div class="rank" aria-hidden="true">A</div>
                         <div>
                             <div class="tag">GATE 05 · CLEARED</div>
-                            <h3>Client sites</h3>
+                            <h3 data-kt-scrub data-kt-proximity="200">Client sites</h3>
                         </div>
                     </div>
 
-                    <p>Twelve sites live in production, built end to end — design, build, domain, deploy, mail. Edson Legal, Street Bud, KMoney, 100BandPlan, SAVV4X, Syren Effect, NirvanaDeshaun Custom Builds, MustHaveFrenchies, LowkeyPrivacy, ShopBayHQ, Shortiie Raw and ShairBraiding.</p>
+                    <p>Twelve sites live in production, built end to end — design, build, domain, deploy, mail. Edson Legal, Street Bud, KMoney, 100BandPlan, SAVV4X, Syren Effect, NirvanaDeshaun Custom Builds, MustHaveFrenchies, ShopBayHQ, Shortiie Raw and ShairBraiding.</p>
 
                     <div class="decision">
                         <div class="tag">THE DECISION</div>
@@ -511,7 +503,7 @@
                         <div class="rank" aria-hidden="true">B</div>
                         <div>
                             <div class="tag">GATE 06 · CLEARED</div>
-                            <h3>101 Films</h3>
+                            <h3 data-kt-scrub data-kt-proximity="200">101 Films</h3>
                         </div>
                     </div>
 
@@ -545,7 +537,7 @@
                         <div class="rank" aria-hidden="true">A</div>
                         <div>
                             <div class="tag">GATE 07 · CLEARED</div>
-                            <h3>COLD OPEN</h3>
+                            <h3 data-kt-scrub data-kt-proximity="200">COLD OPEN</h3>
                         </div>
                     </div>
                     <p>An engine that builds artist sites as named worlds rather than templates. The risk is the one every generator has: output that reads as generated, and numbers on a public page that nobody actually checked.</p>
@@ -595,7 +587,7 @@
             <div class="scan" aria-hidden="true"></div>
             <div class="contact-inner">
                 <p class="eyebrow rv">OPEN TO ROLES</p>
-                <h2 class="rv d1" id="contact-h">Let's talk</h2>
+                <h2 class="rv d1" id="contact-h" data-kt-scrub data-kt-proximity="220">Let's talk</h2>
                 <p class="rv d2">
                     AI Solutions Engineer, Solutions Architect, Forward Deployed Engineer.<br />
                     Toronto or remote. Every message reaches me, not an assistant.
@@ -648,6 +640,9 @@
     </footer>
 
     <script type="module" src="/js/system-landing.js"></script>
+    <script type="module" src="/js/kinetic-type.js"></script>
+    <script type="module" src="/js/registry-graph.js"></script>
+    <script type="module" src="/js/system-figures.js"></script>
     <script type="module" src="/js/hero-reel.js"></script>
     <script type="module" src="/js/gate-cycler.js"></script>
     <script type="module" src="/js/system-chat.js"></script>
