@@ -94,6 +94,14 @@
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://passion.jamesdare.com"
+        },
+        {
+          "key": "Vary",
+          "value": "Origin"
         }
       ]
     }
