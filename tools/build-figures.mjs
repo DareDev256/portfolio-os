@@ -146,6 +146,44 @@ const out = {
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, JSON.stringify(out, null, 2) + '\n');
 
+/* ── /os live state ───────────────────────────────────────────────────────
+ * js/passion-live.js polled https://passion-api.jamesdare.com/api/public every
+ * 30 seconds. That host returns 404 and has for as long as anyone has checked,
+ * so /os hammered a dead domain forever and fell back to canned copy.
+ *
+ * Same-origin generated file instead. ONLY fields with a real source are
+ * written — cyclesTotal, tasksToday and uptime have no honest producer, so they
+ * are omitted and passion-live.js's own sanitiser supplies its defaults. Filling
+ * them with plausible numbers is exactly the drift this generator exists to end.
+ */
+const STATE_OUT = resolve(ROOT, 'public/data/passion-state.json');
+const snapAgeH = snap.generatedAt
+    ? (Date.now() - Date.parse(snap.generatedAt)) / 3_600_000
+    : Infinity;
+
+const state = snapAgeH <= 36 ? 'working' : snapAgeH <= 24 * 7 ? 'thinking' : 'sleeping';
+writeFileSync(
+    STATE_OUT,
+    JSON.stringify(
+        {
+            generatedAt: new Date().toISOString(),
+            source: 'data/system-snapshot.json — freshness of the agent\'s own rollup',
+            status: snapAgeH <= 36 ? 'online' : 'offline',
+            state,
+            mood: snapAgeH <= 36 ? 'shipping' : 'resting',
+            currentFocus: `${out.figures.repos}-repository registry`,
+            lastActive: snap.generatedAt ? snap.generatedAt.slice(0, 10) : 'unknown',
+            commentary:
+                snapAgeH <= 36
+                    ? 'Rollup written within the last day. The scheduled fleet is reporting.'
+                    : 'No rollup in over a day. The fleet is quiet.',
+        },
+        null,
+        2
+    ) + '\n'
+);
+console.log(`wrote ${STATE_OUT}  (state=${state})`);
+
 const f = out.figures;
 console.log(
     `wrote ${OUT}\n` +

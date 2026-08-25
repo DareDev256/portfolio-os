@@ -6,9 +6,19 @@
 
 import { Sanitize } from './sanitize.js';
 
-const API_URL = 'https://passion-api.jamesdare.com/api/public';
+/* Was https://passion-api.jamesdare.com/api/public — a host that returns 404 and
+ * has for as long as anyone has checked. /os polled it every 30 seconds forever
+ * and silently fell back to canned copy.
+ *
+ * Same-origin generated file now, written by tools/build-figures.mjs from the
+ * agent's own rollup. Fields with no honest producer (cyclesTotal, tasksToday,
+ * uptime) are simply absent, so sanitizeState below supplies its defaults rather
+ * than the page showing invented numbers. */
+const API_URL = '/data/passion-state.json';
 const CACHE_KEY = 'passion_live_cache';
-const POLL_INTERVAL = 30_000; // 30 seconds
+// A generated static file changes when the generator runs, not every 30 seconds.
+// Polling one that often was only ever justified by a live API that never existed.
+const POLL_INTERVAL = 300_000; // 5 minutes
 const FETCH_TIMEOUT = 5_000;  // 5 second abort
 
 // Known valid states — rejects anything the API shouldn't return
