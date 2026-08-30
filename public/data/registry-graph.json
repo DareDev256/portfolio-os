@@ -1,167 +1,316 @@
 {
-  "generatedAt": "2026-08-24T14:53:40.182Z",
-  "source": "gh repo list DareDev256 --limit 300 (all visibilities, archived excluded)",
+  "generatedAt": "2026-08-30T19:35:18.908Z",
+  "source": "gh repo list DareDev256 --limit 300 (all visibilities, archived excluded) merged with data/registry-curation.json",
   "totals": {
-    "repos": 91,
-    "active": 86,
+    "repos": 92,
+    "active": 87,
     "archived": 5,
-    "namedOnGraph": 14
+    "public": 24,
+    "namedOnGraph": 13
   },
   "definitions": {
-    "radius": "sqrt of repository disk usage, normalised to the largest named repo",
+    "selection": "hand-picked in data/registry-curation.json — not the most recently pushed, and not everything that exists",
+    "radius": "curated tier: flagship > shipped > tool. NOT repository size",
     "heat": "0 to 1 by recency of last push — 1 is today, 0 is 90 days or older",
-    "unnamed": "registry entries drawn but not labelled — every private repository plus the public ones past the display cap; the count is real, the placement is not",
-    "private": "private repositories are counted and never named",
+    "unnamed": "registry entries drawn but not labelled — the count is real, the placement is arrangement",
+    "private": "private repositories are counted; a private repo is named only where it is already public elsewhere on the page, and never links to code",
+    "proves": "star and fork counts are substituted from the live gh call at build time, never typed by hand",
     "archived": "excluded from the graph but still counted in totals.repos"
+  },
+  "tiers": {
+    "flagship": {
+      "r": 21,
+      "legend": "PROVEN OUTSIDE THIS SITE"
+    },
+    "shipped": {
+      "r": 15,
+      "legend": "RUNNING IN PRODUCTION"
+    },
+    "tool": {
+      "r": 10,
+      "legend": "BUILT TO PROVE A TECHNIQUE"
+    }
   },
   "core": {
     "id": "passion-agent",
     "label": "CORE",
     "r": 26,
-    "blurb": "Autonomous AI code agent with Discord bot — thinks, improves repos, notifies via Discord",
-    "pushedAt": "2026-08-23"
+    "tier": "core",
+    "what": "The autonomous agent that manages the rest of the registry — it reads the repos, opens the work, and reports to Discord without being asked.",
+    "proves": "97 modules, 60,795 lines of first-party code, running unattended on a Mac Mini.",
+    "stack": [
+      "Node",
+      "MCP",
+      "Discord"
+    ],
+    "live": null,
+    "code": null,
+    "pushedAt": "2026-08-23",
+    "lang": "JavaScript",
+    "private": true
   },
   "nodes": [
     {
-      "id": "syreneffect-site",
-      "r": 11.04,
-      "heat": 1,
-      "ageDays": 0,
-      "pushedAt": "2026-08-24",
-      "lang": "TypeScript",
+      "id": "fcp-mcp-server",
+      "tier": "flagship",
+      "r": 21,
+      "heat": 0.878,
+      "ageDays": 11,
+      "pushedAt": "2026-08-19",
+      "lang": "Python",
+      "stars": 95,
+      "forks": 19,
       "private": false,
-      "blurb": "THE SYREN EFFECT — Content creator & Twitch streamer site. Next.js 16 + Tailwind."
+      "what": "The first MCP server for Final Cut Pro XML — drive a professional video timeline with natural language.",
+      "proves": "95 stars and 19 forks from developers who found it on their own. 11 releases published to PyPI.",
+      "stack": [
+        "Python",
+        "MCP",
+        "FCPXML"
+      ],
+      "live": {
+        "label": "VIEW ON PYPI",
+        "url": "https://pypi.org/project/fcp-mcp-server/"
+      },
+      "code": "https://github.com/DareDev256/fcp-mcp-server"
     },
     {
-      "id": "portfolio-os",
-      "r": 15.67,
-      "heat": 0.989,
-      "ageDays": 1,
-      "pushedAt": "2026-08-23",
-      "lang": "JavaScript",
-      "private": false,
-      "blurb": "Zero-dependency cyberpunk desktop OS portfolio — draggable windows, GPU glass effects, Three.js, 20 apps, 46 vanilla JS modules. No frameworks, no runtime deps."
+      "id": "betmetrics",
+      "tier": "flagship",
+      "r": 21,
+      "heat": 0.933,
+      "ageDays": 6,
+      "pushedAt": "2026-08-24",
+      "lang": "TypeScript",
+      "stars": 0,
+      "forks": 0,
+      "private": true,
+      "what": "Sports-betting analytics platform built for a paying client and running in production.",
+      "proves": "Live at betmetrics.ca with real users and a paid engagement behind it.",
+      "stack": [
+        "Next.js",
+        "Convex",
+        "TypeScript"
+      ],
+      "live": {
+        "label": "OPEN BETMETRICS",
+        "url": "https://betmetrics.ca"
+      },
+      "code": null
     },
     {
       "id": "coldopen",
-      "r": 8.95,
-      "heat": 0.989,
-      "ageDays": 1,
+      "tier": "flagship",
+      "r": 21,
+      "heat": 0.922,
+      "ageDays": 7,
       "pushedAt": "2026-08-22",
       "lang": "TypeScript",
+      "stars": 0,
+      "forks": 0,
       "private": false,
-      "blurb": "Artist websites as named worlds, not templates. Extracts the premise, derives type/colour/motion from it, and refuses to print a number it cannot source. Two blind judges couldn't pick the generated site."
+      "what": "Generates an artist website as a named world rather than a template — it derives type, colour and motion from the artist's own premise.",
+      "proves": "Two blind judges could not pick the generated site out of a lineup. It refuses to print a number it cannot source.",
+      "stack": [
+        "TypeScript",
+        "Next.js"
+      ],
+      "live": null,
+      "code": "https://github.com/DareDev256/coldopen"
     },
     {
-      "id": "passion-learning-suite",
-      "r": 7.86,
-      "heat": 0.989,
-      "ageDays": 1,
-      "pushedAt": "2026-08-23",
-      "lang": "TypeScript",
+      "id": "portfolio-os",
+      "tier": "flagship",
+      "r": 21,
+      "heat": 1,
+      "ageDays": 0,
+      "pushedAt": "2026-08-30",
+      "lang": "JavaScript",
+      "stars": 1,
+      "forks": 0,
       "private": false,
-      "blurb": "6 web-based educational games teaching Gen AI concepts through gameplay — Prompt Craft, Token Prophet, Hallucination Hunter, Bias Buster, Tool Match, Red Team Arena. Next.js + FSRS spaced repetition + PWA-ready."
+      "what": "This site, plus a full draggable desktop OS at /os — 20 apps and 46 vanilla modules with no framework and no runtime dependencies.",
+      "proves": "Zero runtime dependencies. Every number on this page traces to a generator that exits non-zero rather than invent one.",
+      "stack": [
+        "Vanilla JS",
+        "Three.js",
+        "Vite"
+      ],
+      "live": {
+        "label": "OPEN THE DESKTOP",
+        "url": "/os"
+      },
+      "code": "https://github.com/DareDev256/portfolio-os"
     },
     {
-      "id": "DareDev256",
-      "r": 7.84,
-      "heat": 0.989,
-      "ageDays": 1,
-      "pushedAt": "2026-08-23",
-      "lang": null,
-      "private": false,
-      "blurb": "Creative Technologist | AI Product Builder | Former Music Video Director  I directed 350+ music videos for artists like Chief Keef, Migos, and Masicka. Built KushdUp Filmsz and sold the platform to 6ixBuzz (now 3M+ followers). Earned a gold record. Pioneered cross-connections between the Canadian and US hip-hop scenes."
-    },
-    {
-      "id": "fcp-mcp-server",
-      "r": 8.56,
+      "id": "passion-dashboard",
+      "tier": "shipped",
+      "r": 15,
       "heat": 0.944,
       "ageDays": 5,
-      "pushedAt": "2026-08-19",
-      "lang": "Python",
-      "private": false,
-      "blurb": "🎬 The first AI-powered MCP server for Final Cut Pro XML. Control your edits with natural language."
+      "pushedAt": "2026-08-25",
+      "lang": "TypeScript",
+      "stars": 0,
+      "forks": 0,
+      "private": true,
+      "what": "Mission control for the agent — the surface that shows what it ran, what it changed, and what it is blocked on.",
+      "proves": "Serving live agent telemetry daily. The public view runs on demo data so client names never leave the machine.",
+      "stack": [
+        "Next.js 16",
+        "React 19"
+      ],
+      "live": {
+        "label": "OPEN THE DASHBOARD",
+        "url": "/passion"
+      },
+      "code": null
     },
     {
       "id": "tdotssolutionsz-portfolio",
-      "r": 22,
-      "heat": 0.922,
-      "ageDays": 7,
+      "tier": "shipped",
+      "r": 15,
+      "heat": 0.856,
+      "ageDays": 13,
       "pushedAt": "2026-08-17",
       "lang": "JavaScript",
+      "stars": 1,
+      "forks": 0,
       "private": false,
-      "blurb": "Music video portfolio for TdotsSolutionsz"
+      "what": "The music-video directing catalogue — the other half of the career, kept deliberately separate from the engineering surface.",
+      "proves": "Live, and the source of record for the directing credits claimed on this page.",
+      "stack": [
+        "JavaScript"
+      ],
+      "live": {
+        "label": "OPEN THE REEL",
+        "url": "https://tdotssolutionsz.com"
+      },
+      "code": "https://github.com/DareDev256/tdotssolutionsz-portfolio"
     },
     {
-      "id": "Ultimate-Image-Video-Prompt-Generator",
-      "r": 19.85,
-      "heat": 0.911,
-      "ageDays": 8,
-      "pushedAt": "2026-08-16",
+      "id": "syreneffect-site",
+      "tier": "shipped",
+      "r": 15,
+      "heat": 0.933,
+      "ageDays": 6,
+      "pushedAt": "2026-08-24",
       "lang": "TypeScript",
+      "stars": 0,
+      "forks": 0,
       "private": false,
-      "blurb": "AI prompt engineering tool for image/video generation — structured prompt builder for Nano Banana , Veo3 , DALL-E, Kling 01, Sora workflows"
+      "what": "Content-creator and Twitch-streamer site built for a client, shipped end to end.",
+      "proves": "Deployed and handed over, with contact delivery verified by receipt rather than by the page's success banner.",
+      "stack": [
+        "Next.js 16",
+        "Tailwind"
+      ],
+      "live": null,
+      "code": "https://github.com/DareDev256/syreneffect-site"
     },
     {
       "id": "perfectpixel-studio",
-      "r": 14.47,
-      "heat": 0.833,
-      "ageDays": 15,
+      "tier": "shipped",
+      "r": 15,
+      "heat": 0.767,
+      "ageDays": 21,
       "pushedAt": "2026-08-09",
       "lang": "Go",
+      "stars": 0,
+      "forks": 0,
       "private": false,
-      "blurb": "AI-powered animation sprite studio — generate character sprite sheets with 8 directions and 100+ actions from a single text prompt (Wails + Go + React)"
+      "what": "Desktop app that generates character sprite sheets — 8 directions and 100+ actions from one text prompt.",
+      "proves": "A native desktop binary, not a web demo. Written in Go with a React front end.",
+      "stack": [
+        "Go",
+        "Wails",
+        "React"
+      ],
+      "live": null,
+      "code": "https://github.com/DareDev256/perfectpixel-studio"
     },
     {
       "id": "clickfix-defense-kit",
-      "r": 7.62,
-      "heat": 0.711,
-      "ageDays": 26,
+      "tier": "tool",
+      "r": 10,
+      "heat": 0.644,
+      "ageDays": 32,
       "pushedAt": "2026-07-29",
       "lang": "Shell",
+      "stars": 1,
+      "forks": 1,
       "private": false,
-      "blurb": "macOS anti-infostealer toolkit — born from a real ClickFix attack. Blocks curl|sh paste attacks, audits your secret blast-radius, and more. Defensive-use only."
+      "what": "macOS anti-infostealer toolkit that blocks curl-pipe-shell paste attacks and audits how far a leaked secret would reach.",
+      "proves": "Written after a real ClickFix attack, not from a threat report. Defensive use only.",
+      "stack": [
+        "Shell",
+        "macOS"
+      ],
+      "live": null,
+      "code": "https://github.com/DareDev256/clickfix-defense-kit"
     },
     {
-      "id": "lockedin",
-      "r": 11.2,
-      "heat": 0.689,
-      "ageDays": 28,
-      "pushedAt": "2026-07-27",
-      "lang": "JavaScript",
-      "private": false,
-      "blurb": "LockedIn — One-tap connection card. Action router with Follow All, Connect (vCard), DM, Book, Pay modes. Not a Linktree clone — an action protocol."
-    },
-    {
-      "id": "buildright",
-      "r": 8.93,
-      "heat": 0.689,
-      "ageDays": 28,
-      "pushedAt": "2026-07-27",
+      "id": "passion-learning-suite",
+      "tier": "tool",
+      "r": 10,
+      "heat": 0.922,
+      "ageDays": 7,
+      "pushedAt": "2026-08-23",
       "lang": "TypeScript",
+      "stars": 0,
+      "forks": 0,
       "private": false,
-      "blurb": "Duolingo-style mobile learning app for home building in Georgia. Built with React Native, Expo, and react-native-reanimated."
+      "what": "Six browser games that teach generative-AI concepts by playing them — prompt craft, hallucination hunting, red teaming.",
+      "proves": "Spaced repetition on the FSRS algorithm, so retention is scheduled rather than hoped for.",
+      "stack": [
+        "Next.js",
+        "FSRS",
+        "PWA"
+      ],
+      "live": null,
+      "code": "https://github.com/DareDev256/passion-learning-suite"
     },
     {
-      "id": "toronto-parking-viz",
-      "r": 8.23,
-      "heat": 0.689,
-      "ageDays": 28,
-      "pushedAt": "2026-07-27",
+      "id": "Ultimate-Image-Video-Prompt-Generator",
+      "tier": "tool",
+      "r": 10,
+      "heat": 0.844,
+      "ageDays": 14,
+      "pushedAt": "2026-08-16",
       "lang": "TypeScript",
+      "stars": 9,
+      "forks": 3,
       "private": false,
-      "blurb": "Interactive 3D timelapse of parking ticket activity across Toronto. Built with deck.gl, MapLibre, and Toronto Open Data."
+      "what": "Structured prompt builder for image and video models — Veo, Sora, Kling, Nano Banana.",
+      "proves": "9 stars and 3 forks, and it runs on its own domain.",
+      "stack": [
+        "TypeScript"
+      ],
+      "live": {
+        "label": "OPEN THE TOOL",
+        "url": "https://prompts.tdotssolutionsz.com"
+      },
+      "code": "https://github.com/DareDev256/Ultimate-Image-Video-Prompt-Generator"
     },
     {
-      "id": "whats-poppin",
-      "r": 8.09,
-      "heat": 0.689,
-      "ageDays": 28,
-      "pushedAt": "2026-07-27",
-      "lang": "JavaScript",
+      "id": "rag-system-with-citations",
+      "tier": "tool",
+      "r": 10,
+      "heat": 0.6,
+      "ageDays": 36,
+      "pushedAt": "2026-07-25",
+      "lang": "Python",
+      "stars": 2,
+      "forks": 0,
       "private": false,
-      "blurb": "Bubble pop game with cultural sauce — match, combo, dominate"
+      "what": "Retrieval-augmented generation that will not answer without citing the passage it used.",
+      "proves": "Built to make an unsourced answer structurally impossible rather than discouraged.",
+      "stack": [
+        "Python",
+        "Embeddings"
+      ],
+      "live": null,
+      "code": "https://github.com/DareDev256/rag-system-with-citations"
     }
   ],
-  "unnamed": 71
+  "unnamed": 74
 }

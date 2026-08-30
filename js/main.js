@@ -82,7 +82,14 @@ async function init() {
     if (!safeMode && sessionStorage.getItem('digivice-intro-seen')) {
         // Load galaxy after a delay to not block initial interaction
         setTimeout(async () => {
-            try { await ensureGalaxy(document.body); } catch {}
+            // Same silent-failure class as the service-worker registration
+            // below: the galaxy is decorative, so a failure must not break the
+            // page — but it must not vanish either.
+            try {
+                await ensureGalaxy(document.body);
+            } catch (err) {
+                console.warn('[galaxy] failed to load:', err && err.message);
+            }
         }, 3000);
     }
 
@@ -102,7 +109,15 @@ async function init() {
     // CSS into JS modules, and SW cache-first strategy poisons the cache)
     if ('serviceWorker' in navigator && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js').catch(() => { });
+            /* An empty catch here is how this went unnoticed. sw.js lived at the
+             * repo root instead of public/, so Vite never copied it to dist/ and
+             * the Vercel catch-all answered /sw.js with the HTML shell — the
+             * browser got text/html where it expected JavaScript, registration
+             * threw, and this swallowed it. The worker had never once run in
+             * production. Warn, so the next time it breaks somebody can see it. */
+            navigator.serviceWorker.register('/sw.js').catch((err) => {
+                console.warn('[sw] registration failed:', err && err.message);
+            });
         });
     }
 
@@ -135,7 +150,30 @@ async function init() {
  * and force-injects them as a recovery fallback.                   */
 // Absolute, not relative. The OS now serves from /os, where a relative
 // 'css/reset.css' resolves to /os/css/reset.css and 404s.
-const CRITICAL_STYLES = ['/css/reset.css', '/css/variables.css', '/css/styles.css', '/css/windows.css', '/css/modal.css', '/css/loading.css'];
+/* No hardcoded source paths. Vite bundles every stylesheet into a hashed
+ * /assets/*.css, so /css/reset.css and friends ship in NO production build —
+ * Safe Mode was injecting six URLs that the catch-all answers with the HTML
+ * shell, which a browser refuses to apply as CSS. The recovery was inert in
+ * precisely the emergency it exists for.
+ *
+ * The stated failure is a race or a bad cache, which means the <link> tags are
+ * in the document and simply did not load. So recover from the document's own
+ * links: re-request exactly what this build actually references, cache-busted.
+ * Correct in dev and in production, and it cannot go stale against the build. */
+function criticalStyleHrefs() {
+    const links = Array.from(document.querySelectorAll('link[rel="stylesheet"][href]'));
+    const own = links
+        .map((l) => {
+            try {
+                const u = new URL(l.href, window.location.href);
+                return u.origin === window.location.origin ? u.pathname : null;
+            } catch {
+                return null;
+            }
+        })
+        .filter(Boolean);
+    return Array.from(new Set(own));
+}
 
 function recoverStyles() {
     setTimeout(() => {
@@ -152,9 +190,17 @@ function recoverStyles() {
         });
         if (hasOurStyles) return;
 
-        console.warn('Critical styles missing. Activating Safe Mode...');
+        const hrefs = criticalStyleHrefs();
+        if (!hrefs.length) {
+            // Nothing to re-request. Say so rather than silently doing nothing —
+            // this is the branch that means the HTML itself came back wrong.
+            console.warn('[styles] missing, and no same-origin stylesheet link to recover from.');
+            return;
+        }
+
+        console.warn(`Critical styles missing. Activating Safe Mode (${hrefs.length} stylesheets)...`);
         const bust = Date.now();
-        for (const href of CRITICAL_STYLES) {
+        for (const href of hrefs) {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
             link.href = `${href}?t=${bust}`;

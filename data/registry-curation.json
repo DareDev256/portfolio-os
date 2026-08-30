@@ -1,0 +1,133 @@
+{
+  "_readme": [
+    "THIS FILE IS JAMES'S JUDGEMENT. tools/build-registry-graph.mjs merges it with live",
+    "`gh repo list` facts and REFUSES to label any repo that is not named here.",
+    "",
+    "Why it exists: the generator used to sort the registry by pushedAt and label the top",
+    "14. With 24 public active repos that named 58% of them, which is a listing, not a",
+    "curation — a bubble-pop game rendered at the same weight as a package with 95 stars.",
+    "Push recency is a fact about a README typo, not about value.",
+    "",
+    "RULES THE GENERATOR ENFORCES:",
+    "  - A repo here that no longer exists on GitHub aborts the build. No silent drop.",
+    "  - A PRIVATE repo is only labelled when its entry carries `disclosed`, naming where",
+    "    it is already public. Private repos never get a `code` link.",
+    "  - `proves` may contain {stars} and {forks}. They are substituted from the live gh",
+    "    call at build time, so a number on the page can never go stale against its source.",
+    "    Never hardcode a count here.",
+    "  - `what` is one sentence a non-engineer can read. `proves` is the evidence a",
+    "    sceptic would ask for. If an entry has no honest `proves`, it is not flagship.",
+    "",
+    "TIERS decide node radius. Radius used to be disk usage, which made a repo full of",
+    "video assets the biggest thing on screen."
+  ],
+
+  "tiers": {
+    "flagship": { "r": 21, "legend": "PROVEN OUTSIDE THIS SITE" },
+    "shipped":  { "r": 15, "legend": "RUNNING IN PRODUCTION" },
+    "tool":     { "r": 10, "legend": "BUILT TO PROVE A TECHNIQUE" }
+  },
+
+  "core": {
+    "repo": "passion-agent",
+    "disclosed": "named in prose in the section lede on this page",
+    "what": "The autonomous agent that manages the rest of the registry — it reads the repos, opens the work, and reports to Discord without being asked.",
+    "proves": "97 modules, 60,795 lines of first-party code, running unattended on a Mac Mini.",
+    "stack": ["Node", "MCP", "Discord"]
+  },
+
+  "entries": [
+    {
+      "repo": "fcp-mcp-server",
+      "tier": "flagship",
+      "what": "The first MCP server for Final Cut Pro XML — drive a professional video timeline with natural language.",
+      "proves": "{stars} stars and {forks} forks from developers who found it on their own. 11 releases published to PyPI.",
+      "stack": ["Python", "MCP", "FCPXML"],
+      "live": { "label": "VIEW ON PYPI", "url": "https://pypi.org/project/fcp-mcp-server/" }
+    },
+    {
+      "repo": "betmetrics",
+      "tier": "flagship",
+      "disclosed": "named in the CLEARED GATES section on this page",
+      "what": "Sports-betting analytics platform built for a paying client and running in production.",
+      "proves": "Live at betmetrics.ca with real users and a paid engagement behind it.",
+      "stack": ["Next.js", "Convex", "TypeScript"],
+      "live": { "label": "OPEN BETMETRICS", "url": "https://betmetrics.ca" }
+    },
+    {
+      "repo": "coldopen",
+      "tier": "flagship",
+      "what": "Generates an artist website as a named world rather than a template — it derives type, colour and motion from the artist's own premise.",
+      "proves": "Two blind judges could not pick the generated site out of a lineup. It refuses to print a number it cannot source.",
+      "stack": ["TypeScript", "Next.js"]
+    },
+    {
+      "repo": "portfolio-os",
+      "tier": "flagship",
+      "what": "This site, plus a full draggable desktop OS at /os — 20 apps and 46 vanilla modules with no framework and no runtime dependencies.",
+      "proves": "Zero runtime dependencies. Every number on this page traces to a generator that exits non-zero rather than invent one.",
+      "stack": ["Vanilla JS", "Three.js", "Vite"],
+      "live": { "label": "OPEN THE DESKTOP", "url": "/os" }
+    },
+    {
+      "repo": "passion-dashboard",
+      "tier": "shipped",
+      "disclosed": "linked as OPEN THE LIVE DASHBOARD on this page",
+      "what": "Mission control for the agent — the surface that shows what it ran, what it changed, and what it is blocked on.",
+      "proves": "Serving live agent telemetry daily. The public view runs on demo data so client names never leave the machine.",
+      "stack": ["Next.js 16", "React 19"],
+      "live": { "label": "OPEN THE DASHBOARD", "url": "/passion" }
+    },
+    {
+      "repo": "tdotssolutionsz-portfolio",
+      "tier": "shipped",
+      "what": "The music-video directing catalogue — the other half of the career, kept deliberately separate from the engineering surface.",
+      "proves": "Live, and the source of record for the directing credits claimed on this page.",
+      "stack": ["JavaScript"],
+      "live": { "label": "OPEN THE REEL", "url": "https://tdotssolutionsz.com" }
+    },
+    {
+      "repo": "syreneffect-site",
+      "tier": "shipped",
+      "what": "Content-creator and Twitch-streamer site built for a client, shipped end to end.",
+      "proves": "Deployed and handed over, with contact delivery verified by receipt rather than by the page's success banner.",
+      "stack": ["Next.js 16", "Tailwind"]
+    },
+    {
+      "repo": "perfectpixel-studio",
+      "tier": "shipped",
+      "what": "Desktop app that generates character sprite sheets — 8 directions and 100+ actions from one text prompt.",
+      "proves": "A native desktop binary, not a web demo. Written in Go with a React front end.",
+      "stack": ["Go", "Wails", "React"]
+    },
+    {
+      "repo": "clickfix-defense-kit",
+      "tier": "tool",
+      "what": "macOS anti-infostealer toolkit that blocks curl-pipe-shell paste attacks and audits how far a leaked secret would reach.",
+      "proves": "Written after a real ClickFix attack, not from a threat report. Defensive use only.",
+      "stack": ["Shell", "macOS"]
+    },
+    {
+      "repo": "passion-learning-suite",
+      "tier": "tool",
+      "what": "Six browser games that teach generative-AI concepts by playing them — prompt craft, hallucination hunting, red teaming.",
+      "proves": "Spaced repetition on the FSRS algorithm, so retention is scheduled rather than hoped for.",
+      "stack": ["Next.js", "FSRS", "PWA"]
+    },
+    {
+      "repo": "Ultimate-Image-Video-Prompt-Generator",
+      "tier": "tool",
+      "what": "Structured prompt builder for image and video models — Veo, Sora, Kling, Nano Banana.",
+      "proves": "{stars} stars and {forks} forks, and it runs on its own domain.",
+      "stack": ["TypeScript"],
+      "live": { "label": "OPEN THE TOOL", "url": "https://prompts.tdotssolutionsz.com" }
+    },
+    {
+      "repo": "rag-system-with-citations",
+      "tier": "tool",
+      "what": "Retrieval-augmented generation that will not answer without citing the passage it used.",
+      "proves": "Built to make an unsourced answer structurally impossible rather than discouraged.",
+      "stack": ["Python", "Embeddings"]
+    }
+  ]
+}

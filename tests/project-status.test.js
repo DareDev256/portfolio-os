@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import process from 'node:process';
 import { deriveStatus, statusClass } from '../js/project-status.js';
 
 // Tests run under jsdom, where import.meta.url is an http URL — read from the

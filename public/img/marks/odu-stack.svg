@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 56" width="34" height="56" role="img" aria-label="Eight-bit Odu stack: 03 over 14">
+  <!-- 8 registers = 2^8 = 256 = the 256 Odu Ifa. Top nibble 0011 = 3 (March),
+       bottom 1110 = 14. The birthday written the way the machine would. -->
+  <g fill="currentColor">
+    <rect x="0" y="0"  width="34" height="4" opacity="0.22"/>
+    <rect x="0" y="7"  width="34" height="4" opacity="0.22"/>
+    <rect x="0" y="14" width="34" height="4"/>
+    <rect x="0" y="21" width="34" height="4"/>
+    <rect x="0" y="31" width="34" height="4"/>
+    <rect x="0" y="38" width="34" height="4"/>
+    <rect x="0" y="45" width="34" height="4"/>
+    <rect x="0" y="52" width="34" height="4" opacity="0.22"/>
+  </g>
+  <rect x="0" y="27" width="34" height="1" fill="currentColor" opacity="0.5"/>
+</svg>

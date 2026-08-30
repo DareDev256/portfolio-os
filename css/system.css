@@ -853,16 +853,42 @@ button:focus-visible {
     stroke-width: 2.6;
 }
 
-/* Readout — fills the dead centre-right the old static graph left empty. */
+/* ---------- detail panel ----------
+ * Was a hover-only readout with `pointer-events: none`, which is why it had no
+ * links: the pointer could not travel to one without leaving the node and
+ * reverting the panel. Pinning is what makes a link possible here, so the two
+ * states are styled as genuinely different objects — a preview is transparent
+ * and inert, a pinned panel is opaque, bordered and reachable. */
 .rg-readout {
     position: absolute;
     left: 0;
     bottom: 0;
-    max-width: 268px;
+    max-width: 300px;
     padding: 14px 16px;
     border-left: 2px solid var(--sys-cyan);
     background: linear-gradient(90deg, rgba(6, 14, 32, 0.92), rgba(6, 14, 32, 0));
     pointer-events: none;
+    transition:
+        background 0.25s var(--sys-cubic),
+        box-shadow 0.25s var(--sys-cubic);
+}
+
+.rg-readout.is-pinned {
+    /* Opaque, not a gradient: the links sit at the bottom of the panel, over the
+     * transparent end of the old gradient, where graph nodes showed through the
+     * text. */
+    background: var(--sys-panel);
+    box-shadow:
+        0 0 0 1px var(--sys-hair),
+        0 18px 44px rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+}
+
+.rg-r-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .rg-r-name {
@@ -873,12 +899,53 @@ button:focus-visible {
     color: var(--sys-cyan-pale);
 }
 
-.rg-r-blurb {
+/* Tier is the curated claim — the one thing on the panel that is a judgement
+ * rather than a fact, so it is labelled as a badge instead of set as prose. */
+.rg-r-tier,
+.rg-ix-tier {
+    font-family: var(--sys-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    padding: 2px 6px;
+    border: 1px solid var(--sys-hair);
+    border-radius: 2px;
+    color: var(--sys-muted);
+    white-space: nowrap;
+}
+
+.rg-r-tier[data-tier='flagship'],
+.rg-ix-tier[data-tier='flagship'],
+.rg-r-tier[data-tier='core'],
+.rg-ix-tier[data-tier='core'] {
+    color: var(--sys-gold);
+    border-color: rgba(255, 215, 106, 0.42);
+}
+
+.rg-r-tier[data-tier='shipped'],
+.rg-ix-tier[data-tier='shipped'] {
+    color: var(--sys-cyan);
+    border-color: rgba(111, 211, 255, 0.42);
+}
+
+.rg-r-what {
     font-family: var(--sys-prose);
     font-size: 13px;
     line-height: 1.45;
     color: var(--sys-dim);
-    margin-top: 6px;
+    margin: 7px 0 0;
+    text-wrap: pretty;
+}
+
+/* The evidence line. Set apart from the description because it is a different
+ * kind of sentence — one a sceptic is invited to check. */
+.rg-r-proves {
+    font-family: var(--sys-prose);
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--sys-cyan-pale);
+    margin: 8px 0 0;
+    padding-left: 9px;
+    border-left: 1px solid rgba(111, 211, 255, 0.34);
     text-wrap: pretty;
 }
 
@@ -893,15 +960,517 @@ button:focus-visible {
     color: var(--sys-muted);
 }
 
+.rg-r-act {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.rg-r-act:empty {
+    margin-top: 0;
+}
+
+.rg-btn,
+.rg-ix-links a {
+    font-family: var(--sys-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    padding: 7px 11px;
+    border: 1px solid var(--sys-hair);
+    color: var(--sys-cyan);
+    /* 34px of vertical target on a 9.5px font. A mono link at this size is a
+     * ~12px tap area without it. */
+    line-height: 1.2;
+    transition:
+        border-color 0.2s var(--sys-cubic),
+        color 0.2s var(--sys-cubic),
+        background 0.2s var(--sys-cubic);
+}
+
+.rg-btn-live {
+    border-color: rgba(111, 211, 255, 0.5);
+    color: var(--sys-cyan-pale);
+}
+
+.rg-btn:hover,
+.rg-btn:focus-visible,
+.rg-ix-links a:hover,
+.rg-ix-links a:focus-visible {
+    border-color: var(--sys-cyan);
+    background: rgba(111, 211, 255, 0.09);
+    color: var(--sys-cyan-pale);
+}
+
+.rg-r-hint {
+    margin: 11px 0 0;
+    font-family: var(--sys-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: rgba(127, 168, 201, 0.62);
+}
+
+.rg-r-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 26px;
+    height: 26px;
+    background: none;
+    border: 1px solid var(--sys-hair);
+    color: var(--sys-muted);
+    font-size: 11px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s var(--sys-cubic), border-color 0.2s var(--sys-cubic);
+}
+
+.rg-r-close:hover,
+.rg-r-close:focus-visible {
+    color: var(--sys-cyan-pale);
+    border-color: var(--sys-cyan);
+}
+
+/* A pinned node holds its highlight after the pointer has gone. Without this the
+ * panel says one repo while the graph highlights nothing. */
+.rg-node.is-pinned .rg-disc,
+.rg-core.is-pinned .rg-core-disc {
+    stroke: var(--sys-gold);
+    stroke-width: 2.4;
+}
+
+.rg-node.is-pinned .rg-label {
+    fill: var(--sys-gold);
+}
+
+.rg-core {
+    cursor: pointer;
+}
+
+.rg-core:focus {
+    outline: none;
+}
+
+.rg-core:focus-visible .rg-core-disc {
+    stroke: var(--sys-cyan-pale);
+    stroke-width: 3;
+}
+
 @media (max-width: 720px) {
     /* Stacked under the graph on phones. Overlaying it there covers the nodes,
-     * and there is no hover to drive it anyway. */
+     * and there is no hover to drive it anyway — on touch, every interaction is
+     * already the pinned state. */
     .rg-readout {
         position: static;
         max-width: none;
         margin-top: 18px;
         background: none;
+        pointer-events: auto;
     }
+
+    .rg-readout.is-pinned {
+        box-shadow: none;
+        background: rgba(6, 14, 32, 0.6);
+    }
+
+    .rg-r-hint {
+        display: none;
+    }
+}
+
+/* ---------- the rail ----------
+ * Horizontal snap slider under the graph. Scrolling is native: scroll-snap-type
+ * plus scrollBy from the script. A JS-driven transform track would have to
+ * reimplement momentum and rubber-banding, and would fight the browser for the
+ * same gesture on the one device this exists for. */
+.rg-rail {
+    margin-top: 38px;
+    border-top: 1px solid var(--sys-hair);
+    padding-top: 20px;
+}
+
+.rg-rail-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 16px;
+}
+
+.rg-rail-title {
+    font-family: var(--sys-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--sys-muted);
+    margin: 0;
+}
+
+.rg-rail-sub {
+    color: var(--sys-cyan);
+    margin-left: 8px;
+}
+
+/* The swipe hint is for touch. On a pointer device the arrows are right there,
+ * and telling a mouse user to swipe is instruction for a gesture they do not have. */
+@media (hover: hover) and (pointer: fine) {
+    .rg-rail-sub {
+        display: none;
+    }
+}
+
+.rg-rail-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.rg-arrow {
+    width: 38px;
+    height: 34px;
+    background: none;
+    border: 1px solid var(--sys-hair);
+    color: var(--sys-cyan);
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        border-color 0.2s var(--sys-cubic),
+        background 0.2s var(--sys-cubic),
+        opacity 0.2s var(--sys-cubic);
+}
+
+.rg-arrow:hover:not(:disabled),
+.rg-arrow:focus-visible:not(:disabled) {
+    border-color: var(--sys-cyan);
+    background: rgba(111, 211, 255, 0.1);
+}
+
+/* Disabled, not hidden: a control that disappears mid-gesture slides its
+ * neighbour under a finger already travelling toward it. */
+.rg-arrow:disabled {
+    opacity: 0.28;
+    cursor: default;
+}
+
+/* Hidden on touch — the gesture IS the control, and two 38px buttons at the top
+ * of a rail you swipe are dead pixels. */
+@media (hover: none) {
+    .rg-rail-nav {
+        display: none;
+    }
+}
+
+.rg-rail-track {
+    display: flex;
+    gap: clamp(14px, 1.6vw, 20px);
+    list-style: none;
+    margin: 0;
+    padding: 4px 0 18px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    /* The rail is full-bleed to the right on a phone so a half-visible next card
+     * signals there is more. Padding-right gives the last card somewhere to land. */
+    scroll-padding-left: 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    cursor: grab;
+}
+
+.rg-rail-track::-webkit-scrollbar {
+    display: none;
+}
+
+.rg-rail-track.is-grabbing {
+    cursor: grabbing;
+    /* Text selection during a drag turns a pan into a highlight. */
+    user-select: none;
+    scroll-snap-type: none;
+}
+
+.rg-rail-track:focus-visible {
+    outline: 1px solid var(--sys-cyan);
+    outline-offset: 4px;
+}
+
+.rg-card {
+    position: relative;
+    flex: 0 0 auto;
+    /* min() so one card never exceeds the viewport on a small phone, and never
+     * grows into a full-width slab on a desktop. */
+    width: min(310px, 78vw);
+    scroll-snap-align: start;
+    background: linear-gradient(180deg, rgba(10, 24, 52, 0.55), rgba(6, 14, 32, 0.25));
+    border: 1px solid var(--sys-hair);
+    padding: 16px 17px 17px;
+    display: flex;
+    flex-direction: column;
+    transition:
+        border-color 0.35s var(--sys-cubic),
+        background 0.35s var(--sys-cubic),
+        transform 0.35s var(--sys-cubic);
+}
+
+/* The card the rail has settled on. Marking it is what keeps the rail and the
+ * graph agreeing about where you are — otherwise they are two lists of the same
+ * repos that never point at the same one. */
+.rg-card.is-active {
+    border-color: rgba(111, 211, 255, 0.44);
+    background: linear-gradient(180deg, rgba(14, 34, 70, 0.7), rgba(6, 14, 32, 0.3));
+}
+
+.rg-card:hover {
+    border-color: rgba(111, 211, 255, 0.34);
+}
+
+/* Recency as a hairline on the top edge. The graph encodes it as node
+ * brightness, which is unreadable once you are reading text; this is the exact
+ * same value, so the two views cannot drift. */
+.rg-card-heat {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    height: 2px;
+    width: calc(28% + 72% * var(--heat, 0));
+    background: linear-gradient(90deg, var(--sys-cyan), rgba(111, 211, 255, 0));
+    opacity: calc(0.3 + 0.7 * var(--heat, 0));
+}
+
+.rg-card.is-core {
+    border-color: rgba(255, 215, 106, 0.34);
+}
+
+.rg-card.is-core .rg-card-heat {
+    background: linear-gradient(90deg, var(--sys-gold), rgba(255, 215, 106, 0));
+}
+
+.rg-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 11px;
+}
+
+.rg-card-num {
+    font-family: var(--sys-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(127, 168, 201, 0.55);
+}
+
+.rg-card-tier {
+    font-family: var(--sys-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    padding: 2px 6px;
+    border: 1px solid var(--sys-hair);
+    border-radius: 2px;
+    color: var(--sys-muted);
+    white-space: nowrap;
+}
+
+.rg-card-tier[data-tier='flagship'],
+.rg-card-tier[data-tier='core'] {
+    color: var(--sys-gold);
+    border-color: rgba(255, 215, 106, 0.42);
+}
+
+.rg-card-tier[data-tier='shipped'] {
+    color: var(--sys-cyan);
+    border-color: rgba(111, 211, 255, 0.42);
+}
+
+.rg-card-name {
+    font-family: var(--sys-mono);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--sys-cyan-pale);
+    text-decoration: none;
+    /* Long repo names (Ultimate-Image-Video-Prompt-Generator) must wrap inside
+     * the card rather than widen it and break every snap position. */
+    overflow-wrap: anywhere;
+}
+
+.rg-card-name:hover,
+.rg-card-name:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.rg-card-what {
+    font-family: var(--sys-prose);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--sys-dim);
+    margin: 8px 0 0;
+    text-wrap: pretty;
+}
+
+.rg-card-proves {
+    font-family: var(--sys-prose);
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--sys-cyan-pale);
+    margin: 11px 0 0;
+    padding-left: 10px;
+    border-left: 1px solid rgba(111, 211, 255, 0.34);
+    text-wrap: pretty;
+}
+
+.rg-card-proves-k {
+    display: block;
+    font-family: var(--sys-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    color: var(--sys-muted);
+    margin-bottom: 4px;
+}
+
+.rg-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px 12px;
+    /* margin-top:auto pins the meta and links to the card's bottom edge, so a
+     * row of cards with different text lengths still has its buttons in a line. */
+    margin-top: auto;
+    padding-top: 13px;
+    font-family: var(--sys-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    color: var(--sys-muted);
+}
+
+.rg-card-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 11px;
+}
+
+.rg-card-btn {
+    font-family: var(--sys-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    padding: 8px 11px;
+    border: 1px solid var(--sys-hair);
+    color: var(--sys-cyan);
+    line-height: 1.2;
+    transition:
+        border-color 0.2s var(--sys-cubic),
+        background 0.2s var(--sys-cubic),
+        color 0.2s var(--sys-cubic);
+}
+
+.rg-card-btn.is-live {
+    border-color: rgba(111, 211, 255, 0.5);
+    color: var(--sys-cyan-pale);
+}
+
+.rg-card-btn:hover,
+.rg-card-btn:focus-visible {
+    border-color: var(--sys-cyan);
+    background: rgba(111, 211, 255, 0.09);
+    color: var(--sys-cyan-pale);
+}
+
+.rg-card-note {
+    font-family: var(--sys-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: var(--sys-muted);
+    align-self: center;
+}
+
+/* The remainder, stated. Without it the rail silently implies the registry is
+ * only as big as the part that got a card. */
+.rg-card-tail {
+    justify-content: center;
+    border-style: dashed;
+    border-color: rgba(90, 190, 255, 0.16);
+    background: none;
+}
+
+.rg-card-tailnum {
+    font-family: var(--sys-display);
+    font-size: 40px;
+    line-height: 1;
+    color: rgba(111, 211, 255, 0.5);
+}
+
+/* A node the rail is currently sitting on. Distinct from :hover and from the
+ * pinned state — this is "the rail is here", not "you chose this". */
+.rg-node.is-near .rg-disc,
+.rg-core.is-near .rg-core-disc {
+    stroke: var(--sys-cyan-pale);
+}
+
+.rg-node.is-near .rg-label {
+    fill: var(--sys-cyan-pale);
+}
+
+.rg-rail-foot {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.rg-rail-bar {
+    flex: 1;
+    height: 1px;
+    background: var(--sys-hair);
+    overflow: hidden;
+}
+
+.rg-rail-fill {
+    display: block;
+    height: 100%;
+    background: var(--sys-cyan);
+    transform-origin: left center;
+    transform: scaleX(0.04);
+    transition: transform 0.18s linear;
+}
+
+.rg-rail-count {
+    font-family: var(--sys-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    color: var(--sys-muted);
+    /* tabular-nums stops the whole row jittering as 1 becomes 11. */
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 720px) {
+    .rg-rail-track {
+        /* Bleed past the section gutter so the next card is visibly cut off at
+         * the screen edge. A rail that ends flush reads as a finished row and
+         * nobody swipes it. */
+        margin-right: calc(var(--sys-gut) * -1);
+        padding-right: var(--sys-gut);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rg-rail-track {
+        scroll-behavior: auto;
+    }
+
+    .rg-card,
+    .rg-rail-fill {
+        transition: none;
+    }
+}
+
+/* Snapshot stamp beside a section heading. */
+.h3-note {
+    font-family: var(--sys-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+    color: var(--sys-muted);
+    margin-left: 8px;
 }
 
 .legend {
@@ -985,8 +1554,97 @@ button:focus-visible {
     color: var(--sys-muted);
 }
 
-.svc .up {
+.svc .up,
+.svc .state[data-state='up'] {
     color: var(--sys-cyan);
+}
+
+/* A measured DOWN is the point of the probe — it reads clearly without shouting. */
+.svc .state[data-state='down'] {
+    color: #ff8f6a;
+}
+
+/* The host itself did not answer. Amber, not red: nothing is broken, the page
+   simply cannot see it and says so rather than asserting UP. */
+.svc .state[data-state='unreachable'] {
+    color: var(--sys-gold);
+    letter-spacing: 0.06em;
+}
+
+.svc .state[data-state='down'],
+.svc .state[data-state='unreachable'] {
+    cursor: help;
+}
+
+/* ── Figure provenance ────────────────────────────────────────────────────
+   Every generated figure ships a definition. It used to live only in `title`,
+   which is invisible until hovered and does nothing at all on touch, so the
+   whole provenance argument reached no one on a phone. A 1px dotted rule is
+   the smallest mark that says "this is explainable" without adding chrome. */
+.panel-rows [data-fig][data-explained] {
+    border-bottom: 1px dotted rgba(127, 168, 201, 0.45);
+    cursor: help;
+    transition: border-color 0.18s ease, color 0.18s ease;
+}
+
+.panel-rows [data-fig][data-explained]:hover,
+.panel-rows [data-fig][data-explained]:focus-visible {
+    border-bottom-color: var(--sys-cyan);
+    outline: none;
+}
+
+/* Hand-counted figures are a different KIND of claim from measured ones. The
+   generator already separates them; this is the first time the page shows it. */
+.panel-rows [data-fig][data-kind='manual'] {
+    border-bottom-style: dashed;
+    border-bottom-color: var(--sys-gold-dim, rgba(255, 215, 106, 0.45));
+}
+
+.panel-rows [data-fig][data-kind='manual']::after {
+    content: '\00b0';
+    color: var(--sys-gold);
+    font-size: 0.85em;
+    vertical-align: super;
+    margin-left: 1px;
+}
+
+/* One readout for the whole panel — no popover positioning, no layout shift. */
+.panel-def {
+    padding: 0 18px 14px;
+    font-family: var(--sys-mono);
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--sys-muted);
+    min-height: 2.6em;
+    border-top: 1px solid rgba(127, 168, 201, 0.12);
+    padding-top: 12px;
+}
+
+.panel-def[data-on='true'] {
+    color: var(--sys-cyan-pale);
+}
+
+.panel-def .def-hint {
+    opacity: 0.45;
+    font-style: italic;
+}
+
+/* A figure a stranger can verify in one click. Underline only on hover so the
+   rows stay quiet. */
+.receipt {
+    color: inherit;
+    text-decoration: none;
+}
+
+.receipt:hover,
+.receipt:focus-visible {
+    color: var(--sys-cyan);
+}
+
+/* The probe stamp goes gold once the reading is older than three days, so an
+   old build is visible instead of quietly passing as current. */
+.h3-note [data-stale='true'] {
+    color: var(--sys-gold);
 }
 
 .log {

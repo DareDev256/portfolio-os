@@ -26,6 +26,7 @@
  *      visibly a different KIND of claim.
  */
 
+import process from 'node:process';
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
@@ -104,6 +105,56 @@ try {
 // ── 4. Registry counts, live.
 const repos = JSON.parse(gh(['repo', 'list', 'DareDev256', '--limit', '300', '--json', 'name,isArchived,isPrivate']));
 
+
+/* ── Service probe ────────────────────────────────────────────────────────
+ * index.html carried three hand-written "UP" rows for the Mini's services with
+ * a comment admitting nothing measured them: "Stamped as of a date until tools/
+ * actually probes the ports." This is that. The services bind to loopback on the
+ * Mini, so the only honest probe is over SSH.
+ *
+ * A service being DOWN is a MEASURED value, not a missing one, so it does not
+ * trip Rule 1 — it renders. What Rule 1 forbids is claiming UP without looking,
+ * which is exactly what the markup did. If the host itself cannot be reached the
+ * answer is `unreachable`, which is the truth and is more informative than a
+ * green row: a page that says "I build systems that run without me" is worth
+ * more when it can admit one is not running.
+ */
+function probeServices() {
+    const SVC = [
+        { name: 'dashboard', port: 3000 },
+        { name: 'brain', port: 7777 },
+        { name: 'letstrade', port: 8420 },
+    ];
+    const checkedAt = new Date().toISOString();
+    const SSH = ['-o', 'BatchMode=yes', '-o', 'ConnectTimeout=8', 'macmini'];
+    // SSH_AUTH_SOCK is cleared: the agent socket is not present under launchd and
+    // its absence made an unrelated auth error look like a dead host.
+    const env = { ...process.env, SSH_AUTH_SOCK: '' };
+
+    try {
+        execFileSync('ssh', [...SSH, 'true'], { encoding: 'utf8', env, stdio: 'pipe' });
+    } catch {
+        return { checkedAt, host: 'unreachable', services: SVC.map((s) => ({ ...s, state: 'unreachable' })) };
+    }
+
+    return {
+        checkedAt,
+        host: 'up',
+        services: SVC.map((s) => {
+            try {
+                const code = execFileSync(
+                    'ssh',
+                    [...SSH, `curl -s -o /dev/null -m 5 -w '%{http_code}' http://127.0.0.1:${s.port}/ || echo 000`],
+                    { encoding: 'utf8', env, stdio: 'pipe' },
+                ).trim();
+                return { ...s, state: /^[23]\d\d$/.test(code) ? 'up' : 'down', code };
+            } catch {
+                return { ...s, state: 'down' };
+            }
+        }),
+    };
+}
+
 const out = {
     generatedAt: new Date().toISOString(),
     figures: {
@@ -122,6 +173,13 @@ const out = {
         // looked like a contradiction. Naming both, with definitions, ends it.
         reposPublic: repos.filter((r) => !r.isPrivate && !r.isArchived).length,
         reposArchived: repos.filter((r) => r.isArchived).length,
+
+        /* One date for every stamp on the page. Three different snapshot dates
+         * used to render inside one viewport — 08*20 in the status panel,
+         * 2026*08*23 in the aside, 2026-08-24 in the graph JSON — because each
+         * was typed by hand at a different time. Same failure as the module
+         * counts, same fix: the page reads the date, it does not carry one. */
+        snapshotDate: snap.generatedAt.slice(0, 10).replace(/-/g, '\u2022').slice(2),
     },
     definitions: {
         stars: `GitHub stargazers on ${OSS_REPO}, live at build time`,
@@ -133,10 +191,15 @@ const out = {
         jobs: snap.definitions?.scheduledJobs ?? 'scheduled jobs across both machines',
         reposPublic: 'public, non-archived repositories',
         reposArchived: 'archived repositories, excluded from active counts',
+        services: 'live SSH probe of the Mac Mini loopback ports at build time; unreachable means the host did not answer',
+        snapshotDate: 'when data/system-snapshot.json was last generated — the date every stamp on this page reads from',
     },
     /* Figures no API can produce. Kept separate and dated on purpose: a reader
      * who checks the generated ones should be able to see at a glance which
      * claims are machine-verified and which are James's own count. */
+    /* Measured, not asserted. `unreachable` means the Mini did not answer SSH —
+     * the page says so rather than showing three green rows. */
+    services: probeServices(),
     manual: {
         clientSites: { value: 12, asOf: '2026-08-24', note: 'deployed client sites, counted by hand' },
         directedViews: { value: '25,332,774', asOf: '2026-08-24', note: 'sum of public view counts on directed films' },

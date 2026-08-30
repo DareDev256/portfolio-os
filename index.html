@@ -163,14 +163,22 @@
                     <div class="bk" aria-hidden="true"></div>
                     <div class="panel-head">
                         <span class="label">STATUS</span>
-                        <span class="stamp">SNAPSHOT 08&#8226;20<span class="caret" aria-hidden="true">&#9612;</span></span>
+                        <span class="stamp">SNAPSHOT <span data-fig="snapshotDate">&#8212;</span><span class="caret" aria-hidden="true">&#9612;</span></span>
                     </div>
                     <div class="panel-rows">
                         <div class="row rw1"><span class="k">REGISTRY</span><span><span data-fig="repos">&#8212;</span> repos <span class="sub">/ <span data-fig="active">&#8212;</span> active</span></span></div>
                         <div class="row rw2"><span class="k">SCALE</span><span><span data-fig="modules">&#8212;</span> modules &#183; <span data-fig="loc">&#8212;</span> LOC</span></div>
                         <div class="row rw3"><span class="k">DEPLOYED</span><span><span data-fig="clientSites">&#8212;</span> client sites</span></div>
-                        <div class="row rw4"><span class="k">ADOPTED</span><span><span data-fig="stars">&#8212;</span> stars <span class="sub">&#183; <span data-fig="installs">&#8212;</span> installs/mo</span></span></div>
+                        <div class="row rw4"><span class="k">ADOPTED</span><span><a class="receipt" href="https://github.com/DareDev256/fcp-mcp-server/stargazers" target="_blank" rel="noopener"><span data-fig="stars">&#8212;</span> stars</a> <span class="sub">&#183; <a class="receipt" href="https://pypistats.org/packages/fcp-mcp-server" target="_blank" rel="noopener"><span data-fig="installs">&#8212;</span> installs/mo</a></span></span></div>
                         <div class="row rw5"><span class="k">DIRECTED</span><span class="gold"><span data-fig="directedViews">&#8212;</span> views</span></div>
+                    </div>
+                    <!-- One shared readout instead of a popover per figure. Every number in
+                         this panel already ships a `definitions` entry saying what it counts;
+                         until now that only reached a title attribute, which does nothing on
+                         touch and signals nothing on desktop. Hover or tap a figure and its
+                         definition prints here, in the panel's own type. -->
+                    <div class="panel-def" data-fig-readout aria-live="polite">
+                        <span class="def-hint">hover a figure to see how it is counted</span>
                     </div>
                     <a class="panel-foot" href="#contact">
                         <span>OPEN TO ROLES</span><span aria-hidden="true">ENTER →</span>
@@ -187,8 +195,8 @@
                 <p class="eyebrow rv">SYSTEM SNAPSHOT</p>
                 <h2 class="sect-title rv d1" id="sys-h" data-kt-scrub>Passion Agent</h2>
                 <p class="lede rv d2">
-                    <span data-fig="modules">&#8212;</span> modules across a <span data-fig="repos">&#8212;</span>-repository registry. Three services hold on a Mac
-                    Mini, and 59 scheduled jobs across both machines report into Discord without
+                    <span data-fig="modules">&#8212;</span> modules across a <span data-fig="repos">&#8212;</span>-repository registry. <span data-svc-summary>Three services run on a Mac
+                    Mini</span>, and <span data-fig="jobs">&#8212;</span> scheduled jobs across both machines report into Discord without
                     being asked. A gold pulse marks an edge the agent moved data down in this
                     snapshot.
                 </p>
@@ -200,32 +208,79 @@
                          repo list below, in text a screen reader can actually use. -->
                     <svg id="registry-graph" viewBox="0 0 850 640" aria-hidden="true"></svg>
 
+                    <!-- Detail panel. Hover previews a node; click or Enter PINS it, which
+                         is when the links become reachable — a hover panel that vanishes on
+                         the way to its own button is a link nobody can click. Pinning also
+                         writes #system/<repo> so a single node can be sent to someone. -->
                     <div class="rg-readout" id="rg-readout" aria-live="polite">
-                        <div class="rg-r-name" data-rg="name">passion-agent</div>
-                        <div class="rg-r-blurb" data-rg="blurb">&#8212;</div>
-                        <div class="rg-r-meta">
-                            <span data-rg="pushed">&#8212;</span>
-                            <span data-rg="lang">&#8212;</span>
+                        <div class="rg-r-head">
+                            <span class="rg-r-name" data-rg="name">passion-agent</span>
+                            <span class="rg-r-tier" data-rg="tier">CORE</span>
                         </div>
+                        <p class="rg-r-what" data-rg="what">&#8212;</p>
+                        <p class="rg-r-proves" data-rg="proves" hidden></p>
+                        <div class="rg-r-meta">
+                            <span data-rg="stack"></span>
+                            <span data-rg="pushed">&#8212;</span>
+                        </div>
+                        <div class="rg-r-act">
+                            <a class="rg-btn rg-btn-live" data-rg="live" hidden></a>
+                            <a class="rg-btn rg-btn-code" data-rg="code" hidden>CODE &#8599;</a>
+                        </div>
+                        <p class="rg-r-hint" data-rg="hint">CLICK A NODE TO PIN IT</p>
+                        <button type="button" class="rg-r-close" data-rg="close" hidden aria-label="Unpin this repository">&#10005;</button>
                     </div>
                 </div>
 
                 <div class="legend rv d4">
-                    <span><i class="grp" aria-hidden="true"></i>SIZE = REPO ON DISK</span>
+                    <span><i class="grp" aria-hidden="true"></i>SIZE = HAND-PICKED TIER, NOT REPO SIZE</span>
                     <span><i class="act" aria-hidden="true"></i>BRIGHTNESS = PUSHED RECENTLY</span>
                     <span><i class="repo" aria-hidden="true"></i>UNLABELLED REGISTRY ENTRY</span>
-                    <span class="legend-src">GENERATED FROM <code>gh repo list</code></span>
+                    <span class="legend-src">EDGES MEAN REGISTRY MEMBERSHIP, NOT DEPENDENCY</span>
+                    <span class="legend-src">CURATED IN <code>registry-curation.json</code> &#183; FACTS FROM <code>gh repo list</code></span>
+                </div>
+                <!-- The SVG above is aria-hidden and canvas-only: without this the named
+                     repositories are unreachable to a screen reader and invisible to a
+                     crawler. Same JSON as the graph, so the two cannot disagree.
+
+                     A swipe rail rather than a grid: on a phone the graph caps at six
+                     labelled nodes, so the rail is where the other seven actually live.
+                     It is a <ul> of real links underneath — the slider is layout, and a
+                     crawler with no CSS still reads a list. -->
+                <div class="rg-rail rv d4" id="rg-rail">
+                    <div class="rg-rail-head">
+                        <h3 class="rg-rail-title">
+                            THE TWELVE <span class="rg-rail-sub">SWIPE &#8594;</span>
+                        </h3>
+                        <div class="rg-rail-nav">
+                            <button type="button" class="rg-arrow" data-rail="prev" aria-label="Previous repository" aria-controls="rg-rail-track">&#8592;</button>
+                            <button type="button" class="rg-arrow" data-rail="next" aria-label="Next repository" aria-controls="rg-rail-track">&#8594;</button>
+                        </div>
+                    </div>
+
+                    <ul class="rg-rail-track" id="rg-rail-track" tabindex="0" role="list"
+                        aria-label="Curated repositories. Use the left and right arrow keys to move between cards."></ul>
+
+                    <div class="rg-rail-foot">
+                        <div class="rg-rail-bar" aria-hidden="true"><span class="rg-rail-fill"></span></div>
+                        <div class="rg-rail-count" aria-hidden="true"><span data-rail="at">1</span>&#8202;/&#8202;<span data-rail="of">&#8212;</span></div>
+                    </div>
                 </div>
             </div>
 
             <aside class="snapshot-aside">
                 <div class="aside-block">
-                    <h3>SERVICES</h3>
+                    <!-- 2026-08-30: these rows are now MEASURED. tools/build-figures.mjs
+                         SSHes to the Mini at build time and curls each loopback port, writing
+                         the result into figures.json. They were hand-written "UP" before, on
+                         the one section whose whole argument is that the system reports itself.
+                         A DOWN or UNREACHABLE row is the feature, not a failure to hide. -->
+                    <h3>SERVICES <span class="h3-note">PROBED <span data-svc-checked>&#8212;</span></span></h3>
                     <div class="svc">
-                        <div class="rv d1"><span class="k">dashboard:3000</span><span class="up">UP</span></div>
-                        <div class="rv d2"><span class="k">brain:7777</span><span class="up">UP</span></div>
-                        <div class="rv d3"><span class="k">letstrade:8420</span><span class="up">UP</span></div>
-                        <div class="rv d4"><span class="k">scheduled jobs</span><span>59 registered</span></div>
+                        <div class="rv d1"><span class="k">dashboard:3000</span><span class="state" data-svc="dashboard">&#8212;</span></div>
+                        <div class="rv d2"><span class="k">brain:7777</span><span class="state" data-svc="brain">&#8212;</span></div>
+                        <div class="rv d3"><span class="k">letstrade:8420</span><span class="state" data-svc="letstrade">&#8212;</span></div>
+                        <div class="rv d4"><span class="k">scheduled jobs</span><span><span data-fig="jobs">&#8212;</span> registered</span></div>
                     </div>
                 </div>
 
@@ -254,7 +309,7 @@
                 <div class="aside-foot">
                     <a href="/passion">OPEN THE LIVE DASHBOARD &#8594;</a>
                     <a href="/os">OPEN THE DESKTOP &#8599;</a>
-                    <div class="stamp">DASHBOARD: LIVE &#183; DEMO DATA<br />DESKTOP: SNAPSHOT 2026&#8226;08&#8226;23 &#183; STATIC</div>
+                    <div class="stamp">DASHBOARD: LIVE &#183; DEMO DATA<br />DESKTOP: SNAPSHOT <span data-fig="snapshotDate">&#8212;</span> &#183; STATIC</div>
                 </div>
             </aside>
         </section>

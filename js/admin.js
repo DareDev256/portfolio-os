@@ -643,7 +643,13 @@ export const Admin = {
                     const match = url.match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[&?/]|$)/);
 
                     if (match && match[1] && posterInput && !posterInput.value) {
-                        posterInput.value = `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
+                        /* hqdefault, not maxresdefault. YouTube only generates a
+                         * maxres frame for videos uploaded at 1280x720 or above,
+                         * and returns 404 for the rest — 3 of the 5 videos on
+                         * this site have no maxres. hqdefault exists for every
+                         * video ever uploaded, so the autofill cannot mint a
+                         * dead poster URL. */
+                        posterInput.value = `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
                     }
                 }
             }

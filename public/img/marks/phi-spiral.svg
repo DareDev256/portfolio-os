@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 89" width="144" height="89" role="img" aria-label="Golden ratio subdivision">
+  <!-- Fibonacci subdivision: 89 = 55 + 34, 55 = 34 + 21 ... the rectangle that
+       keeps its own proportion as it divides. 144x89 are Fibonacci numbers. -->
+  <g fill="none" stroke="currentColor" stroke-width="1" opacity="0.55">
+    <rect x="0.5" y="0.5" width="143" height="88"/>
+    <path d="M89.5 0.5V88.5M89.5 34.5H143.5M123.5 34.5V88.5M123.5 55.5H143.5M134.5 55.5V88.5"/>
+  </g>
+  <path d="M89 89a89 89 0 0 0-89-89 0 0 0 0 0 0 0" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0"/>
+  <path d="M0 89A89 89 0 0 1 89 0" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <path d="M89 0a34 34 0 0 1 34 34" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <path d="M123 34a21 21 0 0 1 21 21" fill="none" stroke="currentColor" stroke-width="1.5"/>
+</svg>

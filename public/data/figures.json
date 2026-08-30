@@ -1,15 +1,16 @@
 {
-  "generatedAt": "2026-08-25T01:05:13.811Z",
+  "generatedAt": "2026-08-30T23:01:38.843Z",
   "figures": {
-    "stars": 94,
+    "stars": 95,
     "forks": 19,
-    "installs": "2,107",
+    "installs": "1,976",
     "repos": 91,
     "modules": 97,
     "loc": "61K",
     "jobs": 59,
     "reposPublic": 24,
-    "reposArchived": 5
+    "reposArchived": 5,
+    "snapshotDate": "26•08•23"
   },
   "definitions": {
     "stars": "GitHub stargazers on DareDev256/fcp-mcp-server, live at build time",
@@ -20,7 +21,30 @@
     "loc": "all first-party .mjs, excluding node_modules and test dirs",
     "jobs": "com.daredev.* loaded on both machines",
     "reposPublic": "public, non-archived repositories",
-    "reposArchived": "archived repositories, excluded from active counts"
+    "reposArchived": "archived repositories, excluded from active counts",
+    "services": "live SSH probe of the Mac Mini loopback ports at build time; unreachable means the host did not answer",
+    "snapshotDate": "when data/system-snapshot.json was last generated — the date every stamp on this page reads from"
+  },
+  "services": {
+    "checkedAt": "2026-08-30T23:01:38.864Z",
+    "host": "unreachable",
+    "services": [
+      {
+        "name": "dashboard",
+        "port": 3000,
+        "state": "unreachable"
+      },
+      {
+        "name": "brain",
+        "port": 7777,
+        "state": "unreachable"
+      },
+      {
+        "name": "letstrade",
+        "port": 8420,
+        "state": "unreachable"
+      }
+    ]
   },
   "manual": {
     "clientSites": {

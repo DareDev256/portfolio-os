@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 4.22.0
-last_updated: 2026-08-22
+version: 4.25.0
+last_updated: 2026-08-30
 
 ---
 
@@ -15,6 +15,180 @@ last_updated: 2026-08-22
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.25.0] - 2026-08-30
+
+### Added
+- **`tools/link-audit.mjs`** and `npm run audit:links` / `audit:links:net` —
+  resolves every link on the site and says which ones actually reach something.
+  It CANNOT be an HTTP crawler: vercel.json ends with a catch-all that rewrites
+  every unmatched path to /index.html, so `curl -w %{http_code}` returns 200 for
+  paths that ship no file at all. Verified on production - `/this-path-never-
+  existed` answers HTTP 200 with the homepage's own `<title>`. Internal links are
+  therefore resolved against the BUILD OUTPUT and the rewrite table; only
+  external links go over the wire.
+- Link sources are HTML attributes, `public/data/*.json` link fields, and JS
+  string literals - the OS desktop ships one shell document and builds its entire
+  UI at runtime, so every link inside it exists only as a literal and HTML
+  scanning alone finds none of them.
+- `tests/link-integrity.test.js` runs the offline half in the normal suite, so a
+  dead internal link or a dead in-page anchor fails the run and is named in the
+  failure message. Proven to go red by injecting one of each.
+
+### Fixed
+- **The OS desktop linked to five repositories that 404 for every visitor** -
+  passion-framework, Vehicle-Hour-Tracker, typemaster-template, red-team-arena
+  and daredev256.github.io/vibe-coder. All five are PRIVATE and all five were
+  labelled `status: 'live'`. This is invisible to the logged-in owner, because a
+  private repo looks normal to the account that owns it. They now use the
+  renderer's existing `private` state (lock icon, no click) and the dead URLs are
+  removed rather than left for a future status flip to re-enable.
+- `PORTFOLIO_OS` was the opposite error: labelled `private` and hidden behind a
+  lock while the repo is public and is this very site. Now `live` and linked.
+- A YouTube poster 404'd, and the ROOT CAUSE was in the admin: the autofill
+  hardcoded `maxresdefault.jpg`, which YouTube only generates for uploads at
+  1280x720 or above - 3 of the 5 videos here have no maxres frame. Now
+  `hqdefault`, which exists for every video, so the tool cannot mint a dead URL.
+
+### Added
+- **`public/ga4.js` intent events** - the file was 7 lines and recorded
+  pageviews only, so a year of traffic could not answer "did anyone try to
+  contact him". Now 12 delegated, passive, try/catch-wrapped events:
+  contact_email, contact_booking, resume_download, outbound_linkedin,
+  outbound_github, outbound_click, gate_open, chat_suggestion,
+  chat_message_sent (click AND Enter paths), scroll_depth (25/50/75/90) and
+  contact_section_viewed. chat_message_sent records a `length_bucket` and
+  NEVER the message text - the widget promises nothing typed is stored, and
+  that promise is enforced here, not just written on the page. All 12 verified
+  firing by intercepting `window.dataLayer.push`, with a capture-phase
+  preventDefault so the verification could not navigate the tab.
+- **`tools/deployed-drift.mjs`** - fetches the live `figures.json` and diffs it
+  against the local build. **Exit 0 = match, 2 = drift, 1 = could not
+  determine.** "I could not check" and "nothing is wrong" must never be the
+  same exit code. First run caught the site serving figures 142 hours stale:
+  stars 94 vs 95, installs 2,107 vs 1,976, and two keys absent entirely.
+- **Service state is probed, not asserted.** `tools/build-figures.mjs` gained
+  `probeServices()`, which SSHes to the Mini and curls each of dashboard:3000,
+  brain:7777 and letstrade:8420. index.html previously hardcoded three
+  `<span class="up">UP</span>` badges, so the page claimed three services were
+  running whether or not any of them were. It now renders UP / DOWN /
+  UNREACHABLE from a real probe with the check timestamp beside it, and the
+  lede sentence counts the live ones. Unreachable is its own state and never
+  renders as UP.
+
+### Fixed
+- **The chat widget was quoting stale numbers while telling visitors to verify
+  them.** Same root cause as the drift above - prod had not been rebuilt in
+  142 hours. Fixed by deploying and by adding the drift tool so it is caught
+  next time rather than noticed by accident.
+
+### Known
+- `work/` holds four case-study pages (index, second-opinion, passion,
+  sandy-chain-recall) that are NOT in the Vite input and are not linked from
+  anywhere. They do not build and do not ship. Orphaned content, not a broken
+  link - listed here so the September overhaul can decide to wire them in or
+  delete them.
+- 25 links to ninonline.fandom.com and ninjora.fandom.com report HTTP 403 to any
+  non-browser user-agent. That is Fandom refusing to be audited, not a dead link;
+  they are reported as BLOCKED rather than BROKEN so real findings stay visible.
+
+---
+
+## [4.24.0] - 2026-08-30
+
+### Added
+- **The repo list is a swipe rail.** One card per curated repo - tier badge,
+  what it is, what it PROVES, stack, last push, and its live and code links -
+  with scroll-snap, drag-to-pan on a mouse, arrow keys, Home/End, prev/next
+  buttons and a progress bar. It is still a `<ul>` of real anchors underneath;
+  the slider is layout, so a crawler with no CSS reads a list.
+- It also carries the phone. The narrow layout caps the graph at six labelled
+  nodes, so on a phone the rail is the only place the other seven exist. The
+  track bleeds past the gutter there so the next card is visibly cut off - a
+  rail that ends flush reads as a finished row and nobody swipes it.
+- Scrolling the rail marks the card in view and lights that node on the graph,
+  so the two views agree about where you are instead of being two lists of the
+  same repos that never point at the same one.
+- Recency is a hairline on each card's top edge, from the same `heat` value the
+  graph uses for node brightness - unreadable as brightness once you are reading
+  text, legible as a bar.
+- A tail card states the unnamed remainder rather than letting the rail imply
+  the registry is only as big as the part that got a card.
+
+### Fixed
+- **The rail was a scroll trap.** Chrome maps a vertical wheel onto a
+  horizontally-scrollable element with no vertical overflow, so scrolling the
+  PAGE with the cursor anywhere over the rail scrolled the RAIL sideways and the
+  page stayed put - a dead zone the height of the cards, which reads as the page
+  having frozen. No CSS property opts out of that translation, so a non-passive
+  wheel handler cancels a dominantly-vertical gesture and scrolls the window by
+  the same delta. A horizontal gesture still belongs to the rail.
+- **An rAF latch could kill the rail for the life of the page.** The scroll
+  handler set `pending = true` BEFORE requesting a frame; in a background tab
+  the browser throttles rAF to nothing, so that frame never arrived, the flag
+  never cleared, and every later scroll returned early. Now it holds the frame
+  id and cancels-then-requests, and a hidden document syncs synchronously.
+- Chrome does not dispatch scroll events at all while a tab is hidden, so a rail
+  scrolled in a background tab came back stale. `visibilitychange` flushes it.
+- The heading counted its own cards instead of carrying a hardcoded "THE
+  TWELVE", which would have gone stale the first time a repo was curated in.
+
+---
+
+## [4.23.0] - 2026-08-30
+
+### Changed
+- **The system graph is curated, not sorted.** `build-registry-graph.mjs` ordered
+  the registry by `pushedAt` and labelled the top 14. Against 24 public active
+  repos that named 58% of them, which is a listing rather than a selection: a
+  bubble-pop game rendered at the same weight as `fcp-mcp-server` (95 stars, 19
+  forks, 11 releases on PyPI) because both had been touched the same week. Push
+  recency is a fact about the last README typo. Selection now comes from
+  `data/registry-curation.json`, where each entry carries what the repo IS and
+  what it PROVES, and the generator refuses to label a repo that is not in it.
+- **Node radius is the curated tier, not disk usage.** Disk usage made
+  `tdotssolutionsz-portfolio` the largest node on the canvas because it stores
+  video assets. The legend says so, so the claim can be argued with.
+- Star and fork counts in `proves` are written as `{stars}` / `{forks}` and
+  substituted from the live `gh` call at build time. A count typed by hand goes
+  stale against the source it advertises.
+- The narrow-viewport cap of 6 labelled nodes now surfaces the 4 flagship repos
+  plus 2 shipped, rather than the 6 most recently pushed.
+
+### Added
+- **Click, keyboard and deep links.** Nodes carried `role="button"` and
+  `tabindex` but did nothing on Enter, and the readout was hover-only with
+  `pointer-events: none` - which is why it had no links: the pointer could not
+  reach one without leaving the node and reverting the panel. Click or Enter now
+  PINS a node, which makes the panel opaque and reachable, reveals its live and
+  code links, and writes `#system/<repo>` so one repo can be sent to someone.
+  Esc, the close button, or a click on empty canvas unpins.
+- The core node is interactive for the first time - it was the only thing on the
+  graph a visitor could not inspect.
+- **A text index under the graph** (`READ IT AS A LIST`). The SVG is
+  `aria-hidden` and canvas-only, so the named repositories existed nowhere a
+  screen reader, a keyboard, or a crawler could reach them. Rendered from the
+  same JSON as the graph, so the two cannot drift.
+- Generator guards, each of which was a way to ship something false: a curated
+  repo missing from GitHub, an archived one, a duplicate, an undefined tier, and
+  an unknown substitution token all exit non-zero instead of writing a graph.
+
+### Fixed
+- **Three different snapshot dates rendered inside one viewport** - `08*20` in
+  the status panel, `2026*08*23` in the aside, `2026-08-24` in the graph JSON -
+  because each was typed by hand at a different time. Same failure as the module
+  counts in 4.21, same fix: `snapshotDate` is a figure the page reads.
+- The scheduled-job count was hardcoded as `59` in two places; both now read
+  `data-fig="jobs"`.
+- The SERVICES panel asserted `UP` for three ports in the present tense with
+  nothing measuring them, on the one section whose argument is that the system
+  reports itself accurately. Stamped `AS OF <date>` until `tools/` actually
+  probes the ports.
+- Private repositories are still never named by accident: naming one now requires
+  an explicit `disclosed` field saying where it is already public, and a private
+  repo never renders a code link.
 
 ---
 
