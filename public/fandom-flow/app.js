@@ -90,12 +90,25 @@
   // Staleness is the one thing this page must never hide: a dead cron would
   // otherwise leave it quietly asserting a streak with old data.
   var f = document.getElementById('freshness');
-  var gen = "2026-08-30 13:00 UTC".replace(' UTC', 'Z').replace(' ', 'T');
+  var gen = "2026-08-30 20:01 UTC".replace(' UTC', 'Z').replace(' ', 'T');
   var days = (Date.now() - Date.parse(gen)) / 86400000;
   if (f && days > 2) {
     f.innerHTML = '<span class="stale">STALE - last built ' + Math.floor(days) +
                   ' days ago</span>';
   }
+
+  // The Ago column was rendered at build time. The page rebuilds once a day, so
+  // a row written "19m" ago still says 19m six hours later, which is the one
+  // number on this page that gets less true the longer you look at it. Recompute
+  // from the raw UTC timestamp on load; the build-time text is the no-JS fallback.
+  document.querySelectorAll('td.rel[data-ts]').forEach(function(td){
+    var t = Date.parse(td.dataset.ts);
+    if (isNaN(t)) return;
+    var h = (Date.now() - t) / 3600000;
+    td.textContent = h < 1  ? Math.max(Math.round(h * 60), 1) + 'm'
+                   : h < 48 ? Math.floor(h) + 'h'
+                            : Math.floor(h / 24) + 'd';
+  });
 
   function boot(){
     var el = document.getElementById('boot');
