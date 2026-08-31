@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31T15:29:21.060Z",
+  "generatedAt": "2026-08-31T15:52:16.053Z",
   "windowHours": 36,
   "ranInWindow": 8,
   "jobsWatched": 8,
@@ -10,7 +10,7 @@
       "source": "career-digest · Discord",
       "at": "2026-08-31T13:21:45.535Z",
       "time": "09:21",
-      "ageMinutes": 128
+      "ageMinutes": 151
     },
     {
       "id": "portfolio-traffic-radar",
@@ -18,7 +18,7 @@
       "source": "portfolio-traffic-radar",
       "at": "2026-08-31T13:15:05.048Z",
       "time": "09:15",
-      "ageMinutes": 134
+      "ageMinutes": 157
     },
     {
       "id": "branch-shepherd",
@@ -26,7 +26,7 @@
       "source": "branch-shepherd",
       "at": "2026-08-31T13:11:30.233Z",
       "time": "09:11",
-      "ageMinutes": 138
+      "ageMinutes": 161
     },
     {
       "id": "check-daily-rollup",
@@ -34,7 +34,7 @@
       "source": "check-daily-rollup",
       "at": "2026-08-31T12:00:05.788Z",
       "time": "08:00",
-      "ageMinutes": 209
+      "ageMinutes": 232
     },
     {
       "id": "daily-brief",
@@ -42,7 +42,7 @@
       "source": "daily-brief · Discord",
       "at": "2026-08-31T10:46:38.644Z",
       "time": "06:46",
-      "ageMinutes": 283
+      "ageMinutes": 306
     }
   ],
   "skipped": [],
