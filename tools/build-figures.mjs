@@ -128,6 +128,28 @@ const wikiUser = await wikiJSON(
     `action=query&list=users&ususers=${WIKI.bot}&usprop=editcount`,
     'wiki user'
 );
+/* The revert rate. Gate 08 invited the reader to check it — "an on-wiki kill
+ * switch any editor can pull, and a revert rate you can check" — and then gave
+ * them nothing to check it against. It is also the strongest number on the site
+ * for the sentence in the hero: an autonomous agent whose edits a volunteer
+ * community of 43,000 accounts could undo at any time, and largely does not.
+ *
+ * MediaWiki tags a reverted revision `mw-reverted`, so this is the wiki's own
+ * bookkeeping rather than a heuristic over edit summaries. uclimit maxes at 500
+ * for a non-bot client, so this is an honest SAMPLE of the most recent edits and
+ * is labelled as one — not an all-time rate it cannot see. */
+const wikiContribs = await wikiJSON(
+    `action=query&list=usercontribs&ucuser=${WIKI.bot}&uclimit=500&ucprop=ids|timestamp|tags`,
+    'wiki usercontribs'
+);
+const contribs = wikiContribs?.query?.usercontribs;
+if (!Array.isArray(contribs) || contribs.length === 0) {
+    die(`no contributions returned for ${WIKI.bot} — is the account name still right?`);
+}
+const revertedCount = contribs.filter((c) => (c.tags ?? []).includes('mw-reverted')).length;
+const revertSample = contribs.length;
+const revertPct = (revertedCount / revertSample) * 100;
+
 const wikiTotal = wikiStats?.query?.statistics?.edits;
 const wikiBot = wikiUser?.query?.users?.[0]?.editcount;
 if (typeof wikiTotal !== 'number' || typeof wikiBot !== 'number') {
@@ -250,6 +272,12 @@ const out = {
         wikiEdits: wikiBot.toLocaleString('en-US'),
         wikiTotal: wikiTotal.toLocaleString('en-US'),
         wikiSince: WIKI.since,
+        wikiReverted: revertedCount,
+        wikiRevertSample: revertSample.toLocaleString('en-US'),
+        wikiStood: (revertSample - revertedCount).toLocaleString('en-US'),
+        /* Shown to one decimal only when it is under 1%, because "0%" would read
+         * as a rounding flourish on a number whose whole job is to be checkable. */
+        wikiRevertRate: revertPct < 1 ? `${revertPct.toFixed(1)}%` : `${Math.round(revertPct)}%`,
 
         // The agent system.
         repos: snap.repos,
@@ -282,6 +310,10 @@ const out = {
         installs: `PyPI downloads of ${PYPI_PACKAGE} in the last 30 days, via pypistats`,
         clientSites: 'client sites in the roster at /data/client-sites.json, each one named and linked on the page',
         clientSitesUp: 'how many of those answered a request when these figures were generated',
+        wikiReverted: `edits by ${WIKI.bot} that MediaWiki tagged mw-reverted, in the most recent ${revertSample} sampled`,
+        wikiRevertSample: `how many recent edits were examined — the API returns at most 500, so this is a sample and not an all-time rate`,
+        wikiStood: `recent edits by ${WIKI.bot} that no editor reverted`,
+        wikiRevertRate: `share of the sampled edits that were reverted, per MediaWiki's own mw-reverted tag`,
         wikiShare: `${WIKI.bot}'s share of every edit ever made on ${WIKI.host}, read live from the MediaWiki API`,
         wikiEdits: `edits made by ${WIKI.bot} on ${WIKI.host}, per the MediaWiki API`,
         wikiTotal: `every edit by every editor on ${WIKI.host} since ${WIKI.since}, per the MediaWiki API`,

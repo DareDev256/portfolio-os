@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.33.0
+version: 4.34.0
 last_updated: 2026-08-30
 
 ---
@@ -15,6 +15,22 @@ last_updated: 2026-08-30
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.34.0] - 2026-08-31
+
+### Added
+- **The revert rate is measured.** Gate 08 ended "an on-wiki kill switch any
+  editor can pull, and a revert rate you can check" — inviting the reader to
+  verify a number the page never showed them. It is also the strongest evidence
+  on the site for the sentence in the hero: an autonomous agent whose edits a
+  volunteer community of 43,000 accounts can undo at any time, and mostly does
+  not. `build-figures.mjs` now reads MediaWiki's own `mw-reverted` tag, which is
+  the wiki's bookkeeping rather than a heuristic over edit summaries.
+  **499 of the last 500 edits stood. 0.2% reverted.**
+  Labelled a SAMPLE, because `uclimit` caps at 500 for a non-bot client and the
+  page must not imply an all-time rate it cannot see.
 
 ---
 

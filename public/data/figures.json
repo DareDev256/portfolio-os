@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31T10:01:38.081Z",
+  "generatedAt": "2026-08-31T16:24:15.934Z",
   "figures": {
     "stars": 95,
     "forks": 19,
@@ -8,13 +8,17 @@
     "clientSitesUp": 11,
     "wikiShare": "33%",
     "wikiEdits": "5,798",
-    "wikiTotal": "17,766",
+    "wikiTotal": "17,765",
     "wikiSince": 2013,
+    "wikiReverted": 1,
+    "wikiRevertSample": "500",
+    "wikiStood": "499",
+    "wikiRevertRate": "0.2%",
     "repos": 91,
     "modules": 97,
     "loc": "61K",
     "jobs": 59,
-    "reposPublic": 24,
+    "reposPublic": 23,
     "reposArchived": 5,
     "snapshotDate": "26•08•23"
   },
@@ -24,6 +28,10 @@
     "installs": "PyPI downloads of fcp-mcp-server in the last 30 days, via pypistats",
     "clientSites": "client sites in the roster at /data/client-sites.json, each one named and linked on the page",
     "clientSitesUp": "how many of those answered a request when these figures were generated",
+    "wikiReverted": "edits by RawBOT that MediaWiki tagged mw-reverted, in the most recent 500 sampled",
+    "wikiRevertSample": "how many recent edits were examined — the API returns at most 500, so this is a sample and not an all-time rate",
+    "wikiStood": "recent edits by RawBOT that no editor reverted",
+    "wikiRevertRate": "share of the sampled edits that were reverted, per MediaWiki's own mw-reverted tag",
     "wikiShare": "RawBOT's share of every edit ever made on ninonline.fandom.com, read live from the MediaWiki API",
     "wikiEdits": "edits made by RawBOT on ninonline.fandom.com, per the MediaWiki API",
     "wikiTotal": "every edit by every editor on ninonline.fandom.com since 2013, per the MediaWiki API",
@@ -37,7 +45,7 @@
     "snapshotDate": "when data/system-snapshot.json was last generated — the date every stamp on this page reads from"
   },
   "services": {
-    "checkedAt": "2026-08-31T10:01:38.092Z",
+    "checkedAt": "2026-08-31T16:24:15.957Z",
     "host": "unreachable",
     "services": [
       {
