@@ -110,7 +110,7 @@
       "forks": 0,
       "private": false,
       "what": "Generates an artist website as a named world rather than a template — it derives type, colour and motion from the artist's own premise.",
-      "proves": "Two blind judges could not pick the generated site out of a lineup. It refuses to print a number it cannot source.",
+      "proves": "In its one documented blind A/B, the judge asked to spot the generated site picked a hand-built one and ranked the generated site the most hand-made of five. It refuses to print a number it cannot source.",
       "stack": [
         "TypeScript",
         "Next.js"

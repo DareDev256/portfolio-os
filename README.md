@@ -21,21 +21,24 @@ Every number below is reproducible from a clean clone. No figure in this README 
 
 | Figure | Reproduce it |
 |---|---|
-| 655 tests across 40 files | `npm test` |
+| 658 tests across 41 files | `npm test` |
 | 86 JavaScript modules | `git ls-files 'js/*.js' \| wc -l` |
 | 50 stylesheets | `git ls-files '*.css' \| wc -l` |
 | 2 runtime dependencies | `node -p "Object.keys(require('./package.json').dependencies).length"` |
 
-## Two Surfaces
+## Three Surfaces
 
-Since v4.0.0 this repository builds **two** independent pages from one Vite config:
+This repository builds **three** independent pages from one Vite config. Count them
+yourself with `grep -c "resolve(import.meta.dirname" vite.config.js`, or read
+`build.rollupOptions.input` in that file:
 
 | Route | Entry | What it is |
 |---|---|---|
 | `/` | `index.html` + `css/system.css` | **THE SYSTEM** — the hiring surface. A static scrolling page: status panel, Passion Agent snapshot, cleared gates, contact. No framework, no OS code. |
 | `/os` | `os/index.html` + `js/main.js` | **Passion OS** — the desktop environment this README documents. Everything below describes this surface. |
+| `/coldopen` | `coldopen/index.html` | **COLD OPEN** — the writeup of the artist-site engine at [github.com/DareDev256/coldopen](https://github.com/DareDev256/coldopen). Added in 4.21.0. |
 
-The two are deliberately kept apart in type, palette, layout skeleton and motion
+The three are deliberately kept apart in type, palette, layout skeleton and motion
 signature; `css/system.css` carries the divergence record at the top of the file.
 Client services and the client roster live on
 [tdotssolutionsz.com](https://tdotssolutionsz.com), not here.
