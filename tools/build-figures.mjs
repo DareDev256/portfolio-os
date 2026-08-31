@@ -300,8 +300,22 @@ const out = {
     /* Measured, not asserted. `unreachable` means the Mini did not answer SSH —
      * the page says so rather than showing three green rows. */
     services: probeServices(),
+    /* Hand-counted, dated, and kept in ONE place. The film figures previously
+     * lived at three separate call sites — the status panel read directedViews
+     * from here while Gate 06's prose and its stat block each carried their own
+     * copy of the same numbers. That is the identical defect as the client-site
+     * count: a figure with more than one home eventually disagrees with itself.
+     * The short form is DERIVED rather than typed, so 25.3M cannot drift from
+     * 25,332,774. */
     manual: {
         directedViews: { value: '25,332,774', asOf: '2026-08-24', note: 'sum of public view counts on directed films' },
+        directedViewsShort: {
+            value: `${(25332774 / 1e6).toFixed(1)}M`,
+            asOf: '2026-08-24',
+            note: 'the same view total, rounded for the stat block — derived from directedViews, never typed twice',
+        },
+        directedFilms: { value: 101, asOf: '2026-08-24', note: 'music videos directed, counted by hand' },
+        directedArtists: { value: 54, asOf: '2026-08-24', note: 'distinct artists directed for, counted by hand' },
     },
 };
 

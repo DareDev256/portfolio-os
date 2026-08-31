@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.30.0
+version: 4.31.0
 last_updated: 2026-08-30
 
 ---
@@ -15,6 +15,23 @@ last_updated: 2026-08-30
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.31.0] - 2026-08-31
+
+### Fixed
+- **The film figures had three homes.** Applying 4.30.0's own lesson - grep for
+  the VALUE, not for the list you think you have - turned up `25,332,774` typed
+  into Gate 06's prose while the hero STATUS panel read the same number from the
+  generator, and `101 / 54 / 25.3M` typed again into Gate 06's stat block. Same
+  defect as the client-site count, which reached production reading twelve above
+  a panel reading eleven. A figure with more than one home eventually disagrees
+  with itself.
+  `directedFilms`, `directedArtists` and `directedViewsShort` join
+  `directedViews` in the `manual` block - still hand-counted and dated, but with
+  one home. The short form is DERIVED from the long one in the generator rather
+  than typed, so `25.3M` cannot drift from `25,332,774`.
 
 ---
 
