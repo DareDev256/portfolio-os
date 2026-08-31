@@ -4,10 +4,8 @@
 
 ### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
 
-![Version](https://img.shields.io/badge/v4.8.0-00f0ff?style=flat-square&labelColor=0d0d0d)
-![Tests](https://img.shields.io/badge/645_tests-00e676?style=flat-square&labelColor=0d0d0d)
-![Modules](https://img.shields.io/badge/76_modules-b388ff?style=flat-square&labelColor=0d0d0d)
-![Frameworks](https://img.shields.io/badge/0_frameworks-ff5252?style=flat-square&labelColor=0d0d0d)
+[![Version](https://img.shields.io/github/package-json/v/DareDev256/portfolio-os?style=flat-square&labelColor=0d0d0d&color=00f0ff)](package.json)
+[![Last commit](https://img.shields.io/github/last-commit/DareDev256/portfolio-os?style=flat-square&labelColor=0d0d0d&color=00e676)](https://github.com/DareDev256/portfolio-os/commits/main)
 
 **[▸ ENTER THE LIVE DEMO](https://jamesdare.com/os)**
 
@@ -15,11 +13,18 @@
 
 ---
 
-A fully interactive desktop environment — draggable windows, GPU-composited glass UI, Three.js cyberspace, Spotlight-style command palette — running entirely in the browser with zero runtime dependencies. Not a portfolio template. An operating system.
+A fully interactive desktop environment — draggable windows, GPU-composited glass UI, Three.js cyberspace, Spotlight-style command palette — running entirely in the browser. No UI framework: the DOM is built by hand. The browser bundle carries one dependency, `@vercel/analytics`; the two serverless routes under `api/` use `@anthropic-ai/sdk`.
 
 Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
 
-> `76 modules` · `50 stylesheets` · `607 tests / 33 files` · `21 desktop apps` · `0 dependencies`
+Every number below is reproducible from a clean clone. No figure in this README is typed by hand.
+
+| Figure | Reproduce it |
+|---|---|
+| 655 tests across 40 files | `npm test` |
+| 86 JavaScript modules | `git ls-files 'js/*.js' \| wc -l` |
+| 50 stylesheets | `git ls-files '*.css' \| wc -l` |
+| 2 runtime dependencies | `node -p "Object.keys(require('./package.json').dependencies).length"` |
 
 ## Two Surfaces
 
@@ -53,7 +58,7 @@ Open `http://localhost:5173` for the hiring surface, or `http://localhost:5173/o
 ### Desktop Environment
 
 - **Window Manager** — Drag, resize, minimize, maximize, z-index focus management with ceiling-bounded normalization. Animated open/close with glass shimmer effects.
-- **21 Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column grid. Right-click context menus on each. Includes 3 external deployed-project links (Vibe Coder, IMG_GEN.ai, TypeMaster) and a curated Portfolio showcase.
+- **Desktop Icons** — Custom SVG icons in a recruiter-optimized 4-column grid. Right-click context menus on each. Includes 3 external deployed-project links (Vibe Coder, IMG_GEN.ai, TypeMaster) and a curated Portfolio showcase.
 - **Purple Reign Showcase** — Opens with the **"Amethyst Aperture"** — a cinematic camera-iris reveal (`clip-path: circle()`) that opens from center to reveal the creative director's identity. James Olusoga's name appears in muted gold Playfair Display serif with staggered letter-spacing animation, a gold divider line draws itself, and the role tagline fades in amethyst. Below, the "Ascending Core" — a rotating CSS 3D obsidian crystal with internal amethyst glow — fractures apart on scroll. The "Amethyst Code" glitch effect resolves to unveil the section title. An "Obsidian Veil" monolith overlay fractures into six polygon shards with amethyst edge-glow before scattering apart. Featured projects display as cinematic scroll-snap chapters with forcefield reveal, gilded gold shimmer on titles, staggered animations, dot navigation, and syntax-highlighted code snippets with copy-to-clipboard. CTA buttons feature "Opulent Interface" micro-interactions: embossed depth, animated gold border trace, and letter-spacing breathe on hover. Each chapter has a "Catalyst Aura" — a mouse-reactive amethyst-gold glow with hexagonal crystal lens that follows the cursor.
 - **Command Palette** — `Cmd+K` / `Ctrl+K` opens a Spotlight-style fuzzy-search launcher across all apps and system toggles.
 - **Dock** — macOS-style magnetic magnification (icons swell on cursor proximity with Gaussian falloff), active window indicators, minimize-to-dock animation, hover tooltips.
@@ -441,7 +446,7 @@ npm run lint      # ESLint
 npm run format    # Prettier
 ```
 
-The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and **ESLint** + **Prettier** for code quality. There are no runtime dependencies — only dev tooling.
+The project uses **Vite** for dev/build, **Vitest** + **jsdom** for testing, and **ESLint** + **Prettier** for code quality. `package.json` lists two runtime dependencies: `@vercel/analytics`, imported by `js/main.js` into the browser bundle, and `@anthropic-ai/sdk`, used only by the serverless routes in `api/`. Everything else is dev tooling.
 
 ## Deployment
 
@@ -492,7 +497,7 @@ npm run preview    # Serve dist/ on localhost:4173
 
 | Document | Description |
 |----------|-------------|
-| [DOCUMENTATION.md](DOCUMENTATION.md) | Complete user guide — 20 desktop apps, keyboard shortcuts, customization, deployment |
+| [DOCUMENTATION.md](DOCUMENTATION.md) | Complete user guide — desktop apps, keyboard shortcuts, customization, deployment |
 | [ADMIN_DASHBOARD_GUIDE.md](ADMIN_DASHBOARD_GUIDE.md) | No-code content editor (console-only) |
 | [EASTER_EGGS_GUIDE.md](EASTER_EGGS_GUIDE.md) | All hidden easter eggs and secret interactions |
 | [CHANGELOG.md](CHANGELOG.md) | Full version history from v1.0 to present |
