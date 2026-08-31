@@ -463,6 +463,34 @@ button:focus-visible {
     color: var(--sys-gold);
 }
 
+/* The coordinate line. Deliberately NOT the 11px mono of .hero-sub: a screener
+   who cannot read it in the first two seconds has not received it, and this is
+   the one line on the page whose whole job is to be received first. Sized so it
+   sits under the H1 in the hierarchy but above everything else in it. */
+.hero-name {
+    font-family: var(--sys-sans, inherit);
+    font-size: clamp(15px, 1.25vw, 18px);
+    line-height: 1.55;
+    letter-spacing: 0.005em;
+    color: rgba(217, 242, 255, 0.82);
+    max-width: 44ch;
+    margin: 0 0 18px;
+}
+
+.hero-name strong {
+    color: #fff;
+    font-weight: 620;
+    letter-spacing: 0.01em;
+}
+
+@media (max-width: 720px) {
+    .hero-name {
+        font-size: 15px;
+        max-width: 100%;
+        margin-bottom: 14px;
+    }
+}
+
 .hero-sub {
     font-family: var(--sys-mono);
     font-size: 11px;

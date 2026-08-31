@@ -1,9 +1,13 @@
 {
-  "generatedAt": "2026-08-31T01:23:01.486Z",
+  "generatedAt": "2026-08-31T03:40:09.388Z",
   "figures": {
     "stars": 95,
     "forks": 19,
     "installs": "1,978",
+    "wikiShare": "33%",
+    "wikiEdits": "5,798",
+    "wikiTotal": "17,766",
+    "wikiSince": 2013,
     "repos": 91,
     "modules": 97,
     "loc": "61K",
@@ -16,6 +20,9 @@
     "stars": "GitHub stargazers on DareDev256/fcp-mcp-server, read live when these figures were last generated",
     "forks": "GitHub forks of DareDev256/fcp-mcp-server, read live when these figures were last generated",
     "installs": "PyPI downloads of fcp-mcp-server in the last 30 days, via pypistats",
+    "wikiShare": "RawBOT's share of every edit ever made on ninonline.fandom.com, read live from the MediaWiki API",
+    "wikiEdits": "edits made by RawBOT on ninonline.fandom.com, per the MediaWiki API",
+    "wikiTotal": "every edit by every editor on ninonline.fandom.com since 2013, per the MediaWiki API",
     "repos": "gh repo list DareDev256, all visibilities",
     "modules": "top-level *.mjs in passion-agent",
     "loc": "all first-party .mjs, excluding node_modules and test dirs",
@@ -26,7 +33,7 @@
     "snapshotDate": "when data/system-snapshot.json was last generated — the date every stamp on this page reads from"
   },
   "services": {
-    "checkedAt": "2026-08-31T01:23:01.501Z",
+    "checkedAt": "2026-08-31T03:40:09.405Z",
     "host": "unreachable",
     "services": [
       {

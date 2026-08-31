@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.26.0
+version: 4.27.0
 last_updated: 2026-08-30
 
 ---
@@ -15,6 +15,42 @@ last_updated: 2026-08-30
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.27.0] - 2026-08-31
+
+### Changed
+- **The hero leads with other people's decisions instead of James's output.**
+  Three critics judged the live page blind, with no access to the reasoning
+  behind it. Two of them — a recruiter doing a 20-second scan and an investor
+  reading for distribution — independently named the same defect: the STATUS
+  panel opened on `91 repos` and `97 modules / 61K LOC`, which are counts of
+  his own work. Self-counted volume reads as prolific, not senior.
+  Every row above SCALE now measures a decision somebody else made: an install,
+  a star, a hire, a view, an edit nobody reverted. SCALE survives, last, because
+  the engineering scale is real and still worth stating - it just cannot lead.
+- **Added the coordinate line.** The recruiter could not answer "what level is
+  this person" or even "what is his name" after a full screen: the only name was
+  a 10px nav mark and the largest type on the page was a slogan containing no
+  person. The bar sites (leerob, rauno, brianlovin, thesephist) all spend their
+  first 40 characters on name + standing, because that is what tells a reader at
+  what level to read everything after it. No employer is claimed, because there
+  is not one to claim; the standing is the client roster and the install count,
+  and a reader can check both.
+
+### Added
+- **`wikiShare` is now a generated figure.** The page claimed in prose that the
+  agent's account "has written roughly a third of every edit in the wiki's
+  history" - the single strongest external-validation number on the site, and
+  the only headline claim with no generator behind it. Exactly the shape of
+  assertion this build step exists to retire. It now reads
+  `RawBOT`'s editcount and the wiki's total from the MediaWiki API:
+  **5,798 of 17,766 edits, 33%**, on a wiki that has run since 2013.
+  Two traps are documented in the code rather than rediscovered: Fandom's CDN
+  403s a bare curl (not an outage, a missing user-agent), and the bot edits as
+  `RawBOT` while `NinWikiBot` is only the Discord identity and resolves to
+  `missing` — a near-miss that would make a wrong number look verified.
 
 ---
 
