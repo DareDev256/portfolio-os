@@ -96,16 +96,44 @@ fetch(SRC)
         const probe = snap.services;
         if (probe) {
             const LABEL = { up: 'UP', down: 'DOWN', unreachable: 'UNREACHABLE' };
+
+            /* A probe is a measurement, and a measurement has an age. figures.json
+             * is generated locally and COMMITTED — Vercel's build is `vite build`
+             * and never re-runs the generator — so whatever state was true at the
+             * last generator run ships until someone regenerates.
+             *
+             * That is how the hardcoded green `UP` badges this panel was built to
+             * replace would come back in through the back door: probe the Mini
+             * while it is up, let it die that evening, and the page keeps telling
+             * visitors three services are running for as long as nobody rebuilds.
+             * Past the threshold the panel stops asserting a present-tense state
+             * and says only what it actually knows — what the last probe saw, and
+             * how long ago. 26h leaves the daily radar two hours of jitter before
+             * a healthy site starts calling itself unverified. */
+            const STALE_HOURS = 26;
+            const ageH = probe.checkedAt
+                ? (Date.now() - new Date(probe.checkedAt).getTime()) / 3600000
+                : Infinity;
+            const stale = !(ageH < STALE_HOURS);
+            const ageWord = Number.isFinite(ageH)
+                ? ageH < 48
+                    ? `${Math.round(ageH)}h ago`
+                    : `${Math.round(ageH / 24)} days ago`
+                : 'at an unrecorded time';
+
             for (const svc of probe.services ?? []) {
                 const el = document.querySelector(`[data-svc="${svc.name}"]`);
                 if (!el) continue;
-                el.textContent = LABEL[svc.state] ?? String(svc.state).toUpperCase();
-                el.dataset.state = svc.state;
+                const label = LABEL[svc.state] ?? String(svc.state).toUpperCase();
+                el.textContent = stale ? 'UNVERIFIED' : label;
+                el.dataset.state = stale ? 'stale' : svc.state;
                 el.setAttribute(
                     'title',
-                    svc.state === 'unreachable'
-                        ? `The Mac Mini did not answer SSH when this build ran (${probe.checkedAt}). Nothing on this page can see the port from here, so it does not claim to.`
-                        : `curl http://127.0.0.1:${svc.port}/ on the Mac Mini at build time${svc.code ? ` — HTTP ${svc.code}` : ''}`,
+                    stale
+                        ? `Not checked recently. The last probe ran ${ageWord} and saw ${label}. This page will not claim a live state it has not measured, so it reports the age instead.`
+                        : svc.state === 'unreachable'
+                          ? `The Mac Mini did not answer SSH when this build ran (${probe.checkedAt}). Nothing on this page can see the port from here, so it does not claim to.`
+                          : `curl http://127.0.0.1:${svc.port}/ on the Mac Mini, probed ${ageWord}${svc.code ? ` — HTTP ${svc.code}` : ''}`,
                 );
             }
             /* The lede asserted "Three services hold on a Mac Mini" in the present
@@ -118,12 +146,13 @@ fetch(SRC)
                 const n = (probe.services ?? []).length;
                 const up = (probe.services ?? []).filter((x) => x.state === 'up').length;
                 const word = WORD[n] ?? String(n);
-                sum.textContent =
-                    probe.host === 'unreachable'
-                        ? `${word} services live on a Mac Mini the page could not reach at build time`
-                        : up === n
-                          ? `${word} services hold on a Mac Mini`
-                          : `${up} of ${n} services answered on a Mac Mini`;
+                sum.textContent = stale
+                    ? `${word} services live on a Mac Mini, last checked ${ageWord}`
+                    : probe.host === 'unreachable'
+                      ? `${word} services live on a Mac Mini the page could not reach at build time`
+                      : up === n
+                        ? `${word} services hold on a Mac Mini`
+                        : `${up} of ${n} services answered on a Mac Mini`;
             }
 
             const when = document.querySelector('[data-svc-checked]');
@@ -132,7 +161,7 @@ fetch(SRC)
                 const hrs = (Date.now() - d.getTime()) / 3600000;
                 when.textContent = d.toISOString().slice(0, 10).replace(/-/g, '\u2022').slice(2);
                 when.setAttribute('title', `Probed ${Math.round(hrs)}h ago at build time`);
-                if (hrs > 72) when.dataset.stale = 'true';
+                if (stale) when.dataset.stale = 'true';
             }
         }
 

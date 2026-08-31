@@ -1571,6 +1571,15 @@ button:focus-visible {
     letter-spacing: 0.06em;
 }
 
+/* Not a measured state at all — the probe is simply too old to speak for the
+   present. Deliberately the quietest row in the panel: an unverified service
+   must never read as louder or more reassuring than a measured DOWN. */
+.svc .state[data-state='stale'] {
+    color: var(--sys-dim, #7b8794);
+    letter-spacing: 0.06em;
+    font-style: italic;
+}
+
 .svc .state[data-state='down'],
 .svc .state[data-state='unreachable'] {
     cursor: help;

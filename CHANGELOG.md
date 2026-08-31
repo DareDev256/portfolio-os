@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.25.0
+version: 4.26.0
 last_updated: 2026-08-30
 
 ---
@@ -15,6 +15,28 @@ last_updated: 2026-08-30
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.26.0] - 2026-08-30
+
+### Fixed
+- **A stale service probe no longer renders as a live state.** `figures.json`
+  is generated locally and COMMITTED - Vercel's build is `vite build` and never
+  re-runs the generator - so the panel always displays a measurement taken at
+  some point in the past. Nothing bounded how old.
+  That is the hardcoded-`UP` bug this panel was built to replace, returning
+  through the back door: probe the Mini while it is up, let it die that evening,
+  never rebuild, and the page keeps telling visitors three services are running.
+  Past 26 hours the panel stops asserting a present tense and renders
+  `UNVERIFIED`, with the last measured state and its age in the tooltip. The
+  lede sentence follows the same rule, and a missing `checkedAt` counts as
+  stale rather than fresh. 26h leaves a daily radar two hours of jitter.
+  `UNVERIFIED` is styled as the quietest row in the panel - an unmeasured
+  service must never read as more reassuring than a measured `DOWN`.
+  Covered by `tests/system-figures-staleness.test.js`; with the threshold
+  disabled 4 of its 7 cases fail, so the suite is load-bearing rather than
+  decorative.
 
 ---
 
