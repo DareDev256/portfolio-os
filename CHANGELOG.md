@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.34.0
+version: 4.34.1
 last_updated: 2026-08-30
 
 ---
@@ -15,6 +15,26 @@ last_updated: 2026-08-30
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.34.1] - 2026-08-31
+
+### Fixed
+- **The RAN WITHOUT ME panel shipped invisible.** Rows carry `.rv`, which is
+  `opacity: 0` until something adds `.on`, and `system-landing.js` collects
+  `.rv` ONCE at load with `querySelectorAll` — so rows injected afterwards were
+  never in that list and never revealed. Five rows sat in the DOM at opacity 0
+  on production: present, readable by `textContent`, invisible to a human.
+  The verification that passed it read `textContent`, which cannot tell a
+  painted row from an unpainted one. It was caught by looking at a screenshot.
+  `activity-log.js` now reveals its rows directly on all three render paths
+  (events, empty, failed read), across two `requestAnimationFrame`s so the
+  transition runs instead of being collapsed into the same frame. The d1..d5
+  delays still stagger them; only the trigger changed.
+- Three tests pin what `textContent` cannot see. Verified load-bearing by
+  mutation: with `reveal()` commented out, 3 fail and 4 pass — and the 4 that
+  pass are the text assertions, which is exactly how this reached production.
 
 ---
 

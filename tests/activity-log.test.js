@@ -65,6 +65,36 @@ describe('activity log', () => {
         expect(log()).not.toMatch(/Morning brief/);
     });
 
+    /* The first version of this panel shipped INVISIBLE. Rows carry `.rv`, which
+     * is opacity:0 until something adds `.on`, and the page's reveal script
+     * collects `.rv` once at load — so injected rows were in the DOM, readable by
+     * textContent, and unpainted. The textContent assertions above all passed
+     * against a blank panel. These pin the thing textContent cannot see. */
+    it('reveals injected rows — a row in the DOM at opacity 0 is not rendered', async () => {
+        await render({
+            windowHours: 36, ranInWindow: 1, jobsWatched: 8,
+            events: [{ time: '09:21', label: 'Career pipeline digested', source: 'x', ageMinutes: 12 }],
+        });
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+        const rows = [...document.querySelectorAll('[data-activity-log] .rv')];
+        expect(rows.length).toBeGreaterThan(0);
+        for (const r of rows) expect(r.classList.contains('on')).toBe(true);
+    });
+
+    it('reveals the empty-state row too', async () => {
+        await render({ windowHours: 36, ranInWindow: 0, jobsWatched: 8, events: [] });
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+        const row = document.querySelector('[data-activity-log] .rv');
+        expect(row.classList.contains('on')).toBe(true);
+    });
+
+    it('reveals the failed-read row too', async () => {
+        await render(null, { fail: true });
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+        const row = document.querySelector('[data-activity-log] .rv');
+        expect(row.classList.contains('on')).toBe(true);
+    });
+
     it('escapes values rather than injecting them as markup', async () => {
         await render({
             windowHours: 36, ranInWindow: 1, jobsWatched: 8,

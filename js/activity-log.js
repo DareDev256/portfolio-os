@@ -16,6 +16,25 @@
 
 const SRC = '/data/activity.json';
 
+/* Rows carry `.rv`, which is `opacity: 0` until something adds `.on`.
+ * system-landing.js collects `.rv` ONCE at load with querySelectorAll, so rows
+ * injected afterwards are never in that list and never reveal. The panel then
+ * renders present-in-the-DOM and invisible-to-a-human, which a textContent check
+ * cannot tell apart from working — that is exactly how the first version of this
+ * shipped and passed its own verification.
+ *
+ * An IntersectionObserver here would re-create the same fragility for the next
+ * person, so the rows are revealed directly. The d1..d5 transition delays still
+ * stagger them; only the trigger changes. */
+function reveal(container) {
+    const rows = container.querySelectorAll('.rv');
+    // Next frame, so the browser paints the opacity:0 start state first and the
+    // transition actually runs instead of being skipped as a same-frame change.
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => rows.forEach((r) => r.classList.add('on')));
+    });
+}
+
 fetch(SRC)
     .then((r) => {
         if (!r.ok) throw new Error(`${SRC} -> ${r.status}`);
@@ -40,6 +59,7 @@ fetch(SRC)
             list.innerHTML =
                 '<div class="rv d1"><time>—</time><div><div class="what">Nothing ran in the last ' +
                 `${data.windowHours} hours</div><div class="src">that is the measurement, not a gap</div></div></div>`;
+            reveal(list);
             return;
         }
 
@@ -65,6 +85,7 @@ fetch(SRC)
                 );
             })
             .join('');
+        reveal(list);
     })
     .catch((err) => {
         // Leave the markup's own fallback text in place rather than inventing a
@@ -74,6 +95,7 @@ fetch(SRC)
             list.innerHTML =
                 '<div class="rv d1"><time>—</time><div><div class="what">Could not read the activity log</div>' +
                 '<div class="src">this is a failed check, not a quiet day</div></div></div>';
+            reveal(list);
         }
         console.warn('[activity-log]', err.message);
     });
