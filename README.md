@@ -21,7 +21,7 @@ Every number below is reproducible from a clean clone. No figure in this README 
 
 | Figure | Reproduce it |
 |---|---|
-| 655 tests across 40 files | `npm test` |
+| 658 tests across 41 files (656 pass, 2 skip) | `npm test` |
 | 86 JavaScript modules | `git ls-files 'js/*.js' \| wc -l` |
 | 50 stylesheets | `git ls-files '*.css' \| wc -l` |
 | 2 runtime dependencies | `node -p "Object.keys(require('./package.json').dependencies).length"` |
