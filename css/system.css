@@ -1670,6 +1670,23 @@ button:focus-visible {
     transition: border-color 0.18s ease, color 0.18s ease;
 }
 
+/* The cue has to travel with the figure. Scoping it to .panel-rows meant every
+   figure added outside that panel — the hero standing line, the Gate 05 count —
+   shipped with no affordance: hoverable, but nothing said so, and invisible on
+   touch. Same failure this file already recorded once. */
+.hero-name [data-fig][data-explained],
+.gate-body [data-fig][data-explained] {
+    border-bottom: 1px dotted rgba(111, 211, 255, 0.5);
+    cursor: help;
+}
+
+.hero-name [data-fig][data-explained]:hover,
+.gate-body [data-fig][data-explained]:hover,
+.hero-name [data-fig][data-explained]:focus-visible,
+.gate-body [data-fig][data-explained]:focus-visible {
+    border-bottom-color: var(--sys-cyan);
+}
+
 .panel-rows [data-fig][data-explained]:hover,
 .panel-rows [data-fig][data-explained]:focus-visible {
     border-bottom-color: var(--sys-cyan);

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.29.0
+version: 4.30.0
 last_updated: 2026-08-30
 
 ---
@@ -15,6 +15,41 @@ last_updated: 2026-08-30
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.30.0] - 2026-08-31
+
+### Fixed
+- **The hero still said "Twelve client sites" while the panel beside it said 11.**
+  4.29.0 fixed four call sites and its commit message claimed all four were done.
+  It was wrong: 4.27.0 had introduced a FIFTH one two commits earlier — the
+  hardcoded English word "Twelve" in the new hero standing line — and the 4.29.0
+  audit never looked at the sentence it had just written. At 390px the
+  contradiction and its correction sat in the same viewport. A hardcoded word is
+  still a hardcoded figure. It now reads `data-fig="clientSites"` like the rest.
+- **The explain cue was scoped to `.panel-rows`,** so every figure added outside
+  that panel shipped with no affordance: hoverable, but nothing said so, and
+  unreachable on touch. This file already recorded the definitions "shipping
+  invisibly for a week" once. The dotted underline now travels to `.hero-name`
+  and `.gate-body`.
+- **A figure inside a link no longer takes focus of its own.** `tabIndex = 0` on
+  every explained figure meant a keyboard user stopped twice on the same content
+  — the second time on a span with no role and nothing to activate. The wrapping
+  anchor drives the readout instead.
+- **Gate figures were never wired to the readout.** The one-shot pass ran over
+  `document` before the gate clones existed, so their figures got a `title` and
+  nothing else — no focus, no readout, definitions unreachable on touch, which
+  is precisely the gap the shared readout was built to close. A MutationObserver
+  now wires each clone as it lands.
+- **`clientSitesUp` was measured and read by nobody.** The generator probed all
+  eleven sites every run and wrote the result to a public file that nothing
+  rendered. The DEPLOYED row now reads "N of N answering", so a client site
+  going dark is visible rather than merely recorded.
+- **The `clientSites` tooltip cited `data/client-sites.json`,** which is a
+  build-time import; the SPA catch-all answered that URL with `index.html`. The
+  roster is now published to `/data/client-sites.json` and the definition points
+  at the served path — a receipt that resolves.
 
 ---
 

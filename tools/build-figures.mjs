@@ -148,6 +148,14 @@ if (typeof wikiTotal !== 'number' || typeof wikiBot !== 'number') {
 const roster = JSON.parse(readFileSync(resolve(ROOT, 'data/client-sites.json'), 'utf8')).sites;
 if (!Array.isArray(roster) || roster.length === 0) die('data/client-sites.json holds no sites');
 
+/* The definition tells a reader the roster lives at a URL, so it has to BE at a
+ * URL. data/ is a build-time import and the SPA catch-all answers it with
+ * index.html — a receipt that 404s in the only way this site cannot afford. */
+writeFileSync(
+    resolve(ROOT, 'public/data/client-sites.json'),
+    JSON.stringify({ generatedAt: new Date().toISOString(), sites: roster }, null, 2) + '\n'
+);
+
 const clientStatus = [];
 for (const site of roster) {
     let code = 0;
@@ -272,7 +280,7 @@ const out = {
         stars: `GitHub stargazers on ${OSS_REPO}, read live when these figures were last generated`,
         forks: `GitHub forks of ${OSS_REPO}, read live when these figures were last generated`,
         installs: `PyPI downloads of ${PYPI_PACKAGE} in the last 30 days, via pypistats`,
-        clientSites: 'client sites in the roster at data/client-sites.json, each one named and linked on the page',
+        clientSites: 'client sites in the roster at /data/client-sites.json, each one named and linked on the page',
         clientSitesUp: 'how many of those answered a request when these figures were generated',
         wikiShare: `${WIKI.bot}'s share of every edit ever made on ${WIKI.host}, read live from the MediaWiki API`,
         wikiEdits: `edits made by ${WIKI.bot} on ${WIKI.host}, per the MediaWiki API`,

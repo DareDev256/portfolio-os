@@ -79,14 +79,39 @@ fetch(SRC)
                 readout.innerHTML = rest;
                 delete readout.dataset.on;
             };
-            document.querySelectorAll('[data-fig][data-explained]').forEach((el) => {
-                el.tabIndex = 0;
-                el.addEventListener('pointerenter', () => show(el));
-                el.addEventListener('focus', () => show(el));
-                el.addEventListener('click', () => show(el));
-                el.addEventListener('pointerleave', clear);
-                el.addEventListener('blur', clear);
-            });
+            /* A figure inside a link must NOT take focus of its own. The anchor is
+             * already a tab stop, so making the span one too stops a keyboard user
+             * twice on the same content — the second time on a span with no role
+             * and nothing to activate. Let the wrapping anchor drive the readout
+             * instead, which is the behaviour a reader expects anyway. */
+            const wire = (el) => {
+                if (el.dataset.readoutWired) return;
+                el.dataset.readoutWired = '1';
+                const inLink = el.closest('a');
+                if (!inLink) el.tabIndex = 0;
+                const target = inLink ?? el;
+                target.addEventListener('pointerenter', () => show(el));
+                target.addEventListener('focus', () => show(el));
+                target.addEventListener('click', () => show(el));
+                target.addEventListener('pointerleave', clear);
+                target.addEventListener('blur', clear);
+            };
+            document.querySelectorAll('[data-fig][data-explained]').forEach(wire);
+
+            /* Gate panels are cloned from <template> long after this runs, so a
+             * one-shot pass over `document` gave their figures a title and nothing
+             * else: no focus, no readout, definitions unreachable on touch —
+             * exactly the gap the shared readout exists to close. Wire each clone
+             * as it lands. */
+            new MutationObserver((records) => {
+                for (const rec of records) {
+                    rec.addedNodes.forEach((node) => {
+                        if (node.nodeType !== 1) return;
+                        if (node.matches?.('[data-fig][data-explained]')) wire(node);
+                        node.querySelectorAll?.('[data-fig][data-explained]').forEach(wire);
+                    });
+                }
+            }).observe(document.body, { childList: true, subtree: true });
         }
 
         /* Services are a different shape from figures: each has its own measured
