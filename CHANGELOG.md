@@ -4,7 +4,7 @@
 
 title: Passion OS Changelog
 version: 4.34.1
-last_updated: 2026-08-30
+last_updated: 2026-08-31
 
 ---
 
@@ -84,6 +84,33 @@ This changelog documents the evolutionary development of Passion OS from initial
   unreadable-source case, and value escaping.
 
 ---
+
+### Fixed — from the parallel session on this repo
+_Shipped the same day by the other Claude session working this tree. Kept
+verbatim: both corrections are real, and the second one finds call sites that
+4.29.0 claimed to have finished._
+
+### Fixed
+- **The site claimed two blind judges and two passed rounds. There was one judge
+  and one round.** `coldopen/docs/GAUNTLET.md` records a single blind A/B on
+  2026-08-21: one judge, one round, one 1440x900 viewport, no panel and no
+  repeat trial. The judge picked savv4x.com, which is hand-built, at 70 percent
+  self-declared confidence, and ranked the generated site first of five for
+  reading hand-made. The page instead said "Two blind judges could not pick the
+  generated site out of a lineup" and printed "2x BLIND A/B PASSED" as a stat.
+  Corrected at every call site: the `/` meta description was not involved, but
+  the hero reel plate, the Gate 07 stat block, the `/coldopen` meta description,
+  its lede, its stat block, its pull-quote attribution and its proof paragraph
+  all carried a version of the claim, as did `data/registry-curation.json` and
+  the generated `public/data/registry-graph.json` that both routes read.
+  The corrected claim is still the good result: ranked first of five, blind.
+- **Three surfaces still said twelve client sites while the roster names
+  eleven.** 4.29.0 fixed four call sites and its own source comment says "all
+  four now read the roster". Three more were typed copies it never reached: the
+  `/` meta description, the TdotsSolutionsz reel plate caption, and the two chat
+  widgets (`js/system-chat.js`, `js/passion-assistant.js`). All now say eleven,
+  which is `data/client-sites.json` length as generated on 2026-08-31.
+
 
 ## [4.32.0] - 2026-08-31
 
