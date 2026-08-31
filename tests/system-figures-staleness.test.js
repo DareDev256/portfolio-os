@@ -44,7 +44,11 @@ function snapshot(checkedAt, host, states) {
 
 async function render(snap) {
     markup();
-    global.fetch = vi.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve(snap) }));
+    // globalThis, not global. `global` is a Node-only alias that eslint's browser
+    // env does not declare, so it lints as an undefined variable — the same class
+    // as the `process` no-undefs already fixed in this repo. globalThis is
+    // standard and resolves in both environments.
+    globalThis.fetch = vi.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve(snap) }));
     vi.resetModules();
     await import('../js/system-figures.js');
     // Let the fetch .then chain settle.
