@@ -477,6 +477,33 @@ button:focus-visible {
     margin: 0 0 18px;
 }
 
+/* A named artifact beats a bare figure: the reader can open it. Underlined
+   rather than coloured so it reads as a link on a dark plate without competing
+   with the gold accent the H1 already owns. */
+.hero-link {
+    color: var(--sys-cyan);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(111, 211, 255, 0.45);
+}
+
+.hero-link:hover,
+.hero-link:focus-visible {
+    text-decoration-color: var(--sys-cyan);
+}
+
+.panel-rows .receipt.named {
+    color: var(--sys-cyan-pale);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(111, 211, 255, 0.35);
+}
+
+.panel-rows .receipt.named:hover,
+.panel-rows .receipt.named:focus-visible {
+    border-bottom-color: var(--sys-cyan);
+}
+
 .hero-name strong {
     color: #fff;
     font-weight: 620;

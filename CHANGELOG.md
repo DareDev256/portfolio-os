@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.27.0
+version: 4.28.0
 last_updated: 2026-08-30
 
 ---
@@ -15,6 +15,25 @@ last_updated: 2026-08-30
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.28.0] - 2026-08-31
+
+### Changed
+- **Named the artifacts on the first screen.** A blind A/B critic — shown this
+  hero and the previous one as unlabelled items K and Q, with no idea which was
+  newer — picked this one decisively and named the coordinate line as the
+  deciding element. Then it named what this version still lacked: every figure
+  on screen one is asserted, and not one thing is a named artifact a reader can
+  open. The only proper noun was a client credit strip, which is the weakest
+  signal on the screen and pulls the read toward freelance web shop.
+  The bar sites do the inverse — leerob names Vercel, brianlovin names Campsite,
+  thesephist names Oak — they lead with the thing and let numbers trail.
+  So `fcp-mcp-server` is now named and linked in the standing line, the ADOPTED
+  row leads with the package rather than a star count, and DEPLOYED leads with
+  `betmetrics.ca`, the one client site that is a live money product.
+  One verifiable proper noun outranks a stat row.
 
 ---
 
