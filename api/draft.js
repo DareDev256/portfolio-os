@@ -45,10 +45,49 @@ function parse(raw) {
     return { subject, body };
 }
 
+/* Same allowlist discipline as api/chat.js, and for the same reason: this
+ * endpoint spends money on every call. It shipped without one while its sibling
+ * had it — so any page on the internet could POST here from a browser, bill the
+ * Anthropic account, and drain the SHARED rate limiter that /api/chat depends
+ * on, taking the visitor-facing chat down as a side effect.
+ *
+ * Never a wildcard. Anyone who can call this can spend from it. */
+const ALLOWED_ORIGINS = new Set([
+    'https://jamesdare.com',
+    'https://www.jamesdare.com',
+    'https://passion.jamesdare.com',
+]);
+
+function applyCors(req, res) {
+    const origin = req.headers.origin;
+    if (origin && ALLOWED_ORIGINS.has(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Vary', 'Origin');
+        res.setHeader('Access-Control-Allow-Headers', 'content-type');
+        res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+        res.setHeader('Access-Control-Max-Age', '86400');
+        return true;
+    }
+    return false;
+}
+
 export default async function handler(req, res) {
+    const corsOk = applyCors(req, res);
+
+    // Preflight answered before the rate limiter — an OPTIONS is not a request
+    // for work and must not spend the caller's budget.
+    if (req.method === 'OPTIONS') return res.status(corsOk ? 204 : 403).end();
+
     if (req.method !== 'POST') {
         res.setHeader('Allow', 'POST');
         return res.status(405).json({ error: 'POST only.' });
+    }
+
+    // Refuse a cross-origin POST from an origin not on the list, BEFORE the
+    // limiter reserves anything — otherwise a rejected caller still consumes
+    // the budget it was refused.
+    if (req.headers.origin && !corsOk) {
+        return res.status(403).json({ error: 'Origin not allowed.' });
     }
 
     // Reserve before parsing the body and before any model call.

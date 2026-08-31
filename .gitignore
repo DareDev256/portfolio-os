@@ -56,3 +56,9 @@ coverage/
 # deployed — the site's RESUME button 404'd while pointing at it. The live PDFs
 # are public/resume/*.pdf, built from ~/Documents/Career/Resumes/_sources/.
 /resume/
+
+# Never ship into the public deploy: macOS metadata and editor backups end up
+# publicly fetchable because public/ is copied verbatim by Vite.
+.DS_Store
+public/**/.DS_Store
+*.backup

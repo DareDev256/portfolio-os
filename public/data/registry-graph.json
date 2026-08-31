@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T19:35:18.908Z",
+  "generatedAt": "2026-08-31T00:06:25.140Z",
   "source": "gh repo list DareDev256 --limit 300 (all visibilities, archived excluded) merged with data/registry-curation.json",
   "totals": {
     "repos": 92,
@@ -102,8 +102,8 @@
       "id": "coldopen",
       "tier": "flagship",
       "r": 21,
-      "heat": 0.922,
-      "ageDays": 7,
+      "heat": 0.911,
+      "ageDays": 8,
       "pushedAt": "2026-08-22",
       "lang": "TypeScript",
       "stars": 0,
@@ -130,7 +130,7 @@
       "forks": 0,
       "private": false,
       "what": "This site, plus a full draggable desktop OS at /os — 20 apps and 46 vanilla modules with no framework and no runtime dependencies.",
-      "proves": "Zero runtime dependencies. Every number on this page traces to a generator that exits non-zero rather than invent one.",
+      "proves": "No UI framework and no component library — 46 vanilla modules. Every number on this page traces to a generator that exits non-zero rather than invent one.",
       "stack": [
         "Vanilla JS",
         "Three.js",

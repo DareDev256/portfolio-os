@@ -31,7 +31,7 @@
   ],
   "headers": [
     {
-      "source": "/((?!passion).*)",
+      "source": "/((?!passion$|passion/).*)",
       "headers": [
         {
           "key": "Content-Security-Policy",

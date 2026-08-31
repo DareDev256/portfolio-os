@@ -1290,7 +1290,7 @@ export const Desktop = {
                 name: 'Passion Ecosystem',
                 color: '#d4af37',
                 apps: [
-                    { name: 'PASSION_FRAMEWORK', desc: 'Autonomous AI agent framework \u2014 92 modules, 3 LLM backends, runs 24/7', status: 'private' },
+                    { name: 'PASSION_FRAMEWORK', desc: 'Autonomous AI agent framework \u2014 3 LLM backends, runs 24/7', status: 'private' },
                     { name: 'PASSION_SITE', desc: 'Live AI agent presence \u2014 passion.jamesdare.com', status: 'live', link: 'https://passion.jamesdare.com' },
                     { name: 'PASSION_MEMORY', desc: 'Shared brain MCP server \u2014 somatic markers, session handoffs, feedback loops', status: 'private' },
                     { name: 'PACT_DASHBOARD', desc: 'Real-time HUD \u2014 101 components, 60 API routes, live metrics, task history', status: 'private' },

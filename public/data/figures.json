@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T23:01:38.843Z",
+  "generatedAt": "2026-08-31T00:05:47.789Z",
   "figures": {
     "stars": 95,
     "forks": 19,
@@ -13,8 +13,8 @@
     "snapshotDate": "26•08•23"
   },
   "definitions": {
-    "stars": "GitHub stargazers on DareDev256/fcp-mcp-server, live at build time",
-    "forks": "GitHub forks of DareDev256/fcp-mcp-server, live at build time",
+    "stars": "GitHub stargazers on DareDev256/fcp-mcp-server, read live when these figures were last generated",
+    "forks": "GitHub forks of DareDev256/fcp-mcp-server, read live when these figures were last generated",
     "installs": "PyPI downloads of fcp-mcp-server in the last 30 days, via pypistats",
     "repos": "gh repo list DareDev256, all visibilities",
     "modules": "top-level *.mjs in passion-agent",
@@ -26,7 +26,7 @@
     "snapshotDate": "when data/system-snapshot.json was last generated — the date every stamp on this page reads from"
   },
   "services": {
-    "checkedAt": "2026-08-30T23:01:38.864Z",
+    "checkedAt": "2026-08-31T00:05:47.806Z",
     "host": "unreachable",
     "services": [
       {

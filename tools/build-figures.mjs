@@ -182,8 +182,15 @@ const out = {
         snapshotDate: snap.generatedAt.slice(0, 10).replace(/-/g, '\u2022').slice(2),
     },
     definitions: {
-        stars: `GitHub stargazers on ${OSS_REPO}, live at build time`,
-        forks: `GitHub forks of ${OSS_REPO}, live at build time`,
+        /* NOT "live at build time". package.json's build script is `vite build`
+         * and nothing else — these generators need gh auth and an SSH route to
+         * the Mini, neither of which exists on Vercel, so they run locally and
+         * their output is committed. The number is real; it is as fresh as the
+         * last generator run, and `generatedAt` says when that was. Claiming
+         * build-time freshness is the provenance failure this file exists to
+         * prevent: it invites exactly the check it cannot survive. */
+        stars: `GitHub stargazers on ${OSS_REPO}, read live when these figures were last generated`,
+        forks: `GitHub forks of ${OSS_REPO}, read live when these figures were last generated`,
         installs: `PyPI downloads of ${PYPI_PACKAGE} in the last 30 days, via pypistats`,
         repos: snap.definitions?.repos ?? 'all repositories on the account',
         modules: snap.definitions?.modules ?? 'top-level modules in passion-agent',

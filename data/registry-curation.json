@@ -65,7 +65,7 @@
       "repo": "portfolio-os",
       "tier": "flagship",
       "what": "This site, plus a full draggable desktop OS at /os — 20 apps and 46 vanilla modules with no framework and no runtime dependencies.",
-      "proves": "Zero runtime dependencies. Every number on this page traces to a generator that exits non-zero rather than invent one.",
+      "proves": "No UI framework and no component library \u2014 46 vanilla modules. Every number on this page traces to a generator that exits non-zero rather than invent one.",
       "stack": ["Vanilla JS", "Three.js", "Vite"],
       "live": { "label": "OPEN THE DESKTOP", "url": "/os" }
     },

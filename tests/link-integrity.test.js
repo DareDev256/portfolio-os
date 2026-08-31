@@ -58,3 +58,18 @@ describe('link integrity', () => {
         expect(anchors.map((r) => `${r.url} in ${r.from}`)).toEqual([]);
     });
 });
+
+/* The version string drifted from 4.11.0 to 4.25.0 unnoticed because two files
+ * each held their own copy. js/version.js calls itself the single source of
+ * truth for the version and is what the /os top bar and boot sequence render,
+ * so when it disagrees with package.json the product tells visitors the wrong
+ * number. A test is the only thing that makes that impossible to ship. */
+describe('version provenance', () => {
+    it('js/version.js matches package.json', async () => {
+        const { readFileSync } = await import('node:fs');
+        const pkg = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf8')).version;
+        const src = readFileSync(resolve(ROOT, 'js/version.js'), 'utf8');
+        const found = /export const VERSION = '([^']+)'/.exec(src);
+        expect(found && found[1]).toBe(pkg);
+    });
+});
