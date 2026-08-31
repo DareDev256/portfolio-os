@@ -1,9 +1,11 @@
 {
-  "generatedAt": "2026-08-31T03:40:09.388Z",
+  "generatedAt": "2026-08-31T03:50:04.699Z",
   "figures": {
     "stars": 95,
     "forks": 19,
     "installs": "1,978",
+    "clientSites": 11,
+    "clientSitesUp": 11,
     "wikiShare": "33%",
     "wikiEdits": "5,798",
     "wikiTotal": "17,766",
@@ -20,6 +22,8 @@
     "stars": "GitHub stargazers on DareDev256/fcp-mcp-server, read live when these figures were last generated",
     "forks": "GitHub forks of DareDev256/fcp-mcp-server, read live when these figures were last generated",
     "installs": "PyPI downloads of fcp-mcp-server in the last 30 days, via pypistats",
+    "clientSites": "client sites in the roster at data/client-sites.json, each one named and linked on the page",
+    "clientSitesUp": "how many of those answered a request when these figures were generated",
     "wikiShare": "RawBOT's share of every edit ever made on ninonline.fandom.com, read live from the MediaWiki API",
     "wikiEdits": "edits made by RawBOT on ninonline.fandom.com, per the MediaWiki API",
     "wikiTotal": "every edit by every editor on ninonline.fandom.com since 2013, per the MediaWiki API",
@@ -33,7 +37,7 @@
     "snapshotDate": "when data/system-snapshot.json was last generated — the date every stamp on this page reads from"
   },
   "services": {
-    "checkedAt": "2026-08-31T03:40:09.405Z",
+    "checkedAt": "2026-08-31T03:50:04.711Z",
     "host": "unreachable",
     "services": [
       {
@@ -54,11 +58,6 @@
     ]
   },
   "manual": {
-    "clientSites": {
-      "value": 12,
-      "asOf": "2026-08-24",
-      "note": "deployed client sites, counted by hand"
-    },
     "directedViews": {
       "value": "25,332,774",
       "asOf": "2026-08-24",

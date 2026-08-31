@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.28.0
+version: 4.29.0
 last_updated: 2026-08-30
 
 ---
@@ -15,6 +15,36 @@ last_updated: 2026-08-30
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.29.0] - 2026-08-31
+
+### Fixed
+- **The page said twelve client sites and named eleven.** A critic counted the
+  proper nouns in four seconds. It was the ONLY hand-counted figure on a page
+  that spends two gates arguing that counting by hand is the bug, and it was the
+  only one that was wrong - which is a very unlucky place to be wrong.
+  The count is now the length of `data/client-sites.json`, so the sentence and
+  the list cannot disagree again, and all eleven names are links a reader can
+  open rather than proper nouns they must take on trust. All eleven verified
+  200 before shipping.
+  The same off-by-one shipped at FOUR call sites — the hero, the Gate 05 prose,
+  the Gate 05 stat block and the chat widget's grounding. Fixing three would
+  have left the widget reciting the contradiction on demand, which is exactly
+  what the critic caught it doing. All four now read the roster.
+  `clientSites` left the `manual` block; only `directedViews` remains hand-counted.
+  Liveness is probed and reported separately as `clientSitesUp`: a site that is
+  briefly unreachable is not a site he did not build, and dropping the count on
+  a network blip would be its own kind of lie.
+
+### Changed
+- **Removed the rate card from the `/os` indexable fallback.** Its `<noscript>`
+  block carried ten dollar figures from $200 to $3,000. A JS reader never sees
+  it, but a search engine does, and the homepage links `/os` four times. A
+  hiring manager who searches his name and reads "$250 websites" has repriced
+  him before the page loads. The service names stay; the numbers are a
+  conversation, not a snippet.
 
 ---
 

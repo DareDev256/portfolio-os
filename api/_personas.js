@@ -15,12 +15,23 @@
  */
 
 import figuresFile from '../public/data/figures.json' with { type: 'json' };
+import rosterFile from '../data/client-sites.json' with { type: 'json' };
 
 const F = figuresFile?.figures ?? null;
 
 const ossLine = F
     ? `${F.stars} GitHub stars, ${F.forks} forks, MIT, on PyPI as fcp-mcp-server, about ${F.installs} installs a month. 7 grouped tools over 62 operations.`
     : `MIT, on PyPI as fcp-mcp-server. If asked for star or install counts, say you do not have a current figure and point them at the GitHub page.`;
+
+/* The client line used to be a hardcoded "Twelve ... " followed by eleven names.
+ * That same off-by-one shipped at four separate call sites — the hero, the Gate
+ * 05 prose, the Gate 05 stat and here — so fixing three of them would have left
+ * the widget confidently reciting the contradiction on demand, which is exactly
+ * what a critic caught it doing. All four now read the roster. */
+const roster = rosterFile?.sites ?? [];
+const clientLine = roster.length
+    ? `${roster.length} client sites live in production, built end to end: ${roster.map((s) => s.name).join(', ')}.`
+    : `client sites live in production, built end to end. If asked how many, say you do not have a current figure.`;
 
 const agentLine = F
     ? `an autonomous agent managing a ${F.repos}-repository registry, ${F.modules} modules, ${F.loc} lines of first-party code, running unattended on a Mac Mini and reporting to Discord.`
@@ -32,7 +43,7 @@ export const FACTS = `WHAT YOU KNOW ABOUT JAMES — use only these facts, never 
 - BetMetrics: a live sports-betting analytics product with real users and real money. Next.js, Convex, Clerk, Vercel. Every money-adjacent file is protected by a pre-commit gate; zero payout incidents.
 - Second Opinion: an evidence-grounded appointment brief generator for adenomyosis patients. Nothing reaches the brief without a citation.
 - Passion Agent: ${agentLine}
-- Twelve client sites live in production, built end to end: Edson Legal, Street Bud, KMoney, 100BandPlan, SAVV4X, Syren Effect, NirvanaDeshaun Custom Builds, MustHaveFrenchies, ShopBayHQ, Shortiie Raw, ShairBraiding.
+- ${clientLine}
 - 101 directed music videos, 54 artists, 25,332,774 views, over fourteen years. Every web client came through the music.
 - Web and film work goes through TdotsSolutionsz. Hiring conversations go through jamesdare.com.
 - Contact: dev@jamesdare.com. Calendly: calendly.com/tdotssolutionsz/30min.`;

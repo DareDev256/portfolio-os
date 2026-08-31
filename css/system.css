@@ -480,6 +480,25 @@ button:focus-visible {
 /* A named artifact beats a bare figure: the reader can open it. Underlined
    rather than coloured so it reads as a link on a dark plate without competing
    with the gold accent the H1 already owns. */
+/* Eleven client names, each one openable. A proper noun a reader can click is
+   worth more than the number above it, and it is what stops the sentence and
+   the list from ever disagreeing again. Kept quiet: this is a paragraph, not a
+   nav, so the links underline rather than shout. */
+.gate-body .site-link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-color: rgba(111, 211, 255, 0.38);
+    transition: color 0.18s ease, text-decoration-color 0.18s ease;
+}
+
+.gate-body .site-link:hover,
+.gate-body .site-link:focus-visible {
+    color: var(--sys-cyan-pale);
+    text-decoration-color: var(--sys-cyan);
+}
+
 .hero-link {
     color: var(--sys-cyan);
     text-decoration: underline;

@@ -538,7 +538,13 @@
                         </div>
                     </div>
 
-                    <p>Twelve sites live in production, built end to end — design, build, domain, deploy, mail. Edson Legal, Street Bud, KMoney, 100BandPlan, SAVV4X, Syren Effect, NirvanaDeshaun Custom Builds, MustHaveFrenchies, ShopBayHQ, Shortiie Raw and ShairBraiding.</p>
+                    <!-- This sentence used to read "Twelve" and then name eleven. It was the
+                         only hand-counted figure on a page that spends two gates arguing that
+                         counting by hand is the bug, and it was the only one that was wrong.
+                         Both the number and the names now come from data/client-sites.json,
+                         so they cannot drift apart again, and every name is a link a reader
+                         can open instead of a proper noun they have to take on trust. -->
+                    <p><span data-fig="clientSites">&#8212;</span> sites live in production, built end to end &mdash; design, build, domain, deploy, mail. <a class="site-link" href="https://edsonlegal.com" target="_blank" rel="noopener">Edson Legal</a>, <a class="site-link" href="https://officialstreetbud.com" target="_blank" rel="noopener">Street Bud</a>, <a class="site-link" href="https://officialkmoney.com" target="_blank" rel="noopener">KMoney</a>, <a class="site-link" href="https://100bandplan.com" target="_blank" rel="noopener">100BandPlan</a>, <a class="site-link" href="https://savv4x.com" target="_blank" rel="noopener">SAVV4X</a>, <a class="site-link" href="https://syreneffect.com" target="_blank" rel="noopener">Syren Effect</a>, <a class="site-link" href="https://nirvanadeshaunbuilds.com" target="_blank" rel="noopener">NirvanaDeshaun Custom Builds</a>, <a class="site-link" href="https://musthavefrenchies.com" target="_blank" rel="noopener">MustHaveFrenchies</a>, <a class="site-link" href="https://shopbayhq.com" target="_blank" rel="noopener">ShopBayHQ</a>, <a class="site-link" href="https://shortiieraw.com" target="_blank" rel="noopener">Shortiie Raw</a> and <a class="site-link" href="https://shairbraiding.com" target="_blank" rel="noopener">ShairBraiding</a>.</p>
 
                     <div class="decision">
                         <div class="tag">THE DECISION</div>
@@ -546,7 +552,7 @@
                     </div>
 
                     <div class="figs">
-                        <div><div class="n">12</div><div class="cap">LIVE IN PRODUCTION</div></div>
+                        <div><div class="n" data-fig="clientSites">&#8212;</div><div class="cap">LIVE IN PRODUCTION</div></div>
                         <div><div class="n cyan">100%</div><div class="cap">SHIPPED SOLO</div></div>
                         <div><div class="n gold">0</div><div class="cap">TEMPLATES USED</div></div>
                     </div>

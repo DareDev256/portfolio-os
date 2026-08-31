@@ -1,0 +1,16 @@
+{
+  "_comment": "The client roster, and the SOURCE of the number the page states. On 2026-08-31 the page said 'Twelve sites live in production' and then named eleven — the one hand-counted figure on a page whose whole argument is that its figures are generated. The count is now the length of this list, so the sentence and the list cannot disagree again. Add a site here and every call site moves together.",
+  "sites": [
+    { "name": "Edson Legal",                "url": "https://edsonlegal.com" },
+    { "name": "Street Bud",                 "url": "https://officialstreetbud.com" },
+    { "name": "KMoney",                     "url": "https://officialkmoney.com" },
+    { "name": "100BandPlan",                "url": "https://100bandplan.com" },
+    { "name": "SAVV4X",                     "url": "https://savv4x.com" },
+    { "name": "Syren Effect",               "url": "https://syreneffect.com" },
+    { "name": "NirvanaDeshaun Custom Builds","url": "https://nirvanadeshaunbuilds.com" },
+    { "name": "MustHaveFrenchies",          "url": "https://musthavefrenchies.com" },
+    { "name": "ShopBayHQ",                  "url": "https://shopbayhq.com" },
+    { "name": "Shortiie Raw",               "url": "https://shortiieraw.com" },
+    { "name": "ShairBraiding",              "url": "https://shairbraiding.com" }
+  ]
+}
