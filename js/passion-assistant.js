@@ -76,7 +76,7 @@ const RESPONSES = {
 
     ai: () => `James builds custom AI solutions — chatbots, workflow automation, content pipelines, and full autonomous agents.\n\nFun fact: I'm one of his projects! I run 24/7 on a Mac Mini, managing repos, scanning for opportunities, and helping visitors like you.\n\nAI projects are quoted individually. Want to discuss your idea?`,
 
-    photo: () => `Photography & videography runs **$500 – $3,000** per project.\n\nJames directed **350+ music videos** for artists like Chief Keef, Migos, and Masicka — earned an **RIAA Gold record**. He also does product shoots, event coverage, and social media content.\n\nWhat kind of shoot are you looking for?`,
+    photo: () => `Photography & videography runs **$500 – $3,000** per project.\n\nJames directed music videos for a decade, **101 of them indexed**, for artists like Chief Keef, Migos and Masicka. One of them, Casper TNG's "Dope Boy", was **certified Gold by Music Canada** in 2022. He also does product shoots, event coverage, and social media content.\n\nWhat kind of shoot are you looking for?`,
 
     branding: () => `Branding packages run **$300 – $800** and include:\n\n• Logo design (3 concepts, unlimited revisions)\n• Color palette & typography\n• Brand style guide\n• Social media templates\n\nWant to see examples or book a branding consultation?`,
 
@@ -84,7 +84,7 @@ const RESPONSES = {
 
     location: () => `James is based in **${KNOWLEDGE.location}**, but works with clients everywhere. All communication and delivery is remote — you don't need to be local.\n\nThat said, if you're in the GTA, in-person meetings are always an option!`,
 
-    who: () => `James Olusoga (DareDev256) is an **AI Solutions Engineer & Creative Technologist** based in Toronto.\n\nBefore tech, he directed 350+ music videos (RIAA Gold), built KushdUp Filmsz (sold to 6ixbuzzTV, now 3M+ followers), and worked with Chief Keef, Migos, and Masicka.\n\nNow he builds custom websites, AI systems, and creative tech for businesses of all sizes. Check out the About window for the full story!`,
+    who: () => `James Olusoga (DareDev256) is an **AI Solutions Engineer & Creative Technologist** based in Toronto.\n\nBefore tech, he directed 101 indexed music videos, one of them certified Gold by Music Canada, and built KushdUp Filmsz, the channel he sold that became 6ixBuzz Premieres. He worked with Chief Keef, Migos and Masicka.\n\nNow he builds custom websites, AI systems, and creative tech for businesses of all sizes. Check out the About window for the full story!`,
 
     passion: () => `I'm Passion — James's autonomous AI companion! I run 24/7 on a Mac Mini in Toronto.\n\nI manage his code repositories, scan for opportunities, track his fitness (yes, really), and help visitors like you navigate the site.\n\nI'm not ChatGPT or a generic bot — I'm a custom-built agent framework with ${PassionLive.getStats().cyclesTotal || 'thousands of'} cycles under my belt. Pretty cool, right?`,
 
