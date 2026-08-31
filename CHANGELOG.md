@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.31.0
+version: 4.32.0
 last_updated: 2026-08-30
 
 ---
@@ -15,6 +15,28 @@ last_updated: 2026-08-30
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.32.0] - 2026-08-31
+
+### Fixed
+- **The 4.30.0 gate-clone fix did nothing, and shipped claiming it worked.**
+  Verified on the live page: every gate figure carried `readoutWired: null` and
+  `tabIndex: -1`, and a `pointerenter` left the readout on its placeholder.
+  The observer matched `[data-fig][data-explained]`, but `data-explained` is
+  stamped by `apply()`, which runs from the gate-cycler's own observer AFTER
+  insertion — so at the moment a clone lands it carries only `data-fig` and
+  never matched. It now matches `[data-fig]`; `show()` reads the title lazily,
+  so wiring before the definition arrives is safe.
+  This is the second attempt at the same defect. Both times the figures VISIBLY
+  FILLED, which is what let the miss survive a manual check twice.
+
+### Added
+- **`tests/gate-figure-wiring.test.js`** — asserts the thing a filled figure
+  does not prove: that a figure inserted after load is actually wired, gets a
+  tab stop when it is not inside a link, and does NOT get one when it is.
+  Verified load-bearing by mutation: all three fail against the 4.30.0 selector.
 
 ---
 

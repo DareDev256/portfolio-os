@@ -107,8 +107,16 @@ fetch(SRC)
                 for (const rec of records) {
                     rec.addedNodes.forEach((node) => {
                         if (node.nodeType !== 1) return;
-                        if (node.matches?.('[data-fig][data-explained]')) wire(node);
-                        node.querySelectorAll?.('[data-fig][data-explained]').forEach(wire);
+                        /* Match on [data-fig] ALONE. `data-explained` is stamped by
+                         * apply(), which runs from the gate-cycler's own observer
+                         * AFTER insertion — so at the moment a clone lands it carries
+                         * only data-fig. Requiring both attributes here is why the
+                         * 4.30.0 version of this fix silently did nothing: every gate
+                         * figure filled, showed a title, and was still unreachable by
+                         * keyboard or touch. show() reads the title lazily, so wiring
+                         * before the definition arrives is safe. */
+                        if (node.matches?.('[data-fig]')) wire(node);
+                        node.querySelectorAll?.('[data-fig]').forEach(wire);
                     });
                 }
             }).observe(document.body, { childList: true, subtree: true });
