@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2026-08-31T15:29:21.060Z",
+  "windowHours": 36,
+  "ranInWindow": 8,
+  "jobsWatched": 8,
+  "events": [
+    {
+      "id": "career-digest",
+      "label": "Career pipeline digested",
+      "source": "career-digest · Discord",
+      "at": "2026-08-31T13:21:45.535Z",
+      "time": "09:21",
+      "ageMinutes": 128
+    },
+    {
+      "id": "portfolio-traffic-radar",
+      "label": "Portfolio traffic swept",
+      "source": "portfolio-traffic-radar",
+      "at": "2026-08-31T13:15:05.048Z",
+      "time": "09:15",
+      "ageMinutes": 134
+    },
+    {
+      "id": "branch-shepherd",
+      "label": "Branches swept for drift",
+      "source": "branch-shepherd",
+      "at": "2026-08-31T13:11:30.233Z",
+      "time": "09:11",
+      "ageMinutes": 138
+    },
+    {
+      "id": "check-daily-rollup",
+      "label": "System snapshot regenerated",
+      "source": "check-daily-rollup",
+      "at": "2026-08-31T12:00:05.788Z",
+      "time": "08:00",
+      "ageMinutes": 209
+    },
+    {
+      "id": "daily-brief",
+      "label": "Morning brief compiled and sent",
+      "source": "daily-brief · Discord",
+      "at": "2026-08-31T10:46:38.644Z",
+      "time": "06:46",
+      "ageMinutes": 283
+    }
+  ],
+  "skipped": [],
+  "definitions": {
+    "ranInWindow": "launchd jobs that wrote to their own log in the last 36 hours",
+    "time": "the log file's modification time, in local time — the moment the job last wrote",
+    "jobsWatched": "jobs listed in data/unattended-jobs.json; a job that has not run recently is omitted, not faked"
+  }
+}

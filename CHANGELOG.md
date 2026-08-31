@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.32.0
+version: 4.33.0
 last_updated: 2026-08-30
 
 ---
@@ -15,6 +15,37 @@ last_updated: 2026-08-30
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.33.0] - 2026-08-31
+
+### Changed
+- **The SNAPSHOT LOG is now measured instead of typed.** It was four hardcoded
+  `<div>`s with frozen clock times — "19:04 Published 20 wiki pages", "06:00
+  Morning brief compiled and sent" — and it was the page's single strongest
+  evidence for the sentence in the hero. A visitor returning the next day saw
+  the same four lines at the same four times. On a page whose entire argument is
+  that its figures are generated, the THESIS was the one thing that was a mockup.
+  The events were real. Eight launchd jobs write logs with real timestamps, and
+  on the morning this shipped six had already run while James was at work.
+  `tools/build-activity.mjs` reads those logs and reports only what it can see.
+  The panel is retitled **RAN WITHOUT ME**, with a live "N of M ran · 36h" count.
+- **The empty case renders rather than hides.** If nothing ran, the panel says
+  nothing ran. It never falls back to the last known good list and never hides
+  itself — a panel that only ever shows activity is back to being a mockup, and
+  a hidden one reads as "fine". A failed read says so in its own words.
+
+### Added
+- `data/unattended-jobs.json` — the eight jobs the panel reports on, declared by
+  hand so a wrong label is visible in a diff.
+- `npm run activity`. Deliberately NOT wired into `build`: Vercel cannot read
+  this machine's launchd logs, so a build-time hook there would silently produce
+  an empty panel on every deploy. It runs locally and its output is committed,
+  exactly like `figures.json`.
+- `tests/activity-log.test.js` — pins the dangerous direction, which is not
+  failing loudly but showing activity when there was none: the empty case, the
+  unreadable-source case, and value escaping.
 
 ---
 

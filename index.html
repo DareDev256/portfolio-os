@@ -295,23 +295,18 @@
                 </div>
 
                 <div class="aside-block">
-                    <h3>SNAPSHOT LOG</h3>
-                    <div class="log">
+                    <h3>RAN WITHOUT ME <span class="h3-note" data-activity-count>&#8212;</span></h3>
+                    <!-- These four rows used to be hand-typed, with frozen clock times. It
+                         was the strongest evidence on the page for the sentence in the
+                         hero, and it was the only claim here that nothing measured — a
+                         visitor returning the next day saw the same four lines at the same
+                         four times. tools/build-activity.mjs now reads eight launchd jobs'
+                         own logs and reports what it can actually see. If nothing ran, the
+                         panel says nothing ran. -->
+                    <div class="log" data-activity-log>
                         <div class="rv d1">
-                            <time>19:04</time>
-                            <div><div class="what">Published 20 wiki pages</div><div class="src">fandom-flow · ninjora</div></div>
-                        </div>
-                        <div class="rv d2">
-                            <time>09:25</time>
-                            <div><div class="what">Fleet radar swept 9 domains</div><div class="src">all 200 OK</div></div>
-                        </div>
-                        <div class="rv d3">
-                            <time>09:05</time>
-                            <div><div class="what">Billing radar flagged 1 decline</div><div class="src">billing-failure-radar</div></div>
-                        </div>
-                        <div class="rv d4">
-                            <time>06:00</time>
-                            <div><div class="what">Morning brief compiled and sent</div><div class="src">daily-brief · Discord</div></div>
+                            <time>&#8212;</time>
+                            <div><div class="what">Reading the activity log&#8230;</div><div class="src">from the jobs' own logs</div></div>
                         </div>
                     </div>
                 </div>
@@ -720,6 +715,7 @@
     <script type="module" src="/js/kinetic-type.js"></script>
     <script type="module" src="/js/registry-graph.js"></script>
     <script type="module" src="/js/system-figures.js"></script>
+        <script type="module" src="/js/activity-log.js"></script>
     <script type="module" src="/js/hero-reel.js"></script>
     <script type="module" src="/js/gate-cycler.js"></script>
     <script type="module" src="/js/system-chat.js"></script>
