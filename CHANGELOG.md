@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.39.0
+version: 4.40.0
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,55 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.40.0] - 2026-09-01
+
+### The resume a recruiter downloads was 14 days stale and claimed something untrue
+Both PDFs were rendered **2026-08-18**. Their Markdown source had been corrected
+on **2026-08-31** and never re-rendered — so every fix made yesterday was
+invisible to anyone who clicked RESUME (PDF). Rebuilt from source and redeployed.
+
+**The false claim:** *"Two published MCP servers."* One is published.
+`pypi.org/pypi/fcp-mcp-server/json` returns **200**; `passion-memory`,
+`passion-memory-mcp` and `passion-memory-server` return **404 on PyPI and 404 on
+npm**. The fcp-mcp-server 200 is the control — the check can see a published
+package and does not see a second one. Passion Memory MCP is real and running;
+it is simply not published, and now says so: *"A published MCP server — FCPXML
+MCP — plus Passion Memory MCP, running in private production across two
+machines."*
+
+**Also gone from the shipped PDF**, all corrected in the source on Aug 31 and
+stranded there by the stale render: **RIAA Gold** (it is **Music Canada** — RIAA
+is the US body), and **"350+ video projects"** (101 indexed, which is what the
+site says).
+
+### Figures, measured today rather than remembered
+| | was | now | measured by |
+|---|---|---|---|
+| GitHub stars | 87 / 94 | **95** | GitHub API |
+| tests | 1,337 / 1,230 | **1,343** | `pytest --collect-only -q` |
+| installs/mo | ~1,600 | **1,978** | pypistats |
+| modules · LOC | 130+ · 100K+ | **97 · 61K** | jamesdare.com's own generator |
+
+The last row makes him **smaller**, and is still right: the site publishes 97/61K
+from `build-figures.mjs`, which states its definition and exits non-zero rather
+than invent a number. Two of his own surfaces disagreeing by 78% is worse than
+the lower figure, and only one of them can show the script that produced it.
+
+The test count is worth noting: counting `def test_` functions gives 1,168, and
+that is the WRONG instrument — pytest collects parametrised cases individually.
+Running the collector gives 1,343. The earlier figure was never verified, in
+either direction.
+
+### The corrections were applied to every live variant, not just this one
+Six source files carried the same claims in different grammar. Grepping the
+VALUE rather than the sentence found two the first pass missed: a Skills line
+reading *"Model Context Protocol (published two servers)"* and another reading
+*"two published production servers"*. `_archive/` was deliberately left untouched
+— it records what was actually sent to whom, and rewriting it would destroy the
+ability to answer "what did that company receive?"
 
 ---
 
