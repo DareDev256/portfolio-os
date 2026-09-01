@@ -1,0 +1,31 @@
+{
+  "note": "Busy blocks overlapping the offered window. Cars excluded \u2014 they are deadlines, not occupancy, and the generator models them separately.",
+  "generatedAt": "2026-09-01T16:28:13.420486-04:00",
+  "blocks": [
+    {
+      "date": "2026-09-02",
+      "start": "15:00",
+      "end": "15:30"
+    },
+    {
+      "date": "2026-09-03",
+      "start": "16:30",
+      "end": "17:15"
+    },
+    {
+      "date": "2026-09-04",
+      "start": "16:30",
+      "end": "17:15"
+    },
+    {
+      "date": "2026-09-06",
+      "start": "16:30",
+      "end": "16:45"
+    },
+    {
+      "date": "2026-09-07",
+      "start": "16:30",
+      "end": "17:15"
+    }
+  ]
+}

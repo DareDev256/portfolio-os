@@ -1,0 +1,198 @@
+{
+  "generatedAt": "2026-09-01T20:34:01.418Z",
+  "timeZone": "America/Toronto",
+  "window": "15:00-17:00",
+  "slotMinutes": 30,
+  "bookingUrl": "https://calendly.com/tdotssolutionsz/30min",
+  "sample": {
+    "cars": 46,
+    "days": 25,
+    "horizonDays": 21,
+    "busyBlocks": 5
+  },
+  "method": "Offered slots sit after the day's last delivery deadline. Flat-rate work, so the schedule is mine to sequence; the deadline is what is fixed.",
+  "days": [
+    {
+      "date": "2026-09-02",
+      "weekday": "Wed",
+      "carsDue": 1,
+      "lastDeadline": "14:00",
+      "confidence": "measured",
+      "slots": [
+        "15:30",
+        "16:00",
+        "16:30"
+      ]
+    },
+    {
+      "date": "2026-09-03",
+      "weekday": "Thu",
+      "carsDue": 4,
+      "lastDeadline": "17:15",
+      "confidence": "measured",
+      "slots": []
+    },
+    {
+      "date": "2026-09-04",
+      "weekday": "Fri",
+      "carsDue": 2,
+      "lastDeadline": "13:00",
+      "confidence": "measured",
+      "slots": [
+        "15:00",
+        "15:30",
+        "16:00"
+      ]
+    },
+    {
+      "date": "2026-09-07",
+      "weekday": "Mon",
+      "carsDue": 0,
+      "lastDeadline": null,
+      "confidence": "unbooked-so-far",
+      "slots": [
+        "15:00",
+        "15:30",
+        "16:00"
+      ]
+    },
+    {
+      "date": "2026-09-08",
+      "weekday": "Tue",
+      "carsDue": 0,
+      "lastDeadline": null,
+      "confidence": "unbooked-so-far",
+      "slots": [
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30"
+      ]
+    },
+    {
+      "date": "2026-09-09",
+      "weekday": "Wed",
+      "carsDue": 2,
+      "lastDeadline": "17:00",
+      "confidence": "measured",
+      "slots": []
+    },
+    {
+      "date": "2026-09-10",
+      "weekday": "Thu",
+      "carsDue": 0,
+      "lastDeadline": null,
+      "confidence": "unbooked-so-far",
+      "slots": [
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30"
+      ]
+    },
+    {
+      "date": "2026-09-11",
+      "weekday": "Fri",
+      "carsDue": 1,
+      "lastDeadline": "10:00",
+      "confidence": "measured",
+      "slots": [
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30"
+      ]
+    },
+    {
+      "date": "2026-09-14",
+      "weekday": "Mon",
+      "carsDue": 0,
+      "lastDeadline": null,
+      "confidence": "unbooked-so-far",
+      "slots": [
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30"
+      ]
+    },
+    {
+      "date": "2026-09-15",
+      "weekday": "Tue",
+      "carsDue": 0,
+      "lastDeadline": null,
+      "confidence": "unbooked-so-far",
+      "slots": [
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30"
+      ]
+    },
+    {
+      "date": "2026-09-16",
+      "weekday": "Wed",
+      "carsDue": 0,
+      "lastDeadline": null,
+      "confidence": "unbooked-so-far",
+      "slots": [
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30"
+      ]
+    },
+    {
+      "date": "2026-09-17",
+      "weekday": "Thu",
+      "carsDue": 0,
+      "lastDeadline": null,
+      "confidence": "unbooked-so-far",
+      "slots": [
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30"
+      ]
+    },
+    {
+      "date": "2026-09-18",
+      "weekday": "Fri",
+      "carsDue": 0,
+      "lastDeadline": null,
+      "confidence": "unbooked-so-far",
+      "slots": [
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30"
+      ]
+    },
+    {
+      "date": "2026-09-21",
+      "weekday": "Mon",
+      "carsDue": 0,
+      "lastDeadline": null,
+      "confidence": "unbooked-so-far",
+      "slots": [
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30"
+      ]
+    },
+    {
+      "date": "2026-09-22",
+      "weekday": "Tue",
+      "carsDue": 0,
+      "lastDeadline": null,
+      "confidence": "unbooked-so-far",
+      "slots": [
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30"
+      ]
+    }
+  ]
+}
