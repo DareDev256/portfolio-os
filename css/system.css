@@ -2165,8 +2165,47 @@ button:focus-visible {
 }
 
 @media (max-width: 720px) {
-    .gate-tab .nm { display: none; }
-    .gate-tab { padding: 0 18px; }
+    /* The names STAY on mobile.
+     *
+     * This rule used to be `.gate-tab .nm { display: none }`, which left seven
+     * anonymous chips reading 01 02 03 04 05 06 07. On a phone that tab rail is
+     * the ONLY index of his work, so hiding the names turned the whole case-study
+     * section into one visible project and six numbers — `fcp-mcp-server`, the
+     * thing the hero leads with, became a blind tap on "02".
+     *
+     * The names were never missing: index.html has carried BetMetrics,
+     * fcp-mcp-server, Second Opinion, Passion Agent, Client sites, 101 Films and
+     * COLD OPEN all along. One line of CSS was throwing them away.
+     *
+     * They were hidden because seven named tabs cannot WRAP into a narrow column
+     * without eating the screen. So don't wrap — scroll. One row, swipeable,
+     * snapping, with the scrollbar hidden and the 44px target intact. */
+    .gate-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        /* Bleed to the viewport edge so the rail reads as scrollable rather than
+         * as a row that happens to be clipped. */
+        padding-right: var(--sys-gut);
+    }
+
+    .gate-tabs::-webkit-scrollbar { display: none; }
+
+    .gate-tab {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        padding: 0 14px;
+    }
+
+    .gate-tab .nm {
+        /* Long names cannot be allowed to stretch a tab past the screen. */
+        max-width: 22ch;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2989,8 +3028,19 @@ button:focus-visible {
     background: var(--sys-cyan-pale);
 }
 
-.aside-foot a + a {
-    margin-top: 8px;
+/* `margin-top` on an inline anchor is a no-op — the two links ran together as
+ * "OPEN THE LIVE DASHBOARD -> OPEN THE DESKTOP ^", one sentence with two abutting
+ * tap targets and no gap between them. Lay the row out instead of nudging it. */
+.aside-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px 22px;
+}
+
+.aside-foot .stamp {
+    /* The stamp is a block caption, not a third link in the row. */
+    flex: 1 0 100%;
 }
 
 .aside-foot .stamp {

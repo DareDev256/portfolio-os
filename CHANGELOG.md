@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.36.0
+version: 4.36.1
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,40 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.36.1] - 2026-09-01
+
+### Fixed — found by a blind mobile critic judging against rauno.me / leerob.com / paco.me / brittanychiang.com
+- **The gate tabs lost every project name on mobile.** `.gate-tab .nm { display: none }`
+  under `max-width: 720px` left seven anonymous chips reading `01 02 03 04 05 06 07`.
+  On a phone that rail is the ONLY index of his work, so the case-study section
+  showed one project and six numbers — `fcp-mcp-server`, which the hero leads
+  with, was a blind tap on "02". The names were never missing; index.html has
+  carried all seven all along. One line of CSS threw them away.
+  The rail now scrolls horizontally with snap instead of wrapping, because seven
+  named tabs cannot wrap into a narrow column without eating the screen.
+- **`.aside-foot a + a { margin-top: 8px }` was a no-op** on inline anchors, so
+  "OPEN THE LIVE DASHBOARD →" and "OPEN THE DESKTOP ↗" ran together as one
+  sentence with two abutting tap targets. Laid the row out with flex + gap
+  rather than nudging inline elements.
+
+### Verified by rendering, not by grep
+Measured on a real 390pt viewport with `getComputedStyle` and bounding boxes —
+`textContent` cannot tell a painted name from a `display: none` one, which is
+the exact bug:
+- 7/7 names painted, every tab still ≥44px tall.
+- Rail `scrollWidth` 1141 vs `clientWidth` 390 — scrollable, as intended.
+- No horizontal overflow introduced at the document level.
+
+### Note on the instrument
+The first capture of this page — full-page screenshot via a scraper — was
+**unusable and would have produced confident false findings**: content clipped
+at ~985px of a 1440px frame, and whole sections blank because the page reveals
+with IntersectionObserver and nothing had actually scrolled. Replaced with a
+Playwright capture that walks the document and then asserts 0 of 26 `.rv`
+elements remain non-opaque before writing the file.
 
 ---
 

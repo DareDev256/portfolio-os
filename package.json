@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "4.36.0",
+  "version": "4.36.1",
   "description": "Three surfaces from one repo: a hiring landing page at /, Passion OS, a Windows-like desktop portfolio, at /os, and the COLD OPEN method page at /coldopen. Vanilla HTML, CSS and JavaScript with Vite as the only build step.",
   "main": "sw.js",
   "scripts": {
