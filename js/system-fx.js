@@ -68,7 +68,20 @@
         const started = performance.now();
 
         function step(now) {
-            const t = Math.min(1, (now - started) / DURATION);
+            /* Clamped at BOTH ends. The upper bound was always here; the lower
+             * one matters because `now` is the frame's start timestamp and can
+             * legitimately predate the performance.now() taken just before
+             * scheduling this callback. A negative t makes 2^(-10t) enormous,
+             * so outExpo returns a large NEGATIVE multiplier and the figure
+             * renders as garbage — `v0.59` came out as `v-51666.88` and `2×` as
+             * `-175252×` in a real capture of the live page.
+             *
+             * A normal browser does not do this: instrumented over 244 rendered
+             * values in headless Chromium, every one counted up cleanly. The
+             * renderer that produced those numbers drives a virtual clock ~1.8s
+             * behind. That is exactly what link-preview bots, archive crawlers
+             * and OG-image generators do, and their output is seen by people. */
+            const t = Math.max(0, Math.min(1, (now - started) / DURATION));
             const eased = outExpo(t);
             el.textContent = render(part, part.value * eased);
             if (t < 1) {

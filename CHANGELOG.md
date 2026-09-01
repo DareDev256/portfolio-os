@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.38.2
+version: 4.38.3
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,31 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.38.3] - 2026-09-01
+
+### Hardened — the count-up could render a huge negative number to a bot
+`countUp` computed `t = Math.min(1, (now - started) / DURATION)` — clamped at the
+top, not the bottom. `now` is the frame's start timestamp and can legitimately
+predate the `performance.now()` taken just before scheduling the callback. A
+negative `t` makes `2^(-10t)` enormous, so `outExpo` returns a large NEGATIVE
+multiplier: **`v0.59` rendered as `v-51666.88`, and `2×` as `-175252×`**, both
+caught in a real capture of the live page.
+
+Now clamped at both ends.
+
+### What the evidence actually supports
+**A normal browser never did this.** Instrumented with a MutationObserver over
+every value the counters render, headless Chromium produced **244 values, zero
+negative**, counting cleanly from `v0.04` to `v0.59`. So this was never visible
+to a human loading the site, and it is not reported as if it were.
+
+The renderer that produced those numbers drives a virtual clock roughly 1.8s
+behind — which is precisely what link-preview bots, archive crawlers and
+OG-image generators do, and their output *is* seen by people. That is the reason
+to fix it, and the only one claimed.
 
 ---
 
