@@ -296,6 +296,11 @@ const out = {
          * was typed by hand at a different time. Same failure as the module
          * counts, same fix: the page reads the date, it does not carry one. */
         snapshotDate: snap.generatedAt.slice(0, 10).replace(/-/g, '\u2022').slice(2),
+        /* The same instant, unformatted. The page needs to know HOW OLD the
+         * snapshot is, not just what date it carries, and parsing `26*08*23`
+         * back into a Date couples the staleness check to a display string.
+         * Emit both: one for humans, one for arithmetic. */
+        snapshotAt: snap.generatedAt,
     },
     definitions: {
         /* NOT "live at build time". package.json's build script is `vite build`

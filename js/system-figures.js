@@ -61,6 +61,55 @@ fetch(SRC)
 
         apply(document, values, defs);
 
+        /* The snapshot stamp has to be able to admit it is old.
+         *
+         * `snapshotDate` is the date data/system-snapshot.json was last written,
+         * and the page renders it as a bare date — which reads as "this is
+         * current" no matter how old it is. On 2026-09-01 it read 26*08*23,
+         * nine days stale, above a hero that says "I build systems that run
+         * without me". The generator behaved correctly: system-snapshot.sh
+         * refuses to write when the Mac Mini is unreachable, because a failed
+         * ssh returns 0 jobs and would publish an undercount that looks valid.
+         * So the number was right to freeze. The page was wrong to hide it.
+         *
+         * This is the same treatment the service probes already get above
+         * (UNVERIFIED past 26h). A stale stamp presented as fresh is a worse
+         * failure here than anywhere else on the page, because this panel is
+         * the page's claim to measure itself.
+         *
+         * 8 days, not 26 hours: com.daredev.system-snapshot is a WEEKLY job
+         * (StartCalendarInterval Weekday 0, 09:30), so one missed Sunday plus a
+         * day of jitter is the honest bound. Tie the threshold to the job's own
+         * period or it cries wolf and gets ignored, then removed. */
+        const SNAPSHOT_STALE_DAYS = 8;
+        const snapAt = (() => {
+            // Prefer the raw ISO the generator emits. Fall back to parsing the
+            // display form so an older deployed figures.json still degrades
+            // correctly instead of silently skipping the check.
+            if (snap.figures?.snapshotAt) return new Date(snap.figures.snapshotAt);
+            const m = /^(\d{2})\u2022(\d{2})\u2022(\d{2})$/.exec(values.snapshotDate ?? '');
+            return m ? new Date(`20${m[1]}-${m[2]}-${m[3]}T00:00:00Z`) : null;
+        })();
+
+        if (snapAt && Number.isFinite(snapAt.getTime())) {
+            const days = (Date.now() - snapAt.getTime()) / 86400000;
+            if (days >= SNAPSHOT_STALE_DAYS) {
+                const word = `${Math.round(days)} DAYS OLD`;
+                document.querySelectorAll('[data-fig="snapshotDate"]').forEach((el) => {
+                    el.textContent = `${values.snapshotDate} \u00b7 ${word}`;
+                    el.dataset.state = 'stale';
+                    el.setAttribute(
+                        'title',
+                        `The system snapshot has not been regenerated in ${Math.round(days)} days. `
+                        + 'com.daredev.system-snapshot runs weekly and refuses to write when the Mac '
+                        + 'Mini is unreachable, rather than publish an undercount. The figures above '
+                        + 'are still the last measured values, not estimates.',
+                    );
+                    el.dataset.explained = 'true';
+                });
+            }
+        }
+
 
         /* Shared definition readout. `title` is desktop-only and invisible until
          * hovered, so the generator's whole `definitions` block reached nobody on

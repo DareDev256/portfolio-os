@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.35.0
+version: 4.36.0
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,61 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.36.0] - 2026-09-01
+
+### Fixed
+- **The SNAPSHOT stamp could not admit it was old.** The live status panel read
+  `SNAPSHOT 26•08•23` — nine days stale — as a bare date, directly above a hero
+  that says "I build systems that run without me". The first thing a technical
+  hiring manager would check on this page is the one panel that claims the page
+  measures itself, and it was quietly presenting frozen data as current.
+
+### The generator was right; the page was wrong
+- `system-snapshot.sh` **refuses to write when the Mac Mini is unreachable**,
+  because a failed `ssh` returns 0 jobs and would publish an undercount that
+  looks perfectly valid. So `data/system-snapshot.json` correctly froze at
+  2026-08-23. Nothing lied. The defect was rendering a frozen date as a live one
+  — the same class as the hardcoded green `UP` badges this panel replaced.
+- Root cause traced end to end: Mini offline (`ssh macmini` times out) → guard
+  aborts → artifact frozen → page renders the old stamp. The job is
+  `com.daredev.system-snapshot`, **weekly** (`StartCalendarInterval` Weekday 0,
+  09:30), last successful write Aug 23; it did not fire on Aug 30.
+
+### Changed
+- Past **8 days** the stamp renders `26•08•23 · 9 DAYS OLD`, takes
+  `data-state="stale"`, and explains the cause on hover. 8 days, not 26 hours:
+  the threshold is tied to the job's own weekly period plus a day of jitter. A
+  threshold that fires every Sunday morning before the job runs gets ignored,
+  then removed.
+- The date itself **survives** the degradation. Replacing it with a word throws
+  away the one fact a reader can check.
+- `build-figures.mjs` now emits `snapshotAt` (raw ISO) beside `snapshotDate`
+  (display). Parsing `26•08•23` back into a Date couples a staleness check to
+  a human-facing string; the page reads the ISO and falls back to parsing only
+  so an older deployed `figures.json` still degrades instead of skipping.
+
+### Guarded
+- `tests/snapshot-stamp-staleness.test.js`, 7 tests. Mutation-checked: raising
+  the threshold to 99999 fails 4 of them. A test that cannot fail certifies
+  nothing.
+- One test pins that **every** stamp is marked — `index.html` carries this figure
+  twice, and a fix written with `querySelector` instead of `querySelectorAll`
+  leaves the second quietly claiming to be current.
+- One test pins the no-`snapshotAt` path, because the CDN still holds a
+  `figures.json` without it and silently skipping the check would reproduce the
+  exact bug being fixed.
+- Verified in `dist/`, not in a green build: `DAYS OLD` is present in the
+  compiled bundle.
+
+### Unchanged, deliberately
+- The figures themselves. Live prod already matches local exactly (95★, 1,978
+  installs/mo, 33% of every edit, 11 of 11 answering, 97 modules, 61K LOC, 91
+  repos). `figures.json` was **not** regenerated: `build-figures.mjs` needs both
+  network and an SSH route to the Mini, and running it while the Mini is down
+  risks degrading correct values to fix a display bug.
 
 ---
 
