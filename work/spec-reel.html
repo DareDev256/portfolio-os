@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spec Reel 2026 · Case Study · James Olusoga</title>
+<meta name="description" content="Thirty spec commercials for real brands, brief to finished 87-second reel, in one session for about US$21. A case study in AI-native creative production: the strategy, the pipeline, and every bug that nearly shipped.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://jamesdare.com/work/spec-reel.html">
+<meta property="og:title" content="Spec Reel 2026 · 30 spots, one session, US$21">
+<meta property="og:description" content="Thirty spec commercials for real brands, brief to finished reel in one session. The strategy, the pipeline, and the bugs that nearly shipped.">
+<meta property="og:url" content="https://jamesdare.com/work/spec-reel.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://jamesdare.com/work/assets/spec-reel-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/assets/mahoraga-wheel.svg">
+<link rel="stylesheet" href="/work/work.css">
+<style>
+  .reel { margin: 40px 0 8px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: #000; }
+  .reel video { display: block; width: 100%; height: auto; }
+  .reel-cap { color: var(--text-dim); font-size: .82rem; margin: 0 0 40px; }
+  .spots { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin: 24px 0; }
+  .spot { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; }
+  .spot-brand { color: var(--text-dim); font-size: .72rem; letter-spacing: .09em; text-transform: uppercase; }
+  .spot-line { color: var(--white); font-size: 1.16rem; font-weight: 600; margin: 6px 0 14px; line-height: 1.3; }
+  .spot-body { color: var(--text-muted); font-size: .88rem; line-height: 1.55; margin-bottom: 8px; }
+  .lab { color: var(--accent); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; margin-right: 6px; }
+  table.grid { width: 100%; border-collapse: collapse; margin: 20px 0 8px; font-size: .88rem; }
+  table.grid th { text-align: left; color: var(--text-dim); font-weight: 500; font-size: .72rem;
+                   letter-spacing: .08em; text-transform: uppercase; padding: 0 12px 10px 0;
+                   border-bottom: 1px solid var(--border); }
+  table.grid td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.grid td.n { color: var(--text-dim); font-variant-numeric: tabular-nums; width: 34px; }
+  table.grid td.line { color: var(--white); }
+  table.grid td.tension { color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-back" href="/work/">← /work</a>
+    <div class="nav-links">
+      <a href="/">jamesdare.com</a>
+      <a href="mailto:tdotssolutionsz@gmail.com">Email</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section class="case-hero">
+    <div class="breadcrumb"><a href="/work/">Work</a> / Spec Reel 2026</div>
+    <h1>Spec Reel 2026</h1>
+    <p class="tagline">Thirty unsolicited commercials for real brands — brief to finished 87-second reel in a single session, for about US$21. One human tension, one strategic turn, one line, six seconds of screen, thirty times over.</p>
+  </section>
+
+  <div class="reel">
+    <video controls preload="metadata" playsinline poster="/work/assets/spec-reel-poster.jpg">
+      <source src="/work/assets/spec-reel.mp4" type="video/mp4">
+    </video>
+  </div>
+  <p class="reel-cap">1920×1080 · 2.39:1 · 86.75s · 30 spots + end card</p>
+
+  <div class="callout warn">
+    <strong>Spec work.</strong> Every brand shown is real; none of them commissioned, reviewed or
+    approved any of this. These are unsolicited concepts, the way a portfolio book has always
+    carried them. Nothing here has run anywhere.
+  </div>
+
+  <div class="kvs">
+    <div class="kv"><div class="k">Status</div><div class="v">Spec / concept · complete · not published on behalf of any brand</div></div>
+    <div class="kv"><div class="k">Role</div><div class="v">Solo — strategy, art direction, prompt engineering, pipeline, edit</div></div>
+    <div class="kv"><div class="k">Cost</div><div class="v">~US$21 measured end to end, including the two runs thrown away</div></div>
+    <div class="kv"><div class="k">Stack</div><div class="v">Gemini 2.5 Flash Image (keyframes) · Kling 2.1 via fal.ai (motion) · ffmpeg (cut) · Python harness</div></div>
+    <div class="kv"><div class="k">Why it exists</div><div class="v">To show brand thinking at volume, and the engineering that makes volume repeatable rather than lucky</div></div>
+  </div>
+
+  <section class="case-section">
+    <h2>The rule every spot had to pass</h2>
+    <p>Generative tools make it trivial to produce thirty pretty frames and zero ideas. So the
+    constraint came first, and it was written before a single image was made: each spot names a
+    <strong>human tension</strong> that is true whether or not the brand exists, a
+    <strong>strategic turn</strong> that does something with it, and <strong>one line</strong>.
+    The picture is the last thing decided, not the first.</p>
+    <p>Colour was also decided up front — a committed ground plus exactly one loud accent per spot,
+    chosen before composition. That is what keeps thirty frames from collapsing into the same
+    tasteful neutral wash.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>Four of the thirty</h2>
+    <div class="spots">
+    <div class="spot">
+      <div class="spot-brand">Tim Hortons</div>
+      <div class="spot-line">The line is the point.</div>
+      <div class="spot-body"><span class="lab">Tension</span> The drive-thru is the only daily ritual this country reliably shows up for.</div>
+      <div class="spot-body"><span class="lab">Turn</span> Stop selling the coffee. Sell the queue as evidence of belonging.</div>
+    </div>
+    <div class="spot">
+      <div class="spot-brand">Canada Goose</div>
+      <div class="spot-line">Rated for worse.</div>
+      <div class="spot-body"><span class="lab">Tension</span> The coat is rated for a winter almost no owner will ever stand in.</div>
+      <div class="spot-body"><span class="lab">Turn</span> Do not apologise for the overbuild. Make the overbuild the entire ad.</div>
+    </div>
+    <div class="spot">
+      <div class="spot-brand">No Frills</div>
+      <div class="spot-line">No frills. All haul.</div>
+      <div class="spot-body"><span class="lab">Tension</span> Grocery pricing is a live national grievance and everybody is counting.</div>
+      <div class="spot-body"><span class="lab">Turn</span> Own the Haulers. Make thrift look like sport, not sacrifice.</div>
+    </div>
+    <div class="spot">
+      <div class="spot-brand">Air Canada</div>
+      <div class="spot-line">Mostly, we fly people home.</div>
+      <div class="spot-body"><span class="lab">Tension</span> Departures get the ad budget. Arrivals are where the story is.</div>
+      <div class="spot-body"><span class="lab">Turn</span> Reposition the airline from escape to return.</div>
+    </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>All thirty</h2>
+    <table class="grid">
+      <thead><tr><th></th><th>Brand</th><th>Line</th><th>The turn</th></tr></thead>
+      <tbody>
+      <tr><td class="n">01</td><td>Tim Hortons</td><td class="line">The line is the point.</td><td class="tension">Stop selling the coffee. Sell the queue as evidence of belonging.</td></tr>
+      <tr><td class="n">02</td><td>TTC</td><td class="line">You have never missed the stop that mattered.</td><td class="tension">Frame the commute as the only 40 minutes that belong to the rider.</td></tr>
+      <tr><td class="n">03</td><td>Canada Goose</td><td class="line">Rated for worse.</td><td class="tension">Do not apologise for the overbuild. Make the overbuild the entire ad.</td></tr>
+      <tr><td class="n">04</td><td>Roots</td><td class="line">One logo. Six lives.</td><td class="tension">Stop picking a customer. The range IS the brand.</td></tr>
+      <tr><td class="n">05</td><td>RBC</td><td class="line">The first hundred is the hardest to keep.</td><td class="tension">Talk to the beginning of a financial life, not the middle of one.</td></tr>
+      <tr><td class="n">06</td><td>Lululemon</td><td class="line">Whatever you are actually doing.</td><td class="tension">Quit defending the yoga origin. Name the real use case out loud.</td></tr>
+      <tr><td class="n">07</td><td>Aritzia</td><td class="line">Dress for the version of you that already got it.</td><td class="tension">Sell the self-image, not the garment.</td></tr>
+      <tr><td class="n">08</td><td>No Frills</td><td class="line">No frills. All haul.</td><td class="tension">Own the Haulers. Make thrift look like sport, not sacrifice.</td></tr>
+      <tr><td class="n">09</td><td>Shopify</td><td class="line">The rent is zero. The line-up is not.</td><td class="tension">The barrier is gone. The work is not. Say the second part.</td></tr>
+      <tr><td class="n">10</td><td>Air Canada</td><td class="line">Mostly, we fly people home.</td><td class="tension">Reposition the airline from escape to return.</td></tr>
+      <tr><td class="n">11</td><td>Toronto Raptors</td><td class="line">We still the north.</td><td class="tension">Do not re-litigate 2019. Claim the geography instead.</td></tr>
+      <tr><td class="n">12</td><td>Nike</td><td class="line">Winter is a training partner.</td><td class="tension">Reframe the worst condition as the actual advantage.</td></tr>
+      <tr><td class="n">13</td><td>Wealthsimple</td><td class="line">We deleted the jargon. Not the money.</td><td class="tension">Attack the jargon, which is the actual barrier, not the fees.</td></tr>
+      <tr><td class="n">14</td><td>Canadian Tire</td><td class="line">Still legal tender in this house.</td><td class="tension">Lean all the way into the artifact.</td></tr>
+      <tr><td class="n">15</td><td>IKEA</td><td class="line">Everybody&#x27;s first place was crooked.</td><td class="tension">Stop selling the finished room. Sell the crooked first attempt.</td></tr>
+      <tr><td class="n">16</td><td>Spotify</td><td class="line">We will not tell.</td><td class="tension">Make the data feel like a secret kept, not a secret sold.</td></tr>
+      <tr><td class="n">17</td><td>Netflix</td><td class="line">Twelve minutes to pick. Still worth it.</td><td class="tension">Admit the friction. Nobody else will.</td></tr>
+      <tr><td class="n">18</td><td>Heinz</td><td class="line">Slow is the recipe.</td><td class="tension">The delay is the proof of quality. Shoot the delay.</td></tr>
+      <tr><td class="n">19</td><td>Guinness</td><td class="line">Nobody rushes a Guinness. Or a Tuesday.</td><td class="tension">Extend the patience from the pint to the day around it.</td></tr>
+      <tr><td class="n">20</td><td>Liquid Death</td><td class="line">Death to plastic.</td><td class="tension">Sell the enemy, not the water.</td></tr>
+      <tr><td class="n">21</td><td>Oatly</td><td class="line">It is oats. Calm down.</td><td class="tension">Undercut your own voice. Self-awareness reads as confidence.</td></tr>
+      <tr><td class="n">22</td><td>Apple AirPods</td><td class="line">Forty minutes that belong to you.</td><td class="tension">Sell the 40 minutes, not the transducer.</td></tr>
+      <tr><td class="n">23</td><td>Adidas Samba</td><td class="line">The shoe outlived the sport.</td><td class="tension">Do not fight the drift. Document it.</td></tr>
+      <tr><td class="n">24</td><td>Uniqlo</td><td class="line">Nothing to say. Everything to wear.</td><td class="tension">Reframe restraint as engineering.</td></tr>
+      <tr><td class="n">25</td><td>Vans</td><td class="line">The spot is wherever you are.</td><td class="tension">Follow the culture to where it actually went.</td></tr>
+      <tr><td class="n">26</td><td>Dyson</td><td class="line">You will wish you had not looked.</td><td class="tension">Weaponise the disgust. It is the only proof of performance.</td></tr>
+      <tr><td class="n">27</td><td>BMO</td><td class="line">Money does not move itself. Yet.</td><td class="tension">Stop competing on trust. Compete on motion.</td></tr>
+      <tr><td class="n">28</td><td>Cineplex</td><td class="line">Bigger than your living room. Always was.</td><td class="tension">Do not argue convenience. Argue scale.</td></tr>
+      <tr><td class="n">29</td><td>SkipTheDishes</td><td class="line">Somebody went out so you did not have to.</td><td class="tension">Put the courier in the ad. Nobody else will.</td></tr>
+      <tr><td class="n">30</td><td>LCBO</td><td class="line">Everyone in this line has plans.</td><td class="tension">Shoot the line-up as a portrait series.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="case-section">
+    <h2>How it was actually made</h2>
+    <p>One Python file holds all thirty spots as data and regenerates both the human-readable
+    bible and the JSON that drives generation. Everything downstream is resumable and
+    spend-capped, because the interesting failure mode of this kind of work is not a bad frame,
+    it is a bad frame you paid for thirty times.</p>
+    <table class="grid">
+      <thead><tr><th></th><th>Step</th><th>What it does</th></tr></thead>
+      <tbody>
+      <tr><td class="n">1</td><td class="line">Keyframe stills</td><td class="tension">Gemini image API, resumable, ffprobes every file it writes</td></tr>
+      <tr><td class="n">2</td><td class="line">Motion</td><td class="tension">Kling 2.1 image-to-video on fal, all 30 submitted concurrently, request IDs journalled to disk at submit time</td></tr>
+      <tr><td class="n">3</td><td class="line">Recovery</td><td class="tension">Re-fetches already-billed clips from the journal when a run dies</td></tr>
+      <tr><td class="n">4</td><td class="line">Cut</td><td class="tension">ffmpeg — autocrop, 2.39:1 letterbox, lower third, end card</td></tr>
+      </tbody>
+    </table>
+    <p>Kling costs about US$0.28 for five seconds. Veo 3.1 Fast is US$0.12/second and only serves
+    1080p at eight seconds, so US$0.96 a clip — four times the price for motion that tested no
+    better on this material. That comparison was run, not assumed.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>What went wrong, since that is the actual work</h2>
+    <p>The image API silently ignored the aspect ratio. The prompt opened with
+    <em>&ldquo;1920×1080, 16:9, do not generate a square image&rdquo;</em> and it returned
+    1024×1024 — forty-five times, with no error. Aspect ratio is an API parameter, not a
+    sentence. Every still is now ffprobed after it is written.</p>
+    <p>Worse, the contact sheets used for review were built with an ffmpeg crop, so they
+    <em>rendered</em> the square frames as 16:9. The review artifact performed the exact
+    transformation whose absence it was supposed to detect. Two paid render batches ran on bad
+    frames before that surfaced.</p>
+    <p>Then two separate luminance harnesses reported an opaque black box as identical to no box
+    at all, because scaling an image to 1×1 does not average it. The fix is dull and
+    non-negotiable: run a known control through the instrument before trusting a single reading
+    from it.</p>
+    <p>None of this is unique to advertising. It is the same failure in every automated pipeline —
+    a check that cannot see the thing it is checking for reports success either way.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>What I would do next</h2>
+    <p>Shoot the three weakest spots properly rather than generate them; the gap between a
+    generated frame and a directed one is still widest on faces and hands. Build a per-brand
+    reference sheet so the same product reads identically across spots. And cut a
+    thirty-second version, because eighty-seven seconds is a portfolio length, not a feed length.</p>
+  </section>
+
+  <div class="cta">
+    <p>Toronto. Open to creative strategy and AI engineering work.</p>
+    <p><a href="mailto:tdotssolutionsz@gmail.com">tdotssolutionsz@gmail.com</a></p>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <p>James Olusoga · Toronto · <a href="/work/">Work</a> · <a href="https://github.com/DareDev256">GitHub</a> · <a href="https://linkedin.com/in/james-olusoga">LinkedIn</a></p>
+</footer>
+
+</body>
+</html>
