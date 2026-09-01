@@ -1306,7 +1306,7 @@ export const Desktop = {
                     { name: 'LLM_EVAL', desc: 'LLM evaluation harness \u2014 rule-based, semantic, LLM-as-judge scoring', status: 'live', link: 'https://github.com/DareDev256/llm-evaluation-harness' },
                     { name: 'VECTOR_SEARCH', desc: 'Semantic vector vs BM25 keyword search \u2014 embedding tradeoffs', status: 'live', link: 'https://github.com/DareDev256/vector-vs-keyword-search' },
                     { name: 'CONTRACT_TRANSLATOR', desc: 'Upload any legal contract \u2014 plain-English clause-by-clause breakdown', status: 'live', link: 'https://contract-translator.vercel.app' },
-                    { name: 'IMG_PROMPT_GEN', desc: 'Structured prompt builder for Nano Banana, Veo3, DALL-E, Kling, Sora', status: 'live', link: 'https://github.com/DareDev256/Ultimate-Image-Video-Prompt-Generator' },
+                    { name: 'IMG_PROMPT_GEN', desc: 'Structured prompt builder for nine image and video engines', status: 'live', link: 'https://github.com/DareDev256/Ultimate-Image-Video-Prompt-Generator' },
                 ],
             },
             {

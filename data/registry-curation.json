@@ -117,7 +117,7 @@
     {
       "repo": "Ultimate-Image-Video-Prompt-Generator",
       "tier": "tool",
-      "what": "Structured prompt builder for image and video models — Veo, Sora, Kling, Nano Banana.",
+      "what": "Structured prompt builder for nine image and video engines.",
       "proves": "{stars} stars and {forks} forks, and it runs on its own domain.",
       "stack": ["TypeScript"],
       "live": { "label": "OPEN THE TOOL", "url": "https://prompts.tdotssolutionsz.com" }

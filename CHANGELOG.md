@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.36.1
+version: 4.37.0
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,60 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.37.0] - 2026-09-01
+
+### Removed three claims that would not survive an interview
+An adversarial fact-check ran every checkable claim on the page against the
+outside world. Three failed. All three are now corrected at **every** surface
+that recited them — seven call sites across five files, not the three the page
+appeared to have.
+
+- **`1st — RANKED MOST HAND-MADE, BLIND`** was the only unqualified superlative
+  on a page whose entire thesis is provenance. `/coldopen` discloses the real
+  shape one screen away: **one judge, one round, one viewport, run once on
+  2026-08-21, at 70% confidence**. The homepage stripped every qualifier and
+  rendered an n=1 result as a standing ranking. Now `1 of 5 · MOST HAND-MADE ·
+  ONE BLIND JUDGE` — same result, survives the follow-up question. The
+  `/coldopen` stat block and the hero plate's prose were aligned to match, so the
+  three surfaces cannot contradict each other.
+- **"an agent that makes one reviewed edit a day"** was wrong by 34x, and was
+  contradicted by the page it links to. Measured against the Fandom API:
+  RawBOT's last 500 edits span 12 days — **median 34/day, mean 41.7, max 159**.
+  A manager who clicks `Special:Contributions/RawBOT` finds the system
+  describing itself wrong, which poisons the "every figure is generated"
+  argument. Replaced with "edits them unattended" rather than a new hand-typed
+  rate: the rate is not in `figures.json`, and typing one is the failure being
+  fixed.
+- **"a structured prompt builder for Nano Banana, Veo 3, Sora and Kling"** named
+  a model the tool does not support. The live tool offers nine engines — Nano
+  Banana Pro, GPT-Image-2, Seedance 2.0, Veo 3.1, Kling 3.0, Wan, HunyuanVideo,
+  LTX, Mochi — and no Sora. Two of the four named versions were stale as well.
+  Now "nine image and video engines", which does not rot every model release.
+  The Passion OS desktop listing also claimed **DALL-E**, equally absent.
+
+### The call sites were the story
+Fixing `index.html` alone would have left all three claims live. They also sat in
+`js/desktop.js` (the OS window listing), `data/registry-curation.json` (source),
+`public/data/registry-graph.json` (generated — fixing only the source would have
+left the old string serving until the next regeneration), `public/fandom-flow/index.html`
+(a **meta description**, so the false rate was going to search results), and
+`coldopen/index.html`. Verified by grepping the OLD values to zero across every
+surface, then again in `dist/`.
+
+### Flagged, not changed — these are James's calls
+- **"the first MCP server for Final Cut Pro"** holds: all 12 GitHub FCP-MCP repos
+  are newer (his `created_at` 2026-01-18; next is 2026-03-19), and nothing earlier
+  exists on PyPI or npm. But his own README says first for Final Cut Pro **XML**
+  and the site widened it, and a competitor now ships 131 stars against his 95.
+  The likely interview question is "first, or first for XML — and who leads now?"
+- **`91 repos`** — `gh repo list` now returns 93. Self-corrects on the next
+  `build-figures` run, which needs the Mini.
+- **25.3M views / 101 films / 54 artists** cannot be verified from outside; the
+  only corroboration is another of his own sites printing the identical string,
+  which is one source counted twice.
 
 ---
 
