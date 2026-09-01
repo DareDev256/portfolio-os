@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.38.0
+version: 4.38.1
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,40 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.38.1] - 2026-09-01
+
+### Fixed — half a megabyte of video nobody had asked for yet
+The hero reel attached the current plate *and* the look-ahead plate at
+`preload: 'auto'`, so both pulled a full body before the visitor had scrolled or
+clicked: **986KB + 505KB**. The existing budget comment was right about the
+COUNT ("two clips in flight, not ten") and silent about the BYTES.
+
+The look-ahead now attaches at `metadata` and is upgraded to `auto` in `show()`
+when its turn actually arrives.
+
+| first load, no scrolling | before | after |
+|---|---|---|
+| desktop total | 3.23 MB | **2.74 MB** |
+| video | 1.46 MB / 2 req | **0.96 MB / 1 req** |
+
+Paint was never the problem and is unchanged-to-better (FCP 348ms → 284ms
+desktop; it was already fast because `begin()` waits for load plus an idle beat).
+This is about what a recruiter on mobile data pays for a hero they may never
+watch.
+
+### Verified by driving the reel, not by reading the diff
+A preload change that silently breaks the advance would look identical in the
+source. Measured live: the reel advances on its own timer (plate 1 → 2), the
+current plate is `preload: auto` and playing, and the look-ahead is still
+`metadata` — 0 JS errors.
+
+**The first version of that check reported a false failure.** It asserted on a
+hardcoded plate index while the reel had already advanced past it on its own
+timer, so it graded the wrong element. Rewritten to find the plate that IS
+current and assert on that. The instrument was broken, not the code.
 
 ---
 

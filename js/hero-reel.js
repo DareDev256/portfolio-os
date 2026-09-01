@@ -52,7 +52,8 @@
      * directly.
      *
      * Cost is bounded already: only the current plate and the next one are ever
-     * attached, so this is two clips in flight, not ten. */
+     * attached, so this is two clips in flight, not ten — and only the current
+     * one pulls a full body. See attachVideo. */
     const allowVideo = !reduced && !thin;
 
     const STILL_HOLD = 5200;
@@ -124,7 +125,20 @@
         if (credit.meta) credit.meta.textContent = plate.dataset.meta || '';
     }
 
-    function attachVideo(plate) {
+    /* `eager` decides preload, and it is the difference between 3.2MB and 2.7MB
+     * on first load.
+     *
+     * Both the current plate and the look-ahead used to attach at preload
+     * 'auto', so the reel pulled TWO full clip bodies — 986KB + 505KB — before
+     * the visitor had scrolled or clicked anything. The two-in-flight budget
+     * described above was right about the COUNT and silent about the BYTES.
+     *
+     * The look-ahead does not need a body yet, only enough to start instantly
+     * when it becomes current, so it attaches at 'metadata' and is upgraded in
+     * show(). A clip that has not finished buffering when its turn arrives
+     * degrades to its poster via the existing `playing` listener, which is the
+     * same graceful path a stalled clip already took. */
+    function attachVideo(plate, eager) {
         const src = plate.dataset.clip;
         if (!src || !allowVideo || plate.querySelector('video')) return null;
 
@@ -134,7 +148,7 @@
         video.playsInline = true;
         video.setAttribute('playsinline', '');
         video.setAttribute('muted', '');
-        video.preload = 'auto';
+        video.preload = eager ? 'auto' : 'metadata';
         video.src = src;
         // Only reveal the clip once frames are actually running, so a stalled or
         // blocked video degrades to its poster instead of flashing black.
@@ -157,6 +171,8 @@
 
         const video = plate.querySelector('video');
         if (video) {
+            // Its turn now — let it buffer fully.
+            if (video.preload !== 'auto') video.preload = 'auto';
             video.currentTime = 0;
             const played = video.play();
             if (played && played.catch) played.catch(() => schedule(STILL_HOLD));
@@ -172,7 +188,7 @@
         }
 
         // Warm the next clip while this one plays, never before.
-        attachVideo(plates[(next + 1) % plates.length]);
+        attachVideo(plates[(next + 1) % plates.length], false);
     }
 
     function advance() {
@@ -211,8 +227,8 @@
     setCredit(plates[0]);
 
     function begin() {
-        attachVideo(plates[0]);
-        attachVideo(plates[1]);
+        attachVideo(plates[0], true);    // on screen now — needs the body
+        attachVideo(plates[1], false);   // next up — metadata is enough
         start();
     }
 
