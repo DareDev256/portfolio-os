@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.43.0
+version: 4.44.0
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,34 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.44.0] - 2026-09-01
+
+### Spec Reel 2026 — a creative case study on an engineering portfolio
+Thirty unsolicited commercials for real brands, brief to a finished 87-second
+reel in one session for about US$21, now living at `/work/spec-reel.html` with a
+card at the top of `/work/`.
+
+The placement was the decision, not the page. This site argues AI Engineer; the
+Toronto roles this reel is aimed at say Creative Strategist. Rather than pick a
+lane, the case study is framed as **AI-native creative production** — the thirty
+tensions and lines prove the strategist, the resumable spend-capped pipeline
+behind them proves the engineer, and neither claim needs the other to stand.
+
+**The failure section is the load-bearing part.** The image API silently ignored
+a written aspect-ratio instruction and returned 1024×1024 forty-five times, and
+the contact sheet used to review those frames was built with an ffmpeg crop — so
+the review artifact performed the exact transformation whose absence it existed
+to detect. Two paid render batches ran on bad frames before it surfaced. That is
+on the page in full, because a portfolio that only shows the wins is a portfolio
+nobody can calibrate against.
+
+Video ships in-repo at 18 MB (CRF 24, faststart) rather than on R2, so the whole
+thing deploys behind one gate instead of two. Poster is the Tim Hortons aerial —
+the only frame bright enough to read as a thumbnail without being the one
+blown-out white shot in the set.
 
 ---
 
