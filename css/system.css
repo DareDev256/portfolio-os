@@ -3117,3 +3117,60 @@ button:focus-visible {
     .avail-row { flex-direction: column; gap: 6px; }
     .avail-day { flex: none; }
 }
+
+/* ---------- gate roster (mobile only) ----------
+ * A phone reader saw exactly one case study: the cycler auto-advances every 9s,
+ * which suits a desktop reader and not a thumb that scrolls past in three.
+ * Stacking all seven gates was rejected on arithmetic — the page is already 8.9
+ * phone screens and that would roughly double it, trading "one proof visible"
+ * for "nobody reaches the contact section". One compact row each instead. */
+.roster { padding: 0 var(--sys-gut) 4px; }
+
+.roster-list {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--sys-hair);
+}
+
+.roster-row { border-bottom: 1px solid var(--sys-hair); }
+
+.roster-btn {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    /* 44px, the same target the gate tabs carry. A row that is only as tall as
+     * its text is a row that gets mis-tapped. */
+    min-height: 44px;
+    padding: 8px 2px;
+    border: 0;
+    background: none;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.roster-nm {
+    font-family: var(--sys-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--sys-text);
+}
+
+.roster-fig {
+    flex: 0 0 auto;
+    font-family: var(--sys-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--sys-dim);
+    text-align: right;
+}
+
+.roster-fig b { color: var(--sys-cyan); font-weight: 700; }
+
+.roster-btn:hover .roster-nm,
+.roster-btn:focus-visible .roster-nm { color: var(--sys-cyan); }
+
+@media (min-width: 721px) { .roster { display: none; } }

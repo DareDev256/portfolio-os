@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.42.0
+version: 4.43.0
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,46 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.43.0] - 2026-09-01
+
+### A phone reader now sees six projects, not one
+The gauntlet's last open finding: *"a phone reader sees exactly one case study."*
+The cycler auto-advances every 9 seconds, which suits a desktop reader and is
+useless to a thumb that scrolls past in three. The tab rail carries all seven
+names since 4.36.1, but nothing told anyone tapping one would do something.
+
+A compact roster of the remaining six now sits under the rail on mobile — name
+plus that gate's single hardest figure, read from the **same `<template>` the
+expanded gate renders from**, so it cannot drift from the case study the way a
+hand-written summary would. Tapping a row drives the real cycler rather than
+duplicating its render.
+
+**The critic's own fix was rejected on arithmetic.** It wanted all gates stacked
+vertically. The page is already 8.9 phone screens; seven expanded gates roughly
+doubles it, trading "one proof visible" for "nobody reaches the contact section".
+A reader who bounces at screen 14 is not better served than one who bounces at 9.
+Desktop is untouched — the cycler works there and the reader has the patience the
+format assumes.
+
+### Three failures caught by actually rendering it
+- **Four of six rows read `— GITHUB STARS`.** Figures inside a `<template>` are
+  never rendered, so `data-fig` spans still hold the em-dash that
+  `system-figures.js` replaces at runtime. Now resolved from `figures.json`, and
+  a figure that still will not resolve is DROPPED rather than shipped as a dash —
+  the name alone is worth a row; a dash is not.
+- **`window.matchMedia` was called from a default parameter**, so the module
+  **threw on import** anywhere it does not exist. Guarded, falling back to "not
+  narrow" — worst case is the desktop cycler alone, never a blank section.
+- **`scrollIntoView` threw inside the click handler.** The gate switch now
+  happens first and the scroll is treated as the courtesy it is.
+
+The first two were invisible in the source and only appeared when the thing was
+rendered and its values printed.
+
+701 tests / 46 files.
 
 ---
 
