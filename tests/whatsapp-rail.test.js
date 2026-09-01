@@ -10,7 +10,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { WA_USERNAME, WA_BASE, waHref, initWhatsAppRail } from '../js/whatsapp-rail.js';
+import { WA_USERNAME, WA_BASE, waHref, buildMessage, initWhatsAppRail } from '../js/whatsapp-rail.js';
 
 const HTML = readFileSync(resolve(import.meta.dirname, '../index.html'), 'utf8');
 
@@ -41,11 +41,48 @@ describe('whatsapp rail — the published handle', () => {
         anchors.forEach((tag) => expect(tag).toContain(`href="${WA_BASE}"`));
     });
 
+    it('names the site from location rather than a hardcoded string', () => {
+        const msg = buildMessage('contact', null, { hostname: 'www.jamesdare.com' });
+        expect(msg).toContain('jamesdare.com');
+        // www is stripped — he is sent the name of the site, not of the host.
+        expect(msg).not.toContain('www.');
+        // A preview deploy must name ITSELF, or he cannot tell which surface
+        // produced the message, which is the whole reason this is derived.
+        expect(buildMessage('contact', null, { hostname: 'portfolio-os-git-x.vercel.app' }))
+            .toContain('portfolio-os-git-x.vercel.app');
+        // No location at all (SSR, a stripped environment) must not print "undefined".
+        expect(buildMessage('contact', null, null)).not.toContain('undefined');
+    });
+
+    it('carries the case study the visitor was reading', () => {
+        document.body.innerHTML = `
+            <button class="gate-tab"><span class="nm">BetMetrics</span></button>
+            <button class="gate-tab on"><span class="nm">fcp-mcp-server</span></button>`;
+        expect(buildMessage('contact', document, { hostname: 'jamesdare.com' }))
+            .toBe('Hi James — I found you on jamesdare.com, reading fcp-mcp-server. ');
+    });
+
+    it('reads correctly when no case study is open', () => {
+        document.body.innerHTML = '<p>nothing here</p>';
+        // The gated branch would trail off into a dangling clause. This is the
+        // most common way the footer link gets tapped, so it cannot be the
+        // broken one.
+        expect(buildMessage('footer', document, { hostname: 'jamesdare.com' }))
+            .toBe('Hi James — I found you on jamesdare.com. ');
+    });
+
+    it('caps the body — some Android builds truncate silently', () => {
+        document.body.innerHTML =
+            `<button class="gate-tab on"><span class="nm">${'x'.repeat(2000)}</span></button>`;
+        const msg = buildMessage('contact', document, { hostname: 'jamesdare.com' });
+        expect(msg.length).toBeLessThanOrEqual(900);
+        expect(msg.endsWith('...')).toBe(true);
+    });
+
     it('prefills an opener per surface, url-encoded', () => {
-        expect(waHref('contact')).toBe(`${WA_BASE}?text=${encodeURIComponent('Hi James — saw jamesdare.com. ')}`);
-        // An unknown surface must still produce a usable link, never undefined.
-        expect(waHref('nope')).toBe(`${WA_BASE}?text=${encodeURIComponent('Hi James — ')}`);
-        expect(waHref('nope')).not.toContain('undefined');
+        document.body.innerHTML = '';
+        expect(waHref('nope', document, { hostname: 'jamesdare.com' })).not.toContain('undefined');
+        expect(waHref('nope', document, { hostname: 'jamesdare.com' })).toContain('Hi%20James');
     });
 });
 
@@ -59,8 +96,25 @@ describe('whatsapp rail — behaviour in the page', () => {
 
     it('upgrades each anchor with its own surface prefill', () => {
         initWhatsAppRail(document);
-        expect(document.querySelector('[data-wa="contact"]').href).toBe(waHref('contact'));
-        expect(document.querySelector('[data-wa="footer"]').href).toBe(waHref('footer'));
+        const c = document.querySelector('[data-wa="contact"]').href;
+        expect(c).toContain(encodeURIComponent('Hi James —'));
+        expect(c).toContain(WA_USERNAME);
+        expect(c).not.toContain('undefined');
+    });
+
+    it('rebuilds the href at click time, not once at load', () => {
+        // The gate rail advances while the visitor reads. An href written once
+        // at load names whichever case study was on screen when the page booted,
+        // which is reliably the wrong one by the time anyone taps.
+        document.body.innerHTML += '<button class="gate-tab on"><span class="nm">BetMetrics</span></button>';
+        initWhatsAppRail(document);
+        const a = document.querySelector('[data-wa="contact"]');
+        expect(decodeURIComponent(a.href)).toContain('BetMetrics');
+
+        document.querySelector('.gate-tab.on .nm').textContent = 'Second Opinion';
+        a.dispatchEvent(new Event('pointerdown'));
+        expect(decodeURIComponent(a.href)).toContain('Second Opinion');
+        expect(decodeURIComponent(a.href)).not.toContain('BetMetrics');
     });
 
     it('surfaces the handle as text when the handoff silently fails', () => {

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.38.3
+version: 4.39.0
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,44 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.39.0] - 2026-09-01
+
+### The WhatsApp message now arrives pre-qualified
+Ported the three ideas the same rail on **shairbraiding.com** already had and
+this one did not. That rail sends her the style, length, area and price the
+visitor picked, so she can quote without a round trip. Its lesson is that the
+prefill's job is not to be polite — it is to carry CONTEXT the visitor would not
+have bothered to type.
+
+- **The site names itself.** `siteName()` reads `location.hostname` and strips
+  `www.`, instead of a hardcoded `jamesdare.com`. The page is served on the apex,
+  on `www`, from preview deploys and from localhost — a hardcoded string is wrong
+  on three of those four, and cannot tell him which surface produced the message.
+- **It carries the case study they were reading.** The equivalent of "which
+  style" on a hiring surface is not a price, it is context: a recruiter who read
+  the BetMetrics gate and a client who read Client sites want opposite
+  conversations, and that distinction is worth more to him than anything the
+  visitor would type. Read from `.gate-tab.on .nm` at click time.
+- **900-character cap.** Some Android builds truncate a long body silently.
+
+Result: `Hi James — I found you on jamesdare.com, reading fcp-mcp-server.`
+
+### Built at click time, never once at load
+The gate rail advances on its own timer while a visitor reads. An `href` written
+once at load names whichever case study happened to be on screen when the page
+booted — reliably the wrong one by the time anyone taps. Rebuilt on
+`pointerdown`, `focus` and Enter/Space, all of which precede navigation.
+
+### Both branches of the closing line have to read
+`, reading X. ` versus `. ` — the gated branch trails off into a dangling clause
+when nobody has opened a case study, which is the most common way the footer link
+gets tapped. Pinned by its own test, so the common path cannot be the broken one.
+
+13 tests on this file now, up from 8. Verified in a real browser: the href
+changes from `BetMetrics` to `Second Opinion` when the visitor switches gates.
 
 ---
 
