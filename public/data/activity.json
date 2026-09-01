@@ -1,51 +1,56 @@
 {
-  "generatedAt": "2026-08-31T15:52:16.053Z",
+  "generatedAt": "2026-09-01T23:02:51.527Z",
   "windowHours": 36,
-  "ranInWindow": 8,
+  "ranInWindow": 7,
   "jobsWatched": 8,
   "events": [
     {
-      "id": "career-digest",
-      "label": "Career pipeline digested",
-      "source": "career-digest · Discord",
-      "at": "2026-08-31T13:21:45.535Z",
-      "time": "09:21",
-      "ageMinutes": 151
+      "id": "life-rhythm",
+      "label": "Life-rhythm check ran",
+      "source": "life-rhythm",
+      "at": "2026-09-01T22:10:12.672Z",
+      "time": "18:10",
+      "ageMinutes": 53
     },
     {
-      "id": "portfolio-traffic-radar",
-      "label": "Portfolio traffic swept",
-      "source": "portfolio-traffic-radar",
-      "at": "2026-08-31T13:15:05.048Z",
-      "time": "09:15",
-      "ageMinutes": 157
+      "id": "sandra-digest",
+      "label": "Household digest sent",
+      "source": "sandra-digest · Discord",
+      "at": "2026-09-01T21:13:29.077Z",
+      "time": "17:13",
+      "ageMinutes": 109
     },
     {
       "id": "branch-shepherd",
       "label": "Branches swept for drift",
       "source": "branch-shepherd",
-      "at": "2026-08-31T13:11:30.233Z",
-      "time": "09:11",
-      "ageMinutes": 161
+      "at": "2026-09-01T13:08:30.959Z",
+      "time": "09:08",
+      "ageMinutes": 594
     },
     {
       "id": "check-daily-rollup",
-      "label": "System snapshot regenerated",
+      "label": "Agent rollup written",
       "source": "check-daily-rollup",
-      "at": "2026-08-31T12:00:05.788Z",
+      "at": "2026-09-01T12:00:06.071Z",
       "time": "08:00",
-      "ageMinutes": 232
+      "ageMinutes": 663
     },
     {
       "id": "daily-brief",
       "label": "Morning brief compiled and sent",
       "source": "daily-brief · Discord",
-      "at": "2026-08-31T10:46:38.644Z",
+      "at": "2026-09-01T10:46:23.548Z",
       "time": "06:46",
-      "ageMinutes": 306
+      "ageMinutes": 736
     }
   ],
-  "skipped": [],
+  "skipped": [
+    {
+      "id": "drift-check",
+      "why": "last ran 50h ago"
+    }
+  ],
   "definitions": {
     "ranInWindow": "launchd jobs that wrote to their own log in the last 36 hours",
     "time": "the log file's modification time, in local time — the moment the job last wrote",

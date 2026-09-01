@@ -69,6 +69,29 @@ bump from a parallel session working the same tree. The provenance test caught i
 
 ---
 
+## [4.46.0] - 2026-09-01
+
+### /reel/ and /spec-reel/ pulled back to private — not to standard
+Both pages shipped earlier today and are now removed from the site. The work is
+kept at `~/Creative/Projects/spec-reel-2026/site/`, out of this repo entirely.
+
+**Removing them from the build was not enough.** This repository is PUBLIC, so a
+file under `public/` is reachable through two independent doors: the deployed
+site, and raw.githubusercontent.com. The 18 MB reel returned HTTP 200 and all
+17,907,488 bytes from the raw URL while being perfectly absent from `dist/`.
+Deleting the route closes one door and leaves the other open, so the sources
+were moved out of the repo rather than merely unrouted.
+
+**Still open, and it needs an explicit decision:** the blobs remain in git
+HISTORY. Anyone can fetch them from commits d4db258 and e9582cc. Purging that
+requires rewriting published history and a force-push, which is destructive and
+was not done unilaterally.
+
+`vercel.json` is restored to its pre-4.44.0 catch-all, so the routing table is
+byte-identical to where it started.
+
+---
+
 ## [4.45.0] - 2026-09-01
 
 ### /reel/ — fourteen years of direction, and what it became
