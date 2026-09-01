@@ -323,9 +323,43 @@ function placeLabel(it, x, y) {
         return;
     }
 
-    const side = dx < 0 ? -1 : 1;
+    /* Pick the side that FITS, not merely the side the node points at.
+     *
+     * The radial rule below is right about direction and silent about width.
+     * On the 460-unit phone canvas a 25-character id — `tdotssolutionsz-portfolio`,
+     * `passion-dashboard` — is wider than the gap between its node and the edge,
+     * so with `overflow: visible` it rendered past the viewBox and the page edge
+     * sheared it: two of six labelled nodes read `tionsz-portfolio` and
+     * `assion-dashboard`. Unreadable, in the one section built to be evidence.
+     *
+     * Measured, not assumed: getComputedTextLength on the real element, cached
+     * once because the text never changes and place() runs every frame of the
+     * 1.9s settle — measuring per frame would force layout 60 times a second. */
+    if (it.labelW === undefined) {
+        it.labelW = typeof it.label.getComputedTextLength === 'function'
+            ? it.label.getComputedTextLength()
+            : it.label.textContent.length * 7;   // jsdom and other non-rendering hosts
+    }
+
+    const PAD = 6;
+    const gap = it.p.r + 11;
+    const w = it.labelW;
+    const wants = dx < 0 ? -1 : 1;
+
+    // Does the preferred side leave the whole label inside the canvas?
+    const fits = (side) => (side < 0 ? x - gap - w >= PAD : x + gap + w <= W - PAD);
+    const side = fits(wants) ? wants : (fits(-wants) ? -wants : wants);
+
     it.label.setAttribute('text-anchor', side < 0 ? 'end' : 'start');
-    it.label.setAttribute('x', (x + side * (it.p.r + 11)).toFixed(1));
+
+    let lx = x + side * gap;
+    // A label wider than the room on BOTH sides still must not leave the frame.
+    // Clamping beats truncating: the whole name stays readable, it simply sits
+    // closer to its node than the radial rule would like.
+    if (side < 0) lx = Math.max(lx, PAD + w);
+    else lx = Math.min(lx, W - PAD - w);
+
+    it.label.setAttribute('x', lx.toFixed(1));
     // +3.6 puts the mono baseline on the disc's optical centre.
     it.label.setAttribute('y', (y + 3.6).toFixed(1));
 }

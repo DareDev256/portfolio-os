@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.38.1
+version: 4.38.2
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,37 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.38.2] - 2026-09-01
+
+### Fixed — registry graph labels were sheared off at the frame edge
+`placeLabel` put a label at `x ± (node radius + 11)` with `text-anchor:
+start`/`end`. That rule is right about DIRECTION and silent about WIDTH. On the
+460-unit phone canvas a 25-character id is wider than the gap between its node
+and the edge, and with `.graph-wrap svg { overflow: visible }` it rendered past
+the viewBox where the page edge sheared it — `passion-dashboard` read
+`assion-dashboard`, `tdotssolutionsz-portfolio` read `tionsz-portfolio`. Two of
+six labelled nodes unreadable, in the one section built to be live evidence.
+
+The label now picks the side that **fits** rather than the side its node points
+at, and clamps if neither side has room. Clamping beats truncating: the whole
+name stays readable, it just sits closer to its node than the radial rule would
+prefer. Width comes from `getComputedTextLength()` on the real element, cached
+once — `place()` runs every frame of the 1.9s settle, so measuring per frame
+would force layout 60 times a second.
+
+### It was also broken on desktop, which nobody had reported
+The mobile review found two. Measuring both viewports found a third:
+**`Ultimate-Image-Video-Prompt-Generator` started at x = -23.3** on the 850-unit
+desktop canvas. Only mobile had been looked at.
+
+### Mutation-checked
+Reverting just the fitting logic and the clamp puts **2 labels outside the frame
+on mobile and 1 on desktop**; restoring puts it back to 0/0. The check can see
+the failure it claims to prevent, measured as `getBBox()` against `viewBox`
+rather than by eye.
 
 ---
 
