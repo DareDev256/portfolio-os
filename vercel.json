@@ -32,7 +32,15 @@
       "destination": "https://passion-dashboard.vercel.app/passion/:path*"
     },
     {
-      "source": "/((?!resume/|passion$|passion/|fandom-flow|os$|os/|coldopen$|coldopen/).*)",
+      "source": "/spec-reel",
+      "destination": "/spec-reel/index.html"
+    },
+    {
+      "source": "/spec-reel/",
+      "destination": "/spec-reel/index.html"
+    },
+    {
+      "source": "/((?!resume/|passion$|passion/|fandom-flow|os$|os/|coldopen$|coldopen/|spec-reel$|spec-reel/).*)",
       "destination": "/index.html"
     }
   ],

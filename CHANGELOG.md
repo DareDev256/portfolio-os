@@ -20,29 +20,33 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ## [4.44.0] - 2026-09-01
 
-### Spec Reel 2026 — a creative case study on an engineering portfolio
+### Spec Reel 2026 — a standalone surface, deliberately not filed with the client work
 Thirty unsolicited commercials for real brands, brief to a finished 87-second
-reel in one session for about US$21, now living at `/work/spec-reel.html` with a
-card at the top of `/work/`.
+reel in one session for about US$21, now live at `/spec-reel/`.
 
-The placement was the decision, not the page. This site argues AI Engineer; the
-Toronto roles this reel is aimed at say Creative Strategist. Rather than pick a
-lane, the case study is framed as **AI-native creative production** — the thirty
-tensions and lines prove the strategist, the resumable spend-capped pipeline
-behind them proves the engineer, and neither claim needs the other to stand.
+**Placement was the whole decision.** The front page's work surface is `#gates`,
+titled *"Work that had something on the line."* Spec work has nothing on the
+line. Filing it there would contradict the page's own thesis, so it does not go
+there — it is a standalone URL to hand to a specific reader, and its disclaimer
+points back at `/#gates` for the work with real stakes.
 
-**The failure section is the load-bearing part.** The image API silently ignored
-a written aspect-ratio instruction and returned 1024×1024 forty-five times, and
-the contact sheet used to review those frames was built with an ffmpeg crop — so
-the review artifact performed the exact transformation whose absence it existed
-to detect. Two paid render batches ran on bad frames before it surfaced. That is
-on the page in full, because a portfolio that only shows the wins is a portfolio
-nobody can calibrate against.
+**Two pre-existing defects surfaced on the way and are recorded, not fixed.**
+`/work/` — four hand-authored case studies including second-opinion and
+sandy-chain-recall — is **not in the Vite build inputs and not linked from
+anywhere**. Every one of those URLs returns the homepage under HTTP 200 via the
+catch-all rewrite, exactly the trap `tools/link-audit.mjs` was written to catch.
+The audit reports zero broken links because nothing links to them at all; an
+orphan is invisible to a link checker. Whether `/work/` is legacy to delete or
+content to revive is a call for its author, so nothing there was touched.
 
-Video ships in-repo at 18 MB (CRF 24, faststart) rather than on R2, so the whole
-thing deploys behind one gate instead of two. Poster is the Tim Hortons aerial —
-the only frame bright enough to read as a thumbnail without being the one
-blown-out white shot in the set.
+`/spec-reel/` avoids that trap on both counts: it is a `public/` directory Vite
+copies verbatim, and it is excluded from the catch-all in `vercel.json` the same
+way `os` and `coldopen` are.
+
+Verified against the build output, not the network: 5 built pages (was 4), link
+audit 0 broken, and headless render confirms HTTP 200, video probing 1920x1080,
+30 spot rows, computed body background `rgb(10,10,10)` proving the stylesheet
+actually applied, and mp4/poster/css all serving with correct content-types.
 
 ---
 
