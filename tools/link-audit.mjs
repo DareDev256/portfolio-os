@@ -68,6 +68,33 @@ function matchRewrite(pathname) {
     });
 }
 
+/* REDIRECTS, which Vercel evaluates BEFORE rewrites.
+ *
+ * This auditor knew about `rewrites` and not `redirects`, so the day `/book`
+ * was added as a redirect it reported a false failure: "no file ships for this
+ * path — the catch-all serves index.html with a 200". True of a rewrite, wrong
+ * of a redirect, because the redirect fires first and the request never reaches
+ * the catch-all.
+ *
+ * A false failure is not harmless. It is the reading that gets a check switched
+ * off, and this check exists to catch a genuinely invisible bug — a link to a
+ * page that ships no file and returns 200 anyway. Teach it the rule rather than
+ * suppress the finding. */
+const redirects = (vercel.redirects || []).map((r) => ({
+    ...r,
+    re: new RegExp('^' + r.source.replace(/\(\.\*\)/g, '.*').replace(/:\w+\*/g, '.*') + '$'),
+}));
+
+function matchRedirect(pathname) {
+    return redirects.find((r) => {
+        try {
+            return r.re.test(pathname);
+        } catch {
+            return false;
+        }
+    });
+}
+
 /* ---------- walk the build ---------- */
 
 function walk(dir, out = []) {
@@ -249,6 +276,20 @@ for (const l of links) {
     const file = fileFor(pathname);
     if (file) {
         results.push({ url, from, kind, type: 'internal', status: 'OK', note: file });
+        continue;
+    }
+
+    /* Vercel evaluates REDIRECTS before rewrites, so this check has to come
+     * first — placing it inside the rewrite branch (as the first attempt did)
+     * means it only fires for paths that already matched a rewrite, which a
+     * redirect-only path never does.
+     *
+     * The destination is off-site by definition here, so there is no local file
+     * to resolve; the network half of this audit (`npm run audit:links:net`) is
+     * what checks the far end still answers. */
+    const rd = matchRedirect(pathname);
+    if (rd) {
+        results.push({ url, from, kind, type: 'internal', status: 'OK', note: `redirect → ${rd.destination}` });
         continue;
     }
 

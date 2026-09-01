@@ -46,7 +46,7 @@ export const FACTS = `WHAT YOU KNOW ABOUT JAMES — use only these facts, never 
 - ${clientLine}
 - 101 directed music videos, 54 artists, 25,332,774 views, over fourteen years. Every web client came through the music.
 - Web and film work goes through TdotsSolutionsz. Hiring conversations go through jamesdare.com.
-- Contact: dev@jamesdare.com. Calendly: calendly.com/tdotssolutionsz/30min.`;
+- Contact: dev@jamesdare.com. Booking: jamesdare.com/book.`;
 
 /* Rules that hold for BOTH voices. Persona changes tone; it never changes what
  * may be said. Anything below that a persona could soften is a rule that would

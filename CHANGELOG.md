@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.41.0
+version: 4.42.0
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,66 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.42.0] - 2026-09-01
+
+### One booking link he owns: `jamesdare.com/book`
+The plan was to migrate from Calendly to Cal.com. A red-team pass killed it, and
+the verdict was better than the plan: **the long-term rail is a URL James owns,
+not a vendor.** `/book` is a 302 in `vercel.json`. The backend behind it becomes
+swappable forever, in one line, with **zero CSP change** — a redirect never loads
+a third-party script, which an embed would have.
+
+**302, not 301, deliberately.** A permanent redirect is cached by the browser
+forever, which would make repointability — the entire reason this exists — the
+one thing it could not do.
+
+### The migration reasoning that changed
+The original plan was to run Calendly and Cal.com in parallel and let Calendly
+die once links went stale. **Sent-mail links never go stale** — recruiters reopen
+threads months later, so there is no date at which killing it is safe. Calendly
+free costs nothing, so the answer is never to kill it: just stop propagating it.
+The old link and `/book` point at the same backend indefinitely.
+
+Cal.com's one real free-tier advantage over Calendly free — unlimited calendar
+connections, and webhooks — has **no consumer today**: the freshness cron is
+blocked on a Google OAuth consent, and the Mini that would run it is offline.
+Migrating now buys a capability nothing can use. Revisit after Oct 1.
+
+### 🔴 The privacy hole this surfaced, which was not in the JSON
+Care had been going into sanitising `availability.json`. The actual exposure is
+one layer down: **connecting any booking vendor to `olusogaj2022@gmail.com`
+hands Maurice's car invites — customer names, plates, deadlines in event titles —
+to a third party, under James's personal account.** That line gets crossed
+silently at OAuth time, and no amount of payload scrubbing catches it.
+
+**Rule from here: booking tools connect to `tdotssolutionsz` only. The Audi
+calendar informs `build-availability.mjs` locally and never leaves the machine.**
+
+### Seven call sites, one of them a chatbot
+`index.html`, `js/system-chat.js`, `tools/build-availability.mjs`,
+`api/_personas.js` (the assistant recited the raw Calendly URL to visitors),
+`public/data/availability.json` and two test assertions. The vendor URL now
+appears in exactly **one** file — `vercel.json` — and **zero** times in `dist/`.
+
+### The link auditor was taught, not silenced
+Adding `/book` made `tools/link-audit.mjs` report a **false failure**: *"no file
+ships for this path — the catch-all serves index.html with a 200."* True of a
+rewrite, wrong of a redirect, because Vercel evaluates redirects first and the
+request never reaches the catch-all.
+
+A false failure is not harmless — it is the reading that gets a check switched
+off, and this one exists to catch a genuinely invisible bug. So it now honours
+`redirects`. The first attempt placed the check **inside** the rewrite branch,
+where it could only fire for paths that had already matched a rewrite — which a
+redirect-only path never does. Moved ahead of the rewrite lookup, matching
+Vercel's own order.
+
+**Mutation-checked, because editing a link checker can blind it:** pointing a
+link at a path that ships no file still produces exactly one finding; removing it
+returns to zero.
 
 ---
 

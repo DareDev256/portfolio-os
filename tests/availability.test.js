@@ -11,7 +11,7 @@ function payload(over = {}) {
     return {
         generatedAt: new Date().toISOString(),
         slotMinutes: 30,
-        bookingUrl: 'https://calendly.com/tdotssolutionsz/30min',
+        bookingUrl: '/book',
         days: [{ date: '2026-09-04', weekday: 'Fri', carsDue: 2, lastDeadline: '13:00', slots: ['15:00', '15:30'] }],
         ...over,
     };
@@ -41,7 +41,7 @@ describe('availability panel', () => {
         await render(payload());
         expect(panel().hidden).toBe(false);
         expect(panel().querySelectorAll('.avail-slot')).toHaveLength(2);
-        expect(panel().querySelector('a').href).toContain('calendly.com/tdotssolutionsz/30min');
+        expect(panel().querySelector('a').getAttribute('href')).toBe('/book');
     });
 
     it('formats 24h into the 12h a North American reader expects', async () => {
@@ -62,7 +62,7 @@ describe('availability panel', () => {
         await render(payload({ days: [{ date: '2026-09-03', weekday: 'Thu', slots: [] }] }));
         expect(panel().hidden).toBe(false);
         expect(panel().textContent).toContain('No open windows');
-        expect(panel().querySelector('a').href).toContain('calendly.com');
+        expect(panel().querySelector('a').getAttribute('href')).toBe('/book');
     });
 });
 

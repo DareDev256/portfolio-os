@@ -32,7 +32,7 @@
                 'Yes. AI Solutions Engineer, Solutions Architect, Forward Deployed Engineer. Toronto or remote.',
                 'Fourteen years shipping to real audiences, the last three building agent infrastructure. I read every message myself — there is no assistant in front of this.',
             ],
-            cta: { label: 'BOOK 30 MINUTES', href: 'https://calendly.com/tdotssolutionsz/30min' },
+            cta: { label: 'BOOK 30 MINUTES', href: '/book' },
         },
         {
             q: 'What have you actually shipped?',

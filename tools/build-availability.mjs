@@ -189,7 +189,10 @@ function blocked(date, h) {
         timeZone: TZ,
         window: `${pad(WINDOW.startHour)}:00-${pad(WINDOW.endHour)}:00`,
         slotMinutes: SLOT_MINUTES,
-        bookingUrl: 'https://calendly.com/tdotssolutionsz/30min',
+        /* The rail, never the vendor. /book is a 302 in vercel.json, so the
+         * backend behind it can change without touching a link that is by then
+         * sitting in sent mail, a LinkedIn About and an email signature. */
+        bookingUrl: '/book',
         sample: { cars: all.length, days: byDay.size, horizonDays: HORIZON, busyBlocks: BUSY.length },
         method: 'Offered slots sit after the day\'s last delivery deadline. Flat-rate work, so the schedule is mine to sequence; the deadline is what is fixed.',
         days,

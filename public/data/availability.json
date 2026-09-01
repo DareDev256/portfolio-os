@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-01T20:34:01.418Z",
+  "generatedAt": "2026-09-01T20:48:24.419Z",
   "timeZone": "America/Toronto",
   "window": "15:00-17:00",
   "slotMinutes": 30,
-  "bookingUrl": "https://calendly.com/tdotssolutionsz/30min",
+  "bookingUrl": "/book",
   "sample": {
     "cars": 46,
     "days": 25,
