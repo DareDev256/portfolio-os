@@ -197,128 +197,6 @@
             </div>
         </section>
 
-        <!-- ============ SYSTEM SNAPSHOT ============ -->
-        <section class="snapshot" id="system" aria-labelledby="sys-h">
-            <div class="scan" aria-hidden="true"></div>
-
-            <div class="snapshot-main">
-                <p class="eyebrow rv">SYSTEM SNAPSHOT</p>
-                <h2 class="sect-title rv d1" id="sys-h" data-kt-scrub>Passion Agent</h2>
-                <p class="lede rv d2">
-                    <span data-fig="modules">&#8212;</span> modules across a <span data-fig="repos">&#8212;</span>-repository registry. <span data-svc-summary>Three services run on a Mac
-                    Mini</span>, and <span data-fig="jobs">&#8212;</span> scheduled jobs across both machines report into Discord without
-                    being asked. A gold pulse marks an edge the agent moved data down in this
-                    snapshot.
-                </p>
-
-                <div class="graph-wrap rv d3">
-                    <!-- Filled by js/registry-graph.js from /data/registry-graph.json,
-                         which tools/build-registry-graph.mjs generates from `gh repo list`.
-                         aria-hidden because the same facts are in the readout and the
-                         repo list below, in text a screen reader can actually use. -->
-                    <svg id="registry-graph" viewBox="0 0 850 640" aria-hidden="true"></svg>
-
-                    <!-- Detail panel. Hover previews a node; click or Enter PINS it, which
-                         is when the links become reachable — a hover panel that vanishes on
-                         the way to its own button is a link nobody can click. Pinning also
-                         writes #system/<repo> so a single node can be sent to someone. -->
-                    <div class="rg-readout" id="rg-readout" aria-live="polite">
-                        <div class="rg-r-head">
-                            <span class="rg-r-name" data-rg="name">passion-agent</span>
-                            <span class="rg-r-tier" data-rg="tier">CORE</span>
-                        </div>
-                        <p class="rg-r-what" data-rg="what">&#8212;</p>
-                        <p class="rg-r-proves" data-rg="proves" hidden></p>
-                        <div class="rg-r-meta">
-                            <span data-rg="stack"></span>
-                            <span data-rg="pushed">&#8212;</span>
-                        </div>
-                        <div class="rg-r-act">
-                            <a class="rg-btn rg-btn-live" data-rg="live" hidden></a>
-                            <a class="rg-btn rg-btn-code" data-rg="code" hidden>CODE &#8599;</a>
-                        </div>
-                        <p class="rg-r-hint" data-rg="hint">CLICK A NODE TO PIN IT</p>
-                        <button type="button" class="rg-r-close" data-rg="close" hidden aria-label="Unpin this repository">&#10005;</button>
-                    </div>
-                </div>
-
-                <div class="legend rv d4">
-                    <span><i class="grp" aria-hidden="true"></i>SIZE = HAND-PICKED TIER, NOT REPO SIZE</span>
-                    <span><i class="act" aria-hidden="true"></i>BRIGHTNESS = PUSHED RECENTLY</span>
-                    <span><i class="repo" aria-hidden="true"></i>UNLABELLED REGISTRY ENTRY</span>
-                    <span class="legend-src">EDGES MEAN REGISTRY MEMBERSHIP, NOT DEPENDENCY</span>
-                    <span class="legend-src">CURATED IN <code>registry-curation.json</code> &#183; FACTS FROM <code>gh repo list</code></span>
-                </div>
-                <!-- The SVG above is aria-hidden and canvas-only: without this the named
-                     repositories are unreachable to a screen reader and invisible to a
-                     crawler. Same JSON as the graph, so the two cannot disagree.
-
-                     A swipe rail rather than a grid: on a phone the graph caps at six
-                     labelled nodes, so the rail is where the other seven actually live.
-                     It is a <ul> of real links underneath — the slider is layout, and a
-                     crawler with no CSS still reads a list. -->
-                <div class="rg-rail rv d4" id="rg-rail">
-                    <div class="rg-rail-head">
-                        <h3 class="rg-rail-title">
-                            THE TWELVE <span class="rg-rail-sub">SWIPE &#8594;</span>
-                        </h3>
-                        <div class="rg-rail-nav">
-                            <button type="button" class="rg-arrow" data-rail="prev" aria-label="Previous repository" aria-controls="rg-rail-track">&#8592;</button>
-                            <button type="button" class="rg-arrow" data-rail="next" aria-label="Next repository" aria-controls="rg-rail-track">&#8594;</button>
-                        </div>
-                    </div>
-
-                    <ul class="rg-rail-track" id="rg-rail-track" tabindex="0" role="list"
-                        aria-label="Curated repositories. Use the left and right arrow keys to move between cards."></ul>
-
-                    <div class="rg-rail-foot">
-                        <div class="rg-rail-bar" aria-hidden="true"><span class="rg-rail-fill"></span></div>
-                        <div class="rg-rail-count" aria-hidden="true"><span data-rail="at">1</span>&#8202;/&#8202;<span data-rail="of">&#8212;</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <aside class="snapshot-aside">
-                <div class="aside-block">
-                    <!-- 2026-08-30: these rows are now MEASURED. tools/build-figures.mjs
-                         SSHes to the Mini at build time and curls each loopback port, writing
-                         the result into figures.json. They were hand-written "UP" before, on
-                         the one section whose whole argument is that the system reports itself.
-                         A DOWN or UNREACHABLE row is the feature, not a failure to hide. -->
-                    <h3>SERVICES <span class="h3-note">PROBED <span data-svc-checked>&#8212;</span></span></h3>
-                    <div class="svc">
-                        <div class="rv d1"><span class="k">dashboard:3000</span><span class="state" data-svc="dashboard">&#8212;</span></div>
-                        <div class="rv d2"><span class="k">brain:7777</span><span class="state" data-svc="brain">&#8212;</span></div>
-                        <div class="rv d3"><span class="k">letstrade:8420</span><span class="state" data-svc="letstrade">&#8212;</span></div>
-                        <div class="rv d4"><span class="k">scheduled jobs</span><span><span data-fig="jobs">&#8212;</span> registered</span></div>
-                    </div>
-                </div>
-
-                <div class="aside-block">
-                    <h3>RAN WITHOUT ME <span class="h3-note" data-activity-count>&#8212;</span></h3>
-                    <!-- These four rows used to be hand-typed, with frozen clock times. It
-                         was the strongest evidence on the page for the sentence in the
-                         hero, and it was the only claim here that nothing measured — a
-                         visitor returning the next day saw the same four lines at the same
-                         four times. tools/build-activity.mjs now reads eight launchd jobs'
-                         own logs and reports what it can actually see. If nothing ran, the
-                         panel says nothing ran. -->
-                    <div class="log" data-activity-log>
-                        <div class="rv d1">
-                            <time>&#8212;</time>
-                            <div><div class="what">Reading the activity log&#8230;</div><div class="src">from the jobs' own logs</div></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="aside-foot">
-                    <a href="/passion">OPEN THE LIVE DASHBOARD &#8594;</a>
-                    <a href="/os">OPEN THE DESKTOP &#8599;</a>
-                    <div class="stamp">DASHBOARD: LIVE &#183; DEMO DATA<br />DESKTOP: SNAPSHOT <span data-fig="snapshotDate">&#8212;</span> &#183; STATIC</div>
-                </div>
-            </aside>
-        </section>
-
         <!-- ============ GATES ============ -->
         <section class="gates" id="gates" aria-labelledby="gates-h">
             <div class="gate-lead">
@@ -512,7 +390,7 @@
                              image was Passion OS this was /os; the image is now the
                              dashboard, so the dashboard takes the filled button and the
                              desktop keeps a door as the second, separate artifact. -->
-                        <a class="btn" href="/passion">OPEN THE LIVE DASHBOARD &#8594;</a>
+                        <a class="btn" href="/passion">OPEN THE DASHBOARD &#8212; DEMO DATA &#8594;</a>
                         <a class="btn ghost" href="/os">OPEN THE DESKTOP &#8594;</a>
                         <span class="stack">NEXT.JS &#183; REACT &#183; TYPESCRIPT &nbsp;&#183;&nbsp; AGENT RUNS ON A MAC MINI</span>
                     </div>
@@ -659,6 +537,128 @@
                     <p>A real-time multiplayer ninja game — Phaser client, Colyseus server, six jutsu slots and no respec. Built to find out where a game engine stops behaving like a web app.</p>
                 </div>
             </div>
+        </section>
+
+        <!-- ============ SYSTEM SNAPSHOT ============ -->
+        <section class="snapshot" id="system" aria-labelledby="sys-h">
+            <div class="scan" aria-hidden="true"></div>
+
+            <div class="snapshot-main">
+                <p class="eyebrow rv">SYSTEM SNAPSHOT</p>
+                <h2 class="sect-title rv d1" id="sys-h" data-kt-scrub>Passion Agent</h2>
+                <p class="lede rv d2">
+                    <span data-fig="modules">&#8212;</span> modules across a <span data-fig="repos">&#8212;</span>-repository registry. <span data-svc-summary>Three services run on a Mac
+                    Mini</span>, and <span data-fig="jobs">&#8212;</span> scheduled jobs across both machines report into Discord without
+                    being asked. A gold pulse marks an edge the agent moved data down in this
+                    snapshot.
+                </p>
+
+                <div class="graph-wrap rv d3">
+                    <!-- Filled by js/registry-graph.js from /data/registry-graph.json,
+                         which tools/build-registry-graph.mjs generates from `gh repo list`.
+                         aria-hidden because the same facts are in the readout and the
+                         repo list below, in text a screen reader can actually use. -->
+                    <svg id="registry-graph" viewBox="0 0 850 640" aria-hidden="true"></svg>
+
+                    <!-- Detail panel. Hover previews a node; click or Enter PINS it, which
+                         is when the links become reachable — a hover panel that vanishes on
+                         the way to its own button is a link nobody can click. Pinning also
+                         writes #system/<repo> so a single node can be sent to someone. -->
+                    <div class="rg-readout" id="rg-readout" aria-live="polite">
+                        <div class="rg-r-head">
+                            <span class="rg-r-name" data-rg="name">passion-agent</span>
+                            <span class="rg-r-tier" data-rg="tier">CORE</span>
+                        </div>
+                        <p class="rg-r-what" data-rg="what">&#8212;</p>
+                        <p class="rg-r-proves" data-rg="proves" hidden></p>
+                        <div class="rg-r-meta">
+                            <span data-rg="stack"></span>
+                            <span data-rg="pushed">&#8212;</span>
+                        </div>
+                        <div class="rg-r-act">
+                            <a class="rg-btn rg-btn-live" data-rg="live" hidden></a>
+                            <a class="rg-btn rg-btn-code" data-rg="code" hidden>CODE &#8599;</a>
+                        </div>
+                        <p class="rg-r-hint" data-rg="hint">CLICK A NODE TO PIN IT</p>
+                        <button type="button" class="rg-r-close" data-rg="close" hidden aria-label="Unpin this repository">&#10005;</button>
+                    </div>
+                </div>
+
+                <div class="legend rv d4">
+                    <span><i class="grp" aria-hidden="true"></i>SIZE = HAND-PICKED TIER, NOT REPO SIZE</span>
+                    <span><i class="act" aria-hidden="true"></i>BRIGHTNESS = PUSHED RECENTLY</span>
+                    <span><i class="repo" aria-hidden="true"></i>UNLABELLED REGISTRY ENTRY</span>
+                    <span class="legend-src">EDGES MEAN REGISTRY MEMBERSHIP, NOT DEPENDENCY</span>
+                    <span class="legend-src">CURATED IN <code>registry-curation.json</code> &#183; FACTS FROM <code>gh repo list</code></span>
+                </div>
+                <!-- The SVG above is aria-hidden and canvas-only: without this the named
+                     repositories are unreachable to a screen reader and invisible to a
+                     crawler. Same JSON as the graph, so the two cannot disagree.
+
+                     A swipe rail rather than a grid: on a phone the graph caps at six
+                     labelled nodes, so the rail is where the other seven actually live.
+                     It is a <ul> of real links underneath — the slider is layout, and a
+                     crawler with no CSS still reads a list. -->
+                <div class="rg-rail rv d4" id="rg-rail">
+                    <div class="rg-rail-head">
+                        <h3 class="rg-rail-title">
+                            THE TWELVE <span class="rg-rail-sub">SWIPE &#8594;</span>
+                        </h3>
+                        <div class="rg-rail-nav">
+                            <button type="button" class="rg-arrow" data-rail="prev" aria-label="Previous repository" aria-controls="rg-rail-track">&#8592;</button>
+                            <button type="button" class="rg-arrow" data-rail="next" aria-label="Next repository" aria-controls="rg-rail-track">&#8594;</button>
+                        </div>
+                    </div>
+
+                    <ul class="rg-rail-track" id="rg-rail-track" tabindex="0" role="list"
+                        aria-label="Curated repositories. Use the left and right arrow keys to move between cards."></ul>
+
+                    <div class="rg-rail-foot">
+                        <div class="rg-rail-bar" aria-hidden="true"><span class="rg-rail-fill"></span></div>
+                        <div class="rg-rail-count" aria-hidden="true"><span data-rail="at">1</span>&#8202;/&#8202;<span data-rail="of">&#8212;</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="snapshot-aside">
+                <div class="aside-block">
+                    <!-- 2026-08-30: these rows are now MEASURED. tools/build-figures.mjs
+                         SSHes to the Mini at build time and curls each loopback port, writing
+                         the result into figures.json. They were hand-written "UP" before, on
+                         the one section whose whole argument is that the system reports itself.
+                         A DOWN or UNREACHABLE row is the feature, not a failure to hide. -->
+                    <h3>SERVICES <span class="h3-note">PROBED <span data-svc-checked>&#8212;</span></span></h3>
+                    <div class="svc">
+                        <div class="rv d1"><span class="k">dashboard:3000</span><span class="state" data-svc="dashboard">&#8212;</span></div>
+                        <div class="rv d2"><span class="k">brain:7777</span><span class="state" data-svc="brain">&#8212;</span></div>
+                        <div class="rv d3"><span class="k">letstrade:8420</span><span class="state" data-svc="letstrade">&#8212;</span></div>
+                        <div class="rv d4"><span class="k">scheduled jobs</span><span><span data-fig="jobs">&#8212;</span> registered</span></div>
+                    </div>
+                </div>
+
+                <div class="aside-block">
+                    <h3>RAN WITHOUT ME <span class="h3-note" data-activity-count>&#8212;</span></h3>
+                    <!-- These four rows used to be hand-typed, with frozen clock times. It
+                         was the strongest evidence on the page for the sentence in the
+                         hero, and it was the only claim here that nothing measured — a
+                         visitor returning the next day saw the same four lines at the same
+                         four times. tools/build-activity.mjs now reads eight launchd jobs'
+                         own logs and reports what it can actually see. If nothing ran, the
+                         panel says nothing ran. -->
+                    <div class="log" data-activity-log>
+                        <div class="rv d1">
+                            <time>&#8212;</time>
+                            <div><div class="what">Reading the activity log&#8230;</div><div class="src">from the jobs' own logs</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="aside-foot">
+                    <a href="/passion">OPEN THE DASHBOARD &#8212; DEMO DATA &#8594;</a>
+                    <a href="/os">OPEN THE DESKTOP &#8599;</a>
+                    <div class="stamp">DASHBOARD: LIVE, RUNNING ON DEMO DATA<br />DESKTOP: SNAPSHOT <span data-fig="snapshotDate">&#8212;</span> &#183; STATIC</div>
+                </div>
+            </aside>
         </section>
 
         <!-- ============ CONTACT ============ -->

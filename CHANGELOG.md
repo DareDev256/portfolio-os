@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.37.0
+version: 4.38.0
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,52 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.38.0] - 2026-09-01
+
+### Changed — the work now comes before the infrastructure
+`GATES` moved above `SYSTEM`. Two blind critics reached this independently from
+opposite ends (desktop and phone), and a prior session had analysed the same
+change and never built it — three arrivals at one answer.
+
+**The nav already agreed.** It has always read `WORK (#gates)` then
+`SYSTEM (#system)`; only the DOM disagreed. The page was navigating one way and
+rendering the other.
+
+Measured effect — the number that matters is how long before a recruiter sees a
+case study:
+
+| | before | after |
+|---|---|---|
+| desktop, first case study | screen 2.8 | **screen 1.0** |
+| phone, first case study | screen 3.8 | **screen 1.2** |
+
+The registry graph is still on the page, unchanged, one section later. It was
+never wrong — it was expensive, and it was spending the most valuable real
+estate on the page to say what the case studies say better.
+
+### Fixed
+- **"OPEN THE LIVE DASHBOARD" invited a click into demo data.** The disclosure
+  ("DASHBOARD: LIVE · DEMO DATA") sat one line *below* the button — which is one
+  line after the click. Both instances now read **"OPEN THE DASHBOARD — DEMO
+  DATA →"**, so the caveat travels with the link instead of trailing it. The
+  link itself is fine: the target answers 200 with `PACT — Passion Agent Command
+  Terminal`, and a bogus path on that host returns 404, so the control separates.
+
+### How the splice was verified
+A programmatic markup move that builds clean can still ship a dead section, so
+the move was checked as a **pure permutation** rather than trusted:
+- Anchored on the section opening tags, not line numbers — it aborts rather than
+  mangles if the file moved underneath.
+- `Counter(new) == Counter(old)` — every line accounted for, none lost or
+  duplicated. Line count 738 → 738.
+- Tag balance identical before and after (the two pre-existing imbalances are
+  unchanged; none were introduced).
+- Then RENDERED at 1440 and 390: 0 of 26 reveals left hidden, 7/7 gate tabs
+  named, no horizontal overflow, **0 JS errors**, and `gates` confirmed above
+  `system` by measured document offset in both viewports.
 
 ---
 
