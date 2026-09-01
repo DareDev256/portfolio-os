@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 4.34.1
-last_updated: 2026-08-31
+version: 4.35.0
+last_updated: 2026-09-01
 
 ---
 
@@ -15,6 +15,64 @@ last_updated: 2026-08-31
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.35.0] - 2026-09-01
+
+### Added
+- **WhatsApp rail, addressed by username instead of a phone number.** The rail
+  was ported from `hair-braider-site` and had been parked since 2026-08-30 on a
+  single question: publishing a mobile number on a hiring surface. A WhatsApp
+  username removes the question rather than answering it — `@JamesOD6` opens a
+  chat and the number is never shown to anyone who does not already have it.
+  Two surfaces: the contact actions row and the footer nav.
+
+### Verified, not assumed
+- **The username link format was measured before anything was built.**
+  `curl https://wa.me/@JamesOD6` returns `302` to
+  `api.whatsapp.com/send/?text&username=JamesOD6&type=username&app_absent=0`,
+  where a phone number returns `...&type=phone_number`. So `wa.me` classifies an
+  `@handle` server-side and the scheme is live — the published guides all still
+  document phone numbers only, and one described username links as a thing
+  WhatsApp is "expected to support".
+
+### 🔴 The one check that is James's, and why nothing here can stand in for it
+- **A handle that does not exist redirects identically.**
+  `wa.me/@zzzznotarealhandle999` returns the same `302` and a 225KB landing page
+  differing from the real one only in the echoed handle and a per-request nonce.
+  The redirector classifies; it does not validate. **Whether `@JamesOD6` resolves
+  to James's account can only be proven by opening
+  `https://wa.me/@JamesOD6` on a phone with WhatsApp installed.** Until that tap
+  happens, this ships a link whose format is confirmed and whose destination is
+  not. Also relevant: username *messaging* is a phased rollout through 2026 —
+  reserving a handle is not the same as it being routable everywhere yet.
+
+### Guarded
+- **The handle is written twice on purpose, and a test holds the two together.**
+  `js/whatsapp-rail.js` exports `WA_USERNAME`; `index.html` bakes the href so the
+  rail works with scripting off. `tests/whatsapp-rail.test.js` fails if they ever
+  disagree, and asserts no `wa.me/<digits>` path is ever published. The last
+  hand-maintained figure on this page said "twelve client sites" over a list of
+  eleven, at four call sites — the only wrong number was the only one a human was
+  keeping in sync.
+- Mutation-checked: flipping the handle in `index.html` to `@JamesOD7` fails two
+  tests. A test that cannot fail certifies nothing.
+- The fallback assertion reads `note.hidden`, not `note.textContent`. A note that
+  says the right thing while hidden is the same as no note — that is the 4.34.1
+  opacity-0 panel, and `textContent` could not see it then either.
+
+### Changed
+- `public/ga4.js` emits `contact_whatsapp` with the surface that produced it,
+  placed **before** the generic outbound branch — otherwise every rail tap lands
+  in `outbound_click` and is indistinguishable from a link to betmetrics.
+
+### Handled
+- **The silent handoff failure.** In-app browsers — LinkedIn's and Instagram's
+  especially, which is exactly where a recruiter arrives from — often refuse the
+  `wa.me` handoff with no error at all: the tap does nothing. If the page is
+  still visible 1.4s after a tap, the rail surfaces `@JamesOD6` as text to search
+  under New Chat. Never a dead end.
 
 ---
 

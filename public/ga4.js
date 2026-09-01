@@ -36,6 +36,11 @@ gtag('config', 'G-TG10CNCMJY');
 
         if (/^mailto:/i.test(href)) return sent('contact_email', { label: label });
         if (/calendly\.com/i.test(href)) return sent('contact_booking', { label: label });
+        // Before the generic outbound branch, or the rail's taps land in
+        // outbound_click and become indistinguishable from a link to betmetrics.
+        if (/wa\.me|api\.whatsapp\.com/i.test(href)) {
+            return sent('contact_whatsapp', { surface: a.getAttribute('data-wa') || 'other' });
+        }
         if (/\.pdf($|\?)/i.test(href) || /resume/i.test(label)) return sent('resume_download', { label: label });
         if (/linkedin\.com/i.test(href)) return sent('outbound_linkedin', { label: label });
         if (/github\.com/i.test(href)) return sent('outbound_github', { label: label, url: href });
