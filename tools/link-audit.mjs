@@ -440,8 +440,24 @@ const mine = (r) => !GENERATED.test(r.from);
 
 if (AS_JSON) {
     console.log(JSON.stringify({ checked: uniq.length, broken, unknown, blocked, all: uniq }, null, 2));
-    process.exit(broken.filter(mine).length ? 1 : 0);
+    /* `process.exitCode`, NOT `process.exit()`.
+     *
+     * When stdout is a PIPE, console.log is asynchronous, and process.exit()
+     * terminates before the buffer drains — truncating output at exactly the
+     * 64KB pipe size. This report crossed 64KB when /reel/ was added, and the
+     * consumer started getting invalid JSON: "SyntaxError: Expected ',' or ']'
+     * at position 65528". Which reads as "the audit is broken" rather than "the
+     * audit found something", and a checker that fails unreadably is a checker
+     * that gets deleted.
+     *
+     * Redirecting to a FILE always worked (68,896 bytes, complete) because file
+     * writes are synchronous — which is exactly why this was invisible from the
+     * command line and only appeared under the test. Setting exitCode lets the
+     * process end naturally, after the flush. */
+    process.exitCode = broken.filter(mine).length ? 1 : 0;
 }
+
+if (AS_JSON) { /* the JSON branch above is the whole output */ } else {
 
 const by = (s) => uniq.filter((r) => r.status === s).length;
 
@@ -485,4 +501,6 @@ if (unknown.length) {
     console.log('');
 }
 
-process.exit(mineBroken.length ? 1 : 0);
+process.exitCode = mineBroken.length ? 1 : 0;
+
+}

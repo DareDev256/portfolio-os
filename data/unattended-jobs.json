@@ -3,7 +3,7 @@
   "windowHours": 36,
   "jobs": [
     { "id": "daily-brief",            "label": "Morning brief compiled and sent", "source": "daily-brief · Discord",      "log": "~/.claude/logs/daily-brief.log" },
-    { "id": "check-daily-rollup",     "label": "System snapshot regenerated",     "source": "check-daily-rollup",          "log": "~/.claude/logs/check-daily-rollup.out.log" },
+    { "id": "check-daily-rollup",     "label": "Agent rollup written",     "source": "check-daily-rollup",          "log": "~/.claude/logs/check-daily-rollup.out.log" },
     { "id": "branch-shepherd",        "label": "Branches swept for drift",        "source": "branch-shepherd",             "log": "~/.claude/logs/branch-shepherd.log" },
     { "id": "career-digest",          "label": "Career pipeline digested",        "source": "career-digest · Discord",     "log": "~/.claude/logs/career-digest.out.log" },
     { "id": "portfolio-traffic-radar","label": "Portfolio traffic swept",         "source": "portfolio-traffic-radar",     "log": "~/dev/utilities/passion-cron/logs/portfolio-traffic-radar.log" },

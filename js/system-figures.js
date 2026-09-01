@@ -228,8 +228,14 @@ fetch(SRC)
                 const n = (probe.services ?? []).length;
                 const up = (probe.services ?? []).filter((x) => x.state === 'up').length;
                 const word = WORD[n] ?? String(n);
+                /* STALE means the probe is too old to know. "live" is a present-tense
+                 * claim, so the stale branch was asserting exactly what the panel
+                 * beside it renders as UNVERIFIED — the page arguing with itself,
+                 * on the one panel whose job is to prove it measures itself. The
+                 * earlier fix covered the unreachable and all-up branches and left
+                 * this one saying "live". */
                 sum.textContent = stale
-                    ? `${word} services live on a Mac Mini, last checked ${ageWord}`
+                    ? `${word} services on a Mac Mini, unverified for ${ageWord.replace(' ago', '')}`
                     : probe.host === 'unreachable'
                       ? `${word} services live on a Mac Mini the page could not reach at build time`
                       : up === n

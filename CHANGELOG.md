@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.45.0
+version: 4.46.0
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,57 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.46.0] - 2026-09-01
+
+### The page was arguing with itself in two places
+Both spotted on the live SYSTEM SNAPSHOT section, and both worse than being
+stale: this is the one panel whose entire job is to prove the page measures
+itself honestly.
+
+- **The lede said "Three services LIVE on a Mac Mini" two inches from a panel
+  rendering `UNVERIFIED` three times.** A present-tense claim from a probe too
+  old to support one. An earlier fix rewrote the `unreachable` and `all up`
+  branches of that same conditional and **left the STALE branch asserting
+  liveness**. Now reads *"Three services on a Mac Mini, unverified for 31h"*.
+- **"08:00 System snapshot regenerated" sat above "SNAPSHOT 26•08•23 · 10 DAYS
+  OLD".** Not a stale number — a **mislabel**. `check-daily-rollup` writes
+  `passion-agent/ops-snapshot.json` (today, 08:00); the stamp reads
+  `data/system-snapshot.json` (Aug 23, written by the weekly, Mini-dependent
+  `system-snapshot.sh`). Two different files, one label conflating them.
+  Relabelled **"Agent rollup written"**, which is what it does.
+
+### The test that existed and did not catch it
+`tests/system-figures-staleness.test.js` already covered the stale lede — and
+asserted only `not /hold on a Mac Mini/`. It passed for weeks while the sentence
+read "live". Banning one word is not the invariant. The invariant is that a stale
+probe supports **no present-tense liveness claim at all**, so both words are
+banned and the honest one is required. Mutation-checked: restoring "live" fails
+two tests.
+
+### 🔴 `process.exit()` was truncating the link audit at 64KB
+`link-audit.mjs --json` did `console.log(report)` then `process.exit()`
+immediately. **When stdout is a pipe, `console.log` is asynchronous** — the exit
+terminated before the buffer drained, cutting output at exactly the 64KB pipe
+size. The report crossed 64KB when `/reel/` was added, and the test began
+reporting `SyntaxError: Expected ',' or ']' at position 65528`.
+
+That reads as *"the audit is broken"* rather than *"the audit found something"*,
+and a checker that fails unreadably is a checker that gets deleted.
+
+**Redirecting to a file always worked** — 68,896 bytes, complete — because file
+writes are synchronous. Which is exactly why this was invisible from the command
+line and only appeared under the test. Now `process.exitCode`, so the process
+ends after the flush. Verified: a pipe and a file now both carry 68,896 bytes and
+the pipe parses.
+
+### Also
+`js/version.js` was left at 4.43.0 while `package.json` said 4.45.0 — a partial
+bump from a parallel session working the same tree. The provenance test caught it.
+
+704 tests / 46 files.
 
 ---
 

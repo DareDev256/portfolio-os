@@ -89,10 +89,18 @@ describe('service panel staleness', () => {
     });
 
     it('does not let the lede claim services hold when the probe is stale', async () => {
+        /* This test USED to assert `not /hold on a Mac Mini/` and `/last checked/`,
+         * and it passed for weeks while the lede read "Three services LIVE on a
+         * Mac Mini, last checked 31h ago" — a present-tense claim two inches
+         * above a panel rendering UNVERIFIED. Banning one word is not the
+         * invariant. The invariant is that a stale probe supports NO present-tense
+         * liveness claim at all, so both words are banned and the honest one is
+         * required. */
         await render(snapshot(STALE(), 'up', ['up', 'up', 'up']));
         const sum = document.querySelector('[data-svc-summary]').textContent;
-        expect(sum).toMatch(/last checked/);
-        expect(sum).not.toMatch(/hold on a Mac Mini/);
+        expect(sum).not.toMatch(/\bhold\b/i);
+        expect(sum).not.toMatch(/\blive\b/i);
+        expect(sum).toMatch(/unverified/i);
     });
 
     it('still reports a fresh unreachable host as unreachable, not stale', async () => {
@@ -112,5 +120,37 @@ describe('service panel staleness', () => {
     it('marks the probe timestamp stale so the header shows it', async () => {
         await render(snapshot(STALE(), 'up', ['up', 'up', 'up']));
         expect(document.querySelector('[data-svc-checked]').dataset.stale).toBe('true');
+    });
+});
+
+describe('the lede and the panel must never contradict each other', () => {
+    /* The panel renders UNVERIFIED past 26h. The sentence two inches above it
+     * was still saying "Three services LIVE on a Mac Mini" — a present-tense
+     * claim from a probe too old to support one.
+     *
+     * An earlier fix rewrote the `unreachable` and `all up` branches of that same
+     * conditional and left the STALE branch asserting liveness, which is exactly
+     * why this is pinned per branch rather than once. */
+    beforeEach(() => { document.body.innerHTML = ''; });
+    afterEach(() => { vi.restoreAllMocks(); });
+
+    it('never says "live" when the probe is stale', async () => {
+        await render(snapshot(STALE(), 'up', ['up', 'up', 'up']));
+        const sum = document.querySelector('[data-svc-summary]').textContent;
+        expect(sum).not.toMatch(/\blive\b/i);
+        expect(sum).not.toMatch(/\bhold\b/i);
+        expect(sum).toMatch(/unverified/i);
+    });
+
+    it('still states the measured state when the probe is fresh', async () => {
+        await render(snapshot(FRESH(), 'up', ['up', 'up', 'up']));
+        const sum = document.querySelector('[data-svc-summary]').textContent;
+        expect(sum).toMatch(/hold/i);
+        expect(sum).not.toMatch(/unverified/i);
+    });
+
+    it('says how many answered when the probe is fresh and some are down', async () => {
+        await render(snapshot(FRESH(), 'up', ['up', 'down', 'up']));
+        expect(document.querySelector('[data-svc-summary]').textContent).toMatch(/2 of 3/);
     });
 });
