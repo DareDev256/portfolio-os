@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.44.0
+version: 4.45.0
 last_updated: 2026-09-01
 
 ---
@@ -15,6 +15,38 @@ last_updated: 2026-09-01
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
+
+---
+
+## [4.45.0] - 2026-09-01
+
+### /reel/ — fourteen years of direction, and what it became
+The spec reel needed a parent. `/reel/` is the arc: 101 directed music videos
+across 54 artists and 25,332,774 views (2012–2025), then the thirty AI-generated
+spots, with an explicit ACT II reading what carried over and what did not.
+
+**Every figure is read from `videos-enriched.json`, not typed.** The catalogue in
+tdotssolutionsz.com sums to exactly the 25,332,774 / 101 / 54 already hard-coded
+in `build-figures.mjs`, so the numbers are now sourced rather than asserted.
+
+**Three instruments lied before one worked.** YouTube's oEmbed API returned 200
+for all 101 videos — it confirms a video EXISTS, not that embedding is permitted.
+Navigating an embed URL directly reported a player error for a known-GOOD video
+too, because YouTube requires a Referer and direct navigation sends none, so that
+check could not separate any two videos. Measuring tile saturation across a tall
+grid marked progressively more videos dead further down the page — that was lazy
+loading and throttling, not blocked videos. What finally worked: render exactly
+the videos to be published, in one page, from a real origin, alongside a
+known-bad control iframe, and read the screenshot. Control shows "This video is
+unavailable"; every published tile shows a real thumbnail.
+
+**Casper TNG — Dope Boy is excluded** despite being the second-largest title in
+the catalogue at 5,243,020 views. The uploader has embedding disabled. It is a
+real credit and it is still counted in the totals; it just cannot be shown in an
+iframe, and a dead player on a portfolio page is worse than its absence.
+
+The two halves carry an explicit disclaimer that they are not the same claim:
+Act I is commissioned work with clients and release dates, Act III is spec.
 
 ---
 

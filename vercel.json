@@ -40,7 +40,15 @@
       "destination": "/spec-reel/index.html"
     },
     {
-      "source": "/((?!resume/|passion$|passion/|fandom-flow|os$|os/|coldopen$|coldopen/|spec-reel$|spec-reel/).*)",
+      "source": "/reel",
+      "destination": "/reel/index.html"
+    },
+    {
+      "source": "/reel/",
+      "destination": "/reel/index.html"
+    },
+    {
+      "source": "/((?!resume/|passion$|passion/|fandom-flow|os$|os/|coldopen$|coldopen/|spec-reel$|spec-reel/|reel$|reel/).*)",
       "destination": "/index.html"
     }
   ],
