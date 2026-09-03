@@ -90,7 +90,7 @@
   // Staleness is the one thing this page must never hide: a dead cron would
   // otherwise leave it quietly asserting a streak with old data.
   var f = document.getElementById('freshness');
-  var gen = "2026-09-03 13:00 UTC".replace(' UTC', 'Z').replace(' ', 'T');
+  var gen = "2026-09-03 17:00 UTC".replace(' UTC', 'Z').replace(' ', 'T');
   var days = (Date.now() - Date.parse(gen)) / 86400000;
   if (f && days > 2) {
     f.innerHTML = '<span class="stale">STALE - last built ' + Math.floor(days) +
