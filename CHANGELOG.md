@@ -18,6 +18,18 @@ This changelog documents the evolutionary development of Passion OS from initial
 
 ---
 
+## [4.46.3] - 2026-09-08
+
+### Changed
+- CLEARED GATES 02 (fcp-mcp-server) now shows the tool running instead of a
+  screenshot of its GitHub page. `assets/system/gates/fcp.gif` is raw screen
+  capture of Final Cut Pro being driven: a marker placed on every cut, then
+  dialogue/music/effects roles assigned across ten clips, with Final Cut open
+  and untouched. Deliberately the ungraded take with no captions burnt in, so
+  the gate's own typography is the only type in the card.
+- Gate 02 stack line said `PYPI FCP-MCP-SERVER v0.16.0`. Shipped version is
+  v0.25.1, so the gate was nine minor releases behind its own subject.
+
 ## [4.46.2] - 2026-09-08
 
 ### Fixed
