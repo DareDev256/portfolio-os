@@ -31,17 +31,46 @@ try {
     process.exit(1);
 }
 
-let live;
-try {
-    const r = await fetch(LIVE, { headers: { 'cache-control': 'no-cache' } });
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    live = await r.json();
-} catch (err) {
-    // Cannot see the deployed file. Exit 1, never 0 — "I could not check" and
-    // "nothing is wrong" are different answers and only one of them is safe.
-    console.error(`✗ could not fetch ${LIVE}: ${err.message}`);
-    process.exit(1);
+/* SECOND VANTAGE.
+ *
+ * 2026-09-08: this MacBook could not reach www.jamesdare.com at all — 000
+ * after a 15s timeout — while the Mac Mini fetched the same URL in 0.32s.
+ * It is not a local misconfiguration: the route, gateway and interface are
+ * identical to hosts that work, cloudflare.com answers in 0.29s, and
+ * vercel.com in 0.35s. One Cloudflare anycast prefix (172.64.80.1) is
+ * unreachable from this ISP, and IPv6 has no route to it either.
+ *
+ * A drift checker that cannot see the site is not a checker. Rather than
+ * report "could not determine" four times a day forever from a host that
+ * structurally cannot answer, fall back to a host that can. An http 000 is
+ * "I could not look", never a site status — so the fallback runs before any
+ * verdict is reached, not after one is guessed.
+ *
+ * Still exits 1 if BOTH vantages fail. "I could not check" and "nothing is
+ * wrong" are different answers and only one of them is safe. */
+async function fetchLive() {
+    try {
+        const r = await fetch(LIVE, { headers: { 'cache-control': 'no-cache' } });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return { data: await r.json(), via: 'local' };
+    } catch (err) {
+        console.error(`· local vantage failed (${err.message}) — trying the Mini`);
+    }
+    try {
+        const { execFileSync } = await import('node:child_process');
+        const out = execFileSync('ssh', [
+            '-o', 'ConnectTimeout=8', '-o', 'BatchMode=yes', 'macmini',
+            `curl -sS -m 20 -H 'cache-control: no-cache' ${LIVE}`,
+        ], { encoding: 'utf8', timeout: 40000, env: { ...process.env, SSH_AUTH_SOCK: '' } });
+        return { data: JSON.parse(out), via: 'macmini' };
+    } catch (err) {
+        console.error(`✗ could not fetch ${LIVE} from either vantage: ${err.message}`);
+        process.exit(1);
+    }
 }
+
+const { data: live, via } = await fetchLive();
+if (via !== 'local') console.error(`· read the deployed file via ${via}`);
 
 const drift = [];
 const lf = local.figures ?? {};
