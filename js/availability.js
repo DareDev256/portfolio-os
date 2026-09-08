@@ -27,7 +27,16 @@ function render(root, data) {
     const ageH = (Date.now() - new Date(data.generatedAt).getTime()) / 3600000;
     const stale = !(ageH < STALE_HOURS);
 
-    const open = data.days.filter((d) => d.slots.length);
+    /* A day is offerable only if it has slots AND has not already happened.
+     * The date filter is not redundant with the generator: on 2026-09-08 this
+     * page was offering Mon Sep 7, because the payload was three days old and
+     * nothing here re-checked it against the clock. A stale file is a producer
+     * bug and gets fixed upstream, but a booking page must never invite someone
+     * to a slot in the past no matter what it is handed. Compared as ISO date
+     * strings in the visitor's own day, so a viewer in any timezone sees a day
+     * drop only once it is genuinely behind them. */
+    const todayISO = new Date().toLocaleDateString('en-CA');
+    const open = data.days.filter((d) => d.slots.length && d.date >= todayISO);
     if (!open.length) {
         root.hidden = false;
         root.innerHTML = '<p class="avail-note">No open windows in the next three weeks. '

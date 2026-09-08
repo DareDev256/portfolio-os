@@ -7,12 +7,24 @@ const DATA = JSON.parse(
     readFileSync(resolve(import.meta.dirname, '../public/data/availability.json'), 'utf8'),
 );
 
+/* Fixture dates are computed relative to NOW, not hardcoded. The renderer
+ * drops any day already in the past, so a literal like '2026-09-04' turns
+ * these tests red the day after it passes -- and it did: they had been
+ * asserting against a date three days gone. Aged with the SAME call the
+ * renderer uses (toLocaleDateString('en-CA')), so a timezone difference
+ * cannot make the fixture and the filter disagree. */
+function dayFromNow(n) {
+    const d = new Date();
+    d.setDate(d.getDate() + n);
+    return d.toLocaleDateString('en-CA');
+}
+
 function payload(over = {}) {
     return {
         generatedAt: new Date().toISOString(),
         slotMinutes: 30,
         bookingUrl: '/book',
-        days: [{ date: '2026-09-04', weekday: 'Fri', carsDue: 2, lastDeadline: '13:00', slots: ['15:00', '15:30'] }],
+        days: [{ date: dayFromNow(1), weekday: 'Fri', carsDue: 2, lastDeadline: '13:00', slots: ['15:00', '15:30'] }],
         ...over,
     };
 }
@@ -45,9 +57,25 @@ describe('availability panel', () => {
     });
 
     it('formats 24h into the 12h a North American reader expects', async () => {
-        await render(payload({ days: [{ date: '2026-09-04', weekday: 'Fri', slots: ['15:00', '15:30', '09:00'] }] }));
+        await render(payload({ days: [{ date: dayFromNow(1), weekday: 'Fri', slots: ['15:00', '15:30', '09:00'] }] }));
         const t = [...panel().querySelectorAll('.avail-slot')].map((e) => e.textContent);
         expect(t).toEqual(['3pm', '3:30pm', '9am']);
+    });
+
+    it('never offers a day that has already happened', async () => {
+        /* The live regression, 2026-09-08: the page rendered "Mon, Sep 7" on
+         * Sep 8 because the payload was three days old and nothing here
+         * re-checked it against the clock. A stale payload is a producer bug;
+         * inviting someone to a slot in the past is this file's bug. */
+        await render(payload({
+            days: [
+                { date: dayFromNow(-1), weekday: 'Mon', slots: ['15:00', '15:30'] },
+                { date: dayFromNow(2), weekday: 'Thu', slots: ['16:00'] },
+            ],
+        }));
+        const rows = panel().querySelectorAll('.avail-row');
+        expect(rows).toHaveLength(1);
+        expect(rows[0].textContent).not.toContain('Mon');
     });
 
     it('says so when it is stale instead of presenting old data as live', async () => {
@@ -59,7 +87,7 @@ describe('availability panel', () => {
     });
 
     it('handles a fully booked horizon without rendering an empty box', async () => {
-        await render(payload({ days: [{ date: '2026-09-03', weekday: 'Thu', slots: [] }] }));
+        await render(payload({ days: [{ date: dayFromNow(1), weekday: 'Thu', slots: [] }] }));
         expect(panel().hidden).toBe(false);
         expect(panel().textContent).toContain('No open windows');
         expect(panel().querySelector('a').getAttribute('href')).toBe('/book');

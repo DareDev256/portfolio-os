@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.46.1
+version: 4.46.2
 last_updated: 2026-09-08
 
 ---
@@ -17,6 +17,31 @@ last_updated: 2026-09-08
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.46.2] - 2026-09-08
+
+### Fixed
+- **The booking panel offered a day that had already happened.** On Sep 8 it
+  rendered "Mon, Sep 7". Two independent defects, both now closed:
+  - `tools/build-availability.mjs` had no scheduler. Nothing ran it, so the
+    published payload was three days old. Now on `com.daredev.availability-refresh`
+    at 07:00 / 12:00 / 16:00 / 20:00, which refuses to publish a payload whose
+    first offered date is before today.
+  - `js/availability.js` filtered days by "has slots" and never by "is not in
+    the past", so it rendered whatever it was handed. A stale payload is a
+    producer bug; inviting someone to a past slot is this file's bug, and it
+    now drops those days regardless of what the producer sends.
+- Availability test fixtures used hardcoded dates three days gone, so they
+  would have turned red on their own. Aged relative to now with the same
+  `toLocaleDateString('en-CA')` call the renderer uses, so a timezone
+  difference cannot make fixture and filter disagree.
+- `js/version.js` called itself the single source of truth for the version
+  while sitting a patch behind `package.json` and `CHANGELOG.md`, which both
+  read 4.46.1. All three now agree.
+
+### Added
+- Regression test: a day in the past is never offered, mutation-verified by
+  removing the filter and confirming the test goes red.
 
 ## [4.46.1] - 2026-09-08
 
