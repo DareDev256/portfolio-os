@@ -1,26 +1,27 @@
 {
-  "generatedAt": "2026-08-31T16:24:15.934Z",
+  "generatedAt": "2026-09-08T11:46:36.385Z",
   "figures": {
-    "stars": 95,
+    "stars": 103,
     "forks": 19,
-    "installs": "1,978",
+    "installs": "3,052",
     "clientSites": 11,
     "clientSitesUp": 11,
     "wikiShare": "33%",
-    "wikiEdits": "5,798",
-    "wikiTotal": "17,765",
+    "wikiEdits": "5,994",
+    "wikiTotal": "17,961",
     "wikiSince": 2013,
     "wikiReverted": 1,
     "wikiRevertSample": "500",
     "wikiStood": "499",
     "wikiRevertRate": "0.2%",
-    "repos": 91,
+    "repos": 98,
     "modules": 97,
     "loc": "61K",
-    "jobs": 59,
+    "jobs": 82,
     "reposPublic": 23,
     "reposArchived": 5,
-    "snapshotDate": "26•08•23"
+    "snapshotDate": "26•09•06",
+    "snapshotAt": "2026-09-06T13:30:07Z"
   },
   "definitions": {
     "stars": "GitHub stargazers on DareDev256/fcp-mcp-server, read live when these figures were last generated",
@@ -45,23 +46,26 @@
     "snapshotDate": "when data/system-snapshot.json was last generated — the date every stamp on this page reads from"
   },
   "services": {
-    "checkedAt": "2026-08-31T16:24:15.957Z",
-    "host": "unreachable",
+    "checkedAt": "2026-09-08T11:46:36.415Z",
+    "host": "up",
     "services": [
       {
         "name": "dashboard",
         "port": 3000,
-        "state": "unreachable"
+        "state": "up",
+        "code": "200"
       },
       {
         "name": "brain",
         "port": 7777,
-        "state": "unreachable"
+        "state": "down",
+        "code": "404"
       },
       {
         "name": "letstrade",
         "port": 8420,
-        "state": "unreachable"
+        "state": "up",
+        "code": "200"
       }
     ]
   },

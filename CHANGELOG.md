@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 4.46.0
-last_updated: 2026-09-01
+version: 4.46.1
+last_updated: 2026-09-08
 
 ---
 
@@ -17,6 +17,25 @@ last_updated: 2026-09-01
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.46.1] - 2026-09-08
+
+### Fixed
+- fcp-mcp-server star count refreshed to 103 across every surface that carries it.
+  Three surfaces were stale by three different amounts, which is the tell that they
+  were not all reading the same source:
+  - `public/data/figures.json` (95) and `public/data/registry-graph.json` (95) —
+    both regenerated from the live GitHub API via `tools/build-figures.mjs` and
+    `tools/build-registry-graph.mjs`.
+  - `public/data/projects.json` and `work/index.html` (87 stars, ~1.6k installs/mo)
+    — hand-typed, now 103 stars and ~3.1k installs/mo. These remain hand-typed and
+    will drift again; they have no generator.
+- `data/registry-curation.json`: added the required `disclosed` field to the
+  `syreneffect-site` entry, which had been blocking `build-registry-graph.mjs` from
+  running at all (it refuses rather than guess on a private repo). Regenerating also
+  stripped a private repo URL, `github.com/DareDev256/syreneffect-site`, that the
+  previously deployed `registry-graph.json` was publishing — a stale artifact from
+  before that guard existed.
 
 ## [4.46.0] - 2026-09-01
 
