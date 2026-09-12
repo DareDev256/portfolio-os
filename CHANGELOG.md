@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.47.0
+version: 4.48.0
 last_updated: 2026-09-12
 
 ---
@@ -17,6 +17,16 @@ last_updated: 2026-09-12
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.48.0] - 2026-09-12
+
+### Changed
+- **Paper register for `/`.** The page measured 16.9/255 mean luminance with 95.7% of pixels under 40 ("too dark", James, 2026-09-12). The hero keeps its night plate; the Gates and Contact sections now take a `.paper` class that flips every `--sys-*` token to white ground / ink text, so the page alternates night → paper → night (System Snapshot) → paper → night (footer). Accent on paper is magenta `#d40f5f` (5.2:1 on white, 4.65:1 on the panel tint), gold deepens to ochre `#96650b` (5.0:1); cyan cannot survive on white and blue-on-white read as a bank. A 32px blueprint grid keeps the status-window skeleton visible on paper.
+- `css/system.css`: 79 colour literals in the section range replaced with `rgba(var(--sys-*-rgb), a)` channel tokens, plus `--sys-strong` / `--sys-warn` / `--sys-gold-pale`, so one alpha rule serves both registers. `.sect-title` and `a:hover` were hardcoded `#fff` and vanished on paper — the two bugs the first render caught.
+- Divergence record in `system.css` updated: ground now alternates, magenta is the paper accent. tdots keeps orange.
+
+### Out of scope
+- `/os`, `/work`, `/resume`, `/coldopen` are untouched; this is the landing page's register only.
 
 ## [4.47.0] - 2026-09-12
 
