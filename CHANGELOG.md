@@ -28,6 +28,11 @@ This changelog documents the evolutionary development of Passion OS from initial
 ### Out of scope
 - `/os`, `/work`, `/resume`, `/coldopen` are untouched; this is the landing page's register only.
 
+## [4.47.1] - 2026-09-12
+
+### Fixed
+- `/os` Client Work list rebuilt from the roster: all 12 sites, real domains (three had pointed at `.vercel.app` aliases), Bali Whisper and ShairBraiding added. Asserted every roster URL appears.
+
 ## [4.47.0] - 2026-09-12
 
 ### Added
