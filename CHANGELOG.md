@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 4.46.2
-last_updated: 2026-09-08
+version: 4.47.0
+last_updated: 2026-09-12
 
 ---
 
@@ -17,6 +17,14 @@ last_updated: 2026-09-08
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.47.0] - 2026-09-12
+
+### Added
+- **Bali Whisper** (baliwhisper.com) joins the client roster: `data/client-sites.json` is now 12 sites, and `clientSites` / `clientSitesUp` regenerate to 12 / 12.
+
+### Fixed
+- The hand-typed copies of the roster count that the generated figure never reached: the `/` meta description ("eleven"), the TdotsSolutionsz reel plate ("11 client sites"), the Gate 05 named-links sentence, `js/system-chat.js` and `js/passion-assistant.js`. All say twelve and name Bali Whisper. Found by grepping the old value, per the 08-31 rule.
 
 ## [4.46.3] - 2026-09-08
 
