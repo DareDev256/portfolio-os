@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12T16:50:00.112Z",
+  "generatedAt": "2026-09-13T13:10:08.682Z",
   "sites": [
     {
       "name": "Edson Legal",
@@ -48,6 +48,10 @@
     {
       "name": "Bali Whisper",
       "url": "https://baliwhisper.com"
+    },
+    {
+      "name": "Lodiie Harmony Tour",
+      "url": "https://lodiieharmonytour.com"
     }
   ]
 }
