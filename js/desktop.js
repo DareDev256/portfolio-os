@@ -1848,18 +1848,21 @@ export const Desktop = {
 
             <div class="window-section-header purple scroll-reveal" data-reveal-delay="2" style="margin: 20px 0 15px;">◈ DIRECT_TRANSMISSION</div>
 
-            <form class="contact-form scroll-reveal" data-reveal-delay="3">
+            <form class="contact-form scroll-reveal" data-reveal-delay="3" novalidate>
                 <div class="cyber-form-group">
                     <label class="cyber-label" for="contact-name">IDENTITY</label>
-                    <input type="text" id="contact-name" name="name" class="cyber-input" placeholder="ENTER DESIGNATION" required maxlength="100">
+                    <input type="text" id="contact-name" name="name" class="cyber-input" placeholder="ENTER DESIGNATION" required maxlength="100" aria-describedby="contact-name-error">
+                    <p class="cyber-error" id="contact-name-error" data-error-for="name" role="alert" hidden></p>
                 </div>
                 <div class="cyber-form-group">
                     <label class="cyber-label" for="contact-email">FREQUENCY (EMAIL)</label>
-                    <input type="email" id="contact-email" name="email" class="cyber-input" placeholder="USER@NET.COM" required maxlength="254">
+                    <input type="email" id="contact-email" name="email" class="cyber-input" placeholder="USER@NET.COM" required maxlength="254" aria-describedby="contact-email-error">
+                    <p class="cyber-error" id="contact-email-error" data-error-for="email" role="alert" hidden></p>
                 </div>
                 <div class="cyber-form-group">
                     <label class="cyber-label" for="contact-message">PACKET DATA</label>
-                    <textarea id="contact-message" name="message" class="cyber-textarea" placeholder="INITIATE MESSAGE SEQUENCE..." required maxlength="2000"></textarea>
+                    <textarea id="contact-message" name="message" class="cyber-textarea" placeholder="INITIATE MESSAGE SEQUENCE..." required maxlength="2000" aria-describedby="contact-message-error"></textarea>
+                    <p class="cyber-error" id="contact-message-error" data-error-for="message" role="alert" hidden></p>
                 </div>
                 <button type="submit" class="cyber-button" style="width: 100%; margin-top: 10px;">
                     <span>TRANSMIT ENCRYPTED DATA</span>
@@ -1873,8 +1876,64 @@ export const Desktop = {
         `;
 
         const form = content.querySelector('form');
+
+        // Inline error text next to each required field — replaces relying on
+        // the browser's own validation bubble, which carries none of the
+        // site's styling and is silently suppressed by novalidate above.
+        const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        const clearFieldError = (field) => {
+            field.classList.remove('cyber-input--invalid');
+            field.removeAttribute('aria-invalid');
+            const errorEl = form.querySelector(`[data-error-for="${field.name}"]`);
+            if (errorEl) {
+                errorEl.hidden = true;
+                errorEl.textContent = '';
+            }
+        };
+
+        const showFieldError = (field, message) => {
+            field.classList.add('cyber-input--invalid');
+            field.setAttribute('aria-invalid', 'true');
+            const errorEl = form.querySelector(`[data-error-for="${field.name}"]`);
+            if (errorEl) {
+                errorEl.textContent = message;
+                errorEl.hidden = false;
+            }
+        };
+
+        const validateField = (field) => {
+            const value = field.value.trim();
+            if (!value) {
+                showFieldError(field, 'REQUIRED');
+                return false;
+            }
+            if (field.type === 'email' && !EMAIL_RE.test(value)) {
+                showFieldError(field, 'ENTER A VALID EMAIL');
+                return false;
+            }
+            clearFieldError(field);
+            return true;
+        };
+
+        ['name', 'email', 'message'].forEach((fieldName) => {
+            const field = form.elements[fieldName];
+            field.addEventListener('input', () => {
+                if (field.value.trim()) clearFieldError(field);
+            });
+        });
+
         form.onsubmit = (e) => {
             e.preventDefault();
+
+            const fields = ['name', 'email', 'message'].map((f) => form.elements[f]);
+            const validations = fields.map(validateField);
+            if (!validations.every(Boolean)) {
+                const firstInvalid = fields[validations.findIndex((v) => !v)];
+                firstInvalid.focus();
+                return;
+            }
+
             const formData = new FormData(form);
             const name = formData.get('name');
             const email = formData.get('email');

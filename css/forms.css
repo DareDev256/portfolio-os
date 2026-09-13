@@ -118,6 +118,24 @@
     box-shadow: 0 0 5px rgba(255, 0, 170, 0.3);
 }
 
+/* Custom validation state — set by JS on submit, since the contact form
+ * runs novalidate and reports errors inline instead of via the native
+ * browser tooltip. */
+.cyber-input--invalid,
+.cyber-textarea.cyber-input--invalid {
+    border-color: var(--neon-magenta);
+    box-shadow: 0 0 5px rgba(255, 0, 170, 0.3);
+}
+
+.cyber-error {
+    margin: 6px 0 0;
+    font-size: 11px;
+    font-family: var(--font-family);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--neon-magenta);
+}
+
 /* Custom Scrollbar for Textarea */
 .cyber-textarea::-webkit-scrollbar {
     width: 6px;
