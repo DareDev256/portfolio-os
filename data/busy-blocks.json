@@ -1,38 +1,18 @@
 {
-  "note": "Busy blocks overlapping the offered window. Cars excluded \u2014 they are deadlines, not occupancy, and the generator models them separately. Times only, never titles.",
-  "generatedAt": "2026-09-14T17:31:29.955863Z",
-  "source": "google:tdot (one-off via session calendar connector; launchd producer tools/build-busy-blocks.mjs blocked on calendar scope)",
+  "note": "Busy blocks overlapping the offered window. Cars excluded — they are deadlines, not occupancy, and the generator models them separately. Times only, never titles.",
+  "generatedAt": "2026-09-19T22:42:17.229Z",
+  "source": "google:tdot",
   "horizonDays": 22,
   "window": {
     "start": "15:00",
     "end": "17:00"
   },
   "sample": {
-    "events": 500,
-    "considered": 190,
-    "blocks": 18
+    "events": 559,
+    "considered": 213,
+    "blocks": 20
   },
   "blocks": [
-    {
-      "date": "2026-09-14",
-      "start": "16:30",
-      "end": "17:15"
-    },
-    {
-      "date": "2026-09-15",
-      "start": "16:30",
-      "end": "17:15"
-    },
-    {
-      "date": "2026-09-17",
-      "start": "16:30",
-      "end": "17:15"
-    },
-    {
-      "date": "2026-09-18",
-      "start": "16:30",
-      "end": "17:15"
-    },
     {
       "date": "2026-09-20",
       "start": "15:00",
@@ -100,6 +80,36 @@
     },
     {
       "date": "2026-10-04",
+      "start": "16:30",
+      "end": "16:45"
+    },
+    {
+      "date": "2026-10-05",
+      "start": "16:30",
+      "end": "17:15"
+    },
+    {
+      "date": "2026-10-06",
+      "start": "16:30",
+      "end": "17:15"
+    },
+    {
+      "date": "2026-10-08",
+      "start": "16:30",
+      "end": "17:15"
+    },
+    {
+      "date": "2026-10-09",
+      "start": "16:30",
+      "end": "17:15"
+    },
+    {
+      "date": "2026-10-11",
+      "start": "15:00",
+      "end": "16:30"
+    },
+    {
+      "date": "2026-10-11",
       "start": "16:30",
       "end": "16:45"
     }
