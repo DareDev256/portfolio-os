@@ -1,29 +1,33 @@
 {
-  "generatedAt": "2026-09-13T13:10:14.558Z",
+  "generatedAt": "2026-09-18T13:10:14.199Z",
   "figures": {
-    "stars": 105,
+    "stars": 108,
     "forks": 19,
-    "installs": "3,304",
+    "installs": "3,297",
     "clientSites": 13,
     "clientSitesUp": 13,
-    "wikiShare": "34%",
-    "wikiEdits": "6,245",
-    "wikiTotal": "18,212",
+    "wikiShare": "35%",
+    "wikiEdits": "6,468",
+    "wikiTotal": "18,435",
     "wikiSince": 2013,
-    "wikiReverted": 0,
+    "wikiReverted": 3,
     "wikiRevertSample": "500",
-    "wikiStood": "500",
-    "wikiRevertRate": "0.0%",
-    "repos": 98,
+    "wikiStood": "497",
+    "wikiRevertRate": "0.6%",
+    "repos": 100,
     "modules": 97,
     "loc": "61K",
-    "jobs": 82,
+    "jobs": 92,
     "reposPublic": 23,
     "reposArchived": 5,
-    "snapshotDate": "26•09•06",
-    "snapshotAt": "2026-09-06T13:30:07Z"
+    "snapshotDate": "26•09•13",
+    "snapshotAt": "2026-09-13T13:30:07Z",
+    "siteVersion": "4.50.2",
+    "passionVersion": "4.94.0"
   },
   "definitions": {
+    "siteVersion": "jamesdare.com package.json version when these figures were generated",
+    "passionVersion": "passion-agent package.json version on the machine that generated these figures",
     "stars": "GitHub stargazers on DareDev256/fcp-mcp-server, read live when these figures were last generated",
     "forks": "GitHub forks of DareDev256/fcp-mcp-server, read live when these figures were last generated",
     "installs": "PyPI downloads of fcp-mcp-server in the last 30 days, via pypistats",
@@ -46,7 +50,7 @@
     "snapshotDate": "when data/system-snapshot.json was last generated — the date every stamp on this page reads from"
   },
   "services": {
-    "checkedAt": "2026-09-13T13:10:14.602Z",
+    "checkedAt": "2026-09-18T13:10:14.260Z",
     "host": "up",
     "services": [
       {

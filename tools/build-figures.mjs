@@ -87,12 +87,34 @@ if (typeof repo.stargazers_count !== 'number') die('GitHub returned no star coun
 
 // ── 2. PyPI. pypistats is the only public source for download counts; PyPI's
 //       own JSON API has not exposed them since 2018.
-const pypi = await fetchJSON(
-    `https://pypistats.org/api/packages/${PYPI_PACKAGE}/recent`,
-    'pypistats'
-);
-const installs = pypi?.data?.last_month;
-if (typeof installs !== 'number') die('pypistats returned no last_month figure');
+/* pypistats' JSON API answers this IP with a bare 429 (no Retry-After) on
+ * every attempt since at least 2026-09-17 — the daily radar plus its own
+ * four retries is enough to trip a per-IP limit that never resets in time.
+ * The Mini shares the IP, so it is no second vantage. The package's HTML page
+ * on the same host is served without the limit and carries the identical
+ * figure ("Downloads last month: 3,297" beside `last_month: 3297` on
+ * 09-18), so it is the same source read through a different door, not a
+ * fallback to a guess. JSON first; HTML only when JSON is rate-limited; a
+ * miss on both still dies. */
+async function pypiLastMonth() {
+    const api = `https://pypistats.org/api/packages/${PYPI_PACKAGE}/recent`;
+    let res = null;
+    try { res = await fetch(api, { headers: { 'user-agent': 'jamesdare.com figures builder' } }); } catch { /* fall through */ }
+    if (res?.ok) {
+        const n = (await res.json())?.data?.last_month;
+        if (typeof n === 'number') return n;
+        die('pypistats returned no last_month figure');
+    }
+    if (res && res.status !== 429) die(`pypistats: HTTP ${res.status}`);
+    console.error('  pypistats: HTTP 429 on the JSON API, reading the package page instead');
+    const html = await fetch(`https://pypistats.org/packages/${PYPI_PACKAGE}`, {
+        headers: { 'user-agent': 'jamesdare.com figures builder' },
+    }).then((r) => (r.ok ? r.text() : die(`pypistats page: HTTP ${r.status}`)));
+    const m = html.replace(/<[^>]*>/g, ' ').match(/Downloads last month:?\s*([\d,]+)/i);
+    if (!m) die('pypistats page carried no "Downloads last month" figure');
+    return Number(m[1].replace(/,/g, ''));
+}
+const installs = await pypiLastMonth();
 
 /* ── 2b. The wiki share. This is the strongest external-validation number the
  *       site has and it was the only headline claim on the page with no
@@ -301,8 +323,17 @@ const out = {
          * back into a Date couples the staleness check to a display string.
          * Emit both: one for humans, one for arithmetic. */
         snapshotAt: snap.generatedAt,
+
+        /* Versions. /os carried "v4.11.0" by hand while package.json read
+         * 4.50.1 — 39 minor releases of drift on a label that sits in the top
+         * bar of every visit. Same class of bug as the module counts: the page
+         * typed a number the repo already knew. Read both from their source. */
+        siteVersion: JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf8')).version,
+        passionVersion: JSON.parse(readFileSync(resolve(process.env.HOME, 'dev/passion-agent/package.json'), 'utf8')).version,
     },
     definitions: {
+        siteVersion: 'jamesdare.com package.json version when these figures were generated',
+        passionVersion: 'passion-agent package.json version on the machine that generated these figures',
         /* NOT "live at build time". package.json's build script is `vite build`
          * and nothing else — these generators need gh auth and an SSH route to
          * the Mini, neither of which exists on Vercel, so they run locally and

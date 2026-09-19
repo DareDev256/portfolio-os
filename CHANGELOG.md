@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 4.48.0
-last_updated: 2026-09-12
+version: 4.50.2
+last_updated: 2026-09-18
 
 ---
 
@@ -17,6 +17,36 @@ last_updated: 2026-09-12
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.50.2] - 2026-09-18
+
+### Fixed
+- **`/os` top bar read `v4.11.0` by hand while `package.json` read 4.50.1** — 39 minor releases of drift on a label in every visit. The label is now `[data-fig="siteVersion"]` bound by the same `js/system-figures.js` the home page uses; `tools/build-figures.mjs` emits `siteVersion` (this repo's package.json) and `passionVersion` (passion-agent's, 4.94.0) with definitions. `/os` did not load the binder before this; it does now.
+- **`figures.json` had not regenerated since 09-16 — pypistats' JSON API answers this IP with a bare 429 on every attempt**, so `site-truth-radar` refused (correctly) every day. The Mini shares the IP, so it was no second vantage; a third-party fetch got 200 with the same figure. The generator now reads the package's HTML page on the same host when the JSON lane is rate-limited — same source, different door — and still dies when both miss. Regenerated: 108 stars · 19 forks · 3,297 installs/mo.
+
+## [4.50.1] - 2026-09-16
+
+### Fixed
+- Tenure claims matched to LinkedIn: hero and meta now say "ten years shipping solo for people who pay for it" (was "fourteen years shipping to real audiences"); Gate 05 says "a decade directing music video" (was fourteen). One number per claim, the LinkedIn About is the reference.
+
+## [4.50.0] - 2026-09-16
+
+### Changed
+- **Positioning matched to LinkedIn after the Electric Mind screen (Nathalie Cronick, VP Talent, 2026-09-16).** Her note: a title that claims AI before ChatGPT reads as "10 years in AI, which nobody has". Every "AI Solutions Engineer" literal on `/` and `/os` (title, meta, OG, Twitter, JSON-LD `jobTitle`/`seeks`, hero eyebrow, contact block, `/os` login card, Passion assistant) is now **Software Engineer, production AI**. The contact line and the Ask-the-System "open to work" answer now say what LinkedIn says: a seat on a delivery team, in house or consulting; ten years shipping solo; **the AI work is 2025 onward and dated that way** (the chat used to say "the last three building agent infrastructure", i.e. AI since 2023).
+- **The RESUME button served the Sep 1 PDF** carrying every claim she flagged — "AI Product & Community Strategist", "+40% bookings", LangChain as shipped, 124 stars, four pages. Both served PDFs replaced with the current two-page set (`AI-Engineer_2026-09e`, `Creative_2026-09c`). Grep of the banned list against the served PDFs: 0.
+- `/os` BetMetrics card: "Built for affiliate marketing at scale" → "Built for a business owner on a paid retainer; 377+ registered users" (the OLG-affiliate claim is unconfirmed until Mo says otherwise).
+
+## [4.49.0] - 2026-09-16
+
+### Changed
+- **Steel register replaces paper on `/`.** The white sections read as "off" (James, 2026-09-16) — a status window that flips to a printed sheet and back. Gates and Contact now sit on mid-grey steel `#2e333b` (46,51,59 — 3x the night ground, so the 09-12 all-black finding stays fixed) with the same `.paper` class and token mechanism. Cyan `#7fdcff` (8.9:1) and gold `#ffd76a` (10.2:1) hold on steel, so the magenta/ochre pair that existed only because cyan died on white is gone; the page speaks one accent again. Blueprint grid stays, white at 6%. Two directions were rendered first (gunmetal `#1a1e25` collapsed into the hero; steel did not) — shots in `docs/shots/`.
+
+### Fixed
+- **Ask-the-System quoted "90 stars, 1,900 installs, twelve sites" while the counter above it said 107.** The scripted answers in `js/system-chat.js` carried literals — the exact drift `tools/build-figures.mjs` was written to end. They now read `{stars}`, `{installs}`, `{clientSitesUp}`, `{directedFilms}`, `{directedArtists}`, `{directedViews}` from `/data/figures.json`, the same file every `[data-fig]` reads; a missing key renders an em dash, never a stale number.
+- `figures.json` regenerated: 107 stars · 19 forks · 3,329 installs/mo (live had 105 from 09-13).
+
+### Out of scope
+- `/os`, `/work`, `/resume`, `/coldopen` untouched.
 
 ## [4.48.0] - 2026-09-12
 
