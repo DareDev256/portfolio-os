@@ -1743,7 +1743,7 @@ export const Desktop = {
                 </div>
                 <div class="gauntlet-reveal" data-gauntlet-delay="2">
                     <div class="gauntlet-text">
-                        AI Solutions Engineer &bull; Creative Technologist<br>
+                        Software Engineer &bull; Creative Technologist<br>
                         <strong>Toronto, Canada</strong> &mdash; Always shipping
                     </div>
                 </div>

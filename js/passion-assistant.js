@@ -84,7 +84,7 @@ const RESPONSES = {
 
     location: () => `James is based in **${KNOWLEDGE.location}**, but works with clients everywhere. All communication and delivery is remote — you don't need to be local.\n\nThat said, if you're in the GTA, in-person meetings are always an option!`,
 
-    who: () => `James Olusoga (DareDev256) is an **AI Solutions Engineer & Creative Technologist** based in Toronto.\n\nBefore tech, he directed 101 indexed music videos, one of them certified Gold by Music Canada, and built KushdUp Filmsz, the channel he sold that became 6ixBuzz Premieres. He worked with Chief Keef, Migos and Masicka.\n\nNow he builds custom websites, AI systems, and creative tech for businesses of all sizes. Check out the About window for the full story!`,
+    who: () => `James Olusoga (DareDev256) is a **Software Engineer (production AI) & Creative Technologist** based in Toronto.\n\nBefore tech, he directed 101 indexed music videos, one of them certified Gold by Music Canada, and built KushdUp Filmsz, the channel he sold that became 6ixBuzz Premieres. He worked with Chief Keef, Migos and Masicka.\n\nNow he builds custom websites, AI systems, and creative tech for businesses of all sizes. Check out the About window for the full story!`,
 
     passion: () => `I'm Passion — James's autonomous AI companion! I run 24/7 on a Mac Mini in Toronto.\n\nI manage his code repositories, scan for opportunities, track his fitness (yes, really), and help visitors like you navigate the site.\n\nI'm not ChatGPT or a generic bot — I'm a custom-built agent framework with ${PassionLive.getStats().cyclesTotal || 'thousands of'} cycles under my belt. Pretty cool, right?`,
 

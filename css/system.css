@@ -6,10 +6,10 @@
  *
  * DIVERGENCE RECORD — this surface must not converge with tdotssolutionsz.com.
  *   jamesdare  Saira var / Inter / JetBrains Mono · cyan #6fd3ff + gold #ffd76a
- *              on the night hero; magenta #d40f5f + ochre on the PAPER sections
- *              · ground alternates #04080f / #ffffff (2026-09-12: the page
- *              measured 16.9/255 mean luminance, 95.7% of pixels under 40)
- *              · holo-window skeleton, blueprint grid on paper · SNAP motion
+ *              everywhere; ground alternates night #04080f / STEEL #2e333b
+ *              (2026-09-16 — white paper read as "off" and needed a second
+ *              accent; 2026-09-12 measured the all-night page at 16.9/255)
+ *              · holo-window skeleton, blueprint grid on steel · SNAP motion
  *   tdots      Anton / Archivo / — · orange #e85d34 · warmed ground #0b0a09
  *              · 3D card-cloud skeleton · CONTINUOUS DRIFT motion
  * Four axes, opposite values. Do not borrow across. Saira was chosen partly
@@ -68,41 +68,43 @@
     --sys-gut: clamp(20px, 4.4vw, 64px);
 }
 
-/* PAPER REGISTER — 2026-09-12. The hero keeps the night plate; the sections
- * under it flip to white ground and ink text. Same tokens, second value set,
- * so a section moves registers by taking the class, not by owning colours.
- * The accent is HOT MAGENTA, not blue: cyan dies on white (2.1:1) and every
- * blue-on-white replacement reads as a bank. Magenta at 4.6:1 keeps the neon
- * energy of the dark register, and gold stays as the figure colour. Neutrals
- * are tinted toward the magenta so the ramp reads designed, not assembled.
- * A faint blueprint grid keeps the status-window skeleton visible on paper. */
+/* STEEL REGISTER — 2026-09-16 (replaces the PAPER register of 09-12). The
+ * hero and the snapshot keep the night plate; the sections between them sit
+ * on a mid-grey steel ground. White paper read as "off" — a hiring page that
+ * flips from a status window to a printed sheet and back — and the magenta it
+ * needed only existed because cyan dies on white. On steel, cyan (8.9:1) and
+ * gold (10.2:1) both hold, so the whole page speaks one accent again.
+ * Same mechanism as before: a section changes register by taking the class,
+ * never by owning colours. The 32px blueprint grid stays, in white at 6%.
+ * The 09-12 luminance finding still holds — steel at 46,51,59 is 3x the
+ * night ground, so the page no longer measures as one black sheet. */
 .paper {
-    --sys-ground: #ffffff;
-    --sys-panel: rgba(255, 255, 255, 0.96);
-    --sys-panel-solid: #f5f1f4;
-    --sys-cyan: #d40f5f;
-    --sys-cyan-pale: #b80f55;
-    --sys-gold: #96650b;
-    --sys-gold-pale: #7a5008;
-    --sys-text: #140b12;
-    --sys-muted: #6b5a66;
-    --sys-dim: #3e2f3a;
-    --sys-strong: #0b0609;
-    --sys-warn: #c2410c;
-    --sys-edge: rgba(212, 15, 95, 0.9);
-    --sys-hair: rgba(20, 11, 18, 0.16);
-    --sys-glow: rgba(212, 15, 95, 0.08);
-    --sys-cyan-rgb: 212, 15, 95;
-    --sys-gold-rgb: 150, 101, 11;
-    --sys-text-rgb: 20, 11, 18;
-    --sys-muted-rgb: 107, 90, 102;
-    --sys-ground-rgb: 255, 255, 255;
-    --sys-panel-rgb: 245, 241, 244;
-    --sys-wash-rgb: 250, 160, 200;
-    --sys-shadow-rgb: 20, 11, 18;
+    --sys-ground: #2e333b;
+    --sys-panel: rgba(56, 62, 72, 0.96);
+    --sys-panel-solid: #3a4049;
+    --sys-cyan: #7fdcff;
+    --sys-cyan-pale: #c2f0ff;
+    --sys-gold: #ffd76a;
+    --sys-gold-pale: #ffe59a;
+    --sys-text: #f1f4f8;
+    --sys-muted: #a3acb8;
+    --sys-dim: #c9d0d9;
+    --sys-strong: #ffffff;
+    --sys-warn: #ff9a78;
+    --sys-edge: rgba(127, 220, 255, 0.85);
+    --sys-hair: rgba(241, 244, 248, 0.16);
+    --sys-glow: rgba(127, 220, 255, 0.1);
+    --sys-cyan-rgb: 127, 220, 255;
+    --sys-gold-rgb: 255, 215, 106;
+    --sys-text-rgb: 241, 244, 248;
+    --sys-muted-rgb: 163, 172, 184;
+    --sys-ground-rgb: 46, 51, 59;
+    --sys-panel-rgb: 58, 64, 73;
+    --sys-wash-rgb: 127, 220, 255;
+    --sys-shadow-rgb: 0, 0, 0;
     background:
-        linear-gradient(rgba(20, 11, 18, 0.055) 1px, transparent 1px) 0 0 / 100% 32px,
-        linear-gradient(90deg, rgba(20, 11, 18, 0.055) 1px, transparent 1px) 0 0 / 32px 100%,
+        linear-gradient(rgba(241, 244, 248, 0.06) 1px, transparent 1px) 0 0 / 100% 32px,
+        linear-gradient(90deg, rgba(241, 244, 248, 0.06) 1px, transparent 1px) 0 0 / 32px 100%,
         var(--sys-ground);
     color: var(--sys-text);
 }

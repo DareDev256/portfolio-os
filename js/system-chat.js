@@ -25,20 +25,35 @@
 
     const MAIL = 'dev@jamesdare.com';
 
+    /* Figures in the scripted answers come from /data/figures.json — the same
+     * file every [data-fig] on the page reads. This block carried "90 stars,
+     * 1,900 installs, twelve sites" as literals until 2026-09-16, when the
+     * counter above it said 107 and James asked why the stars were wrong. A
+     * placeholder with no value renders as an em dash, never a stale number. */
+    let FIG = {};
+    const figuresReady = fetch('/data/figures.json')
+        .then((r) => (r.ok ? r.json() : {}))
+        .then((snap) => {
+            FIG = { ...(snap.figures ?? {}) };
+            for (const [k, m] of Object.entries(snap.manual ?? {})) FIG[k] = m.value;
+        })
+        .catch(() => {});
+    const fill = (text) => text.replace(/\{(\w+)\}/g, (_, k) => (FIG[k] === undefined || FIG[k] === null ? '\u2014' : String(FIG[k])));
+
     const ANSWERS = [
         {
             q: 'Are you open to work?',
             a: [
-                'Yes. AI Solutions Engineer, Solutions Architect, Forward Deployed Engineer. Toronto or remote.',
-                'Fourteen years shipping to real audiences, the last three building agent infrastructure. I read every message myself — there is no assistant in front of this.',
+                'Yes. Software engineer, production AI systems. A seat on a delivery team, in house or consulting. Toronto or remote.',
+                'Ten years shipping solo for people who pay for it. The AI work is 2025 onward, and I date it that way. I read every message myself — there is no assistant in front of this.',
             ],
             cta: { label: 'BOOK 30 MINUTES', href: '/book' },
         },
         {
             q: 'What have you actually shipped?',
             a: [
-                'An open-source MCP server for Final Cut Pro — 90 stars, on PyPI, about 1,900 installs a month. A sports-betting analytics product with real money moving through it. Twelve client sites live right now.',
-                'And 101 music videos across 54 artists, 25,332,774 views. Everything on this page links to the running thing, not a case study about it.',
+                'An open-source MCP server for Final Cut Pro — {stars} stars, on PyPI, about {installs} installs a month. A sports-betting analytics product with real money moving through it. {clientSitesUp} client sites live right now.',
+                'And {directedFilms} music videos across {directedArtists} artists, {directedViews} views. Everything on this page links to the running thing, not a case study about it.',
             ],
             cta: { label: 'SEE THE WORK', href: '#gates' },
         },
@@ -258,7 +273,7 @@
         let i = 0;
         const next = () => {
             if (i < lines.length) {
-                bubble('sys', lines[i]);
+                bubble('sys', fill(lines[i]));
                 i += 1;
                 scrollThread();
                 window.setTimeout(next, reduced ? 0 : 420);
@@ -274,7 +289,7 @@
     function ask(entry) {
         bubble('you', entry.q);
         scrollThread();
-        say(entry.a, entry.cta, entry.ask ? '' : undefined);
+        figuresReady.then(() => say(entry.a, entry.cta, entry.ask ? '' : undefined));
         if (entry.ask) input.focus({ preventScroll: true });
     }
 
