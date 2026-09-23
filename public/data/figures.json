@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-09-18T13:10:14.199Z",
+  "generatedAt": "2026-09-23T19:50:45.483Z",
   "figures": {
-    "stars": 108,
-    "forks": 19,
-    "installs": "3,297",
+    "stars": 109,
+    "forks": 20,
+    "installs": "3,122",
     "clientSites": 13,
     "clientSitesUp": 13,
-    "wikiShare": "35%",
-    "wikiEdits": "6,468",
-    "wikiTotal": "18,435",
+    "wikiShare": "36%",
+    "wikiEdits": "6,716",
+    "wikiTotal": "18,683",
     "wikiSince": 2013,
     "wikiReverted": 3,
     "wikiRevertSample": "500",
@@ -50,7 +50,7 @@
     "snapshotDate": "when data/system-snapshot.json was last generated — the date every stamp on this page reads from"
   },
   "services": {
-    "checkedAt": "2026-09-18T13:10:14.260Z",
+    "checkedAt": "2026-09-23T19:50:45.507Z",
     "host": "up",
     "services": [
       {
