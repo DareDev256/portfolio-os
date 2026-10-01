@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18T13:10:07.483Z",
+  "generatedAt": "2026-10-01T21:47:40.867Z",
   "sites": [
     {
       "name": "Edson Legal",
@@ -52,6 +52,18 @@
     {
       "name": "Lodiie Harmony Tour",
       "url": "https://lodiieharmonytour.com"
+    },
+    {
+      "name": "BetMetrics",
+      "url": "https://betmetrics.ca"
+    },
+    {
+      "name": "Spoiled Kass",
+      "url": "https://spoiledkass.com"
+    },
+    {
+      "name": "Dancehall Princess Canada",
+      "url": "https://dancehallprincess.ca"
     }
   ]
 }
