@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-30T11:00:32.774Z",
+  "generatedAt": "2026-10-01T00:00:30.914Z",
   "timeZone": "America/Toronto",
   "window": "15:00-17:00",
   "slotMinutes": 30,
   "bookingUrl": "/book",
   "sample": {
-    "cars": 79,
-    "days": 34,
+    "cars": 80,
+    "days": 35,
     "horizonDays": 21,
     "busyBlocks": 19
   },
@@ -27,8 +27,8 @@
     {
       "date": "2026-10-02",
       "weekday": "Fri",
-      "carsDue": 0,
-      "lastDeadline": null,
+      "carsDue": 1,
+      "lastDeadline": "10:00",
       "confidence": "measured",
       "slots": [
         "15:00",
