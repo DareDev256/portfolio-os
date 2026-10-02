@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 4.50.2
-last_updated: 2026-09-18
+version: 4.51.0
+last_updated: 2026-10-01
 
 ---
 
@@ -17,6 +17,15 @@ last_updated: 2026-09-18
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.51.0] - 2026-10-01
+
+### Added
+- Client sites list now names all 16 in the roster: + Lodiie Harmony Tour, BetMetrics, Spoiled Kass, Dancehall Princess Canada (the "N sites live" figure already read 16 from `data/client-sites.json`; the prose named 12). `/os` list gains Lodiie, Spoiled Kass and Dancehall Princess Canada; Shortiie Raw's line describes the new site.
+- TdotsSolutionsz reel plate: "12 client sites" → "15 client sites" (what tdotssolutionsz.com now shows).
+
+### Fixed
+- **Cold Open claim.** The reel plate and `/coldopen` said the engine generated shortiieraw.com. Since 2026-10-01 shortiieraw.com is a hand-built site; the generated one is archived at shortiieraw.com/carry-on/. Copy now says the engine generated the *first* shortiieraw.com, and "See what it generated" links to /carry-on/ (200).
 
 ## [4.50.2] - 2026-09-18
 
