@@ -75,7 +75,11 @@ describe('availability panel', () => {
         }));
         const rows = panel().querySelectorAll('.avail-row');
         expect(rows).toHaveLength(1);
-        expect(rows[0].textContent).not.toContain('Mon');
+        /* Compare by the rendered date, not the weekday name: on a Saturday the
+         * day two ahead is itself a Monday (2026-10-03 false failure). */
+        const label = (n) => new Date(`${dayFromNow(n)}T12:00:00`).toLocaleDateString('en-CA', { weekday: 'short', month: 'short', day: 'numeric' });
+        expect(rows[0].textContent).toContain(label(2));
+        expect(rows[0].textContent).not.toContain(label(-1));
     });
 
     it('says so when it is stale instead of presenting old data as live', async () => {
