@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.52.0
+version: 4.53.0
 last_updated: 2026-10-03
 
 ---
@@ -17,6 +17,14 @@ last_updated: 2026-10-03
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.53.0] - 2026-10-03
+
+### Added
+- PLAY section (and a PLAY link in the nav): nine browser games built with AI, each with its real title screen and a direct link. MANY ROADS featured; What's Poppin, TypeMaster AI and six Passionate Learning games (Prompt Craft, Red Team Arena, Token Prophet, Bias Buster, NetRunner, Circuit Prophet). Every link was opened and its title screen rendered before it was listed; Hallucination Hunter is left off because it never gets past its loader.
+
+### Fixed
+- The availability test compares rendered dates instead of weekday names (it failed every Saturday).
 
 ## [4.52.0] - 2026-10-03
 
