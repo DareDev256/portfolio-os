@@ -748,6 +748,9 @@ button:focus-visible {
 .rw5 {
     animation-delay: 1.51s;
 }
+.rw6 {
+    animation-delay: 1.6s;
+}
 
 @keyframes rowIn {
     from {

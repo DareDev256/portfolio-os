@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 4.51.0
-last_updated: 2026-10-01
+version: 4.52.0
+last_updated: 2026-10-03
 
 ---
 
@@ -17,6 +17,14 @@ last_updated: 2026-10-01
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.52.0] - 2026-10-03
+
+### Added
+- MANY ROADS in the hero: a PLAYABLE plate in the reel (Ravine's Izuna Drop in the Don Valley, filmed from the live game, no captions), placed beside the Nin Online and Ninjora wikis, and a PLAYABLE row in the STATUS panel linking to playmanyroads.com.
+
+### Fixed
+- `js/version.js` matched package.json again (it had stayed at 4.50.1).
 
 ## [4.51.0] - 2026-10-01
 
