@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.53.0
+version: 4.54.0
 last_updated: 2026-10-03
 
 ---
@@ -17,6 +17,12 @@ last_updated: 2026-10-03
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.54.0] - 2026-10-03
+
+### Changed
+- PLAY leads with MANY ROADS alone: a full-width feature with its gameplay looping, the facts (17 fighters, 10 Toronto places, 160 versions in 10 days, 1,100+ tests) and PLAY FREE / trailer / itch.io. The six Passionate Learning games and the two arcade prototypes now sit behind expandable rows instead of competing with it.
+- The MANY ROADS clip (hero reel and PLAY) is now Massacouraman's leap on the Lakeshore boardwalk. The Izuna clip contained a full white super-flash frame that blinked on every loop (brightest frame now 74 of 255).
 
 ## [4.53.0] - 2026-10-03
 

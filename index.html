@@ -668,80 +668,89 @@
         </section>
 
         <!-- ============ PLAY ============ -->
-        <!-- Games that run in the browser right now. Every link here was opened and its title
-             screen rendered on 2026-10-03; a game that only shows a loader stays off the list
-             until it is fixed (Hallucination Hunter, same date). -->
+        <!-- MANY ROADS is the game at the bar, so it is the only one shown open. Everything
+             else is a prototype or a learning experiment and sits behind a <details> row.
+             Every link was opened and its title screen rendered on 2026-10-03;
+             Hallucination Hunter is left off because it never gets past its loader. -->
         <section class="play" id="play" aria-labelledby="play-h">
             <div class="play-head">
                 <p class="eyebrow rv">PLAY</p>
                 <h2 class="sect-title rv d1" id="play-h">Games I built with AI</h2>
-                <p class="play-lede rv d2">All free, all in the browser. Nothing to install.</p>
             </div>
-            <div class="play-grid">
-                <a class="play-card featured rv" href="https://playmanyroads.com" target="_blank" rel="noopener">
-                    <img src="/assets/system/play/manyroads.jpg" alt="Many Roads title screen" loading="lazy" width="640" height="400" />
-                    <span class="play-tag">FREE ALPHA · FEATURED</span>
-                    <span class="play-name">MANY ROADS</span>
-                    <span class="play-blurb">Battle Network style roguelite set in real Toronto. 17 fighters, 10 places. Built with Claude Code in 10 days.</span>
-                    <span class="play-go">PLAY &#8599;</span>
+
+            <article class="play-hero rv">
+                <a class="play-hero-media" href="https://playmanyroads.com" target="_blank" rel="noopener" aria-label="Play MANY ROADS">
+                    <video src="/assets/system/reel/site-manyroads.mp4" poster="/assets/system/reel/site-manyroads.jpg" autoplay muted loop playsinline preload="metadata"></video>
                 </a>
-                <a class="play-card rv" href="https://passion-pop.vercel.app" target="_blank" rel="noopener">
-                    <img src="/assets/system/play/poppin.jpg" alt="What'S Poppin title screen" loading="lazy" width="640" height="400" />
-                    <span class="play-tag">ARCADE</span>
-                    <span class="play-name">WHAT'S POPPIN</span>
-                    <span class="play-blurb">Bubble match with streaks, a daily challenge and characters to unlock.</span>
-                    <span class="play-go">PLAY &#8599;</span>
-                </a>
-                <a class="play-card rv" href="https://typing-game-kappa-seven.vercel.app" target="_blank" rel="noopener">
-                    <img src="/assets/system/play/typemaster.jpg" alt="Typemaster Ai title screen" loading="lazy" width="640" height="400" />
-                    <span class="play-tag">TYPING</span>
-                    <span class="play-name">TYPEMASTER AI</span>
-                    <span class="play-blurb">Learn AI and ML engineering terms by typing them at speed.</span>
-                    <span class="play-go">PLAY &#8599;</span>
-                </a>
-                <a class="play-card rv" href="https://prompt-craft-jet.vercel.app" target="_blank" rel="noopener">
-                    <img src="/assets/system/play/promptcraft.jpg" alt="Prompt Craft title screen" loading="lazy" width="640" height="400" />
-                    <span class="play-tag">PASSIONATE LEARNING</span>
-                    <span class="play-name">PROMPT CRAFT</span>
-                    <span class="play-blurb">Master prompt engineering one challenge at a time.</span>
-                    <span class="play-go">PLAY &#8599;</span>
-                </a>
-                <a class="play-card rv" href="https://red-team-arena.vercel.app" target="_blank" rel="noopener">
-                    <img src="/assets/system/play/redteam.jpg" alt="Red Team Arena title screen" loading="lazy" width="640" height="400" />
-                    <span class="play-tag">PASSIONATE LEARNING</span>
-                    <span class="play-name">RED TEAM ARENA</span>
-                    <span class="play-blurb">Break the AI with ethical prompt injection, then learn to protect it.</span>
-                    <span class="play-go">PLAY &#8599;</span>
-                </a>
-                <a class="play-card rv" href="https://token-prophet.vercel.app" target="_blank" rel="noopener">
-                    <img src="/assets/system/play/tokenprophet.jpg" alt="Token Prophet title screen" loading="lazy" width="640" height="400" />
-                    <span class="play-tag">PASSIONATE LEARNING</span>
-                    <span class="play-name">TOKEN PROPHET</span>
-                    <span class="play-blurb">See how language models think by predicting the next token.</span>
-                    <span class="play-go">PLAY &#8599;</span>
-                </a>
-                <a class="play-card rv" href="https://bias-buster-five.vercel.app" target="_blank" rel="noopener">
-                    <img src="/assets/system/play/biasbuster.jpg" alt="Bias Buster title screen" loading="lazy" width="640" height="400" />
-                    <span class="play-tag">PASSIONATE LEARNING</span>
-                    <span class="play-name">BIAS BUSTER</span>
-                    <span class="play-blurb">AI ethics through branching story choices.</span>
-                    <span class="play-go">PLAY &#8599;</span>
-                </a>
-                <a class="play-card rv" href="https://netrunner-gamma.vercel.app" target="_blank" rel="noopener">
-                    <img src="/assets/system/play/netrunner.jpg" alt="Netrunner title screen" loading="lazy" width="640" height="400" />
-                    <span class="play-tag">PASSIONATE LEARNING</span>
-                    <span class="play-name">NETRUNNER</span>
-                    <span class="play-blurb">Networking fundamentals as interactive challenges.</span>
-                    <span class="play-go">PLAY &#8599;</span>
-                </a>
-                <a class="play-card rv" href="https://circuit-prophet.vercel.app" target="_blank" rel="noopener">
-                    <img src="/assets/system/play/circuit.jpg" alt="Circuit Prophet title screen" loading="lazy" width="640" height="400" />
-                    <span class="play-tag">PASSIONATE LEARNING</span>
-                    <span class="play-name">CIRCUIT PROPHET</span>
-                    <span class="play-blurb">Electrical and hardware basics: calculate, connect, compute.</span>
-                    <span class="play-go">PLAY &#8599;</span>
-                </a>
-            </div>
+                <div class="play-hero-copy">
+                    <span class="play-tag gold">FREE ALPHA DEMO</span>
+                    <h3 class="play-hero-name">MANY ROADS</h3>
+                    <p class="play-hero-blurb">A Battle Network style roguelite set in real Toronto. Fight as a duo on an eight by five grid where every enemy attack is announced before it lands.</p>
+                    <ul class="play-hero-facts">
+                        <li><b>17</b> fighters</li>
+                        <li><b>10</b> Toronto places</li>
+                        <li><b>160</b> versions in 10 days</li>
+                        <li><b>1,100+</b> automated tests</li>
+                    </ul>
+                    <div class="play-hero-act">
+                        <a class="play-btn" href="https://playmanyroads.com" target="_blank" rel="noopener">PLAY FREE &#8599;</a>
+                        <a class="play-link" href="https://youtu.be/Ntf4V5m5iAw" target="_blank" rel="noopener">TRAILER</a>
+                        <a class="play-link" href="https://daredev256.itch.io/many-roads" target="_blank" rel="noopener">ITCH.IO</a>
+                    </div>
+                </div>
+            </article>
+
+            <details class="play-more rv">
+                <summary><span class="play-tag">PASSIONATE LEARNING</span><span class="play-more-title">Six games that teach AI and computing</span><span class="play-more-count">6 &#9662;</span></summary>
+                <div class="play-mini-grid">
+                        <a class="play-mini" href="https://prompt-craft-jet.vercel.app" target="_blank" rel="noopener">
+                            <img src="/assets/system/play/promptcraft.jpg" alt="Prompt Craft title screen" loading="lazy" width="640" height="400" />
+                            <span class="play-mini-name">PROMPT CRAFT</span>
+                            <span class="play-mini-blurb">Prompt engineering, one challenge at a time.</span>
+                        </a>
+                        <a class="play-mini" href="https://red-team-arena.vercel.app" target="_blank" rel="noopener">
+                            <img src="/assets/system/play/redteam.jpg" alt="Red Team Arena title screen" loading="lazy" width="640" height="400" />
+                            <span class="play-mini-name">RED TEAM ARENA</span>
+                            <span class="play-mini-blurb">Break the AI with ethical prompt injection, then protect it.</span>
+                        </a>
+                        <a class="play-mini" href="https://token-prophet.vercel.app" target="_blank" rel="noopener">
+                            <img src="/assets/system/play/tokenprophet.jpg" alt="Token Prophet title screen" loading="lazy" width="640" height="400" />
+                            <span class="play-mini-name">TOKEN PROPHET</span>
+                            <span class="play-mini-blurb">How language models think: predict the next token.</span>
+                        </a>
+                        <a class="play-mini" href="https://bias-buster-five.vercel.app" target="_blank" rel="noopener">
+                            <img src="/assets/system/play/biasbuster.jpg" alt="Bias Buster title screen" loading="lazy" width="640" height="400" />
+                            <span class="play-mini-name">BIAS BUSTER</span>
+                            <span class="play-mini-blurb">AI ethics through branching story choices.</span>
+                        </a>
+                        <a class="play-mini" href="https://netrunner-gamma.vercel.app" target="_blank" rel="noopener">
+                            <img src="/assets/system/play/netrunner.jpg" alt="Netrunner title screen" loading="lazy" width="640" height="400" />
+                            <span class="play-mini-name">NETRUNNER</span>
+                            <span class="play-mini-blurb">Networking fundamentals as interactive challenges.</span>
+                        </a>
+                        <a class="play-mini" href="https://circuit-prophet.vercel.app" target="_blank" rel="noopener">
+                            <img src="/assets/system/play/circuit.jpg" alt="Circuit Prophet title screen" loading="lazy" width="640" height="400" />
+                            <span class="play-mini-name">CIRCUIT PROPHET</span>
+                            <span class="play-mini-blurb">Electrical and hardware basics.</span>
+                        </a>
+                </div>
+            </details>
+
+            <details class="play-more rv">
+                <summary><span class="play-tag">PROTOTYPES</span><span class="play-more-title">Early arcade experiments</span><span class="play-more-count">2 &#9662;</span></summary>
+                <div class="play-mini-grid">
+                        <a class="play-mini" href="https://passion-pop.vercel.app" target="_blank" rel="noopener">
+                            <img src="/assets/system/play/poppin.jpg" alt="What'S Poppin title screen" loading="lazy" width="640" height="400" />
+                            <span class="play-mini-name">WHAT'S POPPIN</span>
+                            <span class="play-mini-blurb">Bubble match with streaks and a daily challenge.</span>
+                        </a>
+                        <a class="play-mini" href="https://typing-game-kappa-seven.vercel.app" target="_blank" rel="noopener">
+                            <img src="/assets/system/play/typemaster.jpg" alt="Typemaster Ai title screen" loading="lazy" width="640" height="400" />
+                            <span class="play-mini-name">TYPEMASTER AI</span>
+                            <span class="play-mini-blurb">Learn AI and ML terms by typing them at speed.</span>
+                        </a>
+                </div>
+            </details>
         </section>
 
         <!-- ============ CONTACT ============ -->
