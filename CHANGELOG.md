@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.54.0
+version: 4.55.0
 last_updated: 2026-10-03
 
 ---
@@ -17,6 +17,12 @@ last_updated: 2026-10-03
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.55.0] - 2026-10-03
+
+### Changed
+- PLAY: the eight separate learning-suite and prototype games are replaced by one feature for Passionate Learning (passionate-learning.vercel.app), the unified, open-source app they merged into: 9 worlds, 163 cards, stickman look, installable. Links to build a world on GitHub.
+- OS mode: the TYPEMASTER icon now opens Speed Keys inside Passionate Learning (the old TypeMaster site is retired).
 
 ## [4.54.0] - 2026-10-03
 

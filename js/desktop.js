@@ -190,7 +190,7 @@ export const Desktop = {
             label: 'TYPEMASTER',
             icon: 'svg:/assets/typemaster.svg',
             color: '#00ff88',
-            action: () => openExternal('https://typing-game-kappa-seven.vercel.app/'),
+            action: () => openExternal('https://passionate-learning.vercel.app/w/keys/'),
         },
         {
             id: 'settings',
