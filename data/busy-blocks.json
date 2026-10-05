@@ -1,6 +1,6 @@
 {
   "note": "Busy blocks overlapping the offered window. Cars excluded — they are deadlines, not occupancy, and the generator models them separately. Times only, never titles.",
-  "generatedAt": "2026-10-05T00:00:07.030Z",
+  "generatedAt": "2026-10-05T11:00:03.607Z",
   "source": "google:tdot",
   "horizonDays": 22,
   "window": {
@@ -8,7 +8,7 @@
     "end": "17:00"
   },
   "sample": {
-    "events": 599,
+    "events": 601,
     "considered": 210,
     "blocks": 21
   },
