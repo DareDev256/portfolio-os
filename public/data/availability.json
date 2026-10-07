@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-07T11:00:31.926Z",
+  "generatedAt": "2026-10-07T20:08:12.611Z",
   "timeZone": "America/Toronto",
   "window": "15:00-17:00",
   "slotMinutes": 30,
   "bookingUrl": "/book",
   "sample": {
-    "cars": 88,
-    "days": 40,
+    "cars": 90,
+    "days": 42,
     "horizonDays": 21,
     "busyBlocks": 20
   },
@@ -75,14 +75,10 @@
     {
       "date": "2026-10-15",
       "weekday": "Thu",
-      "carsDue": 0,
-      "lastDeadline": null,
-      "confidence": "unbooked-so-far",
-      "slots": [
-        "15:00",
-        "15:30",
-        "16:00"
-      ]
+      "carsDue": 1,
+      "lastDeadline": "16:15",
+      "confidence": "measured",
+      "slots": []
     },
     {
       "date": "2026-10-16",
