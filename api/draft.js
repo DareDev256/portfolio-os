@@ -19,7 +19,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { checkAndReserve, release, clientIp } from './_limit.js';
 import { stripForeignLinks } from './_guard.js';
 
-const MODEL = process.env.DRAFT_MODEL || process.env.CHAT_MODEL || 'claude-haiku-4-5';
+const MODEL = process.env.DRAFT_MODEL || process.env.CHAT_MODEL || 'claude-haiku-5-5';
 const MAX_TOKENS = Number(process.env.DRAFT_MAX_TOKENS || 500);
 const MAX_CHARS = 600;
 
@@ -119,6 +119,8 @@ export default async function handler(req, res) {
             messages: [{ role: 'user', content: `What the visitor asked in the window:\n${seed}` }],
         };
         if (supportsEffort) request.output_config = { effort: 'low' };
+        // Haiku 5.5 thinks by default; an "asdf" draft spent 419 of 500 tokens on it.
+        if (/haiku-5/.test(MODEL)) request.thinking = { type: 'disabled' };
 
         const client = new Anthropic();
         const response = await client.messages.create(request);

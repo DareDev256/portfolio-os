@@ -26,7 +26,7 @@ import { checkAndReserve, release, clientIp, used, PER_IP_MAX } from './_limit.j
  * which model wrote three sentences. What they CAN tell is a dead chat box,
  * which is what happens when the month's budget goes in week two. Set
  * CHAT_MODEL=claude-opus-5 in Vercel to flip it; nothing else changes. */
-const MODEL = process.env.CHAT_MODEL || 'claude-haiku-4-5';
+const MODEL = process.env.CHAT_MODEL || 'claude-haiku-5-5';
 const MAX_TOKENS = Number(process.env.CHAT_MAX_TOKENS || 400);
 
 // Ceiling on any single message, inbound or replayed from history.
@@ -131,6 +131,11 @@ export default async function handler(req, res) {
             messages,
         };
         if (supportsEffort) request.output_config = { effort: 'low' };
+        /* Haiku 5.5 thinks by default (adaptive). Measured 2026-10-07 with this
+         * prompt and MAX_TOKENS=400: thinking tokens ate the budget and one reply
+         * stopped at "James has built " (stop_reason max_tokens). Three sentences
+         * off a fixed fact list need no thinking, so switch it off. */
+        if (/haiku-5/.test(model)) request.thinking = { type: 'disabled' };
 
         const client = new Anthropic();
         const response = await client.messages.create(request);

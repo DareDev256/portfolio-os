@@ -3,8 +3,8 @@
 ---
 
 title: Passion OS Changelog
-version: 4.55.0
-last_updated: 2026-10-03
+version: 4.55.1
+last_updated: 2026-10-07
 
 ---
 
@@ -17,6 +17,12 @@ last_updated: 2026-10-03
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
 
 ---
+
+## [4.55.1] - 2026-10-07
+
+### Changed
+- THE SYSTEM chat (`/api/chat`, `api/_personas.js`) and the SEND IT TO JAMES draft (`/api/draft`) move from Claude Haiku 4.5 to Haiku 5.5 (`claude-haiku-5-5`), after an 8 to 14 prompt side-by-side: same facts, no invented numbers, no guard trips, no 4-sentence overruns. Haiku 5.5 list price is $0.10 / $0.50 per MTok (up to 100K prompt tokens) against $1 / $5.
+- Both calls send `thinking: { type: "disabled" }` on Haiku 5.5. It thinks by default, and with `max_tokens` 400 one chat reply was cut off mid-sentence ("James has built ") while a draft spent 419 of 500 tokens thinking. PASSION stays on Sonnet 5.
 
 ## [4.55.0] - 2026-10-03
 

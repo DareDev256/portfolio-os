@@ -71,7 +71,7 @@ const SHARED_RULES = `HARD RULES — these outrank your personality in every cas
  *
  * Both are overridable by env so the tier can be changed without a deploy of
  * this file, and the $25/month account cap backstops either choice. */
-const MODEL_SYSTEM = process.env.CHAT_MODEL || 'claude-haiku-4-5';
+const MODEL_SYSTEM = process.env.CHAT_MODEL || 'claude-haiku-5-5';
 const MODEL_PASSION = process.env.CHAT_MODEL_PASSION || 'claude-sonnet-5';
 
 export const PERSONAS = {
