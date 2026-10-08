@@ -12,6 +12,11 @@ last_updated: 2026-10-07
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
 
+## 4.56.2 — 2026-10-08 · Booking API ready for the voice agents
+
+- `/api/slots?voice=1`: up to 6 options spread across days, each with a spoken label, for the ElevenLabs web agents.
+- `/api/book` accepts the agents' shared secret (`x-booking-agent-secret`, env `BOOKING_AGENT_SECRET`): agent bookings are limited per guest email (1 per 6 h), since every agent call arrives from ElevenLabs' shared IP; browser bookings stay per-IP. Constant-time secret compare. 2 new tests (10 total).
+
 ## 4.56.1 — 2026-10-08 · Booking widget: the Book button reads disabled until a time is picked
 
 ## 4.56.0 — 2026-10-08 · Book a free 15-minute call, live from the real calendar

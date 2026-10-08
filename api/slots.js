@@ -4,7 +4,7 @@
  * If any calendar can't be read, slots is [] and `complete` is false: an incomplete read must never be
  * offered to the public, because that is how an intro call lands on top of an interview.
  */
-import { cors, readCalendar, slotsFrom } from './_booking.js';
+import { cors, readCalendar, slotsFrom, voiceOptions } from './_booking.js';
 import { clientIp } from './_limit.js';
 
 const hits = new Map();   // light per-IP throttle: slots is cheap but should not be scraped in a loop
@@ -22,7 +22,9 @@ export default async function handler(req, res) {
     try {
         const cal = await readCalendar(now);
         if (!cal.complete) return res.status(200).json({ slots: [], complete: false, reason: 'calendar not fully readable right now', measuredAt: new Date(now).toISOString() });
-        return res.status(200).json({ slots: slotsFrom(cal.busy, now, cal.bookedPerDay), complete: true, measuredAt: new Date(now).toISOString() });
+        const slots = slotsFrom(cal.busy, now, cal.bookedPerDay);
+        if (req.query?.voice) return res.status(200).json({ complete: true, options: voiceOptions(slots), note: 'Times are Toronto time. Offer two or three, then book the one the caller picks using its start value exactly.' });
+        return res.status(200).json({ slots, complete: true, measuredAt: new Date(now).toISOString() });
     } catch (e) {
         console.error('slots', e.message);
         return res.status(503).json({ slots: [], complete: false, reason: 'booking is offline; use WhatsApp or email', measuredAt: new Date(now).toISOString() });

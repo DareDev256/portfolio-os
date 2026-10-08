@@ -160,3 +160,27 @@ export async function createBooking(token, { name, email, note, site, start }) {
     if (!r.ok) throw new Error(`calendar insert failed (${j.error?.status || r.status})`);
     return { id: j.id, meet: j.hangoutLink || null };
 }
+
+/* For the voice agents: a few options a person can hear, spread across days (max 2 per day, 6 total). */
+export function voiceOptions(slots) {
+    const fmt = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    const perDay = {}, out = [];
+    for (const s of slots) {
+        const d = localDay(Date.parse(s));
+        if ((perDay[d] = (perDay[d] || 0) + 1) > 2) continue;
+        out.push({ start: s, spoken: fmt.format(new Date(s)).replace(' a.m.', ' AM').replace(' p.m.', ' PM') });
+        if (out.length === 6) break;
+    }
+    return out;
+}
+
+/* The ElevenLabs web agents call /api/book from ElevenLabs servers (one shared IP for every caller), so
+ * they authenticate with a shared secret instead and are limited per guest email, not per IP. */
+export function isAgent(req) {
+    const want = process.env.BOOKING_AGENT_SECRET;
+    const got = req.headers['x-booking-agent-secret'];
+    if (!want || typeof got !== 'string' || got.length !== want.length) return false;
+    let diff = 0;
+    for (let i = 0; i < want.length; i++) diff |= want.charCodeAt(i) ^ got.charCodeAt(i);
+    return diff === 0;
+}

@@ -59,3 +59,22 @@ describe('validate', () => {
     });
     it('falls back to the jamesdare persona for an unknown site', () => { expect(validate({ ...ok, site: 'evil' }).site).toBe('jamesdare'); });
 });
+
+import { voiceOptions, isAgent } from '../api/_booking.js';
+describe('voice agent helpers', () => {
+    it('spreads spoken options across days, max 2 a day, 6 total', () => {
+        const opts = voiceOptions(slotsFrom([], NOW));
+        expect(opts.length).toBe(6);
+        const days = opts.map((o) => localDay(Date.parse(o.start)));
+        for (const d of new Set(days)) expect(days.filter((x) => x === d).length).toBeLessThanOrEqual(2);
+        expect(opts[0].spoken).toMatch(/Friday, October 9/);
+    });
+    it('accepts only the exact agent secret', () => {
+        process.env.BOOKING_AGENT_SECRET = 's3cret-value-123';
+        expect(isAgent({ headers: { 'x-booking-agent-secret': 's3cret-value-123' } })).toBe(true);
+        expect(isAgent({ headers: { 'x-booking-agent-secret': 's3cret-value-124' } })).toBe(false);
+        expect(isAgent({ headers: {} })).toBe(false);
+        delete process.env.BOOKING_AGENT_SECRET;
+        expect(isAgent({ headers: { 'x-booking-agent-secret': '' } })).toBe(false);
+    });
+});
