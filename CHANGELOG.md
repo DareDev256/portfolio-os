@@ -12,6 +12,10 @@ last_updated: 2026-10-07
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
 
+## 4.57.1 — 2026-10-08 · Booking card fits a phone
+
+- `/book` at 390px: the card no longer overflows (it sat in a centring grid that let it grow to its content). Day tabs stay one line and scroll sideways; the page leaves room under WhatsApp so the voice bubble never covers it. Seen in the live mobile screenshot, fixed, re-rendered.
+
 ## 4.57.0 — 2026-10-08 · Talk to my assistant (voice)
 
 - **Voice assistant bubble** (bottom-right, homepage and `/book`): an ElevenLabs web agent, persona "James — web". It qualifies the visitor in a few turns and books the free 15-minute intro call through the same `/api/slots` + `/api/book`, so voice and click read one live calendar. Widget pinned to `@elevenlabs/convai-widget-embed@0.18.2`.

@@ -17,13 +17,13 @@
         tdots: { h: 'Book a free 15-min call', sub: 'Tell me about your business. Website, video, or an AI tool. No pitch deck needed.', wa: 'Hi James, I want a site. My Instagram is @' },
     };
     const css = `
-.bk{--bg:#fff;--fg:#0a0a0a;--mute:#5c5c5c;--line:#e4e4e4;--acc:#e8401c;--chip:#f3f3f3;font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:22px;max-width:640px;margin:0 auto;box-sizing:border-box}
+.bk{--bg:#fff;--fg:#0a0a0a;--mute:#5c5c5c;--line:#e4e4e4;--acc:#e8401c;--chip:#f3f3f3;font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:22px;width:100%;max-width:640px;min-width:0;margin:0 auto;box-sizing:border-box;overflow:hidden}
 .bk[data-theme=dark]{--bg:#0b0b0b;--fg:#f5f5f5;--mute:#a3a3a3;--line:#262626;--chip:#171717}
-.bk *{box-sizing:border-box}.bk h3{margin:0 0 4px;font-size:22px;letter-spacing:-.01em}.bk p{margin:0 0 16px;color:var(--mute)}
-.bk .days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px}
+.bk *{box-sizing:border-box;min-width:0}.bk h3{margin:0 0 4px;font-size:22px;letter-spacing:-.01em}.bk p{margin:0 0 16px;color:var(--mute)}
+.bk .days{min-width:0;display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px}
 .bk button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--chip);color:var(--fg);padding:9px 12px;min-height:40px}
 .bk button[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
-.bk .times{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin-bottom:14px}
+.bk .days button{flex:0 0 auto;white-space:nowrap}.bk .times{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin-bottom:14px}
 .bk form{display:grid;gap:10px}.bk input,.bk textarea{font:inherit;width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
 .bk .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}.bk .go{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600;flex:1}
 .bk .wa{background:transparent;flex:1;text-decoration:none;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:9px 12px;text-align:center;min-height:40px;display:inline-flex;align-items:center;justify-content:center}
