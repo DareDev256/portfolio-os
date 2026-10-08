@@ -1,12 +1,10 @@
 {
-  "redirects": [
+  "redirects": [],
+  "rewrites": [
     {
       "source": "/book",
-      "destination": "https://calendly.com/tdotssolutionsz/30min",
-      "permanent": false
-    }
-  ],
-  "rewrites": [
+      "destination": "/book/index.html"
+    },
     {
       "source": "/os",
       "destination": "/os/index.html"

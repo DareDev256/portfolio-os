@@ -12,6 +12,14 @@ last_updated: 2026-10-07
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
 
+## 4.56.0 — 2026-10-08 · Book a free 15-minute call, live from the real calendar
+
+- **`/api/slots` + `/api/book`**: intro calls booked straight onto James's Google calendar. Free/busy is read LIVE across every calendar (tdot, dev, personal) on each request, so a time shown is free right now; visitors see start times only, never titles. Weekdays 4:45-7 pm, Saturday 11-2, 15-min buffer, 12 h notice, max 3 a day. The guest gets a Google invite with a Meet link.
+- **Refuses rather than guesses**: if any calendar can't be read, no slots are offered and the block points to WhatsApp. `/api/book` re-checks the exact slot before writing.
+- **Calendar-only credential** (`BOOKING_GOOGLE_*`: freebusy + events, no Gmail). CORS allowlist: jamesdare.com + tdotssolutionsz.com. Honeypot, per-IP limits.
+- **`/book` is ours now** (was a 302 to Calendly 30 min): a page hosting the widget. The contact section's static availability panel is replaced by the live widget; the button reads BOOK 15 MINUTES.
+- Tests: `tests/booking.test.js` (8): windows, notice, buffer, day cap, validation.
+
 ## Overview
 
 This changelog documents the evolutionary development of Passion OS from initial concept to current state. Features are organized by implementation phases with the newest changes first.
