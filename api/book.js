@@ -7,6 +7,7 @@
  */
 import { cors, readCalendar, slotsFrom, validate, createBooking, isAgent } from './_booking.js';
 import { clientIp } from './_limit.js';
+import { notify, whenToronto } from './_notify.js';
 
 const recent = new Map();
 
@@ -34,6 +35,7 @@ export default async function handler(req, res) {
         if (!offered.has(new Date(v.start).toISOString())) return res.status(409).json({ error: 'That time was just taken. Pick another.' });
         const made = await createBooking(cal.token, v);
         recent.set(key, [...mine, now]);
+        await notify(`📅 **New intro call booked** · ${v.site === 'tdots' ? 'tdotssolutionsz.com' : 'jamesdare.com'}${key.startsWith('agent:') ? ' (by voice)' : ''}\n**${v.name}** <${v.email}> · ${whenToronto(v.start)}${v.note ? `\n“${v.note}”` : ''}`);
         return res.status(200).json({ ok: true, start: new Date(v.start).toISOString(), meet: made.meet });
     } catch (e) {
         console.error('book', e.message);

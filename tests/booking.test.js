@@ -78,3 +78,24 @@ describe('voice agent helpers', () => {
         expect(isAgent({ headers: { 'x-booking-agent-secret': '' } })).toBe(false);
     });
 });
+
+import { createHmac } from 'node:crypto';
+import { verify, summarize } from '../api/agent-call.js';
+describe('agent post-call webhook', () => {
+    const secret = 'whsec_test';
+    const sign = (raw, ts) => `t=${ts},v0=${createHmac('sha256', secret).update(`${ts}.${raw}`).digest('hex')}`;
+    it('accepts a correct signature and rejects a wrong, missing or stale one', () => {
+        const raw = '{"a":1}', ts = Math.floor(Date.now() / 1000);
+        expect(verify(raw, sign(raw, ts), secret)).toBe(true);
+        expect(verify(raw + ' ', sign(raw, ts), secret)).toBe(false);
+        expect(verify(raw, undefined, secret)).toBe(false);
+        expect(verify(raw, sign(raw, ts - 3600), secret)).toBe(false);
+    });
+    it('marks a booked conversation and a silent one', () => {
+        const booked = summarize({ data: { agent_id: 'agent_0601m4e12qvqeegt2z2a9xg99x96', metadata: { call_duration_secs: 95 }, analysis: { transcript_summary: 'Bakery wants a site.' },
+            transcript: [{ role: 'user', message: 'I run a bakery' }, { role: 'agent', tool_results: [{ tool_name: 'book_intro_call', result_value: '{"ok":true}' }] }] } });
+        expect(booked.text).toMatch(/BOOKED/); expect(booked.text).toMatch(/tdotssolutionsz/); expect(booked.quiet).toBe(false);
+        const silent = summarize({ data: { agent_id: 'agent_8001m4e12p1dfz5rx4w7tr06a1xw', transcript: [{ role: 'agent', message: 'Hi' }] } });
+        expect(silent.quiet).toBe(true);
+    });
+});

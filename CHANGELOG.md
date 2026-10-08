@@ -12,6 +12,12 @@ last_updated: 2026-10-07
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
 
+## 4.59.0 — 2026-10-08 · James hears about every booking and every voice chat
+
+- **Booking alert**: every `/api/book` success posts to James's Discord #inbox: who, which site, when (Toronto), their note, and "(by voice)" when the agent booked it. Fire-and-forget with a 4 s cap, so a Discord hiccup can't fail a booking.
+- **`/api/agent-call`**: ElevenLabs post-call webhook for both website voice agents. HMAC-verified (`ElevenLabs-Signature`, 30-min tolerance, `AGENT_WEBHOOK_SECRET`); posts a one-line verdict (BOOKED / no booking) plus ElevenLabs' summary. Silent open-and-close conversations are not posted.
+- New env: `BOOKING_DISCORD_WEBHOOK`, `AGENT_WEBHOOK_SECRET`. Tests 12 (signature right/tampered/missing/stale; booked vs silent summary).
+
 ## 4.58.0 — 2026-10-08 · The booking panel looks like the site again
 
 - Contact section: the live booking now renders in the site's own **NEXT OPEN** panel (`.avail`, mono day rows, cyan chips from `css/system.css`), the look the static availability panel had before 4.56, but every chip is a live, bookable time. 4 days × 4 times, "More times →" goes to `/book`; the form uses the site's `.chat-input` / `.btn ghost`. Widget option `data-skin="system"`; `/book` and tdotssolutionsz keep the card skin.
