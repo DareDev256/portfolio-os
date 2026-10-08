@@ -27,7 +27,7 @@
 .bk form{display:grid;gap:10px}.bk input,.bk textarea{font:inherit;width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
 .bk .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}.bk .go{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600;flex:1}
 .bk .wa{background:transparent;flex:1;text-decoration:none;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:9px 12px;text-align:center;min-height:40px;display:inline-flex;align-items:center;justify-content:center}
-.bk .msg{margin-top:12px;font-weight:500}.bk .hp{position:absolute;left:-9999px;height:0;width:0;opacity:0}
+.bk button:disabled{opacity:.45;cursor:not-allowed}.bk .msg{margin-top:12px;font-weight:500}.bk .hp{position:absolute;left:-9999px;height:0;width:0;opacity:0}
 .bk .tz{font-size:12px;color:var(--mute);margin:-6px 0 12px}`;
     const fmtDay = (iso) => new Intl.DateTimeFormat('en-CA', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric' }).format(new Date(iso));
     const fmtTime = (iso) => new Intl.DateTimeFormat('en-CA', { timeZone: TZ, hour: 'numeric', minute: '2-digit' }).format(new Date(iso));

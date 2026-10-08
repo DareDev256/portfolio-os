@@ -12,6 +12,8 @@ last_updated: 2026-10-07
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
 
+## 4.56.1 — 2026-10-08 · Booking widget: the Book button reads disabled until a time is picked
+
 ## 4.56.0 — 2026-10-08 · Book a free 15-minute call, live from the real calendar
 
 - **`/api/slots` + `/api/book`**: intro calls booked straight onto James's Google calendar. Free/busy is read LIVE across every calendar (tdot, dev, personal) on each request, so a time shown is free right now; visitors see start times only, never titles. Weekdays 4:45-7 pm, Saturday 11-2, 15-min buffer, 12 h notice, max 3 a day. The guest gets a Google invite with a Meet link.
