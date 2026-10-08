@@ -12,6 +12,13 @@ last_updated: 2026-10-07
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
 
+## 4.57.0 — 2026-10-08 · Talk to my assistant (voice)
+
+- **Voice assistant bubble** (bottom-right, homepage and `/book`): an ElevenLabs web agent, persona "James — web". It qualifies the visitor in a few turns and books the free 15-minute intro call through the same `/api/slots` + `/api/book`, so voice and click read one live calendar. Widget pinned to `@elevenlabs/convai-widget-embed@0.18.2`.
+- Agent guardrails (set in `the-system/booking/voice-agents/deploy.mjs`): origin allowlist (jamesdare.com, tdotssolutionsz.com) with origin header required, 2 concurrent / 25 per day, 4-minute cap, no voice recording, 30-day transcripts. Tested: reads back only real slots; when the calendar is unreadable it points to WhatsApp.
+- Headers: `Permissions-Policy` microphone `()` → `(self)` (the page itself only; embeds still can't use it). CSP adds the widget's exact hosts: unpkg (pinned path), `api.elevenlabs.io` + `livekit.rtc.elevenlabs.io` (https/wss), and `blob:` for its audio worklet.
+- `js/version.js` brought back in line with `package.json` (it had stayed at 4.55.1 across today's bumps).
+
 ## 4.56.2 — 2026-10-08 · Booking API ready for the voice agents
 
 - `/api/slots?voice=1`: up to 6 options spread across days, each with a spoken label, for the ElevenLabs web agents.
