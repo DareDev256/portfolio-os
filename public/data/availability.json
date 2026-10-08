@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T11:00:33.968Z",
+  "generatedAt": "2026-10-08T20:00:31.926Z",
   "timeZone": "America/Toronto",
   "window": "15:00-17:00",
   "slotMinutes": 30,
@@ -8,7 +8,7 @@
     "cars": 90,
     "days": 42,
     "horizonDays": 21,
-    "busyBlocks": 20
+    "busyBlocks": 23
   },
   "method": "Offered slots sit after the day's last delivery deadline. Flat-rate work, so the schedule is mine to sequence; the deadline is what is fixed.",
   "days": [
@@ -19,9 +19,7 @@
       "lastDeadline": "10:00",
       "confidence": "measured",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00"
+        "16:30"
       ]
     },
     {
@@ -31,9 +29,7 @@
       "lastDeadline": null,
       "confidence": "measured",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00"
+        "16:30"
       ]
     },
     {
@@ -43,8 +39,7 @@
       "lastDeadline": "12:00",
       "confidence": "measured",
       "slots": [
-        "15:00",
-        "15:30"
+        "16:30"
       ]
     },
     {
@@ -54,9 +49,6 @@
       "lastDeadline": null,
       "confidence": "unbooked-so-far",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00",
         "16:30"
       ]
     },
@@ -66,7 +58,9 @@
       "carsDue": 1,
       "lastDeadline": "16:15",
       "confidence": "measured",
-      "slots": []
+      "slots": [
+        "16:30"
+      ]
     },
     {
       "date": "2026-10-16",
@@ -75,9 +69,7 @@
       "lastDeadline": null,
       "confidence": "unbooked-so-far",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00"
+        "16:30"
       ]
     },
     {
@@ -87,9 +79,7 @@
       "lastDeadline": null,
       "confidence": "unbooked-so-far",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00"
+        "16:30"
       ]
     },
     {
@@ -99,9 +89,7 @@
       "lastDeadline": null,
       "confidence": "unbooked-so-far",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00"
+        "16:30"
       ]
     },
     {
@@ -111,9 +99,6 @@
       "lastDeadline": null,
       "confidence": "unbooked-so-far",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00",
         "16:30"
       ]
     },
@@ -124,9 +109,7 @@
       "lastDeadline": null,
       "confidence": "unbooked-so-far",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00"
+        "16:30"
       ]
     },
     {
@@ -136,9 +119,7 @@
       "lastDeadline": null,
       "confidence": "unbooked-so-far",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00"
+        "16:30"
       ]
     },
     {
@@ -148,9 +129,7 @@
       "lastDeadline": null,
       "confidence": "unbooked-so-far",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00"
+        "16:30"
       ]
     },
     {
@@ -160,9 +139,7 @@
       "lastDeadline": null,
       "confidence": "unbooked-so-far",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00"
+        "16:30"
       ]
     },
     {
@@ -172,9 +149,6 @@
       "lastDeadline": null,
       "confidence": "unbooked-so-far",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00",
         "16:30"
       ]
     },
@@ -185,9 +159,7 @@
       "lastDeadline": null,
       "confidence": "unbooked-so-far",
       "slots": [
-        "15:00",
-        "15:30",
-        "16:00"
+        "16:30"
       ]
     }
   ]
