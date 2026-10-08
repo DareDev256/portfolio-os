@@ -12,6 +12,11 @@ last_updated: 2026-10-07
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
 
+## 4.58.0 — 2026-10-08 · The booking panel looks like the site again
+
+- Contact section: the live booking now renders in the site's own **NEXT OPEN** panel (`.avail`, mono day rows, cyan chips from `css/system.css`), the look the static availability panel had before 4.56, but every chip is a live, bookable time. 4 days × 4 times, "More times →" goes to `/book`; the form uses the site's `.chat-input` / `.btn ghost`. Widget option `data-skin="system"`; `/book` and tdotssolutionsz keep the card skin.
+- Voice bubble recoloured to the site palette (ground #04080f, cyan #6fd3ff) in the agent's widget config.
+
 ## 4.57.1 — 2026-10-08 · Booking card fits a phone
 
 - `/book` at 390px: the card no longer overflows (it sat in a centring grid that let it grow to its content). Day tabs stay one line and scroll sideways; the page leaves room under WhatsApp so the voice bubble never covers it. Seen in the live mobile screenshot, fixed, re-rendered.

@@ -38,6 +38,61 @@
         return n;
     };
 
+
+    /* data-skin="system": jamesdare.com's own look (the pre-4.56 static panel): .avail, NEXT OPEN head,
+     * mono day rows, cyan chips. Styling comes from the page's css/system.css; only the interactive
+     * states (pressed chip, form spacing) are added here. */
+    const sysCss = `
+.avail button.avail-slot{background:transparent;cursor:pointer;font:inherit;font-family:var(--sys-mono);font-size:11px;color:var(--sys-cyan);line-height:1.4}
+.avail button.avail-slot:hover{border-color:var(--sys-cyan)}
+.avail button.avail-slot[aria-pressed=true]{background:var(--sys-cyan);color:rgb(var(--sys-ground-rgb));border-color:var(--sys-cyan)}
+.avail .bk-form{display:grid;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--sys-hair)}
+.avail .bk-form .chat-input{width:100%;box-sizing:border-box}
+.avail .bk-form .btn[disabled]{opacity:.45;cursor:not-allowed}
+.avail .bk-hp{position:absolute;left:-9999px;height:0;width:0;opacity:0}`;
+    async function mountSystem(host) {
+        if (!document.getElementById('bk-sys-css')) document.head.append(el('style', { id: 'bk-sys-css' }, sysCss));
+        const box = el('div', { class: 'avail' });
+        const stamp = el('span', { class: 'stamp' }, 'CHECKING…');
+        box.append(el('div', { class: 'avail-head' }, el('span', { class: 'label' }, 'NEXT OPEN · 15-MIN INTRO'), stamp));
+        host.replaceChildren(box);
+        let data;
+        try { data = await fetch(`${API}/slots`, { cache: 'no-store' }).then((r) => r.json()); } catch { data = { slots: [] }; }
+        if (!data.slots?.length) {
+            stamp.textContent = data.complete === false ? 'PAUSED' : 'FULL'; stamp.dataset.state = 'stale';
+            box.append(el('p', { class: 'avail-note' }, 'No bookable times right now. WhatsApp or email reaches James directly.'));
+            return;
+        }
+        stamp.textContent = 'LIVE · ET';
+        const byDay = new Map();
+        for (const s of data.slots) { const d = fmtDay(s).toUpperCase(); byDay.set(d, [...(byDay.get(d) || []), s]); }
+        let picked = null;
+        const go = el('button', { class: 'btn ghost', type: 'submit', disabled: '' }, 'PICK A TIME');
+        const list = el('ul', { class: 'avail-list' });
+        [...byDay.entries()].slice(0, 4).forEach(([d, slots]) => {
+            const chips = el('span', { class: 'avail-slots' }, ...slots.slice(0, 4).map((s) => el('button', { type: 'button', class: 'avail-slot', 'aria-pressed': 'false', on: { click: (e) => {
+                picked = s; box.querySelectorAll('button.avail-slot').forEach((b) => b.setAttribute('aria-pressed', String(b === e.currentTarget)));
+                go.textContent = `BOOK ${fmtDay(s).toUpperCase()} · ${fmtTime(s).toUpperCase()}`; go.disabled = false;
+            } } }, fmtTime(s))));
+            list.append(el('li', { class: 'avail-row' }, el('span', { class: 'avail-day' }, d), chips));
+        });
+        const name = el('input', { class: 'chat-input', name: 'name', placeholder: 'Your name', autocomplete: 'name', required: '' });
+        const email = el('input', { class: 'chat-input', name: 'email', type: 'email', placeholder: 'Email: the invite goes here', autocomplete: 'email', required: '' });
+        const note = el('input', { class: 'chat-input', name: 'note', placeholder: 'What should James know? (optional)', maxlength: '500' });
+        const hp = el('input', { name: 'website', class: 'bk-hp', tabindex: '-1', autocomplete: 'off', 'aria-hidden': 'true' });
+        const msg = el('p', { class: 'avail-note', role: 'status', 'aria-live': 'polite' });
+        const form = el('form', { class: 'bk-form', on: { submit: async (e) => {
+            e.preventDefault(); if (!picked) return;
+            go.disabled = true; msg.textContent = 'Booking…';
+            try {
+                const r = await fetch(`${API}/book`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: name.value, email: email.value, note: note.value, website: hp.value, site: 'jamesdare', start: picked }) });
+                const j = await r.json();
+                if (j.ok) { list.remove(); form.replaceChildren(el('p', { class: 'avail-note' }, `Booked: ${fmtDay(picked)}, ${fmtTime(picked)} Toronto time. The invite with a Meet link is on its way to ${email.value}.`)); stamp.textContent = 'BOOKED'; return; }
+                msg.textContent = j.error || 'Something went wrong. Try WhatsApp.'; go.disabled = false;
+            } catch { msg.textContent = 'Could not reach the booking service. Try WhatsApp.'; go.disabled = false; }
+        } } }, name, email, note, hp, go, msg);
+        box.append(list, el('p', { class: 'avail-note' }, 'Free 15-minute call. Pick a time and Google sends the invite. ', el('a', { href: '/book' }, 'More times →')), form);
+    }
     async function mount(host) {
         const site = COPY[host.dataset.site] ? host.dataset.site : 'jamesdare';
         const c = COPY[site];
@@ -89,7 +144,7 @@
 
     const start = () => {
         if (!document.getElementById('bk-css')) document.head.append(el('style', { id: 'bk-css' }, css));
-        document.querySelectorAll('[data-book-intro]').forEach(mount);
+        document.querySelectorAll('[data-book-intro]').forEach((h) => (h.dataset.skin === 'system' ? mountSystem(h) : mount(h)));
     };
     document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', start) : start();
 })();
