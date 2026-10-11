@@ -1,28 +1,28 @@
 {
-  "generatedAt": "2026-10-03T23:35:33.296Z",
+  "generatedAt": "2026-10-11T11:41:57.715Z",
   "figures": {
-    "stars": 116,
-    "forks": 21,
-    "installs": "3,115",
+    "stars": 121,
+    "forks": 22,
+    "installs": "1,628",
     "clientSites": 16,
     "clientSitesUp": 16,
-    "wikiShare": "40%",
-    "wikiEdits": "8,008",
-    "wikiTotal": "19,977",
+    "wikiShare": "41%",
+    "wikiEdits": "8,416",
+    "wikiTotal": "20,384",
     "wikiSince": 2013,
     "wikiReverted": 0,
     "wikiRevertSample": "500",
     "wikiStood": "500",
     "wikiRevertRate": "0.0%",
-    "repos": 100,
+    "repos": 123,
     "modules": 97,
-    "loc": "61K",
-    "jobs": 92,
+    "loc": "63K",
+    "jobs": 152,
     "reposPublic": 23,
     "reposArchived": 4,
-    "snapshotDate": "26•09•13",
-    "snapshotAt": "2026-09-13T13:30:07Z",
-    "siteVersion": "4.55.0",
+    "snapshotDate": "26•10•11",
+    "snapshotAt": "2026-10-11T11:41:48Z",
+    "siteVersion": "4.59.0",
     "passionVersion": "4.94.0"
   },
   "definitions": {
@@ -43,21 +43,21 @@
     "repos": "gh repo list DareDev256, all visibilities",
     "modules": "top-level *.mjs in passion-agent",
     "loc": "all first-party .mjs, excluding node_modules and test dirs",
-    "jobs": "com.daredev.* loaded on both machines",
+    "jobs": "com.daredev.* loaded on the MacBook + enabled on the Mac Mini",
     "reposPublic": "public, non-archived repositories",
     "reposArchived": "archived repositories, excluded from active counts",
     "services": "live SSH probe of the Mac Mini loopback ports at build time; unreachable means the host did not answer",
     "snapshotDate": "when data/system-snapshot.json was last generated — the date every stamp on this page reads from"
   },
   "services": {
-    "checkedAt": "2026-10-03T23:35:33.327Z",
+    "checkedAt": "2026-10-11T11:41:57.743Z",
     "host": "up",
     "services": [
       {
         "name": "dashboard",
         "port": 3000,
-        "state": "up",
-        "code": "200"
+        "state": "down",
+        "code": "000000"
       },
       {
         "name": "brain",

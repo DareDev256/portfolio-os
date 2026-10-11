@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-13T13:30:07Z",
-  "repos": 100,
-  "scheduledJobs": { "total": 92, "macbook": 84, "macMini": 8 },
+  "generatedAt": "2026-10-11T11:41:48Z",
+  "repos": 123,
+  "scheduledJobs": { "total": 152, "macbook": 143, "macMini": 9 },
   "modules": 97,
-  "linesOfCode": 60828,
+  "linesOfCode": 62643,
   "definitions": {
     "modules": "top-level *.mjs in passion-agent",
     "linesOfCode": "all first-party .mjs, excluding node_modules and test dirs",
     "repos": "gh repo list DareDev256, all visibilities",
-    "scheduledJobs": "com.daredev.* loaded on both machines"
+    "scheduledJobs": "com.daredev.* loaded on the MacBook + enabled on the Mac Mini"
   }
 }
