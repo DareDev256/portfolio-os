@@ -164,9 +164,9 @@
       ]
     },
     {
-      "repo": "passion-learning-suite",
+      "repo": "passionate-learning",
       "tier": "tool",
-      "what": "Six browser games that teach generative-AI concepts by playing them \u2014 prompt craft, hallucination hunting, red teaming.",
+      "what": "A free, open-source learning game: 60-second rounds that teach generative-AI concepts by playing them \u2014 prompt craft, hallucination hunting, red teaming.",
       "proves": "Spaced repetition on the FSRS algorithm, so retention is scheduled rather than hoped for.",
       "stack": [
         "Next.js",
