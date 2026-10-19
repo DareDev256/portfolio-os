@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T14:50:11.707Z",
+  "generatedAt": "2026-10-19T15:00:04.745Z",
   "figures": {
     "stars": 127,
     "forks": 22,
@@ -20,13 +20,13 @@
     "bibPlayers": "2,950",
     "bibSurvived": "2,759",
     "bibShares": "513",
-    "bibBodies": "3,408,642",
+    "bibCompletion": "44%",
     "bibTopScore": "73,782",
     "bibVersion": "1.26.0",
     "bibBuildHours": 7,
     "bibCommits": 111,
-    "bibAsOf": "Oct 19 2026, 10:49 ET",
-    "bibReadAt": "2026-10-19T14:49:26.000Z",
+    "bibAsOf": "Oct 19 2026, 10:59 ET",
+    "bibReadAt": "2026-10-19T14:59:52.000Z",
     "repos": 128,
     "modules": 97,
     "loc": "63K",
@@ -35,7 +35,7 @@
     "reposArchived": 4,
     "snapshotDate": "26•10•18",
     "snapshotAt": "2026-10-18T13:30:09Z",
-    "siteVersion": "4.60.0",
+    "siteVersion": "4.60.1",
     "passionVersion": "4.94.0"
   },
   "definitions": {
@@ -63,7 +63,7 @@
     "bibPlayers": "distinct players who started a run, per the game counters, as of the stamp beside it",
     "bibSurvived": "runs that lasted the whole song, per the game counters, as of the stamp beside it",
     "bibShares": "times a player shared their result, per the game counters, as of the stamp beside it",
-    "bibBodies": "bodies boxed across every run, per the game counters, as of the stamp beside it",
+    "bibCompletion": "share of runs that lasted the whole song (survived divided by runs), per the game counters, as of the stamp beside it",
     "bibTopScore": "highest score on the public leaderboard, as of the stamp beside it",
     "bibBuildHours": "hours from the first commit to the v1.9.0 commit (live, two songs), read from the game repo git history",
     "bibCommits": "commits in the game repo when these figures were generated",
@@ -74,7 +74,7 @@
     "snapshotDate": "when data/system-snapshot.json was last generated — the date every stamp on this page reads from"
   },
   "services": {
-    "checkedAt": "2026-10-19T14:50:11.714Z",
+    "checkedAt": "2026-10-19T15:00:04.750Z",
     "host": "up",
     "services": [
       {

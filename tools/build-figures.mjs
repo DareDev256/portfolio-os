@@ -249,7 +249,7 @@ if (Date.now() - bibRead > 24 * 3_600_000) {
     die(`bib panel is ${Math.round((Date.now() - bibRead) / 3_600_000)}h old — re-run bib-panel.py before generating`);
 }
 const bibT = bibPanel.data?.totals ?? {};
-for (const k of ['runs', 'players', 'survived', 'shares', 'bodies']) {
+for (const k of ['runs', 'players', 'survived', 'shares']) {
     if (typeof bibT[k] !== 'number') die(`bib panel totals.${k} missing — refusing to guess`);
 }
 if (typeof bibPanel.data?.top?.score !== 'number') die('bib panel top.score missing — refusing to guess');
@@ -361,7 +361,7 @@ const out = {
         bibPlayers: bibT.players.toLocaleString('en-US'),
         bibSurvived: bibT.survived.toLocaleString('en-US'),
         bibShares: bibT.shares.toLocaleString('en-US'),
-        bibBodies: bibT.bodies.toLocaleString('en-US'),
+        bibCompletion: `${Math.round((bibT.survived / bibT.runs) * 100)}%`,
         bibTopScore: bibPanel.data.top.score.toLocaleString('en-US'),
         bibVersion: bibPanel.data.version,
         bibBuildHours,
@@ -431,7 +431,7 @@ const out = {
         bibPlayers: 'distinct players who started a run, per the game counters, as of the stamp beside it',
         bibSurvived: 'runs that lasted the whole song, per the game counters, as of the stamp beside it',
         bibShares: 'times a player shared their result, per the game counters, as of the stamp beside it',
-        bibBodies: 'bodies boxed across every run, per the game counters, as of the stamp beside it',
+        bibCompletion: 'share of runs that lasted the whole song (survived divided by runs), per the game counters, as of the stamp beside it',
         bibTopScore: 'highest score on the public leaderboard, as of the stamp beside it',
         bibBuildHours: 'hours from the first commit to the v1.9.0 commit (live, two songs), read from the game repo git history',
         bibCommits: 'commits in the game repo when these figures were generated',

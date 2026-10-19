@@ -12,6 +12,10 @@ last_updated: 2026-10-07
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
 
+## 4.60.1 — 2026-10-19 · Gate 08 trimmed for a general audience
+
+- Removed the "bodies boxed" count from gate 08 and from `figures.json`; dropped top score from the sentence. Added the completion rate (`bibCompletion`, survived divided by runs, rounded), generated in `tools/build-figures.mjs` from the bib panel. No other copy or styling changed.
+
 ## 4.60.0 — 2026-10-19 · Gate 08: Bodies In Boxes, and the stale claims behind it
 
 - **New gate, CLEARED GATES 08: Bodies In Boxes.** The browser promo game built for Savv4x (official video on top, the run below, the song is the level). Description, the build-time fact, generation spend as recorded on day one, links to play it (`savv4x.com/play?ref=portfolio`, so the game's own channel counter splits portfolio traffic) and to the YouTube Short. Gate shot is a 1200x666 composite of real v1.26.0 gameplay frames. Deep link: `/#bodies-in-boxes` (opens the gate, stops auto-advance, scrolls to the section).
