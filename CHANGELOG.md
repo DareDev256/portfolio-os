@@ -12,6 +12,13 @@ last_updated: 2026-10-07
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
 
+## 4.60.0 — 2026-10-19 · Gate 08: Bodies In Boxes, and the stale claims behind it
+
+- **New gate, CLEARED GATES 08: Bodies In Boxes.** The browser promo game built for Savv4x (official video on top, the run below, the song is the level). Description, the build-time fact, generation spend as recorded on day one, links to play it (`savv4x.com/play?ref=portfolio`, so the game's own channel counter splits portfolio traffic) and to the YouTube Short. Gate shot is a 1200x666 composite of real v1.26.0 gameplay frames. Deep link: `/#bodies-in-boxes` (opens the gate, stops auto-advance, scrolls to the section).
+- **Its numbers are generated, not typed.** `tools/build-figures.mjs` now reads the bib panel (runs, players, survivors, shares, bodies boxed, top score, game version) and the game repo's git history (first commit to the v1.9.0 commit, 7 hours; commit count). It refuses a missing, failed or day-old panel. The gate prints "counts as of <Toronto time>" and `js/system-figures.js` adds "N DAYS OLD" past 3 days. Test `tests/bib-gate.test.js`: tab count equals template count, every `bib*` figure exists, no audience count typed into the markup.
+- **Claim audit, fixed from live sources.** Reel credit for Nin Online said "1,300+ articles · ~a third of the wiki's history"; the wiki reads 1,480 articles and RawBOT's share is 47%. Reel `data-meta` now takes `{figure}` tokens filled from figures.json. Ninjora's "121 pages" (now 395 pages, 125 articles) and TdotsSolutionsz's "15 client sites" (roster is 16) typed counts removed from the reel. "PyPI fcp-mcp-server v0.25.1" was two releases stale (0.26.0); it is now `pypiVersion` from PyPI. The GitHub stars receipt linked to `/stargazers`, which 404s for visitors; it now links to the repo. Edson Legal link points at the canonical `www` host. Stars 121 to 127, repos 123 to 128, wiki edits and jobs refreshed by the generator.
+- Version labels (`package.json`, `js/version.js`) at 4.60.0.
+
 ## 4.59.0 — 2026-10-08 · James hears about every booking and every voice chat
 
 - **Booking alert**: every `/api/book` success posts to James's Discord #inbox: who, which site, when (Toronto), their note, and "(by voice)" when the agent booked it. Fire-and-forget with a 4 s cap, so a Discord hiccup can't fail a booking.

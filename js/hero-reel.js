@@ -118,11 +118,24 @@
     let timer = null;
     let visible = true;
 
+    /* A plate's data-meta may carry {figure} tokens, filled from
+     * /data/figures.json so a number on the reel is generated, never typed.
+     * Until the figures arrive, or if one is missing, the token renders as
+     * nothing rather than as a stale or invented value. */
+    let FIG = {};
+    const fill = (t) => String(t || '').replace(/\{(\w+)\}/g, (_, k) => (FIG[k] ?? ''));
+    let current = null;
+    fetch('/data/figures.json')
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => { if (d) { FIG = d.figures || {}; if (current) setCredit(current); } })
+        .catch(() => {});
+
     function setCredit(plate) {
+        current = plate;
         if (credit.kind) credit.kind.textContent = plate.dataset.kind || '';
         if (credit.who) credit.who.textContent = plate.dataset.who || '';
         if (credit.what) credit.what.textContent = plate.dataset.what || '';
-        if (credit.meta) credit.meta.textContent = plate.dataset.meta || '';
+        if (credit.meta) credit.meta.textContent = fill(plate.dataset.meta);
     }
 
     /* `eager` decides preload, and it is the difference between 3.2MB and 2.7MB

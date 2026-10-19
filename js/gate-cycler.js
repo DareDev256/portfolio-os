@@ -114,4 +114,20 @@
     }
 
     render(0);
+
+    /* Deep links. A gate can be linked by its template name, e.g.
+     * /#bodies-in-boxes. There is no element with that id until the gate is
+     * cloned in, so the browser cannot scroll to it on its own. Open the gate,
+     * stop the auto-advance so it stays put, then bring the section into view. */
+    function openFromHash() {
+        const want = decodeURIComponent((window.location.hash || '').slice(1));
+        if (!want) return;
+        const at = templates.findIndex((t) => t.getAttribute('data-gate') === want);
+        if (at < 0) return;
+        stop();
+        render(at);
+        if (typeof root.scrollIntoView === 'function') root.scrollIntoView({ block: 'start' });
+    }
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
 })();

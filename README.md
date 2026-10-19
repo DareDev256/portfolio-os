@@ -50,6 +50,19 @@ signature; `css/system.css` carries the divergence record at the top of the file
 Client services and the client roster live on
 [tdotssolutionsz.com](https://tdotssolutionsz.com), not here.
 
+### Generated figures
+
+Every public number on `/` comes from `public/data/figures.json`, written by
+`npm run figures` (`tools/build-figures.mjs`) and committed. Sources: GitHub, PyPI,
+the MediaWiki API, the system snapshot, and, since 4.60.0, the Bodies In Boxes game
+counters (read from `~/.local/state/passion-cron/panels/bib.json`, which
+`passion-cron/bib-panel.py` writes from the game's database). The generator refuses a
+missing, failed or day-old bib panel. The page prints an "as of" stamp beside those counts
+and adds the age once they are 3 days old. Re-run `bib-panel.py`, then `npm run figures`,
+then commit the data files and deploy.
+
+A gate can be deep linked by its template name, for example `/#bodies-in-boxes`.
+
 ## Quick Start
 
 **Prerequisites:** Node.js 18+ and npm 9+.

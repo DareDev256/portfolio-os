@@ -115,6 +115,8 @@ async function pypiLastMonth() {
     return Number(m[1].replace(/,/g, ''));
 }
 const installs = await pypiLastMonth();
+const pypiVersion = (await fetchJSON(`https://pypi.org/pypi/${PYPI_PACKAGE}/json`, 'pypi json'))?.info?.version;
+if (typeof pypiVersion !== 'string') die('PyPI returned no version');
 
 /* ── 2b. The wiki share. This is the strongest external-validation number the
  *       site has and it was the only headline claim on the page with no
@@ -224,6 +226,57 @@ try {
     die(`data/system-snapshot.json unreadable: ${err.message}`);
 }
 
+
+/* ── 4b. Bodies In Boxes. The numbers on gate 08 come from the game's own
+ *       counters, via the bib panel (passion-cron/bib-panel.py, which reads the
+ *       game's Neon tables on a 30 minute period). This generator reads the
+ *       panel file and nothing else: no database URL and no typed figure. It
+ *       refuses a missing, failed or day-old panel, because a stale audience
+ *       count that renders looks exactly like a current one. The read time is
+ *       carried through so the page can print "as of" beside the numbers. */
+const BIB_PANEL = resolve(process.env.HOME, '.local/state/passion-cron/panels/bib.json');
+let bibPanel;
+try {
+    bibPanel = JSON.parse(readFileSync(BIB_PANEL, 'utf8'));
+} catch (err) {
+    die(`bib panel unreadable (${BIB_PANEL}): ${err.message}. Run passion-cron/bib-panel.py first.`);
+}
+const bibRead = Date.parse(bibPanel?.read_at);
+if (bibPanel?.status !== 'ok' || !Number.isFinite(bibRead)) {
+    die(`bib panel status=${bibPanel?.status} reason=${bibPanel?.reason} — refusing to publish its numbers`);
+}
+if (Date.now() - bibRead > 24 * 3_600_000) {
+    die(`bib panel is ${Math.round((Date.now() - bibRead) / 3_600_000)}h old — re-run bib-panel.py before generating`);
+}
+const bibT = bibPanel.data?.totals ?? {};
+for (const k of ['runs', 'players', 'survived', 'shares', 'bodies']) {
+    if (typeof bibT[k] !== 'number') die(`bib panel totals.${k} missing — refusing to guess`);
+}
+if (typeof bibPanel.data?.top?.score !== 'number') die('bib panel top.score missing — refusing to guess');
+/* The panel stamps read_at in the machine's local offset (ET). Format it in
+ * Toronto time with the zone named, so the stamp cannot be read as UTC. */
+const bibAsOf = new Date(bibRead)
+    .toLocaleString('en-CA', {
+        timeZone: 'America/Toronto', year: 'numeric', month: 'short', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', hour12: false,
+    })
+    .replace(',', '') + ' ET';
+
+
+/* The build-time claim ("about 7 hours from first commit to live with two songs")
+ * is read from the game's git history rather than typed: first commit, and the
+ * commit whose subject starts "v1.9.0:". Refuses if either cannot be found. */
+const BIB_REPO = resolve(process.env.HOME, 'Projects/clients/savv4x-bodies-in-boxes');
+const bibLog = execFileSync('git', ['-C', BIB_REPO, 'log', '--reverse', '--format=%aI|%s'], { encoding: 'utf8' })
+    .trim().split('\n').map((l) => l.split(/\|(.*)/s));
+const bibFirst = Date.parse(bibLog[0]?.[0]);
+const bibLive = Date.parse(bibLog.find((l) => /^v1\.9\.0:/.test(l[1] ?? ''))?.[0]);
+if (!Number.isFinite(bibFirst) || !Number.isFinite(bibLive) || bibLive <= bibFirst) {
+    die('could not read first commit and the v1.9.0 commit from the Bodies In Boxes repo');
+}
+const bibBuildHours = Math.round((bibLive - bibFirst) / 3_600_000);
+const bibCommits = Number(execFileSync('git', ['-C', BIB_REPO, 'rev-list', '--count', 'HEAD'], { encoding: 'utf8' }));
+
 // ── 4. Registry counts, live.
 const repos = JSON.parse(gh(['repo', 'list', 'DareDev256', '--limit', '300', '--json', 'name,isArchived,isPrivate']));
 
@@ -284,6 +337,8 @@ const out = {
         stars: repo.stargazers_count,
         forks: repo.forks_count,
         installs: installs.toLocaleString('en-US'),
+        pypiVersion,
+        wikiArticles: wikiStats.query.statistics.articles.toLocaleString('en-US'),
 
         /* The roster is the count. See data/client-sites.json. */
         clientSites: roster.length,
@@ -300,6 +355,19 @@ const out = {
         /* Shown to one decimal only when it is under 1%, because "0%" would read
          * as a rounding flourish on a number whose whole job is to be checkable. */
         wikiRevertRate: revertPct < 1 ? `${revertPct.toFixed(1)}%` : `${Math.round(revertPct)}%`,
+
+        // Bodies In Boxes — the game's own counters, as of bibReadAt.
+        bibRuns: bibT.runs.toLocaleString('en-US'),
+        bibPlayers: bibT.players.toLocaleString('en-US'),
+        bibSurvived: bibT.survived.toLocaleString('en-US'),
+        bibShares: bibT.shares.toLocaleString('en-US'),
+        bibBodies: bibT.bodies.toLocaleString('en-US'),
+        bibTopScore: bibPanel.data.top.score.toLocaleString('en-US'),
+        bibVersion: bibPanel.data.version,
+        bibBuildHours,
+        bibCommits,
+        bibAsOf,
+        bibReadAt: new Date(bibRead).toISOString(),
 
         // The agent system.
         repos: snap.repos,
@@ -343,6 +411,8 @@ const out = {
          * prevent: it invites exactly the check it cannot survive. */
         stars: `GitHub stargazers on ${OSS_REPO}, read live when these figures were last generated`,
         forks: `GitHub forks of ${OSS_REPO}, read live when these figures were last generated`,
+        pypiVersion: `latest ${PYPI_PACKAGE} release on PyPI when these figures were generated`,
+        wikiArticles: `article count on ${WIKI.host} per the MediaWiki API`,
         installs: `PyPI downloads of ${PYPI_PACKAGE} in the last 30 days, via pypistats`,
         clientSites: 'client sites in the roster at /data/client-sites.json, each one named and linked on the page',
         clientSitesUp: 'how many of those answered a request when these figures were generated',
@@ -357,6 +427,15 @@ const out = {
         modules: snap.definitions?.modules ?? 'top-level modules in passion-agent',
         loc: snap.definitions?.linesOfCode ?? 'first-party lines of code',
         jobs: snap.definitions?.scheduledJobs ?? 'scheduled jobs across both machines',
+        bibRuns: 'runs started on savv4x.com/play, counted by the game itself, as of the stamp beside it',
+        bibPlayers: 'distinct players who started a run, per the game counters, as of the stamp beside it',
+        bibSurvived: 'runs that lasted the whole song, per the game counters, as of the stamp beside it',
+        bibShares: 'times a player shared their result, per the game counters, as of the stamp beside it',
+        bibBodies: 'bodies boxed across every run, per the game counters, as of the stamp beside it',
+        bibTopScore: 'highest score on the public leaderboard, as of the stamp beside it',
+        bibBuildHours: 'hours from the first commit to the v1.9.0 commit (live, two songs), read from the game repo git history',
+        bibCommits: 'commits in the game repo when these figures were generated',
+        bibAsOf: 'when the numbers on this gate were read from the game counters (Toronto time). They are not live; they are as fresh as the last generator run',
         reposPublic: 'public, non-archived repositories',
         reposArchived: 'archived repositories, excluded from active counts',
         services: 'live SSH probe of the Mac Mini loopback ports at build time; unreachable means the host did not answer',

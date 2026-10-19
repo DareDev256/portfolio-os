@@ -59,6 +59,17 @@ fetch(SRC)
             manualKeys.add(k);
         }
 
+        /* The Bodies In Boxes counts are read from the game's counters when
+         * figures.json is generated, and figures.json is committed, so they age
+         * between runs. The as-of stamp admits it: past 3 days it adds the age.
+         * Done on `values` so every render path, including gate clones, agrees. */
+        if (values.bibReadAt && values.bibAsOf) {
+            const bibDays = (Date.now() - new Date(values.bibReadAt).getTime()) / 86400000;
+            if (Number.isFinite(bibDays) && bibDays >= 3) {
+                values.bibAsOf = `${values.bibAsOf} \u00b7 ${Math.round(bibDays)} DAYS OLD`;
+            }
+        }
+
         apply(document, values, defs);
 
         /* The snapshot stamp has to be able to admit it is old.
