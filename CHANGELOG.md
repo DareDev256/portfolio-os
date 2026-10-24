@@ -3,14 +3,18 @@
 ---
 
 title: Passion OS Changelog
-version: 4.55.1
-last_updated: 2026-10-07
+version: 4.61.0
+last_updated: 2026-10-24
 
 ---
 
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.61.0 — 2026-10-24 · Cross-link to S-Tier Solutions Inc.
+
+- Footer gains an S-TIER SOLUTIONS link to the company site, and the Person JSON-LD gains `worksFor` S-Tier Solutions Inc. (company site plus its LinkedIn page). jamesdare.com stays the personal site; the company site links back as the founder's site. No other copy or styling changed. When stiersolutions.ca goes live, update both URLs in `index.html`.
 
 ## 4.60.1 — 2026-10-19 · Gate 08 trimmed for a general audience
 
