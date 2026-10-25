@@ -17,7 +17,7 @@
   },
   {
     "title": "BetMetrics.ca",
-    "description": "Sports betting odds comparison platform with live data from 11 sportsbooks, forum, and user accounts. Built for a business owner on a paid retainer; 377+ registered users.",
+    "description": "Sports betting platform on play credits, with odds from 11 sportsbooks, a forum and user accounts. Built for a business owner; 398 registered accounts. Paused since the odds feed key expired.",
     "tech": [
       "Next.js 16",
       "React 19",
@@ -163,7 +163,7 @@
   },
   {
     "title": "FCPXML MCP Server",
-    "description": "The first MCP server for Final Cut Pro XML. Lets Claude read, modify and generate professional video timelines in natural language. Published on PyPI.",
+    "description": "An MCP server for Final Cut Pro XML. Lets Claude read, modify and generate professional video timelines in natural language. Published on PyPI.",
     "tech": [
       "Python",
       "Claude AI",
@@ -177,7 +177,7 @@
     "demo": "https://pypi.org/project/fcp-mcp-server/",
     "repo": "https://github.com/DareDev256/fcp-mcp-server",
     "status": "LIVE",
-    "metrics": "121 stars · ~1.6k installs/mo · 1,337 tests",
+    "metrics": "102 operations · 2,379 tests · on PyPI",
     "demoLabel": "View on PyPI"
   },
   {

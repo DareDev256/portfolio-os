@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.61.0
+version: 4.61.1
 last_updated: 2026-10-24
 
 ---
@@ -11,6 +11,14 @@ last_updated: 2026-10-24
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.61.1 — 2026-10-24 · Claim fixes from the career truth sweep, and the S-Tier domain
+
+- Edson Legal (work page and reel plate): it is a civil rights and police accountability law firm, not a personal-injury firm. The unsourced "bookings 40%", "admin 60%" and "since 2013" are removed. It now reads as what it is: a pre-retainer intake screener, a prototype on synthetic data until a data processing agreement is signed.
+- BetMetrics: 398 registered accounts (was 207+ and 377+), described as a betting platform on play credits, paused since the odds feed key expired. "Paid retainer" and the unsourced AODA pass are removed.
+- fcp-mcp-server: 102 operations and 2,379 tests (was 62 and 1,337, per the README and `pytest --collect-only` on 2026-10-24). "First" is dropped, and the desktop link now points at the real repo name.
+- The site assistant no longer names Chief Keef or Migos. The video catalogue has neither; it now names Masicka, King Louie, Casper TNG and Street Bud.
+- The S-Tier links now point at stiersolutions.ca.
 
 ## 4.61.0 — 2026-10-24 · Cross-link to S-Tier Solutions Inc.
 
