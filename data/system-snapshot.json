@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-18T13:30:09Z",
-  "repos": 128,
-  "scheduledJobs": { "total": 172, "macbook": 163, "macMini": 9 },
+  "generatedAt": "2026-10-25T13:30:08Z",
+  "repos": 129,
+  "scheduledJobs": { "total": 191, "macbook": 182, "macMini": 9 },
   "modules": 97,
-  "linesOfCode": 62996,
+  "linesOfCode": 63002,
   "definitions": {
     "modules": "top-level *.mjs in passion-agent",
     "linesOfCode": "all first-party .mjs, excluding node_modules and test dirs",
