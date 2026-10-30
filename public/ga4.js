@@ -1,6 +1,26 @@
 // Google Analytics 4 — jamesdare.com (G-TG10CNCMJY)
 // External file rather than an inline <script> so the site's
 // Content-Security-Policy does not need 'unsafe-inline' for scripts.
+/* ── Not a visitor ────────────────────────────────────────────────────────
+ * Added 2026-10-30. Our own automated checks (Playwright, DevTools: any
+ * browser with navigator.webdriver) were 317 of 338 sessions in the week to
+ * 2026-10-29: Toronto, Mac, direct, 4.5 s average, one engaged. They buried
+ * the ~20 real visitors and inflated the site-intel number. `ga-disable-<id>`
+ * is gtag's own opt-out and must be set before gtag.js loads, which is why it
+ * lives here. Opening the site once with `?ga=off` does the same for James's
+ * own browsers; `?ga=on` undoes it.
+ */
+(function () {
+    var off = navigator.webdriver === true;
+    try {
+        var q = new URLSearchParams(location.search).get('ga');
+        if (q === 'off') localStorage.setItem('ga-off', '1');
+        if (q === 'on') localStorage.removeItem('ga-off');
+        off = off || localStorage.getItem('ga-off') === '1';
+    } catch (_e) { /* storage blocked: the webdriver check still stands */ }
+    if (off) window['ga-disable-G-TG10CNCMJY'] = true;
+})();
+
 window.dataLayer = window.dataLayer || [];
 function gtag() { window.dataLayer.push(arguments); }
 gtag('js', new Date());

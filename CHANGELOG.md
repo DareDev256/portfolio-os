@@ -3,14 +3,21 @@
 ---
 
 title: Passion OS Changelog
-version: 4.61.1
-last_updated: 2026-10-24
+version: 4.61.2
+last_updated: 2026-10-30
 
 ---
 
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.61.2 — 2026-10-30 · Analytics stops counting our own automated checks
+
+- `public/ga4.js` sets gtag's `ga-disable-G-TG10CNCMJY` opt-out when `navigator.webdriver` is true. Our Playwright and DevTools checks were 317 of 338 GA4 sessions in the week to 2026-10-29 (Toronto, Mac, direct, 4.5 s average, one engaged), which buried the ~20 real visitors and inflated the site-intel figure.
+- Opening the site once with `?ga=off` excludes that browser too (James's own devices); `?ga=on` undoes it. Real visitors are still counted, checked with a headless probe in both modes.
+- `tools/link-audit.mjs` treats `/_vercel/*` as served by Vercel's edge. Since Web Analytics went on (2026-10-08), the link-integrity test failed whenever a local `dist/` existed, flagging `/_vercel/insights/script.js`, which the live site serves as JavaScript.
+- `js/version.js` bumped to match.
 
 ## 4.61.1 — 2026-10-24 · Claim fixes from the career truth sweep, and the S-Tier domain
 

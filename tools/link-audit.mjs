@@ -287,6 +287,15 @@ for (const l of links) {
      * The destination is off-site by definition here, so there is no local file
      * to resolve; the network half of this audit (`npm run audit:links:net`) is
      * what checks the far end still answers. */
+    /* Vercel's edge answers /_vercel/* itself (Web Analytics, enabled 2026-10-08
+     * in 986161c, ships /_vercel/insights/script.js), ahead of every rewrite, so
+     * no file in dist is expected. Live check 2026-10-30: 200,
+     * application/javascript, not the catch-all's HTML. */
+    if (pathname.startsWith('/_vercel/')) {
+        results.push({ url, from, kind, type: 'internal', status: 'OK', note: 'served by the Vercel edge' });
+        continue;
+    }
+
     const rd = matchRedirect(pathname);
     if (rd) {
         results.push({ url, from, kind, type: 'internal', status: 'OK', note: `redirect → ${rd.destination}` });
