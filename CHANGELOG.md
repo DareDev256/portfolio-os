@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.63.1
+version: 4.64.0
 last_updated: 2026-10-31
 
 ---
@@ -11,6 +11,15 @@ last_updated: 2026-10-31
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.64.0 — 2026-10-31 · The crew is on screen
+
+First-time visitors could not tell the homepage was a director's monitor. Three changes make the point of view literal (picked by James from mockup v4, "Crew"):
+
+- **Every source is a crew member with a real film-set job**, drawn as a small pixel agent holding its tool (`js/crew.js`, hand-placed pixels, no generated art): Producer (BetMetrics), Editor (fcp-mcp-server), Set Medic (Second Opinion), 1st AD (Passion Agent), Set Builder (client sites), Camera (101 Films), Art Dept (COLD OPEN), Stunts (Bodies In Boxes), Fight Choreo (MANY ROADS), Set Tutor (Passionate Learning), Script Supervisor (Fandom Flow), Transpo (ShopBayHQ), Storyboard (Prompt Generator), In Training (sixjutsu), DIT (Passion OS), Prod Office (the registry). The agent on air works its tool, the rest idle out of step, and each hops when cut to. The HUD reads `CAM 2 · EDITOR · FCP-MCP-SERVER`.
+- **A caption on the monitor**: "You're in the director's chair. Every button below is an agent on my crew. Tap one to cut to it." It points at the crew and retires after the first real tap, once per browser. It sits on the screen rather than taking a line, which is how the page still fits a phone; the hero's lede line is gone.
+- **A three-second cold open** on a first visit: QUIET ON SET, the slate (production, scene, crew), the clap, ROLLING. Any tap or key skips it; reduced motion and no-script visitors never see it.
+- Short phones (Safari toolbars up) get the crew in two rows of eight. The fit harness passes every source and tab at 390x844, 390x664, 430x740, 1440x900 and 1280x720.
 
 ## 4.63.1 — 2026-10-31 · A deep link to the agent keeps the clip's label
 

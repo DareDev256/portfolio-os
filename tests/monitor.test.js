@@ -13,6 +13,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { initMonitor, routeFor, activitySummary, hudDate, agentFeedLabel } from '../js/monitor.js';
+import { TOOLS, sprite, drawCrew } from '../js/crew.js';
 
 const root = resolve(import.meta.dirname, '..');
 const html = readFileSync(resolve(root, 'index.html'), 'utf8');
@@ -55,6 +56,32 @@ describe('monitor markup', () => {
         expect(html).toContain('data-book-intro');
         expect(html).toContain('id="system-chat"');
         expect(html).toContain('id="registry-graph"');
+    });
+});
+
+describe('the crew', () => {
+    it('gives every source a crew role, a tool that exists and a colour', () => {
+        const tags = [...html.matchAll(/<button[^>]*class="src[^"]*"[^>]*>/g)].map((m) => m[0]);
+        expect(tags.length).toBe(16);
+        for (const t of tags) {
+            const id = /data-src="([\w-]+)"/.exec(t)[1];
+            expect(/data-role="[A-Z0-9 ]+"/.test(t), id).toBe(true);
+            expect(TOOLS[/data-tool="(\w+)"/.exec(t)?.[1]], id).toBeDefined();
+            expect(/data-tint="#[0-9a-f]{6}"/i.test(t), id).toBe(true);
+        }
+    });
+    it('draws one agent per button, once', () => {
+        document.body.innerHTML = '<button class="src" data-tool="scissors" data-tint="#6fd3ff"><span class="role">EDITOR</span></button><button class="src" data-tool="nope" data-tint="#6fd3ff"><span class="role">X</span></button>';
+        expect(drawCrew(document)).toBe(1);
+        expect(drawCrew(document)).toBe(0);
+        const svg = document.querySelector('.sprite');
+        expect(svg.nextElementSibling.className).toBe('role');
+        expect(svg.querySelectorAll('.bod rect').length).toBeGreaterThan(50);
+        expect(svg.querySelectorAll('.prop rect').length).toBeGreaterThan(5);
+    });
+    it('refuses an unknown tool or a malformed colour rather than drawing the wrong agent', () => {
+        expect(sprite(document, 'nope', '#6fd3ff')).toBeNull();
+        expect(sprite(document, 'scissors', 'red')).toBeNull();
     });
 });
 
@@ -122,6 +149,8 @@ describe('the switcher in the page', () => {
         window.HTMLMediaElement.prototype.load = vi.fn();
         window.scrollTo = vi.fn();
         window.location.hash = '';
+        localStorage.removeItem('jd-coach-seen');
+        localStorage.removeItem('jd-coldopen-seen');
         globalThis.fetch = vi.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({ generatedAt: new Date().toISOString(), windowHours: 36, ranInWindow: 4, jobsWatched: 8, events: [{ time: '06:47', id: 'daily-brief', label: 'Morning brief compiled and sent' }] }),
@@ -145,7 +174,8 @@ describe('the switcher in the page', () => {
         expect(take('betmetrics').hidden).toBe(false);
         expect(take('fcp').hidden).toBe(true);
         expect(document.querySelectorAll('.take:not([hidden])').length).toBe(1);
-        expect(document.getElementById('hudCam').textContent).toBe('1 · BETMETRICS');
+        expect(document.getElementById('hudCam').textContent).toBe('CAM 1 · PRODUCER · BETMETRICS');
+        expect(document.querySelector('#hudCam b').textContent).toBe('PRODUCER');
         expect(document.getElementById('hudRec').textContent).toBe('REC 21 AUG 26');
         expect(document.getElementById('sTake').textContent).toBe('02');
         expect(sel('betmetrics').tabIndex).toBe(0);
@@ -224,6 +254,28 @@ describe('the switcher in the page', () => {
         expect(document.activeElement).toBe(sel('second'));
         sel('second').dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
         expect(api.current).toBe('registry');
+    });
+
+    it('shows the director\'s-chair caption until the first real tap, then never again', () => {
+        const coach = document.getElementById('coach');
+        expect(coach.hidden).toBe(false);
+        document.getElementById('src-agent').click();
+        expect(coach.classList.contains('gone')).toBe(true);
+        expect(localStorage.getItem('jd-coach-seen')).toBe('1');
+        document.documentElement.innerHTML = html.replace(/^[\s\S]*?<html[^>]*>/, '').replace(/<\/html>\s*$/, '');
+        initMonitor(document, window);
+        expect(document.getElementById('coach').hidden).toBe(true);
+        localStorage.removeItem('jd-coach-seen');
+    });
+
+    it('plays the cold open on a first visit only', () => {
+        localStorage.removeItem('jd-coldopen-seen');
+        document.documentElement.innerHTML = html.replace(/^[\s\S]*?<html[^>]*>/, '').replace(/<\/html>\s*$/, '');
+        initMonitor(document, window);
+        expect(document.getElementById('coldopen').hidden).toBe(false);
+        document.documentElement.innerHTML = html.replace(/^[\s\S]*?<html[^>]*>/, '').replace(/<\/html>\s*$/, '');
+        initMonitor(document, window);
+        expect(document.getElementById('coldopen').hidden).toBe(true);
     });
 
     it('holds and releases the program feed from the screen', () => {

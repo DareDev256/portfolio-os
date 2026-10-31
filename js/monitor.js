@@ -14,7 +14,16 @@
  * reads completely with scripting off. This file only decides what is on air.
  */
 
+import { drawCrew } from './crew.js';
+
 const VIEWS = ['monitor', 'crew', 'reel', 'call'];
+/* First-visit teaching: the cold open and the caption on the monitor each show
+ * once per browser. Storage can be blocked (private mode); then they simply
+ * show again next time, which is the harmless failure. */
+const SEEN_OPEN = 'jd-coldopen-seen';
+const SEEN_COACH = 'jd-coach-seen';
+const seen = (k) => { try { return localStorage.getItem(k) === '1'; } catch { return false; } };
+const mark = (k) => { try { localStorage.setItem(k, '1'); } catch { /* blocked */ } };
 const LEGACY = { gates: 'monitor', work: 'monitor', system: 'monitor', play: 'monitor', contact: 'call', book: 'call' };
 const LEGACY_SOURCE = { system: 'registry', play: 'manyroads' };
 const HUD_PREFIX = { rec: 'REC ', log: 'LOG ', still: 'STILL ', play: '▶ ', graph: 'LIVE · ', none: '' };
@@ -106,11 +115,16 @@ export function initMonitor(doc = document, win = window) {
     function clipsOf(b) { return (b.dataset.clips || '').split(/\s+/).filter(Boolean); }
     function tagsOf(b) { return (b.dataset.tags || '').split('|').filter(Boolean); }
 
+    /* CAM 2 · EDITOR · FCP-MCP-SERVER: which camera, which crew member, which
+     * scene. The role is set off in the tally colour, built as nodes, not HTML. */
     function camLabel(b, i) {
         const n = buttons.indexOf(b) + 1;
         const tags = tagsOf(b);
         const tag = tags.length ? ` · ${tags[i % tags.length]}` : '';
-        return `${n} · ${b.dataset.scene.toUpperCase()}${tag}`;
+        const el = $('hudCam');
+        const role = doc.createElement('b');
+        role.textContent = b.dataset.role || '';
+        el.replaceChildren(`CAM ${n} · `, ...(b.dataset.role ? [role, ' · '] : []), `${b.dataset.scene.toUpperCase()}${tag}`);
     }
 
     function stopClip() {
@@ -136,7 +150,7 @@ export function initMonitor(doc = document, win = window) {
         if (clips.length < 2) return;
         clipIndex = (clipIndex + 1) % clips.length;
         pgm.src = clips[clipIndex];
-        $('hudCam').textContent = camLabel(current, clipIndex);
+        camLabel(current, clipIndex);
         play(pgm);
     });
 
@@ -263,7 +277,8 @@ export function initMonitor(doc = document, win = window) {
             } else nosig.hidden = false;
         }
 
-        $('hudCam').textContent = camLabel(b, 0);
+        camLabel(b, 0);
+        if (!initial && !reduce) { b.classList.remove('hop'); void b.offsetWidth; b.classList.add('hop'); }
         $('hudRec').textContent = `${HUD_PREFIX[kind] ?? ''}${b.dataset.date || ''}`;
         $('hudFmt').textContent = kind === 'graph' || kind === 'log' ? 'DATA' : '16:9 · 24P';
         $('bezelSrc').textContent = `SRC ${pad(n)}`;
@@ -279,7 +294,16 @@ export function initMonitor(doc = document, win = window) {
         }
     }
 
-    buttons.forEach((b) => b.addEventListener('click', () => cut(b.dataset.src)));
+    const coach = $('coach');
+    function retireCoach() {
+        if (!coach || coach.hidden || coach.classList.contains('gone')) return;
+        mark(SEEN_COACH);
+        coach.classList.add('gone');
+        win.setTimeout(() => { coach.hidden = true; }, 360);
+    }
+    if (coach && !seen(SEEN_COACH)) coach.hidden = false;
+
+    buttons.forEach((b) => b.addEventListener('click', () => { cut(b.dataset.src); retireCoach(); }));
 
     /* Arrow keys move along the switcher and cut as they go, the way a tablist
      * with automatic activation behaves. Home and End jump to the ends. */
@@ -295,6 +319,7 @@ export function initMonitor(doc = document, win = window) {
         if (to === null) return;
         e.preventDefault();
         cut(buttons[to].dataset.src, { focus: true });
+        retireCoach();
     });
 
     hold.addEventListener('click', () => {
@@ -398,6 +423,27 @@ export function initMonitor(doc = document, win = window) {
             activityLine.textContent = sum.text.toUpperCase();
             if (sum.stale) activityLine.dataset.state = 'stale';
         });
+    }
+
+    drawCrew(doc);
+
+    /* ---------- cold open ---------- */
+    const co = $('coldopen');
+    if (co && !reduce && !seen(SEEN_OPEN)) {
+        mark(SEEN_OPEN);
+        let done = false;
+        const end = () => {
+            if (done) return;
+            done = true;
+            co.classList.remove('run');
+            co.classList.add('out');
+            win.setTimeout(() => { co.hidden = true; co.classList.remove('out'); }, 450);
+        };
+        co.hidden = false;
+        co.classList.add('run');
+        co.addEventListener('click', end);
+        doc.addEventListener('keydown', end, { once: true });
+        win.setTimeout(end, 2900);
     }
 
     const initial = routeFor(win.location.hash, ids);
