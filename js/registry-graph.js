@@ -33,7 +33,13 @@ const NS = 'http://www.w3.org/2000/svg';
  * rather than on resize — re-solving mid-session would make the graph jump for
  * a visitor who merely rotated their phone, and the labels would land somewhere
  * different from where they last read them. */
-const NARROW = typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches;
+/* The homepage monitor (4.62.0) plays the graph inside a 16:9 screen, so it asks
+ * for the wide canvas on every device with data-graph-layout="wide". A portrait
+ * canvas letterboxed into a landscape screen would be half its height. */
+const NARROW =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(max-width: 640px)').matches &&
+    !document.querySelector('[data-graph-layout="wide"]');
 
 const W = NARROW ? 460 : 850;
 const H = NARROW ? 620 : 640;

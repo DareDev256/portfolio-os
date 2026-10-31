@@ -52,10 +52,10 @@
         {
             q: 'What have you actually shipped?',
             a: [
-                'An open-source MCP server for Final Cut Pro — {stars} stars, on PyPI, about {installs} installs a month. A sports-betting analytics product with real money moving through it. {clientSitesUp} client sites live right now.',
+                'An open-source MCP server for Final Cut Pro — {stars} stars, on PyPI, about {installs} installs a month. A sports-betting platform on play credits with real accounts on it. {clientSitesUp} client sites live right now.',
                 'And {directedFilms} music videos across {directedArtists} artists, {directedViews} views. Everything on this page links to the running thing, not a case study about it.',
             ],
-            cta: { label: 'SEE THE WORK', href: '#gates' },
+            cta: { label: 'SEE THE WORK', href: '#monitor' },
         },
         {
             q: 'Can you build something for us?',

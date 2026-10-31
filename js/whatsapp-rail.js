@@ -80,7 +80,11 @@ function siteName(loc) {
  * Read from the DOM at click time, never cached at load: the gate rail advances
  * on its own and a value captured at load is stale by the time anyone taps. */
 function activeGate(doc) {
-    const tab = doc && doc.querySelector('.gate-tab.on .nm');
+    if (!doc) return null;
+    // 4.62.0: the homepage switcher. The source on air is the one being read.
+    const src = doc.querySelector('[data-src][aria-selected="true"]');
+    if (src && src.dataset.scene) return src.dataset.scene;
+    const tab = doc.querySelector('.gate-tab.on .nm');
     const name = tab && tab.textContent.trim();
     return name || null;
 }

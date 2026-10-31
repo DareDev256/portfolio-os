@@ -3,14 +3,31 @@
 ---
 
 title: Passion OS Changelog
-version: 4.61.2
-last_updated: 2026-10-30
+version: 4.62.0
+last_updated: 2026-10-31
 
 ---
 
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.62.0 — 2026-10-31 · The homepage becomes a director's monitor
+
+The long scrolling page is replaced by a video village: a program monitor, a production switcher with one button per project, and a clapper slate that carries each project's receipt. The rule it was built to: one tap reaches anything, and no view scrolls. Measured with a fit harness at 390x844, 390x664 (iPhone Safari with its toolbars up), 430x740, 1440x900 and 1280x720: all 16 sources and all four tabs are exactly one screen tall, with nothing sideways.
+
+- **Monitor tab.** "I direct agents." 16 sources: the eight cleared gates, both games, the four also-shipped projects, Passion OS, and the registry graph. Each source plays real footage (three new recordings: Second Opinion, Passionate Learning, Prompt Generator; the Final Cut feed is the fcp-mcp-server recording), a still labelled STILL, the agent's own log, the live graph, or NO SIGNAL for sixjutsu. The HUD dates are when the footage was recorded, never a "live" claim. Tap the screen to hold the feed; reduced motion starts on hold.
+- **Every figure stays generated.** Each number is a `[data-fig]` filled from `/data/figures.json` by `js/system-figures.js`, as before. `tests/monitor.test.js` fails if the page reads a key the generator does not write, or if any `[data-fig]` carries a typed value.
+- **The agent feed admits its age.** Source 4 replays `/data/activity.json` (regenerated today: 4 of 8 watched jobs wrote a log in 36 h). Past its 36-hour window the closing line says how old the read is instead of passing as current. The stale "Ran without me" panel and the UNVERIFIED services rows are gone; this replaces both.
+- **Crew tab.** The STATUS panel as a crew list (Director, Editor, 1st AD, Script Supervisor, Producer, Second Unit), same figures, with the shared definition readout: tap a figure to see how it is counted.
+- **Reel tab.** The view total, three music video clips and the catalogue links.
+- **Call tab.** Live booking slots (the same `/booking/widget.js`; the form appears once a time is picked), Ask the System as a sheet so the thread can grow without the page scrolling, the voice agent rendered inside its card instead of floating over the page, email with copy, résumé, WhatsApp and every footer link.
+- **Registry.** The repo graph plays on the monitor (`data-graph-layout="wide"` asks `js/registry-graph.js` for the wide canvas on phones too). On desktop the node readout is a HUD panel on the screen; the curated repos are a swipe rail on the slate. Its CSS moved verbatim into `css/registry.css`.
+- **Old anchors still land.** `#gates` and `#work` open the monitor, `#system` and `#system/<repo>` cut to the registry, `#play` cuts to MANY ROADS, `#contact` and `#book` open Call. Any source id works as a deep link (`/#agent`).
+- **Claims follow the 4.61.1 truth sweep.** BetMetrics is described as a betting platform on play credits with 398 accounts (the old gate and the chat still said "real money"); fcp-mcp-server is no longer "the first" and counts 102 operations. The meta description drops "twelve client sites".
+- WhatsApp prefill names the source on air (`js/whatsapp-rail.js` reads the switcher, and still reads the old gate tabs). The chat's SEE THE WORK link points at `#monitor` and closes the sheet.
+- Inter is no longer loaded; Saira carries display and prose, JetBrains Mono the labels.
+- `css/system.css` and the old landing modules (gate cycler, hero reel, kinetic type, activity log, system FX) are no longer loaded by `/`. They stay in the repo, with their tests.
 
 ## 4.61.2 — 2026-10-30 · Analytics stops counting our own automated checks
 

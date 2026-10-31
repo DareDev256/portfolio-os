@@ -1,0 +1,783 @@
+/* registry.css: the repo-graph rules lifted verbatim from css/system.css (lines 822-1599) when the
+ * homepage became the Director's Monitor in 4.62.0. js/registry-graph.js writes geometry and one
+ * --heat per node; every visual decision lives here. The --sys-* tokens are defined in
+ * css/monitor.css with the values system.css gave them, so the graph renders unchanged. */
+
+.graph-wrap {
+    position: relative;
+    margin: 26px auto 0;
+    max-width: 900px;
+}
+
+.graph-wrap svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+}
+
+/* ---------- registry graph ----------
+ * Positions come from the solver in js/registry-graph.js; everything visual
+ * lives here. The JS writes only geometry and one --heat per node, so the
+ * palette cannot drift out of the token set. */
+
+.rg-edge {
+    stroke: rgba(var(--sys-cyan-rgb), 0.16);
+    stroke-width: 1;
+    fill: none;
+}
+
+.rg-dot {
+    fill: rgba(var(--sys-text-rgb), 0.26);
+}
+
+/* Heat is days-since-push, 1 = today. It rides the SAME cyan the rest of the
+ * surface uses — a second hue here would read as a category, implying repos
+ * come in two kinds when the only difference is when they were last touched. */
+.rg-disc {
+    fill: var(--sys-ground);
+    stroke: rgba(var(--sys-cyan-rgb), calc(0.28 + 0.62 * var(--heat, 0)));
+    stroke-width: calc(1.2 + 1.1 * var(--heat, 0));
+    transition:
+        stroke 0.3s var(--sys-cubic),
+        fill 0.3s var(--sys-cubic);
+}
+
+.rg-hit {
+    fill: transparent;
+    /* The hit target is deliberately larger than the disc — a 7px node is a
+     * 14px target, which is under every pointer-size guideline there is. */
+    cursor: pointer;
+}
+
+.rg-label {
+    font-family: var(--sys-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.9px;
+    fill: var(--sys-muted);
+    pointer-events: none;
+    transition: fill 0.3s var(--sys-cubic);
+    /* NO text-anchor HERE. In SVG, a CSS declaration beats a presentation
+     * attribute of the same name, so `text-anchor: middle` in this rule
+     * silently overrode every setAttribute('text-anchor', ...) the renderer
+     * made — the side labels computed correctly and then drew centred anyway,
+     * with nothing in the console. js/registry-graph.js owns this property. */
+}
+
+.rg-label-core {
+    font-size: 11px;
+    letter-spacing: 1.6px;
+    text-anchor: middle;
+}
+
+.rg-core-disc {
+    fill: var(--sys-ground);
+    stroke: var(--sys-cyan);
+    stroke-width: 2;
+}
+
+.rg-core-dot {
+    fill: var(--sys-cyan-pale);
+    animation: rgCore 2.6s var(--sys-cubic) infinite;
+}
+
+.rg-core-ring {
+    fill: none;
+    stroke: rgba(var(--sys-cyan-rgb), 0.45);
+    stroke-width: 1;
+    animation: rgRing 3.4s var(--sys-expo) infinite;
+}
+
+@keyframes rgCore {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.45;
+    }
+}
+
+@keyframes rgRing {
+    0% {
+        opacity: 0.7;
+        transform: scale(0.86);
+    }
+    70%,
+    100% {
+        opacity: 0;
+        transform: scale(1.28);
+    }
+}
+
+.rg-core-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+/* The dispatch pulse — the agent reaching a repo. */
+.rg-pulse {
+    fill: var(--sys-gold);
+}
+
+.rg-node.is-hit .rg-disc {
+    stroke: var(--sys-gold);
+    fill: rgba(var(--sys-gold-rgb), 0.14);
+}
+
+.rg-node.is-hit .rg-label {
+    fill: var(--sys-gold);
+}
+
+/* Hover/focus: lift the one, drop the rest. Dimming is on the SVG root rather
+ * than on each sibling, so the cost is one class toggle instead of ~85. */
+.rg-nodes,
+.rg-halo,
+.rg-edges {
+    transition: opacity 0.35s var(--sys-cubic);
+}
+
+.is-focus .rg-halo,
+.is-focus .rg-edges {
+    opacity: 0.3;
+}
+
+.is-focus .rg-node {
+    opacity: 0.32;
+    transition: opacity 0.35s var(--sys-cubic);
+}
+
+.is-focus .rg-node.is-on {
+    opacity: 1;
+}
+
+.rg-node.is-on .rg-disc {
+    stroke: var(--sys-cyan-pale);
+    stroke-width: 2.4;
+    fill: rgba(var(--sys-cyan-rgb), 0.16);
+}
+
+.rg-node.is-on .rg-label {
+    fill: var(--sys-strong);
+}
+
+.rg-node:focus {
+    outline: none;
+}
+
+.rg-node:focus-visible .rg-disc {
+    stroke: var(--sys-gold);
+    stroke-width: 2.6;
+}
+
+/* ---------- detail panel ----------
+ * Was a hover-only readout with `pointer-events: none`, which is why it had no
+ * links: the pointer could not travel to one without leaving the node and
+ * reverting the panel. Pinning is what makes a link possible here, so the two
+ * states are styled as genuinely different objects — a preview is transparent
+ * and inert, a pinned panel is opaque, bordered and reachable. */
+.rg-readout {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    max-width: 300px;
+    padding: 14px 16px;
+    border-left: 2px solid var(--sys-cyan);
+    background: linear-gradient(90deg, rgba(var(--sys-ground-rgb), 0.92), rgba(var(--sys-ground-rgb), 0));
+    pointer-events: none;
+    transition:
+        background 0.25s var(--sys-cubic),
+        box-shadow 0.25s var(--sys-cubic);
+}
+
+.rg-readout.is-pinned {
+    /* Opaque, not a gradient: the links sit at the bottom of the panel, over the
+     * transparent end of the old gradient, where graph nodes showed through the
+     * text. */
+    background: var(--sys-panel);
+    box-shadow:
+        0 0 0 1px var(--sys-hair),
+        0 18px 44px rgba(var(--sys-shadow-rgb), 0.5);
+    pointer-events: auto;
+}
+
+.rg-r-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.rg-r-name {
+    font-family: var(--sys-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--sys-cyan-pale);
+}
+
+/* Tier is the curated claim — the one thing on the panel that is a judgement
+ * rather than a fact, so it is labelled as a badge instead of set as prose. */
+.rg-r-tier,
+.rg-ix-tier {
+    font-family: var(--sys-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    padding: 2px 6px;
+    border: 1px solid var(--sys-hair);
+    border-radius: 2px;
+    color: var(--sys-muted);
+    white-space: nowrap;
+}
+
+.rg-r-tier[data-tier='flagship'],
+.rg-ix-tier[data-tier='flagship'],
+.rg-r-tier[data-tier='core'],
+.rg-ix-tier[data-tier='core'] {
+    color: var(--sys-gold);
+    border-color: rgba(var(--sys-gold-rgb), 0.42);
+}
+
+.rg-r-tier[data-tier='shipped'],
+.rg-ix-tier[data-tier='shipped'] {
+    color: var(--sys-cyan);
+    border-color: rgba(var(--sys-cyan-rgb), 0.42);
+}
+
+.rg-r-what {
+    font-family: var(--sys-prose);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--sys-dim);
+    margin: 7px 0 0;
+    text-wrap: pretty;
+}
+
+/* The evidence line. Set apart from the description because it is a different
+ * kind of sentence — one a sceptic is invited to check. */
+.rg-r-proves {
+    font-family: var(--sys-prose);
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--sys-cyan-pale);
+    margin: 8px 0 0;
+    padding-left: 9px;
+    border-left: 1px solid rgba(var(--sys-cyan-rgb), 0.34);
+    text-wrap: pretty;
+}
+
+.rg-r-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin-top: 9px;
+    font-family: var(--sys-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--sys-muted);
+}
+
+.rg-r-act {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.rg-r-act:empty {
+    margin-top: 0;
+}
+
+.rg-btn,
+.rg-ix-links a {
+    font-family: var(--sys-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    padding: 7px 11px;
+    border: 1px solid var(--sys-hair);
+    color: var(--sys-cyan);
+    /* 34px of vertical target on a 9.5px font. A mono link at this size is a
+     * ~12px tap area without it. */
+    line-height: 1.2;
+    transition:
+        border-color 0.2s var(--sys-cubic),
+        color 0.2s var(--sys-cubic),
+        background 0.2s var(--sys-cubic);
+}
+
+.rg-btn-live {
+    border-color: rgba(var(--sys-cyan-rgb), 0.5);
+    color: var(--sys-cyan-pale);
+}
+
+.rg-btn:hover,
+.rg-btn:focus-visible,
+.rg-ix-links a:hover,
+.rg-ix-links a:focus-visible {
+    border-color: var(--sys-cyan);
+    background: rgba(var(--sys-cyan-rgb), 0.09);
+    color: var(--sys-cyan-pale);
+}
+
+.rg-r-hint {
+    margin: 11px 0 0;
+    font-family: var(--sys-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: rgba(var(--sys-muted-rgb), 0.62);
+}
+
+.rg-r-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 26px;
+    height: 26px;
+    background: none;
+    border: 1px solid var(--sys-hair);
+    color: var(--sys-muted);
+    font-size: 11px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s var(--sys-cubic), border-color 0.2s var(--sys-cubic);
+}
+
+.rg-r-close:hover,
+.rg-r-close:focus-visible {
+    color: var(--sys-cyan-pale);
+    border-color: var(--sys-cyan);
+}
+
+/* A pinned node holds its highlight after the pointer has gone. Without this the
+ * panel says one repo while the graph highlights nothing. */
+.rg-node.is-pinned .rg-disc,
+.rg-core.is-pinned .rg-core-disc {
+    stroke: var(--sys-gold);
+    stroke-width: 2.4;
+}
+
+.rg-node.is-pinned .rg-label {
+    fill: var(--sys-gold);
+}
+
+.rg-core {
+    cursor: pointer;
+}
+
+.rg-core:focus {
+    outline: none;
+}
+
+.rg-core:focus-visible .rg-core-disc {
+    stroke: var(--sys-cyan-pale);
+    stroke-width: 3;
+}
+
+@media (max-width: 720px) {
+    /* Stacked under the graph on phones. Overlaying it there covers the nodes,
+     * and there is no hover to drive it anyway — on touch, every interaction is
+     * already the pinned state. */
+    .rg-readout {
+        position: static;
+        max-width: none;
+        margin-top: 18px;
+        background: none;
+        pointer-events: auto;
+    }
+
+    .rg-readout.is-pinned {
+        box-shadow: none;
+        background: rgba(var(--sys-ground-rgb), 0.6);
+    }
+
+    .rg-r-hint {
+        display: none;
+    }
+}
+
+/* ---------- the rail ----------
+ * Horizontal snap slider under the graph. Scrolling is native: scroll-snap-type
+ * plus scrollBy from the script. A JS-driven transform track would have to
+ * reimplement momentum and rubber-banding, and would fight the browser for the
+ * same gesture on the one device this exists for. */
+.rg-rail {
+    margin-top: 38px;
+    border-top: 1px solid var(--sys-hair);
+    padding-top: 20px;
+}
+
+.rg-rail-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 16px;
+}
+
+.rg-rail-title {
+    font-family: var(--sys-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--sys-muted);
+    margin: 0;
+}
+
+.rg-rail-sub {
+    color: var(--sys-cyan);
+    margin-left: 8px;
+}
+
+/* The swipe hint is for touch. On a pointer device the arrows are right there,
+ * and telling a mouse user to swipe is instruction for a gesture they do not have. */
+@media (hover: hover) and (pointer: fine) {
+    .rg-rail-sub {
+        display: none;
+    }
+}
+
+.rg-rail-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.rg-arrow {
+    width: 38px;
+    height: 34px;
+    background: none;
+    border: 1px solid var(--sys-hair);
+    color: var(--sys-cyan);
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        border-color 0.2s var(--sys-cubic),
+        background 0.2s var(--sys-cubic),
+        opacity 0.2s var(--sys-cubic);
+}
+
+.rg-arrow:hover:not(:disabled),
+.rg-arrow:focus-visible:not(:disabled) {
+    border-color: var(--sys-cyan);
+    background: rgba(var(--sys-cyan-rgb), 0.1);
+}
+
+/* Disabled, not hidden: a control that disappears mid-gesture slides its
+ * neighbour under a finger already travelling toward it. */
+.rg-arrow:disabled {
+    opacity: 0.28;
+    cursor: default;
+}
+
+/* Hidden on touch — the gesture IS the control, and two 38px buttons at the top
+ * of a rail you swipe are dead pixels. */
+@media (hover: none) {
+    .rg-rail-nav {
+        display: none;
+    }
+}
+
+.rg-rail-track {
+    display: flex;
+    gap: clamp(14px, 1.6vw, 20px);
+    list-style: none;
+    margin: 0;
+    padding: 4px 0 18px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    /* The rail is full-bleed to the right on a phone so a half-visible next card
+     * signals there is more. Padding-right gives the last card somewhere to land. */
+    scroll-padding-left: 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    cursor: grab;
+}
+
+.rg-rail-track::-webkit-scrollbar {
+    display: none;
+}
+
+.rg-rail-track.is-grabbing {
+    cursor: grabbing;
+    /* Text selection during a drag turns a pan into a highlight. */
+    user-select: none;
+    scroll-snap-type: none;
+}
+
+.rg-rail-track:focus-visible {
+    outline: 1px solid var(--sys-cyan);
+    outline-offset: 4px;
+}
+
+.rg-card {
+    position: relative;
+    flex: 0 0 auto;
+    /* min() so one card never exceeds the viewport on a small phone, and never
+     * grows into a full-width slab on a desktop. */
+    width: min(310px, 78vw);
+    scroll-snap-align: start;
+    background: linear-gradient(180deg, rgba(var(--sys-panel-rgb), 0.55), rgba(var(--sys-ground-rgb), 0.25));
+    border: 1px solid var(--sys-hair);
+    padding: 16px 17px 17px;
+    display: flex;
+    flex-direction: column;
+    transition:
+        border-color 0.35s var(--sys-cubic),
+        background 0.35s var(--sys-cubic),
+        transform 0.35s var(--sys-cubic);
+}
+
+/* The card the rail has settled on. Marking it is what keeps the rail and the
+ * graph agreeing about where you are — otherwise they are two lists of the same
+ * repos that never point at the same one. */
+.rg-card.is-active {
+    border-color: rgba(var(--sys-cyan-rgb), 0.44);
+    background: linear-gradient(180deg, rgba(var(--sys-panel-rgb), 0.7), rgba(var(--sys-ground-rgb), 0.3));
+}
+
+.rg-card:hover {
+    border-color: rgba(var(--sys-cyan-rgb), 0.34);
+}
+
+/* Recency as a hairline on the top edge. The graph encodes it as node
+ * brightness, which is unreadable once you are reading text; this is the exact
+ * same value, so the two views cannot drift. */
+.rg-card-heat {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    height: 2px;
+    width: calc(28% + 72% * var(--heat, 0));
+    background: linear-gradient(90deg, var(--sys-cyan), rgba(var(--sys-cyan-rgb), 0));
+    opacity: calc(0.3 + 0.7 * var(--heat, 0));
+}
+
+.rg-card.is-core {
+    border-color: rgba(var(--sys-gold-rgb), 0.34);
+}
+
+.rg-card.is-core .rg-card-heat {
+    background: linear-gradient(90deg, var(--sys-gold), rgba(var(--sys-gold-rgb), 0));
+}
+
+.rg-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 11px;
+}
+
+.rg-card-num {
+    font-family: var(--sys-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(var(--sys-muted-rgb), 0.55);
+}
+
+.rg-card-tier {
+    font-family: var(--sys-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    padding: 2px 6px;
+    border: 1px solid var(--sys-hair);
+    border-radius: 2px;
+    color: var(--sys-muted);
+    white-space: nowrap;
+}
+
+.rg-card-tier[data-tier='flagship'],
+.rg-card-tier[data-tier='core'] {
+    color: var(--sys-gold);
+    border-color: rgba(var(--sys-gold-rgb), 0.42);
+}
+
+.rg-card-tier[data-tier='shipped'] {
+    color: var(--sys-cyan);
+    border-color: rgba(var(--sys-cyan-rgb), 0.42);
+}
+
+.rg-card-name {
+    font-family: var(--sys-mono);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--sys-cyan-pale);
+    text-decoration: none;
+    /* Long repo names (Ultimate-Image-Video-Prompt-Generator) must wrap inside
+     * the card rather than widen it and break every snap position. */
+    overflow-wrap: anywhere;
+}
+
+.rg-card-name:hover,
+.rg-card-name:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.rg-card-what {
+    font-family: var(--sys-prose);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--sys-dim);
+    margin: 8px 0 0;
+    text-wrap: pretty;
+}
+
+.rg-card-proves {
+    font-family: var(--sys-prose);
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--sys-cyan-pale);
+    margin: 11px 0 0;
+    padding-left: 10px;
+    border-left: 1px solid rgba(var(--sys-cyan-rgb), 0.34);
+    text-wrap: pretty;
+}
+
+.rg-card-proves-k {
+    display: block;
+    font-family: var(--sys-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    color: var(--sys-muted);
+    margin-bottom: 4px;
+}
+
+.rg-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px 12px;
+    /* margin-top:auto pins the meta and links to the card's bottom edge, so a
+     * row of cards with different text lengths still has its buttons in a line. */
+    margin-top: auto;
+    padding-top: 13px;
+    font-family: var(--sys-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    color: var(--sys-muted);
+}
+
+.rg-card-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 11px;
+}
+
+.rg-card-btn {
+    font-family: var(--sys-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    padding: 8px 11px;
+    border: 1px solid var(--sys-hair);
+    color: var(--sys-cyan);
+    line-height: 1.2;
+    transition:
+        border-color 0.2s var(--sys-cubic),
+        background 0.2s var(--sys-cubic),
+        color 0.2s var(--sys-cubic);
+}
+
+.rg-card-btn.is-live {
+    border-color: rgba(var(--sys-cyan-rgb), 0.5);
+    color: var(--sys-cyan-pale);
+}
+
+.rg-card-btn:hover,
+.rg-card-btn:focus-visible {
+    border-color: var(--sys-cyan);
+    background: rgba(var(--sys-cyan-rgb), 0.09);
+    color: var(--sys-cyan-pale);
+}
+
+.rg-card-note {
+    font-family: var(--sys-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: var(--sys-muted);
+    align-self: center;
+}
+
+/* The remainder, stated. Without it the rail silently implies the registry is
+ * only as big as the part that got a card. */
+.rg-card-tail {
+    justify-content: center;
+    border-style: dashed;
+    border-color: rgba(var(--sys-cyan-rgb), 0.16);
+    background: none;
+}
+
+.rg-card-tailnum {
+    font-family: var(--sys-display);
+    font-size: 40px;
+    line-height: 1;
+    color: rgba(var(--sys-cyan-rgb), 0.5);
+}
+
+/* A node the rail is currently sitting on. Distinct from :hover and from the
+ * pinned state — this is "the rail is here", not "you chose this". */
+.rg-node.is-near .rg-disc,
+.rg-core.is-near .rg-core-disc {
+    stroke: var(--sys-cyan-pale);
+}
+
+.rg-node.is-near .rg-label {
+    fill: var(--sys-cyan-pale);
+}
+
+.rg-rail-foot {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.rg-rail-bar {
+    flex: 1;
+    height: 1px;
+    background: var(--sys-hair);
+    overflow: hidden;
+}
+
+.rg-rail-fill {
+    display: block;
+    height: 100%;
+    background: var(--sys-cyan);
+    transform-origin: left center;
+    transform: scaleX(0.04);
+    transition: transform 0.18s linear;
+}
+
+.rg-rail-count {
+    font-family: var(--sys-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    color: var(--sys-muted);
+    /* tabular-nums stops the whole row jittering as 1 becomes 11. */
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 720px) {
+    .rg-rail-track {
+        /* Bleed past the section gutter so the next card is visibly cut off at
+         * the screen edge. A rail that ends flush reads as a finished row and
+         * nobody swipes it. */
+        margin-right: calc(var(--sys-gut) * -1);
+        padding-right: var(--sys-gut);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rg-rail-track {
+        scroll-behavior: auto;
+    }
+
+    .rg-card,
+    .rg-rail-fill {
+        transition: none;
+    }
+}
+

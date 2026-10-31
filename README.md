@@ -41,7 +41,7 @@ yourself with `grep -c "resolve(import.meta.dirname" vite.config.js`, or read
 
 | Route | Entry | What it is |
 |---|---|---|
-| `/` | `index.html` + `css/system.css` | **THE SYSTEM** — the hiring surface. A static scrolling page: status panel, Passion Agent snapshot, cleared gates, contact. No framework, no OS code. |
+| `/` | `index.html` + `css/monitor.css` + `js/monitor.js` | **THE MONITOR** — the hiring surface (4.62.0). A director's video village: program monitor, a switcher with one button per project, a slate with each project's receipt, and Crew / Reel / Call tabs. One tap reaches anything and no view scrolls. No framework, no OS code. |
 | `/os` | `os/index.html` + `js/main.js` | **Passion OS** — the desktop environment this README documents. Everything below describes this surface. |
 | `/coldopen` | `coldopen/index.html` | **COLD OPEN** — the writeup of the artist-site engine at [github.com/DareDev256/coldopen](https://github.com/DareDev256/coldopen). Added in 4.21.0. |
 

@@ -1,54 +1,58 @@
 {
-  "generatedAt": "2026-09-01T23:02:51.527Z",
+  "generatedAt": "2026-10-31T09:43:34.916Z",
   "windowHours": 36,
-  "ranInWindow": 7,
+  "ranInWindow": 4,
   "jobsWatched": 8,
   "events": [
     {
       "id": "life-rhythm",
       "label": "Life-rhythm check ran",
       "source": "life-rhythm",
-      "at": "2026-09-01T22:10:12.672Z",
-      "time": "18:10",
-      "ageMinutes": 53
-    },
-    {
-      "id": "sandra-digest",
-      "label": "Household digest sent",
-      "source": "sandra-digest · Discord",
-      "at": "2026-09-01T21:13:29.077Z",
-      "time": "17:13",
-      "ageMinutes": 109
+      "at": "2026-10-31T03:14:00.455Z",
+      "time": "23:14",
+      "ageMinutes": 390
     },
     {
       "id": "branch-shepherd",
       "label": "Branches swept for drift",
       "source": "branch-shepherd",
-      "at": "2026-09-01T13:08:30.959Z",
-      "time": "09:08",
-      "ageMinutes": 594
+      "at": "2026-10-30T13:11:18.795Z",
+      "time": "09:11",
+      "ageMinutes": 1232
     },
     {
       "id": "check-daily-rollup",
       "label": "Agent rollup written",
       "source": "check-daily-rollup",
-      "at": "2026-09-01T12:00:06.071Z",
+      "at": "2026-10-30T12:00:05.709Z",
       "time": "08:00",
-      "ageMinutes": 663
+      "ageMinutes": 1303
     },
     {
       "id": "daily-brief",
       "label": "Morning brief compiled and sent",
       "source": "daily-brief · Discord",
-      "at": "2026-09-01T10:46:23.548Z",
-      "time": "06:46",
-      "ageMinutes": 736
+      "at": "2026-10-30T10:47:03.672Z",
+      "time": "06:47",
+      "ageMinutes": 1377
     }
   ],
   "skipped": [
     {
+      "id": "career-digest",
+      "why": "last ran 44h ago"
+    },
+    {
+      "id": "portfolio-traffic-radar",
+      "why": "last ran 116h ago"
+    },
+    {
+      "id": "sandra-digest",
+      "why": "last ran 1213h ago"
+    },
+    {
       "id": "drift-check",
-      "why": "last ran 50h ago"
+      "why": "last ran 132h ago"
     }
   ],
   "definitions": {

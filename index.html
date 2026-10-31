@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04080f" />
 
     <!-- Google tag (gtag.js) -->
     <script src="/ga4.js"></script>
@@ -12,14 +13,14 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TG10CNCMJY"></script>
 
     <title>James Olusoga | Software Engineer, Production AI — Toronto</title>
-    <meta name="description" content="James Olusoga — Software Engineer in Toronto, production AI systems. The AI work is 2025 onward; ten years shipping solo for people who pay for it: an autonomous agent running 97 modules across a 128-repository registry, a live sports-betting analytics product, twelve client sites, and 25 million views of directed film." />
+    <meta name="description" content="James Olusoga — Software Engineer in Toronto, production AI systems. The AI work is 2025 onward; ten years shipping solo for people who pay for it: an autonomous agent running 97 modules across a 129-repository registry, a sports-betting platform, client sites in production, and 25 million views of directed film." />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon-system.svg" />
     <link rel="canonical" href="https://www.jamesdare.com" />
 
     <!-- Open Graph / Social Sharing -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="James Olusoga — Software Engineer, Production AI | Toronto" />
-    <meta property="og:description" content="I build systems that run without me. Autonomous agent infrastructure, a live analytics product with real money on it, and 25M views of directed film." />
+    <meta property="og:description" content="I direct agents. Ten years directing music video, now agents that edit in Final Cut, ship client sites and run the schedule. Tap any source." />
     <meta property="og:url" content="https://www.jamesdare.com" />
     <meta property="og:site_name" content="James Olusoga" />
     <meta property="og:image" content="https://www.jamesdare.com/thumbnails/og-preview.jpg" />
@@ -27,7 +28,7 @@
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="James Olusoga — Software Engineer, Production AI" />
-    <meta name="twitter:description" content="I build systems that run without me. Toronto." />
+    <meta name="twitter:description" content="I direct agents. Toronto." />
     <meta name="twitter:image" content="https://www.jamesdare.com/thumbnails/og-preview.jpg" />
 
     <meta name="author" content="James Olusoga" />
@@ -54,792 +55,464 @@
     }
     </script>
 
-    <!-- Fonts -->
+    <!-- Two faces, two jobs. Saira (variable wdth) carries display AND prose;
+         JetBrains Mono carries labels, figures and the HUD. Inter left with the
+         4.62 redesign: a third face read as a template. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Three faces, three jobs, zero OS drift. Saira carries a live wdth 50-125 and
-         wght 100-900 axis — the display type is ANIMATED on those axes, so a static
-         face (Barlow Condensed) cannot replace it. Inter is prose only. Mono is labels.
-         No system font sits ahead of a webfont in any stack: 'Avenir Next Condensed'
-         used to, which meant Mac visitors and Windows visitors read two different sites. -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=JetBrains+Mono:wght@400;700&family=Saira:wdth,wght@50..125,100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Saira:wdth,wght@50..125,300..900&display=swap" rel="stylesheet" />
 
-    <link rel="stylesheet" href="/css/system.css" />
+    <link rel="stylesheet" href="/css/monitor.css" />
+    <link rel="stylesheet" href="/css/registry.css" />
 
+    <!-- Without JavaScript there is no switcher, so every take and every view
+         renders in order and the page scrolls like a document. -->
     <noscript>
         <style>
-            .rv { opacity: 1 !important; transform: none !important; }
+            .view[hidden], .take[hidden] { display: block !important; }
+            .switcher, .tabs, .monitor { display: none !important; }
+            main { padding-bottom: 24px !important; }
         </style>
     </noscript>
 </head>
 
-<body class="system">
+<body class="village-page">
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <header class="sys-header">
-        <div class="wordmark">
-            <div class="diamond" aria-hidden="true"></div>
-            <span>J. OLUSOGA</span>
+    <header class="top">
+        <div class="top-in">
+            <a class="who" href="#monitor">J. OLUSOGA</a>
+            <span class="status">OPEN TO ROLES<span class="wide"> · SOFTWARE ENGINEER, PRODUCTION AI · TORONTO</span></span>
         </div>
-        <nav class="sys-nav" aria-label="Primary">
-            <a href="#gates">WORK</a>
-            <a href="#system">SYSTEM</a>
-            <a href="#play">PLAY</a>
-            <a href="/passion">PASSION</a>
-            <a href="/os">OS</a>
-            <a href="/resume/JamesOlusoga-AI-Engineer.pdf">RESUME</a>
-            <a class="cta" href="#contact">CONTACT</a>
-        </nav>
     </header>
+
+    <!-- One tap reaches everything; no view scrolls. Phones get the bar at the
+         bottom, desktops get it in the header row. -->
+    <nav class="tabs" aria-label="Sections">
+        <a href="#monitor"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="12" rx="1" /><path d="M8 20h8M12 16.5V20" /></svg>MONITOR</a>
+        <a href="#crew"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" /></svg>CREW</a>
+        <a href="#reel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="2" /><circle cx="12" cy="6.5" r="1.6" /><circle cx="17.5" cy="12" r="1.6" /><circle cx="12" cy="17.5" r="1.6" /><circle cx="6.5" cy="12" r="1.6" /></svg>REEL</a>
+        <a href="#call"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z" /></svg>CALL</a>
+    </nav>
 
     <main id="main">
 
-        <!-- ============ HERO ============ -->
-        <section class="hero" aria-labelledby="hero-h">
-            <div class="plate-stack" id="plate-stack" aria-hidden="true">
-                <div class="plate is-on" data-clip="/assets/system/reel/site-nirvana.mp4" data-kind="BUILT" data-who="NirvanaDeshaun" data-what="nirvanadeshaunbuilds.com" data-meta="Atlanta custom home builds">
-                    <img src="/assets/system/reel/site-nirvana.jpg" alt="" role="presentation" fetchpriority="high" />
-                </div>
-                <div class="plate" data-clip="/assets/system/reel/site-edson.mp4" data-kind="BUILT" data-who="Edson Legal" data-what="edsonlegal.com" data-meta="civil rights law · Toronto">
-                    <img src="/assets/system/reel/site-edson.jpg" alt="" role="presentation" loading="lazy" />
-                </div>
-                <div class="plate" data-clip="/assets/system/reel/site-betmetrics.mp4" data-kind="BUILT" data-who="BetMetrics" data-what="betmetrics.ca" data-meta="live product · real users · provably-fair casino">
-                    <img src="/assets/system/reel/site-betmetrics.jpg" alt="" role="presentation" loading="lazy" />
-                </div>
-                <div class="plate" data-clip="/assets/system/reel/site-shopbayhq.mp4" data-kind="BUILT" data-who="ShopBayHQ" data-what="shopbayhq.com" data-meta="shop-floor SaaS, live in production">
-                    <img src="/assets/system/reel/site-shopbayhq.jpg" alt="" role="presentation" loading="lazy" />
-                </div>
-                <div class="plate" data-clip="/assets/system/reel/site-ninonline-v2.mp4" data-kind="BUILT" data-who="Nin Online Wiki" data-what="ninonline.fandom.com" data-meta="{wikiArticles} articles · {wikiShare} of the wiki's edits">
-                    <img src="/assets/system/reel/site-ninonline-v2.jpg" alt="" role="presentation" loading="lazy" />
-                </div>
-                <div class="plate" data-clip="/assets/system/reel/site-ninjora-v4.mp4" data-kind="BUILT" data-who="Ninjora Wiki" data-what="ninjora.fandom.com" data-meta="built from zero">
-                    <img src="/assets/system/reel/site-ninjora-v4.jpg" alt="" role="presentation" loading="lazy" />
-                </div>
-                <div class="plate" data-clip="/assets/system/reel/site-manyroads.mp4" data-kind="PLAYABLE" data-who="MANY ROADS" data-what="playmanyroads.com" data-meta="my game · a Battle Network style roguelite set in Toronto · free alpha demo">
-                    <img src="/assets/system/reel/site-manyroads.jpg" alt="" role="presentation" loading="lazy" />
-                </div>
-                <div class="plate" data-clip="/assets/system/reel/site-kmoney.mp4" data-kind="BUILT" data-who="KMoney" data-what="officialkmoney.com" data-meta="x2 platinum · 33M views">
-                    <img src="/assets/system/reel/site-kmoney.jpg" alt="" role="presentation" loading="lazy" />
-                </div>
-                <div class="plate" data-clip="/assets/system/reel/site-bandplan.mp4" data-kind="BUILT" data-who="100BandPlan" data-what="100bandplan.com" data-meta="323,024 monthly listeners">
-                    <img src="/assets/system/reel/site-bandplan.jpg" alt="" role="presentation" loading="lazy" />
-                </div>
-                <div class="plate" data-clip="/assets/system/reel/site-frenchies.mp4" data-kind="BUILT" data-who="MustHaveFrenchies" data-what="musthavefrenchies.com" data-meta="breeder site with a custom admin CMS">
-                    <img src="/assets/system/reel/site-frenchies.jpg" alt="" role="presentation" loading="lazy" />
-                </div>
-                <div class="plate" data-clip="/assets/system/reel/site-tdots.mp4" data-kind="BUILT" data-who="TdotsSolutionsz" data-what="tdotssolutionsz.com" data-meta="101 films · every client site on one map">
-                    <img src="/assets/system/reel/site-tdots.jpg" alt="" role="presentation" loading="lazy" />
-                </div>
-                <div class="plate" data-clip="/assets/system/reel/site-streetbud.mp4" data-kind="BUILT" data-who="Street Bud" data-what="officialstreetbud.com" data-meta="the block after dark">
-                    <img src="/assets/system/reel/site-streetbud.jpg" alt="" role="presentation" loading="lazy" />
-                </div>
-</div>
-                <div class="plate" data-clip="/assets/system/reel/site-coldopen.mp4" data-kind="ENGINE" data-who="COLD OPEN" data-what="github.com/DareDev256/coldopen" data-meta="open source · it generated the first shortiieraw.com, now archived at /carry-on · one blind judge, one round, ranked it the most hand-made of five">
-                    <img src="/assets/system/reel/site-coldopen.jpg" alt="" role="presentation" loading="lazy" />
-                </div>
-            <div class="wash" aria-hidden="true"></div>
-            <div class="scan" aria-hidden="true"></div>
-
-            <div class="hero-grid">
-                <div class="hero-copy">
-                    <p class="eyebrow line l1">SOFTWARE ENGINEER &nbsp;·&nbsp; PRODUCTION AI &nbsp;·&nbsp; TORONTO</p>
-                    <!-- The coordinate. A screener decides what to book you AS before
-                         they decide whether to book you, and the page used to answer
-                         the second question first. No employer is claimed here because
-                         there is not one to claim; the standing is the roster and the
-                         install count, both of which a reader can check. -->
-                    <p class="hero-name line l2">
-                        <strong>James Olusoga.</strong> <span data-fig="clientSites">&#8212;</span> client sites in production, shipped solo &mdash;
-                        and <a class="hero-link" href="https://pypi.org/project/fcp-mcp-server/" target="_blank" rel="noopener">fcp-mcp-server</a>, the first MCP server for Final Cut Pro, which other engineers install
-                        <a class="receipt" href="https://pypistats.org/packages/fcp-mcp-server" target="_blank" rel="noopener"><span data-fig="installs">&#8212;</span> times a month</a>.
-                    </p>
-                    <!-- Line breaks are authored, not left to the wrap. Each line rises
-                         out of its own mask and widens on Saira's wdth axis as it lands.
-                         Keep the aria-label: split markup reads as fragments to a screen
-                         reader otherwise. -->
-                    <h1 id="hero-h" class="line l2" aria-label="I build systems that run without me.">
-                        <span class="kt-line" aria-hidden="true"><span class="kt-in">I build systems</span></span>
-                        <span class="kt-line" aria-hidden="true"><span class="kt-in">that run</span></span>
-                        <span class="kt-line" aria-hidden="true"><span class="kt-in gold">without me.</span></span>
-                    </h1>
-                    <p class="hero-sub line l3">
-                        Ten years shipping solo for people who pay for it.<br />
-                        First directing music video, now engineering<br />
-                        the system that runs the rest.
-                    </p>
-
-                    <p class="reel-credit line l3">
-                        <span class="dot" aria-hidden="true"></span><span data-reel-kind>BUILT</span> ·
-                        <span data-reel-who>NirvanaDeshaun</span> —
-                        <span data-reel-what>nirvanadeshaunbuilds.com</span> ·
-                        <span data-reel-meta>Atlanta custom home builds</span>
-                    </p>
+        <!-- ============ MONITOR ============
+             A video village: the program monitor, a production switcher with one
+             button per source, and a clapper slate that carries the receipt for
+             whichever source is cut to air. Every figure is a [data-fig] filled
+             from /data/figures.json by js/system-figures.js, so it renders as an
+             em dash rather than a stale number when the file cannot be read. -->
+        <section id="monitor" class="view" aria-labelledby="hero-h">
+            <div class="village">
+                <div class="intro">
+                    <h1 id="hero-h">I direct agents.</h1>
+                    <p class="lede">Ten years directing music videos. Now I direct agents that <b>edit in Final Cut</b>, <b>ship <span data-fig="clientSites">&#8212;</span> client sites</b> and <b>run <span data-fig="jobs">&#8212;</span> scheduled jobs</b>. Tap any source.</p>
                 </div>
 
-                <div class="panel brackets">
-                    <div class="bk" aria-hidden="true"></div>
-                    <div class="panel-head">
-                        <span class="label">STATUS</span>
-                        <span class="stamp">SNAPSHOT <span data-fig="snapshotDate">&#8212;</span><span class="caret" aria-hidden="true">&#9612;</span></span>
+                <figure class="monitor">
+                    <div class="screen" id="screen">
+                        <video id="pgm" muted playsinline loop preload="auto" aria-label="Program monitor"></video>
+                        <img class="still" id="still" alt="" hidden />
+                        <div class="logfeed" id="logfeed" hidden aria-label="The agent's own log"></div>
+                        <div class="graphfeed" id="graphfeed" hidden>
+                            <div class="graph-wrap" data-graph-layout="wide">
+                                <svg id="registry-graph" viewBox="0 0 850 640" aria-hidden="true"></svg>
+                            </div>
+                            <div class="rg-readout" id="rg-readout" aria-live="polite">
+                                <div class="rg-r-head">
+                                    <span class="rg-r-name" data-rg="name">passion-agent</span>
+                                    <span class="rg-r-tier" data-rg="tier">CORE</span>
+                                </div>
+                                <p class="rg-r-what" data-rg="what">&#8212;</p>
+                                <p class="rg-r-proves" data-rg="proves" hidden></p>
+                                <div class="rg-r-meta">
+                                    <span data-rg="stack"></span>
+                                    <span data-rg="pushed">&#8212;</span>
+                                </div>
+                                <div class="rg-r-act">
+                                    <a class="rg-btn rg-btn-live" data-rg="live" hidden></a>
+                                    <a class="rg-btn rg-btn-code" data-rg="code" hidden>CODE &#8599;</a>
+                                </div>
+                                <p class="rg-r-hint" data-rg="hint">CLICK A NODE TO PIN IT</p>
+                                <button type="button" class="rg-r-close" data-rg="close" hidden aria-label="Unpin this repository">&#10005;</button>
+                            </div>
+                        </div>
+                        <div class="nosignal" id="nosignal" hidden><span>NO SIGNAL · IN PROGRESS</span></div>
+                        <div class="blank" aria-hidden="true"></div>
+                        <button type="button" class="hold" id="hold" aria-pressed="false" aria-label="Pause the program feed"></button>
+                        <div class="hud" aria-hidden="true">
+                            <span class="tl" id="hudCam">2 · FCP-MCP-SERVER</span>
+                            <span class="tr"><i class="tally" id="hudTally"></i><span id="hudRec">REC 08 SEP 26</span></span>
+                            <span class="bl">TC <span id="tc">00:00:00:00</span></span>
+                            <span class="br" id="hudFmt">16:9 · 24P</span>
+                            <i class="guide g1"></i><i class="guide g2"></i><i class="guide g3"></i><i class="guide g4"></i>
+                        </div>
                     </div>
-                    <div class="panel-rows">
-                        <div class="row rw1"><span class="k">ADOPTED</span><span><a class="receipt named" href="https://github.com/DareDev256/fcp-mcp-server" target="_blank" rel="noopener">fcp-mcp-server</a> <span class="sub"><a class="receipt" href="https://github.com/DareDev256/fcp-mcp-server" target="_blank" rel="noopener"><span data-fig="stars">&#8212;</span>&#9733;</a>  &#183; <a class="receipt" href="https://pypistats.org/packages/fcp-mcp-server" target="_blank" rel="noopener"><span data-fig="installs">&#8212;</span> installs/mo</a></span></span></div>
-                        <div class="row rw2"><span class="k">UNSUPERVISED</span><span><a class="receipt" href="https://ninonline.fandom.com/wiki/Special:Contributions/RawBOT" target="_blank" rel="noopener"><span data-fig="wikiShare">&#8212;</span> of every edit</a> <span class="sub">&#183; a wiki since <span data-fig="wikiSince">&#8212;</span></span></span></div>
-                        <div class="row rw3"><span class="k">DEPLOYED</span><span><a class="receipt named" href="https://betmetrics.ca" target="_blank" rel="noopener">betmetrics.ca</a> <span class="sub">&#183; <span data-fig="clientSitesUp">&#8212;</span> of <span data-fig="clientSites">&#8212;</span> answering</span></span></div>
-                        <div class="row rw4"><span class="k">DIRECTED</span><span class="gold"><span data-fig="directedViews">&#8212;</span> views</span></div>
-                        <div class="row rw5"><span class="k">SCALE</span><span class="sub"><span data-fig="modules">&#8212;</span> modules &#183; <span data-fig="loc">&#8212;</span> LOC &#183; <span data-fig="repos">&#8212;</span> repos</span></div>
-                        <div class="row rw6"><span class="k">PLAYABLE</span><span><a class="receipt named" href="https://playmanyroads.com" target="_blank" rel="noopener">MANY ROADS</a> <span class="sub">&#183; my game &#183; free alpha</span></span></div>
+                    <figcaption class="bezel"><span>VILLAGE 01</span><span id="bezelSrc">SRC 02</span><span class="pgm" id="bezelPgm">● PGM</span></figcaption>
+                </figure>
+
+                <!-- data-kind: rec = recorded footage, play = playback of a film,
+                     log = the agent's own log, still = a frame, graph = the live
+                     registry, none = nothing to show yet. The date is when the
+                     footage was recorded, so the HUD never claims a live feed. -->
+                <div class="switcher" id="switcher" role="tablist" aria-label="Sources">
+                    <span class="sw-label">SOURCES · TAP TO CUT</span>
+                    <div class="sw-grid">
+                        <button type="button" class="src" role="tab" id="src-betmetrics" aria-controls="take-betmetrics" aria-selected="false" tabindex="-1" data-src="betmetrics" data-kind="rec" data-scene="BetMetrics" data-date="21 AUG 26" data-clips="/assets/system/reel/site-betmetrics.mp4" data-poster="/assets/system/reel/site-betmetrics.jpg"><span class="n">1</span>BET&shy;METRICS</button>
+                        <button type="button" class="src" role="tab" id="src-fcp" aria-controls="take-fcp" aria-selected="true" tabindex="0" data-src="fcp" data-kind="rec" data-scene="fcp-mcp-server" data-date="08 SEP 26" data-clips="/assets/system/monitor/feed-finalcut.mp4" data-poster="/assets/system/monitor/feed-finalcut.jpg"><span class="n">2</span>FCP-MCP</button>
+                        <button type="button" class="src" role="tab" id="src-second" aria-controls="take-second" aria-selected="false" tabindex="-1" data-src="second" data-kind="rec" data-scene="Second Opinion" data-date="30 OCT 26" data-clips="/assets/system/monitor/feed-second-opinion.mp4" data-poster="/assets/system/monitor/feed-second-opinion.jpg"><span class="n">3</span>2ND OPINION</button>
+                        <button type="button" class="src" role="tab" id="src-agent" aria-controls="take-agent" aria-selected="false" tabindex="-1" data-src="agent" data-kind="log" data-scene="Passion Agent"><span class="n">4</span>PASSION AGENT</button>
+                        <button type="button" class="src" role="tab" id="src-sites" aria-controls="take-sites" aria-selected="false" tabindex="-1" data-src="sites" data-kind="rec" data-scene="Client sites" data-date="20 AUG 26" data-clips="/assets/system/reel/site-nirvana.mp4 /assets/system/reel/site-edson.mp4 /assets/system/reel/site-kmoney.mp4 /assets/system/reel/site-bandplan.mp4 /assets/system/reel/site-frenchies.mp4 /assets/system/reel/site-savv4x.mp4 /assets/system/reel/site-streetbud.mp4 /assets/system/reel/site-tdots.mp4" data-tags="NIRVANADESHAUN|EDSON LEGAL|KMONEY|100BANDPLAN|MUSTHAVEFRENCHIES|SAVV4X|STREET BUD|TDOTSSOLUTIONSZ" data-poster="/assets/system/reel/site-nirvana.jpg"><span class="n">5</span>CLIENT SITES</button>
+                        <button type="button" class="src" role="tab" id="src-films" aria-controls="take-films" aria-selected="false" tabindex="-1" data-src="films" data-kind="play" data-scene="101 Films" data-date="PLAYBACK" data-clips="/assets/system/reel/u3O5PKN9vCQ.mp4 /assets/system/reel/E7ZStZMn-ac.mp4 /assets/system/reel/AKuI1b-o69M.mp4" data-tags="MASICKA|CASPER TNG FT FRESH|STREET BUD" data-poster="/assets/system/reel/u3O5PKN9vCQ.jpg"><span class="n">6</span>101 FILMS</button>
+                        <button type="button" class="src" role="tab" id="src-coldopen" aria-controls="take-coldopen" aria-selected="false" tabindex="-1" data-src="coldopen" data-kind="rec" data-scene="COLD OPEN" data-date="22 AUG 26" data-clips="/assets/system/reel/site-coldopen.mp4" data-poster="/assets/system/reel/site-coldopen.jpg"><span class="n">7</span>COLD OPEN</button>
+                        <button type="button" class="src" role="tab" id="src-bib" aria-controls="take-bib" aria-selected="false" tabindex="-1" data-src="bib" data-kind="still" data-scene="Bodies In Boxes" data-date="19 OCT 26" data-still="/assets/system/gates/bodies-in-boxes.jpg"><span class="n">8</span>BODIES IN BOXES</button>
+                        <button type="button" class="src" role="tab" id="src-manyroads" aria-controls="take-manyroads" aria-selected="false" tabindex="-1" data-src="manyroads" data-kind="rec" data-scene="MANY ROADS" data-date="03 OCT 26" data-clips="/assets/system/reel/site-manyroads.mp4" data-poster="/assets/system/reel/site-manyroads.jpg"><span class="n">9</span>MANY ROADS</button>
+                        <button type="button" class="src" role="tab" id="src-learning" aria-controls="take-learning" aria-selected="false" tabindex="-1" data-src="learning" data-kind="rec" data-scene="Passionate Learning" data-date="30 OCT 26" data-clips="/assets/system/monitor/feed-learning.mp4" data-poster="/assets/system/monitor/feed-learning.jpg"><span class="n">10</span>LEARNING</button>
+                        <button type="button" class="src" role="tab" id="src-fandom" aria-controls="take-fandom" aria-selected="false" tabindex="-1" data-src="fandom" data-kind="rec" data-scene="Fandom Flow" data-date="20 AUG 26" data-clips="/assets/system/reel/site-ninonline-v2.mp4" data-poster="/assets/system/reel/site-ninonline-v2.jpg"><span class="n">11</span>FANDOM FLOW</button>
+                        <button type="button" class="src" role="tab" id="src-shopbay" aria-controls="take-shopbay" aria-selected="false" tabindex="-1" data-src="shopbay" data-kind="rec" data-scene="ShopBayHQ" data-date="20 AUG 26" data-clips="/assets/system/reel/site-shopbayhq.mp4" data-poster="/assets/system/reel/site-shopbayhq.jpg"><span class="n">12</span>SHOPBAY&shy;HQ</button>
+                        <button type="button" class="src" role="tab" id="src-prompts" aria-controls="take-prompts" aria-selected="false" tabindex="-1" data-src="prompts" data-kind="rec" data-scene="Prompt Generator" data-date="30 OCT 26" data-clips="/assets/system/monitor/feed-prompts.mp4" data-poster="/assets/system/monitor/feed-prompts.jpg"><span class="n">13</span>PROMPT GEN</button>
+                        <button type="button" class="src" role="tab" id="src-sixjutsu" aria-controls="take-sixjutsu" aria-selected="false" tabindex="-1" data-src="sixjutsu" data-kind="none" data-scene="sixjutsu" data-date="IN PROGRESS"><span class="n">14</span>SIXJUTSU</button>
+                        <button type="button" class="src" role="tab" id="src-os" aria-controls="take-os" aria-selected="false" tabindex="-1" data-src="os" data-kind="still" data-scene="Passion OS" data-date="20 AUG 26" data-still="/assets/system/gates/passion-agent.jpg"><span class="n">15</span>PASSION OS</button>
+                        <button type="button" class="src" role="tab" id="src-registry" aria-controls="take-registry" aria-selected="false" tabindex="-1" data-src="registry" data-kind="graph" data-scene="Registry" data-date="GH REPO LIST"><span class="n">16</span>REGISTRY</button>
                     </div>
-                    <!-- One shared readout instead of a popover per figure. Every number in
-                         this panel already ships a `definitions` entry saying what it counts;
-                         until now that only reached a title attribute, which does nothing on
-                         touch and signals nothing on desktop. Hover or tap a figure and its
-                         definition prints here, in the panel's own type. -->
-                    <div class="panel-def" data-fig-readout aria-live="polite">
-                        <span class="def-hint">hover a figure to see how it is counted</span>
+                </div>
+
+                <div class="slate" id="slate">
+                    <div class="clapper" aria-hidden="true"></div>
+                    <div class="slate-body">
+                        <dl class="fields">
+                            <div><dt>SCENE</dt><dd id="sScene">fcp-mcp-server</dd></div>
+                            <div><dt>TAKE</dt><dd id="sTake">01</dd></div>
+                            <div><dt>DATE</dt><dd id="sDate">08 SEP 26</dd></div>
+                        </dl>
+
+                        <div class="take" id="take-betmetrics" role="tabpanel" aria-labelledby="src-betmetrics" hidden>
+                            <h2 class="vh">BetMetrics</h2>
+                            <p class="what">A sports-betting platform on play credits, 398 accounts. One mis-scoped query pays the wrong person.</p>
+                            <p class="call-line"><b>THE CALL</b>Prize logic only changes with a human sign-off, enforced by a pre-commit gate.</p>
+                            <dl class="stats">
+                                <div><dd>v0.59</dd><dt>shipped</dt></div>
+                                <div><dd>0</dd><dt>payout incidents</dt></div>
+                                <div><dd>2×</dd><dt>scope expansions</dt></div>
+                            </dl>
+                            <div class="links"><a href="https://betmetrics.ca" rel="noopener">See it live ↗</a><span class="stack">NEXT.JS · CONVEX · CLERK · VERCEL</span></div>
+                        </div>
+
+                        <div class="take" id="take-fcp" role="tabpanel" aria-labelledby="src-fcp">
+                            <h2 class="vh">fcp-mcp-server</h2>
+                            <p class="what">Claude Code cuts ten clips into a Final Cut timeline, then marks every cut. An MCP server for Final Cut Pro, MIT.</p>
+                            <p class="call-line"><b>THE CALL</b>Strangers adopted it, the one proof I can’t write myself. Counts from the GitHub and PyPI APIs.</p>
+                            <dl class="stats">
+                                <div><dd data-fig="stars">&#8212;</dd><dt>stars</dt></div>
+                                <div><dd data-fig="forks">&#8212;</dd><dt>forks</dt></div>
+                                <div><dd data-fig="installs">&#8212;</dd><dt>installs / month</dt></div>
+                            </dl>
+                            <div class="links"><a href="https://github.com/DareDev256/fcp-mcp-server" rel="noopener">Read the source ↗</a><a href="https://pypi.org/project/fcp-mcp-server/" rel="noopener">PyPI v<span data-fig="pypiVersion">&#8212;</span> ↗</a><span class="stack">102 OPERATIONS · PYTHON · FCPXML</span></div>
+                        </div>
+
+                        <div class="take" id="take-second" role="tabpanel" aria-labelledby="src-second" hidden>
+                            <h2 class="vh">Second Opinion</h2>
+                            <p class="what">An evidence-grounded appointment brief for adenomyosis patients, built in a hackathon weekend.</p>
+                            <p class="call-line"><b>THE CALL</b>Nothing reaches the brief without a citation. When retrieval fails, the patient sees the gap.</p>
+                            <dl class="stats">
+                                <div><dd>30s</dd><dt>to a full brief</dt></div>
+                                <div><dd>51</dd><dt>sources cited</dt></div>
+                                <div><dd>1 in 3</dd><dt>women it is for</dt></div>
+                            </dl>
+                            <div class="links"><a href="https://second-opinion-eta.vercel.app" rel="noopener">Open the demo ↗</a><span class="stack">NEXT.JS · RAG · REPO PRIVATE, DEMO OPEN</span></div>
+                        </div>
+
+                        <div class="take" id="take-agent" role="tabpanel" aria-labelledby="src-agent" hidden>
+                            <h2 class="vh">Passion Agent</h2>
+                            <p class="what">Runs a <span data-fig="repos">&#8212;</span>-repo registry and its scheduled work overnight. The feed is each job’s own log.</p>
+                            <p class="call-line"><b>THE CALL</b>It reports to Discord unasked. Work that only shows when asked never gets audited.</p>
+                            <dl class="stats">
+                                <div><dd data-fig="modules">&#8212;</dd><dt>modules</dt></div>
+                                <div><dd data-fig="loc">&#8212;</dd><dt>lines</dt></div>
+                                <div><dd data-fig="jobs">&#8212;</dd><dt>scheduled jobs</dt></div>
+                            </dl>
+                            <div class="links"><a href="/passion">The dashboard, demo data →</a><a href="/os">The desktop →</a></div>
+                        </div>
+
+                        <div class="take" id="take-sites" role="tabpanel" aria-labelledby="src-sites" hidden>
+                            <h2 class="vh">Client sites</h2>
+                            <p class="what"><span data-fig="clientSites">&#8212;</span> sites live, built end to end: design, build, domain, deploy, mail.</p>
+                            <p class="roster"><a href="https://nirvanadeshaunbuilds.com" rel="noopener">NirvanaDeshaun</a><a href="https://www.edsonlegal.com" rel="noopener">Edson Legal</a><a href="https://officialstreetbud.com" rel="noopener">Street Bud</a><a href="https://officialkmoney.com" rel="noopener">KMoney</a><a href="https://100bandplan.com" rel="noopener">100BandPlan</a><a href="https://savv4x.com" rel="noopener">SAVV4X</a><a href="https://syreneffect.com" rel="noopener">Syren Effect</a><a href="https://musthavefrenchies.com" rel="noopener">MustHaveFrenchies</a><a href="https://shopbayhq.com" rel="noopener">ShopBayHQ</a><a href="https://shortiieraw.com" rel="noopener">Shortiie Raw</a><a href="https://shairbraiding.com" rel="noopener">ShairBraiding</a><a href="https://baliwhisper.com" rel="noopener">Bali Whisper</a><a href="https://lodiieharmonytour.com" rel="noopener">Lodiie Harmony</a><a href="https://betmetrics.ca" rel="noopener">BetMetrics</a><a href="https://spoiledkass.com" rel="noopener">Spoiled Kass</a><a href="https://dancehallprincess.ca" rel="noopener">Dancehall Princess</a></p>
+                            <dl class="stats">
+                                <div><dd><span data-fig="clientSitesUp">&#8212;</span>/<span data-fig="clientSites">&#8212;</span></dd><dt>answering</dt></div>
+                                <div><dd>100%</dd><dt>shipped solo</dt></div>
+                                <div><dd>0</dd><dt>templates</dt></div>
+                            </dl>
+                            <div class="links"><a href="https://tdotssolutionsz.com" rel="noopener">Every site on one map ↗</a></div>
+                        </div>
+
+                        <div class="take" id="take-films" role="tabpanel" aria-labelledby="src-films" hidden>
+                            <h2 class="vh">101 Films</h2>
+                            <p class="what">A decade directing music video: Masicka, Casper TNG, King Louie, Street Bud. Every web client came from here.</p>
+                            <p class="call-line"><b>THE CALL</b>Direct first, pitch never. The film is the outreach; there has never been a cold email.</p>
+                            <dl class="stats">
+                                <div><dd data-fig="directedFilms">&#8212;</dd><dt>films</dt></div>
+                                <div><dd data-fig="directedArtists">&#8212;</dd><dt>artists</dt></div>
+                                <div><dd data-fig="directedViewsShort">&#8212;</dd><dt>views</dt></div>
+                            </dl>
+                            <div class="links"><a href="#reel">The reel →</a><a href="https://tdotssolutionsz.com" rel="noopener">The catalogue ↗</a></div>
+                        </div>
+
+                        <div class="take" id="take-coldopen" role="tabpanel" aria-labelledby="src-coldopen" hidden>
+                            <h2 class="vh">COLD OPEN</h2>
+                            <p class="what">An engine that builds artist sites as named worlds, not templates. It generated the first shortiieraw.com.</p>
+                            <p class="call-line"><b>THE CALL</b>A fact needs a source URL and the date it was read, or it renders as a redaction bar.</p>
+                            <dl class="stats">
+                                <div><dd>2</dd><dt>sites live</dt></div>
+                                <div><dd>0</dd><dt>unsourced figures</dt></div>
+                                <div><dd>1 of 5</dd><dt>most hand-made (blind judge)</dt></div>
+                            </dl>
+                            <div class="links"><a href="/coldopen">Read the method →</a><span class="stack">TYPESCRIPT · ZERO DEPENDENCIES</span></div>
+                        </div>
+
+                        <!-- Every count here is read from the game's own counters by
+                             tools/build-figures.mjs; the as-of stamp is the time of
+                             that read. Nothing in this panel is typed. -->
+                        <div class="take" id="take-bib" role="tabpanel" aria-labelledby="src-bib" hidden>
+                            <h2 class="vh">Bodies In Boxes</h2>
+                            <p class="what">A game for a new Savv4x song: his video plays on top, the run below. The song is the level.</p>
+                            <p class="call-line"><b>THE CALL</b>Treat the song as the spec. Claude Code wrote it, first commit to live in <span data-fig="bibBuildHours">&#8212;</span> hours.</p>
+                            <dl class="stats">
+                                <div><dd data-fig="bibRuns">&#8212;</dd><dt>runs</dt></div>
+                                <div><dd data-fig="bibPlayers">&#8212;</dd><dt>players</dt></div>
+                                <div><dd data-fig="bibCompletion">&#8212;</dd><dt>finished the song</dt></div>
+                            </dl>
+                            <div class="links"><a href="https://savv4x.com/play?ref=portfolio" rel="noopener">Play it ↗</a><a href="https://youtube.com/shorts/IJ8d9oYstgs" rel="noopener">How it was built ↗</a><span class="stack">NANO-BANANA · VEO 3.1 LITE · ELEVENLABS</span><span class="asof">COUNTS AS OF <span data-fig="bibAsOf">&#8212;</span> · v<span data-fig="bibVersion">&#8212;</span></span></div>
+                        </div>
+
+                        <div class="take" id="take-manyroads" role="tabpanel" aria-labelledby="src-manyroads" hidden>
+                            <h2 class="vh">MANY ROADS</h2>
+                            <p class="what">My game, free alpha: a Battle Network style roguelite in real Toronto. Fight as a duo on an 8×5 grid where every attack is announced before it lands.</p>
+                            <dl class="stats">
+                                <div><dd>17</dd><dt>fighters</dt></div>
+                                <div><dd>10</dd><dt>Toronto places</dt></div>
+                                <div><dd>160</dd><dt>versions in 10 days</dt></div>
+                                <div><dd>1,100+</dd><dt>automated tests</dt></div>
+                            </dl>
+                            <div class="links"><a href="https://playmanyroads.com" rel="noopener">Play free ↗</a><a href="https://youtu.be/Ntf4V5m5iAw" rel="noopener">Trailer ↗</a><a href="https://daredev256.itch.io/many-roads" rel="noopener">itch.io ↗</a></div>
+                        </div>
+
+                        <div class="take" id="take-learning" role="tabpanel" aria-labelledby="src-learning" hidden>
+                            <h2 class="vh">Passionate Learning</h2>
+                            <p class="what">A learning game about AI and tech in 60-second rounds. Stickman memes explain each idea, a System levels you up, no streak to lose.</p>
+                            <dl class="stats">
+                                <div><dd>9</dd><dt>worlds live</dt></div>
+                                <div><dd>163</dd><dt>cards</dt></div>
+                                <div><dd>E→S</dd><dt>ranks</dt></div>
+                                <div><dd>MIT</dd><dt>open source</dt></div>
+                            </dl>
+                            <div class="links"><a href="https://passionate-learning.vercel.app" rel="noopener">Play free ↗</a><a href="https://github.com/DareDev256/passionate-learning" rel="noopener">Build a world ↗</a></div>
+                        </div>
+
+                        <div class="take" id="take-fandom" role="tabpanel" aria-labelledby="src-fandom" hidden>
+                            <h2 class="vh">Fandom Flow</h2>
+                            <p class="what">An agent that edits two live game wikis unattended. On Nin Online, a wiki since <span data-fig="wikiSince">&#8212;</span>, it wrote <span data-fig="wikiShare">&#8212;</span> of every edit.</p>
+                            <p class="call-line"><b>THE CALL</b>Any editor can pull its kill switch. <span data-fig="wikiStood">&#8212;</span> of its last <span data-fig="wikiRevertSample">&#8212;</span> edits stood: <span data-fig="wikiRevertRate">&#8212;</span> reverted.</p>
+                            <dl class="stats">
+                                <div><dd data-fig="wikiShare">&#8212;</dd><dt>of all edits</dt></div>
+                                <div><dd data-fig="wikiArticles">&#8212;</dd><dt>articles</dt></div>
+                            </dl>
+                            <div class="links"><a href="/fandom-flow">The live console →</a><a href="https://ninonline.fandom.com/wiki/Special:Contributions/RawBOT" rel="noopener">The bot’s edits ↗</a></div>
+                        </div>
+
+                        <div class="take" id="take-shopbay" role="tabpanel" aria-labelledby="src-shopbay" hidden>
+                            <h2 class="vh">ShopBayHQ</h2>
+                            <p class="what">Shop-floor software for auto detailing: a real-time board, a 3D lot map and offline-capable intake, live in production against a Neon database.</p>
+                            <div class="links"><a href="https://shopbayhq.com" rel="noopener">Open ShopBayHQ ↗</a></div>
+                        </div>
+
+                        <div class="take" id="take-prompts" role="tabpanel" aria-labelledby="src-prompts" hidden>
+                            <h2 class="vh">Prompt Generator</h2>
+                            <p class="what">A prompt builder for nine image and video engines that turns a blank box into a shot list. Open source and hosted: use it now.</p>
+                            <dl class="stats">
+                                <div><dd>9</dd><dt>engines</dt></div>
+                                <div><dd>MIT</dd><dt>open source</dt></div>
+                            </dl>
+                            <div class="links"><a href="https://prompts.tdotssolutionsz.com" rel="noopener">Use it now ↗</a></div>
+                        </div>
+
+                        <div class="take" id="take-sixjutsu" role="tabpanel" aria-labelledby="src-sixjutsu" hidden>
+                            <h2 class="vh">sixjutsu</h2>
+                            <p class="what">A real-time multiplayer ninja game: Phaser client, Colyseus server, six jutsu slots and no respec.</p>
+                            <p class="call-line"><b>THE CALL</b>Built to find out where a game engine stops behaving like a web app.</p>
+                        </div>
+
+                        <div class="take" id="take-os" role="tabpanel" aria-labelledby="src-os" hidden>
+                            <h2 class="vh">Passion OS</h2>
+                            <p class="what">A desktop in the browser with no UI framework: windows, a dock, a command palette, and the agent’s operator surface.</p>
+                            <div class="links"><a href="/os">Open the desktop →</a><a href="/passion">The dashboard, demo data →</a><span class="stack">DESKTOP SNAPSHOT <span data-fig="snapshotDate">&#8212;</span> · STATIC</span></div>
+                        </div>
+
+                        <!-- The graph on the monitor is aria-hidden canvas work; this
+                             rail is the same JSON as real links, so a screen reader and
+                             a crawler reach every curated repository. -->
+                        <div class="take take-registry" id="take-registry" role="tabpanel" aria-labelledby="src-registry" hidden>
+                            <h2 class="vh">Registry</h2>
+                            <p class="what">The <span data-fig="repos">&#8212;</span>-repo registry the agent manages. Brighter means pushed recently; swipe the hand-picked few.</p>
+                            <div class="rg-rail" id="rg-rail">
+                                <div class="rg-rail-head">
+                                    <h3 class="rg-rail-title">THE TWELVE <span class="rg-rail-sub">SWIPE &#8594;</span></h3>
+                                    <div class="rg-rail-nav">
+                                        <button type="button" class="rg-arrow" data-rail="prev" aria-label="Previous repository" aria-controls="rg-rail-track">&#8592;</button>
+                                        <button type="button" class="rg-arrow" data-rail="next" aria-label="Next repository" aria-controls="rg-rail-track">&#8594;</button>
+                                    </div>
+                                </div>
+                                <ul class="rg-rail-track" id="rg-rail-track" tabindex="0" role="list" aria-label="Curated repositories. Use the left and right arrow keys to move between cards."></ul>
+                                <div class="rg-rail-foot">
+                                    <div class="rg-rail-bar" aria-hidden="true"><span class="rg-rail-fill"></span></div>
+                                    <div class="rg-rail-count" aria-hidden="true"><span data-rail="at">1</span>&#8202;/&#8202;<span data-rail="of">&#8212;</span></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <a class="panel-foot" href="#contact">
-                        <span>OPEN TO ROLES</span><span aria-hidden="true">ENTER →</span>
-                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- ============ GATES ============ -->
-        <section class="gates paper" id="gates" aria-labelledby="gates-h">
-            <div class="gate-lead">
-                <p class="eyebrow rv">CLEARED GATES</p>
-                <h2 class="sect-title rv d1" id="gates-h" data-kt-scrub>Work that had something on the line</h2>
+        <!-- ============ CREW ============
+             The old STATUS panel, recast as a crew list. Same figures, same
+             definitions: tap one and the readout says how it is counted. -->
+        <section id="crew" class="view" aria-labelledby="crew-h" hidden>
+            <div class="view-head">
+                <h2 id="crew-h">Crew list</h2>
+                <p class="def" data-fig-readout aria-live="polite"><span class="def-hint">Who does what on set, with the figure that proves it. Tap a figure to see how it is counted.</span></p>
             </div>
-
-            <div class="gate-cycler" id="gate-cycler">
-                <div class="gate" data-gate-stage>
-                <div class="gate-shot">
-                    <img src="/assets/system/gates/betmetrics.jpg" alt="The BetMetrics live odds board, showing matchups and prices across sportsbooks." loading="eager" decoding="async" fetchpriority="low" width="1200" height="750" />
-                    <div class="fade" aria-hidden="true"></div>
-                </div>
-
-                <div class="gate-body">
-                    <div class="gate-head">
-                        <div class="rank" aria-hidden="true">A</div>
-                        <div>
-                            <div class="tag">GATE 01 · CLEARED</div>
-                            <h3 data-kt-scrub data-kt-proximity="200">BetMetrics</h3>
-                        </div>
-                    </div>
-
-                    <p>A sports-betting analytics product with real users and real money, where one mis-scoped query pays out the wrong person.</p>
-
-                    <div class="decision">
-                        <div class="tag">THE DECISION</div>
-                        <p>Every money-adjacent file marked protected. No change to prize eligibility ships without explicit human sign-off, enforced by a pre-commit gate rather than a convention.</p>
-                    </div>
-
-                    <div class="figs">
-                        <div><div class="n">v0.59</div><div class="cap">SHIPPED TO PROD</div></div>
-                        <div><div class="n cyan">0</div><div class="cap">PAYOUT INCIDENTS</div></div>
-                        <div><div class="n gold">2×</div><div class="cap">SCOPE EXPANSIONS</div></div>
-                    </div>
-
-                    <div class="gate-foot">
-                        <a class="btn" href="https://betmetrics.ca" rel="noopener">SEE IT LIVE →</a>
-                        <span class="stack">NEXT.JS · CONVEX · CLERK · VERCEL &nbsp;·&nbsp; LIVE AT BETMETRICS.CA</span>
-                    </div>
-                </div>
-                </div>
-
-                <div class="gate-tabs" role="tablist" aria-label="Selected work">
-                    <button type="button" class="gate-tab on" data-gate-tab role="tab" aria-selected="true" tabindex="0"><span class="num">01</span><span class="nm">BetMetrics</span></button>
-                    <button type="button" class="gate-tab" data-gate-tab role="tab" aria-selected="false" tabindex="-1"><span class="num">02</span><span class="nm">fcp-mcp-server</span></button>
-                    <button type="button" class="gate-tab" data-gate-tab role="tab" aria-selected="false" tabindex="-1"><span class="num">03</span><span class="nm">Second Opinion</span></button>
-                    <button type="button" class="gate-tab" data-gate-tab role="tab" aria-selected="false" tabindex="-1"><span class="num">04</span><span class="nm">Passion Agent</span></button>
-                    <button type="button" class="gate-tab" data-gate-tab role="tab" aria-selected="false" tabindex="-1"><span class="num">05</span><span class="nm">Client sites</span></button>
-                    <button type="button" class="gate-tab" data-gate-tab role="tab" aria-selected="false" tabindex="-1"><span class="num">06</span><span class="nm">101 Films</span></button>
-                    <button type="button" class="gate-tab" data-gate-tab role="tab" aria-selected="false" tabindex="-1"><span class="num">07</span><span class="nm">COLD OPEN</span></button>
-                    <button type="button" class="gate-tab" data-gate-tab role="tab" aria-selected="false" tabindex="-1"><span class="num">08</span><span class="nm">Bodies In Boxes</span></button>
-                </div>
-            <div class="roster" data-gate-roster hidden aria-label="The other case studies"></div>
-            <template data-gate="betmetrics">
-                <div class="gate-shot">
-                    <img src="/assets/system/gates/betmetrics.jpg" alt="The BetMetrics live odds board, showing matchups and prices across sportsbooks." loading="eager" decoding="async" fetchpriority="low" width="1200" height="750" />
-                    <div class="fade" aria-hidden="true"></div>
-                </div>
-
-                <div class="gate-body">
-                    <div class="gate-head">
-                        <div class="rank" aria-hidden="true">A</div>
-                        <div>
-                            <div class="tag">GATE 01 · CLEARED</div>
-                            <h3 data-kt-scrub data-kt-proximity="200">BetMetrics</h3>
-                        </div>
-                    </div>
-
-                    <p>A sports-betting analytics product with real users and real money, where one mis-scoped query pays out the wrong person.</p>
-
-                    <div class="decision">
-                        <div class="tag">THE DECISION</div>
-                        <p>Every money-adjacent file marked protected. No change to prize eligibility ships without explicit human sign-off, enforced by a pre-commit gate rather than a convention.</p>
-                    </div>
-
-                    <div class="figs">
-                        <div><div class="n">v0.59</div><div class="cap">SHIPPED TO PROD</div></div>
-                        <div><div class="n cyan">0</div><div class="cap">PAYOUT INCIDENTS</div></div>
-                        <div><div class="n gold">2×</div><div class="cap">SCOPE EXPANSIONS</div></div>
-                    </div>
-
-                    <div class="gate-foot">
-                        <a class="btn" href="https://betmetrics.ca" rel="noopener">SEE IT LIVE →</a>
-                        <span class="stack">NEXT.JS · CONVEX · CLERK · VERCEL &nbsp;·&nbsp; LIVE AT BETMETRICS.CA</span>
-                    </div>
-                </div>
-            </template>
-            <template data-gate="fcp">
-                <div class="gate-shot">
-                    <img src="/assets/system/gates/fcp.gif" alt="fcp-mcp-server driving a running copy of Final Cut Pro: a ten clip timeline read back off the document, a marker placed on every cut, then dialogue, music and effects roles assigned across the clips." loading="eager" decoding="async" fetchpriority="low" width="1100" height="618" />
-                    <div class="fade" aria-hidden="true"></div>
-                </div>
-
-                <div class="gate-body">
-                    <div class="gate-head">
-                        <div class="rank" aria-hidden="true">A</div>
-                        <div>
-                            <div class="tag">GATE 02 · CLEARED</div>
-                            <h3 data-kt-scrub data-kt-proximity="200">fcp-mcp-server</h3>
-                        </div>
-                    </div>
-
-                    <p>An MCP server that drives Final Cut Pro from natural language — 7 grouped tools over 62 underlying operations, shipped to PyPI under MIT.</p>
-
-                    <div class="decision">
-                        <div class="tag">THE DECISION</div>
-                        <p>Strangers adopted it, which is the one kind of proof I cannot write myself. So the numbers on this page come from the GitHub and PyPI APIs, not from a resume that has claimed this same count as 50+, 70, 73 and 74.</p>
-                    </div>
-
-                    <div class="figs">
-                        <div><div class="n gold" data-fig="stars">&#8212;</div><div class="cap">GITHUB STARS</div></div>
-                        <div><div class="n" data-fig="forks">&#8212;</div><div class="cap">FORKS</div></div>
-                        <div><div class="n cyan" data-fig="installs">&#8212;</div><div class="cap">INSTALLS / MONTH</div></div>
-                    </div>
-
-                    <div class="gate-foot">
-                        <a class="btn" href="https://github.com/DareDev256/fcp-mcp-server" rel="noopener">READ THE SOURCE ↗</a>
-                        <span class="stack">PYTHON · MCP · FCPXML &nbsp;·&nbsp; PYPI FCP-MCP-SERVER v<span data-fig="pypiVersion">&#8212;</span></span>
-                    </div>
-                </div>
-            </template>
-            <template data-gate="second-opinion">
-                <div class="gate-shot">
-                    <img src="/assets/system/gates/second-opinion.jpg" alt="Second Opinion — an evidence-grounded appointment brief generator for adenomyosis patients." loading="eager" decoding="async" fetchpriority="low" width="1200" height="666" />
-                    <div class="fade" aria-hidden="true"></div>
-                </div>
-
-                <div class="gate-body">
-                    <div class="gate-head">
-                        <div class="rank" aria-hidden="true">A</div>
-                        <div>
-                            <div class="tag">GATE 03 · CLEARED</div>
-                            <h3 data-kt-scrub data-kt-proximity="200">Second Opinion</h3>
-                        </div>
-                    </div>
-
-                    <p>An evidence-grounded appointment brief for adenomyosis patients, built in a hackathon weekend. It reads the current literature and hands the patient something a specialist will actually read.</p>
-
-                    <div class="decision">
-                        <div class="tag">THE DECISION</div>
-                        <p>Nothing reaches the brief without a citation. A medical tool that cannot show its source is worse than no tool, so retrieval failure renders as a gap the patient can see rather than as confident prose.</p>
-                    </div>
-
-                    <div class="figs">
-                        <div><div class="n">30s</div><div class="cap">TO A FULL BRIEF</div></div>
-                        <div><div class="n cyan">51</div><div class="cap">SOURCES CITED</div></div>
-                        <div><div class="n gold">1 in 3</div><div class="cap">WOMEN IT IS FOR</div></div>
-                    </div>
-
-                    <div class="gate-foot">
-                        <a class="btn" href="https://second-opinion-eta.vercel.app" rel="noopener">OPEN THE DEMO →</a>
-                        <span class="stack">NEXT.JS · RAG · VERCEL &nbsp;·&nbsp; REPO PRIVATE, DEMO OPEN</span>
-                    </div>
-                </div>
-            </template>
-            <template data-gate="passion">
-                <div class="gate-shot">
-                    <img src="/assets/system/gates/passion-dashboard.jpg" alt="The Passion Agent operator dashboard: producer tiles reporting their own freshness, and a workflow run rendered as an execution graph." loading="eager" decoding="async" fetchpriority="low" width="1200" height="666" />
-                    <div class="fade" aria-hidden="true"></div>
-                </div>
-
-                <div class="gate-body">
-                    <div class="gate-head">
-                        <div class="rank" aria-hidden="true">A</div>
-                        <div>
-                            <div class="tag">GATE 04 · CLEARED</div>
-                            <h3 data-kt-scrub data-kt-proximity="200">Passion Agent</h3>
-                        </div>
-                    </div>
-
-                    <p>An agent that manages a <span data-fig="repos">&#8212;</span>-repository registry, ships its own scheduled work overnight, and files what it did. The dashboard above is its operator surface: every tile names the producer behind it and stamps when that producer last wrote.</p>
-
-                    <div class="decision">
-                        <div class="tag">THE DECISION</div>
-                        <p>It reports to Discord whether or not anyone is watching. An autonomous system that only surfaces its work when asked is a system nobody audits, so every scheduled job narrates itself.</p>
-                    </div>
-
-                    <!-- Figures are filled from /data/system-snapshot.json by
-                         js/system-figures.js. Hardcoded, this block read 92 modules /
-                         67K lines / 63 repos while the lede two sections up read 97 and
-                         91 off the same generated file — three numbers for modules and
-                         three for lines on one page. The `title` on each carries the
-                         snapshot's own definition of what the number counts. -->
-                    <div class="figs">
-                        <div><div class="n" data-fig="modules">&#8212;</div><div class="cap">MODULES</div></div>
-                        <div><div class="n cyan" data-fig="loc">&#8212;</div><div class="cap">LINES, FIRST-PARTY</div></div>
-                        <div><div class="n gold" data-fig="repos">&#8212;</div><div class="cap">REPOS IN REGISTRY</div></div>
-                    </div>
-
-                    <div class="gate-foot">
-                        <!-- The primary CTA must match the SCREENSHOT above it. When the
-                             image was Passion OS this was /os; the image is now the
-                             dashboard, so the dashboard takes the filled button and the
-                             desktop keeps a door as the second, separate artifact. -->
-                        <a class="btn" href="/passion">OPEN THE DASHBOARD &#8212; DEMO DATA &#8594;</a>
-                        <a class="btn ghost" href="/os">OPEN THE DESKTOP &#8594;</a>
-                        <span class="stack">NEXT.JS &#183; REACT &#183; TYPESCRIPT &nbsp;&#183;&nbsp; AGENT RUNS ON A MAC MINI</span>
-                    </div>
-                </div>
-            </template>
-            <template data-gate="client-sites">
-                <div class="gate-shot">
-                    <img src="/assets/system/gates/client-sites-v2.jpg" alt="The TdotsSolutionsz network map — every client site as a node around the studio." loading="eager" decoding="async" fetchpriority="low" width="1200" height="666" />
-                    <div class="fade" aria-hidden="true"></div>
-                </div>
-
-                <div class="gate-body">
-                    <div class="gate-head">
-                        <div class="rank" aria-hidden="true">A</div>
-                        <div>
-                            <div class="tag">GATE 05 · CLEARED</div>
-                            <h3 data-kt-scrub data-kt-proximity="200">Client sites</h3>
-                        </div>
-                    </div>
-
-                    <!-- This sentence used to read "Twelve" and then name eleven. It was the
-                         only hand-counted figure on a page that spends two gates arguing that
-                         counting by hand is the bug, and it was the only one that was wrong.
-                         Both the number and the names now come from data/client-sites.json,
-                         so they cannot drift apart again, and every name is a link a reader
-                         can open instead of a proper noun they have to take on trust. -->
-                    <p><span data-fig="clientSites">&#8212;</span> sites live in production, built end to end &mdash; design, build, domain, deploy, mail. <a class="site-link" href="https://www.edsonlegal.com" target="_blank" rel="noopener">Edson Legal</a>, <a class="site-link" href="https://officialstreetbud.com" target="_blank" rel="noopener">Street Bud</a>, <a class="site-link" href="https://officialkmoney.com" target="_blank" rel="noopener">KMoney</a>, <a class="site-link" href="https://100bandplan.com" target="_blank" rel="noopener">100BandPlan</a>, <a class="site-link" href="https://savv4x.com" target="_blank" rel="noopener">SAVV4X</a>, <a class="site-link" href="https://syreneffect.com" target="_blank" rel="noopener">Syren Effect</a>, <a class="site-link" href="https://nirvanadeshaunbuilds.com" target="_blank" rel="noopener">NirvanaDeshaun Custom Builds</a>, <a class="site-link" href="https://musthavefrenchies.com" target="_blank" rel="noopener">MustHaveFrenchies</a>, <a class="site-link" href="https://shopbayhq.com" target="_blank" rel="noopener">ShopBayHQ</a>, <a class="site-link" href="https://shortiieraw.com" target="_blank" rel="noopener">Shortiie Raw</a>, <a class="site-link" href="https://shairbraiding.com" target="_blank" rel="noopener">ShairBraiding</a>, <a class="site-link" href="https://baliwhisper.com" target="_blank" rel="noopener">Bali Whisper</a>, <a class="site-link" href="https://lodiieharmonytour.com" target="_blank" rel="noopener">Lodiie Harmony Tour</a>, <a class="site-link" href="https://betmetrics.ca" target="_blank" rel="noopener">BetMetrics</a>, <a class="site-link" href="https://spoiledkass.com" target="_blank" rel="noopener">Spoiled Kass</a> and <a class="site-link" href="https://dancehallprincess.ca" target="_blank" rel="noopener">Dancehall Princess Canada</a>.</p>
-
-                    <div class="decision">
-                        <div class="tag">THE DECISION</div>
-                        <p>Every one of them is a named world rather than a template — a vault, a mission file, a streetlight after dark. A client who can describe their own site in one sentence will keep it; a client handed a layout will replace it inside a year.</p>
-                    </div>
-
-                    <div class="figs">
-                        <div><div class="n" data-fig="clientSites">&#8212;</div><div class="cap">LIVE IN PRODUCTION</div></div>
-                        <div><div class="n cyan">100%</div><div class="cap">SHIPPED SOLO</div></div>
-                        <div><div class="n gold">0</div><div class="cap">TEMPLATES USED</div></div>
-                    </div>
-
-                    <div class="gate-foot">
-                        <a class="btn" href="https://shopbayhq.com" rel="noopener">OPEN SHOPBAYHQ →</a>
-                        <span class="stack">NEXT.JS · VITE · VERCEL · CLOUDFLARE &nbsp;·&nbsp; SEE THEM IN THE HERO REEL</span>
-                    </div>
-                </div>
-            </template>
-            <template data-gate="films">
-                <div class="gate-shot">
-                    <img src="/assets/system/gates/films-v2.jpg" alt="A frame from Masicka — Everything Mi Want, one of 101 directed music videos." loading="eager" decoding="async" fetchpriority="low" width="1200" height="666" />
-                    <div class="fade" aria-hidden="true"></div>
-                </div>
-
-                <div class="gate-body">
-                    <div class="gate-head">
-                        <div class="rank" aria-hidden="true">B</div>
-                        <div>
-                            <div class="tag">GATE 06 · CLEARED</div>
-                            <h3 data-kt-scrub data-kt-proximity="200">101 Films</h3>
-                        </div>
-                    </div>
-
-                    <!-- These three numbers had three homes: this sentence, the stat
-                         block below, and the hero STATUS panel. The panel read the
-                         generated figure while both of these carried typed copies —
-                         the same defect as the client-site count, which reached
-                         production saying twelve above a panel saying eleven. One
-                         source now. -->
-                    <p>A decade directing music video. <span data-fig="directedArtists">&#8212;</span> artists, <span data-fig="directedViews">&#8212;</span> views — Masicka, Casper TNG, King Louie, Street Bud. This is where every client on the previous gate came from.</p>
-
-                    <div class="decision">
-                        <div class="tag">THE DECISION</div>
-                        <p>Direct first, pitch never. Every web client on this page arrived because they had already seen a video with my name on it — the film is the outreach, which is why there has never been a cold email.</p>
-                    </div>
-
-                    <div class="figs">
-                        <div><div class="n" data-fig="directedFilms">&#8212;</div><div class="cap">FILMS DIRECTED</div></div>
-                        <div><div class="n cyan" data-fig="directedArtists">&#8212;</div><div class="cap">ARTISTS</div></div>
-                        <div><div class="n gold" data-fig="directedViewsShort">&#8212;</div><div class="cap">VIEWS</div></div>
-                    </div>
-
-                    <div class="gate-foot">
-                        <a class="btn" href="https://tdotssolutionsz.com" rel="noopener">SEE THE CATALOGUE ↗</a>
-                        <span class="stack">DIRECTION · EDIT · COLOUR &nbsp;·&nbsp; LIVE AT TDOTSSOLUTIONSZ.COM</span>
-                    </div>
-                </div>
-            </template>
-
-            <template data-gate="coldopen">
-                <div class="gate-shot">
-                    <img src="/assets/system/gates/coldopen.jpg" alt="The COLD OPEN studio reading a palette off an artist's release artwork, showing the sampled colour cited to the record it came from." loading="eager" decoding="async" fetchpriority="low" width="1200" height="666" />
-                    <div class="fade" aria-hidden="true"></div>
-                </div>
-                <div class="gate-body">
-                    <div class="gate-head">
-                        <div class="rank" aria-hidden="true">A</div>
-                        <div>
-                            <div class="tag">GATE 07 · CLEARED</div>
-                            <h3 data-kt-scrub data-kt-proximity="200">COLD OPEN</h3>
-                        </div>
-                    </div>
-                    <p>An engine that builds artist sites as named worlds rather than templates. The risk is the one every generator has: output that reads as generated, and numbers on a public page that nobody actually checked.</p>
-                    <div class="decision">
-                        <div class="tag">THE DECISION</div>
-                        <p>Provenance enforced by the type system. A fact cannot be constructed without a source URL and the date it was read. A claim that can't be sourced is sealed and renders as a redaction bar — visible, not quietly dropped and not invented.</p>
-                    </div>
-                    <div class="figs">
-                        <div><div class="n">2</div><div class="cap">SITES LIVE</div></div>
-                        <div><div class="n cyan">0</div><div class="cap">UNSOURCED FIGURES</div></div>
-                        <div><div class="n gold">1 of 5</div><div class="cap">MOST HAND-MADE &#183; ONE BLIND JUDGE</div></div>
-                    </div>
-                    <div class="gate-foot">
-                        <a class="btn" href="/coldopen">READ THE METHOD →</a>
-                        <span class="stack">TYPESCRIPT · ZERO DEPENDENCIES &nbsp;·&nbsp; OPEN SOURCE ON GITHUB</span>
-                    </div>
-                </div>
-            </template>
-            <template data-gate="bodies-in-boxes">
-                <div class="gate-shot">
-                    <img src="/assets/system/gates/bodies-in-boxes.jpg" alt="Frames from Bodies In Boxes: a run on a purple street, the Opp Puppet boss fight, and the song and character select screen. The official music video plays above each run." loading="eager" decoding="async" fetchpriority="low" width="1200" height="666" />
-                    <div class="fade" aria-hidden="true"></div>
-                </div>
-                <div class="gate-body">
-                    <div class="gate-head">
-                        <div class="rank" aria-hidden="true">A</div>
-                        <div>
-                            <div class="tag">GATE 08 · CLEARED</div>
-                            <h3 data-kt-scrub data-kt-proximity="200">Bodies In Boxes</h3>
-                        </div>
-                    </div>
-                    <!-- Every count below is read from the game's own counters by
-                         tools/build-figures.mjs, and the as-of stamp is the time of that read.
-                         Nothing in this block is typed. -->
-                    <p>A browser game that promotes a new song for Toronto rapper Savv4x, who asked for help getting it heard. His official video plays on top and the run plays below, so the song is the level. <a class="site-link" href="https://youtube.com/shorts/IJ8d9oYstgs" target="_blank" rel="noopener">Watch how it was built</a>.</p>
-                    <div class="decision">
-                        <div class="tag">THE DECISION</div>
-                        <p>Treat the song as the spec. The first commit and a live build with two songs were <span data-fig="bibBuildHours">&#8212;</span> hours apart, and fresh-context critics reviewed the build in rounds. Claude Code wrote the game. The art is nano-banana stills, the motion is Veo 3.1 Lite clips, and the voice and effects are ElevenLabs. Generation on day one cost $2.20 for 11 Veo clips, about $0.71 for 21 stills and about 200 ElevenLabs credits.</p>
-                    </div>
-                    <p><span data-fig="bibRuns">&#8212;</span> runs from <span data-fig="bibPlayers">&#8212;</span> players. <span data-fig="bibSurvived">&#8212;</span> lasted the whole song (<span data-fig="bibCompletion">&#8212;</span> of runs) and <span data-fig="bibShares">&#8212;</span> were shared. Counts as of <span data-fig="bibAsOf">&#8212;</span>, v<span data-fig="bibVersion">&#8212;</span>.</p>
-                    <div class="figs">
-                        <div><div class="n" data-fig="bibBuildHours">&#8212;</div><div class="cap">HOURS, FIRST COMMIT TO LIVE</div></div>
-                        <div><div class="n cyan" data-fig="bibPlayers">&#8212;</div><div class="cap">PLAYERS</div></div>
-                        <div><div class="n gold" data-fig="bibRuns">&#8212;</div><div class="cap">RUNS</div></div>
-                    </div>
-                    <div class="gate-foot">
-                        <a class="btn" href="https://savv4x.com/play?ref=portfolio" target="_blank" rel="noopener">PLAY IT →</a>
-                        <span class="stack">CLAUDE CODE · NANO-BANANA · VEO 3.1 LITE · ELEVENLABS &nbsp;·&nbsp; COUNTS AS OF <span data-fig="bibAsOf">&#8212;</span></span>
-                    </div>
-                </div>
-            </template>
-            </div>
-
-            <div class="gate-strip">
-                <a class="gate-card rv d1" href="/fandom-flow">
-                    <div class="rk">ALSO SHIPPED</div>
-                    <h4>Fandom Flow</h4>
-                    <!-- This card used to close by inviting the reader to check a rate the page
-                         never showed them. Restating the old sentence here would put it back
-                         into the served HTML, which is how the /os price removal leaked once
-                         already — a comment ships to the client. It is also the
-                         best evidence on the site for the sentence in the hero: an autonomous
-                         agent whose edits a volunteer community could undo at any time, and
-                         mostly does not. MediaWiki's own mw-reverted tag now supplies it. -->
-                    <p>A corpus-to-MediaWiki pipeline running two live game wikis, and an agent that edits them unattended. On Nin Online — a wiki running since <span data-fig="wikiSince">&#8212;</span> — its account has written <strong><span data-fig="wikiShare">&#8212;</span> of every edit in the wiki's history</strong>. Any editor can pull its kill switch. <strong><span data-fig="wikiStood">&#8212;</span> of the last <span data-fig="wikiRevertSample">&#8212;</span> edits stood</strong> — <span data-fig="wikiRevertRate">&#8212;</span> reverted. <strong>Open the live console →</strong></p>
-                </a>
-                <a class="gate-card rv d2" href="https://shopbayhq.com" rel="noopener">
-                    <div class="rk">ALSO SHIPPED</div>
-                    <h4>ShopBayHQ</h4>
-                    <p>Shop-floor SaaS for auto detailing — a real-time board, a 3D holographic lot map and offline-capable intake. Runs on Railway against a Neon database, live in production.</p>
-                </a>
-                <a class="gate-card rv d3" href="https://prompts.tdotssolutionsz.com" rel="noopener">
-                    <div class="rk">ALSO SHIPPED</div>
-                    <h4>Prompt Generator</h4>
-                    <p>A structured prompt builder for nine image and video engines — turns a blank box into a shot list. MIT, open source, and hosted — it is a tool you can use right now, not a repo to read.</p>
-                </a>
-                <div class="gate-card rv d4 is-wip">
-                    <div class="rk">IN PROGRESS</div>
-                    <h4>sixjutsu</h4>
-                    <p>A real-time multiplayer ninja game — Phaser client, Colyseus server, six jutsu slots and no respec. Built to find out where a game engine stops behaving like a web app.</p>
-                </div>
+            <div class="crew">
+                <article>
+                    <span class="role">DIRECTOR · DIRECTED</span>
+                    <span class="name">James Olusoga</span>
+                    <span class="fig"><span data-fig="directedViews">&#8212;</span> views</span>
+                    <span class="what">A decade of music video. Now directing this crew.</span>
+                    <a class="go" href="#reel">The reel →</a>
+                </article>
+                <article>
+                    <span class="role">EDITOR · ADOPTED</span>
+                    <span class="name">fcp-mcp-server</span>
+                    <span class="fig"><span data-fig="stars">&#8212;</span>★ · <span data-fig="installs">&#8212;</span>/mo</span>
+                    <span class="what">Claude edits in Final Cut Pro through it. Stars on GitHub, installs a month on PyPI.</span>
+                    <a class="go" href="https://github.com/DareDev256/fcp-mcp-server" rel="noopener">Source ↗</a>
+                </article>
+                <article>
+                    <span class="role">1ST AD · SCALE</span>
+                    <span class="name">Passion Agent</span>
+                    <span class="fig"><span data-fig="modules">&#8212;</span> modules · <span data-fig="loc">&#8212;</span> LOC</span>
+                    <span class="what">Runs the schedule: <span data-fig="jobs">&#8212;</span> jobs across two machines, <span data-fig="repos">&#8212;</span> repos.</span>
+                    <span class="asof">SNAPSHOT <span data-fig="snapshotDate">&#8212;</span></span>
+                </article>
+                <article>
+                    <span class="role">SCRIPT SUPERVISOR · UNSUPERVISED</span>
+                    <span class="name">Fandom Flow</span>
+                    <span class="fig"><span data-fig="wikiShare">&#8212;</span> of every edit</span>
+                    <span class="what">Edits a live game wiki unattended. <span data-fig="wikiStood">&#8212;</span> of its last <span data-fig="wikiRevertSample">&#8212;</span> edits stood.</span>
+                    <a class="go" href="https://ninonline.fandom.com/wiki/Special:Contributions/RawBOT" rel="noopener">Its edits ↗</a>
+                </article>
+                <article>
+                    <span class="role">PRODUCER · DEPLOYED</span>
+                    <span class="name">BetMetrics</span>
+                    <span class="fig"><span data-fig="clientSitesUp">&#8212;</span> of <span data-fig="clientSites">&#8212;</span> answering</span>
+                    <span class="what">A betting platform on play credits, and every client site answering.</span>
+                    <a class="go" href="https://betmetrics.ca" rel="noopener">See it live ↗</a>
+                </article>
+                <article>
+                    <span class="role">SECOND UNIT · PLAYABLE</span>
+                    <span class="name">MANY ROADS</span>
+                    <span class="fig">free alpha</span>
+                    <span class="what">My game, built with agents. Plus Bodies In Boxes and Passionate Learning.</span>
+                    <a class="go" href="https://playmanyroads.com" rel="noopener">Play free ↗</a>
+                </article>
             </div>
         </section>
 
-        <!-- ============ SYSTEM SNAPSHOT ============ -->
-        <section class="snapshot" id="system" aria-labelledby="sys-h">
-            <div class="scan" aria-hidden="true"></div>
-
-            <div class="snapshot-main">
-                <p class="eyebrow rv">SYSTEM SNAPSHOT</p>
-                <h2 class="sect-title rv d1" id="sys-h" data-kt-scrub>Passion Agent</h2>
-                <p class="lede rv d2">
-                    <span data-fig="modules">&#8212;</span> modules across a <span data-fig="repos">&#8212;</span>-repository registry. <span data-svc-summary>Three services run on a Mac
-                    Mini</span>, and <span data-fig="jobs">&#8212;</span> scheduled jobs across both machines report into Discord without
-                    being asked. A gold pulse marks an edge the agent moved data down in this
-                    snapshot.
-                </p>
-
-                <div class="graph-wrap rv d3">
-                    <!-- Filled by js/registry-graph.js from /data/registry-graph.json,
-                         which tools/build-registry-graph.mjs generates from `gh repo list`.
-                         aria-hidden because the same facts are in the readout and the
-                         repo list below, in text a screen reader can actually use. -->
-                    <svg id="registry-graph" viewBox="0 0 850 640" aria-hidden="true"></svg>
-
-                    <!-- Detail panel. Hover previews a node; click or Enter PINS it, which
-                         is when the links become reachable — a hover panel that vanishes on
-                         the way to its own button is a link nobody can click. Pinning also
-                         writes #system/<repo> so a single node can be sent to someone. -->
-                    <div class="rg-readout" id="rg-readout" aria-live="polite">
-                        <div class="rg-r-head">
-                            <span class="rg-r-name" data-rg="name">passion-agent</span>
-                            <span class="rg-r-tier" data-rg="tier">CORE</span>
-                        </div>
-                        <p class="rg-r-what" data-rg="what">&#8212;</p>
-                        <p class="rg-r-proves" data-rg="proves" hidden></p>
-                        <div class="rg-r-meta">
-                            <span data-rg="stack"></span>
-                            <span data-rg="pushed">&#8212;</span>
-                        </div>
-                        <div class="rg-r-act">
-                            <a class="rg-btn rg-btn-live" data-rg="live" hidden></a>
-                            <a class="rg-btn rg-btn-code" data-rg="code" hidden>CODE &#8599;</a>
-                        </div>
-                        <p class="rg-r-hint" data-rg="hint">CLICK A NODE TO PIN IT</p>
-                        <button type="button" class="rg-r-close" data-rg="close" hidden aria-label="Unpin this repository">&#10005;</button>
-                    </div>
-                </div>
-
-                <div class="legend rv d4">
-                    <span><i class="grp" aria-hidden="true"></i>SIZE = HAND-PICKED TIER, NOT REPO SIZE</span>
-                    <span><i class="act" aria-hidden="true"></i>BRIGHTNESS = PUSHED RECENTLY</span>
-                    <span><i class="repo" aria-hidden="true"></i>UNLABELLED REGISTRY ENTRY</span>
-                    <span class="legend-src">EDGES MEAN REGISTRY MEMBERSHIP, NOT DEPENDENCY</span>
-                    <span class="legend-src">CURATED IN <code>registry-curation.json</code> &#183; FACTS FROM <code>gh repo list</code></span>
-                </div>
-                <!-- The SVG above is aria-hidden and canvas-only: without this the named
-                     repositories are unreachable to a screen reader and invisible to a
-                     crawler. Same JSON as the graph, so the two cannot disagree.
-
-                     A swipe rail rather than a grid: on a phone the graph caps at six
-                     labelled nodes, so the rail is where the other seven actually live.
-                     It is a <ul> of real links underneath — the slider is layout, and a
-                     crawler with no CSS still reads a list. -->
-                <div class="rg-rail rv d4" id="rg-rail">
-                    <div class="rg-rail-head">
-                        <h3 class="rg-rail-title">
-                            THE TWELVE <span class="rg-rail-sub">SWIPE &#8594;</span>
-                        </h3>
-                        <div class="rg-rail-nav">
-                            <button type="button" class="rg-arrow" data-rail="prev" aria-label="Previous repository" aria-controls="rg-rail-track">&#8592;</button>
-                            <button type="button" class="rg-arrow" data-rail="next" aria-label="Next repository" aria-controls="rg-rail-track">&#8594;</button>
-                        </div>
-                    </div>
-
-                    <ul class="rg-rail-track" id="rg-rail-track" tabindex="0" role="list"
-                        aria-label="Curated repositories. Use the left and right arrow keys to move between cards."></ul>
-
-                    <div class="rg-rail-foot">
-                        <div class="rg-rail-bar" aria-hidden="true"><span class="rg-rail-fill"></span></div>
-                        <div class="rg-rail-count" aria-hidden="true"><span data-rail="at">1</span>&#8202;/&#8202;<span data-rail="of">&#8212;</span></div>
-                    </div>
-                </div>
+        <!-- ============ REEL ============ -->
+        <section id="reel" class="view" aria-labelledby="reel-h" hidden>
+            <div class="view-head">
+                <h2 id="reel-h" class="reel-total"><span data-fig="directedViews">&#8212;</span> views</h2>
+                <p><span data-fig="directedFilms">&#8212;</span> films for <span data-fig="directedArtists">&#8212;</span> artists: Masicka, Casper TNG, King Louie, Street Bud. Tap one to watch.</p>
             </div>
-
-            <aside class="snapshot-aside">
-                <div class="aside-block">
-                    <!-- 2026-08-30: these rows are now MEASURED. tools/build-figures.mjs
-                         SSHes to the Mini at build time and curls each loopback port, writing
-                         the result into figures.json. They were hand-written "UP" before, on
-                         the one section whose whole argument is that the system reports itself.
-                         A DOWN or UNREACHABLE row is the feature, not a failure to hide. -->
-                    <h3>SERVICES <span class="h3-note">PROBED <span data-svc-checked>&#8212;</span></span></h3>
-                    <div class="svc">
-                        <div class="rv d1"><span class="k">dashboard:3000</span><span class="state" data-svc="dashboard">&#8212;</span></div>
-                        <div class="rv d2"><span class="k">brain:7777</span><span class="state" data-svc="brain">&#8212;</span></div>
-                        <div class="rv d3"><span class="k">letstrade:8420</span><span class="state" data-svc="letstrade">&#8212;</span></div>
-                        <div class="rv d4"><span class="k">scheduled jobs</span><span><span data-fig="jobs">&#8212;</span> registered</span></div>
-                    </div>
-                </div>
-
-                <div class="aside-block">
-                    <h3>RAN WITHOUT ME <span class="h3-note" data-activity-count>&#8212;</span></h3>
-                    <!-- These four rows used to be hand-typed, with frozen clock times. It
-                         was the strongest evidence on the page for the sentence in the
-                         hero, and it was the only claim here that nothing measured — a
-                         visitor returning the next day saw the same four lines at the same
-                         four times. tools/build-activity.mjs now reads eight launchd jobs'
-                         own logs and reports what it can actually see. If nothing ran, the
-                         panel says nothing ran. -->
-                    <div class="log" data-activity-log>
-                        <div class="rv d1">
-                            <time>&#8212;</time>
-                            <div><div class="what">Reading the activity log&#8230;</div><div class="src">from the jobs' own logs</div></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="aside-foot">
-                    <a href="/passion">OPEN THE DASHBOARD &#8212; DEMO DATA &#8594;</a>
-                    <a href="/os">OPEN THE DESKTOP &#8599;</a>
-                    <div class="stamp">DASHBOARD: LIVE, RUNNING ON DEMO DATA<br />DESKTOP: SNAPSHOT <span data-fig="snapshotDate">&#8212;</span> &#183; STATIC</div>
-                </div>
-            </aside>
+            <div class="reel">
+                <a class="clip" href="https://www.youtube.com/watch?v=u3O5PKN9vCQ" rel="noopener"><span class="frame"><video data-lazy="/assets/system/reel/u3O5PKN9vCQ.mp4" poster="/assets/system/reel/u3O5PKN9vCQ.jpg" muted playsinline loop preload="none"></video></span><span class="t">Masicka · Everything Mi Want</span><span class="m">YOUTUBE ↗</span></a>
+                <a class="clip" href="https://www.youtube.com/watch?v=E7ZStZMn-ac" rel="noopener"><span class="frame"><video data-lazy="/assets/system/reel/E7ZStZMn-ac.mp4" poster="/assets/system/reel/E7ZStZMn-ac.jpg" muted playsinline loop preload="none"></video></span><span class="t">Casper TNG ft Fresh · Dope Boy</span><span class="m">CERTIFIED GOLD · YOUTUBE ↗</span></a>
+                <a class="clip" href="https://www.youtube.com/watch?v=AKuI1b-o69M" rel="noopener"><span class="frame"><video data-lazy="/assets/system/reel/AKuI1b-o69M.mp4" poster="/assets/system/reel/AKuI1b-o69M.jpg" muted playsinline loop preload="none"></video></span><span class="t">Street Bud · No Cap</span><span class="m">YOUTUBE ↗</span></a>
+                <div class="more"><span class="big-n"><span data-fig="directedFilms">&#8212;</span> films</span><a href="https://www.youtube.com/watch?v=8p4i1b5IW2k" rel="noopener">King Louie · Made Drill ↗</a><a href="https://www.youtube.com/watch?v=l0kNVJaF5as" rel="noopener">Jose Guapo · Where is the Love ↗</a><a href="https://tdotssolutionsz.com" rel="noopener">The full catalogue ↗</a></div>
+            </div>
         </section>
 
-        <!-- ============ PLAY ============ -->
-        <!-- MANY ROADS leads. Passionate Learning replaced the eight separate prototype and
-             learning-suite games on 2026-10-03: they merged into one app with a growing catalogue.
-             Every link was opened and its title screen rendered on 2026-10-03;
-             Hallucination Hunter is left off because it never gets past its loader. -->
-        <section class="play" id="play" aria-labelledby="play-h">
-            <div class="play-head">
-                <p class="eyebrow rv">PLAY</p>
-                <h2 class="sect-title rv d1" id="play-h">Games I built with AI</h2>
+        <!-- ============ CALL ============
+             Everything that used to float over the page lives here: the live
+             booking slots, the chat, the voice agent, and every way to reach James. -->
+        <section id="call" class="view" aria-labelledby="call-h" hidden>
+            <div class="view-head">
+                <h2 id="call-h">Call time</h2>
+                <p>Every message reaches me, not an assistant.</p>
             </div>
-
-            <article class="play-hero rv">
-                <a class="play-hero-media" href="https://playmanyroads.com" target="_blank" rel="noopener" aria-label="Play MANY ROADS">
-                    <video src="/assets/system/reel/site-manyroads.mp4" poster="/assets/system/reel/site-manyroads.jpg" autoplay muted loop playsinline preload="metadata"></video>
-                </a>
-                <div class="play-hero-copy">
-                    <span class="play-tag gold">FREE ALPHA DEMO</span>
-                    <h3 class="play-hero-name">MANY ROADS</h3>
-                    <p class="play-hero-blurb">A Battle Network style roguelite set in real Toronto. Fight as a duo on an eight by five grid where every enemy attack is announced before it lands.</p>
-                    <ul class="play-hero-facts">
-                        <li><b>17</b> fighters</li>
-                        <li><b>10</b> Toronto places</li>
-                        <li><b>160</b> versions in 10 days</li>
-                        <li><b>1,100+</b> automated tests</li>
-                    </ul>
-                    <div class="play-hero-act">
-                        <a class="play-btn" href="https://playmanyroads.com" target="_blank" rel="noopener">PLAY FREE &#8599;</a>
-                        <a class="play-link" href="https://youtu.be/Ntf4V5m5iAw" target="_blank" rel="noopener">TRAILER</a>
-                        <a class="play-link" href="https://daredev256.itch.io/many-roads" target="_blank" rel="noopener">ITCH.IO</a>
+            <div class="callgrid">
+                <div class="card span book-card">
+                    <div id="book" data-book-intro data-site="jamesdare" data-skin="system"></div>
+                </div>
+                <div class="card ask-card">
+                    <div class="row between">
+                        <h3>Ask the System</h3>
+                        <button type="button" class="btn primary" data-open-chat>Type a question</button>
+                    </div>
+                    <p>A real model answers from the work, ten questions per visitor. Or talk to it out loud.</p>
+                    <div class="voice" id="voice">
+                        <!-- Voice assistant (ElevenLabs web agent, persona: jamesdare). Books the same live 15-min slots as the booking block. -->
+                        <elevenlabs-convai agent-id="agent_8001m4e12p1dfz5rx4w7tr06a1xw" variant="compact" placement="bottom-left" action-text="Talk to my assistant" start-call-text="Start talking" end-call-text="End"></elevenlabs-convai>
                     </div>
                 </div>
-            </article>
-
-            <article class="play-hero play-hero-alt rv">
-                <a class="play-hero-media" href="https://passionate-learning.vercel.app" target="_blank" rel="noopener" aria-label="Play Passionate Learning">
-                    <img src="/assets/system/play/passionate-learning.jpg" alt="Passionate Learning on a phone: the map, a card with the stickman reacting, and a world path" loading="lazy" width="1200" height="800" />
-                </a>
-                <div class="play-hero-copy">
-                    <span class="play-tag">FREE · OPEN SOURCE · INSTALLS ON YOUR PHONE</span>
-                    <h3 class="play-hero-name">PASSIONATE LEARNING</h3>
-                    <p class="play-hero-blurb">A learning game about AI and tech in 60-second rounds. Stickman memes explain each idea, a System levels you up, and there is no streak to lose. One app, a growing catalogue of worlds, and anyone can add one.</p>
-                    <ul class="play-hero-facts">
-                        <li><b>9</b> worlds live</li>
-                        <li><b>163</b> cards</li>
-                        <li><b>E→S</b> ranks</li>
-                        <li><b>MIT</b> open source</li>
-                    </ul>
-                    <div class="play-hero-act">
-                        <a class="play-btn" href="https://passionate-learning.vercel.app" target="_blank" rel="noopener">PLAY FREE &#8599;</a>
-                        <a class="play-link" href="https://github.com/DareDev256/passionate-learning" target="_blank" rel="noopener">BUILD A WORLD</a>
-                    </div>
+                <div class="card reach-card">
+                    <p class="role-line">Software engineer, production AI. A seat on a delivery team, in house or consulting. Toronto or remote.</p>
+                    <div class="row between"><a class="email" id="email" href="mailto:dev@jamesdare.com">dev@jamesdare.com</a><button class="btn primary" id="copy" type="button">Copy</button></div>
+                    <div class="row"><a class="btn" href="/resume/JamesOlusoga-AI-Engineer.pdf">Résumé PDF</a><a class="btn" data-wa="contact" href="https://wa.me/@JamesOD6" rel="noopener">WhatsApp</a><a class="btn" href="/book">More times</a></div>
+                    <p class="note" data-wa-note hidden></p>
+                    <nav class="elsewhere" aria-label="Elsewhere">
+                        <a href="https://github.com/DareDev256" rel="noopener">GitHub</a>
+                        <a href="https://linkedin.com/in/james-olusoga" rel="noopener">LinkedIn</a>
+                        <a href="https://tdotssolutionsz.com" rel="noopener">TdotsSolutionsz</a>
+                        <a href="https://stiersolutions.ca" rel="noopener">S-Tier Solutions</a>
+                        <a href="/os">Passion OS</a>
+                        <a href="/privacy.html">Privacy</a>
+                    </nav>
+                    <span class="note sign">JAMES OLUSOGA · TORONTO · <span data-year>2026</span></span>
                 </div>
-            </article>
-        </section>
-
-        <!-- ============ CONTACT ============ -->
-        <section class="contact paper" id="contact" aria-labelledby="contact-h">
-            <div class="scan" aria-hidden="true"></div>
-            <div class="contact-inner">
-                <p class="eyebrow rv">OPEN TO ROLES</p>
-                <h2 class="rv d1" id="contact-h" data-kt-scrub data-kt-proximity="220">Let's talk</h2>
-                <p class="rv d2">
-                    Software engineer, production AI. Looking for a seat on a delivery team, in house or consulting.<br />
-                    Toronto or remote. Every message reaches me, not an assistant.
-                </p>
-
-                <div class="chat panel brackets rv d3" id="system-chat">
-                    <div class="bk" aria-hidden="true"></div>
-                    <div class="panel-head">
-                        <span class="label">ASK THE SYSTEM</span>
-                        <span class="stamp">REPLIES SAME DAY</span>
-                    </div>
-
-                    <div class="chat-thread" data-chat-thread role="log" aria-live="polite" aria-label="Conversation"></div>
-
-                    <div class="chat-chips" data-chat-chips></div>
-
-                    <form class="chat-form" data-chat-form>
-                        <label class="chat-label" for="chat-input">Or write your own — a sentence is plenty</label>
-                        <div class="chat-row">
-                            <input class="chat-input" id="chat-input" data-chat-input type="text" autocomplete="off"
-                                placeholder="We need a site for our firm by October…" />
-                            <button class="btn" type="submit">SEND</button>
-                        </div>
-                    </form>
-                    <p class="chat-note">
-                        Answers here are generated and capped at ten per visitor. Nothing you type is
-                        stored on this site. Anything that matters — rates, timelines, a real
-                        conversation — comes from James at dev@jamesdare.com.
-                    </p>
-                </div>
-
-                <div class="rv d4" id="book" data-book-intro data-site="jamesdare" data-skin="system"></div>
-                <script src="/booking/widget.js" defer></script>
-
-                <div class="contact-actions rv d5">
-                    <a class="btn ghost" href="mailto:dev@jamesdare.com">dev@jamesdare.com</a>
-                    <a class="btn ghost" href="#book">BOOK 15 MINUTES</a>
-                    <a class="btn ghost" data-wa="contact" href="https://wa.me/@JamesOD6" rel="noopener">WHATSAPP</a>
-                    <a class="btn ghost" href="/resume/JamesOlusoga-AI-Engineer.pdf">RESUME (PDF)</a>
-                </div>
-                <p class="chat-note" data-wa-note hidden></p>
             </div>
         </section>
     </main>
 
-    <footer class="sys-footer">
-        <span>JAMES OLUSOGA · TORONTO · <span data-year>2026</span></span>
-        <nav aria-label="Elsewhere">
-            <a href="/os">PASSION OS</a>
-            <a href="/resume/JamesOlusoga-AI-Engineer.pdf">RESUME</a>
-            <a href="https://tdotssolutionsz.com" rel="noopener">TDOTSSOLUTIONSZ</a>
-            <a href="https://stiersolutions.ca" rel="noopener">S-TIER SOLUTIONS</a>
-            <a href="https://github.com/DareDev256" rel="noopener">GITHUB</a>
-            <a href="https://linkedin.com/in/james-olusoga" rel="noopener">LINKEDIN</a>
-                <a href="/privacy.html" rel="noopener">PRIVACY</a>
-            <a data-wa="footer" href="https://wa.me/@JamesOD6" rel="noopener">WHATSAPP</a>
-        </nav>
-    </footer>
+    <!-- ASK THE SYSTEM. A sheet over the Call view, so the thread can grow while
+         the page itself never scrolls. js/system-chat.js drives everything inside. -->
+    <dialog class="ask" id="ask" aria-labelledby="ask-h">
+        <div class="chat" id="system-chat">
+            <div class="chat-head">
+                <span class="label" id="ask-h">ASK THE SYSTEM</span>
+                <span class="stamp">REPLIES SAME DAY</span>
+                <button type="button" class="close" data-close-chat aria-label="Close">&#10005;</button>
+            </div>
+            <div class="chat-thread" data-chat-thread role="log" aria-live="polite" aria-label="Conversation"></div>
+            <div class="chat-chips" data-chat-chips></div>
+            <form class="chat-form" data-chat-form>
+                <label class="chat-label" for="chat-input">Or write your own. A sentence is plenty.</label>
+                <div class="chat-row">
+                    <input class="chat-input" id="chat-input" data-chat-input type="text" autocomplete="off" placeholder="We need a site for our firm by spring…" />
+                    <button class="btn primary" type="submit">Send</button>
+                </div>
+            </form>
+            <p class="chat-note">Answers here are generated and capped at ten per visitor. Nothing you type is stored on this site. Rates, timelines and real conversations come from James at dev@jamesdare.com or <a data-wa="footer" href="https://wa.me/@JamesOD6" rel="noopener">WhatsApp</a>.</p>
+        </div>
+    </dialog>
 
-    <script type="module" src="/js/system-landing.js"></script>
-    <script type="module" src="/js/whatsapp-rail.js"></script>
-    <script type="module" src="/js/availability.js"></script>
-    <script type="module" src="/js/gate-roster.js"></script>
-    <script type="module" src="/js/kinetic-type.js"></script>
-    <script type="module" src="/js/registry-graph.js"></script>
+    <script type="module" src="/js/monitor.js"></script>
     <script type="module" src="/js/system-figures.js"></script>
-        <script type="module" src="/js/activity-log.js"></script>
-    <script type="module" src="/js/hero-reel.js"></script>
-    <script type="module" src="/js/gate-cycler.js"></script>
+    <script type="module" src="/js/registry-graph.js"></script>
+    <script type="module" src="/js/whatsapp-rail.js"></script>
     <script type="module" src="/js/system-chat.js"></script>
-    <script type="module" src="/js/system-notice.js"></script>
-    <script type="module" src="/js/system-fx.js"></script>
-
-    <!-- Voice assistant (ElevenLabs web agent, persona: jamesdare). Books the same live 15-min slots as the booking block. -->
-    <elevenlabs-convai agent-id="agent_8001m4e12p1dfz5rx4w7tr06a1xw" variant="compact" action-text="Talk to my assistant" start-call-text="Start talking" end-call-text="End"></elevenlabs-convai>
+    <script src="/booking/widget.js" defer></script>
     <script src="https://unpkg.com/@elevenlabs/convai-widget-embed@0.18.2/dist/index.js" async type="text/javascript"></script>
 </body>
 

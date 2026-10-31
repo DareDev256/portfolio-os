@@ -62,6 +62,14 @@ describe('whatsapp rail — the published handle', () => {
             .toBe('Hi James — I found you on jamesdare.com, reading fcp-mcp-server. ');
     });
 
+    it('carries the source on air on the homepage monitor', () => {
+        document.body.innerHTML = `
+            <button data-src="fcp" data-scene="fcp-mcp-server" aria-selected="false"></button>
+            <button data-src="bib" data-scene="Bodies In Boxes" aria-selected="true"></button>`;
+        expect(buildMessage('contact', document, { hostname: 'jamesdare.com' }))
+            .toBe('Hi James — I found you on jamesdare.com, reading Bodies In Boxes. ');
+    });
+
     it('reads correctly when no case study is open', () => {
         document.body.innerHTML = '<p>nothing here</p>';
         // The gated branch would trail off into a dangling clause. This is the
