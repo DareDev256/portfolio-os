@@ -1,16 +1,24 @@
 {
-  "generatedAt": "2026-10-31T10:55:21.309Z",
+  "generatedAt": "2026-10-31T12:11:45.280Z",
   "windowHours": 36,
   "ranInWindow": 4,
   "jobsWatched": 8,
   "events": [
+    {
+      "id": "check-daily-rollup",
+      "label": "Agent rollup written",
+      "source": "check-daily-rollup",
+      "at": "2026-10-31T12:00:06.101Z",
+      "time": "08:00",
+      "ageMinutes": 12
+    },
     {
       "id": "daily-brief",
       "label": "Morning brief compiled and sent",
       "source": "daily-brief · Discord",
       "at": "2026-10-31T10:47:08.628Z",
       "time": "06:47",
-      "ageMinutes": 8
+      "ageMinutes": 85
     },
     {
       "id": "life-rhythm",
@@ -18,7 +26,7 @@
       "source": "life-rhythm",
       "at": "2026-10-31T03:14:00.455Z",
       "time": "23:14",
-      "ageMinutes": 461
+      "ageMinutes": 538
     },
     {
       "id": "branch-shepherd",
@@ -26,33 +34,25 @@
       "source": "branch-shepherd",
       "at": "2026-10-30T13:11:18.795Z",
       "time": "09:11",
-      "ageMinutes": 1304
-    },
-    {
-      "id": "check-daily-rollup",
-      "label": "Agent rollup written",
-      "source": "check-daily-rollup",
-      "at": "2026-10-30T12:00:05.709Z",
-      "time": "08:00",
-      "ageMinutes": 1375
+      "ageMinutes": 1380
     }
   ],
   "skipped": [
     {
       "id": "career-digest",
-      "why": "last ran 46h ago"
+      "why": "last ran 47h ago"
     },
     {
       "id": "portfolio-traffic-radar",
-      "why": "last ran 118h ago"
+      "why": "last ran 119h ago"
     },
     {
       "id": "sandra-digest",
-      "why": "last ran 1214h ago"
+      "why": "last ran 1215h ago"
     },
     {
       "id": "drift-check",
-      "why": "last ran 133h ago"
+      "why": "last ran 135h ago"
     }
   ],
   "definitions": {
