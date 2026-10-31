@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.62.0
+version: 4.62.1
 last_updated: 2026-10-31
 
 ---
@@ -11,6 +11,12 @@ last_updated: 2026-10-31
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.62.1 — 2026-10-31 · The live numbers publish themselves
+
+- **Why the figures froze.** The live page showed 127 stars, PyPI v0.26.0 and Bodies In Boxes counts "12 DAYS OLD". `tools/build-figures.mjs` had refused every run since 2026-10-23: the BIB launch-week uptime probe (`com.daredev.bib-uptime`) kept logging "past 2026-10-23, nothing to do" every 10 minutes, and `bib-panel.py` read any non-green line as a fault. The probe's window is over, so it is unloaded (`com.daredev.bib-uptime.plist.disabled`, restorable). And even when the generator did run, nothing committed its output: Vercel served the committed copy while a fresher file sat in the working tree.
+- **`tools/publish-live-data.sh`**, run daily at 09:40 by `com.daredev.jamesdare-data-publish`. It regenerates figures, the client roster, the agent's state and its activity feed, then commits ONLY those four files and pushes main. It refuses off main, refuses when either generator refuses, and refuses when the page reads a figure the new data lacks (`tests/monitor.test.js`, `tests/bib-gate.test.js`). It deploys only when a value changed or the published activity feed is 30 h old, never for a timestamp alone. A refusal posts to #alerts the same day and exits 2. Mutation-checked: a planted unknown figure and the old refusing panel each make it fail loud.
+- **New link preview.** `public/thumbnails/og-preview.jpg` is a 1200x630 frame of the monitor homepage, replacing the old page.
 
 ## 4.62.0 — 2026-10-31 · The homepage becomes a director's monitor
 
