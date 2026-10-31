@@ -197,6 +197,26 @@ describe('the switcher in the page', () => {
         expect(document.querySelector('[data-activity-line]').textContent).toBe('4 OF 8 WATCHED JOBS WROTE A LOG IN 36 H');
     });
 
+    it('keeps the clip\'s HUD when a deep link opens on the agent before the feed file lands', async () => {
+        document.documentElement.innerHTML = html.replace(/^[\s\S]*?<html[^>]*>/, '').replace(/<\/html>\s*$/, '');
+        // replaceState, not location.hash: a hashchange would also drive the
+        // monitors earlier tests left on this window.
+        window.history.replaceState(null, '', '#agent');
+        const at = new Date().toISOString();
+        globalThis.fetch = vi.fn((url) => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve(String(url).includes('agent-feed')
+                ? { recordedAt: at, exitCode: 0 }
+                : { generatedAt: at, windowHours: 36, ranInWindow: 4, jobsWatched: 8, events: [{ time: '06:47', id: 'daily-brief', label: 'x' }] }),
+        }));
+        api = initMonitor(document, window);
+        for (let i = 0; i < 6; i++) await new Promise((r) => setTimeout(r, 0));
+        expect(api.current).toBe('agent');
+        expect(document.getElementById('hudRec').textContent).toBe(`REC ${hudDate(at)}`);
+        expect(document.getElementById('logfeed').hidden).toBe(true);
+        window.history.replaceState(null, '', window.location.pathname);
+    });
+
     it('moves along the switcher with the arrow keys and cuts as it goes', () => {
         sel('fcp').focus();
         sel('fcp').dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));

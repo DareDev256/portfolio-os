@@ -166,7 +166,10 @@ export function initMonitor(doc = document, win = window) {
         logfeed.replaceChildren();
         logfeed.hidden = false;
         activityReady().then((data) => {
-            if (current !== b) return;
+            // The same button can change kind while this was in flight (the filmed
+            // run arrives and upgrades it to a clip), so check the kind, not just
+            // the button, before writing the HUD.
+            if (current !== b || b.dataset.kind !== 'log') return;
             const rows = [];
             if (!data) {
                 // A panel that cannot read its source must not look like a quiet day.

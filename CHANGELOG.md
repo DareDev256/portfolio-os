@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.63.0
+version: 4.63.1
 last_updated: 2026-10-31
 
 ---
@@ -11,6 +11,10 @@ last_updated: 2026-10-31
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.63.1 — 2026-10-31 · A deep link to the agent keeps the clip's label
+
+- Opening `/#agent` directly started the job-log replay, then the filmed run arrived and took over the screen, and the log's late callback overwrote the HUD with `LOG <date>` over a recording. The replay now checks the source is still a log before writing. Caught on the live site; `tests/monitor.test.js` reproduces it and fails without the fix.
 
 ## 4.63.0 — 2026-10-31 · The agent is on camera, every morning
 
