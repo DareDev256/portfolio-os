@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.62.1
+version: 4.63.0
 last_updated: 2026-10-31
 
 ---
@@ -11,6 +11,13 @@ last_updated: 2026-10-31
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.63.0 — 2026-10-31 · The agent is on camera, every morning
+
+- **Source 4 (Passion Agent) plays a real recording.** `tools/record-agent-feed.sh` films an actual Claude Code session (the interactive UI, Haiku, read-only tools) in a headless terminal with VHS: the agent fact-checks this page's own numbers (GitHub stars, forks, PyPI version) against the live GitHub API and PyPI and prints MATCH or DRIFT for each. The first run matched all three. The clip, its poster and `public/data/agent-feed.json` (recordedAt, task, model, durations, exitCode) are written only when every gate passes.
+- **Public-safety gate.** The capture is scanned before anything is published: tokens, keys, email addresses, phone numbers, home paths and personal names refuse the clip (exit 3) and keep the previous one. Personal words live in a private list outside this public repo (`~/.local/state/jamesdare-agent-feed/blocklist.txt`); if that list is missing or empty the gate refuses. Proven with a planted fake token, a planted listed word, and a missing list. The recorder honours the usage reserve (exit 76) like every unattended Claude job.
+- **The page trusts only a clean run.** `js/monitor.js` reads `agent-feed.json`; with `exitCode` 0 the source plays the clip and the HUD reads `REC <date>`, adding its age once past 36 h. Anything else keeps the job-log replay on air. The slate now carries the activity line (jobs that wrote a log in the window).
+- **Daily.** `tools/publish-live-data.sh` (09:40) records first, then regenerates the figures; a failed recording warns in #alerts but never holds back the numbers.
 
 ## 4.62.1 — 2026-10-31 · The live numbers publish themselves
 

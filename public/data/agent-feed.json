@@ -1,0 +1,8 @@
+{
+  "recordedAt": "2026-10-31T12:01:35Z",
+  "task": "Fact-check the three numbers on the jamesdare.com homepage (GitHub stars, forks, PyPI version) against the live GitHub API and PyPI.",
+  "model": "Haiku 5.5",
+  "durationSec": 24.6,
+  "playbackSec": 19.0,
+  "exitCode": 0
+}

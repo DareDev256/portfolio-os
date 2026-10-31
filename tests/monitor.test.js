@@ -12,7 +12,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { initMonitor, routeFor, activitySummary, hudDate } from '../js/monitor.js';
+import { initMonitor, routeFor, activitySummary, hudDate, agentFeedLabel } from '../js/monitor.js';
 
 const root = resolve(import.meta.dirname, '..');
 const html = readFileSync(resolve(root, 'index.html'), 'utf8');
@@ -98,6 +98,21 @@ describe('agent feed age', () => {
     });
 });
 
+describe('the filmed agent run', () => {
+    const now = Date.parse('2026-10-31T20:00:00Z');
+    it('dates a clean recent run like a slate', () => {
+        expect(agentFeedLabel({ recordedAt: '2026-10-31T12:01:35Z', exitCode: 0 }, now)).toBe('31 OCT 26');
+    });
+    it('says how old the footage is once past the window', () => {
+        expect(agentFeedLabel({ recordedAt: '2026-10-27T12:00:00Z', exitCode: 0 }, now)).toBe('27 OCT 26 · 4 DAYS OLD');
+    });
+    it('refuses a failed or undated run, so the log replay stays on air', () => {
+        expect(agentFeedLabel({ recordedAt: '2026-10-31T12:00:00Z', exitCode: 1 }, now)).toBeNull();
+        expect(agentFeedLabel({ recordedAt: 'nope', exitCode: 0 }, now)).toBeNull();
+        expect(agentFeedLabel(null, now)).toBeNull();
+    });
+});
+
 describe('the switcher in the page', () => {
     let api;
     beforeEach(() => {
@@ -162,6 +177,24 @@ describe('the switcher in the page', () => {
         expect(feed.hidden).toBe(false);
         expect(feed.textContent).toContain('daily-brief');
         expect(feed.textContent).toContain('4 of 8 watched jobs wrote a log in 36 h');
+    });
+
+    it('plays the filmed run once the feed file confirms it, dated from that file', async () => {
+        document.documentElement.innerHTML = html.replace(/^[\s\S]*?<html[^>]*>/, '').replace(/<\/html>\s*$/, '');
+        const at = new Date().toISOString();
+        globalThis.fetch = vi.fn((url) => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve(String(url).includes('agent-feed')
+                ? { recordedAt: at, exitCode: 0 }
+                : { generatedAt: at, windowHours: 36, ranInWindow: 4, jobsWatched: 8, events: [] }),
+        }));
+        api = initMonitor(document, window);
+        await new Promise((r) => setTimeout(r, 0));
+        document.getElementById('src-agent').click();
+        expect(document.getElementById('pgm').getAttribute('src')).toContain('feed-agent.mp4');
+        expect(document.getElementById('logfeed').hidden).toBe(true);
+        expect(document.getElementById('hudRec').textContent).toBe(`REC ${hudDate(at)}`);
+        expect(document.querySelector('[data-activity-line]').textContent).toBe('4 OF 8 WATCHED JOBS WROTE A LOG IN 36 H');
     });
 
     it('moves along the switcher with the arrow keys and cuts as it goes', () => {

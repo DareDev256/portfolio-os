@@ -31,6 +31,8 @@ set -uo pipefail
 REPO="/Users/t./Projects/products/jamesdare.com"
 LOG="/Users/t./Library/Logs/passion-cron/jamesdare-data.log"
 PATHS=(public/data/figures.json public/data/passion-state.json public/data/client-sites.json public/data/activity.json)
+# The filmed agent run (tools/record-agent-feed.sh). Published alongside, never required.
+FEED=(public/assets/system/monitor/feed-agent.mp4 public/assets/system/monitor/feed-agent.jpg public/data/agent-feed.json)
 mkdir -p "$(dirname "$LOG")"
 log() { echo "[$(date -u '+%Y-%m-%dT%H:%M:%SZ')] $*" | tee -a "$LOG"; }
 . "$HOME/Projects/passion/utilities/passion-cron/lib/notify.sh" 2>/dev/null
@@ -45,6 +47,20 @@ fail() {
 cd "$REPO" || fail "repo missing at $REPO"
 BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 [ "$BRANCH" = "main" ] || fail "checkout is on '$BRANCH', not main: a push from here deploys nothing"
+
+# 1. Film this morning's agent run. A failed or stood-down recording keeps
+#    yesterday's clip (the recorder only moves files into place when every gate
+#    passes) and must not hold back the figures, so it warns instead of failing.
+FILMED=0
+bash tools/record-agent-feed.sh >>"$LOG" 2>&1; rrc=$?
+case $rrc in
+    0) FILMED=1; log "agent feed filmed" ;;
+    76) log "agent feed stood down (usage reserve); keeping the last clip" ;;
+    *) log "WARN: agent feed recorder exited $rrc; keeping the last clip"
+       command -v notify_discord >/dev/null && notify_discord "🟠" "jamesdare.com agent footage not refreshed" \
+           "tools/record-agent-feed.sh exited $rrc (3 = the public-safety gate refused the capture). The page keeps the last clip and labels its age. Log: ~/Library/Logs/passion-cron/jamesdare-agent-feed.log" \
+           16763904 "jamesdare-data-publish · daily 09:40" >/dev/null 2>&1 ;;
+esac
 
 out=$(node tools/build-figures.mjs 2>&1) || fail "build-figures refused: $(tail -3 <<< "$out")"
 out=$(node tools/build-activity.mjs 2>&1) || fail "build-activity refused: $(tail -3 <<< "$out")"
@@ -72,6 +88,9 @@ PUB_EPOCH=$(date -j -u -f '%Y-%m-%dT%H:%M:%S' "${PUB_AT%.*}" '+%s' 2>/dev/null |
 AGE_H=$(( PUB_EPOCH > 0 ? ( $(date '+%s') - PUB_EPOCH ) / 3600 : 99 ))
 [ "$AGE_H" -lt 0 ] && AGE_H=99
 
+COMMIT_PATHS=("${PATHS[@]}")
+if [ "$FILMED" = "1" ]; then COMMIT_PATHS+=("${FEED[@]}"); CHANGED+=(agent-feed); fi
+
 if [ ${#CHANGED[@]} -eq 0 ] && [ "$AGE_H" -lt 30 ]; then
     log "OK no value changed (activity published ${AGE_H}h ago) — not deploying a timestamp"
     command -v job_ran >/dev/null && job_ran
@@ -86,7 +105,7 @@ if [ "${DRY_RUN:-}" = "1" ]; then
     exit 0
 fi
 
-git commit -q -m "$MSG" -m "Changed: ${CHANGED[*]:-activity age ${AGE_H}h}. Written by tools/publish-live-data.sh." -- "${PATHS[@]}" >>"$LOG" 2>&1 \
+git commit -q -m "$MSG" -m "Changed: ${CHANGED[*]:-activity age ${AGE_H}h}. Written by tools/publish-live-data.sh." -- "${COMMIT_PATHS[@]}" >>"$LOG" 2>&1 \
     || fail "commit failed"
 git push -q origin main >>"$LOG" 2>&1 \
     || fail "PUSH REJECTED: the commit is local only and the live page stays stale. Never force it; pull and re-run."

@@ -19,6 +19,10 @@ const LEGACY = { gates: 'monitor', work: 'monitor', system: 'monitor', play: 'mo
 const LEGACY_SOURCE = { system: 'registry', play: 'manyroads' };
 const HUD_PREFIX = { rec: 'REC ', log: 'LOG ', still: 'STILL ', play: '▶ ', graph: 'LIVE · ', none: '' };
 const ACTIVITY = '/data/activity.json';
+/* tools/record-agent-feed.sh films a real Claude Code run every morning and
+ * writes this file beside the clip. The agent source plays that clip only when
+ * the file says the run finished cleanly; otherwise it replays the jobs' logs. */
+const AGENT_FEED = '/data/agent-feed.json';
 /* build-activity reads a 36 hour window. Past that the file describes a day
  * that is over, so the feed says how old it is instead of passing as current. */
 const ACTIVITY_STALE_HOURS = 36;
@@ -42,6 +46,19 @@ export function activitySummary(data, now = Date.now()) {
     if (ageH < ACTIVITY_STALE_HOURS) return { text: ran, stale: false };
     const age = ageH < 48 ? `${Math.round(ageH)} hours` : `${Math.round(ageH / 24)} days`;
     return { text: `${ran}. Read ${age} ago, not since`, stale: true };
+}
+
+/* The HUD label for the filmed run. A recording older than the activity window
+ * says so, the same way the log feed does: footage from last week must not read
+ * as this morning's. */
+export function agentFeedLabel(feed, now = Date.now()) {
+    if (!feed || feed.exitCode !== 0) return null;
+    const at = new Date(feed.recordedAt).getTime();
+    if (!Number.isFinite(at)) return null;
+    const ageH = (now - at) / 3600000;
+    const date = hudDate(feed.recordedAt);
+    if (ageH < ACTIVITY_STALE_HOURS) return date;
+    return `${date} · ${ageH < 48 ? `${Math.round(ageH)} H` : `${Math.round(ageH / 24)} DAYS`} OLD`;
 }
 
 export function routeFor(hash, sourceIds = []) {
@@ -356,6 +373,29 @@ export function initMonitor(doc = document, win = window) {
     }
 
     doc.querySelectorAll('[data-year]').forEach((el) => { el.textContent = String(new Date().getFullYear()); });
+
+    const agentBtn = buttons.find((b) => b.dataset.src === 'agent');
+    if (agentBtn && agentBtn.dataset.clips) {
+        fetch(AGENT_FEED)
+            .then((r) => (r.ok ? r.json() : null))
+            .then((feed) => {
+                const label = agentFeedLabel(feed);
+                if (!label) return;
+                agentBtn.dataset.kind = 'rec';
+                agentBtn.dataset.date = label;
+                if (current === agentBtn) { current = null; take -= 1; cut('agent', { initial: true }); }
+            })
+            .catch(() => {});
+    }
+    const activityLine = doc.querySelector('[data-activity-line]');
+    if (activityLine) {
+        activityReady().then((data) => {
+            if (!data) return;
+            const sum = activitySummary(data);
+            activityLine.textContent = sum.text.toUpperCase();
+            if (sum.stale) activityLine.dataset.state = 'stale';
+        });
+    }
 
     const initial = routeFor(win.location.hash, ids);
     cut(initial.source || 'fcp', { initial: true });
