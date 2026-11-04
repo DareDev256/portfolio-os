@@ -3,14 +3,17 @@
 ---
 
 title: Passion OS Changelog
-version: 4.64.0
-last_updated: 2026-10-31
+version: 4.64.1
+last_updated: 2026-11-04
 
 ---
 
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.64.1 — 2026-11-04 · ShopBayHQ says it is parked
+- The ShopBayHQ take no longer says "live in production against a Neon database". The app was parked on 2026-10-14 and app.shopbayhq.com now redirects to shopbayhq.com, which books demos.
 
 ## 4.64.0 — 2026-10-31 · The crew is on screen
 
