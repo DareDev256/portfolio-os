@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T14:43:17.410Z",
+  "generatedAt": "2026-11-06T14:42:54.859Z",
   "figures": {
     "stars": 136,
     "forks": 22,
@@ -9,24 +9,24 @@
     "clientSites": 16,
     "clientSitesUp": 16,
     "wikiShare": "52%",
-    "wikiEdits": "13,039",
-    "wikiTotal": "25,008",
+    "wikiEdits": "13,082",
+    "wikiTotal": "25,051",
     "wikiSince": 2013,
     "wikiReverted": 0,
     "wikiRevertSample": "500",
     "wikiStood": "500",
     "wikiRevertRate": "0.0%",
-    "bibRuns": "8,009",
-    "bibPlayers": "3,869",
-    "bibSurvived": "3,598",
-    "bibShares": "596",
+    "bibRuns": "8,076",
+    "bibPlayers": "3,904",
+    "bibSurvived": "3,634",
+    "bibShares": "599",
     "bibCompletion": "45%",
     "bibTopScore": "73,782",
     "bibVersion": "1.26.0",
     "bibBuildHours": 7,
     "bibCommits": 112,
-    "bibAsOf": "Nov 5 2026, 09:42 ET",
-    "bibReadAt": "2026-11-05T14:42:01.000Z",
+    "bibAsOf": "Nov 6 2026, 09:28 ET",
+    "bibReadAt": "2026-11-06T14:28:31.000Z",
     "repos": 129,
     "modules": 97,
     "loc": "63K",
@@ -74,7 +74,7 @@
     "snapshotDate": "when data/system-snapshot.json was last generated — the date every stamp on this page reads from"
   },
   "services": {
-    "checkedAt": "2026-11-05T14:43:17.425Z",
+    "checkedAt": "2026-11-06T14:42:54.867Z",
     "host": "up",
     "services": [
       {

@@ -1,30 +1,22 @@
 {
-  "generatedAt": "2026-11-05T14:43:18.799Z",
+  "generatedAt": "2026-11-06T14:42:55.587Z",
   "windowHours": 36,
   "ranInWindow": 5,
   "jobsWatched": 8,
   "events": [
     {
-      "id": "career-digest",
-      "label": "Career pipeline digested",
-      "source": "career-digest · Discord",
-      "at": "2026-11-05T14:21:01.145Z",
-      "time": "09:21",
-      "ageMinutes": 22
-    },
-    {
       "id": "branch-shepherd",
       "label": "Branches swept for drift",
       "source": "branch-shepherd",
-      "at": "2026-11-05T14:12:29.039Z",
-      "time": "09:12",
-      "ageMinutes": 31
+      "at": "2026-11-06T14:09:18.800Z",
+      "time": "09:09",
+      "ageMinutes": 34
     },
     {
       "id": "check-daily-rollup",
       "label": "Agent rollup written",
       "source": "check-daily-rollup",
-      "at": "2026-11-05T13:00:07.358Z",
+      "at": "2026-11-06T13:00:06.132Z",
       "time": "08:00",
       "ageMinutes": 103
     },
@@ -32,31 +24,39 @@
       "id": "daily-brief",
       "label": "Morning brief compiled and sent",
       "source": "daily-brief · Discord",
-      "at": "2026-11-05T11:48:07.040Z",
+      "at": "2026-11-06T11:48:45.680Z",
       "time": "06:48",
-      "ageMinutes": 175
+      "ageMinutes": 174
     },
     {
       "id": "life-rhythm",
       "label": "Life-rhythm check ran",
       "source": "life-rhythm",
-      "at": "2026-11-05T04:14:49.527Z",
+      "at": "2026-11-06T04:14:55.805Z",
       "time": "23:14",
       "ageMinutes": 628
+    },
+    {
+      "id": "career-digest",
+      "label": "Career pipeline digested",
+      "source": "career-digest · Discord",
+      "at": "2026-11-05T14:21:01.145Z",
+      "time": "09:21",
+      "ageMinutes": 1462
     }
   ],
   "skipped": [
     {
       "id": "portfolio-traffic-radar",
-      "why": "last ran 72h ago"
+      "why": "last ran 96h ago"
     },
     {
       "id": "sandra-digest",
-      "why": "last ran 1338h ago"
+      "why": "last ran 1362h ago"
     },
     {
       "id": "drift-check",
-      "why": "last ran 88h ago"
+      "why": "last ran 112h ago"
     }
   ],
   "definitions": {
