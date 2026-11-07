@@ -318,7 +318,12 @@ a [data-fig][data-explained] { text-decoration: none; }
 /* The voice agent is a fixed-position web component. A transform on its host
  * makes the host the containing block for that fixed layer, so the widget
  * renders inside this card instead of floating over the tab bar. */
-.voice { position: relative; height: 58px; margin-top: -2px; transform: translateZ(0); }
+/* Measured 2026-11-07: the widget insets its 52px pill by 32px top and bottom (the bottom
+ * band holds its "Powered by" link). A 58px box squashed the pill to 16px. The box is 116px
+ * and the negative margins give the inset back, so the card is only 4px taller and
+ * the page still never scrolls at 390x664. -24px, not -32px, at the bottom keeps the
+ * "Powered by" link off the card below (it overlapped by 2-6px on phones). */
+.voice { position: relative; height: 116px; margin: -32px 0 -24px; transform: translateZ(0); }
 .voice elevenlabs-convai { display: block; position: absolute; inset: 0; }
 
 /* ---------- ask the system: a sheet, so the page never scrolls ---------- */

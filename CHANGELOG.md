@@ -3,14 +3,19 @@
 ---
 
 title: Passion OS Changelog
-version: 4.64.1
-last_updated: 2026-11-04
+version: 4.64.2
+last_updated: 2026-11-07
 
 ---
 
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.64.2 — 2026-11-07 · The voice agent fits its card and works on phones
+- The ElevenLabs widget on Call time was squashed to a 16px sliver: its box was 58px, and the widget insets its 52px pill by 32px top and bottom. The box is now 116px with negative margins that give the inset back, so the card is only 4px taller than before and the page still never scrolls (measured on the live page at 390x844, 390x664, 430x740, 1280x720 and 1440x900; the "Powered by" link clears the card below).
+- Phones could not start a call: the widget loads a resampler worklet from `cdn.jsdelivr.net/npm/@alexanderolsen/libsamplerate-js@2.1.2/`, which the CSP blocked. That exact path is now in `script-src`.
+- Agent side (ElevenLabs, not in this repo): voice capped at 5 calls a day, 90 s each, one at a time, so it cannot drain the credits the phone call screener runs on. The widget's text box and transcript are off, because the card already has "Type a question" and the panel could not open inside the card.
 
 ## 4.64.1 — 2026-11-04 · ShopBayHQ says it is parked
 - The ShopBayHQ take no longer says "live in production against a Neon database". The app was parked on 2026-10-14 and app.shopbayhq.com now redirects to shopbayhq.com, which books demos.
