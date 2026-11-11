@@ -76,10 +76,20 @@ const drift = [];
 const lf = local.figures ?? {};
 const vf = live.figures ?? {};
 
+/* GRACE (2026-11-11): the generator re-reads live sources (BIB panel every 30 min, stars,
+ * wiki) on every radar run, but the site publishes once a day (jamesdare-data-publish 09:40).
+ * A deployed file under 30h old that differs only in VALUES is the normal gap between two
+ * reads, not a stale deploy; flagging it painted site-truth-radar red 30 minutes after every
+ * good publish. Absent keys (structural drift) and any deploy older than 30h still drift. */
+const GRACE_H = 30;
+const preAgeH = live.generatedAt ? (Date.now() - Date.parse(live.generatedAt)) / 3_600_000 : null;
+const inGrace = preAgeH !== null && preAgeH < GRACE_H;
 for (const key of new Set([...Object.keys(lf), ...Object.keys(vf)])) {
     const a = vf[key];
     const b = lf[key];
-    if (String(a) !== String(b)) drift.push({ key, deployed: a ?? '(absent)', generated: b ?? '(absent)' });
+    if (String(a) === String(b)) continue;
+    if (inGrace && a !== undefined && b !== undefined) continue;
+    drift.push({ key, deployed: a ?? '(absent)', generated: b ?? '(absent)' });
 }
 
 // The service probe is the newest field; its absence on prod IS the drift.
