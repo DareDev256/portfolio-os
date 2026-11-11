@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-11-09T14:40:17.334Z",
+  "generatedAt": "2026-11-11T14:42:50.295Z",
   "source": "data/system-snapshot.json — freshness of the agent's own rollup",
-  "status": "online",
-  "state": "working",
-  "mood": "shipping",
+  "status": "offline",
+  "state": "thinking",
+  "mood": "resting",
   "currentFocus": "130-repository registry",
   "lastActive": "2026-11-08",
-  "commentary": "Rollup written within the last day. The scheduled fleet is reporting."
+  "commentary": "No rollup in over a day. The fleet is quiet."
 }

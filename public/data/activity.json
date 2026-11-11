@@ -1,54 +1,58 @@
 {
-  "generatedAt": "2026-11-09T14:40:17.426Z",
+  "generatedAt": "2026-11-11T14:42:50.392Z",
   "windowHours": 36,
-  "ranInWindow": 7,
+  "ranInWindow": 4,
   "jobsWatched": 8,
   "events": [
-    {
-      "id": "career-digest",
-      "label": "Career pipeline digested",
-      "source": "career-digest · Discord",
-      "at": "2026-11-09T14:20:16.739Z",
-      "time": "09:20",
-      "ageMinutes": 20
-    },
-    {
-      "id": "portfolio-traffic-radar",
-      "label": "Portfolio traffic swept",
-      "source": "portfolio-traffic-radar",
-      "at": "2026-11-09T14:15:03.030Z",
-      "time": "09:15",
-      "ageMinutes": 25
-    },
     {
       "id": "branch-shepherd",
       "label": "Branches swept for drift",
       "source": "branch-shepherd",
-      "at": "2026-11-09T14:10:48.410Z",
-      "time": "09:10",
-      "ageMinutes": 29
+      "at": "2026-11-11T14:18:31.448Z",
+      "time": "09:18",
+      "ageMinutes": 24
     },
     {
       "id": "check-daily-rollup",
       "label": "Agent rollup written",
       "source": "check-daily-rollup",
-      "at": "2026-11-09T13:00:07.141Z",
+      "at": "2026-11-11T13:00:06.752Z",
       "time": "08:00",
-      "ageMinutes": 100
+      "ageMinutes": 103
     },
     {
       "id": "daily-brief",
       "label": "Morning brief compiled and sent",
       "source": "daily-brief · Discord",
-      "at": "2026-11-09T11:45:47.712Z",
-      "time": "06:45",
-      "ageMinutes": 174
+      "at": "2026-11-11T11:47:20.500Z",
+      "time": "06:47",
+      "ageMinutes": 175
+    },
+    {
+      "id": "life-rhythm",
+      "label": "Life-rhythm check ran",
+      "source": "life-rhythm",
+      "at": "2026-11-11T04:02:52.646Z",
+      "time": "23:02",
+      "ageMinutes": 640
     }
   ],
   "skipped": [
     {
+      "id": "career-digest",
+      "why": "last ran 48h ago"
+    },
+    {
+      "id": "portfolio-traffic-radar",
+      "why": "last ran 48h ago"
+    },
+    {
       "id": "sandra-digest",
-      "why": "last ran 1434h ago"
+      "why": "last ran 1482h ago"
+    },
+    {
+      "id": "drift-check",
+      "why": "last ran 64h ago"
     }
   ],
   "definitions": {
