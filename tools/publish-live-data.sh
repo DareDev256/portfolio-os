@@ -64,7 +64,14 @@ esac
 
 out=$(node tools/build-figures.mjs 2>&1) || fail "build-figures refused: $(tail -3 <<< "$out")"
 out=$(node tools/build-activity.mjs 2>&1) || fail "build-activity refused: $(tail -3 <<< "$out")"
-out=$(npx vitest run tests/monitor.test.js tests/bib-gate.test.js 2>&1) || fail "the page reads a figure the new data does not carry: $(grep -E '✗|×|AssertionError' <<< "$out" | head -5)"
+out=$(npx vitest run tests/monitor.test.js tests/bib-gate.test.js 2>&1) || {
+    # 11-10 posted this alert with an EMPTY reason: the grep matched nothing (a crash or timeout prints no assertion line),
+    # so nobody could tell which figure. Name the failing test(s), and fall back to the output tail, never to nothing.
+    why=$(grep -E '✗|×|FAIL|AssertionError|Error:' <<< "$out" | head -6)
+    [ -n "$why" ] || why="(no assertion line; vitest output tail) $(tail -6 <<< "$out")"
+    echo "$out" > "$(dirname "$LOG")/jamesdare-vitest-last-failure.log"
+    fail "the page reads a figure the new data does not carry: $why"
+}
 
 # What counts as a change, per file. Everything but the clock.
 sig() {
