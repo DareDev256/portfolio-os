@@ -1,30 +1,38 @@
 {
-  "generatedAt": "2026-11-11T14:42:50.392Z",
+  "generatedAt": "2026-11-12T14:42:18.384Z",
   "windowHours": 36,
-  "ranInWindow": 4,
+  "ranInWindow": 5,
   "jobsWatched": 8,
   "events": [
+    {
+      "id": "career-digest",
+      "label": "Career pipeline digested",
+      "source": "career-digest · Discord",
+      "at": "2026-11-12T14:20:53.317Z",
+      "time": "09:20",
+      "ageMinutes": 21
+    },
     {
       "id": "branch-shepherd",
       "label": "Branches swept for drift",
       "source": "branch-shepherd",
-      "at": "2026-11-11T14:18:31.448Z",
-      "time": "09:18",
-      "ageMinutes": 24
+      "at": "2026-11-12T14:11:24.504Z",
+      "time": "09:11",
+      "ageMinutes": 31
     },
     {
       "id": "check-daily-rollup",
       "label": "Agent rollup written",
       "source": "check-daily-rollup",
-      "at": "2026-11-11T13:00:06.752Z",
+      "at": "2026-11-12T13:00:05.942Z",
       "time": "08:00",
-      "ageMinutes": 103
+      "ageMinutes": 102
     },
     {
       "id": "daily-brief",
       "label": "Morning brief compiled and sent",
       "source": "daily-brief · Discord",
-      "at": "2026-11-11T11:47:20.500Z",
+      "at": "2026-11-12T11:47:46.547Z",
       "time": "06:47",
       "ageMinutes": 175
     },
@@ -32,27 +40,23 @@
       "id": "life-rhythm",
       "label": "Life-rhythm check ran",
       "source": "life-rhythm",
-      "at": "2026-11-11T04:02:52.646Z",
-      "time": "23:02",
-      "ageMinutes": 640
+      "at": "2026-11-12T04:03:28.359Z",
+      "time": "23:03",
+      "ageMinutes": 639
     }
   ],
   "skipped": [
     {
-      "id": "career-digest",
-      "why": "last ran 48h ago"
-    },
-    {
       "id": "portfolio-traffic-radar",
-      "why": "last ran 48h ago"
+      "why": "last ran 72h ago"
     },
     {
       "id": "sandra-digest",
-      "why": "last ran 1482h ago"
+      "why": "last ran 1506h ago"
     },
     {
       "id": "drift-check",
-      "why": "last ran 64h ago"
+      "why": "last ran 88h ago"
     }
   ],
   "definitions": {
