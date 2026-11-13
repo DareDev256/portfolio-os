@@ -28,6 +28,7 @@ import { createCast, EXTRA_SLATES } from './studio/cast.js';
 import { buildBody } from './studio/rig.js';
 import { walkinPose, shouldWalkIn, WALKIN_KEY } from './studio/walkin.js';
 import { activitySummary, agentFeedLabel } from './monitor.js';
+import { STATIONS_URL, takesFor, takesLine, takeDate, stripHeights, stripLabel, rolling, ageLabel } from './studio/takes.js';
 
 const $ = (id) => document.getElementById(id);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -42,11 +43,12 @@ const crewP = fetch('/', { headers: { Accept: 'text/html' } })
     .then((html) => parseCrew(new DOMParser().parseFromString(html, 'text/html')))
     .catch(() => []);
 const figsP = json('/data/figures.json');
-const data = { activity: null, registry: null, agentFeed: null };
-const dataP = Promise.all([json('/data/activity.json'), json('/data/registry-graph.json'), json('/data/agent-feed.json')]).then(([a, r, f]) => {
+const data = { activity: null, registry: null, agentFeed: null, stations: null };
+const dataP = Promise.all([json('/data/activity.json'), json('/data/registry-graph.json'), json('/data/agent-feed.json'), json(STATIONS_URL)]).then(([a, r, f, st]) => {
     data.activity = a;
     data.registry = r;
     data.agentFeed = f;
+    data.stations = st?.stations ? st : null;
 });
 const feedsP = json('/assets/studio/feeds/manifest.json');
 
@@ -453,6 +455,21 @@ function drawGates() {
 
 /* ---------- the crew ---------- */
 const agents = [];
+const LAMP_GEO = new THREE.BoxGeometry(0.15, 0.05, 0.06);
+const LAMP_OFF = 0x2c2f36;
+const LAMP_ON = new THREE.Color('#ff2d55');
+const haloTex = (() => {
+    const c = document.createElement('canvas');
+    c.width = c.height = 64;
+    const x = c.getContext('2d');
+    const g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, 'rgba(255,255,255,1)');
+    g.addColorStop(0.35, 'rgba(255,255,255,.45)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = g;
+    x.fillRect(0, 0, 64, 64);
+    return new THREE.CanvasTexture(c);
+})();
 const screens = createScreens(THREE, { feeds: feedsP.then((m) => m || {}), data, figures: () => state.figures, maxLive: small ? 3 : 6 });
 const blobTex = (() => {
     const c = document.createElement('canvas');
@@ -501,6 +518,14 @@ function makeAgent(c, i, total) {
     face.position.z = STATION.screen.z;
     anchor.add(face);
     screens.add(c, face, STATION.screen);
+    // The tally lamp: red while this station has a take from the last 24 hours (takes.js).
+    const lamp = new THREE.Mesh(LAMP_GEO, new THREE.MeshBasicMaterial({ color: LAMP_OFF, toneMapped: false }));
+    lamp.position.set(F.w / 2 - 0.12, F.h / 2 + 0.03, 0);
+    anchor.add(lamp);
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, color: LAMP_ON, transparent: true, opacity: 0.6, depthWrite: false, toneMapped: false }));
+    halo.scale.setScalar(0.42);
+    halo.visible = false;
+    lamp.add(halo);
 
     const rig = buildBody(THREE, RoundedBoxGeometry, { body: M.white, visor: M.visor, steel: M.steel }, tintMat(c.tint));
     rig.a.position.set(STATION.agent.x, 0, STATION.agent.z);
@@ -516,7 +541,7 @@ function makeAgent(c, i, total) {
     hit.userData.hot = { type: 'agent', id: c.id, label: `${c.role} · ${c.scene}`, tint: c.tint };
     hits.push(hit);
     shadowAll(rig.a);
-    const s = { c, st, ...rig, back: pose.back, phase: i * 0.77, wave: 0, motion: MOTION[c.tool] || MOTION.bag, offcall: c.kind === 'none', work: i % 3 === 0, workT: 2 + (i % 5) * 1.3, attn: null };
+    const s = { c, st, lamp, halo, rolling: false, ...rig, back: pose.back, phase: i * 0.77, wave: 0, motion: MOTION[c.tool] || MOTION.bag, offcall: c.kind === 'none', work: i % 3 === 0, workT: 2 + (i % 5) * 1.3, attn: null };
     agents.push(s);
 }
 
@@ -533,6 +558,8 @@ function ribbonText() {
         const sum = activitySummary(data.activity);
         parts.push({ text: sum.text, color: sum.stale ? '#ffb36a' : '#9a9ca5' });
     }
+    const all = takesFor(data.stations, { kind: 'graph' });
+    if (all) parts.push({ text: `${takesLine(all, data.stations.windowDays).toUpperCase()} · READ ${ageLabel(data.stations.generatedAt) || ''}`.trim(), color: '#ffb36a' });
     parts.push({ text: `${fig(f, 'repos')} repos · ${fig(f, 'jobs')} scheduled jobs · ${asOf()}`, color: '#5be3a0' });
     ribbon.setText(parts);
 }
@@ -712,7 +739,8 @@ function activate(h) {
         s.work = false;
         state.focus = s.c.id;
         desk.snap = 0.6;
-        drawClapper(s.c.scene, String(s.c.n).padStart(2, '0'));
+        const tk = takesFor(data.stations, s.c);
+        drawClapper(s.c.scene, tk && !tk.all ? String(tk.takes) : String(s.c.n).padStart(2, '0'));
         const p = new THREE.Vector3();
         s.a.getWorldPosition(p);
         const dir = new THREE.Vector3(C.x - p.x, 0, C.z - p.z).normalize();
@@ -772,7 +800,7 @@ function activate(h) {
         showExtraSlate('poster');
     }
 }
-function setSlate({ scene: sc, take, date, role, tint, whatNode, callNode, stats, link, live }) {
+function setSlate({ scene: sc, take, date, role, tint, whatNode, callNode, stats, link, live, takes = null }) {
     $('sScene').textContent = sc;
     $('sTake').textContent = take;
     $('sDate').textContent = date || DASH;
@@ -798,15 +826,32 @@ function setSlate({ scene: sc, take, date, role, tint, whatNode, callNode, stats
     l.hidden = !link;
     if (link) { l.href = link.href; l.textContent = `${link.text.replace(/\s*[↗→]\s*$/, '')} ↗`; }
     $('sAsof').textContent = live ? asOf() : '';
+    const tk = $('sTakes');
+    tk.hidden = !takes;
+    if (takes) {
+        const n = data.stations.windowDays;
+        const bars = $('sBars');
+        bars.style.setProperty('--tint', tint);
+        bars.setAttribute('aria-label', stripLabel(takes, n));
+        bars.replaceChildren(...stripHeights(takes.days).map((k) => {
+            const i = document.createElement('i');
+            if (k > 0) i.style.height = `${Math.max(12, Math.round(k * 100))}%`;
+            else i.className = 'z';
+            return i;
+        }));
+        $('sTakesLine').textContent = `${takesLine(takes, n)} · read ${ageLabel(data.stations.generatedAt)?.toLowerCase() || 'at an unknown time'}`;
+    }
     slate.classList.add('on');
 }
 function showCrewSlate(c) {
     const nodeOf = (n) => { if (!n) return null; const x = n.cloneNode(true); const span = document.createElement('span'); if (x.dataset?.fig) span.dataset.fig = x.dataset.fig; span.append(...x.childNodes); return span; };
     const hasFig = (n) => !!n && n.querySelector('[data-fig]') !== null;
+    const tk = takesFor(data.stations, c);
     setSlate({
         scene: c.scene,
-        take: String(c.n).padStart(2, '0'),
-        date: c.date,
+        take: tk && !tk.all ? String(tk.takes) : String(c.n).padStart(2, '0'),
+        date: (tk && takeDate(tk.lastAt)) || c.date,
+        takes: tk,
         role: c.role,
         tint: c.tint,
         whatNode: nodeOf(c.what),
@@ -964,6 +1009,11 @@ function applyFigures(j) {
     drawGates();
     screens.refresh();
     ribbonText();
+    for (const s of agents) {
+        s.rolling = rolling(takesFor(data.stations, s.c));
+        s.halo.visible = s.rolling;
+        if (!s.rolling) s.lamp.material.color.setHex(LAMP_OFF);
+    }
 }
 const setP = crewP.then((crew) => (crew.length ? loadSet(THREE, renderer, crew.length) : null));
 const ready = Promise.all([crewP, figsP, setP, dataP]).then(([crew, j, baked]) => {
@@ -1082,7 +1132,14 @@ function frame() {
     if (cast) cast.update(t, dt, camera, state.mode, reduce);
     if (!reduce) {
         const runAt = cast ? cast.runnerAt() : null;
-        for (const s of agents) agentLife(s, t, dt, onAir, runAt);
+        for (const s of agents) {
+            agentLife(s, t, dt, onAir, runAt);
+            if (s.rolling) {
+                const k = reduce ? 1 : 0.7 + 0.3 * Math.sin(t * 2.4 + s.phase);
+                s.lamp.material.color.copy(LAMP_ON).multiplyScalar(k);
+                s.halo.material.opacity = 0.35 + 0.35 * k;
+            }
+        }
         ribbon.update(dt);
     }
     screens.update(t, camera, onAir, state.focus);

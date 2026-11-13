@@ -441,3 +441,122 @@ describe('the walk-in', () => {
         expect(src).toMatch(/if \(walk && state\.mode === 'wide'\)/);
     });
 });
+
+/* 4.68.0: the takes. Each station screen reads its real commits from
+ * public/data/stations.json (tools/build-stations.mjs). What these pin:
+ *   - a take is a commit on a branch or HEAD: tags never count, because the
+ *     nightly snapshot tags every dirty repo and would read as work done today;
+ *   - days are Toronto days, and a commit after 7 pm ET does not leak into tomorrow;
+ *   - someone else's project cloned onto this Mac is not his takes;
+ *   - the published file carries numbers only, never a commit message;
+ *   - a station the file does not carry keeps the Monitor's own label.
+ */
+import { gitLogArgs, bucketDays, parseLog, summarize, ownRepo, dayKey } from '../tools/build-stations.mjs';
+import { takesFor, ageLabel, rolling, takesLine, takeDate, stripHeights, stripLabel, ROLLING_HOURS } from '../js/studio/takes.js';
+
+describe('the takes', () => {
+    const TZ = 'America/Toronto';
+    const now = Date.parse('2026-11-13T15:00:00Z'); // 10:00 ET
+    const stationsFile = JSON.parse(read('public/data/stations.json'));
+    const map = JSON.parse(read('data/station-repos.json'));
+
+    it('counts branches and HEAD, never tags', () => {
+        const a = gitLogArgs({ repo: 'x' });
+        expect(a).not.toContain('--all');
+        expect(a).not.toContain('--tags');
+        expect(a).toEqual(expect.arrayContaining(['HEAD', '--branches', '--remotes']));
+        const p = gitLogArgs({ repo: 'x', paths: ['os', 'js/desktop.js'] });
+        expect(p.slice(p.indexOf('--'))).toEqual(['--', 'os', 'js/desktop.js']);
+        expect(gitLogArgs({}, 15)).toContain('--since=15.days.ago');
+    });
+
+    it('buckets by Toronto day, oldest first', () => {
+        const lateYesterday = Date.parse('2026-11-13T04:30:00Z'); // 23:30 ET on the 12th
+        const earlyToday = Date.parse('2026-11-13T05:30:00Z'); // 00:30 ET on the 13th
+        const old = Date.parse('2026-10-01T12:00:00Z');
+        expect(dayKey(lateYesterday, TZ)).toBe('2026-11-12');
+        const d = bucketDays([lateYesterday, earlyToday, earlyToday, old], now, TZ, 14);
+        expect(d).toHaveLength(14);
+        expect(d[13]).toBe(2);
+        expect(d[12]).toBe(1);
+        expect(d.reduce((x, y) => x + y, 0)).toBe(3);
+    });
+
+    it('counts a commit once by hash and drops one dated in the future', () => {
+        const t = Math.floor(now / 1000);
+        const m = parseLog(`aaaaaaa ${t - 60}\naaaaaaa ${t - 60}\nbbbbbbb ${t + 86400}\nnot a line\n`, now);
+        parseLog(`aaaaaaa ${t - 60}\nccccccc ${t - 3600}\n`, now, m);
+        expect([...m.keys()].sort()).toEqual(['aaaaaaa', 'ccccccc']);
+        const s = summarize(m, 2, now, TZ, 14);
+        expect(s).toEqual({ repos: 2, takes: 2, inWindow: 2, days: [...new Array(13).fill(0), 2], lastAt: new Date((t - 60) * 1000).toISOString() });
+    });
+
+    it('leaves other people\'s projects out of the registry count', () => {
+        expect(ownRepo('git@github.com:DareDev256/sixjutsu.git', '/x', ['DareDev256'])).toBe(true);
+        expect(ownRepo('https://github.com/daredev256/coldopen', '/x', ['DareDev256'])).toBe(true);
+        expect(ownRepo('https://github.com/hacksider/Deep-Live-Cam.git', '/x', ['DareDev256'])).toBe(false);
+        expect(ownRepo('/x', '/x', ['DareDev256'])).toBe(true); // no origin: local work
+        expect(ownRepo('https://gitlab.com/someone/thing.git', '/x', ['DareDev256'])).toBe(false);
+    });
+
+    it('publishes numbers only, for every mapped station, a fortnight long', () => {
+        expect(stationsFile.windowDays).toBe(map.windowDays);
+        for (const [id, s] of Object.entries(stationsFile.stations)) {
+            expect(Object.keys(map.stations)).toContain(id);
+            expect(Object.keys(s).sort()).toEqual(['days', 'inWindow', 'lastAt', 'repos', 'takes']);
+            expect(s.days).toHaveLength(stationsFile.windowDays);
+            expect(s.inWindow).toBe(s.days.reduce((a, b) => a + b, 0));
+            expect(s.takes).toBeGreaterThanOrEqual(s.inWindow);
+            if (s.lastAt) expect(Number.isNaN(Date.parse(s.lastAt))).toBe(false);
+        }
+        expect(Object.keys(stationsFile.all).sort()).toEqual(['active', 'days', 'inWindow', 'scanned']);
+        // every station id in the map is a real source on the Monitor
+        const ids = crew.map((c) => c.id);
+        for (const id of Object.keys(map.stations)) expect(ids).toContain(id);
+    });
+
+    it('labels age, rolling and the strip from the file', () => {
+        const at = (h) => new Date(now - h * 36e5).toISOString();
+        expect(ageLabel(at(0.2), now)).toBe('12M AGO');
+        expect(ageLabel(at(3), now)).toBe('3H AGO');
+        expect(ageLabel(at(50), now)).toBe('2D AGO');
+        expect(ageLabel(null, now)).toBeNull();
+        expect(rolling({ lastAt: at(ROLLING_HOURS - 0.5) }, now)).toBe(true);
+        expect(rolling({ lastAt: at(ROLLING_HOURS + 0.5) }, now)).toBe(false);
+        expect(rolling(null, now)).toBe(false);
+        expect(takeDate('2026-11-13T04:30:00Z')).toBe('12 NOV 26');
+        expect(stripHeights([0, 2, 4])).toEqual([0, 0.5, 1]);
+        expect(stripHeights([0, 0])).toEqual([0, 0]);
+        const st = { repos: 1, takes: 40, inWindow: 3, days: [...new Array(13).fill(0), 3], lastAt: at(3) };
+        expect(takesLine(st, 14, now)).toBe('3 takes in 14 days · last 3h ago');
+        expect(stripLabel(st, 14, now)).toMatch(/^3 takes in the last 14 days, oldest day first: 0, .*3\. The newest landed 3h ago\.$/);
+    });
+
+    it('a station the file does not carry keeps its Monitor label', () => {
+        const films = crew.find((c) => c.id === 'films');
+        expect(takesFor(stationsFile, films)).toBeNull();
+        expect(takesFor(null, films)).toBeNull();
+        const reg = crew.find((c) => c.kind === 'graph');
+        expect(takesFor(stationsFile, reg).all).toBe(true);
+        const fcp = crew.find((c) => c.id === 'fcp');
+        const lines = lowerThirds(fcp, figs.figures, { stations: stationsFile }, now);
+        expect(lines[0]).toMatch(/^\d+ takes? in 14 days/);
+        expect(lowerThirds(fcp, figs.figures, {}, now)[0]).not.toMatch(/takes/);
+        // the registry keeps its repo totals first, the takes second
+        const registry = JSON.parse(read('public/data/registry-graph.json'));
+        const r = lowerThirds(reg, figs.figures, { registry, stations: stationsFile }, now);
+        expect(r[0]).toContain('repos ·');
+        expect(r[1]).toMatch(/takes across \d+ repos in 14 days/);
+    });
+
+    it('is wired: fetched by the page, built and published daily', () => {
+        const src = read('js/studio.js');
+        expect(src).toContain('json(STATIONS_URL)');
+        expect(src).toMatch(/s\.rolling = rolling\(takesFor\(data\.stations, s\.c\)\)/);
+        const pub = read('tools/publish-live-data.sh');
+        expect(pub).toContain('node tools/build-stations.mjs');
+        expect(pub).toMatch(/PATHS=\([^)]*public\/data\/stations\.json/);
+        expect(pub).toMatch(/public\/data\/stations\.json\) jq -Sc/);
+        expect(read('studio/index.html')).toContain('id="sTakes"');
+    });
+});

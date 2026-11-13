@@ -76,6 +76,12 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .slate .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .slate .row a { font-weight: 600; }
 .asof { font: 11px var(--mono); color: var(--muted); }
+/* 4.68.0: the station's takes, one bar a day for 14 days (takes.js). */
+.takes { display: grid; gap: 6px; }
+.takes .bars { display: flex; align-items: flex-end; gap: 3px; height: 30px; padding-bottom: 1px; border-bottom: 1px solid var(--line, #d9dbe0); }
+.takes .bars i { flex: 1; min-height: 3px; background: var(--tint, var(--accent)); border-radius: 1px; }
+.takes .bars i.z { height: 2px; min-height: 2px; background: #c9ccd3; }
+.takes span { font: 12px var(--mono); color: var(--muted); }
 
 /* inside the computer: Passion OS, studio skin */
 .os { position: fixed; inset: 0; z-index: 20; background: radial-gradient(120% 90% at 70% 10%, #ffffff 0%, #eef0f4 55%, #e2e5ec 100%); opacity: 0; pointer-events: none; transition: opacity 0.45s; display: grid; grid-template-rows: auto 1fr auto; }

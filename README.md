@@ -19,10 +19,10 @@ Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Eng
 
 Every number below is reproducible from a clean clone. No figure in this README is typed by hand.
 
-| Figure (measured 2026-11-13, 4.67.0) | Reproduce it |
+| Figure (measured 2026-11-13, 4.68.0) | Reproduce it |
 |---|---|
-| 796 tests across 50 files | `npm test` |
-| 105 JavaScript modules | `git ls-files 'js/*.js' \| wc -l` |
+| 804 tests across 50 files | `npm test` |
+| 106 JavaScript modules | `git ls-files 'js/*.js' \| wc -l` |
 | 53 stylesheets | `git ls-files '*.css' \| wc -l` |
 | 2 runtime dependencies | `node -p "Object.keys(require('./package.json').dependencies).length"` |
 
@@ -37,7 +37,7 @@ yourself with `grep -c "resolve(import.meta.dirname" vite.config.js`, or read
 | `/` | `index.html` + `css/monitor.css` + `js/monitor.js` | **THE MONITOR** — the hiring surface (4.62.0). A director's video village: program monitor, a switcher with one button per project, a slate with each project's receipt, and Crew / Reel / Call tabs. One tap reaches anything and no view scrolls. No framework, no OS code. |
 | `/os` | `os/index.html` + `js/main.js` | **Passion OS** — the desktop environment this README documents. Everything below describes this surface. |
 | `/coldopen` | `coldopen/index.html` | **COLD OPEN** — the writeup of the artist-site engine at [github.com/DareDev256/coldopen](https://github.com/DareDev256/coldopen). Added in 4.21.0. |
-| `/studio` | `studio/index.html` + `css/studio.css` + `js/studio.js` + `js/studio/` | **THE STUDIO** — the Monitor's 16 crew agents on a white soundstage in three.js. The room is modelled and light-baked in Blender (`tools/studio/build_set.py`), each station plays that source's real footage, an A camera covers one source at a time, the director's monitor opens Passion OS and the Digivice opens Passion. Reads the crew from `/` and every number from `figures.json`. A first visit opens on a short pass across the lab, the Vegapunk board and the throne (4.67.0). Added in 4.65.0, baked set in 4.66.0, not indexed yet. |
+| `/studio` | `studio/index.html` + `css/studio.css` + `js/studio.js` + `js/studio/` | **THE STUDIO** — the Monitor's 16 crew agents on a white soundstage in three.js. The room is modelled and light-baked in Blender (`tools/studio/build_set.py`), each station plays that source's real footage, an A camera covers one source at a time, the director's monitor opens Passion OS and the Digivice opens Passion. Reads the crew from `/` and every number from `figures.json`. A first visit opens on a short pass across the lab, the Vegapunk board and the throne (4.67.0). Each station screen shows its real takes (commits) from git, a 14-day strip and the newest take's age, and a tally lamp burns red on stations that shipped in the last 24 hours (4.68.0). Added in 4.65.0, baked set in 4.66.0, not indexed yet. |
 
 ### Rebuilding the studio set
 

@@ -1,0 +1,41 @@
+{
+  "_comment": "Which repositories each /studio station's takes come from (4.68.0). A take is one commit on a branch; tools/build-stations.mjs counts them and the station screens show the count, a 14-day strip and the newest take's age. A human wrote this map; the counts come from git. Paths are relative to root. `paths` limits a repo to the folders that are that station's work (the /os desktop lives inside this repo). 101 Films has no repo: it is footage, so it shows its playback label and no takes. The Registry station reads every repo (see `categories`).",
+  "root": "~/Projects",
+  "windowDays": 14,
+  "tz": "America/Toronto",
+  "owners": ["DareDev256"],
+  "categories": ["clients", "products", "passion", "games", "tools", "wife", "wikis"],
+  "stations": {
+    "betmetrics": [{ "repo": "clients/betmetrics" }],
+    "fcp": [{ "repo": "tools/fcpxml-mcp-server" }],
+    "second": [{ "repo": "products/second-opinion" }],
+    "agent": [{ "repo": "passion/passion-agent" }],
+    "sites": [
+      { "repo": "clients/nirvanadeshaun-builds" },
+      { "repo": "clients/street-bud-site" },
+      { "repo": "clients/kmoney-site" },
+      { "repo": "clients/100bandplans-site" },
+      { "repo": "clients/savv4x-website" },
+      { "repo": "clients/syreneffect-site" },
+      { "repo": "clients/musthavefrenchies-site" },
+      { "repo": "clients/shopbayhq-site" },
+      { "repo": "clients/shortiie-raw-website" },
+      { "repo": "clients/shairbraiding" },
+      { "repo": "clients/hair-braider-site" },
+      { "repo": "clients/baliwhisper" },
+      { "repo": "clients/bas-harmony-tour" },
+      { "repo": "clients/spoiled-kass" },
+      { "repo": "clients/dancehall-princess-canada" },
+      { "repo": "products/tdotssolutionsz.com" }
+    ],
+    "coldopen": [{ "repo": "products/coldopen" }, { "repo": "products/jamesdare.com", "paths": ["coldopen"] }],
+    "bib": [{ "repo": "clients/savv4x-bodies-in-boxes" }, { "repo": "clients/savv4x-bib-3d-video" }],
+    "manyroads": [{ "repo": "games/crossroads" }, { "repo": "games/many-roads-ios" }, { "repo": "games/many-roads-go" }],
+    "learning": [{ "repo": "games/passionate-learning" }],
+    "fandom": [{ "repo": "wikis/nin-wiki-flow" }, { "repo": "products/jamesdare.com", "paths": ["fandom-flow"] }],
+    "shopbay": [{ "repo": "clients/shopbayhq" }, { "repo": "clients/shopbayhq-site" }],
+    "prompts": [{ "repo": "products/Ultimate Image Prompt Generator" }],
+    "sixjutsu": [{ "repo": "games/sixjutsu" }],
+    "os": [{ "repo": "products/jamesdare.com", "paths": ["os", "js/desktop.js", "css/system.css"] }]
+  }
+}

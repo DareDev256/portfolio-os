@@ -11,9 +11,13 @@
  * the one on air, the one you picked, then the ones nearest the middle of the
  * frame. The rest hold their poster with a slow push-in. Video comes from the
  * 480px station copies (tools/studio/make-feeds.mjs) when one exists.
+ *
+ * 4.68.0: the top bar carries the station's real takes (takes.js): a 14-day
+ * strip and the newest take's age, in place of the Monitor's fixed date.
  */
 import { textOf, fig, DASH } from './slates.js';
 import { activitySummary, agentFeedLabel } from '../monitor.js';
+import { takesFor, ageLabel, takesLine, drawStrip } from './takes.js';
 
 export const W = 480;
 export const H = 288;
@@ -40,8 +44,8 @@ export function screenKind(c) {
     return 'none';
 }
 
-/** The lower-third lines for a source. Every number comes through figures.json or a dash. */
-export function lowerThirds(c, figures, data = {}) {
+/** The lower-third lines for a source. Every number comes through figures.json, stations.json or a dash. */
+export function lowerThirds(c, figures, data = {}, now = Date.now()) {
     const lines = [];
     if (c.kind === 'log') {
         const run = data.agentFeed && agentFeedLabel(data.agentFeed);
@@ -55,6 +59,8 @@ export function lowerThirds(c, figures, data = {}) {
     }
     for (const s of c.stats || []) lines.push(`${textOf(s.value, figures) || DASH} ${s.label}`);
     if (!lines.length) lines.push(textOf(c.what, figures).split('. ')[0] || c.scene);
+    const tk = takesFor(data.stations, c);
+    if (tk) lines.splice(c.kind === 'graph' ? 1 : 0, 0, takesLine(tk, data.stations.windowDays, now));
     return lines;
 }
 
@@ -212,18 +218,24 @@ export function createScreens(THREE, o) {
         x.textBaseline = 'middle';
         x.fillText(c.role, 32, 18);
         x.textAlign = 'right';
+        const tk = takesFor(o.data.stations, c);
+        let edge = W - 12;
         if (s.onAir) {
             x.fillStyle = '#ff2d55';
             x.fillRect(W - 98, 6, 90, 22);
             x.fillStyle = '#fff';
             x.font = '800 14px "JetBrains Mono", monospace';
             x.fillText('ON AIR', W - 18, 18);
+            edge = W - 98;
         } else {
             const dot = s.kind !== 'none' && s.kind !== 'still';
             x.fillStyle = '#c9ccd3';
             x.font = '600 13px "JetBrains Mono", monospace';
-            const label = s.kind === 'none' ? 'NO SIGNAL' : c.date || '';
-            x.fillText(label, dot ? W - 30 : W - 12, 18);
+            const age = tk && !tk.all && ageLabel(tk.lastAt, Date.now());
+            const label = age || (s.kind === 'none' ? 'NO SIGNAL' : c.date || '');
+            const right = dot ? W - 30 : W - 12;
+            x.fillText(label, right, 18);
+            edge = right - x.measureText(label).width;
             if (dot) {
                 x.fillStyle = Math.floor(t * 1.4) % 2 ? 'rgba(255,45,85,.35)' : '#ff2d55';
                 x.beginPath();
@@ -231,6 +243,7 @@ export function createScreens(THREE, o) {
                 x.fill();
             }
         }
+        if (tk) drawStrip(x, tk.days, { left: edge - 10 - 96, top: 9, width: 96, height: 18, color: c.tint });
         x.textAlign = 'left';
         const g = x.createLinearGradient(0, H - 92, 0, H);
         g.addColorStop(0, 'rgba(8,9,12,0)');
@@ -244,7 +257,8 @@ export function createScreens(THREE, o) {
         x.fillText(c.scene, 14, H - 36);
         const lines = s.lines || [];
         let l = lines.length ? lines[s.line % lines.length] : '';
-        if (s.kind === 'clips' && c.tags?.length) l = `NOW · ${c.tags[s.clip % c.tags.length]}`;
+        // A source with a playlist names what is playing, every other beat, so its takes still get a turn.
+        if (s.kind === 'clips' && c.tags?.length && (lines.length < 2 || s.line % 2 === 0)) l = `NOW · ${c.tags[s.clip % c.tags.length]}`;
         x.fillStyle = c.tint;
         x.font = '600 15px "JetBrains Mono", monospace';
         while (l.length > 4 && x.measureText(l).width > W - 28) l = `${l.slice(0, -2).trimEnd()}…`;

@@ -30,7 +30,7 @@ set -uo pipefail
 
 REPO="/Users/t./Projects/products/jamesdare.com"
 LOG="/Users/t./Library/Logs/passion-cron/jamesdare-data.log"
-PATHS=(public/data/figures.json public/data/passion-state.json public/data/client-sites.json public/data/activity.json)
+PATHS=(public/data/figures.json public/data/passion-state.json public/data/client-sites.json public/data/activity.json public/data/stations.json)
 # The filmed agent run (tools/record-agent-feed.sh). Published alongside, never required.
 FEED=(public/assets/system/monitor/feed-agent.mp4 public/assets/system/monitor/feed-agent.jpg public/data/agent-feed.json)
 mkdir -p "$(dirname "$LOG")"
@@ -64,6 +64,14 @@ esac
 
 out=$(node tools/build-figures.mjs 2>&1) || fail "build-figures refused: $(tail -3 <<< "$out")"
 out=$(node tools/build-activity.mjs 2>&1) || fail "build-activity refused: $(tail -3 <<< "$out")"
+# The studio's per-station takes (4.68.0). A refusal keeps yesterday's file (the generator never
+# writes a partial one) and must not hold back the homepage figures, so it warns instead of failing.
+if out=$(node tools/build-stations.mjs 2>&1); then log "$out"; else
+    log "WARN: build-stations refused: $(tail -2 <<< "$out")"
+    command -v notify_discord >/dev/null && notify_discord "🟠" "jamesdare.com studio takes not refreshed" \
+        "tools/build-stations.mjs refused: $(tail -2 <<< "$out"). The studio keeps the last published takes, each with its read age. Log: $LOG" \
+        16763904 "jamesdare-data-publish · daily 09:40" >/dev/null 2>&1
+fi
 out=$(npx vitest run tests/monitor.test.js tests/bib-gate.test.js 2>&1) || {
     # 11-10 posted this alert with an EMPTY reason: the grep matched nothing (a crash or timeout prints no assertion line),
     # so nobody could tell which figure. Name the failing test(s), and fall back to the output tail, never to nothing.
@@ -80,6 +88,7 @@ sig() {
         public/data/passion-state.json) jq -Sc 'del(.generatedAt)' ;;
         public/data/client-sites.json) jq -Sc '.sites' ;;
         public/data/activity.json) jq -Sc '{ranInWindow, jobsWatched, events: [.events[] | del(.ageMinutes)]}' ;;
+        public/data/stations.json) jq -Sc '{stations, all}' ;;
     esac
 }
 CHANGED=()

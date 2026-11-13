@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.67.0
+version: 4.68.0
 last_updated: 2026-11-13
 
 ---
@@ -11,6 +11,14 @@ last_updated: 2026-11-13
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.68.0 — 2026-11-13 · Live takes
+Every station screen carried the Monitor's fixed date ("21 AUG 26"), true once and frozen since. The plan's next milestone was screens that read real runs, each with its age.
+
+- **A take is a commit.** `tools/build-stations.mjs` reads each station's repositories (`data/station-repos.json`, a map a human wrote) and writes `public/data/stations.json`: each station's take count, its takes per Toronto day for 14 days, and when the newest landed. Numbers only: no commit message leaves the Mac. Tags never count (the nightly snapshot tags every dirty repo `wip-nightly`, and `git log --all` read each one as a take landed today; the first run caught it on COLD OPEN). Worktrees and clones count once by hash, and clones of other people's projects stay out of the registry total. It refuses without writing when the projects folder is missing or no station reads.
+- **On set.** Each screen's top bar shows a 14-day strip of its takes and the newest take's age in place of the fixed date. A tally lamp on every monitor burns red, with a halo, while that station has a take from the last 24 hours, so the wide shot shows who shipped today. Tap a crew member and the slate's TAKE is the real take number and DATE the newest take's day, with the strip and how long ago the log was read; the clapper writes the same take. The Registry station shows takes across all his repos (1,189 across 54 repos in 14 days on the first read) and the LED ribbon carries the same line. 101 Films is footage, not a repo, and keeps its playback label.
+- **Published daily** by `tools/publish-live-data.sh` (09:40) with the figures. A refusal keeps yesterday's file and warns instead of holding back the homepage numbers.
+- `tests/studio.test.js` grows to 53: tags never count, Toronto day boundaries, one count per hash, no future dates, other people's clones left out, the published file carries numbers only and only for real Monitor sources, the labels and the lamp's 24-hour rule, the films fallback, and the wiring. All nine guards were broken on purpose and went red.
 
 ## 4.67.0 — 2026-11-13 · The walk-in
 The lab, the Vegapunk board and the throne sit outside the opening frame, and on a phone nothing said they were there. The lab is worse: from every angle the wide orbit allows it hides behind the crew.

@@ -1,0 +1,343 @@
+{
+  "generatedAt": "2026-11-13T20:22:59.076Z",
+  "windowDays": 14,
+  "tz": "America/Toronto",
+  "stations": {
+    "betmetrics": {
+      "repos": 1,
+      "takes": 563,
+      "inWindow": 0,
+      "days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "lastAt": "2026-10-28T01:41:54.000Z"
+    },
+    "fcp": {
+      "repos": 1,
+      "takes": 383,
+      "inWindow": 57,
+      "days": [
+        0,
+        0,
+        11,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        15,
+        31
+      ],
+      "lastAt": "2026-11-13T20:15:53.000Z"
+    },
+    "second": {
+      "repos": 1,
+      "takes": 55,
+      "inWindow": 3,
+      "days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      "lastAt": "2026-11-12T01:09:39.000Z"
+    },
+    "agent": {
+      "repos": 1,
+      "takes": 578,
+      "inWindow": 1,
+      "days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "lastAt": "2026-11-12T00:12:25.000Z"
+    },
+    "sites": {
+      "repos": 16,
+      "takes": 713,
+      "inWindow": 20,
+      "days": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        19,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "lastAt": "2026-11-07T02:23:24.000Z"
+    },
+    "coldopen": {
+      "repos": 2,
+      "takes": 47,
+      "inWindow": 0,
+      "days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "lastAt": "2026-10-08T11:08:22.000Z"
+    },
+    "bib": {
+      "repos": 2,
+      "takes": 285,
+      "inWindow": 0,
+      "days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "lastAt": "2026-10-28T17:28:25.000Z"
+    },
+    "manyroads": {
+      "repos": 3,
+      "takes": 479,
+      "inWindow": 36,
+      "days": [
+        0,
+        3,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        28,
+        0,
+        0
+      ],
+      "lastAt": "2026-11-11T23:07:10.000Z"
+    },
+    "learning": {
+      "repos": 1,
+      "takes": 150,
+      "inWindow": 56,
+      "days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        19,
+        3,
+        0,
+        25,
+        9,
+        0,
+        0,
+        0
+      ],
+      "lastAt": "2026-11-10T16:13:45.000Z"
+    },
+    "fandom": {
+      "repos": 2,
+      "takes": 248,
+      "inWindow": 7,
+      "days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        2,
+        0,
+        2,
+        0,
+        0
+      ],
+      "lastAt": "2026-11-11T23:56:53.000Z"
+    },
+    "shopbay": {
+      "repos": 2,
+      "takes": 132,
+      "inWindow": 0,
+      "days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "lastAt": "2026-10-28T01:32:02.000Z"
+    },
+    "prompts": {
+      "repos": 1,
+      "takes": 107,
+      "inWindow": 0,
+      "days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "lastAt": "2026-08-31T10:08:43.000Z"
+    },
+    "sixjutsu": {
+      "repos": 1,
+      "takes": 204,
+      "inWindow": 0,
+      "days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "lastAt": "2026-08-22T22:00:01.000Z"
+    },
+    "os": {
+      "repos": 1,
+      "takes": 144,
+      "inWindow": 0,
+      "days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "lastAt": "2026-10-25T00:08:14.000Z"
+    }
+  },
+  "all": {
+    "scanned": 181,
+    "active": 54,
+    "inWindow": 1191,
+    "days": [
+      109,
+      111,
+      73,
+      10,
+      91,
+      19,
+      164,
+      60,
+      56,
+      97,
+      88,
+      151,
+      79,
+      83
+    ]
+  },
+  "skipped": [],
+  "definitions": {
+    "take": "one commit on a branch, local or pushed, counted once by hash; tags and snapshots are not takes",
+    "days": "takes per day in America/Toronto time, oldest first; the last entry is the day this file was written",
+    "lastAt": "commit time of the newest take seen when this file was written",
+    "all": "every git repository of his one level under each category folder (no origin, or an origin under his GitHub); clones of other people's projects are left out; active = repos with a take in the window"
+  }
+}
