@@ -529,6 +529,7 @@ describe('the takes', () => {
         expect(stripHeights([0, 0])).toEqual([0, 0]);
         const st = { repos: 1, takes: 40, inWindow: 3, days: [...new Array(13).fill(0), 3], lastAt: at(3) };
         expect(takesLine(st, 14, now)).toBe('3 takes in 14 days · last 3h ago');
+        expect(takesLine({ all: true, repos: 54, inWindow: 1191, days: [] }, 14, now)).toBe('1,191 takes across 54 repos in 14 days');
         expect(stripLabel(st, 14, now)).toMatch(/^3 takes in the last 14 days, oldest day first: 0, .*3\. The newest landed 3h ago\.$/);
     });
 

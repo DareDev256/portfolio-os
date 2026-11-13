@@ -28,7 +28,7 @@ import { createCast, EXTRA_SLATES } from './studio/cast.js';
 import { buildBody } from './studio/rig.js';
 import { walkinPose, shouldWalkIn, WALKIN_KEY } from './studio/walkin.js';
 import { activitySummary, agentFeedLabel } from './monitor.js';
-import { STATIONS_URL, takesFor, takesLine, takeDate, stripHeights, stripLabel, rolling, ageLabel } from './studio/takes.js';
+import { STATIONS_URL, takesFor, takesLine, takeDate, stripHeights, stripLabel, rolling, ageLabel, num } from './studio/takes.js';
 
 const $ = (id) => document.getElementById(id);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -740,7 +740,7 @@ function activate(h) {
         state.focus = s.c.id;
         desk.snap = 0.6;
         const tk = takesFor(data.stations, s.c);
-        drawClapper(s.c.scene, tk && !tk.all ? String(tk.takes) : String(s.c.n).padStart(2, '0'));
+        drawClapper(s.c.scene, tk && !tk.all ? num(tk.takes) : String(s.c.n).padStart(2, '0'));
         const p = new THREE.Vector3();
         s.a.getWorldPosition(p);
         const dir = new THREE.Vector3(C.x - p.x, 0, C.z - p.z).normalize();
@@ -849,7 +849,7 @@ function showCrewSlate(c) {
     const tk = takesFor(data.stations, c);
     setSlate({
         scene: c.scene,
-        take: tk && !tk.all ? String(tk.takes) : String(c.n).padStart(2, '0'),
+        take: tk && !tk.all ? num(tk.takes) : String(c.n).padStart(2, '0'),
         date: (tk && takeDate(tk.lastAt)) || c.date,
         takes: tk,
         role: c.role,

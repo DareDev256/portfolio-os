@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.68.0
+version: 4.68.1
 last_updated: 2026-11-13
 
 ---
@@ -11,6 +11,9 @@ last_updated: 2026-11-13
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.68.1 — 2026-11-13 · Take counts read as numbers
+- Take counts over 999 carry a thousands separator ("1,191 takes across 54 repos"), on the screens, the slate, the clapper and the ribbon. Seen on the live Registry slate.
 
 ## 4.68.0 — 2026-11-13 · Live takes
 Every station screen carried the Monitor's fixed date ("21 AUG 26"), true once and frozen since. The plan's next milestone was screens that read real runs, each with its age.

@@ -19,7 +19,7 @@ Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Eng
 
 Every number below is reproducible from a clean clone. No figure in this README is typed by hand.
 
-| Figure (measured 2026-11-13, 4.68.0) | Reproduce it |
+| Figure (measured 2026-11-13, 4.68.1) | Reproduce it |
 |---|---|
 | 804 tests across 50 files | `npm test` |
 | 106 JavaScript modules | `git ls-files 'js/*.js' \| wc -l` |

@@ -12,6 +12,8 @@
 export const STATIONS_URL = '/data/stations.json';
 export const ROLLING_HOURS = 24;
 const TZ = 'America/Toronto';
+/** 1191 -> '1,191'. */
+export const num = (n) => Number(n).toLocaleString('en-US');
 
 /** The takes for a crew member: its station, the whole registry for the graph, or null. */
 export function takesFor(stations, c) {
@@ -46,9 +48,9 @@ export function takesLine(st, windowDays = 14, now = Date.now()) {
     if (!st) return null;
     const n = st.inWindow;
     const word = n === 1 ? 'take' : 'takes';
-    if (st.all) return `${n} ${word} across ${st.repos} repos in ${windowDays} days`;
+    if (st.all) return `${num(n)} ${word} across ${st.repos} repos in ${windowDays} days`;
     const age = ageLabel(st.lastAt, now);
-    return `${n} ${word} in ${windowDays} days${age ? ` · last ${age.toLowerCase()}` : ''}`;
+    return `${num(n)} ${word} in ${windowDays} days${age ? ` · last ${age.toLowerCase()}` : ''}`;
 }
 
 /** The slate's DATE: the newest take's day, '13 NOV 26', in Toronto time. */
@@ -63,7 +65,7 @@ export function takeDate(iso) {
 export function stripLabel(st, windowDays = 14, now = Date.now()) {
     if (!st) return '';
     const per = st.days.map((d) => String(d)).join(', ');
-    const head = st.all ? `${st.inWindow} takes across ${st.repos} repositories` : `${st.inWindow} takes`;
+    const head = st.all ? `${num(st.inWindow)} takes across ${st.repos} repositories` : `${num(st.inWindow)} takes`;
     const age = !st.all && ageLabel(st.lastAt, now);
     return `${head} in the last ${windowDays} days, oldest day first: ${per}.${age ? ` The newest landed ${age.toLowerCase()}.` : ''}`;
 }
