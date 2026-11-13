@@ -62,3 +62,6 @@ coverage/
 .DS_Store
 public/**/.DS_Store
 *.backup
+
+# Studio set build: derived from index.html + js/studio/layout.js by tools/studio/dump-layout.mjs
+tools/studio/layout.json

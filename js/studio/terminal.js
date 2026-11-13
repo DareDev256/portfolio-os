@@ -36,7 +36,7 @@ export function createTerminal(ctx) {
 
     function run(raw) {
         const line = String(raw ?? '');
-        const echo = `<span class="g">visitor@dare-studio ~ $</span> ${esc(line)}`;
+        const echo = `<span class="g">visitor@the-studio ~ $</span> ${esc(line)}`;
         if (line.trim()) history.push(line.trim());
         const [cmd = '', ...args] = line.trim().split(/\s+/);
         const arg = args.join(' ');

@@ -41,6 +41,11 @@ export function parseCrew(doc) {
             scene: b.dataset.scene || id,
             date: b.dataset.date || (b.dataset.kind || '').toUpperCase(),
             kind: b.dataset.kind || '',
+            // what the Monitor plays for this source: its clips, poster or still, and per-clip tags
+            clips: (b.dataset.clips || '').split(/\s+/).filter(Boolean),
+            poster: b.dataset.poster || null,
+            still: b.dataset.still || null,
+            tags: (b.dataset.tags || '').split('|').filter(Boolean),
             what: what ? what.cloneNode(true) : null,
             call,
             stats,

@@ -1,0 +1,26 @@
+{
+  "note": "tools/studio/make-feeds.mjs: station copies of the Monitor clips",
+  "clips": {
+    "/assets/system/reel/site-betmetrics.mp4": "/assets/studio/feeds/site-betmetrics.mp4",
+    "/assets/system/monitor/feed-finalcut.mp4": "/assets/studio/feeds/feed-finalcut.mp4",
+    "/assets/system/monitor/feed-second-opinion.mp4": "/assets/studio/feeds/feed-second-opinion.mp4",
+    "/assets/system/monitor/feed-agent.mp4": "/assets/studio/feeds/feed-agent.mp4",
+    "/assets/system/reel/site-nirvana.mp4": "/assets/studio/feeds/site-nirvana.mp4",
+    "/assets/system/reel/site-edson.mp4": "/assets/studio/feeds/site-edson.mp4",
+    "/assets/system/reel/site-kmoney.mp4": "/assets/studio/feeds/site-kmoney.mp4",
+    "/assets/system/reel/site-bandplan.mp4": "/assets/studio/feeds/site-bandplan.mp4",
+    "/assets/system/reel/site-frenchies.mp4": "/assets/studio/feeds/site-frenchies.mp4",
+    "/assets/system/reel/site-savv4x.mp4": "/assets/studio/feeds/site-savv4x.mp4",
+    "/assets/system/reel/site-streetbud.mp4": "/assets/studio/feeds/site-streetbud.mp4",
+    "/assets/system/reel/site-tdots.mp4": "/assets/studio/feeds/site-tdots.mp4",
+    "/assets/system/reel/u3O5PKN9vCQ.mp4": "/assets/studio/feeds/u3O5PKN9vCQ.mp4",
+    "/assets/system/reel/E7ZStZMn-ac.mp4": "/assets/studio/feeds/E7ZStZMn-ac.mp4",
+    "/assets/system/reel/AKuI1b-o69M.mp4": "/assets/studio/feeds/AKuI1b-o69M.mp4",
+    "/assets/system/reel/site-coldopen.mp4": "/assets/studio/feeds/site-coldopen.mp4",
+    "/assets/system/reel/site-manyroads.mp4": "/assets/studio/feeds/site-manyroads.mp4",
+    "/assets/system/monitor/feed-learning.mp4": "/assets/studio/feeds/feed-learning.mp4",
+    "/assets/system/reel/site-ninonline-v2.mp4": "/assets/studio/feeds/site-ninonline-v2.mp4",
+    "/assets/system/reel/site-shopbayhq.mp4": "/assets/studio/feeds/site-shopbayhq.mp4",
+    "/assets/system/monitor/feed-prompts.mp4": "/assets/studio/feeds/feed-prompts.mp4"
+  }
+}

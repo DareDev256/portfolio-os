@@ -1,37 +1,53 @@
-/* studio.js: THE STUDIO at /studio (4.65.0).
+/* studio.js: THE STUDIO at /studio (4.66.0).
  *
- * The Monitor's crew, standing on a white soundstage. A canvas world (three
+ * The Monitor's crew, at work on a white soundstage. A canvas world (three
  * 0.170, the same pinned build /os loads) with a thin HUD over it:
+ *   - the room is modelled and light-baked in Blender (tools/studio/build_set.py)
+ *     and drawn unlit; if it is missing or baked for another crew size, the
+ *     hand-built room below stands in;
  *   - 16 agents at stations, read from the homepage's own switcher and slates
- *     (js/studio/slates.js), each holding its tool from crew.js;
- *   - three cleared gates and every station screen fed by figures.json, with
- *     its age, and a dash for anything the file does not carry;
- *   - the director's monitor drops into Passion OS (studio skin, a working
- *     terminal) with a door to the full /os;
- *   - the Digivice on the desk jacks into Passion.
+ *     (js/studio/slates.js), each holding its tool from crew.js, each screen
+ *     showing that source's real footage (js/studio/screens.js);
+ *   - an A camera on a dolly covers one source at a time, a runner does coffee
+ *     rounds, the riser's LED ribbon scrolls the jobs' own log;
+ *   - back right the Monarch's throne, stage left the robot lab, and the inspo
+ *     board on the back flat (js/studio/cast.js);
+ *   - the director's monitor drops into Passion OS, the Digivice into Passion.
  * Lights follow Toronto time: from 20:00 to 06:00 the set runs a night shift.
  */
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
 import { RoomEnvironment } from './studio/vendor/RoomEnvironment.js';
 import { RoundedBoxGeometry } from './studio/vendor/RoundedBoxGeometry.js';
-import { parseCrew, fillFigures, textOf, fig, asOfLabel, torontoHour, isNightShift, GATES, DASH } from './studio/slates.js';
+import { parseCrew, fillFigures, fig, asOfLabel, torontoHour, isNightShift, GATES, DASH } from './studio/slates.js';
 import { createTerminal } from './studio/terminal.js';
 import { makeTool, MOTION } from './studio/tools3d.js';
+import { CENTER, RISER, STATION, stationPose, DESK, CHAIR, MONITOR, DIGIVICE, FLAT, SOFTBOXES, KEY } from './studio/layout.js';
+import { loadSet } from './studio/set.js';
+import { createScreens, createRibbon } from './studio/screens.js';
+import { createCast, EXTRA_SLATES } from './studio/cast.js';
+import { buildBody } from './studio/rig.js';
+import { activitySummary, agentFeedLabel } from './monitor.js';
 
 const $ = (id) => document.getElementById(id);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const narrowNow = () => innerWidth / innerHeight < 0.8;
-const state = { crew: [], figures: {}, generatedAt: null, mode: 'wide' };
+const state = { crew: [], figures: {}, generatedAt: null, mode: 'wide', focus: null, baked: false };
 const asOf = () => asOfLabel(state.generatedAt);
+const json = (url) => fetch(url, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 
 /* ---------- data: the crew from the Monitor, the numbers from figures.json ---------- */
 const crewP = fetch('/', { headers: { Accept: 'text/html' } })
     .then((r) => (r.ok ? r.text() : Promise.reject(new Error(`home ${r.status}`))))
     .then((html) => parseCrew(new DOMParser().parseFromString(html, 'text/html')))
     .catch(() => []);
-const figsP = fetch('/data/figures.json', { cache: 'no-cache' })
-    .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`figures ${r.status}`))))
-    .catch(() => null);
+const figsP = json('/data/figures.json');
+const data = { activity: null, registry: null, agentFeed: null };
+const dataP = Promise.all([json('/data/activity.json'), json('/data/registry-graph.json'), json('/data/agent-feed.json')]).then(([a, r, f]) => {
+    data.activity = a;
+    data.registry = r;
+    data.agentFeed = f;
+});
+const feedsP = json('/assets/studio/feeds/manifest.json');
 
 /* ---------- renderer, or an honest way out ---------- */
 const canvas = $('gl');
@@ -65,11 +81,10 @@ const camera = new THREE.PerspectiveCamera(42, 1, 0.05, 120);
 
 scene.add(new THREE.HemisphereLight(0xffffff, 0xdfe2e8, night ? 0.75 : 1.25));
 const key = new THREE.DirectionalLight(night ? 0xdfe6ff : 0xffffff, night ? 1.2 : 2.1);
-key.position.set(-7, 13, 9);
+key.position.set(KEY.x, KEY.y, KEY.z);
 key.castShadow = true;
 key.shadow.mapSize.set(small ? 1024 : 2048, small ? 1024 : 2048);
-Object.assign(key.shadow.camera, { left: -14, right: 14, top: 14, bottom: -14, near: 1, far: 40 });
-key.shadow.radius = 6;
+Object.assign(key.shadow.camera, { left: -15, right: 15, top: 15, bottom: -15, near: 1, far: 42 });
 key.shadow.bias = -0.0004;
 key.shadow.normalBias = 0.02;
 scene.add(key);
@@ -99,23 +114,12 @@ function canvasTex(w, h) {
     t.anisotropy = 4;
     return { c, ctx: c.getContext('2d'), t };
 }
-function wrap(ctx, text, maxW) {
-    const words = text.split(' ');
-    const lines = [];
-    let line = '';
-    for (const w of words) {
-        const test = line ? `${line} ${w}` : w;
-        if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = w; } else line = test;
-    }
-    if (line) lines.push(line);
-    return lines;
-}
 
 const hits = [];
-const CENTER = new THREE.Vector3(0, 0, 2.5);
+const C = new THREE.Vector3(CENTER.x, 0, CENTER.z);
 
-/* ---------- the cyc: floor that curves into the wall, no horizon ---------- */
-{
+/* ---------- the room by hand: only when the baked set cannot be used ---------- */
+function buildHandSet() {
     const prof = [];
     for (let z = 30; z > -8; z -= 4) prof.push([z, 0]);
     const R = 6;
@@ -133,64 +137,160 @@ const CENTER = new THREE.Vector3(0, 0, 2.5);
     const cyc = new THREE.Mesh(g, M.cyc);
     cyc.receiveShadow = true;
     scene.add(cyc);
-}
 
-/* ---------- director's desk, chair, clapper ---------- */
-const desk = new THREE.Group();
-desk.position.set(0, 0, 3.2);
-scene.add(desk);
-{
-    const top = new THREE.Mesh(new RoundedBoxGeometry(2.6, 0.07, 1.1, 3, 0.03), M.white);
-    top.position.y = 0.76;
+    const desk = new THREE.Group();
+    desk.position.set(DESK.x, 0, DESK.z);
+    scene.add(desk);
+    const top = new THREE.Mesh(new RoundedBoxGeometry(DESK.w, 0.07, DESK.d, 3, 0.03), M.white);
+    top.position.y = DESK.top;
     desk.add(top);
     for (const x of [-1.2, 1.2]) for (const z of [-0.45, 0.45]) { const l = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.74, 10), M.steel); l.position.set(x, 0.37, z); desk.add(l); }
-    const clap = new THREE.Group();
-    clap.position.set(-0.85, 0.8, 0.15);
-    clap.rotation.y = 0.5;
-    desk.add(clap);
-    const board = canvasTex(256, 200);
-    { const c = board.ctx; c.fillStyle = '#0a0a0b'; c.fillRect(0, 0, 256, 200); c.strokeStyle = '#fff'; c.lineWidth = 3; c.strokeRect(10, 10, 236, 180); c.fillStyle = '#fff'; c.font = '700 26px Archivo, "Arial Narrow", sans-serif'; c.fillText('SCENE  STUDIO', 22, 60); c.fillText('TAKE  01', 22, 105); c.font = '600 18px "JetBrains Mono", monospace'; c.fillText('DIR. JAMES', 22, 160); }
-    const b = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.25, 0.015), [M.dark, M.dark, M.dark, M.dark, new THREE.MeshStandardMaterial({ map: board.t, roughness: 0.6 }), M.dark]);
-    b.position.y = 0.125;
-    b.rotation.x = -0.25;
-    clap.add(b);
-    const stick = canvasTex(256, 32);
-    for (let i = 0; i < 8; i++) { const c = stick.ctx; c.fillStyle = i % 2 ? '#fff' : '#0a0a0b'; c.beginPath(); c.moveTo(i * 32, 0); c.lineTo(i * 32 + 32, 0); c.lineTo(i * 32 + 16, 32); c.lineTo(i * 32 - 16, 32); c.fill(); }
-    const s = new THREE.Mesh(new THREE.BoxGeometry(0.33, 0.04, 0.02), new THREE.MeshStandardMaterial({ map: stick.t }));
-    s.position.set(0, 0.27, -0.03);
-    s.rotation.set(-0.25, 0, 0.18);
-    clap.add(s);
-}
-{
+    shadowAll(desk);
+
     const chair = new THREE.Group();
-    chair.position.set(0, 0, 4.45);
+    chair.position.set(CHAIR.x, 0, CHAIR.z);
     scene.add(chair);
     const wood = new THREE.MeshStandardMaterial({ color: 0x1c1d21, roughness: 0.6 });
     for (const x of [-0.3, 0.3]) for (const z of [-0.25, 0.25]) { const l = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 1.05, 8), wood); l.position.set(x, 0.52, z); l.rotation.x = z > 0 ? -0.08 : 0.08; chair.add(l); }
     const seat = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.03, 0.46), new THREE.MeshStandardMaterial({ color: 0x0a0a0b, roughness: 0.9 }));
     seat.position.y = 0.66;
     chair.add(seat);
-    const back = canvasTex(512, 160);
-    { const c = back.ctx; c.fillStyle = '#0a0a0b'; c.fillRect(0, 0, 512, 160); c.fillStyle = '#fff'; c.textAlign = 'center'; c.font = '600 26px "JetBrains Mono", monospace'; c.fillText('DIRECTOR', 256, 52); c.font = '800 64px Archivo, "Arial Narrow", sans-serif'; c.fillText('JAMES', 256, 122); c.fillStyle = '#ff2d55'; c.fillRect(216, 140, 80, 6); }
-    const bk = new THREE.Mesh(new THREE.PlaneGeometry(0.64, 0.2), new THREE.MeshStandardMaterial({ map: back.t, roughness: 0.9, side: THREE.DoubleSide }));
-    bk.position.set(0, 1.0, 0.27);
-    chair.add(bk);
     shadowAll(chair);
+
+    const stand = new THREE.Group();
+    stand.position.set(MONITOR.x, MONITOR.y, MONITOR.z);
+    scene.add(stand);
+    const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.34, 10), M.steel);
+    neck.position.y = 0.17;
+    stand.add(neck);
+    stand.add(new THREE.Mesh(new RoundedBoxGeometry(0.4, 0.02, 0.24, 2, 0.01), M.steel));
+    const frame = new THREE.Mesh(new RoundedBoxGeometry(1.42, 0.84, 0.05, 3, 0.02), M.dark);
+    frame.position.y = 0.72;
+    stand.add(frame);
+
+    for (const s of SOFTBOXES) {
+        const sb = new THREE.Group();
+        sb.position.set(s.x, 0, s.z);
+        sb.rotation.y = s.ry;
+        scene.add(sb);
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 2.6, 8), M.dark);
+        pole.position.y = 1.3;
+        sb.add(pole);
+        const box = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 0.5), M.dark);
+        box.position.set(0, 2.7, -0.05);
+        sb.add(box);
+        const face = new THREE.Mesh(new THREE.PlaneGeometry(1.0, 1.0), new THREE.MeshBasicMaterial({ color: night ? 0xfff3e0 : 0xffffff }));
+        face.position.set(0, 2.7, 0.21);
+        sb.add(face);
+        shadowAll(sb);
+    }
+
+    const panel = new THREE.Mesh(new RoundedBoxGeometry(FLAT.w, FLAT.h, 0.2, 2, 0.04), M.matte);
+    panel.position.set(0, FLAT.h / 2, FLAT.z);
+    scene.add(panel);
+    shadowAll(panel);
+
+    const s = new THREE.Shape();
+    s.moveTo(Math.sin(RISER.a0) * RISER.r2, Math.cos(RISER.a0) * RISER.r2);
+    for (let i = 1; i <= 40; i++) { const a = RISER.a0 + ((RISER.a1 - RISER.a0) * i) / 40; s.lineTo(Math.sin(a) * RISER.r2, Math.cos(a) * RISER.r2); }
+    for (let i = 40; i >= 0; i--) { const a = RISER.a0 + ((RISER.a1 - RISER.a0) * i) / 40; s.lineTo(Math.sin(a) * RISER.r1, Math.cos(a) * RISER.r1); }
+    const rg = new THREE.ExtrudeGeometry(s, { depth: RISER.top - 0.03, bevelEnabled: true, bevelSize: 0.03, bevelThickness: 0.03, bevelSegments: 2, curveSegments: 1 });
+    rg.rotateX(-Math.PI / 2);
+    rg.translate(0, 0, C.z);
+    const riser = new THREE.Mesh(rg, M.matte);
+    riser.castShadow = true;
+    riser.receiveShadow = true;
+    scene.add(riser);
+}
+
+/* With the baked room, live shadows land on catchers that only darken. */
+function addShadowCatchers() {
+    const mat = new THREE.ShadowMaterial({ opacity: night ? 0.12 : 0.16 });
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 24), mat);
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.set(0, 0.004, 3);
+    floor.receiveShadow = true;
+    scene.add(floor);
+    const s = new THREE.Shape();
+    s.moveTo(Math.sin(RISER.a0) * RISER.r2, Math.cos(RISER.a0) * RISER.r2);
+    for (let i = 1; i <= 40; i++) { const a = RISER.a0 + ((RISER.a1 - RISER.a0) * i) / 40; s.lineTo(Math.sin(a) * RISER.r2, Math.cos(a) * RISER.r2); }
+    for (let i = 40; i >= 0; i--) { const a = RISER.a0 + ((RISER.a1 - RISER.a0) * i) / 40; s.lineTo(Math.sin(a) * RISER.r1, Math.cos(a) * RISER.r1); }
+    const g = new THREE.ShapeGeometry(s);
+    g.rotateX(-Math.PI / 2);
+    const top = new THREE.Mesh(g, mat);
+    top.position.set(0, RISER.top + 0.004, C.z);
+    top.receiveShadow = true;
+    scene.add(top);
+}
+
+/* ---------- what stands in both rooms ---------- */
+const desk = { clap: null, stick: null, board: null, snap: 0 };
+{
+    const clap = new THREE.Group();
+    clap.position.set(DESK.x - 0.85, DESK.top + 0.04, DESK.z + 0.15);
+    clap.rotation.y = 0.5;
+    scene.add(clap);
+    desk.board = canvasTex(256, 200);
+    const b = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.25, 0.015), [M.dark, M.dark, M.dark, M.dark, new THREE.MeshStandardMaterial({ map: desk.board.t, roughness: 0.6 }), M.dark]);
+    b.position.y = 0.125;
+    b.rotation.x = -0.25;
+    clap.add(b);
+    const stick = canvasTex(256, 32);
+    for (let i = 0; i < 8; i++) { const c = stick.ctx; c.fillStyle = i % 2 ? '#fff' : '#0a0a0b'; c.beginPath(); c.moveTo(i * 32, 0); c.lineTo(i * 32 + 32, 0); c.lineTo(i * 32 + 16, 32); c.lineTo(i * 32 - 16, 32); c.fill(); }
+    const hinge = new THREE.Group();
+    hinge.position.set(-0.165, 0.255, -0.03);
+    hinge.rotation.x = -0.25;
+    clap.add(hinge);
+    const s = new THREE.Mesh(new THREE.BoxGeometry(0.33, 0.04, 0.02), new THREE.MeshStandardMaterial({ map: stick.t }));
+    s.position.set(0.165, 0.02, 0);
+    hinge.add(s);
+    hinge.rotation.z = 0.3;
+    desk.stick = hinge;
+    shadowAll(clap);
+}
+function drawClapper(sceneName, take) {
+    const c = desk.board.ctx;
+    c.fillStyle = '#0a0a0b';
+    c.fillRect(0, 0, 256, 200);
+    c.strokeStyle = '#fff';
+    c.lineWidth = 3;
+    c.strokeRect(10, 10, 236, 180);
+    c.fillStyle = '#fff';
+    c.font = '700 22px Archivo, "Arial Narrow", sans-serif';
+    let sc = (sceneName || 'STUDIO').toUpperCase();
+    while (sc.length > 3 && c.measureText(`SCENE  ${sc}`).width > 216) sc = sc.slice(0, -1);
+    c.fillText(`SCENE  ${sc}`, 22, 60);
+    c.font = '700 26px Archivo, "Arial Narrow", sans-serif';
+    c.fillText(`TAKE  ${take || '01'}`, 22, 105);
+    c.font = '600 18px "JetBrains Mono", monospace';
+    c.fillText('DIR. JAMES', 22, 160);
+    desk.board.t.needsUpdate = true;
+}
+drawClapper('STUDIO', '01');
+{
+    const back = canvasTex(512, 160);
+    const c = back.ctx;
+    c.fillStyle = '#0a0a0b';
+    c.fillRect(0, 0, 512, 160);
+    c.fillStyle = '#fff';
+    c.textAlign = 'center';
+    c.font = '600 26px "JetBrains Mono", monospace';
+    c.fillText('DIRECTOR', 256, 52);
+    c.font = '800 64px Archivo, "Arial Narrow", sans-serif';
+    c.fillText('JAMES', 256, 122);
+    c.fillStyle = '#ff2d55';
+    c.fillRect(216, 140, 80, 6);
+    const bk = new THREE.Mesh(new THREE.PlaneGeometry(0.64, 0.2), new THREE.MeshStandardMaterial({ map: back.t, roughness: 0.9 }));
+    bk.position.set(CHAIR.x, 1.0, CHAIR.z + 0.276);
+    scene.add(bk);
 }
 
 /* ---------- the program monitor: door to Passion OS ---------- */
 const mon = new THREE.Group();
-mon.position.set(0, 0.8, 3.05);
+mon.position.set(MONITOR.x, MONITOR.y, MONITOR.z);
 scene.add(mon);
 const monScreen = canvasTex(1024, 576);
 {
-    const stand = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.34, 10), M.steel);
-    stand.position.y = 0.17;
-    mon.add(stand);
-    mon.add(new THREE.Mesh(new RoundedBoxGeometry(0.4, 0.02, 0.24, 2, 0.01), M.steel));
-    const frame = new THREE.Mesh(new RoundedBoxGeometry(1.42, 0.84, 0.05, 3, 0.02), M.dark);
-    frame.position.y = 0.72;
-    mon.add(frame);
     const scr = new THREE.Mesh(new THREE.PlaneGeometry(1.34, 0.76), new THREE.MeshBasicMaterial({ map: monScreen.t, toneMapped: false }));
     scr.position.set(0, 0.72, 0.027);
     mon.add(scr);
@@ -241,7 +341,7 @@ function drawMonitor(t) {
 
 /* ---------- the Digivice on its dock: door to Passion ---------- */
 const dv = new THREE.Group();
-dv.position.set(0.95, 0.8, 3.45);
+dv.position.set(DIGIVICE.x, DIGIVICE.y, DIGIVICE.z);
 scene.add(dv);
 const dvBody = new THREE.Group();
 dv.add(dvBody);
@@ -301,55 +401,12 @@ function drawDigivice(t) {
     dvScreen.t.needsUpdate = true;
 }
 
-/* ---------- studio props ---------- */
-function softbox(x, z, ry) {
-    const g = new THREE.Group();
-    g.position.set(x, 0, z);
-    g.rotation.y = ry;
-    scene.add(g);
-    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 2.6, 8), M.dark);
-    pole.position.y = 1.3;
-    g.add(pole);
-    for (let i = 0; i < 3; i++) { const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.9, 6), M.dark); const a = i * 2.094; leg.position.set(Math.cos(a) * 0.3, 0.32, Math.sin(a) * 0.3); leg.rotation.set(Math.sin(a) * 0.75, 0, -Math.cos(a) * 0.75); g.add(leg); }
-    const box = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 0.5), M.dark);
-    box.position.set(0, 2.7, 0);
-    g.add(box);
-    const face = new THREE.Mesh(new THREE.PlaneGeometry(1.0, 1.0), new THREE.MeshBasicMaterial({ color: night ? 0xfff3e0 : 0xffffff }));
-    face.position.set(0, 2.7, 0.26);
-    g.add(face);
-    shadowAll(g);
-    face.castShadow = false;
-}
-softbox(-6.6, 4.6, 0.9);
-softbox(6.6, 4.2, -0.9);
-{
-    const cam = new THREE.Group();
-    cam.position.set(-6.4, 0, 2.6);
-    cam.rotation.y = -1.25;
-    scene.add(cam);
-    for (let i = 0; i < 3; i++) { const a = i * 2.094; const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 1.5, 6), M.dark); leg.position.set(Math.cos(a) * 0.28, 0.7, Math.sin(a) * 0.28); leg.rotation.set(Math.sin(a) * 0.38, 0, -Math.cos(a) * 0.38); cam.add(leg); }
-    const body = new THREE.Mesh(new RoundedBoxGeometry(0.34, 0.3, 0.52, 3, 0.03), M.dark);
-    body.position.y = 1.55;
-    cam.add(body);
-    const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.1, 0.3, 24), M.dark);
-    lens.rotation.x = Math.PI / 2;
-    lens.position.set(0, 1.55, -0.4);
-    cam.add(lens);
-    const tally = new THREE.Mesh(new THREE.SphereGeometry(0.02, 12, 8), tintMat('#ff2d55'));
-    tally.position.set(0.12, 1.72, -0.2);
-    cam.add(tally);
-    shadowAll(cam);
-}
-
-/* ---------- the back flat: three cleared gates and the REC lamp ---------- */
+/* ---------- the back flat's live pieces: three cleared gates and the REC lamp ---------- */
 const gateTex = [];
 {
     const flat = new THREE.Group();
-    flat.position.set(0, 0, -7.2);
+    flat.position.set(0, 0, FLAT.z);
     scene.add(flat);
-    const panel = new THREE.Mesh(new RoundedBoxGeometry(10.5, 3.9, 0.2, 2, 0.04), M.matte);
-    panel.position.y = 1.95;
-    flat.add(panel);
     const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.12, 20, 14), tintMat('#ff2d55'));
     lamp.position.set(4.7, 3.55, 0.16);
     flat.add(lamp);
@@ -393,149 +450,90 @@ function drawGates() {
     }
 }
 
-/* ---------- the riser for the back row ---------- */
-{
-    const s = new THREE.Shape();
-    const r1 = 6.7;
-    const r2 = 9.6;
-    const a0 = -0.98;
-    const a1 = 0.98;
-    s.moveTo(Math.sin(a0) * r2, Math.cos(a0) * r2);
-    for (let i = 1; i <= 40; i++) { const a = a0 + ((a1 - a0) * i) / 40; s.lineTo(Math.sin(a) * r2, Math.cos(a) * r2); }
-    for (let i = 40; i >= 0; i--) { const a = a0 + ((a1 - a0) * i) / 40; s.lineTo(Math.sin(a) * r1, Math.cos(a) * r1); }
-    const g = new THREE.ExtrudeGeometry(s, { depth: 0.36, bevelEnabled: true, bevelSize: 0.03, bevelThickness: 0.03, bevelSegments: 2, curveSegments: 1 });
-    g.rotateX(-Math.PI / 2);
-    g.translate(0, 0, CENTER.z);
-    const riser = new THREE.Mesh(g, M.matte);
-    riser.castShadow = true;
-    riser.receiveShadow = true;
-    scene.add(riser);
-}
-
 /* ---------- the crew ---------- */
 const agents = [];
-function stationLines(s) {
-    const c = s.scr.ctx;
-    c.font = '12px "JetBrains Mono", monospace';
-    const f = state.figures;
-    const lines = [];
-    wrap(c, textOf(s.c.what, f) || s.c.scene, 236).forEach((l) => lines.push(l));
-    s.c.stats.forEach((st) => lines.push(`${textOf(st.value, f) || DASH} ${st.label}`));
-    if (s.c.call) wrap(c, textOf(s.c.call, f), 236).forEach((l) => lines.push(l));
-    s.lines = lines.length ? lines : [s.c.scene];
+const screens = createScreens(THREE, { feeds: feedsP.then((m) => m || {}), data, figures: () => state.figures, maxLive: small ? 3 : 6 });
+const blobTex = (() => {
+    const c = document.createElement('canvas');
+    c.width = c.height = 64;
+    const x = c.getContext('2d');
+    const g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, 'rgba(10,12,18,0.5)');
+    g.addColorStop(1, 'rgba(10,12,18,0)');
+    x.fillStyle = g;
+    x.fillRect(0, 0, 64, 64);
+    return new THREE.CanvasTexture(c);
+})();
+const blobMat = new THREE.MeshBasicMaterial({ map: blobTex, transparent: true, depthWrite: false });
+function blob(parent, size = 0.85) {
+    const b = new THREE.Mesh(new THREE.PlaneGeometry(size, size), blobMat);
+    b.rotation.x = -Math.PI / 2;
+    b.position.y = 0.006;
+    parent.add(b);
+    return b;
 }
 function makeAgent(c, i, total) {
+    const pose = stationPose(i, total);
     const st = new THREE.Group();
-    const half = Math.ceil(total / 2);
-    const back = i >= half;
-    const k = back ? i - half : i;
-    const count = back ? total - half : half;
-    const r = back ? 8.15 : 5.0;
-    const span = back ? 0.84 : 1.1;
-    const th = count > 1 ? -span + (2 * span * k) / (count - 1) : 0;
-    st.position.set(Math.sin(th) * r, back ? 0.39 : 0, CENTER.z - Math.cos(th) * r);
-    st.lookAt(CENTER.x, st.position.y, CENTER.z);
+    st.position.set(pose.x, pose.y, pose.z);
+    st.rotation.y = pose.ry;
     scene.add(st);
-    const ped = new THREE.Mesh(new RoundedBoxGeometry(0.75, 0.95, 0.45, 3, 0.05), M.white);
-    ped.position.set(-0.32, 0.475, 0);
-    st.add(ped);
-    const scr = canvasTex(256, 160);
-    const frame = new THREE.Mesh(new RoundedBoxGeometry(0.9, 0.58, 0.04, 2, 0.015), M.dark);
-    frame.position.set(-0.32, 1.32, 0.02);
-    frame.rotation.x = -0.12;
-    st.add(frame);
-    const face = new THREE.Mesh(new THREE.PlaneGeometry(0.84, 0.525), new THREE.MeshBasicMaterial({ map: scr.t, toneMapped: false }));
-    face.position.set(0, 0, 0.022);
-    frame.add(face);
-    const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.1, 8), M.steel);
-    neck.position.set(-0.32, 1.0, 0.02);
-    st.add(neck);
-
-    const a = new THREE.Group();
-    a.position.set(0.42, 0, 0.32);
-    a.rotation.y = -0.38;
-    st.add(a);
-    const tint = tintMat(c.tint);
-    const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.2, 0.36, 6, 18), M.white);
-    body.position.y = 0.72;
-    a.add(body);
-    const belt = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.018, 8, 32), tint);
-    belt.rotation.x = Math.PI / 2;
-    belt.position.y = 0.66;
-    a.add(belt);
-    const head = new THREE.Group();
-    head.position.y = 1.2;
-    a.add(head);
-    head.add(new THREE.Mesh(new RoundedBoxGeometry(0.5, 0.4, 0.42, 4, 0.12), M.white));
-    const visor = new THREE.Mesh(new RoundedBoxGeometry(0.42, 0.2, 0.06, 3, 0.05), M.visor);
-    visor.position.set(0, -0.01, 0.2);
-    head.add(visor);
-    const eyes = [];
-    for (const x of [-0.08, 0.08]) { const e = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.055, 0.01), tint); e.position.set(x, -0.005, 0.235); head.add(e); eyes.push(e); }
-    const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.14, 6), M.steel);
-    ant.position.y = 0.27;
-    head.add(ant);
-    const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.03, 12, 10), tint);
-    bulb.position.y = 0.35;
-    head.add(bulb);
-    const arms = [];
-    for (const sgn of [-1, 1]) {
-        const pivot = new THREE.Group();
-        pivot.position.set(0.25 * sgn, 0.92, 0);
-        a.add(pivot);
-        const arm = new THREE.Mesh(new THREE.CapsuleGeometry(0.055, 0.3, 4, 10), M.white);
-        arm.position.y = -0.18;
-        pivot.add(arm);
-        const hand = new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 10), M.white);
-        hand.position.y = -0.37;
-        pivot.add(hand);
-        pivot.rotation.z = 0.12 * sgn;
-        arms.push(pivot);
+    const P = STATION.pedestal;
+    const F = STATION.frame;
+    if (!state.baked) {
+        const ped = new THREE.Mesh(new RoundedBoxGeometry(P.w, P.h, P.d, 3, P.r), M.white);
+        ped.position.set(P.x, P.y, P.z);
+        st.add(ped);
+        const neck = new THREE.Mesh(new THREE.CylinderGeometry(STATION.neck.r, STATION.neck.r, STATION.neck.h, 8), M.steel);
+        neck.position.set(STATION.neck.x, STATION.neck.y, STATION.neck.z);
+        st.add(neck);
+        const frame = new THREE.Mesh(new RoundedBoxGeometry(F.w, F.h, F.d, 2, 0.015), M.dark);
+        frame.position.set(F.x, F.y, F.z);
+        frame.rotation.x = F.tilt;
+        st.add(frame);
     }
+    const anchor = new THREE.Group();
+    anchor.position.set(F.x, F.y, F.z);
+    anchor.rotation.x = F.tilt;
+    st.add(anchor);
+    const face = new THREE.Group();
+    face.position.z = STATION.screen.z;
+    anchor.add(face);
+    screens.add(c, face, STATION.screen);
+
+    const rig = buildBody(THREE, RoundedBoxGeometry, { body: M.white, visor: M.visor, steel: M.steel }, tintMat(c.tint));
+    rig.a.position.set(STATION.agent.x, 0, STATION.agent.z);
+    rig.a.rotation.y = STATION.agent.ry;
+    st.add(rig.a);
+    blob(st).position.set(STATION.agent.x, 0.006, STATION.agent.z);
     const tool = makeTool(THREE, c.tool, c.tint, M);
     tool.position.set(0, -0.4, 0.02);
-    arms[1].add(tool);
-    for (const sgn of [-1, 1]) { const leg = new THREE.Mesh(new THREE.CapsuleGeometry(0.07, 0.22, 4, 10), M.white); leg.position.set(0.1 * sgn, 0.2, 0); a.add(leg); }
+    rig.arms[1].add(tool);
     const hit = new THREE.Mesh(new THREE.BoxGeometry(1.7, 1.9, 0.9), M.hit);
     hit.position.set(-0.05, 0.95, 0.1);
     st.add(hit);
     hit.userData.hot = { type: 'agent', id: c.id, label: `${c.role} · ${c.scene}`, tint: c.tint };
     hits.push(hit);
-    shadowAll(st);
-    const s = { c, st, a, head, arms, eyes, scr, lines: [], tick: i * 3, phase: i * 0.77, wave: 0, motion: MOTION[c.tool] || MOTION.bag, offcall: c.kind === 'none' };
-    stationLines(s);
+    shadowAll(rig.a);
+    const s = { c, st, ...rig, back: pose.back, phase: i * 0.77, wave: 0, motion: MOTION[c.tool] || MOTION.bag, offcall: c.kind === 'none', work: i % 3 === 0, workT: 2 + (i % 5) * 1.3, attn: null };
     agents.push(s);
 }
-function drawStation(s, t) {
-    const c = s.scr.ctx;
-    c.fillStyle = '#0d0e11';
-    c.fillRect(0, 0, 256, 160);
-    c.fillStyle = s.c.tint;
-    c.fillRect(0, 0, 256, 24);
-    c.fillStyle = '#0a0a0b';
-    c.font = '700 13px "JetBrains Mono", monospace';
-    c.fillText(s.c.role, 8, 17);
-    c.textAlign = 'right';
-    c.font = '700 10px "JetBrains Mono", monospace';
-    if (s.offcall) c.fillText('NO SIGNAL', 248, 16);
-    else {
-        c.fillText(s.c.date, 232, 16);
-        c.fillStyle = Math.floor(t * 1.6) % 2 ? '#0a0a0b' : '#ff2d55';
-        c.beginPath();
-        c.arc(243, 12, 4, 0, 7);
-        c.fill();
+
+/* ---------- the LED ribbon on the riser: the jobs' own log ---------- */
+const ribbon = createRibbon(THREE, { center: C, radius: RISER.r1 - 0.045, a0: RISER.a0 + 0.03, a1: RISER.a1 - 0.03, y: 0.2, h: 0.24 });
+scene.add(ribbon.mesh);
+function ribbonText() {
+    const f = state.figures;
+    const parts = [{ text: '● LIVE ON SET', color: '#ff2d55' }];
+    const run = data.agentFeed && agentFeedLabel(data.agentFeed);
+    if (run && data.agentFeed.task) parts.push({ text: `FILMED RUN ${run} · ${data.agentFeed.task}`, color: '#6fd3ff' });
+    for (const e of data.activity?.events || []) parts.push({ text: `${e.time}  ${e.label}` });
+    if (data.activity?.generatedAt) {
+        const sum = activitySummary(data.activity);
+        parts.push({ text: sum.text, color: sum.stale ? '#ffb36a' : '#9a9ca5' });
     }
-    c.textAlign = 'left';
-    c.fillStyle = '#f5f5f7';
-    c.font = '800 22px Archivo, "Arial Narrow", sans-serif';
-    c.fillText(s.c.scene, 8, 50);
-    c.font = '12px "JetBrains Mono", monospace';
-    for (let i = 0; i < 6; i++) {
-        const l = s.lines[(s.tick + i) % s.lines.length];
-        c.fillStyle = i === 5 ? s.c.tint : '#9a9ca5';
-        c.fillText(l, 8, 72 + i * 15);
-    }
-    s.scr.t.needsUpdate = true;
+    parts.push({ text: `${fig(f, 'repos')} repos · ${fig(f, 'jobs')} scheduled jobs · ${asOf()}`, color: '#5be3a0' });
+    ribbon.setText(parts);
 }
 
 /* ---------- camera rig ---------- */
@@ -572,6 +570,7 @@ function pick(x, y) {
 }
 const tip = $('tip');
 let down = null;
+let hover = null;
 canvas.addEventListener('pointerdown', (e) => {
     down = { x: e.clientX, y: e.clientY, yaw: rig.yawT, pitch: rig.pitchT, t: performance.now(), moved: false };
     canvas.setPointerCapture(e.pointerId);
@@ -592,6 +591,7 @@ canvas.addEventListener('pointermove', (e) => {
     if (state.mode !== 'wide' && state.mode !== 'focus') return;
     const o = pick(e.clientX, e.clientY);
     canvas.classList.toggle('hot', !!o);
+    hover = o && o.userData.hot.type === 'agent' ? o.userData.hot.id : null;
     if (o && e.pointerType === 'mouse') {
         const h = o.userData.hot;
         tip.replaceChildren(Object.assign(document.createElement('i'), { style: `background:${h.tint}` }), document.createTextNode(h.label));
@@ -600,6 +600,7 @@ canvas.addEventListener('pointermove', (e) => {
         tip.hidden = false;
     } else tip.hidden = true;
 });
+canvas.addEventListener('pointerleave', () => { hover = null; });
 canvas.addEventListener('pointerup', (e) => {
     canvas.classList.remove('drag');
     if (!down) return;
@@ -638,15 +639,31 @@ function chrome(focus) {
     backBtn.classList.toggle('hide', !focus);
 }
 let dvLift = 0;
+let cast = null;
+/** Fly to look at a point from a direction (unit vector on the floor), at a distance. */
+function frameSpot(spot, dir, dist, lift = 0.35) {
+    const pos = spot.clone().addScaledVector(dir, narrowNow() ? dist * 1.35 : dist);
+    pos.y += lift;
+    state.mode = 'focus';
+    flyTo(pos, spot);
+    chrome(true);
+}
+function towardCamera(p) {
+    return new THREE.Vector3(0 - p.x, 0, 12.3 - p.z).normalize();
+}
 function activate(h) {
     tip.hidden = true;
     if (h.type === 'agent') {
         const s = agents.find((x) => x.c.id === h.id);
         if (!s) return;
         s.wave = 2.6;
+        s.work = false;
+        state.focus = s.c.id;
+        desk.snap = 0.6;
+        drawClapper(s.c.scene, String(s.c.n).padStart(2, '0'));
         const p = new THREE.Vector3();
         s.a.getWorldPosition(p);
-        const dir = new THREE.Vector3(CENTER.x - p.x, 0, CENTER.z - p.z).normalize();
+        const dir = new THREE.Vector3(C.x - p.x, 0, C.z - p.z).normalize();
         const side = new THREE.Vector3(-dir.z, 0, dir.x);
         const narrow = narrowNow();
         const pos = p.clone().addScaledVector(dir, narrow ? 3.4 : 2.6).addScaledVector(side, narrow ? 0 : -0.55);
@@ -660,7 +677,7 @@ function activate(h) {
     } else if (h.type === 'gate') {
         const i = GATES.findIndex((x) => x.id === h.id);
         const g = GATES[i];
-        const look = new THREE.Vector3(-2.6 + i * 2.6, 2.85, -7.06);
+        const look = new THREE.Vector3(-2.6 + i * 2.6, 2.85, FLAT.z + 0.14);
         state.mode = 'focus';
         flyTo(look.clone().add(new THREE.Vector3(0, 0.3, narrowNow() ? 4.6 : 3.0)), look);
         showGateSlate(g, i);
@@ -669,15 +686,38 @@ function activate(h) {
         state.mode = 'focus';
         hideSlate();
         chrome(true);
-        flyTo(new THREE.Vector3(0, 1.62, 4.25), new THREE.Vector3(0, 1.52, 3.05), 1.0, () => {
-            flyTo(new THREE.Vector3(0, 1.52, 3.3), new THREE.Vector3(0, 1.52, 3.0), 0.7, enterOS);
+        flyTo(new THREE.Vector3(0, 1.62, MONITOR.z + 1.2), new THREE.Vector3(0, 1.52, MONITOR.z), 1.0, () => {
+            flyTo(new THREE.Vector3(0, 1.52, MONITOR.z + 0.25), new THREE.Vector3(0, 1.52, MONITOR.z - 0.05), 0.7, enterOS);
         });
     } else if (h.type === 'digivice') {
         state.mode = 'focus';
         hideSlate();
         chrome(true);
         dvLift = 1;
-        flyTo(new THREE.Vector3(0.95, 1.3, 4.25), new THREE.Vector3(0.95, 1.18, 3.45), 1.1, () => setTimeout(enterPassion, reduce ? 0 : 500));
+        flyTo(new THREE.Vector3(DIGIVICE.x, 1.3, DIGIVICE.z + 0.8), new THREE.Vector3(DIGIVICE.x, 1.18, DIGIVICE.z), 1.1, () => setTimeout(enterPassion, reduce ? 0 : 500));
+    } else if (h.type === 'dolly') {
+        const id = cast?.onAir();
+        if (id) activate({ type: 'agent', id });
+    } else if (cast && (h.type === 'throne' || h.type === 'shadow')) {
+        const spot = cast.spots.throne();
+        const fwd = new THREE.Vector3(Math.sin(-0.62), 0, Math.cos(-0.62));
+        frameSpot(spot, fwd, 4.6, 0.2);
+        if (h.type === 'throne') {
+            cast.arise();
+            const a = $('arise');
+            a.classList.remove('on');
+            void a.offsetWidth;
+            a.classList.add('on');
+        }
+        showExtraSlate(h.type === 'throne' ? 'throne' : h.id);
+    } else if (cast && h.type === 'robot') {
+        const spot = cast.spots.robot();
+        frameSpot(spot, towardCamera(spot), 2.8, 0.3);
+        showExtraSlate('robot');
+    } else if (cast && h.type === 'poster') {
+        const spot = cast.spots.poster();
+        frameSpot(spot, new THREE.Vector3(0, 0, 1), 2.9, 0.1);
+        showExtraSlate('poster');
     }
 }
 function setSlate({ scene: sc, take, date, role, tint, whatNode, callNode, stats, link, live }) {
@@ -732,10 +772,26 @@ function showGateSlate(g, i) {
     call.textContent = 'Every number on the set is read from its source with an age stamp, never typed.';
     setSlate({ scene: g.title, take: `G${i + 1}`, date: 'LIVE', role: 'CLEARED GATE', tint: '#ff2d55', whatNode: what, callNode: call, stats: [], link: { href: g.link, text: 'See it live' }, live: true });
 }
+function showExtraSlate(id) {
+    const x = EXTRA_SLATES[id];
+    if (!x) return;
+    const what = document.createElement('span');
+    what.textContent = x.what;
+    let call = null;
+    if (x.call) { call = document.createElement('span'); call.textContent = x.call; }
+    const stats = [];
+    if (id === 'throne') {
+        const jobs = document.createElement('span');
+        jobs.dataset.fig = 'jobs';
+        stats.push({ v: String(state.crew.length || DASH), k: 'agents on set' }, { v: jobs, k: 'scheduled jobs' });
+    }
+    setSlate({ scene: x.scene, take: x.take, date: x.date, role: x.role, tint: x.tint, whatNode: what, callNode: call, stats, link: null, live: id === 'throne' });
+}
 function hideSlate() { slate.classList.remove('on'); }
 function goWide() {
     if (state.mode === 'wide') return;
     state.mode = 'wide';
+    state.focus = null;
     hideSlate();
     chrome(false);
     dvLift = 0;
@@ -848,18 +904,27 @@ setInterval(clocks, 15000);
 $('shift').textContent = night ? 'Night shift · the crew is still running' : 'Day shift';
 
 /* ---------- data arrives ---------- */
-function applyFigures(json) {
-    state.figures = (json && json.figures) || {};
-    state.generatedAt = (json && json.generatedAt) || null;
+function applyFigures(j) {
+    state.figures = (j && j.figures) || {};
+    state.generatedAt = (j && j.generatedAt) || null;
     fillFigures(document, state.figures);
     document.querySelectorAll('[data-asof]').forEach((el) => { el.textContent = asOf(); });
     drawGates();
-    agents.forEach((s) => stationLines(s));
+    screens.refresh();
+    ribbonText();
 }
-const ready = Promise.all([crewP, figsP]).then(([crew, json]) => {
+const setP = crewP.then((crew) => (crew.length ? loadSet(THREE, renderer, crew.length) : null));
+const ready = Promise.all([crewP, figsP, setP, dataP]).then(([crew, j, baked]) => {
     state.crew = crew;
+    if (baked) {
+        state.baked = true;
+        if (night) baked.group.traverse((o) => { if (o.isMesh) o.material.color.set(0xdfe2ea); });
+        scene.add(baked.group);
+        addShadowCatchers();
+    } else buildHandSet();
     crew.forEach((c, i) => makeAgent(c, i, crew.length));
-    applyFigures(json);
+    cast = createCast(THREE, { scene, M, RoundedBox: RoundedBoxGeometry, makeTool, hits, crew: agents });
+    applyFigures(j);
     if (!crew.length) $('hint').textContent = 'The crew did not load. Every source is on the Monitor at jamesdare.com';
 });
 drawGates();
@@ -868,9 +933,63 @@ drawGates();
 const clock = new THREE.Clock();
 let acc = 0;
 let shown = false;
+const tmpV = new THREE.Vector3();
 resize();
 rigPos(camera.position);
 camera.lookAt(TARGET);
+function agentLife(s, t, dt, onAir, runAt) {
+    const ph = t + s.phase;
+    const m = s.motion;
+    s.a.position.y = Math.sin(ph * 1.6) * 0.012;
+    if (s.c.tool === 'pad') s.a.position.y = Math.max(0, Math.sin(ph * 2.2)) ** 6 * 0.25;
+    // who it is looking at: you on hover, the A camera when on air, the runner at its mark
+    s.attn = null;
+    if (hover === s.c.id || state.focus === s.c.id) s.attn = camera.position;
+    else if (runAt && runAt.id === s.c.id) s.attn = runAt.pos;
+    else if (onAir === s.c.id && cast) s.attn = cast.camPos();
+    if (s.offcall) {
+        const q = (Math.sin(ph * 2.4) + 1) / 2;
+        s.a.position.y = -q * 0.12;
+        s.arms[0].rotation.x = -q * 1.3;
+        s.arms[1].rotation.x = -0.3 - Math.max(0, Math.sin(ph * 2.4)) * 1.6;
+        return;
+    }
+    if (s.wave > 0) {
+        s.wave -= dt;
+        s.a.rotation.y += (STATION.agent.ry - s.a.rotation.y) * 0.15;
+        s.arms[0].rotation.z = -2.6 + Math.sin(t * 12) * 0.35;
+        s.arms[0].rotation.x = 0;
+    } else {
+        s.workT -= dt;
+        if (s.workT <= 0) {
+            s.work = !s.work && onAir !== s.c.id && !s.attn;
+            s.workT = s.work ? 3 + Math.random() * 4 : 4 + Math.random() * 6;
+        }
+        if (s.attn || onAir === s.c.id) s.work = false;
+        const wantY = s.work ? -1.45 : STATION.agent.ry;
+        s.a.rotation.y += (wantY - s.a.rotation.y) * Math.min(1, dt * 3);
+        s.arms[0].rotation.z += (-0.12 - s.arms[0].rotation.z) * 0.1;
+        if (s.work) {
+            s.arms[0].rotation.x += (-1.05 + Math.sin(t * 17 + s.phase) * 0.07 - s.arms[0].rotation.x) * 0.3;
+            s.arms[1].rotation.x += (-1.0 + Math.sin(t * 15 + s.phase * 2) * 0.07 - s.arms[1].rotation.x) * 0.3;
+        } else {
+            s.arms[1].rotation.x = m.rx + Math.sin(ph * m.hz) * m.amp;
+            s.arms[0].rotation.x = m.both ? m.rx + Math.sin(ph * m.hz + 0.6) * m.amp : -0.75 + Math.sin(ph * 9) * 0.1;
+        }
+    }
+    let yaw = s.work ? 0 : Math.sin(ph * 0.35) > 0.7 ? 0.38 : -0.55;
+    let pitch = s.work ? 0.12 : 0;
+    if (s.attn) {
+        s.a.worldToLocal(tmpV.copy(s.attn));
+        tmpV.y -= 1.2;
+        yaw = THREE.MathUtils.clamp(Math.atan2(tmpV.x, tmpV.z), -1.1, 1.1);
+        pitch = THREE.MathUtils.clamp(-Math.atan2(tmpV.y, Math.hypot(tmpV.x, tmpV.z)), -0.4, 0.4);
+    }
+    s.head.rotation.y += (yaw - s.head.rotation.y) * Math.min(1, dt * 4);
+    s.head.rotation.x += (pitch - s.head.rotation.x) * Math.min(1, dt * 4);
+    const blink = Math.sin(ph * 0.9) > 0.985 ? 0.1 : 1;
+    s.eyes.forEach((e) => { e.scale.y = blink; });
+}
 function frame() {
     const dt = Math.min(clock.getDelta(), 0.1);
     const t = clock.elapsedTime;
@@ -895,32 +1014,18 @@ function frame() {
         view.look.lerp(TARGET, f);
     }
     camera.lookAt(view.look);
+    const onAir = cast ? cast.onAir() : null;
+    if (cast) cast.update(t, dt, camera, state.mode, reduce);
     if (!reduce) {
-        for (const s of agents) {
-            const ph = t + s.phase;
-            const m = s.motion;
-            s.a.position.y = Math.sin(ph * 1.6) * 0.012;
-            if (s.c.tool === 'pad') s.a.position.y = Math.max(0, Math.sin(ph * 2.2)) ** 6 * 0.25;
-            if (s.offcall) {
-                const q = (Math.sin(ph * 2.4) + 1) / 2;
-                s.a.position.y = -q * 0.12;
-                s.arms[0].rotation.x = -q * 1.3;
-                s.arms[1].rotation.x = -0.3 - Math.max(0, Math.sin(ph * 2.4)) * 1.6;
-            } else if (s.wave > 0) {
-                s.wave -= dt;
-                s.arms[0].rotation.z = -2.6 + Math.sin(t * 12) * 0.35;
-                s.arms[0].rotation.x = 0;
-                s.head.rotation.y += (0.38 - s.head.rotation.y) * 0.1;
-            } else {
-                s.arms[0].rotation.z += (-0.12 - s.arms[0].rotation.z) * 0.1;
-                s.arms[1].rotation.x = m.rx + Math.sin(ph * m.hz) * m.amp;
-                s.arms[0].rotation.x = m.both ? m.rx + Math.sin(ph * m.hz + 0.6) * m.amp : -0.75 + Math.sin(ph * 9) * 0.1;
-                const look = Math.sin(ph * 0.35) > 0.7 ? 0.38 : -0.55;
-                s.head.rotation.y += (look - s.head.rotation.y) * 0.04;
-            }
-            const blink = Math.sin(ph * 0.9) > 0.985 ? 0.1 : 1;
-            s.eyes.forEach((e) => { e.scale.y = blink; });
-        }
+        const runAt = cast ? cast.runnerAt() : null;
+        for (const s of agents) agentLife(s, t, dt, onAir, runAt);
+        ribbon.update(dt);
+    }
+    screens.update(t, camera, onAir, state.focus);
+    if (desk.snap > 0) {
+        desk.snap -= dt;
+        const k = desk.snap > 0.45 ? (0.6 - desk.snap) / 0.15 : desk.snap > 0.3 ? 1 : desk.snap / 0.3;
+        desk.stick.rotation.z = 0.3 * (1 - Math.min(1, k));
     }
     dvBody.position.y += (0.2 + (dvLift ? 0.32 : 0) - dvBody.position.y) * 0.08;
     dvBody.rotation.y = dvLift ? dvBody.rotation.y * 0.9 : Math.sin(t * 0.8) * 0.5;
@@ -929,7 +1034,6 @@ function frame() {
         acc = 0;
         drawMonitor(t);
         drawDigivice(t);
-        agents.forEach((s) => { if (Math.random() < 0.08) s.tick += 1; drawStation(s, t); });
     }
     renderer.render(scene, camera);
     if (!shown && agents.length) {
@@ -939,6 +1043,6 @@ function frame() {
     requestAnimationFrame(frame);
 }
 ready.finally(() => { setTimeout(() => { if (!shown) { shown = true; $('load').classList.add('off'); } }, 400); });
-document.fonts?.ready.then(() => { drawGates(); agents.forEach((s) => { stationLines(s); drawStation(s, 0); }); });
+document.fonts?.ready.then(() => { drawGates(); screens.refresh(); ribbonText(); cast?.redraw(); });
 requestAnimationFrame(frame);
-window.__studio = { activate, goWide, agents, state };
+window.__studio = { activate, goWide, agents, state, screens, get cast() { return cast; } };

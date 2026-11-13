@@ -142,3 +142,29 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
     .clock { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .load b i { animation: none; } }
+
+/* ARISE: the throne's moment (4.66.0). One word, violet, gone in two seconds. */
+.arise {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    z-index: 6;
+    font: 800 clamp(64px, 16vw, 220px) / 1 Archivo, 'Arial Narrow', sans-serif;
+    font-stretch: 70%;
+    letter-spacing: 0.08em;
+    color: #c8b2ff;
+    text-shadow: 0 0 40px rgba(143, 107, 255, 0.85), 0 0 120px rgba(80, 40, 200, 0.6);
+    opacity: 0;
+}
+.arise.on { animation: arise 2.1s ease-out forwards; }
+@keyframes arise {
+    0% { opacity: 0; transform: scale(1.18); filter: blur(10px); }
+    18% { opacity: 1; transform: scale(1); filter: blur(0); }
+    70% { opacity: 1; }
+    100% { opacity: 0; transform: scale(0.98); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .arise.on { animation: none; }
+}

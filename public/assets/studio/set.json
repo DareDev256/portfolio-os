@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "builtAt": "2026-11-13T13:15:15Z",
+  "builtWith": "Blender 5.0.1, Cycles 192 samples",
+  "stations": 16,
+  "ids": [
+    "betmetrics",
+    "fcp",
+    "second",
+    "agent",
+    "sites",
+    "films",
+    "coldopen",
+    "bib",
+    "manyroads",
+    "learning",
+    "fandom",
+    "shopbay",
+    "prompts",
+    "sixjutsu",
+    "os",
+    "registry"
+  ],
+  "bin": {
+    "file": "set.bin",
+    "bytes": 313296
+  },
+  "textures": {
+    "cyc": {
+      "file": "cyc.webp",
+      "size": 2048,
+      "seconds": 92,
+      "mean": 2.348
+    },
+    "props": {
+      "file": "props.webp",
+      "size": 2048,
+      "seconds": 35,
+      "mean": 0.651
+    }
+  },
+  "meshes": [
+    {
+      "name": "cyc",
+      "texture": "cyc",
+      "vertices": 2115,
+      "indices": 12144,
+      "indexType": "u16",
+      "position": 0,
+      "uv": 12692,
+      "index": 21152,
+      "center": [
+        0.0,
+        12.0,
+        8.0
+      ],
+      "half": [
+        46.0,
+        12.0,
+        22.0
+      ]
+    },
+    {
+      "name": "props",
+      "texture": "props",
+      "vertices": 17398,
+      "indices": 46938,
+      "indexType": "u16",
+      "position": 45440,
+      "uv": 149828,
+      "index": 219420,
+      "center": [
+        -0.011625289916992188,
+        2.1011240482330322,
+        -1.6921019554138184
+      ],
+      "half": [
+        11.424979209899902,
+        2.198876142501831,
+        9.204830169677734
+      ]
+    }
+  ],
+  "exposure": -2.2
+}

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.65.0
+version: 4.66.0
 last_updated: 2026-11-13
 
 ---
@@ -11,6 +11,17 @@ last_updated: 2026-11-13
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.66.0 — 2026-11-13 · The studio, built in Blender, and alive
+James: "keep going on the Blender room… add more life to it… seeing what's really going on in the screen of each agent." Plus the easter eggs he asked for mid-build: the Monarch's throne, Vegapunk, a robot in the corner after Metabee.
+
+- **The room is modelled and lit in Blender.** `tools/studio/build_set.py` runs headless (`Blender -b -P`), builds the set in three.js units with Y up (nothing is rotated, so nothing can be rotated twice), bakes Cycles light into two 2048 maps (cyc 92 s, props 35 s on this Mac's GPU) and writes `public/assets/studio/`: `set.json`, `set.bin` (313 KB of Int16 positions and Uint16 UVs) and `cyc.webp` + `props.webp` (367 KB). The browser draws it unlit, exactly as Cycles lit it: soft contact shadows, cable runs to a distro box, spike-tape marks at every station, a dolly track, C-stands, a craft-services table, and a violet pool spilling off the throne onto the cove. The crew's live shadows land on catchers that only darken.
+- **One layout for both.** `js/studio/layout.js` holds every position; `tools/studio/dump-layout.mjs` writes it, with the Monitor's own source count, for Blender. `js/studio/set.js` refuses a set baked for another crew size, a short bin or a missing file, and the hand-built room stands in. The exporter refuses a black or flat bake, inward normals, a floor that does not face up, or files over budget.
+- **Every station shows its real work.** `js/studio/screens.js` plays the footage the Monitor cuts to (site walkthroughs, the Final Cut timeline, the filmed agent run, the films) from 480px station copies (`tools/studio/make-feeds.mjs`: 21 clips, 13 MB to 2.4 MB). Stills show their still, the Registry draws the repo graph from `registry-graph.json`, sixjutsu shows static. Over each: the Monitor's label (role, date, REC) and a lower third from its slate, figures through `figures.json` or a dash. Phones play 3 at once, desktops 6: on air first, then the one you picked, then the nearest the middle.
+- **Life.** An A camera on the dolly, with a grip walking it, covers one source every eight seconds and that screen goes ON AIR. A runner does coffee rounds from craft services to the front row and the crew member turns to take it. Agents turn to their screens and type, look at you when you hover, and the clapper snaps with the scene and take of whoever you pick. The riser carries an LED ribbon scrolling the jobs' own log (`activity.json`, the filmed run from `agent-feed.json`, with their ages).
+- **Easter eggs** (`js/studio/cast.js`). Back right, after hours: a black throne with the Monarch on it, eyes lit, and two shadows (Claude and Passion); tap it and they kneel: ARISE. Stage left, the lab: a builder welding a black beetle-type robot, Metabee from Medabots as the inspiration, one arm on the bench and a leg on the floor. On the back flat beside the gates: the inspo board, Dr. Vegapunk, one mind with the crew as its satellites.
+- Names: the terminal prompt is `visitor@the-studio`; public copy says "James", never a surname, and a test holds it.
+- `tests/studio.test.js` grows to 40: the bake matches the Monitor's crew, decodes to the room it was modelled as, falls back when missing; every Monitor clip has a station copy; footage crops without stretching; lower thirds dash what figures.json lacks; the cast's copy carries no surname.
 
 ## 4.65.0 — 2026-11-13 · The Studio
 A fourth surface at `/studio`: the Monitor's crew standing on a white soundstage you can walk around. Built from James's brief after Nick Saraev's Fable 5.2 "studio you walk into" (video 5mA9Hab09Do, 1:57); his picks A A A A on the design page. Not indexed and not linked from `/` yet: it takes the homepage only after it beats the Monitor in a gauntlet and on his phone.

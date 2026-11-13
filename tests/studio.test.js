@@ -210,3 +210,166 @@ describe('the way in and out', () => {
         expect(inline).toHaveLength(0);
     });
 });
+
+/* ------------------------------------------------------------------ 4.66.0: the baked set, real screens, the cast */
+import { setLayout, stationPose, RISER, CENTER, THRONE, LAB, POSTER, FLAT } from '../js/studio/layout.js';
+import { setProblem, loadSet } from '../js/studio/set.js';
+import { coverFit, screenKind, lowerThirds, feedFor } from '../js/studio/screens.js';
+import { EXTRA_SLATES } from '../js/studio/cast.js';
+import { existsSync, statSync } from 'node:fs';
+
+const setJson = JSON.parse(read('public/assets/studio/set.json'));
+const feeds = JSON.parse(read('public/assets/studio/feeds/manifest.json'));
+
+describe('the baked set', () => {
+    it('was baked for exactly the crew the Monitor has', () => {
+        expect(setJson.stations).toBe(crew.length);
+        expect(setJson.ids).toEqual(crew.map((c) => c.id));
+        expect(setProblem(setJson, crew.length)).toBe('');
+    });
+
+    it('refuses a set baked for another crew size, or one that runs past its bin', () => {
+        expect(setProblem(setJson, crew.length + 1)).toMatch(/baked for/);
+        expect(setProblem(null, 16)).toBe('no manifest');
+        const short = { ...setJson, bin: { ...setJson.bin, bytes: 100 } };
+        expect(setProblem(short, crew.length)).toMatch(/runs past/);
+    });
+
+    it('ships every file set.json names, inside its size budget', () => {
+        const bin = resolve(root, 'public/assets/studio', setJson.bin.file);
+        expect(statSync(bin).size).toBe(setJson.bin.bytes);
+        expect(setJson.bin.bytes).toBeLessThan(1_400_000);
+        for (const t of Object.values(setJson.textures)) {
+            const f = resolve(root, 'public/assets/studio', t.file);
+            expect(existsSync(f), t.file).toBe(true);
+            expect(statSync(f).size).toBeLessThan(1_200_000);
+        }
+    });
+
+    it('decodes to the room it was modelled as (Int16 positions, three.js frame)', () => {
+        const buf = readFileSync(resolve(root, 'public/assets/studio', setJson.bin.file));
+        const ab = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+        const cyc = setJson.meshes.find((m) => m.name === 'cyc');
+        const q = new Int16Array(ab, cyc.position, cyc.vertices * 3);
+        const lo = [Infinity, Infinity, Infinity];
+        const hi = [-Infinity, -Infinity, -Infinity];
+        for (let i = 0; i < q.length; i += 3) {
+            for (let a = 0; a < 3; a++) {
+                const v = cyc.center[a] + (cyc.half[a] * q[i + a]) / 32767;
+                lo[a] = Math.min(lo[a], v);
+                hi[a] = Math.max(hi[a], v);
+            }
+        }
+        // floor at y 0 running to z 30 in front, the cove's wall at z -14 going up: Y is up, nothing rotated
+        expect(lo[1]).toBeCloseTo(0, 2);
+        expect(hi[1]).toBeGreaterThan(20);
+        expect(hi[2]).toBeCloseTo(30, 1);
+        expect(lo[2]).toBeCloseTo(-14, 1);
+        expect(hi[0]).toBeCloseTo(46, 1);
+        const idx = cyc.indexType === 'u32' ? new Uint32Array(ab, cyc.index, cyc.indices) : new Uint16Array(ab, cyc.index, cyc.indices);
+        expect(Math.max(...idx)).toBeLessThan(cyc.vertices);
+    });
+
+    it('falls back to the hand-built set when the files are missing', async () => {
+        const real = globalThis.fetch;
+        globalThis.fetch = async () => ({ ok: false, status: 404, json: async () => null });
+        const warn = console.warn;
+        console.warn = () => {};
+        try {
+            expect(await loadSet({}, {}, 16)).toBeNull();
+        } finally {
+            globalThis.fetch = real;
+            console.warn = warn;
+        }
+    });
+});
+
+describe('the layout the bake and the page share', () => {
+    it('puts half the crew on the floor and half on the riser, all facing the middle', () => {
+        const L = setLayout(16);
+        expect(L.stations).toHaveLength(16);
+        expect(L.stations.filter((s) => s.back)).toHaveLength(8);
+        for (const s of L.stations) {
+            expect(s.y).toBe(s.back ? RISER.top : 0);
+            const toC = Math.atan2(CENTER.x - s.x, CENTER.z - s.z);
+            expect(s.ry).toBeCloseTo(toC, 6);
+        }
+    });
+
+    it('keeps the throne, the lab and the inspo board clear of every station', () => {
+        const poses = Array.from({ length: crew.length }, (_, i) => stationPose(i, crew.length));
+        for (const p of [THRONE, LAB.robot, LAB.builder]) {
+            for (const s of poses) expect(Math.hypot(p.x - s.x, p.z - s.z)).toBeGreaterThan(2);
+        }
+        const gateEdges = [-2.6 - 0.85, 2.6 + 0.85];
+        expect(POSTER.x + POSTER.w / 2).toBeLessThan(gateEdges[0]);
+        expect(POSTER.x - POSTER.w / 2).toBeGreaterThan(-FLAT.w / 2);
+    });
+});
+
+describe('the station screens', () => {
+    it('reads what the Monitor plays for each source', () => {
+        const by = Object.fromEntries(crew.map((c) => [c.id, c]));
+        expect(by.fcp.clips.length).toBeGreaterThan(0);
+        expect(by.sites.clips.length).toBe(by.sites.tags.length);
+        expect(by.bib.still).toMatch(/\.jpg$/);
+        expect(screenKind(by.fcp)).toBe('clips');
+        expect(screenKind(by.bib)).toBe('still');
+        expect(screenKind(by.registry)).toBe('graph');
+        expect(screenKind(by.sixjutsu)).toBe('none');
+    });
+
+    it('has a small station copy of every clip on the Monitor', () => {
+        const clips = [...new Set(crew.flatMap((c) => c.clips))];
+        expect(clips.length).toBeGreaterThan(10);
+        for (const clip of clips) {
+            const copy = feeds.clips[clip];
+            expect(copy, `${clip} has no station copy: run node tools/studio/make-feeds.mjs`).toBeDefined();
+            expect(statSync(resolve(root, 'public', copy.slice(1))).size).toBeLessThan(statSync(resolve(root, 'public', clip.slice(1))).size);
+            expect(feedFor(clip, feeds)).toBe(copy);
+        }
+        expect(feedFor('/x.mp4', feeds)).toBe('/x.mp4');
+    });
+
+    it('crops footage to fill the screen without stretching it', () => {
+        const wide = coverFit(1280, 720, 5 / 3);
+        expect(wide.ry).toBe(1);
+        expect(wide.rx).toBeCloseTo((5 / 3) / (16 / 9), 6);
+        expect(wide.ox).toBeCloseTo((1 - wide.rx) / 2, 6);
+        const tall = coverFit(640, 640, 5 / 3);
+        expect(tall.rx).toBe(1);
+        expect(tall.ry).toBeCloseTo(0.6, 6);
+    });
+
+    it('fills every lower third from figures.json, with a dash for what is missing', () => {
+        const fcp = crew.find((c) => c.id === 'fcp');
+        expect(lowerThirds(fcp, figs.figures).join(' ')).toContain(String(figs.figures.stars));
+        expect(lowerThirds(fcp, {}).join(' ')).toContain(DASH);
+        // a stat with no value node at all still prints a dash, never a guess
+        expect(lowerThirds({ kind: 'rec', scene: 'x', what: null, stats: [{ value: null, label: 'stars' }] }, {})).toEqual([`${DASH} stars`]);
+        const agent = crew.find((c) => c.id === 'agent');
+        const activity = JSON.parse(read('public/data/activity.json'));
+        const lines = lowerThirds(agent, figs.figures, { activity });
+        expect(lines.some((l) => l.includes(activity.events[0].label))).toBe(true);
+        const reg = crew.find((c) => c.id === 'registry');
+        const registry = JSON.parse(read('public/data/registry-graph.json'));
+        expect(lowerThirds(reg, figs.figures, { registry })[0]).toContain(`${registry.totals.repos} repos`);
+    });
+});
+
+describe('the cast', () => {
+    it('says "James" and never a surname, and keeps personal names off the set', () => {
+        const copy = JSON.stringify(EXTRA_SLATES);
+        expect(copy).not.toMatch(/\bDare\b|Olusoga|Sandra/);
+        for (const f of ['studio/index.html', 'js/studio.js', 'js/studio/cast.js', 'js/studio/screens.js', 'js/studio/terminal.js']) {
+            expect(read(f), f).not.toMatch(/\bDare\b|Olusoga|dare-studio/);
+        }
+    });
+
+    it('has a slate for every set piece you can tap', () => {
+        for (const id of ['throne', 'claude', 'passion', 'robot', 'poster']) {
+            expect(EXTRA_SLATES[id].what.length, id).toBeGreaterThan(30);
+            expect(EXTRA_SLATES[id].role, id).toMatch(/\S/);
+        }
+    });
+});
