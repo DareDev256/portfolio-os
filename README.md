@@ -19,23 +19,16 @@ Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Eng
 
 Every number below is reproducible from a clean clone. No figure in this README is typed by hand.
 
-| Figure | Reproduce it |
+| Figure (measured 2026-11-13, 4.65.0) | Reproduce it |
 |---|---|
-| 665 tests across 42 files | `npm test` |
-| 89 JavaScript modules | `git ls-files 'js/*.js' \| wc -l` |
-| 50 stylesheets | `git ls-files '*.css' \| wc -l` |
+| 778 tests across 50 files | `npm test` |
+| 99 JavaScript modules | `git ls-files 'js/*.js' \| wc -l` |
+| 53 stylesheets | `git ls-files '*.css' \| wc -l` |
 | 2 runtime dependencies | `node -p "Object.keys(require('./package.json').dependencies).length"` |
 
-| Figure | Reproduce it |
-|---|---|
-| 658 tests across 41 files | `npm test` |
-| 86 JavaScript modules | `git ls-files 'js/*.js' \| wc -l` |
-| 50 stylesheets | `git ls-files '*.css' \| wc -l` |
-| 2 runtime dependencies | `node -p "Object.keys(require('./package.json').dependencies).length"` |
+## Four Surfaces
 
-## Three Surfaces
-
-This repository builds **three** independent pages from one Vite config. Count them
+This repository builds **four** independent pages from one Vite config. Count them
 yourself with `grep -c "resolve(import.meta.dirname" vite.config.js`, or read
 `build.rollupOptions.input` in that file:
 
@@ -44,8 +37,9 @@ yourself with `grep -c "resolve(import.meta.dirname" vite.config.js`, or read
 | `/` | `index.html` + `css/monitor.css` + `js/monitor.js` | **THE MONITOR** — the hiring surface (4.62.0). A director's video village: program monitor, a switcher with one button per project, a slate with each project's receipt, and Crew / Reel / Call tabs. One tap reaches anything and no view scrolls. No framework, no OS code. |
 | `/os` | `os/index.html` + `js/main.js` | **Passion OS** — the desktop environment this README documents. Everything below describes this surface. |
 | `/coldopen` | `coldopen/index.html` | **COLD OPEN** — the writeup of the artist-site engine at [github.com/DareDev256/coldopen](https://github.com/DareDev256/coldopen). Added in 4.21.0. |
+| `/studio` | `studio/index.html` + `css/studio.css` + `js/studio.js` | **THE STUDIO** — the Monitor's 16 crew agents on a white soundstage in three.js: tap an agent for its slate, the director's monitor opens Passion OS, the Digivice opens Passion. Reads the crew from `/` and every number from `figures.json`. Added in 4.65.0, not indexed yet. |
 
-The three are deliberately kept apart in type, palette, layout skeleton and motion
+The four are deliberately kept apart in type, palette, layout skeleton and motion
 signature; `css/system.css` carries the divergence record at the top of the file.
 Client services and the client roster live on
 [tdotssolutionsz.com](https://tdotssolutionsz.com), not here.

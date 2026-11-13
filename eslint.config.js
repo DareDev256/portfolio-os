@@ -31,4 +31,14 @@ export default [
             sourceType: 'module',
         },
     },
+
+    // tools/ are Node scripts and the suite runs under Node (vitest + jsdom), so
+    // both see Node globals as well as the browser ones. Without this, `npm run
+    // lint` had exited 1 on `process` since the booking tools landed in 4.56.0.
+    {
+        files: ['tools/**/*.{js,mjs}', 'tests/**/*.js'],
+        languageOptions: {
+            globals: { ...globals.browser, ...globals.node },
+        },
+    },
 ];

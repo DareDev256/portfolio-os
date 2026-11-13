@@ -20,6 +20,7 @@ import { ScrollReveal } from './scroll-reveal.js';
 import { ensureGalaxy } from './galaxy-init.js';
 import { Achievements } from './achievements.js';
 import { Gauntlet } from './gauntlet.js';
+import { applyStudioDoor } from './studio-door.js';
 import { inject } from '@vercel/analytics';
 
 /* ── Analytics ─────────────────────────────────────────────────────
@@ -69,6 +70,9 @@ if (document.readyState === 'loading') {
 async function init() {
     const params = new URLSearchParams(location.search);
     const safeMode = params.get('safe') === '1';
+
+    // Walked in from /studio: the exit leads back to the set (4.65.0).
+    applyStudioDoor(document, location.search);
 
     // ── Core systems only — all visual effects disabled for stability ──
     Modal.init();

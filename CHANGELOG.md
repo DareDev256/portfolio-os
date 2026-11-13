@@ -3,14 +3,28 @@
 ---
 
 title: Passion OS Changelog
-version: 4.64.2
-last_updated: 2026-11-07
+version: 4.65.0
+last_updated: 2026-11-13
 
 ---
 
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.65.0 — 2026-11-13 · The Studio
+A fourth surface at `/studio`: the Monitor's crew standing on a white soundstage you can walk around. Built from James's brief after Nick Saraev's Fable 5.2 "studio you walk into" (video 5mA9Hab09Do, 1:57); his picks A A A A on the design page. Not indexed and not linked from `/` yet: it takes the homepage only after it beats the Monitor in a gauntlet and on his phone.
+
+- **One source for the crew.** The studio fetches the homepage and reads the 16 switcher buttons and their take panels (`js/studio/slates.js`): role, tool, tint, scene, date, what, THE CALL, stats, first link. Nothing about a source is copied, so the two surfaces cannot drift.
+- **No typed figures.** Every number on the set (station screens, the three cleared gates, the slate, Notes, the terminal, the Digivice) is a `figures.json` key, rendered as a dash when the file does not carry it, with the file's age beside it ("as of Nov 12, 9:42 AM ET", plus "N days old" past 36 hours).
+- **16 agents with their real tools**, built from primitives in `js/studio/tools3d.js` (the same 16 tools `crew.js` draws), each with its own arm motion. Tap one: it waves, the camera moves in, the slate opens with the Monitor's own copy. sixjutsu is In Training: NO SIGNAL on its screen, squats and curls.
+- **The director's monitor is the door to Passion OS.** The camera dives into a studio-skin desktop with Notes and a terminal (`js/studio/terminal.js`: help, ls, cat, crew, gates, neofetch, open, sudo hire james, history, tab completion, arrow history). "Full Passion OS" opens `/os?from=studio`, and `/os` then points its exit back to the studio (`js/studio-door.js`); without the flag `/os` is unchanged.
+- **The Digivice on the desk jacks into Passion**, with a door to passion.jamesdare.com.
+- **Night shift.** From 20:00 to 06:00 Toronto the set dims and says the crew is still running.
+- **Ways out.** No WebGL shows a card that links to the Monitor; a hidden text mirror names the crew for screen readers and crawlers; no inline script, so the site CSP is unchanged. three 0.170 comes from the same pinned CDN path `/os` uses; two addons are vendored in `js/studio/vendor/` with only their import rewritten.
+- `tests/studio.test.js` (27 tests) pins the crew read, the mirror order, dash-not-literal figures, the age line, terminal escaping and links, the `/os` door, the route and noindex. Every guard was broken on purpose and went red.
+- `npm run lint` exits 0 again: tools/ and tests/ get Node globals in `eslint.config.js` (10 `process is not defined` errors since 4.56.0).
+- Caught by the rendered check, not the suite: `.nogl { display: grid }` beat the `hidden` attribute, so the no-WebGL card covered a working scene, and stats lost their figures because the filler skipped the `<dd data-fig>` it was handed. Both fixed, both now tested.
 
 ## 4.64.2 — 2026-11-07 · The voice agent fits its card and works on phones
 - The ElevenLabs widget on Call time was squashed to a 16px sliver: its box was 58px, and the widget insets its 52px pill by 32px top and bottom. The box is now 116px with negative margins that give the inset back, so the card is only 4px taller than before and the page still never scrolls (measured on the live page at 390x844, 390x664, 430x740, 1280x720 and 1440x900; the "Powered by" link clears the card below).

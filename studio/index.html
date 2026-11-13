@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <script src="/ga4.js"></script>
+    <script src="/va.js"></script>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TG10CNCMJY"></script>
+
+    <title>The Studio | jamesdare.com</title>
+    <meta name="description" content="A white soundstage where sixteen AI agents work at stations showing live numbers. Walk the set, tap the crew, go into the computer." />
+    <!-- Not indexed until the studio beats the Monitor and takes /. -->
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://www.jamesdare.com/studio" />
+    <link rel="icon" type="image/svg+xml" href="/assets/mahoraga-wheel.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" />
+    <link rel="stylesheet" href="/css/studio.css" />
+</head>
+
+<body>
+    <canvas id="gl" aria-hidden="true"></canvas>
+
+    <header class="mast" id="mast">
+        <div class="readout"><span>jamesdare.com</span><b>The Studio</b><span id="shift"></span></div>
+        <h1>I direct agents.</h1>
+        <p>Look around the set, tap a crew member, then go into the computer.</p>
+        <nav class="pills" aria-label="Links">
+            <a class="hot" href="/os?from=studio">Passion OS</a>
+            <a href="/">The Monitor</a>
+            <a href="https://passion.jamesdare.com" rel="noopener">Passion</a>
+            <a href="https://github.com/DareDev256" rel="noopener">GitHub</a>
+            <a href="https://github.com/DareDev256/fcp-mcp-server" rel="noopener">fcp-mcp</a>
+            <a href="https://stiersolutions.ca" rel="noopener">S-Tier</a>
+            <a href="https://tdotssolutionsz.com" rel="noopener">tdotssolutionsz</a>
+        </nav>
+    </header>
+    <button class="ghost back hide" id="back" type="button">Back to the wide · Esc</button>
+    <div class="hint" id="hint">Drag to look around · tap the crew, the monitor or the Digivice</div>
+    <div class="tip" id="tip" hidden></div>
+
+    <section class="slate" id="slate" aria-live="polite" aria-label="Slate">
+        <div class="clap" aria-hidden="true"></div>
+        <div class="in">
+            <dl class="fields">
+                <div><dt>SCENE</dt><dd id="sScene"></dd></div>
+                <div><dt>TAKE</dt><dd id="sTake"></dd></div>
+                <div><dt>DATE</dt><dd id="sDate"></dd></div>
+            </dl>
+            <span class="role"><i id="sRoleChip"></i><span id="sRoleName"></span></span>
+            <h2 id="sName"></h2>
+            <p id="sWhat"></p>
+            <p class="call" id="sCall"><b>THE CALL</b><span id="sCallText"></span></p>
+            <div class="stats" id="sStats"></div>
+            <div class="row"><a id="sLink" href="/" rel="noopener">See it live ↗</a><span class="asof" id="sAsof"></span></div>
+        </div>
+    </section>
+
+    <section class="os" id="os" aria-label="Passion OS inside the studio computer" aria-hidden="true">
+        <div class="menubar">
+            <span class="brand">PASSION OS <b>·</b> STUDIO</span>
+            <span id="osApp">Terminal</span>
+            <span class="sp"></span>
+            <span id="osTime"></span>
+            <button class="ghost" type="button" id="osBack">Back to the studio · Esc</button>
+        </div>
+        <div class="desk" id="desk">
+            <div class="clock"><div class="t" id="bigTime"></div><div class="d" id="bigDate"></div></div>
+            <div class="win notes" id="wNotes">
+                <div class="bar"><i></i><i></i><i></i><span>Notes · about.txt</span></div>
+                <div class="body">
+                    <h3>James</h3>
+                    <p>AI Solutions Engineer and Creative Technologist, Toronto. A decade directing music video: Masicka, Casper TNG, King Louie, Street Bud. Now the crew is agents.</p>
+                    <dl>
+                        <dt>REPOS</dt><dd><span data-fig="repos">&#8212;</span></dd>
+                        <dt>JOBS</dt><dd><span data-fig="jobs">&#8212;</span> scheduled</dd>
+                        <dt>SITES</dt><dd><span data-fig="clientSitesUp">&#8212;</span> of <span data-fig="clientSites">&#8212;</span> answering</dd>
+                        <dt>FCP-MCP</dt><dd><span data-fig="stars">&#8212;</span> stars, <span data-fig="installs">&#8212;</span> installs in 30 days</dd>
+                        <dt>WIKI BOT</dt><dd><span data-fig="wikiEdits">&#8212;</span> edits, <span data-fig="wikiReverted">&#8212;</span> of the last <span data-fig="wikiRevertSample">&#8212;</span> reverted</dd>
+                    </dl>
+                    <p class="asof" data-asof></p>
+                </div>
+            </div>
+            <div class="win term" id="wTerm">
+                <div class="bar"><i></i><i></i><i></i><span>Terminal · visitor@dare-studio</span></div>
+                <div class="out" id="tOut" aria-live="polite"></div>
+                <div class="ln"><label for="tIn">visitor@dare-studio ~ $</label><input id="tIn" autocomplete="off" autocapitalize="off" spellcheck="false" /></div>
+            </div>
+        </div>
+        <nav class="dock" aria-label="Dock">
+            <button type="button" data-app="term">Terminal</button>
+            <button type="button" data-app="notes">Notes</button>
+            <button type="button" data-cmd="crew">Crew</button>
+            <button type="button" data-cmd="gates">Gates</button>
+            <a class="real" href="/os?from=studio">Full Passion OS →</a>
+        </nav>
+    </section>
+
+    <section class="jack" id="jack" aria-label="Jacked in to Passion" aria-hidden="true">
+        <div class="card">
+            <div class="glyph" aria-hidden="true"><svg viewBox="0 0 100 50"><path d="M25 25c0-8 6-14 13-14s12 6 12 14 5 14 12 14 13-6 13-14-6-14-13-14-12 6-12 14-5 14-12 14-13-6-13-14z" fill="none" stroke="#5be3a0" stroke-width="7" stroke-linecap="round" /></svg></div>
+            <div class="readout" style="justify-content:center"><b>Digivice · jacked in</b><span data-asof></span></div>
+            <h2>Passion</h2>
+            <p>The agent that runs the registry overnight and reports to Discord unasked. Her live screen and a chat you open from the Digivice are next on the call sheet.</p>
+            <div class="stats">
+                <div><b data-fig="passionVersion">&#8212;</b><span>agent version</span></div>
+                <div><b data-fig="repos">&#8212;</b><span>repos it runs</span></div>
+                <div><b data-fig="jobs">&#8212;</b><span>scheduled jobs</span></div>
+            </div>
+            <div class="row">
+                <a class="btn" href="https://passion.jamesdare.com" rel="noopener">Enter passion.jamesdare.com ↗</a>
+                <button class="ghost" type="button" id="jBack">Back to the studio · Esc</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="load" id="load"><div>RIGGING THE SET<b><i></i></b></div></div>
+    <div class="nogl" id="nogl" hidden>
+        <div>
+            <strong>This device could not start WebGL, so the set cannot render here.</strong>
+            <span>The same crew, with every number, is on the Monitor.</span>
+            <a href="/">Open the Monitor →</a>
+        </div>
+    </div>
+
+    <!-- The set is canvas. This is the same crew as text, for screen readers and
+         crawlers; tests/studio.test.js keeps it in step with the Monitor's switcher. -->
+    <section class="vh" id="mirror" aria-label="The crew">
+        <h2>The crew on the set</h2>
+        <ol>
+            <li data-src="betmetrics">PRODUCER: BetMetrics</li>
+            <li data-src="fcp">EDITOR: fcp-mcp-server</li>
+            <li data-src="second">SET MEDIC: Second Opinion</li>
+            <li data-src="agent">1ST AD: Passion Agent</li>
+            <li data-src="sites">SET BUILDER: Client sites</li>
+            <li data-src="films">CAMERA: 101 Films</li>
+            <li data-src="coldopen">ART DEPT: COLD OPEN</li>
+            <li data-src="bib">STUNTS: Bodies In Boxes</li>
+            <li data-src="manyroads">FIGHT CHOREO: MANY ROADS</li>
+            <li data-src="learning">SET TUTOR: Passionate Learning</li>
+            <li data-src="fandom">SCRIPT SUPV: Fandom Flow</li>
+            <li data-src="shopbay">TRANSPO: ShopBayHQ</li>
+            <li data-src="prompts">STORYBOARD: Prompt Generator</li>
+            <li data-src="sixjutsu">IN TRAINING: sixjutsu</li>
+            <li data-src="os">DIT: Passion OS</li>
+            <li data-src="registry">PROD OFFICE: Registry</li>
+        </ol>
+        <p>Every source, with its figures and links, is on the Monitor: <a href="/">jamesdare.com</a>.</p>
+    </section>
+
+    <script type="module" src="/js/studio.js"></script>
+</body>
+
+</html>

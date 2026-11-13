@@ -14,6 +14,14 @@
       "destination": "/os/index.html"
     },
     {
+      "source": "/studio",
+      "destination": "/studio/index.html"
+    },
+    {
+      "source": "/studio/(.*)",
+      "destination": "/studio/index.html"
+    },
+    {
       "source": "/coldopen",
       "destination": "/coldopen/index.html"
     },
