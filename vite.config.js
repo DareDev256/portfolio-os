@@ -1,13 +1,15 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import { promoteStudio } from './tools/promote-studio.mjs';
 
-// Four entries. `/` is the hiring surface (the Monitor), the Passion OS desktop
-// that used to own `/` now lives at `/os`, `/coldopen` is the method page added
-// in 4.21.0, and `/studio` is the walk-in set added in 4.65.0. Without this
-// config Vite's default single-entry build would emit the landing page and
-// silently drop the other three.
+// Four entries. Without this config Vite's default single-entry build would emit
+// one page and silently drop the other three.
+//
+// Served paths are not source paths since 4.69.0: the studio is /, the Monitor
+// /monitor. The why, and the swap itself, live in tools/promote-studio.mjs.
 export default defineConfig({
     appType: 'mpa',
+    plugins: [promoteStudio()],
     build: {
         rollupOptions: {
             input: {

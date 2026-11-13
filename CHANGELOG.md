@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.68.1
+version: 4.69.0
 last_updated: 2026-11-13
 
 ---
@@ -11,6 +11,19 @@ last_updated: 2026-11-13
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.69.0 — 2026-11-13 · The studio is the home page
+
+jamesdare.com opens on the studio. The Monitor moved to `/monitor`, whole and unchanged, and every old link still lands somewhere real.
+
+- **Routing.** `tools/promote-studio.mjs` renames the two pages in the bundle: `studio/index.html` is served at `/`, the Monitor's `index.html` at `/monitor`. The Monitor's source stays at the root because the nightly `system-snapshot.sh` job, `make-feeds` and `dump-layout` edit or read it there. `npm run dev` and `preview` get the same paths from middleware. `/studio` and `/studio/*` redirect (308) to `/`; the old OS routes (`/about`, `/work`, `/resume`...) rewrite to the Monitor. The plugin refuses to build when either page is missing from the bundle.
+- **The crew still loads.** The studio read its crew from the Monitor's markup at `/`; at `/` it would have read itself and left every station empty. It now reads `/monitor`.
+- **A home page for search and for people.** The studio's head carries the Monitor's Person record (name as the site says it: "James"), a canonical of `https://www.jamesdare.com`, no `noindex`, and a share card that is a real 1200x630 frame of the set (`thumbnails/og-studio.jpg`). The description has no typed figure. The Monitor's canonical and `og:url` are now `/monitor`; the sitemap lists both.
+- **Hiring masthead.** "James · Open to roles · Toronto", then the line "Software engineer, production AI", then Book a call (first, filled), Résumé (through `/cv`, a temporary redirect to the PDF, because its file name carries a surname the page never shows), The Monitor, Passion OS, GitHub, S-Tier. The loader now sits under the masthead, so the name and the way to book paint before the set has rigged.
+- **Phones.** An upright phone opens on a higher, closer shot (pitch 0.48, distance 12, picked from rendered frames at 390x844): the crew fills the screen under the masthead instead of floating in a band of empty cyc. The link rail fades at its edge so it reads as scrollable.
+- **Light.** A soft falloff toward the corners, painted in CSS over the canvas so it costs the GPU nothing.
+- **No WebGL.** A device that cannot start WebGL is sent to `/monitor`, which carries every source and figure in HTML, instead of a blank home page.
+- **Tests.** 811 (was 804): the served paths and the redirects, the bundle swap and its refusal, the home page's head, the James-only copy, the hiring links, the crew read from `/monitor`, the no-WebGL route, the loader under the masthead, and the sitemap. Each one was broken on purpose and went red.
 
 ## 4.68.1 — 2026-11-13 · Take counts read as numbers
 - Take counts over 999 carry a thousands separator ("1,191 takes across 54 repos"), on the screens, the slate, the clapper and the ribbon. Seen on the live Registry slate.

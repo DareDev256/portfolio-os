@@ -1,5 +1,21 @@
 {
-  "redirects": [],
+  "redirects": [
+    {
+      "source": "/studio",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/studio/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/cv",
+      "destination": "/resume/JamesOlusoga-AI-Engineer.pdf",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/book",
@@ -12,14 +28,6 @@
     {
       "source": "/os/(.*)",
       "destination": "/os/index.html"
-    },
-    {
-      "source": "/studio",
-      "destination": "/studio/index.html"
-    },
-    {
-      "source": "/studio/(.*)",
-      "destination": "/studio/index.html"
     },
     {
       "source": "/coldopen",
@@ -38,8 +46,16 @@
       "destination": "https://passion-dashboard.vercel.app/passion/:path*"
     },
     {
+      "source": "/monitor",
+      "destination": "/monitor/index.html"
+    },
+    {
+      "source": "/monitor/(.*)",
+      "destination": "/monitor/index.html"
+    },
+    {
       "source": "/(about|work|media|connect|contact|settings|resume|terminal|services)",
-      "destination": "/index.html"
+      "destination": "/monitor/index.html"
     }
   ],
   "headers": [

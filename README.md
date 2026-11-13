@@ -19,9 +19,9 @@ Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Eng
 
 Every number below is reproducible from a clean clone. No figure in this README is typed by hand.
 
-| Figure (measured 2026-11-13, 4.68.1) | Reproduce it |
+| Figure (measured 2026-11-13, 4.69.0) | Reproduce it |
 |---|---|
-| 804 tests across 50 files | `npm test` |
+| 811 tests across 50 files | `npm test` |
 | 106 JavaScript modules | `git ls-files 'js/*.js' \| wc -l` |
 | 53 stylesheets | `git ls-files '*.css' \| wc -l` |
 | 2 runtime dependencies | `node -p "Object.keys(require('./package.json').dependencies).length"` |
@@ -32,16 +32,18 @@ This repository builds **four** independent pages from one Vite config. Count th
 yourself with `grep -c "resolve(import.meta.dirname" vite.config.js`, or read
 `build.rollupOptions.input` in that file:
 
+**Served paths are not source paths (4.69.0).** The studio's source is `studio/index.html` and it is served at `/`; the Monitor's source stays `index.html` (the nightly snapshot job and the studio tools edit it there) and it is served at `/monitor`. `tools/promote-studio.mjs` renames the two pages in the bundle and gives `npm run dev` / `preview` the same paths. `/studio` redirects to `/`.
+
 | Route | Entry | What it is |
 |---|---|---|
-| `/` | `index.html` + `css/monitor.css` + `js/monitor.js` | **THE MONITOR** — the hiring surface (4.62.0). A director's video village: program monitor, a switcher with one button per project, a slate with each project's receipt, and Crew / Reel / Call tabs. One tap reaches anything and no view scrolls. No framework, no OS code. |
+| `/` | `studio/index.html` + `css/studio.css` + `js/studio.js` + `js/studio/` | **THE STUDIO** — the home page since 4.69.0. The Monitor's 16 crew agents on a white soundstage in three.js, under a hiring masthead (open to roles, book a call, résumé, the Monitor). The room is modelled and light-baked in Blender (`tools/studio/build_set.py`), each station plays that source's real footage, an A camera covers one source at a time, the director's monitor opens Passion OS and the Digivice opens Passion. Reads the crew from `/monitor` and every number from `figures.json`. A first visit opens on a short pass across the lab, the Vegapunk board and the throne (4.67.0). Each station screen shows its real takes (commits) from git, a 14-day strip and the newest take's age, and a tally lamp burns red on stations that shipped in the last 24 hours (4.68.0). A device with no WebGL is sent to `/monitor`. Added at `/studio` in 4.65.0, baked set in 4.66.0. |
+| `/monitor` | `index.html` + `css/monitor.css` + `js/monitor.js` | **THE MONITOR** — the hiring surface from 4.62.0 to 4.68.1, `/` until the studio took it. A director's video village: program monitor, a switcher with one button per project, a slate with each project's receipt, and Crew / Reel / Call tabs. Every figure and link as plain HTML. The old Passion OS routes (`/about`, `/work`, `/resume`...) land here. |
 | `/os` | `os/index.html` + `js/main.js` | **Passion OS** — the desktop environment this README documents. Everything below describes this surface. |
 | `/coldopen` | `coldopen/index.html` | **COLD OPEN** — the writeup of the artist-site engine at [github.com/DareDev256/coldopen](https://github.com/DareDev256/coldopen). Added in 4.21.0. |
-| `/studio` | `studio/index.html` + `css/studio.css` + `js/studio.js` + `js/studio/` | **THE STUDIO** — the Monitor's 16 crew agents on a white soundstage in three.js. The room is modelled and light-baked in Blender (`tools/studio/build_set.py`), each station plays that source's real footage, an A camera covers one source at a time, the director's monitor opens Passion OS and the Digivice opens Passion. Reads the crew from `/` and every number from `figures.json`. A first visit opens on a short pass across the lab, the Vegapunk board and the throne (4.67.0). Each station screen shows its real takes (commits) from git, a 14-day strip and the newest take's age, and a tally lamp burns red on stations that shipped in the last 24 hours (4.68.0). Added in 4.65.0, baked set in 4.66.0, not indexed yet. |
 
 ### Rebuilding the studio set
 
-The room at `/studio` is baked, not hand-placed. When the Monitor gains or loses a
+The studio's room (at `/`) is baked, not hand-placed. When the Monitor gains or loses a
 source, the set must be rebaked (the page refuses a set baked for another crew size,
 and `tests/studio.test.js` goes red):
 
@@ -501,7 +503,7 @@ vercel --prod
 ```
 
 The project ships with a `vercel.json` that configures:
-- **Scoped rewrites** — `/os` and `/os/*` fall through to `os/index.html` for the OS router; everything except `/resume/*` falls through to the landing page at `index.html`
+- **Scoped rewrites** — `/os` and `/os/*` fall through to `os/index.html` for the OS router; the old OS routes (`/about`, `/work`, `/resume`, ...) fall through to the Monitor at `/monitor`; `/studio` redirects to `/`
 - **12 security headers** — CSP, HSTS (2-year preload), X-Frame-Options, COOP, COEP, CORP, Permissions-Policy, DNS prefetch control, download options, and cross-domain policies
 - **Service Worker cache control** — `no-cache` on `sw.js` to prevent stale worker versions
 - **Data endpoint caching** — 5-minute `Cache-Control` with `stale-while-revalidate` on `/data/*`

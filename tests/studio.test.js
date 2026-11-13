@@ -18,6 +18,8 @@ import { createTerminal, OPEN, LINKS } from '../js/studio/terminal.js';
 import { TOOL_IDS, MOTION } from '../js/studio/tools3d.js';
 import { TOOLS } from '../js/crew.js';
 import { applyStudioDoor } from '../js/studio-door.js';
+// existsSync comes from the node:fs import further down (imports hoist).
+import { SERVED, promoteStudio } from '../tools/promote-studio.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const read = (p) => readFileSync(resolve(root, p), 'utf8');
@@ -168,7 +170,8 @@ describe('terminal', () => {
     it('links only to pages the build ships or the outside world', () => {
         const vite = read('vite.config.js');
         const internal = [...LINKS.map(([, u]) => u), ...Object.values(OPEN)].filter((u) => u.startsWith('/')).map((u) => u.split(/[?#]/)[0]);
-        const pages = { '/': 'index.html', '/os': 'os/index.html', '/studio': 'studio/index.html' };
+        // Served path -> source file (4.69.0: the studio is /, the Monitor /monitor).
+        const pages = { '/': 'studio/index.html', '/monitor': 'index.html', '/os': 'os/index.html' };
         for (const p of internal) {
             expect(pages[p], `${p} is not a known page`).toBeDefined();
             expect(vite).toContain(`'${pages[p]}'`);
@@ -177,14 +180,90 @@ describe('terminal', () => {
 });
 
 describe('the way in and out', () => {
-    it('builds /studio and routes it', () => {
+    it('builds the studio and serves it at /, the Monitor at /monitor (4.69.0)', () => {
         expect(read('vite.config.js')).toContain("studio: resolve(import.meta.dirname, 'studio/index.html')");
-        const rw = JSON.parse(read('vercel.json')).rewrites;
-        expect(rw).toContainEqual({ source: '/studio', destination: '/studio/index.html' });
+        expect(SERVED).toEqual({ 'studio/index.html': 'index.html', 'index.html': 'monitor/index.html' });
+        const v = JSON.parse(read('vercel.json'));
+        // Old /studio links land on the home page; nothing still rewrites to a /studio file the build no longer ships.
+        expect(v.redirects).toContainEqual({ source: '/studio', destination: '/', permanent: true });
+        expect(v.redirects).toContainEqual({ source: '/studio/:path*', destination: '/', permanent: true });
+        expect(v.rewrites.filter((r) => r.destination.startsWith('/studio'))).toEqual([]);
+        expect(v.rewrites).toContainEqual({ source: '/monitor', destination: '/monitor/index.html' });
+        // The old Passion OS routes (/about, /work, /resume...) were always the content page: they stay on the Monitor.
+        const legacy = v.rewrites.find((r) => r.source.includes('about|work'));
+        expect(legacy.destination).toBe('/monitor/index.html');
     });
 
-    it('keeps the studio out of search until it takes /', () => {
-        expect(studio.querySelector('meta[name=robots]')?.getAttribute('content')).toBe('noindex');
+    it('swaps the two pages in the bundle, and refuses a bundle missing either', () => {
+        const gen = promoteStudio().generateBundle.handler;
+        const bundle = { 'index.html': { fileName: 'index.html', who: 'monitor' }, 'studio/index.html': { fileName: 'studio/index.html', who: 'studio' }, 'os/index.html': { fileName: 'os/index.html', who: 'os' } };
+        gen.call({ error: (m) => { throw new Error(m); } }, {}, bundle);
+        expect(Object.keys(bundle).sort()).toEqual(['index.html', 'monitor/index.html', 'os/index.html']);
+        expect(bundle['index.html']).toMatchObject({ who: 'studio', fileName: 'index.html' });
+        expect(bundle['monitor/index.html']).toMatchObject({ who: 'monitor', fileName: 'monitor/index.html' });
+        const half = { 'index.html': { fileName: 'index.html' } };
+        expect(() => gen.call({ error: (m) => { throw new Error(m); } }, {}, half)).toThrow(/must all be in the bundle/);
+    });
+
+    it('is the indexable home page, with the Monitor\'s identity and no typed figure', () => {
+        expect(studio.querySelector('meta[name=robots]')).toBeNull();
+        expect(studio.querySelector('link[rel=canonical]').getAttribute('href')).toBe('https://www.jamesdare.com');
+        const ld = (doc) => JSON.parse(doc.querySelector('script[type="application/ld+json"]').textContent);
+        const { name, ...rest } = ld(studio);
+        const { name: legal, ...monitorRest } = ld(home);
+        expect(name).toBe('James');
+        expect(legal).not.toBe(name);
+        expect(rest).toEqual(monitorRest);
+        expect(studio.querySelector('meta[name=description]').getAttribute('content')).not.toMatch(/\d/);
+        const og = studio.querySelector('meta[property="og:image"]').getAttribute('content');
+        expect(og).toBe('https://www.jamesdare.com/thumbnails/og-studio.jpg');
+        expect(existsSync(resolve(root, 'public', new URL(og).pathname.slice(1)))).toBe(true);
+        // The Monitor moved: its canonical says where it lives now.
+        expect(home.querySelector('link[rel=canonical]').getAttribute('href')).toBe('https://www.jamesdare.com/monitor');
+    });
+
+    it('says James, never a surname, in what a visitor reads', () => {
+        const seen = [studio.querySelector('title'), studio.querySelector('#mast'), studio.querySelector('#mirror')].map((n) => n.textContent).join(' ');
+        expect(seen).toMatch(/James/);
+        expect(seen).not.toMatch(/Olusoga|\bDare\b/);
+    });
+
+    it('offers the hiring doors from the masthead: book, résumé, the Monitor', () => {
+        const hrefs = [...studio.querySelectorAll('#mast .pills a')].map((a) => a.getAttribute('href'));
+        expect(hrefs[0]).toBe('/book');
+        expect(studio.querySelector('#mast .pills a.hot').getAttribute('href')).toBe('/book');
+        expect(hrefs).toContain('/monitor');
+        // The résumé opens through /cv: its file name carries the surname the page never shows.
+        expect(hrefs).toContain('/cv');
+        const cv = JSON.parse(read('vercel.json')).redirects.find((r) => r.source === '/cv');
+        expect(cv.permanent).toBe(false);
+        expect(existsSync(resolve(root, 'public', cv.destination.slice(1)))).toBe(true);
+        expect(hrefs).not.toContain('/');
+    });
+
+    it('reads the crew from /monitor, never from / (which is this page now)', () => {
+        const js = read('js/studio.js');
+        expect(js).toMatch(/const MONITOR_URL = '\/monitor';/);
+        expect(js).toMatch(/fetch\(MONITOR_URL,/);
+        expect(js).not.toMatch(/fetch\('\/'/);
+    });
+
+    it('sends a device with no WebGL to the Monitor instead of a blank home page', () => {
+        const js = read('js/studio.js');
+        const fallback = js.slice(js.indexOf("throw new Error('no context')"), js.indexOf('const small ='));
+        expect(fallback).toMatch(/location\.replace\(`\$\{MONITOR_URL\}/);
+        expect(studio.querySelector('#nogl a').getAttribute('href')).toBe('/monitor');
+    });
+
+    it('paints the name and the way to book before the set: the loader sits under the masthead', () => {
+        const css = read('css/studio.css');
+        const z = (sel) => Number(new RegExp(`\\n\\${sel} \\{[^}]*z-index: (\\d+)`).exec(css)?.[1]);
+        expect(z('.load')).toBeLessThan(z('.mast'));
+        expect(z('.nogl')).toBeGreaterThan(z('.mast'));
+    });
+
+    it('lists /monitor in the sitemap', () => {
+        expect(read('public/sitemap.xml')).toContain('<loc>https://www.jamesdare.com/monitor</loc>');
     });
 
     it('points the /os exit at the studio only for visitors from it', () => {
@@ -192,7 +271,7 @@ describe('the way in and out', () => {
         const a = os();
         expect(applyStudioDoor(a, '?from=studio')).toBe(true);
         const exit = a.querySelector('.top-bar-exit');
-        expect(exit.getAttribute('href')).toBe('/studio');
+        expect(exit.getAttribute('href')).toBe('/');
         expect(exit.textContent).toMatch(/THE STUDIO/);
         const b = os();
         expect(applyStudioDoor(b, '')).toBe(false);
@@ -206,7 +285,8 @@ describe('the way in and out', () => {
     });
 
     it('carries no inline script, which the site CSP would block', () => {
-        const inline = [...studio.querySelectorAll('script')].filter((s) => !s.getAttribute('src'));
+        // JSON-LD is data, never executed, so the CSP does not apply to it.
+        const inline = [...studio.querySelectorAll('script')].filter((s) => !s.getAttribute('src') && s.getAttribute('type') !== 'application/ld+json');
         expect(inline).toHaveLength(0);
     });
 });

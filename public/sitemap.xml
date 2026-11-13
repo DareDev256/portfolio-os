@@ -7,11 +7,20 @@
        Every <loc> is www, not the apex. The apex 307-redirects to www, so an
        apex <loc> asks Google to canonicalise onto a URL that does not serve the
        page — it splits ranking signal between two hosts instead of pooling it. -->
+  <!-- 4.69.0: / is the studio, a 3D set whose crew are the projects; the
+       Monitor, the same crew as a switcher with every figure and link in HTML,
+       moved to /monitor and stays a real page with its own canonical. -->
   <url>
     <loc>https://www.jamesdare.com/</loc>
-    <lastmod>2026-08-30</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.jamesdare.com/monitor</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.jamesdare.com/os</loc>

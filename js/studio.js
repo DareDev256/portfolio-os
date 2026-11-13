@@ -1,4 +1,4 @@
-/* studio.js: THE STUDIO at /studio (4.66.0).
+/* studio.js: THE STUDIO, the home page at / since 4.69.0 (at /studio from 4.65.0).
  *
  * The Monitor's crew, at work on a white soundstage. A canvas world (three
  * 0.170, the same pinned build /os loads) with a thin HUD over it:
@@ -38,7 +38,10 @@ const asOf = () => asOfLabel(state.generatedAt);
 const json = (url) => fetch(url, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 
 /* ---------- data: the crew from the Monitor, the numbers from figures.json ---------- */
-const crewP = fetch('/', { headers: { Accept: 'text/html' } })
+// The Monitor lives at /monitor since the studio took / (4.69.0). Reading / here
+// would read this page, find no switcher, and leave every station empty.
+const MONITOR_URL = '/monitor';
+const crewP = fetch(MONITOR_URL, { headers: { Accept: 'text/html' } })
     .then((r) => (r.ok ? r.text() : Promise.reject(new Error(`home ${r.status}`))))
     .then((html) => parseCrew(new DOMParser().parseFromString(html, 'text/html')))
     .catch(() => []);
@@ -59,9 +62,13 @@ try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
     if (!renderer.getContext()) throw new Error('no context');
 } catch {
+    // The home page cannot be a blank canvas: a device with no WebGL gets the
+    // Monitor, which carries every source and figure as plain HTML. The card
+    // stays up (with its link) for the moment the navigation takes.
     $('load').hidden = true;
     $('nogl').hidden = false;
-    throw new Error('studio: WebGL unavailable, showing the Monitor link');
+    location.replace(`${MONITOR_URL}?from=studio-nogl`);
+    throw new Error('studio: WebGL unavailable, sending the visitor to the Monitor');
 }
 const small = Math.min(innerWidth, innerHeight) < 700;
 renderer.setPixelRatio(Math.min(devicePixelRatio, small ? 1.75 : 2));
@@ -566,10 +573,15 @@ function ribbonText() {
 
 /* ---------- camera rig ---------- */
 const TARGET = new THREE.Vector3(0, 1.6, 0.2);
-const rig = { yaw: 0, pitch: 0.25, dist: 12.5, yawT: 0, pitchT: 0.25, distT: 12.5 };
 const view = { look: TARGET.clone() };
 let tween = null;
-const homeDist = () => { const a = innerWidth / innerHeight; return a < 0.8 ? 12.5 : a < 1.2 ? 13.5 : 12.5; };
+// The home shot per screen shape (4.69.0). A phone held upright looks down on the
+// set from higher and a little closer, so the crew fills the glass under the
+// masthead instead of floating in a band of empty cyc; wide screens keep the
+// eye-level shot. Picked from rendered frames at 390x844.
+const homeDist = () => { const a = innerWidth / innerHeight; return a < 0.8 ? 12 : a < 1.2 ? 13.5 : 12.5; };
+const homePitch = () => (narrowNow() ? 0.48 : 0.25);
+const rig = { yaw: 0, pitch: homePitch(), dist: homeDist(), yawT: 0, pitchT: homePitch(), distT: homeDist() };
 function rigPos(out) {
     return out.set(TARGET.x + Math.sin(rig.yaw) * Math.cos(rig.pitch) * rig.dist, TARGET.y + Math.sin(rig.pitch) * rig.dist, TARGET.z + Math.cos(rig.yaw) * Math.cos(rig.pitch) * rig.dist);
 }
@@ -582,7 +594,7 @@ function resize() {
     camera.aspect = innerWidth / innerHeight;
     camera.fov = narrowNow() ? 58 : 42;
     camera.updateProjectionMatrix();
-    if (state.mode === 'wide') rig.distT = homeDist();
+    if (state.mode === 'wide') { rig.distT = homeDist(); rig.pitchT = homePitch(); }
 }
 addEventListener('resize', resize);
 rig.dist = rig.distT = homeDist();
@@ -590,11 +602,11 @@ rig.dist = rig.distT = homeDist();
 /* the walk-in: the lab, the Vegapunk board, the throne, home (first visit; any input skips it) */
 let walk = null;
 let hintText = '';
-const HOME_PITCH = 0.25;
 function shotFor(name, dist) {
     if (name === 'home') {
         const d = homeDist();
-        return { pos: [TARGET.x, TARGET.y + Math.sin(HOME_PITCH) * d, TARGET.z + Math.cos(HOME_PITCH) * d], look: TARGET.toArray() };
+        const pt = homePitch();
+        return { pos: [TARGET.x, TARGET.y + Math.sin(pt) * d, TARGET.z + Math.cos(pt) * d], look: TARGET.toArray() };
     }
     const spot = cast.spots[name]();
     const look = spot.clone();

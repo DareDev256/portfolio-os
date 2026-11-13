@@ -11,14 +11,14 @@ const link = (href, text = href.replace(/^https?:\/\//, '')) => `<a href="${esc(
 
 export const LINKS = [
     ['Passion OS', '/os'],
-    ['The Monitor', '/'],
+    ['The Monitor', '/monitor'],
     ['Passion', 'https://passion.jamesdare.com'],
     ['GitHub', 'https://github.com/DareDev256'],
     ['fcp-mcp-server', 'https://github.com/DareDev256/fcp-mcp-server'],
     ['S-Tier Solutions', 'https://stiersolutions.ca'],
     ['tdotssolutionsz', 'https://tdotssolutionsz.com'],
 ];
-export const OPEN = { os: '/os?from=studio', passion: 'https://passion.jamesdare.com', github: 'https://github.com/DareDev256', monitor: '/' };
+export const OPEN = { os: '/os?from=studio', passion: 'https://passion.jamesdare.com', github: 'https://github.com/DareDev256', monitor: '/monitor' };
 export const COMMANDS = ['help', 'ls', 'cat', 'crew', 'gates', 'neofetch', 'whoami', 'date', 'open', 'clear', 'history', 'exit', 'sudo'];
 export const FILES = ['about.txt', 'links.txt', 'call-sheet.txt'];
 
@@ -57,7 +57,7 @@ export function createTerminal(ctx) {
             }
             case 'crew': {
                 const crew = ctx.crew();
-                if (!crew.length) return out('crew: the call sheet did not load. <span class="m">The Monitor has every source:</span> ' + link('/', 'jamesdare.com'));
+                if (!crew.length) return out('crew: the call sheet did not load. <span class="m">The Monitor has every source:</span> ' + link('/monitor', 'jamesdare.com/monitor'));
                 return out(crew.map((c, i) => `${String(i + 1).padStart(2, '0')}  <span style="color:${esc(c.tint)}">${esc(c.role.padEnd(13))}</span> ${esc(c.scene)}`).join('\n'));
             }
             case 'gates':

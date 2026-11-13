@@ -4,17 +4,57 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" />
 
     <script src="/ga4.js"></script>
     <script src="/va.js"></script>
     <script defer src="/_vercel/insights/script.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TG10CNCMJY"></script>
 
-    <title>The Studio | jamesdare.com</title>
-    <meta name="description" content="A white soundstage where sixteen AI agents work at stations showing live numbers. Walk the set, tap the crew, go into the computer." />
-    <!-- Not indexed until the studio beats the Monitor and takes /. -->
-    <meta name="robots" content="noindex" />
-    <link rel="canonical" href="https://www.jamesdare.com/studio" />
+    <!-- THE HOME PAGE since 4.69.0: this file is served at /, the Monitor (index.html)
+         at /monitor. vite.config.js does the swap; see the note there. No figure is
+         typed into this head: the numbers live on the set, read from their sources. -->
+    <title>James | Software Engineer, Production AI · Toronto</title>
+    <meta name="description" content="James, software engineer in Toronto, builds production AI. Walk the studio: every agent on set is a real project at work, each screen on its live numbers." />
+    <link rel="canonical" href="https://www.jamesdare.com" />
+
+    <!-- Open Graph / Social Sharing: the card is a real frame of the set. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="I direct agents. James, Software Engineer, Production AI" />
+    <meta property="og:description" content="Walk the studio: every agent on set is a real project at work, on its live numbers. Toronto." />
+    <meta property="og:url" content="https://www.jamesdare.com" />
+    <meta property="og:site_name" content="jamesdare.com" />
+    <meta property="og:image" content="https://www.jamesdare.com/thumbnails/og-studio.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The studio: a white soundstage of agents at their stations, each screen showing its project." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="I direct agents. James, Software Engineer, Production AI" />
+    <meta name="twitter:description" content="Walk the studio. Toronto." />
+    <meta name="twitter:image" content="https://www.jamesdare.com/thumbnails/og-studio.jpg" />
+
+    <!-- Structured Data: the Monitor's Person record, with the name as the site
+         says it ("James": public copy carries no surname while the name change
+         is pending). tests/studio.test.js keeps the rest identical to the Monitor's. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "James",
+      "alternateName": "DareDev256",
+      "url": "https://www.jamesdare.com",
+      "jobTitle": "Software Engineer",
+      "address": { "@type": "PostalAddress", "addressLocality": "Toronto", "addressRegion": "ON", "addressCountry": "CA" },
+      "worksFor": { "@type": "Organization", "name": "S-Tier Solutions Inc.", "url": "https://stiersolutions.ca", "sameAs": ["https://www.linkedin.com/company/s-tier-solutions-inc/"] },
+      "sameAs": [
+        "https://linkedin.com/in/james-olusoga",
+        "https://github.com/DareDev256",
+        "https://x.com/TdotsSolutionsz"
+      ],
+      "knowsAbout": ["AI Engineering", "Agent Infrastructure", "Full Stack Development", "Retrieval Augmented Generation", "Sports Analytics", "Music Video Direction"],
+      "seeks": { "@type": "Demand", "name": "Production AI engineering roles on a delivery team" }
+    }
+    </script>
     <link rel="icon" type="image/svg+xml" href="/assets/mahoraga-wheel.svg" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,17 +67,16 @@
     <canvas id="gl" aria-hidden="true"></canvas>
 
     <header class="mast" id="mast">
-        <div class="readout"><span>jamesdare.com</span><b>The Studio</b><span id="shift"></span></div>
+        <div class="readout"><span>James</span><b>Open to roles</b><span>Toronto</span><span id="shift"></span></div>
         <h1>I direct agents.</h1>
-        <p>Look around the set, tap a crew member, then go into the computer.</p>
+        <p>Software engineer, production AI. Every agent on this set is a real project at work: tap one for its numbers.</p>
         <nav class="pills" aria-label="Links">
-            <a class="hot" href="/os?from=studio">Passion OS</a>
-            <a href="/">The Monitor</a>
-            <a href="https://passion.jamesdare.com" rel="noopener">Passion</a>
+            <a class="hot" href="/book">Book a call</a>
+            <a href="/cv">Résumé</a>
+            <a href="/monitor">The Monitor</a>
+            <a href="/os?from=studio">Passion OS</a>
             <a href="https://github.com/DareDev256" rel="noopener">GitHub</a>
-            <a href="https://github.com/DareDev256/fcp-mcp-server" rel="noopener">fcp-mcp</a>
             <a href="https://stiersolutions.ca" rel="noopener">S-Tier</a>
-            <a href="https://tdotssolutionsz.com" rel="noopener">tdotssolutionsz</a>
         </nav>
     </header>
     <button class="ghost back hide" id="back" type="button">Back to the wide · Esc</button>
@@ -58,7 +97,7 @@
             <p class="call" id="sCall"><b>THE CALL</b><span id="sCallText"></span></p>
             <div class="stats" id="sStats"></div>
             <div class="takes" id="sTakes" hidden><div class="bars" id="sBars" role="img"></div><span id="sTakesLine"></span></div>
-            <div class="row"><a id="sLink" href="/" rel="noopener">See it live ↗</a><span class="asof" id="sAsof"></span></div>
+            <div class="row"><a id="sLink" href="/monitor" rel="noopener">See it live ↗</a><span class="asof" id="sAsof"></span></div>
         </div>
     </section>
 
@@ -126,7 +165,7 @@
         <div>
             <strong>This device could not start WebGL, so the set cannot render here.</strong>
             <span>The same crew, with every number, is on the Monitor.</span>
-            <a href="/">Open the Monitor →</a>
+            <a href="/monitor">Open the Monitor →</a>
         </div>
     </div>
 
@@ -152,7 +191,7 @@
             <li data-src="os">DIT: Passion OS</li>
             <li data-src="registry">PROD OFFICE: Registry</li>
         </ol>
-        <p>Every source, with its figures and links, is on the Monitor: <a href="/">jamesdare.com</a>.</p>
+        <p>Every source, with its figures and links, is on the Monitor: <a href="/monitor">jamesdare.com/monitor</a>.</p>
     </section>
 
     <script type="module" src="/js/studio.js"></script>
