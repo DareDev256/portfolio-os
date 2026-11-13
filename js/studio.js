@@ -26,6 +26,7 @@ import { loadSet } from './studio/set.js';
 import { createScreens, createRibbon } from './studio/screens.js';
 import { createCast, EXTRA_SLATES } from './studio/cast.js';
 import { buildBody } from './studio/rig.js';
+import { walkinPose, shouldWalkIn, WALKIN_KEY } from './studio/walkin.js';
 import { activitySummary, agentFeedLabel } from './monitor.js';
 
 const $ = (id) => document.getElementById(id);
@@ -559,6 +560,53 @@ function resize() {
 addEventListener('resize', resize);
 rig.dist = rig.distT = homeDist();
 
+/* the walk-in: the lab, the Vegapunk board, the throne, home (first visit; any input skips it) */
+let walk = null;
+let hintText = '';
+const HOME_PITCH = 0.25;
+function shotFor(name, dist) {
+    if (name === 'home') {
+        const d = homeDist();
+        return { pos: [TARGET.x, TARGET.y + Math.sin(HOME_PITCH) * d, TARGET.z + Math.cos(HOME_PITCH) * d], look: TARGET.toArray() };
+    }
+    const spot = cast.spots[name]();
+    const look = spot.clone();
+    let dir;
+    let lift;
+    if (name === 'robot') { dir = towardCamera(spot); lift = 1.5; look.y += 0.55; }
+    else if (name === 'poster') { dir = new THREE.Vector3(0, 0, 1); lift = -0.3; }
+    else { dir = new THREE.Vector3(Math.sin(-0.62), 0, Math.cos(-0.62)); lift = 0.7; }
+    const pos = spot.clone().addScaledVector(dir, dist * (narrowNow() ? 1.35 : 1));
+    pos.y += lift;
+    return { pos: pos.toArray(), look: look.toArray() };
+}
+function startWalkIn() {
+    let seenAt = null;
+    try { seenAt = localStorage.getItem(WALKIN_KEY); } catch { /* storage blocked: treat as a first visit */ }
+    if (!cast || !shouldWalkIn({ reduce, search: location.search, seenAt })) return;
+    try { localStorage.setItem(WALKIN_KEY, String(Date.now())); } catch { /* fine */ }
+    walk = { t: -0.6, cap: undefined };
+    hintText = hint.textContent;
+    const p = walkinPose(0, shotFor);
+    camera.position.fromArray(p.pos);
+    view.look.fromArray(p.look);
+}
+// Hand the camera back from wherever the pass is: the orbit takes over from
+// the camera's real position and glides into its limits, so nothing jumps.
+function endWalkIn() {
+    if (!walk) return;
+    walk = null;
+    hint.textContent = hintText;
+    hint.classList.remove('cap');
+    const o = camera.position.clone().sub(TARGET);
+    rig.dist = o.length();
+    rig.yaw = Math.atan2(o.x, o.z);
+    rig.pitch = Math.asin(THREE.MathUtils.clamp(o.y / rig.dist, -1, 1));
+    rig.yawT = THREE.MathUtils.clamp(rig.yaw, -0.95, 0.95);
+    rig.pitchT = THREE.MathUtils.clamp(rig.pitch, 0.08, 0.62);
+    rig.distT = THREE.MathUtils.clamp(rig.dist, 7, homeDist() + 3);
+}
+
 /* ---------- picking ---------- */
 const ray = new THREE.Raycaster();
 const ndc = new THREE.Vector2();
@@ -572,6 +620,7 @@ const tip = $('tip');
 let down = null;
 let hover = null;
 canvas.addEventListener('pointerdown', (e) => {
+    endWalkIn();
     down = { x: e.clientX, y: e.clientY, yaw: rig.yawT, pitch: rig.pitchT, t: performance.now(), moved: false };
     canvas.setPointerCapture(e.pointerId);
 });
@@ -612,11 +661,13 @@ canvas.addEventListener('pointerup', (e) => {
     else if (state.mode === 'focus') goWide();
 });
 canvas.addEventListener('wheel', (e) => {
+    endWalkIn();
     if (state.mode !== 'wide') return;
     e.preventDefault();
     rig.distT = THREE.MathUtils.clamp(rig.distT + e.deltaY * 0.01, 7, homeDist() + 3);
 }, { passive: false });
 addEventListener('keydown', (e) => {
+    endWalkIn();
     if (e.key === 'Escape') {
         if (state.mode === 'inside') leaveOS();
         else if (state.mode === 'passion') leavePassion();
@@ -652,6 +703,7 @@ function towardCamera(p) {
     return new THREE.Vector3(0 - p.x, 0, 12.3 - p.z).normalize();
 }
 function activate(h) {
+    endWalkIn();
     tip.hidden = true;
     if (h.type === 'agent') {
         const s = agents.find((x) => x.c.id === h.id);
@@ -924,6 +976,7 @@ const ready = Promise.all([crewP, figsP, setP, dataP]).then(([crew, j, baked]) =
     } else buildHandSet();
     crew.forEach((c, i) => makeAgent(c, i, crew.length));
     cast = createCast(THREE, { scene, M, RoundedBox: RoundedBoxGeometry, makeTool, hits, crew: agents });
+    if (crew.length) startWalkIn();
     applyFigures(j);
     if (!crew.length) $('hint').textContent = 'The crew did not load. Every source is on the Monitor at jamesdare.com';
 });
@@ -993,7 +1046,18 @@ function agentLife(s, t, dt, onAir, runAt) {
 function frame() {
     const dt = Math.min(clock.getDelta(), 0.1);
     const t = clock.elapsedTime;
-    if (tween) {
+    if (walk && state.mode === 'wide') {
+        walk.t += dt;
+        const p = walkinPose(Math.max(0, walk.t), shotFor);
+        camera.position.fromArray(p.pos);
+        view.look.fromArray(p.look);
+        if (p.cap !== walk.cap) {
+            walk.cap = p.cap;
+            hint.textContent = p.cap || hintText;
+            hint.classList.toggle('cap', !!p.cap);
+        }
+        if (p.done) endWalkIn();
+    } else if (tween) {
         tween.t += dt / tween.dur;
         const k = ease(Math.min(tween.t, 1));
         camera.position.lerpVectors(tween.p0, tween.p1, k);
@@ -1045,4 +1109,4 @@ function frame() {
 ready.finally(() => { setTimeout(() => { if (!shown) { shown = true; $('load').classList.add('off'); } }, 400); });
 document.fonts?.ready.then(() => { drawGates(); screens.refresh(); ribbonText(); cast?.redraw(); });
 requestAnimationFrame(frame);
-window.__studio = { activate, goWide, agents, state, screens, get cast() { return cast; } };
+window.__studio = { activate, goWide, agents, state, screens, rig, get cast() { return cast; }, get walk() { return walk; } };

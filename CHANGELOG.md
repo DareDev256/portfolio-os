@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.66.0
+version: 4.67.0
 last_updated: 2026-11-13
 
 ---
@@ -11,6 +11,13 @@ last_updated: 2026-11-13
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.67.0 — 2026-11-13 · The walk-in
+The lab, the Vegapunk board and the throne sit outside the opening frame, and on a phone nothing said they were there. The lab is worse: from every angle the wide orbit allows it hides behind the crew.
+
+- **A first visit opens on an establishing pass** (`js/studio/walkin.js`). The camera starts on the lab (the builder welding Robot 01), crosses to the Vegapunk board on the back wall, holds on the throne, then lands on the wide shot, about 8.6 seconds. The hint pill turns into a caption for each ("Stage left · the robot lab", "Back wall · Dr. Vegapunk", "Back right · the throne") and goes back to "Drag to look around" for the landing. Shots are framed from the props' real positions, so they follow `layout.js`.
+- **It never fights you.** Any touch, wheel, key or tap target ends it on the spot, and the orbit takes over from wherever the camera is and glides into its limits, so nothing jumps. It plays once a month per browser, never under reduced motion, and always with `?walkin` (for showing someone).
+- `tests/studio.test.js` grows to 45: the pass opens on the lab, captions in order, lands home, never moves more than half a unit in a frame, respects the monthly and reduced-motion rules, and every input handler ends it. All seven guards were broken on purpose and went red.
 
 ## 4.66.0 — 2026-11-13 · The studio, built in Blender, and alive
 James: "keep going on the Blender room… add more life to it… seeing what's really going on in the screen of each agent." Plus the easter eggs he asked for mid-build: the Monarch's throne, Vegapunk, a robot in the corner after Metabee.

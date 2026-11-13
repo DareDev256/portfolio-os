@@ -373,3 +373,71 @@ describe('the cast', () => {
         }
     });
 });
+
+/* THE WALK-IN (4.67.0): on a first visit the camera flies the lab, the Vegapunk
+ * board and the throne, then lands on the wide shot. Any input hands it back. */
+import { WALKIN, SHOTS, walkinPose, shouldWalkIn, WALKIN_AGAIN_MS } from '../js/studio/walkin.js';
+
+describe('the walk-in', () => {
+    // a stand-in camera: every shot sits at its own point, distance on x
+    const AT = { robot: [-8, 1, -4], poster: [-4, 3, -7], throne: [9, 2, -9], home: [0, 4.7, 12.3] };
+    const shotFor = (name, dist = 0) => ({ pos: [AT[name][0] + dist, AT[name][1], AT[name][2]], look: AT[name] });
+
+    it('opens on the lab, names the lab, the board and the throne in that order, and lands home', () => {
+        expect(walkinPose(0, shotFor).pos).toEqual(shotFor('robot', WALKIN[0].dist).pos);
+        expect(walkinPose(0, shotFor).cap).toMatch(/robot lab/);
+        const end = walkinPose(WALKIN[WALKIN.length - 1].t + 1, shotFor);
+        expect(end.done).toBe(true);
+        expect(end.pos).toEqual(AT.home);
+        expect(end.cap).toBeNull();
+        const caps = [];
+        for (let t = 0; t < 9; t += 0.05) {
+            const c = walkinPose(t, shotFor).cap;
+            if (caps[caps.length - 1] !== c) caps.push(c);
+        }
+        expect(caps).toEqual(['Stage left · the robot lab', 'Back wall · Dr. Vegapunk', 'Back right · the throne', null]);
+    });
+
+    it('only names shots the page can frame, in time order, and is short', () => {
+        for (let i = 0; i < WALKIN.length; i += 1) {
+            expect(SHOTS).toContain(WALKIN[i].shot);
+            if (i) expect(WALKIN[i].t).toBeGreaterThan(WALKIN[i - 1].t);
+        }
+        expect(WALKIN[WALKIN.length - 1].shot).toBe('home');
+        expect(WALKIN[WALKIN.length - 1].t).toBeLessThanOrEqual(10);
+    });
+
+    it('never jumps: one frame moves the camera a little, never a cut', () => {
+        let prev = walkinPose(0, shotFor).pos;
+        let most = 0;
+        for (let t = 1 / 60; t < 9; t += 1 / 60) {
+            const p = walkinPose(t, shotFor).pos;
+            most = Math.max(most, Math.hypot(p[0] - prev[0], p[1] - prev[1], p[2] - prev[2]));
+            prev = p;
+        }
+        expect(most).toBeGreaterThan(0);
+        expect(most).toBeLessThan(0.5);
+    });
+
+    it('plays once a month, never under reduced motion, and always on ?walkin', () => {
+        const now = 1_800_000_000_000;
+        expect(shouldWalkIn({ reduce: false, now })).toBe(true);
+        expect(shouldWalkIn({ reduce: false, seenAt: 'junk', now })).toBe(true);
+        expect(shouldWalkIn({ reduce: false, seenAt: String(now - 864e5), now })).toBe(false);
+        expect(shouldWalkIn({ reduce: false, seenAt: String(now - WALKIN_AGAIN_MS - 1), now })).toBe(true);
+        expect(shouldWalkIn({ reduce: true, now })).toBe(false);
+        expect(shouldWalkIn({ reduce: true, search: '?walkin', seenAt: String(now), now })).toBe(true);
+        expect(shouldWalkIn({ reduce: false, search: '?walking', now: now, seenAt: String(now) })).toBe(false);
+    });
+
+    it('hands the camera back on any touch, wheel, key or tap target', () => {
+        const src = read('js/studio.js');
+        const body = (marker) => src.slice(src.indexOf(marker), src.indexOf('\n}', src.indexOf(marker)) + 2);
+        expect(body("canvas.addEventListener('pointerdown'")).toContain('endWalkIn()');
+        expect(body("canvas.addEventListener('wheel'")).toContain('endWalkIn()');
+        expect(body("addEventListener('keydown', (e) => {\n    endWalkIn")).toContain('endWalkIn()');
+        expect(body('function activate(h)')).toContain('endWalkIn()');
+        // and the pass only runs in the wide shot, so a tap mid-pass is never fought
+        expect(src).toMatch(/if \(walk && state\.mode === 'wide'\)/);
+    });
+});

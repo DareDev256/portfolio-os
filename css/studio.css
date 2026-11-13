@@ -46,6 +46,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 
 /* hint, back, tooltip */
 .hint { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); font: 600 12px/1.4 var(--mono); color: var(--muted); background: rgba(255, 255, 255, 0.88); border: 1px solid var(--line); border-radius: 99px; padding: 8px 14px; white-space: nowrap; max-width: calc(100% - 32px); overflow: hidden; text-overflow: ellipsis; transition: opacity 0.4s; z-index: 5; }
+/* the walk-in names what is on screen: ink pill, tape-red dot */
+.hint.cap { color: #fff; background: var(--ink); border-color: var(--ink); }
+.hint.cap::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-right: 8px; vertical-align: 1px; }
 .back { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); top: calc(14px + env(safe-area-inset-top, 0px)); z-index: 6; }
 .tip { position: fixed; z-index: 7; pointer-events: none; font: 600 12px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; background: var(--ink); color: #fff; padding: 8px 10px; border-radius: 4px; transform: translate(14px, 14px); white-space: nowrap; }
 .tip i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 8px; }
