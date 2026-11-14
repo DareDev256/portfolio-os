@@ -862,11 +862,11 @@ describe('the anime Monarch', () => {
 
     it('ships as a glTF whose buffer and texture are plain files beside it, at the sizes it claims', () => {
         for (const b of gltf.buffers) {
-            expect(b.uri).toBe('monarch-anime.bin');
-            expect(statSync(resolve(root, 'public/assets/studio', b.uri)).size).toBe(b.byteLength);
+            expect(b.uri.split('?')[0]).toBe('monarch-anime.bin');
+            expect(statSync(resolve(root, 'public/assets/studio', b.uri.split('?')[0])).size).toBe(b.byteLength);
         }
-        expect(gltf.images.map((i) => i.uri).sort()).toEqual(['monarch-anime-shoe.webp', 'monarch-anime.webp']);
-        for (const i of gltf.images) expect(existsSync(resolve(root, 'public/assets/studio', i.uri))).toBe(true);
+        expect(gltf.images.map((i) => i.uri.split('?')[0]).sort()).toEqual(['monarch-anime-shoe.webp', 'monarch-anime.webp']);
+        for (const i of gltf.images) expect(existsSync(resolve(root, 'public/assets/studio', i.uri.split('?')[0]))).toBe(true);
         // no data: or blob: images, which the site CSP would block
         expect(JSON.stringify(gltf.images)).not.toMatch(/data:|blob:/);
         const total = ['monarch-anime.gltf', 'monarch-anime.bin', 'monarch-anime.webp', 'monarch-anime-shoe.webp'].reduce((n, f) => n + statSync(resolve(root, 'public/assets/studio', f)).size, 0);
@@ -931,9 +931,9 @@ describe('the anime Monarch', () => {
 describe('the hooded Monarch', () => {
     const g = JSON.parse(read('public/assets/studio/monarch-hood.gltf'));
     it('ships its glTF, buffer and two textures as plain files, light enough to load on a tap', () => {
-        const files = ['monarch-hood.gltf', ...g.buffers.map((b) => b.uri), ...g.images.map((i) => i.uri)];
-        expect(g.images.map((i) => i.uri).sort()).toEqual(['monarch-hood-shoe.webp', 'monarch-hood.webp']);
-        for (const b of g.buffers) expect(statSync(resolve(root, 'public/assets/studio', b.uri)).size).toBe(b.byteLength);
+        const files = ['monarch-hood.gltf', ...g.buffers.map((b) => b.uri.split('?')[0]), ...g.images.map((i) => i.uri.split('?')[0])];
+        expect(g.images.map((i) => i.uri.split('?')[0]).sort()).toEqual(['monarch-hood-shoe.webp', 'monarch-hood.webp']);
+        for (const b of g.buffers) expect(statSync(resolve(root, 'public/assets/studio', b.uri.split('?')[0])).size).toBe(b.byteLength);
         const total = files.reduce((n, f) => n + statSync(resolve(root, 'public/assets/studio', f)).size, 0);
         expect(total).toBeLessThan(800_000);
         const joints = g.skins[0].joints.map((j) => g.nodes[j].name);
@@ -947,4 +947,20 @@ describe('the hooded Monarch', () => {
         expect(cast).toMatch(/if \(fig\.anime\) monarch\.remove\(fig\.anime\.root\);/);
         expect(read('js/studio/monarch-anime.js')).toMatch(/eyes: eyeSprites \? \[bones\.L_Eye, bones\.R_Eye\] : \[\]/);
     });
+});
+
+/* 4.75.1: the .bin and .webp are cached for hours while the .gltf is revalidated, so every file a
+ * glTF names carries a hash of its bytes; a stale buffer can never be paired with a new glTF. */
+import { createHash } from 'node:crypto';
+describe('the Monarch glTFs bust the cache', () => {
+    for (const name of ['monarch-anime.gltf', 'monarch-hood.gltf']) {
+        it(`${name} names every file with the hash of its current bytes`, () => {
+            const g = JSON.parse(read('public/assets/studio/' + name));
+            for (const it of [...g.buffers, ...g.images]) {
+                const [file, q] = it.uri.split('?v=');
+                const hash = createHash('sha256').update(readFileSync(resolve(root, 'public/assets/studio', file))).digest('hex').slice(0, 10);
+                expect(q, `${name} -> ${file}`).toBe(hash);
+            }
+        });
+    }
 });

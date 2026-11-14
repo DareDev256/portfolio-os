@@ -299,5 +299,14 @@ for im in g.get('images', []):
     src_ = os.path.join(OUT, im['uri']); im['uri'] = want
     if os.path.abspath(src_) != os.path.join(os.path.abspath(OUT), want): os.replace(src_, os.path.join(OUT, want))
 if len({i['uri'] for i in g.get('images', [])}) != len(g.get('images', [])): refuse('two textures map to one file name')
+# cache-busting: the .bin and .webp are cached for hours, the .gltf is revalidated every load, so a
+# changed file must change its URI, or a browser pairs the new glTF with a stale buffer (4.75.1:
+# "Invalid typed array length" in James's Chrome, which fell back to the MPFB Monarch)
+import hashlib
+def _stamp(uri):
+    base = uri.split('?')[0]
+    return f"{base}?v={hashlib.sha256(open(os.path.join(OUT, base), 'rb').read()).hexdigest()[:10]}"
+for b_ in g.get('buffers', []): b_['uri'] = _stamp(b_['uri'])
+for im in g.get('images', []): im['uri'] = _stamp(im['uri'])
 json.dump(g, open(path, 'w'), separators=(',', ':'))
 print(f'build_monarch_anime: thigh {THIGH_UP}, {len(braids)} braid bones, seat {SEAT:.3f}, soles {sole:.3f}, wrote {path}')

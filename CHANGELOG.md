@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.75.0
+version: 4.75.1
 last_updated: 2026-11-14
 
 ---
@@ -11,6 +11,10 @@ last_updated: 2026-11-14
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.75.1 — 2026-11-14 · Fix: a cached buffer hid the anime Monarch
+
+James's Chrome showed the MPFB Monarch: "anime Monarch not used (Invalid typed array length: 1488)". The `.bin` and `.webp` are cached for 4 hours while the `.gltf` is revalidated on every load, so after 4.74.0 changed the buffer under the same name, his browser paired the new glTF with the 4.73.0 buffer. Every file a Monarch glTF names now carries a hash of its bytes (`monarch-anime.bin?v=...`), stamped by `build_monarch_anime.py`; a test recomputes each hash and fails if a file changes without its URI (checked by appending one byte to the buffer). Fresh-profile checks could not see this; the fix was verified in his own Chrome.
 
 ## 4.75.0 — 2026-11-14 · Arise: the hood comes up
 
