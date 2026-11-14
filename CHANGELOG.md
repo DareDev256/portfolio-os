@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.72.1
+version: 4.72.2
 last_updated: 2026-11-14
 
 ---
@@ -11,6 +11,10 @@ last_updated: 2026-11-14
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.72.2 — 2026-11-14 · A VRM bench (dev only)
+
+- **`tools/studio/vrm-bench.html`**: loads any VRM (a VRoid Studio export or a commissioned model) with @pixiv/three-vrm 3.5.5 from the CDN, seats it in the Monarch's pose on the normalized humanoid, and renders it in MToon, the anime shader VRM ships with, optionally with the violet line and rim. Not a build entry. Used to compare the current MPFB figure with the VRoid tier before choosing how the anime Monarch gets made.
 
 ## 4.72.1 — 2026-11-14 · Hair options for the Monarch (design, not shipped)
 
