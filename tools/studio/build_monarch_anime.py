@@ -2,12 +2,16 @@
 
 Run headless (no screen taken):
     /Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup --python-exit-code 1 \
-        -P tools/studio/build_monarch_anime.py -- <rigged.glb> <texture.png> [--out=DIR]
+        -P tools/studio/build_monarch_anime.py -- <rigged.glb> <texture.png> [--shoe=<j4.glb>] [--out=DIR]
 
 Inputs (kept outside the repo; they are Tripo outputs, not sources):
     rigged.glb   Tripo P2 multiview model (front/left/back design sheet) after Tripo's auto-rig
                  (rig-check biped, rig v3.0-20260909, spec tripo): 78 bones, faces +X, about 1 m.
     texture.png  its base colour with the Black Cat soles (tools/studio/blackcat_texture.py).
+    j4.glb       optional: a Tripo H3.1 image-to-model of one logo-free, all-black retro 4-style
+                 left sneaker (toe toward -Y). It replaces both shoes (the right one mirrored),
+                 fitted to each foot's length, direction and sole, rigid on the foot bone, its
+                 texture neutralised to Black Cat black (4.74.0).
 
 What it does, in order (each step was first done live in Blender over MCP, 2026-11-14):
     1. scale to 1.85 m and face -Y (glTF imports use QUATERNION rotation mode: set XYZ first);
@@ -203,6 +207,73 @@ for name, c in specs:
 node = next(n for n in me.materials[0].node_tree.nodes if n.type == 'TEX_IMAGE' and any(l.to_socket.name == 'Base Color' for l in n.outputs[0].links))
 img = bpy.data.images.load(TEX); img.name = 'monarch-anime'; node.image = img
 
+# ---- the Jordan 4s (optional): replace both shoes
+SHOE = next((a.split('=', 1)[1] for a in ARGS if a.startswith('--shoe=')), None)
+if SHOE:
+    import bmesh as _bm
+    names = {g.index: g.name for g in mesh.vertex_groups}
+    def _side(v):
+        if not v.groups: return None
+        n = names[max(v.groups, key=lambda g: g.weight).group]
+        return n[0] if any(k in n for k in ('Foot', 'ToeBase')) else None
+    info = {}
+    for s_ in 'LR':
+        pts = [v.co.copy() for v in me.vertices if _side(v) == s_]
+        if len(pts) < 50: refuse(f'{s_} shoe has {len(pts)} points')
+        ank = arm.data.bones[f'{s_}_Foot'].head_local.copy(); toe = arm.data.bones[f'{s_}_ToeBase'].head_local.copy()
+        fwd = toe - ank; fwd.z = 0; fwd.normalize()
+        along = [(p - ank).dot(fwd) for p in pts]
+        info[s_] = dict(ank=ank, fwd=fwd, sole=min(p.z for p in pts), back=min(along), front=max(along))
+    b = _bm.new(); b.from_mesh(me); dl = b.verts.layers.deform.active
+    def _bs(v):
+        if not v[dl]: return False
+        n = names[max(v[dl].items(), key=lambda kv: kv[1])[0]]
+        return any(k in n for k in ('Foot', 'ToeBase'))
+    kill = [f for f in b.faces if sum(_bs(v) for v in f.verts) * 2 > len(f.verts)]
+    _bm.ops.delete(b, geom=kill, context='FACES'); _bm.ops.delete(b, geom=[v for v in b.verts if not v.link_faces], context='VERTS')
+    b.to_mesh(me); b.free(); me.update()
+    before = set(bpy.data.objects)
+    bpy.ops.import_scene.gltf(filepath=SHOE)
+    snew = [o for o in bpy.data.objects if o not in before]
+    src = max((o for o in snew if o.type == 'MESH'), key=lambda o: len(o.data.polygons))
+    src.parent = None
+    sp = [src.matrix_world @ v.co for v in src.data.vertices]
+    slo = Vector((min(p.x for p in sp), min(p.y for p in sp), min(p.z for p in sp))); shi = Vector((max(p.x for p in sp), max(p.y for p in sp), max(p.z for p in sp)))
+    if (shi.y - slo.y) < (shi.x - slo.x): refuse('the shoe model is not toe-along-Y')
+    # Black Cat: neutral black, not Tripo's blue-grey
+    simg = next(n.image for n in src.data.materials[0].node_tree.nodes if n.type == 'TEX_IMAGE')
+    import numpy as np
+    px = np.array(simg.pixels[:], dtype=np.float32).reshape(-1, 4)
+    grey = px[:, :3].mean(axis=1, keepdims=True)
+    px[:, :3] = (grey * 0.8 + px[:, :3] * 0.2) * 0.72
+    simg.pixels[:] = px.ravel().tolist(); simg.update(); simg.name = 'monarch-anime-shoe'
+    dm = src.modifiers.new('decimate', 'DECIMATE'); dm.ratio = 0.5  # shoes are small on screen: half the faces
+    bpy.ops.object.select_all(action='DESELECT'); src.select_set(True); bpy.context.view_layer.objects.active = src
+    bpy.ops.object.modifier_apply(modifier=dm.name)
+    uvname = me.uv_layers.active.name; made = []
+    for s_, mirror in (('L', False), ('R', True)):
+        i = info[s_]; k = (i['front'] - i['back']) * 1.08 / (shi.y - slo.y)
+        o = src.copy(); o.data = src.data.copy(); bpy.context.scene.collection.objects.link(o)
+        heel = Vector(((slo.x + shi.x) / 2, shi.y, slo.z))
+        yaw = math.atan2(i['fwd'].x, -i['fwd'].y)
+        o.matrix_world = (Matrix.Translation(i['ank'] + i['fwd'] * i['back'] - Vector((0, 0, i['ank'].z - i['sole']))) @ Matrix.Rotation(-yaw, 4, 'Z')
+                          @ Matrix.Scale(k, 4) @ (Matrix.Scale(-1, 4, Vector((1, 0, 0))) if mirror else Matrix()) @ Matrix.Translation(-heel) @ src.matrix_world)
+        bpy.ops.object.select_all(action='DESELECT'); o.select_set(True); bpy.context.view_layer.objects.active = o
+        bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+        if mirror:
+            b = _bm.new(); b.from_mesh(o.data); _bm.ops.reverse_faces(b, faces=b.faces[:]); b.to_mesh(o.data); b.free()
+        o.data.uv_layers.active.name = uvname
+        g = o.vertex_groups.new(name=f'{s_}_Foot'); g.add(list(range(len(o.data.vertices))), 1.0, 'REPLACE')
+        made.append(o)
+    bpy.ops.object.select_all(action='DESELECT')
+    for o in made: o.select_set(True)
+    mesh.select_set(True); bpy.context.view_layer.objects.active = mesh
+    bpy.ops.object.join()
+    me = mesh.data
+    for o in snew:
+        if o.name in bpy.data.objects: bpy.data.objects.remove(o, do_unlink=True)
+    print(f'build_monarch_anime: Jordan 4s fitted, {len(kill)} old shoe faces replaced')
+
 # ---- 6. place in the Monarch's frame and export
 names = {g.index: g.name for g in mesh.vertex_groups}
 hip = arm.data.bones['Hip'].head_local.copy()
@@ -219,7 +290,9 @@ path = os.path.join(OUT, 'monarch-anime.gltf')
 bpy.ops.export_scene.gltf(filepath=path, use_selection=True, export_format='GLTF_SEPARATE', export_skins=True, export_animations=False, export_yup=True, export_image_format='WEBP', export_image_quality=85)
 g = json.load(open(path))
 for im in g.get('images', []):
-    src = os.path.join(OUT, im['uri']); im['uri'] = 'monarch-anime.webp'
-    if os.path.abspath(src) != os.path.join(os.path.abspath(OUT), 'monarch-anime.webp'): os.replace(src, os.path.join(OUT, 'monarch-anime.webp'))
+    want = 'monarch-anime-shoe.webp' if 'shoe' in im.get('name', '') or 'shoe' in im['uri'] else 'monarch-anime.webp'
+    src_ = os.path.join(OUT, im['uri']); im['uri'] = want
+    if os.path.abspath(src_) != os.path.join(os.path.abspath(OUT), want): os.replace(src_, os.path.join(OUT, want))
+if len({i['uri'] for i in g.get('images', [])}) != len(g.get('images', [])): refuse('two textures map to one file name')
 json.dump(g, open(path, 'w'), separators=(',', ':'))
 print(f'build_monarch_anime: {len(braids)} braid bones, seat {SEAT:.3f}, soles {sole:.3f}, wrote {path}')

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.73.0
+version: 4.74.0
 last_updated: 2026-11-14
 
 ---
@@ -11,6 +11,11 @@ last_updated: 2026-11-14
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.74.0 — 2026-11-14 · Jordan 4 Black Cats
+
+- The Monarch wears real Jordan 4-shaped sneakers: one logo-free, all-black retro 4-style reference image went through Tripo H3.1 image-to-model (texture v3.5 with delight, 30 credits), and `build_monarch_anime.py --shoe=` replaces both shoes with it (the right one mirrored), fitted to each foot's length, direction and sole, rigid on the foot bone, halved to keep it light, its blue-grey texture neutralised to Black Cat black. The shoe texture ships as `monarch-anime-shoe.webp`.
+- Files: 732 KB in all (budget raised to 800 KB). Tests check both textures exist and nothing is a data or blob image.
 
 ## 4.73.0 — 2026-11-14 · The anime Monarch takes the throne
 

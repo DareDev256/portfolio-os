@@ -865,12 +865,12 @@ describe('the anime Monarch', () => {
             expect(b.uri).toBe('monarch-anime.bin');
             expect(statSync(resolve(root, 'public/assets/studio', b.uri)).size).toBe(b.byteLength);
         }
-        expect(gltf.images.map((i) => i.uri)).toEqual(['monarch-anime.webp']);
-        expect(existsSync(resolve(root, 'public/assets/studio/monarch-anime.webp'))).toBe(true);
+        expect(gltf.images.map((i) => i.uri).sort()).toEqual(['monarch-anime-shoe.webp', 'monarch-anime.webp']);
+        for (const i of gltf.images) expect(existsSync(resolve(root, 'public/assets/studio', i.uri))).toBe(true);
         // no data: or blob: images, which the site CSP would block
         expect(JSON.stringify(gltf.images)).not.toMatch(/data:|blob:/);
-        const total = ['monarch-anime.gltf', 'monarch-anime.bin', 'monarch-anime.webp'].reduce((n, f) => n + statSync(resolve(root, 'public/assets/studio', f)).size, 0);
-        expect(total).toBeLessThan(600_000);
+        const total = ['monarch-anime.gltf', 'monarch-anime.bin', 'monarch-anime.webp', 'monarch-anime-shoe.webp'].reduce((n, f) => n + statSync(resolve(root, 'public/assets/studio', f)).size, 0);
+        expect(total).toBeLessThan(800_000);
     });
 
     it('is skinned to a skeleton with the head, eyes and a bone per braid strand', () => {
