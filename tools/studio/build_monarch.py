@@ -334,7 +334,9 @@ def add_twists(bm):
     knot = bmesh.ops.create_uvsphere(bm, u_segments=8, v_segments=6, radius=0.012)
     for v in knot['verts']:
         v.co = root + v.co
-    for f in {f for v in knot['verts'] for f in v.link_faces}:
+    kf = list({f for v in knot['verts'] for f in v.link_faces})
+    bmesh.ops.recalc_face_normals(bm, faces=kf)
+    for f in kf:
         f.material_index = mi
     for k in range(7):
         a = k / 7 * math.tau
@@ -344,7 +346,9 @@ def add_twists(bm):
         res = bmesh.ops.create_cone(bm, cap_ends=True, cap_tris=True, segments=5, radius1=0.0048, radius2=0.0028, depth=length)
         rot = Vector((0, 0, 1)).rotation_difference(d).to_matrix().to_4x4()
         bmesh.ops.transform(bm, matrix=Matrix.Translation(start + d * (length / 2)) @ rot, verts=res['verts'])
-        for f in {f for v in res['verts'] for f in v.link_faces}:
+        tf = list({f for v in res['verts'] for f in v.link_faces})
+        bmesh.ops.recalc_face_normals(bm, faces=tf)
+        for f in tf:
             f.material_index = mi
 
 
@@ -360,7 +364,12 @@ def add_collar(bm):
     rot = Vector((0, 0, 1)).rotation_difference(axis).to_matrix().to_4x4()
     bmesh.ops.transform(bm, matrix=Matrix.Translation(c + axis * 0.006) @ rot, verts=res['verts'])
     mi = ZONES.index('top')
-    for f in {f for v in res['verts'] for f in v.link_faces}:
+    cf = list({f for v in res['verts'] for f in v.link_faces})
+    bm.normal_update()
+    out = sum((f.calc_center_median() - c).dot(f.normal) for f in cf)
+    if out < 0:
+        bmesh.ops.reverse_faces(bm, faces=cf)
+    for f in cf:
         f.material_index = mi
     return r
 
@@ -386,7 +395,7 @@ def add_shoes(bm):
         d = (rig.matrix_world @ pb[f'ball_{s}'].tail) - ankle
         d.z = 0
         d.normalize()
-        w = up.cross(d).normalized()
+        w = d.cross(up).normalized()  # (w, d, up) right-handed: up x d mirrors the frame and turns the shoe inside out
         t = [(posed[i] - ankle).dot(d) for i in idx]
         u = [(posed[i] - ankle).dot(w) for i in idx]
         ground = min(posed[i].z for i in idx)
@@ -408,8 +417,14 @@ def add_shoes(bm):
             v.co = frame @ Vector((x * (W / 2 + 0.004), y * (L / 2 + 0.006), z + SOLE / 2))
         for res, z in ((upper, 'shoe'), (sole, 'sole')):
             mi = ZONES.index(z)
-            for f in {f for v in res['verts'] for f in v.link_faces}:
+            faces = list({f for v in res['verts'] for f in v.link_faces})
+            bmesh.ops.recalc_face_normals(bm, faces=faces)  # bmesh primitives can come out inward
+            for f in faces:
                 f.material_index = mi
+            centre = sum((v.co for v in res['verts']), Vector()) / len(res['verts'])
+            vol = sum((f.calc_center_median() - centre).dot(f.normal) * f.calc_area() for f in faces)
+            if vol <= 0:
+                refuse(f'the {s} {z} is inside out (signed volume {vol:.5f})')
 
 
 def decimate(bm, ratio, name):

@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.70.0
+version: 4.71.0
 last_updated: 2026-11-14
 
 ---
@@ -11,6 +11,16 @@ last_updated: 2026-11-14
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.71.0 — 2026-11-14 · The anime look, behind a switch
+
+James asked for the 3D models in a cool animated style, with the Monarch staying a shadowy him. The bar comes from his own X likes: the clearest anime-in-3D post among them is @suji_pop's character test (11-11), with cel shading, ink lines and flat bold colour. Around it are anime openings, JJK and One Piece edits, felt puppets and low-poly dioramas.
+
+- **`?look=anime`** (`js/studio/anime.js`). Every lit figure on the set becomes `MeshToonMaterial` on a 3-band ramp, keeping its colour, maps and emissive, plus a hard rim light. Each one gets an ink outline: an inverted hull pushed out in clip space, so the line keeps its width on screen, thins with distance (down to 55%) and fogs like the room. The baked room stays as Blender lit it, which is how anime is drawn: painted backgrounds, cel characters. Screens, glows and hit boxes are never touched.
+- **The throne is drawn as shadows.** The Monarch and his two shadows take a dark ramp, a violet line and a strong violet rim, so he reads as a shadow of James, with the cap, goatee and glowing eyes still his.
+- **Off by default.** `/` is unchanged and `?look=anime` shows the new look. Cost: 435 meshes gain a line; draw calls are 480 against 289 on a phone and 978 against 580 on a laptop, so it waits for a real-phone check and James's pick.
+- **Fixed: the Monarch's sneakers were inside out (4.70.0).** The sneaker frame was built as `up × d`, a mirrored basis, so the uppers' faces pointed in. The plain look hid it; the ink line drew each shoe as a solid violet blob. The basis is now right-handed and every generated solid (shoes, soles, twists, the collar) has its normals recomputed. The builder refuses an inside-out solid; it caught the soles on the first run.
+- **Tests.** 824 (was 819). A signed-volume test on the shipped shoes, soles and twists fails on the 4.70.0 bytes (shoe volume -0.0053) and passes now. The look tests cover: off unless asked, only known looks, ink sized in device pixels, the throne drawn in the shadow variant, and the hand-built cyc never outlined.
 
 ## 4.70.0 — 2026-11-14 · The Monarch looks like James
 

@@ -263,6 +263,9 @@ export function createCast(THREE, k) {
     }
     hitBox(throne, 1.5, 3.6, 1.6, y0 + 1.6, { type: 'throne', id: 'throne', label: 'The Monarch · James, after hours', tint: '#8f6bff' }).position.z = -0.7;
     shadowAll(throne);
+    // the throne's figures take the shadow variant of whatever look the page is in
+    k.onFigure?.(monarch, 'shadow');
+    shadows.forEach((r) => k.onFigure?.(r.a, 'shadow'));
     const smoke = [];
     for (let i = 0; i < 26; i++) {
         const s = glowSprite('rgba(34,22,66,0.55)', 0.5);
@@ -297,6 +300,7 @@ export function createCast(THREE, k) {
         }
         Object.assign(fig, { head: built.head, torso: built.body, breathe: 0.004, halo: 0.09, headY: built.head.position.y, built: true, tris: built.tris });
         shadowAll(monarch);
+        k.onFigure?.(monarch, 'shadow');
     });
     let arise = 0;
 

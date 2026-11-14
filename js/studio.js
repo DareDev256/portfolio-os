@@ -25,6 +25,7 @@ import { CENTER, RISER, STATION, stationPose, DESK, CHAIR, MONITOR, DIGIVICE, FL
 import { loadSet } from './studio/set.js';
 import { createScreens, createRibbon } from './studio/screens.js';
 import { createCast, EXTRA_SLATES } from './studio/cast.js';
+import { lookFrom, toonify, inkSize } from './studio/anime.js';
 import { buildBody } from './studio/rig.js';
 import { walkinPose, shouldWalkIn, WALKIN_KEY } from './studio/walkin.js';
 import { activitySummary, agentFeedLabel } from './monitor.js';
@@ -79,6 +80,11 @@ renderer.toneMapping = THREE.NeutralToneMapping;
 const night = isNightShift(torontoHour());
 document.documentElement.dataset.shift = night ? 'night' : 'day';
 renderer.toneMappingExposure = night ? 0.92 : 1.05;
+
+// the cel look (4.71.0): ?look=anime, behind a switch until James picks it
+const LOOK = lookFrom(location.search);
+document.documentElement.dataset.look = LOOK;
+const anime = { cache: new Map(), inks: new Map(), meshes: 0 };
 
 const scene = new THREE.Scene();
 const ground = night ? 0xeceef2 : 0xffffff;
@@ -146,6 +152,7 @@ function buildHandSet() {
     g.computeVertexNormals();
     const cyc = new THREE.Mesh(g, M.cyc);
     cyc.receiveShadow = true;
+    cyc.userData.noToon = true;
     scene.add(cyc);
 
     const desk = new THREE.Group();
@@ -589,8 +596,18 @@ const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 function flyTo(pos, look, dur = 1.25, done) {
     tween = { p0: camera.position.clone(), l0: view.look.clone(), p1: pos.clone(), l1: look.clone(), t: 0, dur: reduce ? 0.01 : dur, done };
 }
+function sizeInk() {
+    const c = renderer.domElement;
+    for (const m of anime.inks.values()) m.uniforms.uPx.value.set(...inkSize(m.userData.inkWidth, c.width, c.height, renderer.getPixelRatio()));
+}
+function animeApply(root, variant = 'crew') {
+    if (LOOK !== 'anime') return;
+    anime.meshes += toonify(THREE, root, { variant, cache: anime.cache, inks: anime.inks }).meshes;
+    sizeInk();
+}
 function resize() {
     renderer.setSize(innerWidth, innerHeight, false);
+    sizeInk();
     camera.aspect = innerWidth / innerHeight;
     camera.fov = narrowNow() ? 58 : 42;
     camera.updateProjectionMatrix();
@@ -1041,7 +1058,8 @@ const ready = Promise.all([crewP, figsP, setP, dataP]).then(([crew, j, baked]) =
         addShadowCatchers();
     } else buildHandSet();
     crew.forEach((c, i) => makeAgent(c, i, crew.length));
-    cast = createCast(THREE, { scene, M, RoundedBox: RoundedBoxGeometry, makeTool, hits, crew: agents });
+    cast = createCast(THREE, { scene, M, RoundedBox: RoundedBoxGeometry, makeTool, hits, crew: agents, onFigure: animeApply });
+    animeApply(scene, 'crew');
     if (crew.length) startWalkIn();
     applyFigures(j);
     if (!crew.length) $('hint').textContent = 'The crew did not load. Every source is on the Monitor at jamesdare.com';
@@ -1182,4 +1200,4 @@ function frame() {
 ready.finally(() => { setTimeout(() => { if (!shown) { shown = true; $('load').classList.add('off'); } }, 400); });
 document.fonts?.ready.then(() => { drawGates(); screens.refresh(); ribbonText(); cast?.redraw(); });
 requestAnimationFrame(frame);
-window.__studio = { activate, goWide, agents, state, screens, rig, get cast() { return cast; }, get walk() { return walk; } };
+window.__studio = { activate, goWide, agents, state, screens, rig, get cast() { return cast; }, get walk() { return walk; }, get look() { return { look: LOOK, meshes: anime.meshes, calls: renderer.info.render.calls }; } };

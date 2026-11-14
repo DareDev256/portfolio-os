@@ -742,6 +742,18 @@ describe('the Monarch', () => {
         function soles() { return zonePoints('body', 'sole').map((p) => p[1]); }
     });
 
+    it('ships the solids it generated right side out (an inside-out shoe renders as its own outline)', () => {
+        for (const z of ['shoe', 'sole', 'hair']) {
+            const p = zonePoints(z === 'hair' ? 'head' : 'body', z);
+            let vol = 0;
+            for (let i = 0; i < p.length; i += 3) {
+                const [a, b, c] = [p[i], p[i + 1], p[i + 2]];
+                vol += (a[0] * (b[1] * c[2] - b[2] * c[1]) - a[1] * (b[0] * c[2] - b[2] * c[0]) + a[2] * (b[0] * c[1] - b[1] * c[0])) / 6;
+            }
+            expect(vol, z).toBeGreaterThan(0);
+        }
+    });
+
     it('carries the look in zones and the palette in code: every zone has geometry and a material', () => {
         const zones = new Set();
         for (const mesh of [built.body, built.head.children[0]]) {
@@ -780,5 +792,42 @@ describe('the Monarch', () => {
             expect(files.filter((f) => /\.(jpe?g|heic|png)$/i.test(f)), dir).toEqual([]);
         }
         expect(read('tools/studio/build_monarch.py')).toMatch(/no\s+photo is stored in this repo/);
+    });
+});
+
+/* THE ANIME LOOK (4.71.0): cel bands, ink lines and a shadow variant for the
+ * throne, behind ?look=anime until James picks it. */
+import { lookFrom, inkSize, INK, DEFAULT_LOOK } from '../js/studio/anime.js';
+
+describe('the anime look', () => {
+    it('is off unless the address asks for it, and only takes a known look', () => {
+        expect(DEFAULT_LOOK).toBe('clean');
+        expect(lookFrom('')).toBe('clean');
+        expect(lookFrom('?look=anime')).toBe('anime');
+        expect(lookFrom('?walkin&look=anime')).toBe('anime');
+        expect(lookFrom('?look=clean')).toBe('clean');
+        expect(lookFrom('?look=<script>')).toBe('clean');
+    });
+
+    it('sizes the ink in device pixels, the same on every screen shape', () => {
+        const [x, y] = inkSize(2, 1000, 500, 2);
+        expect(x).toBeCloseTo(0.008, 6);
+        expect(y).toBeCloseTo(0.016, 6);
+        expect(inkSize(2, 0, 0, 1).every(Number.isFinite)).toBe(true);
+    });
+
+    it('draws the throne as shadows: a violet line and a darker ramp than the crew', () => {
+        expect(INK.shadow.color).not.toBe(INK.crew.color);
+        expect(Math.max(...INK.shadow.bands)).toBeLessThan(Math.max(...INK.crew.bands));
+        const cast = read('js/studio/cast.js');
+        expect(cast).toMatch(/k\.onFigure\?\.\(monarch, 'shadow'\);[\s\S]*k\.onFigure\?\.\(monarch, 'shadow'\)/);
+        expect(cast).toMatch(/shadows\.forEach\(\(r\) => k\.onFigure\?\.\(r\.a, 'shadow'\)\)/);
+    });
+
+    it('is applied to the whole live set after the cast, never to the hand-built cyc', () => {
+        const js = read('js/studio.js');
+        expect(js).toMatch(/onFigure: animeApply \}\);\n {4}animeApply\(scene, 'crew'\);/);
+        expect(js).toMatch(/cyc\.userData\.noToon = true;/);
+        expect(js).toMatch(/if \(LOOK !== 'anime'\) return;/);
     });
 });
