@@ -925,3 +925,26 @@ describe('the anime Monarch', () => {
         expect(read('js/studio/springs.js')).toMatch(/Math\.min\(Math\.max\(dt, 0\), o\.maxDt\)/);
     });
 });
+
+/* THE HOODED MONARCH (4.75.0): an all-black belted trench, hood up, the eyes the only colour.
+ * Each Arise swaps between it and the braids, loaded the first time it is asked for. */
+describe('the hooded Monarch', () => {
+    const g = JSON.parse(read('public/assets/studio/monarch-hood.gltf'));
+    it('ships its glTF, buffer and two textures as plain files, light enough to load on a tap', () => {
+        const files = ['monarch-hood.gltf', ...g.buffers.map((b) => b.uri), ...g.images.map((i) => i.uri)];
+        expect(g.images.map((i) => i.uri).sort()).toEqual(['monarch-hood-shoe.webp', 'monarch-hood.webp']);
+        for (const b of g.buffers) expect(statSync(resolve(root, 'public/assets/studio', b.uri)).size).toBe(b.byteLength);
+        const total = files.reduce((n, f) => n + statSync(resolve(root, 'public/assets/studio', f)).size, 0);
+        expect(total).toBeLessThan(800_000);
+        const joints = g.skins[0].joints.map((j) => g.nodes[j].name);
+        for (const b of MONARCH_ANIME_BONES) expect(joints).toContain(b);
+    });
+    it('comes up on Arise and goes back on the next, without glow sprites over its painted eyes', () => {
+        const cast = read('js/studio/cast.js');
+        expect(cast).toMatch(/arise: \(\) => \{ arise = 1\.6; swapHood\(\); \}/);
+        expect(cast).toMatch(/const want = fig\.hood \? MONARCH_ANIME : MONARCH_HOOD;/);
+        expect(cast).toMatch(/eyeSprites: want !== MONARCH_HOOD/);
+        expect(cast).toMatch(/if \(fig\.anime\) monarch\.remove\(fig\.anime\.root\);/);
+        expect(read('js/studio/monarch-anime.js')).toMatch(/eyes: eyeSprites \? \[bones\.L_Eye, bones\.R_Eye\] : \[\]/);
+    });
+});

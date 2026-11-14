@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.74.0
+version: 4.75.0
 last_updated: 2026-11-14
 
 ---
@@ -11,6 +11,12 @@ last_updated: 2026-11-14
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.75.0 — 2026-11-14 · Arise: the hood comes up
+
+- **The hooded Monarch** (`monarch-hood.*`): an all-black belted, double-breasted trench in the spirit of James's Rudsak Sawyer (no violet trim; the eyes are the only colour), a black hoodie with the hood up over the braids, a black turtleneck, black trousers, the Jordan 4 Black Cats. The design sheet was edited from the braids sheet, then Tripo P2 multiview and the auto-rig (135 credits), then `build_monarch_anime.py --name=monarch-hood --braids=0 --thigh=-0.28` (the soles guard refused -0.14 at -0.447 and -0.45 at -0.560; -0.28 lands them at -0.500).
+- **Arise swaps them.** Tapping the throne raises the hood; the next Arise drops it. The hooded model downloads the first time it is asked for (about 0.7 MB) and both are kept after that. Its texture paints violet eyes that the glow ink lights, so it takes no glow sprites (its eye bones sit off the painted eyes).
+- Tests (833): the hooded files and sizes, its skeleton, the Arise swap wiring, no sprites over its eyes. Checked in a browser: braids at start, hood after the first Arise, braids after the second.
 
 ## 4.74.0 — 2026-11-14 · Jordan 4 Black Cats
 

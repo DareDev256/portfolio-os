@@ -12,7 +12,7 @@
 import { buildBody, stride } from './rig.js';
 import { stationPoint, CENTER, DOLLY, CRAFT, THRONE, LAB, POSTER, FLAT } from './layout.js';
 import { loadMonarch } from './monarch.js';
-import { loadAnimeMonarch, turnHead } from './monarch-anime.js';
+import { loadAnimeMonarch, turnHead, MONARCH_ANIME, MONARCH_HOOD } from './monarch-anime.js';
 
 /** Slate copy for the set pieces. Public copy: "James", never a surname. */
 export const EXTRA_SLATES = {
@@ -291,6 +291,8 @@ export function createCast(THREE, k) {
     // the anime look seats the rigged anime Monarch (monarch-anime.js); if it cannot load, the MPFB one
     const useAnime = (am) => {
         monarch.remove(capsule);
+        if (fig.anime) monarch.remove(fig.anime.root);
+        for (const h of halos) monarch.remove(h);
         monarch.add(am.root);
         halos.length = 0;
         for (const eye of am.eyes) {
@@ -299,7 +301,7 @@ export function createCast(THREE, k) {
             monarch.add(h);
             halos.push(h);
         }
-        Object.assign(fig, { anime: am, torso: am.root, breathe: 0.003, halo: 0.07, built: true, tris: am.tris, kind: 'anime' });
+        Object.assign(fig, { anime: am, torso: am.root, breathe: 0.003, halo: 0.07, built: true, tris: am.tris, kind: 'anime', hood: am.url === MONARCH_HOOD });
         shadowAll(monarch);
         k.onFigure?.(monarch, 'monarch');
     };
@@ -320,6 +322,15 @@ export function createCast(THREE, k) {
     });
     if (k.look === 'anime') loadAnimeMonarch(THREE).then((am) => (am ? useAnime(am) : mpfb()));
     else mpfb();
+    // Arise: the hood comes up (each Arise swaps between the two), loaded the first time it is asked for
+    const looks = {};
+    const swapHood = () => {
+        if (fig.kind !== 'anime') return;
+        const want = fig.hood ? MONARCH_ANIME : MONARCH_HOOD;
+        looks[fig.anime.url] = fig.anime;
+        if (looks[want]) { useAnime(looks[want]); return; }
+        loadAnimeMonarch(THREE, want, { eyeSprites: want !== MONARCH_HOOD }).then((am) => { if (am) { looks[want] = am; useAnime(am); } });
+    };
     let arise = 0;
 
     /* ------------------------------------------------ the lab: a builder, a black beetle-type robot */
@@ -689,9 +700,9 @@ export function createCast(THREE, k) {
         onAir: () => order[airIdx]?.c.id ?? null,
         camPos: () => tilt.getWorldPosition(camW),
         runnerAt: () => (run.wait > 0 && run.target ? { id: run.target.c.id, pos: runner.head.getWorldPosition(runW) } : null),
-        arise: () => { arise = 1.6; },
+        arise: () => { arise = 1.6; swapHood(); },
         /** Whether the built Monarch is the one on the throne (consumption, not availability). */
-        monarch: () => ({ built: fig.built, tris: fig.tris, kind: fig.kind }),
+        monarch: () => ({ built: fig.built, tris: fig.tris, kind: fig.kind, hood: !!fig.hood }),
         redraw: () => board.userData.draw(),
         spots: {
             // the built Monarch is framed at his chest; the hand-built one with the whole throne

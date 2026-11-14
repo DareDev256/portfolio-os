@@ -15,6 +15,8 @@
 import { makeSprings } from './springs.js';
 
 export const MONARCH_ANIME = '/assets/studio/monarch-anime.gltf';
+/** The hooded Monarch (4.75.0): an all-black belted trench, hood up, the eyes the only colour. Arise swaps to it. */
+export const MONARCH_HOOD = '/assets/studio/monarch-hood.gltf';
 export const MONARCH_ANIME_BONES = ['Head', 'L_Eye', 'R_Eye', 'Hip', 'Spine02'];
 
 /** Why a loaded scene cannot stand in for the Monarch, or '' when it can. */
@@ -24,7 +26,7 @@ export function animeProblem(bones, skinned) {
     return missing.length ? `missing bones ${missing.join(', ')}` : '';
 }
 
-export async function loadAnimeMonarch(THREE, url = MONARCH_ANIME) {
+export async function loadAnimeMonarch(THREE, url = MONARCH_ANIME, { eyeSprites = true } = {}) {
     try {
         // loaded on demand: a separate chunk, fetched only when the anime look seats this Monarch
         const { GLTFLoader } = await import('./vendor/GLTFLoader.js');
@@ -44,7 +46,8 @@ export async function loadAnimeMonarch(THREE, url = MONARCH_ANIME) {
         const why = animeProblem(bones, skinned);
         if (why) throw new Error(why);
         const springs = makeSprings(THREE, Object.values(bones).filter((b) => b.name.startsWith('Braid_')));
-        return { root, bones, head: bones.Head, rest: bones.Head.quaternion.clone(), eyes: [bones.L_Eye, bones.R_Eye], springs, tris: Math.round(tris) };
+        // the hooded texture paints its own violet eyes (lit by the glow ink), so it takes no glow sprites
+        return { root, bones, head: bones.Head, rest: bones.Head.quaternion.clone(), eyes: eyeSprites ? [bones.L_Eye, bones.R_Eye] : [], springs, tris: Math.round(tris), url };
     } catch (e) {
         console.warn(`studio: anime Monarch not used (${e.message}); keeping the built figure`);
         return null;

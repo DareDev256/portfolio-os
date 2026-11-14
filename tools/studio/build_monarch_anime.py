@@ -7,7 +7,8 @@ Run headless (no screen taken):
 Inputs (kept outside the repo; they are Tripo outputs, not sources):
     rigged.glb   Tripo P2 multiview model (front/left/back design sheet) after Tripo's auto-rig
                  (rig-check biped, rig v3.0-20260909, spec tripo): 78 bones, faces +X, about 1 m.
-    texture.png  its base colour with the Black Cat soles (tools/studio/blackcat_texture.py).
+    texture.png  its base colour with the Black Cat soles (tools/studio/blackcat_texture.py), or - to keep
+                 the model's own (the hooded Monarch, 4.75.0: --name=monarch-hood --braids=0).
     j4.glb       optional: a Tripo H3.1 image-to-model of one logo-free, all-black retro 4-style
                  left sneaker (toe toward -Y). It replaces both shoes (the right one mirrored),
                  fitted to each foot's length, direction and sole, rigid on the foot bone, its
@@ -33,6 +34,8 @@ if len(ARGS) < 2:
 GLB, TEX = ARGS[0], ARGS[1]
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = next((a.split('=', 1)[1] for a in ARGS if a.startswith('--out=')), os.path.join(ROOT, 'public', 'assets', 'studio'))
+NAME = next((a.split('=', 1)[1] for a in ARGS if a.startswith('--name=')), 'monarch-anime')  # monarch-hood for the hooded one
+BRAIDS = '--braids=0' not in ARGS
 def refuse(msg):
     print(f'build_monarch_anime: REFUSED: {msg}'); raise SystemExit(1)
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -123,7 +126,7 @@ def aim(name, d):
     upd()
 def head(n): upd(); return pb[n].head.copy()
 import os
-THIGH_UP = -0.14  # seat-to-sole 0.50, the throne's dais
+THIGH_UP = float(next((a.split('=', 1)[1] for a in ARGS if a.startswith('--thigh=')), '-0.14'))  # seat-to-sole 0.50, the throne's dais
 for s, sx in (('L', 1), ('R', -1)):
     aim(f'{s}_Thigh', (sx * 0.2, -1.0, THIGH_UP))
     aim(f'{s}_Calf', (sx * 0.05, -0.1, -1.0))
@@ -187,7 +190,8 @@ for c in comps:
     zs = [me.vertices[i].co.z for i in c]; xs = [me.vertices[i].co.x for i in c]
     if len(c) >= 10 and max(zs) > hz - 0.155 and min(zs) < hz - 0.095 and (max(zs) - min(zs)) > 0.08 and (max(xs) - min(xs)) < 0.09:
         braids.append(c)
-if len(braids) < 10: refuse(f'found {len(braids)} braid strands, expected about 15')
+if BRAIDS and len(braids) < 10: refuse(f'found {len(braids)} braid strands, expected about 15')
+if not BRAIDS: braids = []
 bpy.ops.object.select_all(action='DESELECT'); arm.select_set(True); bpy.context.view_layer.objects.active = arm
 bpy.ops.object.mode_set(mode='EDIT'); eb = arm.data.edit_bones; specs = []
 for k, c in enumerate(braids):
@@ -205,7 +209,8 @@ for name, c in specs:
 
 # ---- the Black Cat texture
 node = next(n for n in me.materials[0].node_tree.nodes if n.type == 'TEX_IMAGE' and any(l.to_socket.name == 'Base Color' for l in n.outputs[0].links))
-img = bpy.data.images.load(TEX); img.name = 'monarch-anime'; node.image = img
+if TEX != '-':
+    img = bpy.data.images.load(TEX); img.name = NAME; node.image = img
 
 # ---- the Jordan 4s (optional): replace both shoes
 SHOE = next((a.split('=', 1)[1] for a in ARGS if a.startswith('--shoe=')), None)
@@ -284,15 +289,15 @@ arm.location = Vector((-hip.x, -dz, -SEAT))
 bpy.ops.object.select_all(action='DESELECT'); arm.select_set(True); mesh.select_set(True); bpy.context.view_layer.objects.active = arm
 bpy.ops.object.transform_apply(location=True, rotation=False, scale=False)
 sole = min((mesh.matrix_world @ v.co).z for v in me.vertices)
-if not (-0.535 <= sole <= -0.465): refuse(f'soles at {sole:.3f}, the dais is at -0.5')
+if not (-0.535 <= sole <= -0.465): refuse(f'soles at {sole:.3f}, the dais is at -0.5 (adjust --thigh, now {THIGH_UP})')
 os.makedirs(OUT, exist_ok=True)
-path = os.path.join(OUT, 'monarch-anime.gltf')
+path = os.path.join(OUT, f'{NAME}.gltf')
 bpy.ops.export_scene.gltf(filepath=path, use_selection=True, export_format='GLTF_SEPARATE', export_skins=True, export_animations=False, export_yup=True, export_image_format='WEBP', export_image_quality=85)
 g = json.load(open(path))
 for im in g.get('images', []):
-    want = 'monarch-anime-shoe.webp' if 'shoe' in im.get('name', '') or 'shoe' in im['uri'] else 'monarch-anime.webp'
+    want = f'{NAME}-shoe.webp' if 'shoe' in im.get('name', '') or 'shoe' in im['uri'] else f'{NAME}.webp'
     src_ = os.path.join(OUT, im['uri']); im['uri'] = want
     if os.path.abspath(src_) != os.path.join(os.path.abspath(OUT), want): os.replace(src_, os.path.join(OUT, want))
 if len({i['uri'] for i in g.get('images', [])}) != len(g.get('images', [])): refuse('two textures map to one file name')
 json.dump(g, open(path, 'w'), separators=(',', ':'))
-print(f'build_monarch_anime: {len(braids)} braid bones, seat {SEAT:.3f}, soles {sole:.3f}, wrote {path}')
+print(f'build_monarch_anime: thigh {THIGH_UP}, {len(braids)} braid bones, seat {SEAT:.3f}, soles {sole:.3f}, wrote {path}')
