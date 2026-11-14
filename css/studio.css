@@ -46,6 +46,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .pills a { flex: 0 0 auto; text-decoration: none; color: var(--ink); background: rgba(255, 255, 255, 0.9); border: 1px solid var(--line); border-radius: 99px; padding: 0 12px; font: 600 12px/34px var(--mono); min-height: 34px; }
 .pills a:hover { border-color: var(--ink); }
 .pills a.hot { background: var(--ink); color: #fff; border-color: var(--ink); }
+.pills .look { flex: 0 0 auto; cursor: pointer; color: var(--ink); background: rgba(255, 255, 255, 0.9); border: 1px dashed var(--ink); border-radius: 99px; padding: 0 12px; font: 600 12px/32px var(--mono); min-height: 34px; }
+.pills .look:hover { background: var(--ink); color: #fff; }
 
 /* hint, back, tooltip */
 .hint { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); font: 600 12px/1.4 var(--mono); color: var(--muted); background: rgba(255, 255, 255, 0.88); border: 1px solid var(--line); border-radius: 99px; padding: 8px 14px; white-space: nowrap; max-width: calc(100% - 32px); overflow: hidden; text-overflow: ellipsis; transition: opacity 0.4s; z-index: 5; }

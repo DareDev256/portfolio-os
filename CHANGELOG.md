@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.71.0
+version: 4.72.0
 last_updated: 2026-11-14
 
 ---
@@ -11,6 +11,11 @@ last_updated: 2026-11-14
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.72.0 — 2026-11-14 · The anime look is the default
+
+- **The anime look is the default** (James picked A). `/` opens cel-shaded with ink lines and the Shadow Monarch on the throne. A `Clean look` pill in the masthead switches back; the pick is stored per visitor (`localStorage studio.look`) and the address still wins (`?look=clean`, `?look=anime`). Private mode falls back to the address.
+- Tests: the default, the stored pick, address precedence and the switch's wiring. Each was broken on purpose and went red (default set back to clean; the pill removed).
 
 ## 4.71.0 — 2026-11-14 · The anime look, behind a switch
 

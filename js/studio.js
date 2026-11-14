@@ -25,7 +25,7 @@ import { CENTER, RISER, STATION, stationPose, DESK, CHAIR, MONITOR, DIGIVICE, FL
 import { loadSet } from './studio/set.js';
 import { createScreens, createRibbon } from './studio/screens.js';
 import { createCast, EXTRA_SLATES } from './studio/cast.js';
-import { lookFrom, toonify, inkSize } from './studio/anime.js';
+import { lookFrom, otherLook, toonify, inkSize, LOOK_KEY } from './studio/anime.js';
 import { buildBody } from './studio/rig.js';
 import { walkinPose, shouldWalkIn, WALKIN_KEY } from './studio/walkin.js';
 import { activitySummary, agentFeedLabel } from './monitor.js';
@@ -82,8 +82,31 @@ document.documentElement.dataset.shift = night ? 'night' : 'day';
 renderer.toneMappingExposure = night ? 0.92 : 1.05;
 
 // the cel look (4.71.0): ?look=anime, behind a switch until James picks it
-const LOOK = lookFrom(location.search);
+const storedLook = (() => {
+    try {
+        return localStorage.getItem(LOOK_KEY) || '';
+    } catch {
+        return '';
+    }
+})();
+const LOOK = lookFrom(location.search, storedLook);
 document.documentElement.dataset.look = LOOK;
+const lookBtn = document.getElementById('lookBtn');
+if (lookBtn) {
+    const next = otherLook(LOOK);
+    lookBtn.textContent = next === 'clean' ? 'Clean look' : 'Anime look';
+    lookBtn.setAttribute('aria-label', `Switch the set to the ${next} look`);
+    lookBtn.addEventListener('click', () => {
+        try {
+            localStorage.setItem(LOOK_KEY, next);
+        } catch {
+            /* private mode: the address carries the pick instead */
+        }
+        const u = new URL(location.href);
+        u.searchParams.set('look', next);
+        location.replace(u.toString());
+    });
+}
 const anime = { cache: new Map(), inks: new Map(), meshes: 0 };
 
 const scene = new THREE.Scene();

@@ -12,6 +12,9 @@
  *   - shadow: the Monarch and his two shadows get the dark variant, a violet
  *     line and a violet rim, so he reads as a shadow of James, not a portrait.
  *
+ * Default since 4.72.0; the masthead pill switches to the clean look and the pick is
+ * stored per visitor (localStorage studio.look), so it sticks across visits.
+ *
  * The baked room is left as Blender lit it (painted background, cel characters:
  * the way anime itself is drawn). Screens, glows and hit boxes are MeshBasic and
  * are never touched. toonify() is idempotent, so a figure that loads late (the
@@ -19,12 +22,20 @@
  */
 
 export const LOOKS = ['clean', 'anime'];
-export const DEFAULT_LOOK = 'clean';
+/** James picked A on 2026-11-14: the cel look is the default, the clean look one tap away. */
+export const DEFAULT_LOOK = 'anime';
+export const LOOK_KEY = 'studio.look';
 
-/** ?look=anime or ?look=clean wins; anything else is the default. */
-export function lookFrom(search = '') {
+/** ?look= wins, then the visitor's stored pick, then the default. Unknown values are ignored. */
+export function lookFrom(search = '', stored = '') {
     const m = /[?&]look=([a-z]+)/.exec(search);
-    return m && LOOKS.includes(m[1]) ? m[1] : DEFAULT_LOOK;
+    if (m && LOOKS.includes(m[1])) return m[1];
+    return LOOKS.includes(stored) ? stored : DEFAULT_LOOK;
+}
+
+/** The other look, for the switch in the masthead. */
+export function otherLook(look) {
+    return look === 'anime' ? 'clean' : 'anime';
 }
 
 /** Ink and rim per variant. Width is in CSS px at close range. */

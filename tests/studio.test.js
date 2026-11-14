@@ -796,17 +796,32 @@ describe('the Monarch', () => {
 });
 
 /* THE ANIME LOOK (4.71.0): cel bands, ink lines and a shadow variant for the
- * throne, behind ?look=anime until James picks it. */
-import { lookFrom, inkSize, INK, DEFAULT_LOOK } from '../js/studio/anime.js';
+ * throne. James picked A on 2026-11-14, so it is the default since 4.72.0 and the
+ * clean look is one tap away in the masthead. */
+import { lookFrom, otherLook, inkSize, INK, DEFAULT_LOOK, LOOK_KEY } from '../js/studio/anime.js';
 
 describe('the anime look', () => {
-    it('is off unless the address asks for it, and only takes a known look', () => {
-        expect(DEFAULT_LOOK).toBe('clean');
-        expect(lookFrom('')).toBe('clean');
-        expect(lookFrom('?look=anime')).toBe('anime');
-        expect(lookFrom('?walkin&look=anime')).toBe('anime');
-        expect(lookFrom('?look=clean')).toBe('clean');
-        expect(lookFrom('?look=<script>')).toBe('clean');
+    it('is the default, the address wins over a stored pick, and only a known look is taken', () => {
+        expect(DEFAULT_LOOK).toBe('anime');
+        expect(lookFrom('')).toBe('anime');
+        expect(lookFrom('', 'clean')).toBe('clean');
+        expect(lookFrom('?look=anime', 'clean')).toBe('anime');
+        expect(lookFrom('?walkin&look=clean')).toBe('clean');
+        expect(lookFrom('?look=<script>')).toBe('anime');
+        expect(lookFrom('', 'sepia')).toBe('anime');
+        expect(otherLook('anime')).toBe('clean');
+        expect(otherLook('clean')).toBe('anime');
+    });
+
+    it('puts a switch back to the clean look in the masthead, and stores the pick', () => {
+        const html = read('studio/index.html');
+        expect(html).toMatch(/<nav class="pills"[\s\S]*<button class="look" id="lookBtn" type="button">[\s\S]*<\/nav>/);
+        const js = read('js/studio.js');
+        expect(js).toMatch(/const LOOK = lookFrom\(location\.search, storedLook\);/);
+        expect(js).toMatch(/localStorage\.getItem\(LOOK_KEY\)/);
+        expect(js).toMatch(/localStorage\.setItem\(LOOK_KEY, next\)/);
+        expect(js).toMatch(/u\.searchParams\.set\('look', next\)/);
+        expect(LOOK_KEY).toBe('studio.look');
     });
 
     it('sizes the ink in device pixels, the same on every screen shape', () => {
