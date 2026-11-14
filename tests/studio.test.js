@@ -296,7 +296,7 @@ import { setLayout, stationPose, RISER, CENTER, THRONE, LAB, POSTER, FLAT } from
 import { setProblem, loadSet } from '../js/studio/set.js';
 import { coverFit, screenKind, lowerThirds, feedFor } from '../js/studio/screens.js';
 import { EXTRA_SLATES } from '../js/studio/cast.js';
-import { existsSync, statSync } from 'node:fs';
+import { existsSync, statSync, readdirSync } from 'node:fs';
 
 const setJson = JSON.parse(read('public/assets/studio/set.json'));
 const feeds = JSON.parse(read('public/assets/studio/feeds/manifest.json'));
@@ -441,7 +441,7 @@ describe('the cast', () => {
     it('says "James" and never a surname, and keeps personal names off the set', () => {
         const copy = JSON.stringify(EXTRA_SLATES);
         expect(copy).not.toMatch(/\bDare\b|Olusoga|Sandra/);
-        for (const f of ['studio/index.html', 'js/studio.js', 'js/studio/cast.js', 'js/studio/screens.js', 'js/studio/terminal.js']) {
+        for (const f of ['studio/index.html', 'js/studio.js', 'js/studio/cast.js', 'js/studio/screens.js', 'js/studio/terminal.js', 'js/studio/monarch.js', 'tools/studio/build_monarch.py']) {
             expect(read(f), f).not.toMatch(/\bDare\b|Olusoga|dare-studio/);
         }
     });
@@ -639,5 +639,146 @@ describe('the takes', () => {
         expect(pub).toMatch(/PATHS=\([^)]*public\/data\/stations\.json/);
         expect(pub).toMatch(/public\/data\/stations\.json\) jq -Sc/);
         expect(read('studio/index.html')).toContain('id="sTakes"');
+    });
+});
+
+/* THE MONARCH (4.70.0): the figure on the throne is built to James's build in
+ * Blender (tools/studio/build_monarch.py) and swapped in by cast.js; the
+ * hand-built figure stays as the fallback. These decode the shipped bytes and
+ * check the fit on their own, so a bad build cannot pass on the builder's word. */
+import { monarchProblem, buildMonarch, loadMonarch, MONARCH_ZONES } from '../js/studio/monarch.js';
+
+const monarchJson = JSON.parse(read('public/assets/studio/monarch.json'));
+const monarchBin = (() => {
+    const b = readFileSync(resolve(root, 'public/assets/studio', monarchJson.bin.file));
+    return b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength);
+})();
+const FAKE3 = {
+    Vector3: class { constructor(x = 0, y = 0, z = 0) { Object.assign(this, { x, y, z }); } },
+    BufferAttribute: class { constructor(array, itemSize, normalized = false) { Object.assign(this, { array, itemSize, normalized }); } },
+    BufferGeometry: class {
+        constructor() { this.attributes = {}; this.groups = []; }
+        setAttribute(n, a) { this.attributes[n] = a; }
+        setIndex(a) { this.index = a; }
+        addGroup(start, count, materialIndex) { this.groups.push({ start, count, materialIndex }); }
+        computeBoundingSphere() {}
+    },
+    Mesh: class { constructor(g, m) { this.geometry = g; this.material = m; } },
+    Group: class {
+        constructor() { this.children = []; const pos = { x: 0, y: 0, z: 0, fromArray: (a) => { [pos.x, pos.y, pos.z] = a; } }; this.position = pos; }
+        add(c) { this.children.push(c); }
+    },
+};
+const looks = Object.fromEntries(MONARCH_ZONES.map((z) => [z, { zone: z }]));
+const built = buildMonarch(FAKE3, monarchJson, monarchBin, looks);
+/** The points of one zone of one built part, in the Monarch's frame (y 0 = seat top, facing +Z). */
+function zonePoints(part, zone) {
+    const mesh = part === 'head' ? built.head.children[0] : built.body;
+    const off = part === 'head' ? built.head.position : { x: 0, y: 0, z: 0 };
+    const pos = mesh.geometry.attributes.position.array;
+    const idx = mesh.geometry.index.array;
+    const pts = [];
+    for (const g of mesh.geometry.groups.filter((x) => MONARCH_ZONES[x.materialIndex] === zone)) {
+        for (let i = g.start; i < g.start + g.count; i++) {
+            const v = idx[i] * 3;
+            pts.push([pos[v] + off.x, pos[v + 1] + off.y, pos[v + 2] + off.z]);
+        }
+    }
+    return pts;
+}
+
+describe('the Monarch', () => {
+    it('ships a usable monarch.json and a bin of exactly the size it names, inside budget', () => {
+        expect(monarchProblem(monarchJson)).toBe('');
+        expect(monarchBin.byteLength).toBe(monarchJson.bin.bytes);
+        expect(monarchJson.bin.bytes).toBeLessThan(420_000);
+        expect(monarchJson.fit.tris).toBeLessThanOrEqual(16000);
+        expect(built.tris).toBe(monarchJson.fit.tris);
+    });
+
+    it('refuses a bin that is too short, a gap between zones, an unknown zone, or no eyes', () => {
+        expect(monarchProblem(null)).toBe('no manifest');
+        expect(monarchProblem({ ...monarchJson, bin: { ...monarchJson.bin, bytes: 100 } })).toMatch(/runs past/);
+        const gap = structuredClone(monarchJson);
+        gap.parts[0].groups[1].start += 3;
+        expect(monarchProblem(gap)).toMatch(/not contiguous/);
+        const odd = structuredClone(monarchJson);
+        odd.parts[1].groups[0].zone = 'cape';
+        expect(monarchProblem(odd)).toMatch(/unknown zone/);
+        expect(monarchProblem({ ...monarchJson, eyes: [] })).toBe('no eyes');
+    });
+
+    it('sits on the throne: on the seat, soles on the dais, calves clear of the seat, inside the armrests', () => {
+        const pants = zonePoints('body', 'pants');
+        const soles = zonePoints('body', 'sole');
+        const lowest = Math.min(...soles.map((p) => p[1]));
+        expect(lowest).toBeGreaterThan(-0.535);
+        expect(lowest).toBeLessThan(-0.465);
+        // the seat's top is y 0, and the buttocks rest on it (joggers stand a centimetre off the skin)
+        expect(Math.min(...pants.filter((p) => p[2] < 0.1).map((p) => p[1]))).toBeCloseTo(-0.011, 1);
+        const shins = pants.filter((p) => p[1] < -0.12);
+        expect(Math.min(...shins.map((p) => p[2]))).toBeGreaterThan(0.42);
+        for (const part of ['body', 'head']) {
+            for (const z of MONARCH_ZONES) {
+                for (const p of zonePoints(part, z)) {
+                    if (Math.abs(p[0]) > 0.54 && p[2] > -0.48 && p[2] < 0.48 && p[1] < 0.23) throw new Error(`${part} ${z} inside an armrest at ${p}`);
+                }
+            }
+        }
+    });
+
+    it('faces the room, head up, left eye on his left: nothing mirrored or lying down', () => {
+        const pivot = built.head.position;
+        expect(pivot.y).toBeGreaterThan(0.3);
+        const [l, r] = built.eyes;
+        expect(l.z).toBeGreaterThan(0);
+        expect(r.z).toBeGreaterThan(0);
+        expect(l.y).toBeGreaterThan(0);
+        expect(l.x).toBeGreaterThan(r.x);
+        const cap = zonePoints('head', 'cap');
+        const beard = zonePoints('head', 'beard');
+        expect(Math.max(...cap.map((p) => p[1]))).toBeGreaterThan(Math.max(...beard.map((p) => p[1])));
+        expect(Math.min(...soles(), Infinity)).toBeLessThan(pivot.y);
+        function soles() { return zonePoints('body', 'sole').map((p) => p[1]); }
+    });
+
+    it('carries the look in zones and the palette in code: every zone has geometry and a material', () => {
+        const zones = new Set();
+        for (const mesh of [built.body, built.head.children[0]]) {
+            expect(mesh.material).toHaveLength(MONARCH_ZONES.length);
+            for (const g of mesh.geometry.groups) zones.add(MONARCH_ZONES[g.materialIndex]);
+        }
+        expect([...zones].sort()).toEqual([...MONARCH_ZONES].sort());
+        expect(read('public/assets/studio/monarch.json')).not.toMatch(/color|#[0-9a-f]{6}/i);
+    });
+
+    it('keeps the hand-built figure when the files are missing', async () => {
+        const real = globalThis.fetch;
+        globalThis.fetch = async () => ({ ok: false, status: 404, json: async () => null });
+        const warn = console.warn;
+        console.warn = () => {};
+        try {
+            expect(await loadMonarch(FAKE3, looks)).toBeNull();
+        } finally {
+            globalThis.fetch = real;
+            console.warn = warn;
+        }
+    });
+
+    it('is the one cast.js puts on the throne, and the throne shot frames him', () => {
+        const cast = read('js/studio/cast.js');
+        expect(cast).toMatch(/loadMonarch\(THREE, monarchLook\)/);
+        expect(cast).toMatch(/monarch\.remove\(capsule\)/);
+        expect(cast).toMatch(/monarch: \(\) => \(\{ built: fig\.built/);
+        expect(cast).toMatch(/fig\.built \? monarch\.localToWorld/);
+        expect(read('js/studio.js')).toMatch(/frameSpot\(spot, fwd, built \? 3\.3 : 4\.6, 0\.2, built \? 0\.6 : 0\)/);
+    });
+
+    it('keeps the photos it was matched to out of the repo', () => {
+        for (const dir of ['tools/studio', 'public/assets/studio']) {
+            const files = readdirSync(resolve(root, dir));
+            expect(files.filter((f) => /\.(jpe?g|heic|png)$/i.test(f)), dir).toEqual([]);
+        }
+        expect(read('tools/studio/build_monarch.py')).toMatch(/no\s+photo is stored in this repo/);
     });
 });

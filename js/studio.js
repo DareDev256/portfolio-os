@@ -731,11 +731,14 @@ function chrome(focus) {
 let dvLift = 0;
 let cast = null;
 /** Fly to look at a point from a direction (unit vector on the floor), at a distance. */
-function frameSpot(spot, dir, dist, lift = 0.35) {
-    const pos = spot.clone().addScaledVector(dir, narrowNow() ? dist * 1.35 : dist);
+function frameSpot(spot, dir, dist, lift = 0.35, phoneDrop = 0) {
+    // phoneDrop pans the camera down on a phone so the subject sits above the slate
+    const look = spot.clone();
+    if (narrowNow()) look.y -= phoneDrop;
+    const pos = look.clone().addScaledVector(dir, narrowNow() ? dist * 1.35 : dist);
     pos.y += lift;
     state.mode = 'focus';
-    flyTo(pos, spot);
+    flyTo(pos, look);
     chrome(true);
 }
 function towardCamera(p) {
@@ -793,7 +796,8 @@ function activate(h) {
     } else if (cast && (h.type === 'throne' || h.type === 'shadow')) {
         const spot = cast.spots.throne();
         const fwd = new THREE.Vector3(Math.sin(-0.62), 0, Math.cos(-0.62));
-        frameSpot(spot, fwd, 4.6, 0.2);
+        const built = cast.monarch().built;
+        frameSpot(spot, fwd, built ? 3.3 : 4.6, 0.2, built ? 0.6 : 0);
         if (h.type === 'throne') {
             cast.arise();
             const a = $('arise');

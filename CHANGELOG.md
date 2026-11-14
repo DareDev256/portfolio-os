@@ -3,14 +3,26 @@
 ---
 
 title: Passion OS Changelog
-version: 4.69.0
-last_updated: 2026-11-13
+version: 4.70.0
+last_updated: 2026-11-14
 
 ---
 
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.70.0 — 2026-11-14 · The Monarch looks like James
+
+The figure on the throne was a hooded silhouette. It is now James: built to his build and seated the way he sits, in the look of his own System avatar.
+
+- **Built, not drawn.** `tools/studio/build_monarch.py` makes him headless in Blender with MPFB (MakeHuman for Blender): tall, lean, long-limbed, some muscle. He sits forward on the front of the seat with his forearms on his knees and his hands clasped, head level, the pose from his own photos. He wears a black mock-neck and joggers and a fitted skull cap with his twists tied off at the back. He has a goatee, sneakers on white soles and the Monarch's violet eyes.
+- **The likeness is where it can be seen.** The close-up of the throne shows his head about 45 CSS px tall on a phone and 75 on a laptop, so the likeness is carried by build, pose, headwear and beard, not a face scan. No photo is stored in the repo; it records only what was matched.
+- **Two parts, palette in code.** `monarch.bin` (107 KB, 10,066 triangles) holds the body and the head-with-neck. The head turns to watch the camera from a pivot at the base of the neck, and a collar ring covers the seam. Each surface is a zone (skin, top, pants, shoe, sole, cap, hair, beard, eye), and `cast.js` gives each zone its material. `js/studio/monarch.js` loads, checks and builds it, and returns null on any problem, so the hand-built figure stays on the throne.
+- **The throne shot frames him.** Tapping the throne used to frame the whole throne, with his head about 24 px tall on a phone. With the built figure on the throne, the camera frames his chest from closer in. On a phone the camera pans down so he sits above the slate.
+- **The goatee sits on the lips.** MPFB's `joint-mouth` is the jaw pivot, level with the nose; the first build painted the beard over the nose. The mouth is now found from the face's own profile (nose tip, chin, a third of the way down), and the builder refuses landmarks out of order.
+- **Guards.** The builder refuses to write a figure that is off the seat, has soles off the dais, has calves inside the seat, has a limb inside an armrest, faces away, is mirrored, has inward normals, is missing a zone or is over budget. Tested by building with `--thigh=0.6`: it refused with "soles at -0.284, the dais is at -0.5".
+- **Tests.** 819 (was 811). Eight new tests in `tests/studio.test.js` decode the shipped bytes and check, independently of the builder, that he sits on the seat with his soles on the dais and his calves clear of it. They also check that nothing is inside an armrest, that he faces the room unmirrored, that every zone has geometry and a material, and that colour never enters the file. Further tests cover the loader falling back when the files are missing, `cast.js` putting him on the throne with the throne shot framing him, and no photo sitting in the repo. Five sabotages each went red: swapped eyes, the body dropped 10 cm, the swap removed, the loader without its fallback, the old framing.
 
 ## 4.69.0 — 2026-11-13 · The studio is the home page
 

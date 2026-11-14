@@ -11,6 +11,7 @@
  */
 import { buildBody, stride } from './rig.js';
 import { stationPoint, CENTER, DOLLY, CRAFT, THRONE, LAB, POSTER, FLAT } from './layout.js';
+import { loadMonarch } from './monarch.js';
 
 /** Slate copy for the set pieces. Public copy: "James", never a surname. */
 export const EXTRA_SLATES = {
@@ -185,29 +186,32 @@ export function createCast(THREE, k) {
     const monarch = new THREE.Group();
     monarch.position.set(0, y0 + 0.5, -0.62);
     throne.add(monarch);
+    // the hand-built figure: on the throne until the built one (monarch.js) arrives, and the fallback if it never does
+    const capsule = new THREE.Group();
+    monarch.add(capsule);
     const mHead = new THREE.Group();
     const halos = [];
     {
-        monarch.add(between(V(-0.15, 0.1, 0), V(0.15, 0.1, 0), 0.16, cloth));
+        capsule.add(between(V(-0.15, 0.1, 0), V(0.15, 0.1, 0), 0.16, cloth));
         const torso = between(V(0, 0.22, -0.02), V(0, 0.68, -0.1), 0.22, cloth);
-        monarch.add(torso);
+        capsule.add(torso);
         monarch.userData.torso = torso;
-        monarch.add(between(V(-0.31, 0.76, -0.1), V(0.31, 0.76, -0.1), 0.12, cloth));
+        capsule.add(between(V(-0.31, 0.76, -0.1), V(0.31, 0.76, -0.1), 0.12, cloth));
         // a long coat: a high collar, and tails falling over the front of the seat
         const coatMat = new THREE.MeshStandardMaterial({ color: 0x07070a, roughness: 0.9, side: THREE.DoubleSide });
         const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.2, 0.2, 18, 1, true, Math.PI * 0.15, Math.PI * 1.7), coatMat);
         collar.position.set(0, 0.88, -0.1);
         collar.rotation.y = Math.PI;
-        monarch.add(collar);
+        capsule.add(collar);
         for (const sx of [-1, 1]) {
             const tail = new THREE.Mesh(new RoundedBox(0.2, 0.62, 0.025, 2, 0.01), coatMat);
             tail.position.set(sx * 0.33, -0.2, 0.43);
             tail.rotation.set(-0.06, 0, sx * 0.05);
-            monarch.add(tail);
+            capsule.add(tail);
         }
         mHead.position.set(0, 1.0, -0.08);
         mHead.rotation.x = 0.16;
-        monarch.add(mHead);
+        capsule.add(mHead);
         mHead.add(new THREE.Mesh(new THREE.SphereGeometry(0.13, 20, 14), cloth));
         const hood = new THREE.Mesh(new THREE.SphereGeometry(0.175, 24, 16, Math.PI / 2 + 0.85, Math.PI * 2 - 1.7, 0, Math.PI * 0.78), new THREE.MeshStandardMaterial({ color: 0x08080c, roughness: 0.95, side: THREE.DoubleSide }));
         hood.scale.set(1, 1.12, 1.08);
@@ -227,23 +231,23 @@ export function createCast(THREE, k) {
             const hip = V(sx * 0.12, 0.08, 0.02);
             const knee = V(sx * 0.22, 0.12, 0.42);
             const foot = V(sx * 0.26, -0.44, 0.5);
-            monarch.add(between(hip, knee, 0.085, cloth));
-            monarch.add(between(knee, foot, 0.075, cloth));
+            capsule.add(between(hip, knee, 0.085, cloth));
+            capsule.add(between(knee, foot, 0.075, cloth));
             const boot = new THREE.Mesh(new RoundedBox(0.13, 0.08, 0.24, 2, 0.03), cloth);
             boot.position.set(sx * 0.26, -0.47, 0.57);
-            monarch.add(boot);
+            capsule.add(boot);
             const sh = V(sx * 0.3, 0.72, -0.1);
             const el = V(sx * 0.6, 0.24, -0.18);
             const wr = V(sx * 0.62, 0.24, 0.2);
-            monarch.add(between(sh, el, 0.07, cloth));
-            monarch.add(between(el, wr, 0.06, cloth));
+            capsule.add(between(sh, el, 0.07, cloth));
+            capsule.add(between(el, wr, 0.06, cloth));
             const fist = new THREE.Mesh(new THREE.SphereGeometry(0.065, 12, 10), cloth);
             fist.position.copy(wr).add(V(0, 0, 0.05));
-            monarch.add(fist);
+            capsule.add(fist);
         }
         const coat = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.34, 0.5, 18, 1, true), new THREE.MeshStandardMaterial({ color: 0x09090d, roughness: 0.95, side: THREE.DoubleSide }));
         coat.position.set(0, -0.05, 0.02);
-        monarch.add(coat);
+        capsule.add(coat);
     }
     const shadows = [];
     for (const [sx, id] of [[-1, 'claude'], [1, 'passion']]) {
@@ -267,6 +271,33 @@ export function createCast(THREE, k) {
         throne.add(s);
         smoke.push(s);
     }
+    // the Monarch built to James's build (tools/studio/build_monarch.py); the palette lives here, not in the file
+    const fig = { head: mHead, torso: monarch.userData.torso, breathe: 0.012, halo: 0.16, headY: 0, built: false, tris: 0 };
+    const monarchLook = {
+        skin: new THREE.MeshStandardMaterial({ color: 0x52301f, roughness: 0.5 }),
+        top: new THREE.MeshStandardMaterial({ color: 0x0c0c11, roughness: 0.5, emissive: 0x0c0718 }),
+        pants: new THREE.MeshStandardMaterial({ color: 0x0f0f14, roughness: 0.92, emissive: 0x0a0614 }),
+        shoe: new THREE.MeshStandardMaterial({ color: 0x0e0e12, roughness: 0.4 }),
+        sole: new THREE.MeshStandardMaterial({ color: 0xd8d8de, roughness: 0.7 }),
+        cap: new THREE.MeshPhysicalMaterial({ color: 0x0a0a0e, roughness: 0.32, clearcoat: 0.7, clearcoatRoughness: 0.28 }),
+        hair: new THREE.MeshStandardMaterial({ color: 0x070708, roughness: 0.55 }),
+        beard: new THREE.MeshStandardMaterial({ color: 0x0b0908, roughness: 0.95 }),
+        eye: violet,
+    };
+    loadMonarch(THREE, monarchLook).then((built) => {
+        if (!built) return;
+        monarch.remove(capsule);
+        monarch.add(built.body, built.head);
+        halos.length = 0;
+        for (const e of built.eyes) {
+            const h = glowSprite('rgba(176,140,255,0.95)', 0.09);
+            h.position.set(e.x, e.y, e.z + 0.014);
+            built.head.add(h);
+            halos.push(h);
+        }
+        Object.assign(fig, { head: built.head, torso: built.body, breathe: 0.004, halo: 0.09, headY: built.head.position.y, built: true, tris: built.tris });
+        shadowAll(monarch);
+    });
     let arise = 0;
 
     /* ------------------------------------------------ the lab: a builder, a black beetle-type robot */
@@ -543,14 +574,15 @@ export function createCast(THREE, k) {
 
         // the Monarch
         throne.updateMatrixWorld();
-        mHead.getWorldPosition(tmp);
-        monarch.worldToLocal(tmp2.copy(camera.position));
+        monarch.worldToLocal(tmp2.copy(camera.position)).sub(fig.head.position);
         const look = THREE.MathUtils.clamp(Math.atan2(tmp2.x, tmp2.z), -0.45, 0.45);
-        mHead.rotation.y = THREE.MathUtils.lerp(mHead.rotation.y, look, dt * 0.8);
-        monarch.userData.torso.scale.y = 1 + Math.sin(t * 1.1) * 0.012;
+        fig.head.rotation.y = THREE.MathUtils.lerp(fig.head.rotation.y, look, dt * 0.8);
+        const breath = 1 + Math.sin(t * 1.1) * fig.breathe;
+        fig.torso.scale.y = breath;
+        if (fig.built) fig.head.position.y = fig.headY * breath;
         arise = Math.max(0, arise - dt);
         const flare = 1 + arise * 1.6 + (Math.sin(t * 2.3) * 0.5 + 0.5) * 0.25;
-        halos.forEach((h) => h.scale.setScalar(0.16 * flare));
+        halos.forEach((h) => h.scale.setScalar(fig.halo * flare));
         shadows.forEach((r, i) => {
             const kneel = Math.min(1, arise * 1.2);
             r.a.position.y = y0 - kneel * 0.22 + Math.sin(t * 1.4 + i) * 0.006;
@@ -625,9 +657,12 @@ export function createCast(THREE, k) {
         camPos: () => tilt.getWorldPosition(camW),
         runnerAt: () => (run.wait > 0 && run.target ? { id: run.target.c.id, pos: runner.head.getWorldPosition(runW) } : null),
         arise: () => { arise = 1.6; },
+        /** Whether the built Monarch is the one on the throne (consumption, not availability). */
+        monarch: () => ({ built: fig.built, tris: fig.tris }),
         redraw: () => board.userData.draw(),
         spots: {
-            throne: () => throne.localToWorld(V(0, y0 + 1.6, 0.2)),
+            // the built Monarch is framed at his chest; the hand-built one with the whole throne
+            throne: () => (fig.built ? monarch.localToWorld(V(0, 0.5, 0.25)) : throne.localToWorld(V(0, y0 + 1.6, 0.2))),
             robot: () => robot.localToWorld(V(0, 0.2, 0)),
             poster: () => board.localToWorld(V(0, 0, 0)),
         },

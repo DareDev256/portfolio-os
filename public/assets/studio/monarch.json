@@ -1,0 +1,166 @@
+{
+ "version": 1,
+ "kind": "monarch",
+ "bin": {
+  "file": "monarch.bin",
+  "bytes": 106764
+ },
+ "zones": [
+  "skin",
+  "top",
+  "pants",
+  "shoe",
+  "sole",
+  "cap",
+  "hair",
+  "beard",
+  "eye"
+ ],
+ "parts": [
+  {
+   "name": "body",
+   "pivot": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "center": [
+    0.0,
+    0.08674,
+    0.33479
+   ],
+   "half": [
+    0.3547,
+    0.60701,
+    0.48026
+   ],
+   "vertices": 2280,
+   "indices": 13260,
+   "indexType": "u16",
+   "position": 0,
+   "normal": 13680,
+   "index": 20520,
+   "groups": [
+    {
+     "zone": "skin",
+     "start": 0,
+     "count": 3528
+    },
+    {
+     "zone": "top",
+     "start": 3528,
+     "count": 4380
+    },
+    {
+     "zone": "pants",
+     "start": 7908,
+     "count": 3996
+    },
+    {
+     "zone": "shoe",
+     "start": 11904,
+     "count": 996
+    },
+    {
+     "zone": "sole",
+     "start": 12900,
+     "count": 360
+    }
+   ]
+  },
+  {
+   "name": "head",
+   "pivot": [
+    0.0,
+    0.66637,
+    0.2436
+   ],
+   "center": [
+    1e-05,
+    0.11577,
+    0.04078
+   ],
+   "half": [
+    0.1261,
+    0.17596,
+    0.13697
+   ],
+   "vertices": 2872,
+   "indices": 16938,
+   "indexType": "u16",
+   "position": 47040,
+   "normal": 64272,
+   "index": 72888,
+   "groups": [
+    {
+     "zone": "skin",
+     "start": 0,
+     "count": 11394
+    },
+    {
+     "zone": "top",
+     "start": 11394,
+     "count": 1092
+    },
+    {
+     "zone": "cap",
+     "start": 12486,
+     "count": 1983
+    },
+    {
+     "zone": "hair",
+     "start": 14469,
+     "count": 576
+    },
+    {
+     "zone": "beard",
+     "start": 15045,
+     "count": 1149
+    },
+    {
+     "zone": "eye",
+     "start": 16194,
+     "count": 744
+    }
+   ]
+  }
+ ],
+ "eyes": [
+  [
+   0.03317,
+   0.14542,
+   0.13715
+  ],
+  [
+   -0.03317,
+   0.14542,
+   0.13715
+  ]
+ ],
+ "fit": {
+  "seatY": 0,
+  "soleY": -0.5203,
+  "calfZ": 0.445,
+  "neckRadius": 0.0838,
+  "tris": 10066
+ },
+ "source": {
+  "tool": "MPFB (MakeHuman for Blender)",
+  "macros": {
+   "gender": 1.0,
+   "age": 0.5,
+   "muscle": 0.64,
+   "weight": 0.34,
+   "height": 0.74,
+   "proportions": 0.82,
+   "cupsize": 0.5,
+   "firmness": 0.5
+  },
+  "race": {
+   "african": 1.0,
+   "asian": 0.0,
+   "caucasian": 0.0
+  },
+  "rig": "game_engine"
+ }
+}

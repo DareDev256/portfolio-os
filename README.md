@@ -36,7 +36,7 @@ yourself with `grep -c "resolve(import.meta.dirname" vite.config.js`, or read
 
 | Route | Entry | What it is |
 |---|---|---|
-| `/` | `studio/index.html` + `css/studio.css` + `js/studio.js` + `js/studio/` | **THE STUDIO** — the home page since 4.69.0. The Monitor's 16 crew agents on a white soundstage in three.js, under a hiring masthead (open to roles, book a call, résumé, the Monitor). The room is modelled and light-baked in Blender (`tools/studio/build_set.py`), each station plays that source's real footage, an A camera covers one source at a time, the director's monitor opens Passion OS and the Digivice opens Passion. Reads the crew from `/monitor` and every number from `figures.json`. A first visit opens on a short pass across the lab, the Vegapunk board and the throne (4.67.0). Each station screen shows its real takes (commits) from git, a 14-day strip and the newest take's age, and a tally lamp burns red on stations that shipped in the last 24 hours (4.68.0). A device with no WebGL is sent to `/monitor`. Added at `/studio` in 4.65.0, baked set in 4.66.0. |
+| `/` | `studio/index.html` + `css/studio.css` + `js/studio.js` + `js/studio/` | **THE STUDIO** — the home page since 4.69.0. The Monitor's 16 crew agents on a white soundstage in three.js, under a hiring masthead (open to roles, book a call, résumé, the Monitor). The room is modelled and light-baked in Blender (`tools/studio/build_set.py`), each station plays that source's real footage, an A camera covers one source at a time, the director's monitor opens Passion OS and the Digivice opens Passion. Reads the crew from `/monitor` and every number from `figures.json`. A first visit opens on a short pass across the lab, the Vegapunk board and the throne (4.67.0). Each station screen shows its real takes (commits) from git, a 14-day strip and the newest take's age, and a tally lamp burns red on stations that shipped in the last 24 hours (4.68.0). The Monarch on the throne is built to James's build in Blender with MPFB and seated forward on the throne the way he sits (`tools/studio/build_monarch.py`, 4.70.0); the hand-built figure stays as the fallback. A device with no WebGL is sent to `/monitor`. Added at `/studio` in 4.65.0, baked set in 4.66.0. |
 | `/monitor` | `index.html` + `css/monitor.css` + `js/monitor.js` | **THE MONITOR** — the hiring surface from 4.62.0 to 4.68.1, `/` until the studio took it. A director's video village: program monitor, a switcher with one button per project, a slate with each project's receipt, and Crew / Reel / Call tabs. Every figure and link as plain HTML. The old Passion OS routes (`/about`, `/work`, `/resume`...) land here. |
 | `/os` | `os/index.html` + `js/main.js` | **Passion OS** — the desktop environment this README documents. Everything below describes this surface. |
 | `/coldopen` | `coldopen/index.html` | **COLD OPEN** — the writeup of the artist-site engine at [github.com/DareDev256/coldopen](https://github.com/DareDev256/coldopen). Added in 4.21.0. |
@@ -55,6 +55,18 @@ node tools/studio/make-feeds.mjs                       # 480px station copies of
 
 Add `--preview out.png` to the Blender line for a quick lit render from the home camera
 instead of a bake.
+
+The Monarch on the throne is built separately, from MPFB (MakeHuman for Blender, in the
+user's Blender extensions), and needs rebuilding only when his look or the throne changes:
+
+```bash
+/Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup --python-exit-code 1 -P tools/studio/build_monarch.py
+```
+
+`-- --dry` runs every guard and writes nothing; `-- --dry --preview out.png` (add `--hands`
+for the hands) renders a quick Workbench look. It refuses to write a figure that does not sit
+on the seat with his soles on the dais, faces the wrong way, is mirrored, has inward normals,
+is missing a zone, or runs over budget. No photo is stored in the repo.
 
 The four are deliberately kept apart in type, palette, layout skeleton and motion
 signature; `css/system.css` carries the divergence record at the top of the file.
