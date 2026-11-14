@@ -1,0 +1,101 @@
+<!doctype html>
+<!--
+  monarch-bench.html: a look-dev bench for the Monarch (4.72.0). Dev only: it is not a
+  Vite build entry, so it never ships. Run `npx vite` and open
+  /tools/studio/monarch-bench.html?src=/assets/studio/&view=bust&look=anime
+
+  It loads monarch.json/.bin through the site's own loader, dresses him in the same
+  materials cast.js uses and, with look=anime, the same toonify() shadow variant and ink
+  the studio draws, then frames a portrait camera the studio's throne shot cannot.
+  src may point at a design build (build_monarch.py --out=DIR) served by any static path.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Monarch bench</title>
+    <style>
+        html, body { margin: 0; height: 100%; background: #dcdbe3; overflow: hidden; }
+        canvas { display: block; width: 100vw; height: 100vh; }
+        #tag { position: fixed; left: 14px; top: 12px; font: 600 13px/1.2 ui-monospace, monospace; letter-spacing: 0.08em; text-transform: uppercase; color: #101014; }
+    </style>
+</head>
+<body>
+    <canvas id="gl"></canvas>
+    <div id="tag"></div>
+    <script type="module">
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+        import { RoomEnvironment } from '/js/studio/vendor/RoomEnvironment.js';
+        import { loadMonarch } from '/js/studio/monarch.js';
+        import { toonify, inkSize } from '/js/studio/anime.js';
+
+        const q = new URLSearchParams(location.search);
+        const src = q.get('src') || '/assets/studio/';
+        const view = q.get('view') || 'bust';
+        const look = q.get('look') || 'anime';
+        document.getElementById('tag').textContent = q.get('tag') || '';
+
+        const canvas = document.getElementById('gl');
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
+        renderer.setPixelRatio(Math.min(2, devicePixelRatio));
+        renderer.setSize(innerWidth, innerHeight, false);
+        renderer.toneMapping = THREE.NeutralToneMapping;
+        renderer.toneMappingExposure = 1.05;
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xdcdbe3);
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+        scene.environmentIntensity = 0.55;
+        const key = new THREE.DirectionalLight(0xffffff, 1.6);
+        key.position.set(2, 4, 5);
+        scene.add(key);
+        const rim = new THREE.PointLight(0x9a7bff, 6, 6, 1.2);
+        rim.position.set(0, 1.2, -0.9);
+        scene.add(rim);
+        // the throne's back, so the silhouette reads against the dark it sits on
+        const back = new THREE.Mesh(new THREE.BoxGeometry(1.3, 2.2, 0.12), new THREE.MeshStandardMaterial({ color: 0x15151b, roughness: 0.6 }));
+        back.position.set(0, 0.6, -0.45);
+        back.userData.noToon = true;
+        if (view !== 'back') scene.add(back);
+
+        const violet = new THREE.MeshBasicMaterial({ color: 0xc8b2ff, toneMapped: false });
+        const mats = {
+            skin: new THREE.MeshStandardMaterial({ color: 0x52301f, roughness: 0.5 }),
+            top: new THREE.MeshStandardMaterial({ color: 0x0c0c11, roughness: 0.5, emissive: 0x0c0718 }),
+            pants: new THREE.MeshStandardMaterial({ color: 0x0f0f14, roughness: 0.92, emissive: 0x0a0614 }),
+            shoe: new THREE.MeshStandardMaterial({ color: 0x0e0e12, roughness: 0.4 }),
+            sole: new THREE.MeshStandardMaterial({ color: 0xd8d8de, roughness: 0.7 }),
+            cap: new THREE.MeshPhysicalMaterial({ color: 0x0a0a0e, roughness: 0.32, clearcoat: 0.7, clearcoatRoughness: 0.28 }),
+            hair: new THREE.MeshStandardMaterial({ color: 0x070708, roughness: 0.55 }),
+            beard: new THREE.MeshStandardMaterial({ color: 0x0b0908, roughness: 0.95 }),
+            eye: violet,
+        };
+        const VIEWS = {
+            bust: { pos: [0.4, 1.02, 1.55], at: [0, 0.66, 0.22], fov: 30 },
+            three: { pos: [1.05, 0.95, 1.2], at: [0, 0.64, 0.2], fov: 30 },
+            side: { pos: [1.55, 0.8, 0.3], at: [0, 0.6, 0.15], fov: 30 },
+            back: { pos: [-0.7, 1.05, -0.95], at: [0, 0.6, 0.1], fov: 32 },
+            full: { pos: [1.2, 0.55, 2.9], at: [0, 0.05, 0.2], fov: 34 },
+        };
+        const v = VIEWS[view] || VIEWS.bust;
+        const camera = new THREE.PerspectiveCamera(v.fov, innerWidth / innerHeight, 0.05, 50);
+        camera.position.fromArray(v.pos);
+        camera.lookAt(new THREE.Vector3(...v.at));
+
+        const built = await loadMonarch(THREE, mats, src);
+        const fig = new THREE.Group();
+        if (built) {
+            fig.add(built.body, built.head);
+            if (q.get('yaw')) built.head.rotation.y = Number(q.get('yaw'));
+            scene.add(fig);
+        }
+        if (look === 'anime') {
+            const inks = new Map();
+            toonify(THREE, fig, { variant: q.get('variant') || 'shadow', inks });
+            for (const m of inks.values()) m.uniforms.uPx.value.set(...inkSize(m.userData.inkWidth, canvas.width, canvas.height, renderer.getPixelRatio()));
+        }
+        renderer.render(scene, camera);
+        window.__bench = { ready: true, built: !!built, tris: built ? built.tris : 0 };
+    </script>
+</body>
+</html>

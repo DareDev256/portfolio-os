@@ -2,10 +2,14 @@
 
 Run headless (no screen taken):
     /Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup --python-exit-code 1 \
-        -P tools/studio/build_monarch.py -- [--dry]
+        -P tools/studio/build_monarch.py -- [--dry] [--hair=cap|afro|braids] [--out=DIR]
 
 Needs the MPFB extension (MakeHuman for Blender) in the user's Blender
 extensions, nothing else. --dry builds and runs every guard but writes nothing.
+--hair picks the head: cap (the 4.70.0 skull cap with his twists tied off), afro
+(the scalp grown out to a round, clumped shell), or braids (box braids combed back
+and falling to the shoulders, kept clear of the body at every head turn).
+--out writes somewhere else, for a design board that never touches the site.
 
 What it makes, in public/assets/studio/:
     monarch.json  manifest: parts, byte offsets, quantisation, zones, eye points, fit
@@ -47,12 +51,15 @@ import os
 import struct
 import sys
 from collections import Counter, defaultdict
-from mathutils import Matrix, Vector
+from mathutils import Matrix, Vector, noise
+from mathutils.bvhtree import BVHTree
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, 'public', 'assets', 'studio')
 ARGS = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 DRY = '--dry' in ARGS
+HAIR = next((a.split('=', 1)[1] for a in ARGS if a.startswith('--hair=')), 'cap')
+OUT = next((a.split('=', 1)[1] for a in ARGS if a.startswith('--out=')), OUT)
 
 # His build, read off his photos: tall, lean, long-limbed, some muscle.
 MACROS = dict(gender=1.0, age=0.5, muscle=0.64, weight=0.34, height=0.74, proportions=0.82, cupsize=0.5, firmness=0.5)
@@ -68,7 +75,7 @@ BACK_Z = -0.37
 
 ZONES = ['skin', 'top', 'pants', 'shoe', 'sole', 'cap', 'hair', 'beard', 'eye']
 HEAD_ZONES = {'cap', 'hair', 'beard', 'eye'}
-BUDGET_TRIS = 16000
+BUDGET_TRIS = 20000  # 4.72: raised from 16k for the braids; still one draw call per zone
 BUDGET_BYTES = 420_000
 DECIMATE = {'body': 0.3, 'head': 0.62}
 
@@ -76,6 +83,10 @@ DECIMATE = {'body': 0.3, 'head': 0.62}
 def refuse(msg):
     print(f'build_monarch: REFUSED: {msg}')
     raise SystemExit(1)
+
+
+if HAIR not in ('cap', 'afro', 'braids'):
+    refuse(f'--hair={HAIR}: expected cap, afro or braids')
 
 
 def to3(v):
@@ -184,6 +195,8 @@ def zone_of(i):
 
 
 zones = [zone_of(i) for i in range(len(rest))]
+if HAIR != 'cap':
+    zones = ['hair' if z == 'cap' else z for z in zones]  # no cap: the scalp under the hair is hair
 in_head = [((dom[i] in ('head', 'neck_01')) or zones[i] in HEAD_ZONES) for i in range(len(rest))]
 
 # ------------------------------------------------------------------ the pose: forward on the edge of the seat, forearms on his knees
@@ -262,6 +275,9 @@ pnorm = [v.normal.copy() for v in ev.data.vertices]
 neck_pivot = head_of('neck_01')
 eye_pts = [centroid('helper-l-eye', posed), centroid('helper-r-eye', posed)]
 E_p = (eye_pts[0] + eye_pts[1]) / 2
+# the head bone's rest -> posed move: hair is designed upright (rest), then carried onto the posed head
+HEAD_T = (rig.matrix_world @ pb['head'].matrix) @ (rig.matrix_world @ rig.data.bones['head'].matrix_local).inverted()
+HEAD_TI = HEAD_T.inverted()
 
 # ------------------------------------------------------------------ placement in the Monarch's frame
 P3 = [to3(p) for p in posed]
@@ -291,8 +307,10 @@ def part_mesh(want_head):
     bm.verts.ensure_lookup_table()
     head_flag = bm.verts.layers.int.new('head')
     zone = bm.verts.layers.int.new('zone')
+    orig = bm.verts.layers.int.new('orig')
     for v in bm.verts:
         v[head_flag] = 1 if in_head[v.index] else 0
+        v[orig] = v.index
         v[zone] = ZONES.index(zones[v.index])
     bmesh.ops.delete(bm, geom=[v for v in bm.verts if v.index not in keep], context='VERTS')
     drop_faces = []
@@ -350,6 +368,172 @@ def add_twists(bm):
         bmesh.ops.recalc_face_normals(bm, faces=tf)
         for f in tf:
             f.material_index = mi
+
+
+def smooth01(a, b, x):
+    t = min(1.0, max(0.0, (x - a) / (b - a)))
+    return t * t * (3 - 2 * t)
+
+
+def hair_margin(r):
+    """How far a rest-space scalp point sits inside the hairline (the 4.70.0 cap line), in metres."""
+    f = min(1.0, max(0.0, (r.y - E.y) / max(1e-6, back_y - E.y)))
+    return r.z - (E.z + 0.030 - 0.078 * f)
+
+
+AFRO_DEPTH = 0.062
+
+
+def add_afro(bm):
+    """An afro: the scalp duplicated and grown out to a rounded, clumped shell, thin at the hairline."""
+    orig = bm.verts.layers.int['orig']
+    hi = ZONES.index('hair')
+    cran = [rest[i] for i in head_idx if rest[i].z > E.z - 0.01]
+    lo = Vector((min(p.x for p in cran), min(p.y for p in cran), min(p.z for p in cran)))
+    hi_ = Vector((max(p.x for p in cran), max(p.y for p in cran), max(p.z for p in cran)))
+    C = Vector((E.x, (lo.y + hi_.y) / 2 + 0.034, hi_.z - 0.03))
+    R = Vector(((hi_.x - lo.x) / 2 + AFRO_DEPTH * 0.85, (hi_.y - lo.y) / 2 + AFRO_DEPTH * 0.95, 0.03 + AFRO_DEPTH * 1.25))
+    rot_i = HEAD_TI.to_3x3()
+    bm.normal_update()
+    scalp = [f for f in bm.faces if f.material_index == hi]
+    if len(scalp) < 50:
+        refuse(f'only {len(scalp)} scalp faces to grow an afro from')
+    dup = bmesh.ops.duplicate(bm, geom=scalp)
+    dfaces = [g for g in dup['geom'] if isinstance(g, bmesh.types.BMFace)]
+    dedges = list({e for f in dfaces for e in f.edges})
+    sub = bmesh.ops.subdivide_edges(bm, edges=dedges, cuts=1, use_grid_fill=True)
+    bm.normal_update()
+    verts = list({v for f in dfaces for v in f.verts} | {g for g in sub['geom_inner'] if isinstance(g, bmesh.types.BMVert)})
+    dfaces = list({f for v in verts for f in v.link_faces if f.material_index == hi})
+    for v in verts:
+        n = v.normal.copy()
+        r = HEAD_TI @ v.co  # rest space (the subdivided points have no source vertex)
+        nr = (rot_i @ n).normalized()
+        o = Vector(((r.x - C.x) / R.x, (r.y - C.y) / R.y, (r.z - C.z) / R.z))
+        d = Vector((nr.x / R.x, nr.y / R.y, nr.z / R.z))
+        a, b, c = d.dot(d), 2 * o.dot(d), o.dot(o) - 1
+        disc = b * b - 4 * a * c
+        t = max(0.0, (-b + math.sqrt(disc)) / (2 * a)) if disc > 0 else 0.0
+        clump = 1 + 0.12 * noise.noise(r * 17.0) + 0.035 * noise.noise(r * 43.0 + Vector((3.1, 0, 0)))
+        w = smooth01(0.0, 0.026, hair_margin(r))
+        v.co += n * (0.003 + t * clump * w)
+    inner = [v for v in verts if not v.is_boundary]
+    for _ in range(4):  # soft clumps, no spikes at the hairline
+        bmesh.ops.smooth_vert(bm, verts=inner, factor=0.5, use_axis_x=True, use_axis_y=True, use_axis_z=True)
+    for f in dfaces:
+        f.material_index = hi
+    bm.normal_update()
+    return len(verts)
+
+
+BRAIDS = 28
+SIDES = 6
+
+
+def add_braids(head, body):
+    """Box braids: combed back over the scalp from evenly spread roots, then falling to the
+    shoulders. Each strand is kept clear of the head and of the body at the head's full turn
+    (cast.js turns it up to 0.45 rad either way), so it never passes through a shoulder."""
+    hi = ZONES.index('hair')
+    head.normal_update()
+    tree_h = BVHTree.FromBMesh(head)
+    tree_b = BVHTree.FromBMesh(body)
+    rot, rot_i = HEAD_T.to_3x3(), HEAD_TI.to_3x3()
+    cand = [f.calc_center_median() for f in head.faces if f.material_index == hi]
+    cand = [c for c in cand if hair_margin(HEAD_TI @ c) > 0.004]
+    if len(cand) < BRAIDS * 3:
+        refuse(f'only {len(cand)} scalp points for {BRAIDS} braids')
+    roots = [max(cand, key=lambda c: (HEAD_TI @ c).z)]
+    dist = [(c - roots[0]).length for c in cand]
+    while len(roots) < BRAIDS:  # farthest-point sampling: even partings
+        k = max(range(len(cand)), key=lambda i: dist[i])
+        roots.append(cand[k])
+        dist = [min(dist[i], (cand[i] - cand[k]).length) for i in range(len(cand))]
+    down = Vector((0, 0, -1))
+    yaw = [Matrix.Rotation(a, 3, 'Z') for a in (0.0, 0.45, -0.45)]
+
+    def clear(p, gap):
+        loc, nrm, _, _ = tree_h.find_nearest(p)
+        if loc is not None and (p - loc).dot(nrm) < gap:
+            p = loc + nrm * gap
+        for m in yaw:  # the body as the turned head sees it
+            q = neck_pivot + m @ (p - neck_pivot)
+            loc, nrm, _, _ = tree_b.find_nearest(q)
+            if loc is not None and (q - loc).dot(nrm) < gap:
+                q = loc + nrm * gap
+                p = neck_pivot + m.transposed() @ (q - neck_pivot)
+        return p
+
+    strands = []
+    for j, r0 in enumerate(roots):
+        rad = 0.0085 + 0.0012 * ((j * 7) % 3) / 2
+        gap = rad + 0.003
+        length = 0.30 + 0.06 * ((j * 13) % 7) / 6
+        seg = 0.016
+        loc, nrm, _, _ = tree_h.find_nearest(r0)
+        pts = [loc - nrm * 0.003, loc + nrm * gap]
+        rr = HEAD_TI @ r0
+        side = 1.0 if (rr.x - E.x) > 0 or ((rr.x - E.x) == 0 and j % 2) else -1.0
+        comb = rot @ Vector((side * 0.5, 0.85, -0.2))  # from a centre part, back past the ears: the face stays clear
+        travelled = 0.0
+        while travelled < 0.24:  # combed along the scalp until it runs off the side or the back
+            p = pts[-1]
+            loc, nrm, _, _ = tree_h.find_nearest(p)
+            nr = rot_i @ nrm
+            lr = HEAD_TI @ loc
+            past_ear = (lr.y - E.y) > 0.5 * (back_y - E.y)  # only fall once behind the ear line
+            if travelled > 0.02 and past_ear and (nr.z < 0.15 or hair_margin(lr) < 0.01):
+                break
+            tang = (comb - nrm * comb.dot(nrm)).normalized()
+            loc, nrm, _, _ = tree_h.find_nearest(p + tang * seg)
+            pts.append(loc + nrm * gap)
+            travelled += seg
+        anchor = max(2, len(pts) - 2)  # the last combed points bend with the fall, no kink
+        n_free = max(4, int((length - travelled) / seg))
+        for _ in range(n_free):
+            pts.append(pts[-1] + down * seg)
+        for _ in range(90):  # gravity, length, collision, a little stiffness
+            for k in range(anchor, len(pts)):
+                pts[k] = pts[k] + down * 0.002
+            for k in range(anchor, len(pts)):
+                d = pts[k] - pts[k - 1]
+                pts[k] = pts[k - 1] + d.normalized() * seg
+            for k in range(anchor, len(pts) - 1):
+                pts[k] = pts[k].lerp((pts[k - 1] + pts[k + 1]) / 2, 0.25)
+            for k in range(anchor, len(pts)):
+                pts[k] = clear(pts[k], gap)
+        strands.append((pts, rad))
+
+    made = []
+    for pts, rad in strands:
+        n = len(pts)
+        rings = []
+        ref = Vector((1, 0, 0))
+        for k, p in enumerate(pts):
+            t = (pts[min(n - 1, k + 1)] - pts[max(0, k - 1)]).normalized()
+            if abs(t.dot(ref)) > 0.9:
+                ref = Vector((0, 1, 0))
+            u = (ref - t * ref.dot(t)).normalized()
+            w = t.cross(u)
+            ref = u
+            r = rad * (1 - 0.3 * k / n) * (1.0 if k % 2 else 0.8)  # the knots of a braid
+            rings.append([head.verts.new(p + (u * math.cos(a) + w * math.sin(a)) * r) for a in (i / SIDES * math.tau for i in range(SIDES))])
+        tip = head.verts.new(pts[-1] + (pts[-1] - pts[-2]).normalized() * rad * 1.5)
+        base = head.verts.new(pts[0] - (pts[1] - pts[0]).normalized() * rad)
+        fs = []
+        for a, b in zip(rings, rings[1:]):
+            for i in range(SIDES):
+                fs.append(head.faces.new((a[i], a[(i + 1) % SIDES], b[(i + 1) % SIDES], b[i])))
+        for i in range(SIDES):
+            fs.append(head.faces.new((rings[-1][i], rings[-1][(i + 1) % SIDES], tip)))
+            fs.append(head.faces.new((rings[0][(i + 1) % SIDES], rings[0][i], base)))
+        tri = bmesh.ops.triangulate(head, faces=fs)['faces']
+        bmesh.ops.recalc_face_normals(head, faces=tri)
+        for f in tri:
+            f.material_index = hi
+        made.append(tri)
+    head.normal_update()
+    return made
 
 
 def add_collar(bm):
@@ -447,14 +631,18 @@ def decimate(bm, ratio, name):
 
 
 head_bm = part_mesh(True)
-thicken_cap(head_bm)
-add_twists(head_bm)
+if HAIR == 'cap':
+    thicken_cap(head_bm)
+    add_twists(head_bm)
+elif HAIR == 'afro':
+    print(f'build_monarch: afro grown from {add_afro(head_bm)} scalp points')
 body_bm = part_mesh(False)
 loosen_pants(body_bm)
 add_shoes(body_bm)
 neck_r = add_collar(body_bm)
 head_bm = decimate(head_bm, DECIMATE['head'], 'monarch_head')
 body_bm = decimate(body_bm, DECIMATE['body'], 'monarch_body')
+braids = add_braids(head_bm, body_bm) if HAIR == 'braids' else []
 
 # ------------------------------------------------------------------ guards
 pivot3 = place(neck_pivot)
@@ -489,7 +677,7 @@ outward = sum(f.normal.dot(f.calc_center_median() - cen) * f.calc_area() for f i
 if outward <= 0:
     problems.append('body normals face inward')
 present = {ZONES[f.material_index] for bm in (body_bm, head_bm) for f in bm.faces}
-missing = [z for z in ZONES if z not in present]
+missing = [z for z in ZONES if z not in present and not (z == 'cap' and HAIR != 'cap')]
 if missing:
     problems.append(f'zones missing: {missing}')
 tris = len(body_bm.faces) + len(head_bm.faces)
@@ -555,6 +743,7 @@ manifest = {
     'parts': parts,
     'eyes': [[round(x, 5) for x in (e - pivot3)] for e in eyes3],
     'fit': {'seatY': 0, 'soleY': round(sole_y - butt_y, 4), 'calfZ': round(SEAT_FRONT_Z + 0.025, 4), 'neckRadius': round(neck_r, 4), 'tris': tris},
+    'hair': HAIR,
     'source': {'tool': 'MPFB (MakeHuman for Blender)', 'macros': MACROS, 'race': RACE, 'rig': 'game_engine'},
 }
 if len(blob) > BUDGET_BYTES:

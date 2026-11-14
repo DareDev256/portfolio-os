@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.72.0
+version: 4.72.1
 last_updated: 2026-11-14
 
 ---
@@ -11,6 +11,14 @@ last_updated: 2026-11-14
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.72.1 — 2026-11-14 · Hair options for the Monarch (design, not shipped)
+
+James asked for his character with an afro or braids under a black long coat, designed before it ships.
+
+- **`build_monarch.py --hair=afro|braids`** (default `cap`, the shipped 4.70.0 head). The afro duplicates the scalp, subdivides it and grows it out to a tall, round, clumped dome that thins to nothing at the hairline. The braids are 28 strands from evenly spread roots, combed back past the ear line and dropped with gravity; each one is kept clear of the head and of the body at the head's full turn (cast.js turns it 0.45 rad either way), so no braid passes through a shoulder. `--out=DIR` writes a design build anywhere, so the site's files are never touched. Unknown hair is refused.
+- **`tools/studio/monarch-bench.html`**: a dev-only look-dev bench (not a build entry). It loads any Monarch build through the site's own loader, materials and anime shadow ink, and frames bust, three-quarter, side, back and full views the studio's throne shot cannot.
+- Triangle budget 16k to 20k (braids are 17,370). The default build matches the live one in counts and layout; its bytes differ by the same float jitter the 4.70.0 script already shows run to run (2,263 of 106,764).
 
 ## 4.72.0 — 2026-11-14 · The anime look is the default
 
