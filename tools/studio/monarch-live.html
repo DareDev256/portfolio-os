@@ -1,0 +1,139 @@
+<!doctype html>
+<!--
+  monarch-live.html: dev-only live viewer for the rigged anime Monarch (Tripo P2, seated), 4.72.x.
+  Not a Vite build entry. Run `npx vite`, open /tools/studio/monarch-live.html?src=<glb>&view=bust
+  The bar is James's likes (@Dstudio_ai's VRM preview pages): cel shading with a rim light, glowing
+  accents, a head that follows the camera, breathing. Uses the site's own toonify() and ink.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Monarch live</title>
+    <style>
+        html, body { margin: 0; height: 100%; background: #0d0b14; overflow: hidden; }
+        canvas { display: block; width: 100vw; height: 100vh; }
+        #tag { position: fixed; left: 14px; top: 12px; font: 600 13px/1.2 ui-monospace, monospace; letter-spacing: 0.08em; text-transform: uppercase; color: #c8b2ff; }
+    </style>
+    <script type="importmap">
+        { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }
+    </script>
+</head>
+<body>
+    <canvas id="gl"></canvas>
+    <div id="tag"></div>
+    <script type="module">
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+        import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
+        import { toonify, inkSize, INK } from '/js/studio/anime.js';
+        import { makeSprings } from '/js/studio/springs.js';
+
+        const q = new URLSearchParams(location.search);
+        const view = q.get('view') || 'bust';
+        document.getElementById('tag').textContent = q.get('tag') || '';
+        const canvas = document.getElementById('gl');
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
+        renderer.setPixelRatio(Math.min(2, devicePixelRatio));
+        renderer.setSize(innerWidth, innerHeight, false);
+        renderer.toneMapping = THREE.NeutralToneMapping;
+        renderer.toneMappingExposure = Number(q.get('exp') || 1.1);
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0d0b14);
+        scene.fog = new THREE.Fog(0x0d0b14, 6, 14);
+
+        // light: a warm-white key from the front left, a violet fill, a cream rim from behind
+        const key = new THREE.DirectionalLight(0xfff4e8, 2.4); key.position.set(-1.5, 2.5, 3); scene.add(key);
+        const fill = new THREE.DirectionalLight(0x8a6bff, 0.9); fill.position.set(2, 0.5, 1); scene.add(fill);
+        const rim = new THREE.DirectionalLight(0xfff0d8, 3.2); rim.position.set(0.5, 1.5, -3); scene.add(rim);
+        scene.add(new THREE.HemisphereLight(0x6a5aa8, 0x120f1c, 0.6));
+
+        // the throne, as a dark proxy so the seat and dais read
+        const stone = new THREE.MeshStandardMaterial({ color: 0x1a1824, roughness: 0.8 });
+        const add = (g, x, y, z) => { const m = new THREE.Mesh(g, stone); m.position.set(x, y, z); m.userData.noToon = true; scene.add(m); return m; };
+        add(new THREE.BoxGeometry(1.2, 0.12, 0.85), 0, -0.06, 0.0);
+        add(new THREE.BoxGeometry(1.25, 2.1, 0.14), 0, 0.95, -0.45);
+        add(new THREE.BoxGeometry(0.12, 0.35, 0.9), 0.6, 0.06, 0); add(new THREE.BoxGeometry(0.12, 0.35, 0.9), -0.6, 0.06, 0);
+        add(new THREE.BoxGeometry(2.4, 0.08, 2.0), 0, -0.54, 0.4);
+
+        // a cel variant for a lit (not shadow) figure: three bands, dark-navy ink, cream rim
+        INK.hero = { color: 0x14101f, width: Number(q.get('ink') || 2.6), rim: 0xfff0d8, rimStrength: Number(q.get('rim') || 0.16), bands: [0.42, 0.78, 1], ...(q.get('glow') === '0' ? {} : { glow: { color: 0xa98bff, strength: Number(q.get('trim') || 1.4) } }) };
+
+        const gltf = await new GLTFLoader().loadAsync(q.get('src'));
+        const fig = gltf.scene;
+        scene.add(fig);
+        const bones = {};
+        fig.traverse((o) => { if (o.isBone) bones[o.name] = o; if (o.isMesh) { o.frustumCulled = false; for (const m of [].concat(o.material)) m.side = THREE.DoubleSide; } });
+
+        const look = q.get('look') || 'anime';
+        const inks = new Map();
+        if (look === 'anime') toonify(THREE, fig, { variant: 'hero', inks });
+        for (const m of inks.values()) m.uniforms.uPx.value.set(...inkSize(m.userData.inkWidth, canvas.width, canvas.height, renderer.getPixelRatio()));
+
+        // glowing eyes on the eye bones
+        const glowTex = (() => {
+            const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d');
+            const r = g.createRadialGradient(32, 32, 0, 32, 32, 32); r.addColorStop(0, 'rgba(230,215,255,1)'); r.addColorStop(0.25, 'rgba(170,130,255,0.85)'); r.addColorStop(1, 'rgba(120,80,255,0)');
+            g.fillStyle = r; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c);
+        })();
+        const eyes = [];
+        if (q.get('glow') !== '0') for (const n of ['L_Eye', 'R_Eye']) {
+            if (!bones[n]) continue;
+            const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false, transparent: true }));
+            s.scale.setScalar(Number(q.get('eyeglow') || 0.05));
+            scene.add(s); eyes.push([s, bones[n]]);
+        }
+
+        const VIEWS = {
+            bust: { pos: [0.3, 0.92, 1.75], at: [0, 0.6, 0.22], fov: 30 },
+            three: { pos: [0.95, 0.75, 1.35], at: [0, 0.45, 0.2], fov: 32 },
+            throne: { pos: [0.6, 0.35, 3.2], at: [0, 0.2, 0.1], fov: 34 },
+            low: { pos: [0.35, 0.05, 1.6], at: [0, 0.55, 0.2], fov: 32 },
+            feet: { pos: [0.55, -0.15, 1.35], at: [0, -0.38, 0.45], fov: 30 },
+        };
+        const v = VIEWS[view] || VIEWS.bust;
+        const camera = new THREE.PerspectiveCamera(v.fov, innerWidth / innerHeight, 0.05, 50);
+        camera.position.fromArray(v.pos);
+        camera.lookAt(new THREE.Vector3(...v.at));
+
+        // the head follows the camera (clamped), like the site's Monarch
+        const head = bones.Head, tmp = new THREE.Vector3(), base = head ? head.quaternion.clone() : null;
+        let swingT = 0;
+        function lookAtCamera() {
+            if (!head) return;
+            if (q.get('swing') === '1') {
+                head.quaternion.copy(base);
+                const qw = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.sin(swingT * 2.2) * 0.45, 0, 'YXZ'));
+                const parentQ = head.parent.getWorldQuaternion(new THREE.Quaternion());
+                head.quaternion.premultiply(parentQ.clone().invert().multiply(qw).multiply(parentQ));
+                return;
+            }
+            head.quaternion.copy(base);
+            fig.updateMatrixWorld(true);
+            const hp = head.getWorldPosition(new THREE.Vector3());
+            tmp.copy(camera.position).sub(hp);
+            const yaw = THREE.MathUtils.clamp(Math.atan2(tmp.x, tmp.z), -0.45, 0.45);
+            const pitch = THREE.MathUtils.clamp(Math.atan2(tmp.y, Math.hypot(tmp.x, tmp.z)), -0.2, 0.3) * 0.5;
+            const qw = new THREE.Quaternion().setFromEuler(new THREE.Euler(-pitch, yaw, 0, 'YXZ'));
+            const parentQ = head.parent.getWorldQuaternion(new THREE.Quaternion());
+            const local = parentQ.clone().invert().multiply(qw).multiply(parentQ);
+            head.quaternion.premultiply(local);
+        }
+        const springs = makeSprings(THREE, Object.values(bones).filter((b) => b.name.startsWith('Braid_')), { stiffness: Number(q.get('stiff') || 11), drag: Number(q.get('drag') || 0.4) });
+        const clock = new THREE.Clock();
+        function frame(dt = clock.getDelta()) {
+            const t = clock.elapsedTime;
+            lookAtCamera();
+            fig.updateMatrixWorld(true);
+            if (q.get('springs') !== '0') springs.step(dt);
+            if (bones.Spine02) bones.Spine02.rotation.x += 0; // breathing hook for the site build
+            fig.updateMatrixWorld(true);
+            for (const [s, b] of eyes) { b.getWorldPosition(s.position); s.position.z += 0.012; s.material.opacity = 0.75 + Math.sin(t * 2.3) * 0.25; }
+            renderer.render(scene, camera);
+        }
+        frame(0); frame(0);
+        window.__advance = (sec) => { for (let i = 0; i < Math.round(sec * 60); i++) { swingT += 1 / 60; frame(1 / 60); } return swingT; };
+        window.__live = { ready: true, bones: Object.keys(bones).length, meshes: inks.size, springs: springs.springs.length };
+        if (q.get('anim') === '1') renderer.setAnimationLoop(frame);
+    </script>
+</body>
+</html>

@@ -846,3 +846,82 @@ describe('the anime look', () => {
         expect(js).toMatch(/if \(LOOK !== 'anime'\) return;/);
     });
 });
+
+/* THE ANIME MONARCH (4.73.0): the rigged Tripo P2 model of James's design (braids, a black
+ * long coat with violet trim, Black Cats) seated on the throne in the anime look, with the
+ * MPFB Monarch as the fallback. Its glowing trim is an anime.js option; its braids swing on
+ * springs.js. */
+import { animeProblem, MONARCH_ANIME, MONARCH_ANIME_BONES } from '../js/studio/monarch-anime.js';
+import { toonCopy } from '../js/studio/anime.js';
+import { SPRING } from '../js/studio/springs.js';
+
+describe('the anime Monarch', () => {
+    const gltfPath = 'public' + MONARCH_ANIME;
+    const gltf = JSON.parse(read(gltfPath));
+    const names = gltf.nodes.map((n) => n.name);
+
+    it('ships as a glTF whose buffer and texture are plain files beside it, at the sizes it claims', () => {
+        for (const b of gltf.buffers) {
+            expect(b.uri).toBe('monarch-anime.bin');
+            expect(statSync(resolve(root, 'public/assets/studio', b.uri)).size).toBe(b.byteLength);
+        }
+        expect(gltf.images.map((i) => i.uri)).toEqual(['monarch-anime.webp']);
+        expect(existsSync(resolve(root, 'public/assets/studio/monarch-anime.webp'))).toBe(true);
+        // no data: or blob: images, which the site CSP would block
+        expect(JSON.stringify(gltf.images)).not.toMatch(/data:|blob:/);
+        const total = ['monarch-anime.gltf', 'monarch-anime.bin', 'monarch-anime.webp'].reduce((n, f) => n + statSync(resolve(root, 'public/assets/studio', f)).size, 0);
+        expect(total).toBeLessThan(600_000);
+    });
+
+    it('is skinned to a skeleton with the head, eyes and a bone per braid strand', () => {
+        expect(gltf.skins).toHaveLength(1);
+        const joints = gltf.skins[0].joints.map((j) => names[j]);
+        for (const b of MONARCH_ANIME_BONES) expect(joints).toContain(b);
+        expect(joints.filter((n) => n.startsWith('Braid_')).length).toBeGreaterThanOrEqual(10);
+    });
+
+    it('refuses a model without a skinned mesh or a missing bone, so the fallback runs', () => {
+        const all = Object.fromEntries(MONARCH_ANIME_BONES.map((n) => [n, {}]));
+        expect(animeProblem(all, 1)).toBe('');
+        expect(animeProblem(all, 0)).toMatch(/no skinned mesh/);
+        const { Head, ...noHead } = all;
+        expect(Head).toBeDefined();
+        expect(animeProblem(noHead, 1)).toMatch(/missing bones Head/);
+    });
+
+    it('is seated only in the anime look, falls back to the MPFB Monarch, and turns its head and braids', () => {
+        const cast = read('js/studio/cast.js');
+        expect(cast).toMatch(/if \(k\.look === 'anime'\) loadAnimeMonarch\(THREE\)\.then\(\(am\) => \(am \? useAnime\(am\) : mpfb\(\)\)\);\n {4}else mpfb\(\);/);
+        expect(cast).toMatch(/k\.onFigure\?\.\(monarch, 'monarch'\)/);
+        expect(cast).toMatch(/turnHead\(THREE, am, monarch, fig\.yaw\);/);
+        expect(cast).toMatch(/am\.springs\.step\(dt\);/);
+        expect(cast).toMatch(/kind: fig\.kind/);
+        expect(read('js/studio.js')).toMatch(/crew: agents, look: LOOK, onFigure: animeApply/);
+        // the loader is fetched only when needed, and points at the pinned three the CSP allows
+        expect(read('js/studio/monarch-anime.js')).toMatch(/await import\('\.\/vendor\/GLTFLoader\.js'\)/);
+        expect(read('js/studio/vendor/GLTFLoader.js')).toMatch(/from 'https:\/\/cdn\.jsdelivr\.net\/npm\/three@0\.170\.0\/build\/three\.module\.js'/);
+        expect(read('vercel.json')).toMatch(/https:\/\/cdn\.jsdelivr\.net\/npm\/three@0\.170\.0\//);
+    });
+
+    it('lights its violet trim only when the variant asks for glow', () => {
+        class Color { constructor(c) { this.c = c; } clone() { return new Color(this.c); } multiplyScalar() { return this; } }
+        class DataTexture { constructor() { this.needsUpdate = false; } }
+        class MeshToonMaterial { constructor(o) { Object.assign(this, o); this.userData = {}; } }
+        const FAKE = { Color, DataTexture, MeshToonMaterial, RGBAFormat: 1, NearestFilter: 2 };
+        const shader = () => ({ uniforms: {}, fragmentShader: 'void main() {\n#include <emissivemap_fragment>\n#include <opaque_fragment>\n}' });
+        const lit = toonCopy(FAKE, { color: new Color(1) }, INK.monarch);
+        const sh = shader(); lit.onBeforeCompile(sh);
+        expect(sh.uniforms.uGlow).toBeDefined();
+        expect(sh.fragmentShader).toMatch(/totalEmissiveRadiance \+= uGlow \* violet;/);
+        expect(lit.customProgramCacheKey()).toMatch(/-glow-/);
+        const plain = toonCopy(FAKE, { color: new Color(1) }, INK.crew);
+        const sh2 = shader(); plain.onBeforeCompile(sh2);
+        expect(sh2.uniforms.uGlow).toBeUndefined();
+        expect(sh2.fragmentShader).not.toMatch(/uGlow/);
+    });
+
+    it('steps its springs at no more than a thirtieth of a second, so a background tab cannot fling the braids', () => {
+        expect(SPRING.maxDt).toBeLessThanOrEqual(1 / 30);
+        expect(read('js/studio/springs.js')).toMatch(/Math\.min\(Math\.max\(dt, 0\), o\.maxDt\)/);
+    });
+});

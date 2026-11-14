@@ -12,6 +12,7 @@
 import { buildBody, stride } from './rig.js';
 import { stationPoint, CENTER, DOLLY, CRAFT, THRONE, LAB, POSTER, FLAT } from './layout.js';
 import { loadMonarch } from './monarch.js';
+import { loadAnimeMonarch, turnHead } from './monarch-anime.js';
 
 /** Slate copy for the set pieces. Public copy: "James", never a surname. */
 export const EXTRA_SLATES = {
@@ -275,7 +276,7 @@ export function createCast(THREE, k) {
         smoke.push(s);
     }
     // the Monarch built to James's build (tools/studio/build_monarch.py); the palette lives here, not in the file
-    const fig = { head: mHead, torso: monarch.userData.torso, breathe: 0.012, halo: 0.16, headY: 0, built: false, tris: 0 };
+    const fig = { head: mHead, torso: monarch.userData.torso, breathe: 0.012, halo: 0.16, headY: 0, built: false, tris: 0, kind: 'figure', anime: null, yaw: 0 };
     const monarchLook = {
         skin: new THREE.MeshStandardMaterial({ color: 0x52301f, roughness: 0.5 }),
         top: new THREE.MeshStandardMaterial({ color: 0x0c0c11, roughness: 0.5, emissive: 0x0c0718 }),
@@ -287,7 +288,22 @@ export function createCast(THREE, k) {
         beard: new THREE.MeshStandardMaterial({ color: 0x0b0908, roughness: 0.95 }),
         eye: violet,
     };
-    loadMonarch(THREE, monarchLook).then((built) => {
+    // the anime look seats the rigged anime Monarch (monarch-anime.js); if it cannot load, the MPFB one
+    const useAnime = (am) => {
+        monarch.remove(capsule);
+        monarch.add(am.root);
+        halos.length = 0;
+        for (const eye of am.eyes) {
+            const h = glowSprite('rgba(176,140,255,0.95)', 0.07);
+            h.userData.bone = eye;
+            monarch.add(h);
+            halos.push(h);
+        }
+        Object.assign(fig, { anime: am, torso: am.root, breathe: 0.003, halo: 0.07, built: true, tris: am.tris, kind: 'anime' });
+        shadowAll(monarch);
+        k.onFigure?.(monarch, 'monarch');
+    };
+    const mpfb = () => loadMonarch(THREE, monarchLook).then((built) => {
         if (!built) return;
         monarch.remove(capsule);
         monarch.add(built.body, built.head);
@@ -298,10 +314,12 @@ export function createCast(THREE, k) {
             built.head.add(h);
             halos.push(h);
         }
-        Object.assign(fig, { head: built.head, torso: built.body, breathe: 0.004, halo: 0.09, headY: built.head.position.y, built: true, tris: built.tris });
+        Object.assign(fig, { head: built.head, torso: built.body, breathe: 0.004, halo: 0.09, headY: built.head.position.y, built: true, tris: built.tris, kind: 'mpfb' });
         shadowAll(monarch);
         k.onFigure?.(monarch, 'shadow');
     });
+    if (k.look === 'anime') loadAnimeMonarch(THREE).then((am) => (am ? useAnime(am) : mpfb()));
+    else mpfb();
     let arise = 0;
 
     /* ------------------------------------------------ the lab: a builder, a black beetle-type robot */
@@ -515,6 +533,7 @@ export function createCast(THREE, k) {
     /* ------------------------------------------------ per frame */
     const tmp = V(0, 0, 0);
     const tmp2 = V(0, 0, 0);
+    const tmp3 = V(0, 0, 0);
     function update(t, dt, camera, mode, reduce) {
         // on air: a new source every eight seconds
         if (order.length && t - airAt > 8) {
@@ -578,12 +597,22 @@ export function createCast(THREE, k) {
 
         // the Monarch
         throne.updateMatrixWorld();
-        monarch.worldToLocal(tmp2.copy(camera.position)).sub(fig.head.position);
-        const look = THREE.MathUtils.clamp(Math.atan2(tmp2.x, tmp2.z), -0.45, 0.45);
-        fig.head.rotation.y = THREE.MathUtils.lerp(fig.head.rotation.y, look, dt * 0.8);
         const breath = 1 + Math.sin(t * 1.1) * fig.breathe;
-        fig.torso.scale.y = breath;
-        if (fig.built) fig.head.position.y = fig.headY * breath;
+        if (fig.anime) {
+            const am = fig.anime;
+            monarch.worldToLocal(tmp2.copy(camera.position)).sub(monarch.worldToLocal(am.head.getWorldPosition(tmp3)));
+            fig.yaw = THREE.MathUtils.lerp(fig.yaw, THREE.MathUtils.clamp(Math.atan2(tmp2.x, tmp2.z), -0.45, 0.45), dt * 0.8);
+            turnHead(THREE, am, monarch, fig.yaw);
+            am.root.updateMatrixWorld(true);
+            am.springs.step(dt);
+            for (const h of halos) if (h.userData.bone) monarch.worldToLocal(h.userData.bone.getWorldPosition(h.position)).z += 0.012;
+        } else {
+            monarch.worldToLocal(tmp2.copy(camera.position)).sub(fig.head.position);
+            const look = THREE.MathUtils.clamp(Math.atan2(tmp2.x, tmp2.z), -0.45, 0.45);
+            fig.head.rotation.y = THREE.MathUtils.lerp(fig.head.rotation.y, look, dt * 0.8);
+            fig.torso.scale.y = breath;
+            if (fig.built) fig.head.position.y = fig.headY * breath;
+        }
         arise = Math.max(0, arise - dt);
         const flare = 1 + arise * 1.6 + (Math.sin(t * 2.3) * 0.5 + 0.5) * 0.25;
         halos.forEach((h) => h.scale.setScalar(fig.halo * flare));
@@ -662,7 +691,7 @@ export function createCast(THREE, k) {
         runnerAt: () => (run.wait > 0 && run.target ? { id: run.target.c.id, pos: runner.head.getWorldPosition(runW) } : null),
         arise: () => { arise = 1.6; },
         /** Whether the built Monarch is the one on the throne (consumption, not availability). */
-        monarch: () => ({ built: fig.built, tris: fig.tris }),
+        monarch: () => ({ built: fig.built, tris: fig.tris, kind: fig.kind }),
         redraw: () => board.userData.draw(),
         spots: {
             // the built Monarch is framed at his chest; the hand-built one with the whole throne

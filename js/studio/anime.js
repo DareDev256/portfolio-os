@@ -42,6 +42,8 @@ export function otherLook(look) {
 export const INK = {
     crew: { color: 0x101014, width: 2.3, rim: 0xffffff, rimStrength: 0.22, bands: [0.55, 0.84, 1] },
     shadow: { color: 0x9a7bff, width: 2.4, rim: 0xa58bff, rimStrength: 0.9, bands: [0.16, 0.36, 0.7] },
+    // the anime Monarch (4.73.0): lit like the crew but darker, a dark-navy line, a cream rim, glowing violet trim
+    monarch: { color: 0x14101f, width: 2.6, rim: 0xfff0d8, rimStrength: 0.16, bands: [0.38, 0.74, 1], glow: { color: 0xa98bff, strength: 1.4 } },
 };
 
 const ramps = new Map();
@@ -73,17 +75,26 @@ export function toonCopy(THREE, src, ink) {
         gradientMap: ramp(THREE, ink.bands),
     });
     const rim = new THREE.Color(ink.rim).multiplyScalar(ink.rimStrength);
+    // ink.glow: texels whose colour is clearly violet (blue well above green and red) glow, the
+    // way the glow shaders in James's likes light trims and accents. Nothing else changes.
+    const glow = ink.glow ? new THREE.Color(ink.glow.color).multiplyScalar(ink.glow.strength) : null;
     m.onBeforeCompile = (sh) => {
         sh.uniforms.uRim = { value: rim };
+        if (glow) sh.uniforms.uGlow = { value: glow };
         sh.fragmentShader = sh.fragmentShader
-            .replace('void main() {', 'uniform vec3 uRim;\nvoid main() {')
+            .replace('void main() {', `uniform vec3 uRim;\n${glow ? 'uniform vec3 uGlow;\n' : ''}void main() {`)
+            .replace('#include <emissivemap_fragment>', glow ? [
+                '#include <emissivemap_fragment>',
+                'float violet = smoothstep( 0.03, 0.12, diffuseColor.b - max( diffuseColor.g, diffuseColor.r * 0.9 ) );',
+                'totalEmissiveRadiance += uGlow * violet;',
+            ].join('\n') : '#include <emissivemap_fragment>')
             .replace('#include <opaque_fragment>', [
                 'float facing = max( dot( normal, normalize( vViewPosition ) ), 0.0 );',
                 'outgoingLight += uRim * step( 0.72, 1.0 - facing );',
                 '#include <opaque_fragment>',
             ].join('\n'));
     };
-    m.customProgramCacheKey = () => `toon-rim-${ink.rimStrength}`;
+    m.customProgramCacheKey = () => `toon-rim-${ink.rimStrength}${glow ? `-glow-${ink.glow.strength}` : ''}`;
     m.userData.toon = true;
     return m;
 }

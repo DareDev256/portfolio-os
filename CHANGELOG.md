@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.72.2
+version: 4.73.0
 last_updated: 2026-11-14
 
 ---
@@ -11,6 +11,16 @@ last_updated: 2026-11-14
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.73.0 — 2026-11-14 · The anime Monarch takes the throne
+
+James's bar is the living anime avatars in his likes (@Dstudio_ai's Tripo + Claude VRM and its glow-shader viewer, @Yokohara_h's Fable-animated character, @rewind02's Opus + Blender method with bones in the clothes). His design: braids, a black knee-length coat with violet trim, Black Cat 4s.
+
+- **The model.** A front/side/back design sheet (Nano Banana Pro) went through Tripo's P2 multiview model (game topology, 5,237 triangles; H3.1 and TRELLIS.2 were compared and lost on the face or the weight) and Tripo's auto-rig (78 bones). `tools/studio/build_monarch_anime.py` (Blender, headless) then: scales and turns it; moves the coat panels the auto-rig had glued to the finger bones onto the thighs; seats him forward on the throne with the aim() approach of the MPFB builder (seat-to-sole 0.50, the dais); makes the pose the rest pose and lays the coat tails on the seat; gives each of 15 braid strands its own bone under the head; and exports glTF with a separate `.bin` and `.webp`, because the site CSP allows no `blob:` images. It refuses on a missing bone, fewer than 10 braid strands or soles off the dais. `blackcat_texture.py` turns the white soles graphite (no logos). Rebuilt headless from the Tripo file: same texture bytes, sizes, 93 joints and placement as what ships.
+- **On the site** (`js/studio/monarch-anime.js`, `cast.js`). The anime look seats him; the clean look keeps the MPFB Monarch; if the model cannot load, the MPFB Monarch takes the throne (checked by blocking the files: `kind: mpfb`, with the reason in the console). His head follows the camera from its rest pose (`turnHead`), his eyes glow on the eye bones, and his braids swing on `js/studio/springs.js` (VRM-style spring bones, dt clamped to 1/30 s). The GLTF loader is vendored like the other three.js add-ons and loads as a lazy 47 KB chunk.
+- **Glowing trim** (`anime.js`). A variant can ask for `glow`: texels that are clearly violet light up. `INK.monarch` uses it with a dark-navy line and a soft cream rim.
+- **Dev tools.** `tools/studio/monarch-live.html` (the living-avatar viewer: cel, rim, glow, head look-at, springs, a head-swing test).
+- Tests (831): the glTF and its files (no data or blob images, under 600 KB), the skeleton (head, eyes, at least 10 braid bones), the refusal, the anime-only seat with the MPFB fallback, the glow injection only when asked, the spring dt clamp. The fallback removed, the glow removed and the skin check removed each went red.
 
 ## 4.72.2 — 2026-11-14 · A VRM bench (dev only)
 

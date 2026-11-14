@@ -1081,7 +1081,7 @@ const ready = Promise.all([crewP, figsP, setP, dataP]).then(([crew, j, baked]) =
         addShadowCatchers();
     } else buildHandSet();
     crew.forEach((c, i) => makeAgent(c, i, crew.length));
-    cast = createCast(THREE, { scene, M, RoundedBox: RoundedBoxGeometry, makeTool, hits, crew: agents, onFigure: animeApply });
+    cast = createCast(THREE, { scene, M, RoundedBox: RoundedBoxGeometry, makeTool, hits, crew: agents, look: LOOK, onFigure: animeApply });
     animeApply(scene, 'crew');
     if (crew.length) startWalkIn();
     applyFigures(j);
