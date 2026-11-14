@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.75.1
+version: 4.76.0
 last_updated: 2026-11-14
 
 ---
@@ -11,6 +11,10 @@ last_updated: 2026-11-14
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.76.0 — 2026-11-14 · The hooded Monarch always
+
+James: the hooded Monarch should sit the throne all the time, not only after Arise. The anime look now loads `monarch-hood.gltf` first; if it cannot load, the braids Monarch, then the MPFB one. Arise is the flare again (no swap). Tests: the load order, no swap, the fallback (removed on purpose: red).
 
 ## 4.75.1 — 2026-11-14 · Fix: a cached buffer hid the anime Monarch
 

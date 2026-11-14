@@ -891,7 +891,8 @@ describe('the anime Monarch', () => {
 
     it('is seated only in the anime look, falls back to the MPFB Monarch, and turns its head and braids', () => {
         const cast = read('js/studio/cast.js');
-        expect(cast).toMatch(/if \(k\.look === 'anime'\) loadAnimeMonarch\(THREE\)\.then\(\(am\) => \(am \? useAnime\(am\) : mpfb\(\)\)\);\n {4}else mpfb\(\);/);
+        expect(cast).toMatch(/const braids = \(\) => loadAnimeMonarch\(THREE, MONARCH_ANIME\)\.then\(\(am\) => \(am \? useAnime\(am\) : mpfb\(\)\)\);/);
+        expect(cast).toMatch(/if \(k\.look === 'anime'\) loadAnimeMonarch\(THREE, MONARCH_HOOD, \{ eyeSprites: false \}\)\.then\(\(am\) => \(am \? useAnime\(am\) : braids\(\)\)\);\n {4}else mpfb\(\);/);
         expect(cast).toMatch(/k\.onFigure\?\.\(monarch, 'monarch'\)/);
         expect(cast).toMatch(/turnHead\(THREE, am, monarch, fig\.yaw\);/);
         expect(cast).toMatch(/am\.springs\.step\(dt\);/);
@@ -939,12 +940,11 @@ describe('the hooded Monarch', () => {
         const joints = g.skins[0].joints.map((j) => g.nodes[j].name);
         for (const b of MONARCH_ANIME_BONES) expect(joints).toContain(b);
     });
-    it('comes up on Arise and goes back on the next, without glow sprites over its painted eyes', () => {
+    it('sits the throne from the first frame, with the braids and MPFB Monarchs behind it, and no sprites over its painted eyes', () => {
         const cast = read('js/studio/cast.js');
-        expect(cast).toMatch(/arise: \(\) => \{ arise = 1\.6; swapHood\(\); \}/);
-        expect(cast).toMatch(/const want = fig\.hood \? MONARCH_ANIME : MONARCH_HOOD;/);
-        expect(cast).toMatch(/eyeSprites: want !== MONARCH_HOOD/);
-        expect(cast).toMatch(/if \(fig\.anime\) monarch\.remove\(fig\.anime\.root\);/);
+        expect(cast).toMatch(/loadAnimeMonarch\(THREE, MONARCH_HOOD, \{ eyeSprites: false \}\)\.then\(\(am\) => \(am \? useAnime\(am\) : braids\(\)\)\)/);
+        expect(cast).toMatch(/arise: \(\) => \{ arise = 1\.6; \}/);
+        expect(cast).not.toMatch(/swapHood/);
         expect(read('js/studio/monarch-anime.js')).toMatch(/eyes: eyeSprites \? \[bones\.L_Eye, bones\.R_Eye\] : \[\]/);
     });
 });

@@ -320,17 +320,10 @@ export function createCast(THREE, k) {
         shadowAll(monarch);
         k.onFigure?.(monarch, 'shadow');
     });
-    if (k.look === 'anime') loadAnimeMonarch(THREE).then((am) => (am ? useAnime(am) : mpfb()));
+    // the hooded Monarch sits the throne (4.76.0); the braids Monarch, then the MPFB one, are the fallbacks
+    const braids = () => loadAnimeMonarch(THREE, MONARCH_ANIME).then((am) => (am ? useAnime(am) : mpfb()));
+    if (k.look === 'anime') loadAnimeMonarch(THREE, MONARCH_HOOD, { eyeSprites: false }).then((am) => (am ? useAnime(am) : braids()));
     else mpfb();
-    // Arise: the hood comes up (each Arise swaps between the two), loaded the first time it is asked for
-    const looks = {};
-    const swapHood = () => {
-        if (fig.kind !== 'anime') return;
-        const want = fig.hood ? MONARCH_ANIME : MONARCH_HOOD;
-        looks[fig.anime.url] = fig.anime;
-        if (looks[want]) { useAnime(looks[want]); return; }
-        loadAnimeMonarch(THREE, want, { eyeSprites: want !== MONARCH_HOOD }).then((am) => { if (am) { looks[want] = am; useAnime(am); } });
-    };
     let arise = 0;
 
     /* ------------------------------------------------ the lab: a builder, a black beetle-type robot */
@@ -700,7 +693,7 @@ export function createCast(THREE, k) {
         onAir: () => order[airIdx]?.c.id ?? null,
         camPos: () => tilt.getWorldPosition(camW),
         runnerAt: () => (run.wait > 0 && run.target ? { id: run.target.c.id, pos: runner.head.getWorldPosition(runW) } : null),
-        arise: () => { arise = 1.6; swapHood(); },
+        arise: () => { arise = 1.6; },
         /** Whether the built Monarch is the one on the throne (consumption, not availability). */
         monarch: () => ({ built: fig.built, tris: fig.tris, kind: fig.kind, hood: !!fig.hood }),
         redraw: () => board.userData.draw(),
