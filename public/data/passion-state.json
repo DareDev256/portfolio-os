@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-12T14:42:18.290Z",
+  "generatedAt": "2026-11-15T14:42:18.344Z",
   "source": "data/system-snapshot.json — freshness of the agent's own rollup",
   "status": "offline",
-  "state": "thinking",
+  "state": "sleeping",
   "mood": "resting",
   "currentFocus": "130-repository registry",
   "lastActive": "2026-11-08",

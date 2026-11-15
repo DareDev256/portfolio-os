@@ -1,41 +1,41 @@
 {
-  "generatedAt": "2026-11-12T14:42:17.236Z",
+  "generatedAt": "2026-11-15T14:42:14.295Z",
   "figures": {
-    "stars": 149,
+    "stars": 151,
     "forks": 23,
-    "installs": "1,628",
-    "pypiVersion": "0.30.0",
+    "installs": "6,355",
+    "pypiVersion": "0.33.0",
     "wikiArticles": "2,243",
     "clientSites": 16,
     "clientSitesUp": 16,
     "wikiShare": "55%",
-    "wikiEdits": "14,463",
-    "wikiTotal": "26,432",
+    "wikiEdits": "14,603",
+    "wikiTotal": "26,572",
     "wikiSince": 2013,
     "wikiReverted": 0,
     "wikiRevertSample": "500",
     "wikiStood": "500",
     "wikiRevertRate": "0.0%",
-    "bibRuns": "8,210",
-    "bibPlayers": "3,988",
-    "bibSurvived": "3,689",
-    "bibShares": "602",
+    "bibRuns": "8,305",
+    "bibPlayers": "4,044",
+    "bibSurvived": "3,718",
+    "bibShares": "604",
     "bibCompletion": "45%",
     "bibTopScore": "73,782",
     "bibVersion": "1.26.0",
     "bibBuildHours": 7,
     "bibCommits": 112,
-    "bibAsOf": "Nov 12 2026, 09:26 ET",
-    "bibReadAt": "2026-11-12T14:26:21.000Z",
+    "bibAsOf": "Nov 15 2026, 09:12 ET",
+    "bibReadAt": "2026-11-15T14:12:23.000Z",
     "repos": 130,
     "modules": 97,
     "loc": "63K",
     "jobs": 214,
-    "reposPublic": 24,
+    "reposPublic": 26,
     "reposArchived": 4,
     "snapshotDate": "26•11•08",
     "snapshotAt": "2026-11-08T14:30:09Z",
-    "siteVersion": "4.64.2",
+    "siteVersion": "4.78.0",
     "passionVersion": "4.94.0"
   },
   "definitions": {
@@ -74,26 +74,23 @@
     "snapshotDate": "when data/system-snapshot.json was last generated — the date every stamp on this page reads from"
   },
   "services": {
-    "checkedAt": "2026-11-12T14:42:17.244Z",
-    "host": "up",
+    "checkedAt": "2026-11-15T14:42:14.309Z",
+    "host": "unreachable",
     "services": [
       {
         "name": "dashboard",
         "port": 3000,
-        "state": "down",
-        "code": "000000"
+        "state": "unreachable"
       },
       {
         "name": "brain",
         "port": 7777,
-        "state": "down",
-        "code": "404"
+        "state": "unreachable"
       },
       {
         "name": "letstrade",
         "port": 8420,
-        "state": "up",
-        "code": "200"
+        "state": "unreachable"
       }
     ]
   },
