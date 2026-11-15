@@ -48,6 +48,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .pills a.hot { background: var(--ink); color: #fff; border-color: var(--ink); }
 .pills .look { flex: 0 0 auto; cursor: pointer; color: var(--ink); background: rgba(255, 255, 255, 0.9); border: 1px dashed var(--ink); border-radius: 99px; padding: 0 12px; font: 600 12px/32px var(--mono); min-height: 34px; }
 .pills .look:hover { background: var(--ink); color: #fff; }
+.pills .shootpill { border: 1px solid #ff2d55; color: #ff2d55; }
+.pills .shootpill:hover { background: #ff2d55; border-color: #ff2d55; color: #fff; }
 
 /* hint, back, tooltip */
 .hint { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); font: 600 12px/1.4 var(--mono); color: var(--muted); background: rgba(255, 255, 255, 0.88); border: 1px solid var(--line); border-radius: 99px; padding: 8px 14px; white-space: nowrap; max-width: calc(100% - 32px); overflow: hidden; text-overflow: ellipsis; transition: opacity 0.4s; z-index: 5; }
@@ -186,3 +188,19 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 @media (prefers-reduced-motion: reduce) {
     .arise.on { animation: none; }
 }
+
+/* the photoshoot corner (4.77.0): the flash and the polaroid it prints */
+.flash { position: fixed; inset: 0; z-index: 6; background: #fff; opacity: 0; pointer-events: none; }
+.flash.on { animation: flash 0.45s ease-out; }
+@keyframes flash { 0% { opacity: 0.9; } 100% { opacity: 0; } }
+.polaroid { position: fixed; z-index: 7; top: calc(78px + env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); width: min(230px, 44vw); margin: 0; padding: 10px 10px 8px; background: #fff; border: 1px solid var(--ink); border-radius: 3px; box-shadow: 0 18px 50px rgba(10, 10, 11, 0.25); transform: rotate(-2.5deg); }
+.polaroid.on { animation: develop 0.9s ease-out; }
+@keyframes develop { 0% { transform: translateY(-24px) rotate(-6deg); opacity: 0; } 100% { transform: rotate(-2.5deg); opacity: 1; } }
+.polaroid img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; background: var(--ink); }
+.polaroid figcaption { margin: 8px 0 6px; font: 600 10px/1.3 var(--mono); letter-spacing: 0.06em; color: var(--ink); }
+.polaroid .prow { display: flex; gap: 6px; }
+.polaroid .prow a, .polaroid .prow button { flex: 1; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; font: 600 12px var(--mono); text-decoration: none; cursor: pointer; }
+.polaroid .prow a { background: var(--ink); color: #fff; border: 1px solid var(--ink); }
+.polaroid .prow button { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+@media (max-width: 600px) { .polaroid { top: auto; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: min(178px, 46vw); } }
+@media (prefers-reduced-motion: reduce) { .flash.on, .polaroid.on { animation: none; } }

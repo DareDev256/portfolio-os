@@ -78,6 +78,7 @@
             <a href="https://github.com/DareDev256" rel="noopener">GitHub</a>
             <a href="https://stiersolutions.ca" rel="noopener">S-Tier</a>
             <button class="look" id="lookBtn" type="button">Clean look</button>
+            <button class="look shootpill" id="shootBtn" type="button" hidden>The Shoot</button>
         </nav>
     </header>
     <button class="ghost back hide" id="back" type="button">Back to the wide · Esc</button>
@@ -161,6 +162,12 @@
     </section>
 
     <div class="arise" id="arise" aria-hidden="true">ARISE</div>
+    <div class="flash" id="flash" aria-hidden="true"></div>
+    <figure class="polaroid" id="polaroid" hidden>
+        <img id="pImg" alt="" width="480" height="600" />
+        <figcaption id="pCap"></figcaption>
+        <div class="prow"><a id="pSave" href="#">Save</a><button type="button" id="pClose">Close</button></div>
+    </figure>
     <div class="load" id="load"><div>RIGGING THE SET<b><i></i></b></div></div>
     <div class="nogl" id="nogl" hidden>
         <div>

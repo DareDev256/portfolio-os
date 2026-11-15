@@ -20,6 +20,7 @@ export const EXTRA_SLATES = {
     claude: { scene: 'Claude', take: 'S1', date: 'ALWAYS ON', role: 'SHADOW', tint: '#8f6bff', what: 'The first shadow. The model that builds and checks the work on this set, on the director’s call.' },
     passion: { scene: 'Passion', take: 'S2', date: 'ALWAYS ON', role: 'SHADOW', tint: '#8f6bff', what: 'The second shadow. His own agent: she runs the scheduled jobs, keeps the memory and reports back without being asked. Jack in through the Digivice on the desk.' },
     robot: { scene: 'Robot 01', take: 'R1', date: 'IN DESIGN', role: 'R&D', tint: '#ffd76a', what: 'A black beetle-type robot, after Metabee from Medabots. The first physical build planned for this bench.' },
+    shoot: { scene: 'The Shoot', take: 'P1', date: 'IN DESIGN', role: 'PHOTOSHOOT', tint: '#ff2d55', what: 'James and his co-star on a paper sweep. These are Blender stand-ins; the anime versions are on the drawing board. Tap the set to fire the flash, change the pose and print a polaroid.', call: 'Tap the set to shoot.' },
     poster: { scene: 'Dr. Vegapunk', take: 'IN', date: 'ONE PIECE', role: 'INSPO', tint: '#ff7ab6', what: 'One mind, many bodies. Vegapunk splits his genius across six satellites, each carrying part of the work. This set runs on the same idea: one director, a crew of agents.' },
 };
 

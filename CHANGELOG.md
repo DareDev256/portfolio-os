@@ -3,14 +3,23 @@
 ---
 
 title: Passion OS Changelog
-version: 4.76.0
-last_updated: 2026-11-14
+version: 4.77.0
+last_updated: 2026-11-15
 
 ---
 
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.77.0 — 2026-11-15 · The Shoot (behind a flag)
+
+James: a photoshoot corner with him and his co-star, outfits from his brief, blockout figures from Blender until the anime characters are designed.
+
+- **The corner** (`js/studio/shoot.js`): open floor stage right past craft services (13.5, 0.5), a 6.2 m paper sweep lifted 12 mm off the stage (it z-fought the floor at 0), two softboxes turned in, a camera on a tripod set to one side so the view over its shoulder stays clear. The first tap (or the `The Shoot` pill) flies in and loads the figures; every tap after that fires the flash (a strobe light plus a white screen flash), steps the pose and prints a **polaroid**: the frame just drawn, read in the same task that drew it, cropped 4:5 and zoomed, on a card with Save and Close. The slate's take counts up. On a phone the polaroid takes the slate's place under the couple.
+- **The stand-ins** (`tools/studio/build_shoot.py`, MPFB in headless Blender): James in a royal-blue durag with tails, a royal-blue tee, light-wash jean shorts, white socks and white low-tops; the co-star in long caramel-brown hair, a white cropped long-sleeve shirt, high-waisted black wide-leg trousers and black shoes. Colour by body region, three poses each baked to its own mesh (`shoot-james.gltf`, `shoot-costar.gltf`, about 0.7 MB each, hashed buffer URIs), closed shoes as domes over the modelled toes (they read barefoot otherwise), zone borders kept out of the decimation so hems stay straight. Refuses a missing zone or foot, a pose off the floor, or more than 9,000 triangles.
+- **Off by default.** The corner, its pill and its files load only on `?shoot=1` until the co-star says yes to her likeness on the public site. No personal name ships in any file (a test reads the module, the build script and both glTFs).
+- Tests (843): the flag, the pose cycle, the crop at four screen shapes, the read-after-render, clearance from the risers, craft services, the throne and the softboxes (the first placement put the framing camera inside craft services, caught in a phone render), the hashed buffers, no names. Rendered at 1440 and 390: wide, framed, three takes, the pill.
 
 ## 4.76.0 — 2026-11-14 · The hooded Monarch always
 

@@ -25,6 +25,7 @@ import { CENTER, RISER, STATION, stationPose, DESK, CHAIR, MONITOR, DIGIVICE, FL
 import { loadSet } from './studio/set.js';
 import { createScreens, createRibbon } from './studio/screens.js';
 import { createCast, EXTRA_SLATES } from './studio/cast.js';
+import { createShoot, shootFrom, polaroidCaption, polaroidCrop } from './studio/shoot.js';
 import { lookFrom, otherLook, toonify, inkSize, LOOK_KEY } from './studio/anime.js';
 import { buildBody } from './studio/rig.js';
 import { walkinPose, shouldWalkIn, WALKIN_KEY } from './studio/walkin.js';
@@ -770,6 +771,10 @@ function chrome(focus) {
 }
 let dvLift = 0;
 let cast = null;
+// the photoshoot corner: built only when the address asks (?shoot=1) until the co-star says yes
+const SHOOT_ON = shootFrom(location.search);
+let shoot = null;
+let shotPending = 0;
 /** Fly to look at a point from a direction (unit vector on the floor), at a distance. */
 function frameSpot(spot, dir, dist, lift = 0.35, phoneDrop = 0) {
     // phoneDrop pans the camera down on a phone so the subject sits above the slate
@@ -787,6 +792,7 @@ function towardCamera(p) {
 function activate(h) {
     endWalkIn();
     tip.hidden = true;
+    if (h.type !== 'shoot' && state.focus === 'shoot') state.focus = null;
     if (h.type === 'agent') {
         const s = agents.find((x) => x.c.id === h.id);
         if (!s) return;
@@ -850,6 +856,17 @@ function activate(h) {
         const spot = cast.spots.robot();
         frameSpot(spot, towardCamera(spot), 2.8, 0.3);
         showExtraSlate('robot');
+    } else if (shoot && h.type === 'shoot') {
+        if (state.focus === 'shoot' && state.mode === 'focus') {
+            // a tap on the set while framed on it: one take
+            shotPending = shoot.snap();
+            if (!reduce) { const f = $('flash'); f.classList.remove('on'); void f.offsetWidth; f.classList.add('on'); }
+            return;
+        }
+        shoot.load();
+        frameSpot(shoot.spot(), shoot.facing(), 3.4, 0.15, 0.35);
+        state.focus = 'shoot';
+        showExtraSlate('shoot');
     } else if (cast && h.type === 'poster') {
         const spot = cast.spots.poster();
         frameSpot(spot, new THREE.Vector3(0, 0, 1), 2.9, 0.1);
@@ -941,6 +958,30 @@ function showExtraSlate(id) {
     setSlate({ scene: x.scene, take: x.take, date: x.date, role: x.role, tint: x.tint, whatNode: what, callNode: call, stats, link: null, live: id === 'throne' });
 }
 function hideSlate() { slate.classList.remove('on'); }
+$('pClose').addEventListener('click', () => { $('polaroid').hidden = true; });
+/** The polaroid: the frame just drawn, cropped portrait, on a card with a Save link. */
+function printPolaroid(take) {
+    const src = renderer.domElement;
+    const { sx, sy, sw, sh } = polaroidCrop(src.width, src.height);
+    const c = document.createElement('canvas');
+    c.width = 480;
+    c.height = 600;
+    c.getContext('2d').drawImage(src, sx, sy, sw, sh, 0, 0, c.width, c.height);
+    const url = c.toDataURL('image/jpeg', 0.88);
+    const card = $('polaroid');
+    $('pImg').src = url;
+    $('pImg').alt = `Take ${take} from the shoot`;
+    $('pCap').textContent = polaroidCaption(take);
+    const save = $('pSave');
+    save.href = url;
+    save.download = `the-shoot-take-${String(take).padStart(2, '0')}.jpg`;
+    $('sTake').textContent = String(take).padStart(2, '0');
+    if (narrowNow()) hideSlate(); // on a phone the polaroid takes the slate's place below the couple
+    card.hidden = false;
+    card.classList.remove('on');
+    void card.offsetWidth;
+    card.classList.add('on');
+}
 function goWide() {
     if (state.mode === 'wide') return;
     state.mode = 'wide';
@@ -1083,6 +1124,14 @@ const ready = Promise.all([crewP, figsP, setP, dataP]).then(([crew, j, baked]) =
     crew.forEach((c, i) => makeAgent(c, i, crew.length));
     cast = createCast(THREE, { scene, M, RoundedBox: RoundedBoxGeometry, makeTool, hits, crew: agents, look: LOOK, onFigure: animeApply });
     animeApply(scene, 'crew');
+    if (SHOOT_ON) {
+        shoot = createShoot(THREE, { scene, hits, hitMat: M.hit, onFigure: animeApply });
+        animeApply(shoot.group, 'crew');
+        // the corner stands off the wide shot, so it gets a pill; a second press takes the photo
+        const sb = $('shootBtn');
+        sb.hidden = false;
+        sb.addEventListener('click', () => activate({ type: 'shoot', id: 'shoot' }));
+    }
     if (crew.length) startWalkIn();
     applyFigures(j);
     if (!crew.length) $('hint').textContent = 'The crew did not load. Every source is on the Monitor at jamesdare.com';
@@ -1187,6 +1236,7 @@ function frame() {
     camera.lookAt(view.look);
     const onAir = cast ? cast.onAir() : null;
     if (cast) cast.update(t, dt, camera, state.mode, reduce);
+    if (shoot) shoot.update(dt);
     if (!reduce) {
         const runAt = cast ? cast.runnerAt() : null;
         for (const s of agents) {
@@ -1214,6 +1264,7 @@ function frame() {
         drawDigivice(t);
     }
     renderer.render(scene, camera);
+    if (shotPending) { printPolaroid(shotPending); shotPending = 0; } // read the frame in the task that drew it
     if (!shown && agents.length) {
         shown = true;
         requestAnimationFrame(() => $('load').classList.add('off'));
@@ -1223,4 +1274,4 @@ function frame() {
 ready.finally(() => { setTimeout(() => { if (!shown) { shown = true; $('load').classList.add('off'); } }, 400); });
 document.fonts?.ready.then(() => { drawGates(); screens.refresh(); ribbonText(); cast?.redraw(); });
 requestAnimationFrame(frame);
-window.__studio = { activate, goWide, agents, state, screens, rig, get cast() { return cast; }, get walk() { return walk; }, get look() { return { look: LOOK, meshes: anime.meshes, calls: renderer.info.render.calls }; } };
+window.__studio = { activate, goWide, agents, state, screens, rig, get cast() { return cast; }, get shoot() { return shoot; }, get walk() { return walk; }, get look() { return { look: LOOK, meshes: anime.meshes, calls: renderer.info.render.calls }; } };

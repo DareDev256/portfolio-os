@@ -292,7 +292,7 @@ describe('the way in and out', () => {
 });
 
 /* ------------------------------------------------------------------ 4.66.0: the baked set, real screens, the cast */
-import { setLayout, stationPose, RISER, CENTER, THRONE, LAB, POSTER, FLAT } from '../js/studio/layout.js';
+import { setLayout, stationPose, RISER, CENTER, THRONE, LAB, POSTER, FLAT, SOFTBOXES } from '../js/studio/layout.js';
 import { setProblem, loadSet } from '../js/studio/set.js';
 import { coverFit, screenKind, lowerThirds, feedFor } from '../js/studio/screens.js';
 import { EXTRA_SLATES } from '../js/studio/cast.js';
@@ -447,7 +447,7 @@ describe('the cast', () => {
     });
 
     it('has a slate for every set piece you can tap', () => {
-        for (const id of ['throne', 'claude', 'passion', 'robot', 'poster']) {
+        for (const id of ['throne', 'claude', 'passion', 'robot', 'poster', 'shoot']) {
             expect(EXTRA_SLATES[id].what.length, id).toBeGreaterThan(30);
             expect(EXTRA_SLATES[id].role, id).toMatch(/\S/);
         }
@@ -961,6 +961,76 @@ describe('the Monarch glTFs bust the cache', () => {
                 const hash = createHash('sha256').update(readFileSync(resolve(root, 'public/assets/studio', file))).digest('hex').slice(0, 10);
                 expect(q, `${name} -> ${file}`).toBe(hash);
             }
+        });
+    }
+});
+
+/* THE SHOOT (4.77.0): a photoshoot corner, built only on ?shoot=1 until the co-star says yes to her
+ * likeness on the public site. Taps fire the flash, step the pose and print a polaroid. */
+import { shootFrom, nextPose, polaroidCaption, polaroidCrop, SHOOT, SHOOT_FILES, SHOOT_HEIGHT } from '../js/studio/shoot.js';
+describe('the shoot', () => {
+    it('only exists when the address asks for it', () => {
+        expect(shootFrom('')).toBe(false);
+        expect(shootFrom('?look=anime')).toBe(false);
+        expect(shootFrom('?shoot=0')).toBe(false);
+        expect(shootFrom('?shoot=10')).toBe(false);
+        expect(shootFrom('?shoot=1')).toBe(true);
+        expect(shootFrom('?look=clean&shoot=1')).toBe(true);
+        const js = read('js/studio.js');
+        expect(js).toMatch(/const SHOOT_ON = shootFrom\(location\.search\)/);
+        expect(js).toMatch(/if \(SHOOT_ON\) \{\n\s+shoot = createShoot\(/);
+    });
+
+    it('cycles the three poses and wraps', () => {
+        expect([0, 1, 2].map((k) => nextPose(k, 3))).toEqual([1, 2, 0]);
+        expect(nextPose(4, 0)).toBe(0);
+    });
+
+    it('crops the polaroid portrait and inside the frame at any screen shape', () => {
+        for (const [w, h] of [[1440, 900], [390, 844], [2880, 1800], [800, 800]]) {
+            const c = polaroidCrop(w, h);
+            expect(c.sw / c.sh).toBeCloseTo(0.8, 1);
+            expect(c.sx).toBeGreaterThanOrEqual(0);
+            expect(c.sy).toBeGreaterThanOrEqual(0);
+            expect(c.sx + c.sw).toBeLessThanOrEqual(w);
+            expect(c.sy + c.sh).toBeLessThanOrEqual(h);
+        }
+        expect(polaroidCaption(3, new Date('2026-11-15T12:00:00Z'))).toMatch(/^TAKE 03 · THE SHOOT · /);
+    });
+
+    it('reads the polaroid in the same task that drew the frame', () => {
+        expect(read('js/studio.js')).toMatch(/renderer\.render\(scene, camera\);\n\s+if \(shotPending\) \{ printPolaroid\(shotPending\); shotPending = 0; \}/);
+    });
+
+    it('stands clear of the risers, craft services and the throne', () => {
+        const d = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
+        expect(d(SHOOT, CENTER)).toBeGreaterThan(RISER.r2 + 1.5);
+        expect(d(SHOOT, THRONE)).toBeGreaterThan(4);
+        expect(d(SHOOT, { x: 6.9, z: -0.9 })).toBeGreaterThan(3.5);
+        // the framing camera (phone distance, the farther one) must not stand in craft services or a softbox
+        const f = { x: SHOOT.x + Math.sin(SHOOT.ry) * 0.35 + Math.sin(SHOOT.ry) * 3.4 * 1.35, z: SHOOT.z + Math.cos(SHOOT.ry) * (0.35 + 3.4 * 1.35) };
+        expect(d(f, { x: 6.9, z: -0.9 })).toBeGreaterThan(2.5);
+        for (const s of SOFTBOXES) expect(d(f, s)).toBeGreaterThan(2.5);
+        expect(read('js/studio.js')).toMatch(/frameSpot\(shoot\.spot\(\), shoot\.facing\(\), 3\.4,/);
+    });
+
+    it('ships no personal name: files, copy, the build script', () => {
+        const files = ['js/studio/shoot.js', 'tools/studio/build_shoot.py', 'public/assets/studio/shoot-james.gltf', 'public/assets/studio/shoot-costar.gltf'];
+        for (const f of files) expect(read(f), f).not.toMatch(/sandra|shortiie|rawraw|olusoga/i);
+        expect(polaroidCaption(1)).not.toMatch(/James|&/);
+    });
+
+    for (const [who, url] of Object.entries(SHOOT_FILES)) {
+        it(`${who}: three poses, a hashed buffer, a sane height`, () => {
+            const g = JSON.parse(read('public' + url));
+            expect(g.nodes.map((n) => n.name).sort()).toEqual(['pose_0', 'pose_1', 'pose_2']);
+            for (const b of g.buffers) {
+                const [file, q] = b.uri.split('?v=');
+                const hash = createHash('sha256').update(readFileSync(resolve(root, 'public/assets/studio', file))).digest('hex').slice(0, 10);
+                expect(q, `${who} -> ${file}`).toBe(hash);
+            }
+            expect(SHOOT_HEIGHT[who]).toBeGreaterThan(1.4);
+            expect(SHOOT_HEIGHT[who]).toBeLessThan(2.1);
         });
     }
 });
