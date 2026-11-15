@@ -965,9 +965,10 @@ describe('the Monarch glTFs bust the cache', () => {
     }
 });
 
-/* THE SHOOT (4.77.0): a photoshoot corner, built only on ?shoot=1 until the co-star says yes to her
- * likeness on the public site. Taps fire the flash, step the pose and print a polaroid. */
-import { shootFrom, nextPose, polaroidCaption, polaroidCrop, SHOOT, SHOOT_FILES, SHOOT_HEIGHT } from '../js/studio/shoot.js';
+/* THE SHOOT (4.77.0; 4.78.0 James behind the camera): a photoshoot corner, built only on ?shoot=1 until
+ * the co-star says yes to her likeness on the public site. She poses on the paper, he shoots, and the
+ * photo from his camera prints as a polaroid. */
+import { shootFrom, nextPose, polaroidCaption, polaroidCrop, povFov, photographerPose, shootToWorld, SHOOT, SHOOT_FILES, SHOOT_HEIGHT, SHOOT_MARKS, SHOOT_VIEW, CHECK_SECONDS } from '../js/studio/shoot.js';
 describe('the shoot', () => {
     it('only exists when the address asks for it', () => {
         expect(shootFrom('')).toBe(false);
@@ -981,9 +982,24 @@ describe('the shoot', () => {
         expect(js).toMatch(/if \(SHOOT_ON\) \{\n\s+shoot = createShoot\(/);
     });
 
-    it('cycles the three poses and wraps', () => {
-        expect([0, 1, 2].map((k) => nextPose(k, 3))).toEqual([1, 2, 0]);
+    it('cycles her poses and wraps; he checks the screen between takes and is shooting at the flash', () => {
+        expect([0, 1, 2, 3].map((k) => nextPose(k, 4))).toEqual([1, 2, 3, 0]);
         expect(nextPose(4, 0)).toBe(0);
+        expect(photographerPose(0)).toBe(0);
+        expect(photographerPose(0.02)).toBe(0);
+        expect(photographerPose((CHECK_SECONDS.from + CHECK_SECONDS.to) / 2)).toBe(1);
+        expect(photographerPose(CHECK_SECONDS.to + 0.1)).toBe(0);
+        expect(photographerPose(99)).toBe(0);
+    });
+
+    it('puts her on the paper and him in front of her, facing her', () => {
+        const { costar: c, james: j } = SHOOT_MARKS;
+        expect(c.z).toBeLessThan(1);
+        expect(j.z - c.z).toBeGreaterThan(2.2);
+        // his model faces +Z; turned by ry it must point back at her
+        const fx = Math.sin(j.ry), fz = Math.cos(j.ry);
+        const tx = c.x - j.x, tz = c.z - j.z, n = Math.hypot(tx, tz);
+        expect((fx * tx + fz * tz) / n).toBeGreaterThan(0.99);
     });
 
     it('crops the polaroid portrait and inside the frame at any screen shape', () => {
@@ -996,6 +1012,16 @@ describe('the shoot', () => {
             expect(c.sy + c.sh).toBeLessThanOrEqual(h);
         }
         expect(polaroidCaption(3, new Date('2026-11-15T12:00:00Z'))).toMatch(/^TAKE 03 · THE SHOOT · /);
+        // the photo camera widens so its crop, not the whole canvas, spans the framing angle
+        expect(povFov(900, 900)).toBeCloseTo(38, 0);
+        expect(povFov(1688, 975)).toBeGreaterThan(60);
+    });
+
+    it('takes the photo from his camera with him hidden, then redraws the set before the frame shows', () => {
+        const js = read('js/studio.js');
+        expect(js).toMatch(/if \(shoot\?\.aim\(povCam\)\) \{/);
+        expect(js).toMatch(/shoot\.photographer\(false\);\n\s+renderer\.render\(scene, povCam\);\n\s+shoot\.photographer\(true\);/);
+        expect(js).toMatch(/drawImage\(src, sx, sy, sw, sh, 0, 0, c\.width, c\.height\);\n\s+if \(photo\) renderer\.render\(scene, camera\);/);
     });
 
     it('reads the polaroid in the same task that drew the frame', () => {
@@ -1007,11 +1033,14 @@ describe('the shoot', () => {
         expect(d(SHOOT, CENTER)).toBeGreaterThan(RISER.r2 + 1.5);
         expect(d(SHOOT, THRONE)).toBeGreaterThan(4);
         expect(d(SHOOT, { x: 6.9, z: -0.9 })).toBeGreaterThan(3.5);
-        // the framing camera (phone distance, the farther one) must not stand in craft services or a softbox
-        const f = { x: SHOOT.x + Math.sin(SHOOT.ry) * 0.35 + Math.sin(SHOOT.ry) * 3.4 * 1.35, z: SHOOT.z + Math.cos(SHOOT.ry) * (0.35 + 3.4 * 1.35) };
-        expect(d(f, { x: 6.9, z: -0.9 })).toBeGreaterThan(2.5);
-        for (const s of SOFTBOXES) expect(d(f, s)).toBeGreaterThan(2.5);
-        expect(read('js/studio.js')).toMatch(/frameSpot\(shoot\.spot\(\), shoot\.facing\(\), 3\.4,/);
+        // the framing camera, at both distances, must not stand in craft services or a set softbox
+        expect(read('js/studio.js')).toMatch(/frameSpot\(shoot\.spot\(\), shoot\.facing\(\), 4\.0,/);
+        const n = Math.hypot(SHOOT_VIEW.dir.x, SHOOT_VIEW.dir.z);
+        for (const dist of [4.0, 4.0 * 1.35]) {
+            const f = shootToWorld({ x: SHOOT_VIEW.spot.x + (SHOOT_VIEW.dir.x / n) * dist, z: SHOOT_VIEW.spot.z + (SHOOT_VIEW.dir.z / n) * dist });
+            expect(d(f, { x: 6.9, z: -0.9 })).toBeGreaterThan(2.5);
+            for (const s of SOFTBOXES) expect(d(f, s)).toBeGreaterThan(2.5);
+        }
     });
 
     it('ships no personal name: files, copy, the build script', () => {
@@ -1020,10 +1049,11 @@ describe('the shoot', () => {
         expect(polaroidCaption(1)).not.toMatch(/James|&/);
     });
 
+    const NODES = { james: ['flash_0', 'flash_1', 'pose_0', 'pose_1'], costar: ['pose_0', 'pose_1', 'pose_2', 'pose_3'] };
     for (const [who, url] of Object.entries(SHOOT_FILES)) {
-        it(`${who}: three poses, a hashed buffer, a sane height`, () => {
+        it(`${who}: every pose (and his flash points), a hashed buffer, a sane height`, () => {
             const g = JSON.parse(read('public' + url));
-            expect(g.nodes.map((n) => n.name).sort()).toEqual(['pose_0', 'pose_1', 'pose_2']);
+            expect(g.nodes.map((n) => n.name).sort()).toEqual(NODES[who]);
             for (const b of g.buffers) {
                 const [file, q] = b.uri.split('?v=');
                 const hash = createHash('sha256').update(readFileSync(resolve(root, 'public/assets/studio', file))).digest('hex').slice(0, 10);

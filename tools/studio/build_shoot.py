@@ -3,8 +3,8 @@
     /Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup --python-exit-code 1 \\
         -P tools/studio/build_shoot.py -- --who=james|costar [--out=DIR]
 
-The photoshoot corner puts James and the co-star on a paper sweep; each tap of the camera fires the
-flash and moves them to the next pose. These are BLOCKOUT figures (James, 2026-11-15: "for now just
+The photoshoot corner puts the co-star on a paper sweep and James in front of her with a camera; each
+tap fires his flash and moves her to the next pose. These are BLOCKOUT figures (James, 2026-11-15: "for now just
 use whatever you can create with blender") until the anime characters are designed from the sheets
 in ~/Pictures/jamesdare-photoshoot/sheets. No photo is used or stored: the outfits are coloured by
 body region from his brief.
@@ -14,8 +14,10 @@ body region from his brief.
     costar  long wavy caramel-brown hair, a white long-sleeve cropped shirt, high-waisted black
             wide-leg trousers, black heels
 
-Each figure is posed three ways and every pose is baked to its own mesh (shoot-<who>.gltf, nodes
-pose_0..pose_2), standing on y = 0 and facing +Z in three.js units. Colour lives in the material
+Every pose is baked to its own mesh (shoot-<who>.gltf, nodes pose_0..), standing on y = 0 and facing
++Z in three.js units, all poses sharing one offset. James has two (camera up to the eye; camera at the
+chest, head down, checking the screen), each with an empty flash_<k> on top of the camera, where the
+site takes the photo from. The co-star has four (relaxed, a hand on the hip, both, a hand in her hair). Colour lives in the material
 per zone. Every file the glTF names carries a hash of its bytes (the 4.75.1 cache lesson).
 Refuses on a missing zone, a pose that leaves the floor, or more triangles than the budget.
 """
@@ -46,10 +48,11 @@ def refuse(msg):
 PEOPLE = {
     'james': dict(macros=dict(gender=1.0, age=0.5, muscle=0.64, weight=0.34, height=0.74, proportions=0.82),
                   zones={'skin': (0.32, 0.18, 0.11), 'top': (0.10, 0.22, 0.75), 'bottom': (0.55, 0.68, 0.82), 'sock': (0.94, 0.94, 0.94),
-                         'shoe': (0.96, 0.96, 0.96), 'sole': (0.9, 0.9, 0.9), 'hair': (0.10, 0.22, 0.75), 'beard': (0.04, 0.03, 0.03), 'eye': (0.08, 0.06, 0.05)}),
+                         'shoe': (0.96, 0.96, 0.96), 'sole': (0.9, 0.9, 0.9), 'hair': (0.10, 0.22, 0.75), 'beard': (0.04, 0.03, 0.03), 'eye': (0.08, 0.06, 0.05),
+                         'camera': (0.035, 0.035, 0.04)}),
     'costar': dict(macros=dict(gender=0.0, age=0.45, muscle=0.5, weight=0.52, height=0.42, proportions=0.75, cupsize=0.62, firmness=0.6),
                    zones={'skin': (0.30, 0.17, 0.10), 'top': (0.97, 0.97, 0.97), 'bottom': (0.03, 0.03, 0.04), 'sock': (0.30, 0.17, 0.10),
-                          'shoe': (0.03, 0.03, 0.04), 'sole': (0.03, 0.03, 0.04), 'hair': (0.40, 0.22, 0.10), 'beard': (0.30, 0.17, 0.10), 'eye': (0.08, 0.06, 0.05)}),
+                          'shoe': (0.03, 0.03, 0.04), 'sole': (0.03, 0.03, 0.04), 'hair': (0.30, 0.16, 0.07), 'beard': (0.30, 0.17, 0.10), 'eye': (0.08, 0.06, 0.05)}),
 }
 if WHO not in PEOPLE:
     refuse('--who must be james or costar')
@@ -222,13 +225,47 @@ def point(s, sx):  # pointing at the camera
     aim(f'hand_{s}', (sx * 0.05, -1, 0.05))
 
 
+def reach(s, sx, wrist, pole, hand_dir):
+    """Two-bone IK: the wrist of arm s to a world point, the elbow bent toward pole."""
+    upd()
+    M = rig.matrix_world
+    R = M.inverted().to_3x3()
+    S = M @ pb[f'upperarm_{s}'].head
+    a = (M @ pb[f'upperarm_{s}'].tail - S).length
+    b = (M @ pb[f'lowerarm_{s}'].tail - M @ pb[f'lowerarm_{s}'].head).length
+    d = Vector(wrist) - S
+    L = min(d.length, (a + b) * 0.995)
+    u = d.normalized()
+    x = (a * a - b * b + L * L) / (2 * L)
+    h = math.sqrt(max(0.0, a * a - x * x))
+    p = Vector(pole) - u * Vector(pole).dot(u)
+    p = p.normalized() if p.length > 1e-6 else Vector((0, 0, -1))
+    elbow = S + u * x + p * h
+    aim(f'upperarm_{s}', R @ (elbow - S))
+    aim(f'lowerarm_{s}', R @ (S + u * L - elbow))
+    aim(f'hand_{s}', R @ Vector(hand_dir))
+
+
+# James is the photographer: the camera up to his eye, then down at his chest to check the back screen.
+# CAM[k] is where the camera sits in pose k (its centre) and how far it tilts back; None = no camera.
+CAM_UP = E + Vector((0, -0.105, -0.005))
+CAM_CHECK = E + Vector((0, -0.25, -0.31))
+CAM = {'james': [(CAM_UP, 0.0), (CAM_CHECK, 0.75)], 'costar': [None, None, None, None]}
+
+
+def hold(c, tilt):
+    for s, sx in (('l', 1), ('r', -1)):
+        w = c + Vector((sx * 0.088, 0.05, -0.045 - 0.02 * tilt))
+        reach(s, sx, w, (sx * 0.7, 0.15, -1), (-sx * 0.35, -0.7, 0.4 + 0.3 * tilt))
+
+
 POSES = {
-    'james': [lambda: (relaxed('l', 1), relaxed('r', -1)),
-              lambda: (pocket('l', 1), relaxed('r', -1), aim('head', (0.12, -0.05, 1))),
-              lambda: (relaxed('l', 1), point('r', -1))],
+    'james': [lambda: hold(CAM_UP, 0.0),
+              lambda: (aim('head', (0, -0.42, 1)), hold(CAM_CHECK, 0.75))],
     'costar': [lambda: (relaxed('l', 1), relaxed('r', -1)),
                lambda: (hip('l', 1), relaxed('r', -1), aim('spine_03', (0.06, 0, 1)), aim('head', (-0.1, -0.05, 1))),
-               lambda: (hip('l', 1), hip('r', -1))],
+               lambda: (hip('l', 1), hip('r', -1)),
+               lambda: (reach('l', 1, E + Vector((0.07, 0.075, 0.09)), (1, 0.25, 0.7), (-0.6, 0.35, 0.3)), hip('r', -1), aim('head', (0.1, -0.03, 1)))],
 }
 
 # ---------------------------------------------------------------- per pose: a mesh, zoned, dressed, decimated
@@ -321,6 +358,23 @@ def shoes(bm):
             f.material_index = max(f.verts[i][zl] for i in range(len(f.verts)))
 
 
+def camera(bm, c, tilt):
+    """A black camera body, lens and prism hump at c, the lens forward (-Y), tilted back by tilt radians."""
+    zl = bm.verts.layers.int['zone']
+    cz = ZONES.index('camera')
+    T = Matrix.Translation(c) @ Matrix.Rotation(tilt, 4, 'X')
+    made = []
+    made += bmesh.ops.create_cube(bm, size=1.0, matrix=T @ Matrix.Diagonal((0.135, 0.07, 0.088, 1)))['verts']
+    made += bmesh.ops.create_cube(bm, size=1.0, matrix=T @ Matrix.Translation((0, 0.0, 0.055)) @ Matrix.Diagonal((0.05, 0.05, 0.03, 1)))['verts']
+    made += bmesh.ops.create_cone(bm, cap_ends=True, cap_tris=False, segments=14, radius1=0.033, radius2=0.03, depth=0.075,
+                                  matrix=T @ Matrix.Translation((0.008, -0.07, -0.004)) @ Matrix.Rotation(math.pi / 2, 4, 'X'))['verts']
+    for v in made:
+        v[zl] = cz
+    for f in {f for v in made for f in v.link_faces}:
+        f.material_index = cz
+    return T @ Vector((0.03, 0.0, 0.07))  # the flash, on top of the prism
+
+
 def pose_point(p):
     """A rest-pose head point carried onto the posed head bone."""
     hb = rig.data.bones['head']
@@ -328,7 +382,7 @@ def pose_point(p):
     return T @ p
 
 
-meshes = []
+meshes, flashes = [], []
 for k, make in enumerate(POSES[WHO]):
     reset()
     make()
@@ -348,9 +402,10 @@ for k, make in enumerate(POSES[WHO]):
         f.material_index = max(cnt, key=lambda z: (cnt[z], -z))
     dress(bm)
     shoes(bm)
+    flash = camera(bm, *CAM[WHO][k]) if CAM[WHO][k] else None
     # zone borders are kept out of the decimation, so sleeves and hems stay straight instead of zigzag
     bm.verts.index_update()  # indices are stale after the deletes and the added hair and shoes
-    border = {v.index for v in bm.verts if len({f.material_index for f in v.link_faces}) > 1}
+    border = {v.index for v in bm.verts if len({f.material_index for f in v.link_faces}) > 1 or ZONES[v[zl]] == 'camera'}
     me = bpy.data.meshes.new(f'pose_{k}')
     bm.to_mesh(me)
     bm.free()
@@ -369,13 +424,18 @@ for k, make in enumerate(POSES[WHO]):
     ob.select_set(True)
     bpy.context.view_layer.objects.active = ob
     bpy.ops.object.modifier_apply(modifier=dm.name)
-    # stand on the floor, centred, facing +Z in three.js (Blender -Y)
-    pts = [v.co for v in me.vertices]
-    lo = min(p.z for p in pts)
-    cx = sum(p.x for p in pts) / len(pts)
-    cy = sum(p.y for p in pts) / len(pts)
+    # stand on the floor, centred, facing +Z in three.js (Blender -Y); the first pose sets the offset for
+    # every pose, so a pose change moves the arms and nothing else
+    if k == 0:
+        pts = [v.co for v in me.vertices]
+        OFFSET = Vector((sum(p.x for p in pts) / len(pts), sum(p.y for p in pts) / len(pts), min(p.z for p in pts)))
     for v in me.vertices:
-        v.co = Vector((v.co.x - cx, v.co.y - cy, v.co.z - lo))
+        v.co = v.co - OFFSET
+    if flash is not None:
+        fe = bpy.data.objects.new(f'flash_{k}', None)  # an empty: where the flash fires and the photo is taken from
+        fe.location = flash - OFFSET
+        bpy.context.scene.collection.objects.link(fe)
+        flashes.append(fe)
     me.update()
     tris = sum(len(p.vertices) - 2 for p in me.polygons)
     if tris > BUDGET_TRIS:
@@ -386,13 +446,15 @@ for k, make in enumerate(POSES[WHO]):
     meshes.append(ob)
     print(f'build_shoot: {WHO} pose {k}: {tris} triangles, {h:.2f} m')
 
+if WHO == 'james' and len(flashes) != len(POSES[WHO]):
+    refuse('the photographer has a pose without a camera')
 for o in list(bpy.data.objects):
-    if o not in meshes:
+    if o not in meshes and o not in flashes:
         bpy.data.objects.remove(o, do_unlink=True)
 os.makedirs(OUT, exist_ok=True)
 path = os.path.join(OUT, f'shoot-{WHO}.gltf')
 bpy.ops.object.select_all(action='DESELECT')
-for o in meshes:
+for o in meshes + flashes:
     o.select_set(True)
 bpy.ops.export_scene.gltf(filepath=path, use_selection=True, export_format='GLTF_SEPARATE', export_yup=True, export_materials='EXPORT')
 g = json.load(open(path))

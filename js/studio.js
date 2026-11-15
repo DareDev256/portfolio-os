@@ -25,7 +25,7 @@ import { CENTER, RISER, STATION, stationPose, DESK, CHAIR, MONITOR, DIGIVICE, FL
 import { loadSet } from './studio/set.js';
 import { createScreens, createRibbon } from './studio/screens.js';
 import { createCast, EXTRA_SLATES } from './studio/cast.js';
-import { createShoot, shootFrom, polaroidCaption, polaroidCrop } from './studio/shoot.js';
+import { createShoot, shootFrom, polaroidCaption, polaroidCrop, povFov } from './studio/shoot.js';
 import { lookFrom, otherLook, toonify, inkSize, LOOK_KEY } from './studio/anime.js';
 import { buildBody } from './studio/rig.js';
 import { walkinPose, shouldWalkIn, WALKIN_KEY } from './studio/walkin.js';
@@ -864,7 +864,7 @@ function activate(h) {
             return;
         }
         shoot.load();
-        frameSpot(shoot.spot(), shoot.facing(), 3.4, 0.15, 0.35);
+        frameSpot(shoot.spot(), shoot.facing(), 4.0, 0.6, 0.3);
         state.focus = 'shoot';
         showExtraSlate('shoot');
     } else if (cast && h.type === 'poster') {
@@ -959,14 +959,28 @@ function showExtraSlate(id) {
 }
 function hideSlate() { slate.classList.remove('on'); }
 $('pClose').addEventListener('click', () => { $('polaroid').hidden = true; });
-/** The polaroid: the frame just drawn, cropped portrait, on a card with a Save link. */
+/** The polaroid: the photo from James's camera (him hidden), cropped portrait, on a card with a Save link.
+ *  It renders into the page's own canvas and is read before the browser shows it; then the set's view is
+ *  drawn again on top, so nobody sees the photographer's frame on screen. */
+const povCam = new THREE.PerspectiveCamera(30, 1, 0.05, 200);
 function printPolaroid(take) {
     const src = renderer.domElement;
     const { sx, sy, sw, sh } = polaroidCrop(src.width, src.height);
+    let photo = false;
+    if (shoot?.aim(povCam)) {
+        povCam.aspect = src.width / src.height;
+        povCam.fov = povFov(src.height, sh);
+        povCam.updateProjectionMatrix();
+        shoot.photographer(false);
+        renderer.render(scene, povCam);
+        shoot.photographer(true);
+        photo = true;
+    }
     const c = document.createElement('canvas');
     c.width = 480;
     c.height = 600;
     c.getContext('2d').drawImage(src, sx, sy, sw, sh, 0, 0, c.width, c.height);
+    if (photo) renderer.render(scene, camera);
     const url = c.toDataURL('image/jpeg', 0.88);
     const card = $('polaroid');
     $('pImg').src = url;

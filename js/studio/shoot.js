@@ -1,20 +1,27 @@
-/* shoot.js: the photoshoot corner (4.77.0).
+/* shoot.js: the photoshoot corner (4.78.0).
  *
- * Open floor past craft services, stage right: a paper sweep, two softboxes on stands and a
- * camera on a tripod. James and his co-star stand on the sweep. The first tap flies in; every tap
- * after that fires the flash, moves them to the next pose and prints a polaroid of the frame. The
- * figures are Blender stand-ins (tools/studio/build_shoot.py, three baked poses each) until the
- * anime characters are made from the design sheets. The corner only exists when the address asks
- * for it (?shoot=1) until the co-star says yes to her likeness on the public site; no personal name
- * appears in any shipped file.
+ * Open floor stage right: a paper sweep and two softboxes. The co-star poses on the paper and James
+ * stands in front of her with a camera; the set's camera looks over his shoulder. The first tap (or
+ * the pill) flies in; every tap after that is a take: his flash fires, she moves to her next pose, he
+ * drops the camera to check the screen, and the photo, rendered from his camera, prints as a
+ * polaroid. The figures are Blender stand-ins (tools/studio/build_shoot.py) until the anime
+ * characters are made from the design sheets. The corner only exists when the address asks for it
+ * (?shoot=1) until the co-star says yes to her likeness on the public site; no personal name appears
+ * in any shipped file.
  */
 
-export const SHOOT = { x: 13.5, z: 0.5, ry: -1.35 };
+export const SHOOT = { x: 13.5, z: 0.5, ry: 0 };
 export const SHOOT_FILES = { james: '/assets/studio/shoot-james.gltf', costar: '/assets/studio/shoot-costar.gltf' };
 /** Real heights in metres, so the stand-ins read right beside each other whatever the build measured. */
 export const SHOOT_HEIGHT = { james: 1.85, costar: 1.6 };
-/** Where each stands on the sweep (its own space: +Z faces the tripod) and how far each turns in. */
-export const SHOOT_MARKS = { james: { x: -0.42, z: 0.35, ry: 0.12 }, costar: { x: 0.42, z: 0.35, ry: -0.12 } };
+/** Marks in the corner's own space: +Z runs from the paper toward the photographer. */
+export const SHOOT_MARKS = { costar: { x: 0, z: 0.3, ry: 0.1 }, james: { x: 0.35, z: 3.0, ry: Math.PI + 0.13 } };
+/** The set's camera: it looks at spot from along dir, over James's right shoulder. */
+export const SHOOT_VIEW = { spot: { x: 0.1, y: 1.0, z: 1.2 }, dir: { x: 0.42, y: 0, z: 1 } };
+/** Where the photo frames her: the middle of her, from his flash. */
+export const SHOOT_SUBJECT = { x: 0, y: 0.86, z: 0.3 };
+/** How long he looks at the back screen after a take, in seconds. */
+export const CHECK_SECONDS = { from: 0.35, to: 1.6 };
 
 /** ?shoot=1 shows the corner; anything else hides it. */
 export function shootFrom(search = '') {
@@ -26,29 +33,46 @@ export function nextPose(k, n) {
     return n > 0 ? (k + 1) % n : 0;
 }
 
+/** A point in the corner's own space, in world x/z. */
+export function shootToWorld(p) {
+    const c = Math.cos(SHOOT.ry), s = Math.sin(SHOOT.ry);
+    return { x: SHOOT.x + p.x * c + p.z * s, z: SHOOT.z - p.x * s + p.z * c };
+}
+
 /** The polaroid caption for a take. No names: the corner is public before the co-star's yes. */
 export function polaroidCaption(take, when = new Date()) {
     const d = when.toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' });
     return `TAKE ${String(take).padStart(2, '0')} · THE SHOOT · ${d}`;
 }
 
-/** The centred crop of a w x h frame at a portrait aspect (width / height), zoomed in a little, as drawImage source args. */
-export function polaroidCrop(w, h, aspect = 4 / 5, zoom = 0.84) {
+/** The centred crop of a w x h frame at a portrait aspect (width / height), zoomed by zoom, as drawImage source args. */
+export function polaroidCrop(w, h, aspect = 4 / 5, zoom = 1) {
     let sw = w * zoom, sh = Math.round(sw / aspect);
     if (sh > h * zoom) { sh = Math.round(h * zoom); sw = Math.round(sh * aspect); }
     sw = Math.round(sw);
     return { sx: Math.round((w - sw) / 2), sy: Math.round((h - sh) / 2), sw, sh };
 }
 
+/** The vertical field of view (degrees) a render of height h needs so its crop of height sh spans deg either side. */
+export function povFov(h, sh, deg = 19) {
+    return (2 * Math.atan((Math.tan((deg * Math.PI) / 180) * h) / sh) * 180) / Math.PI;
+}
+
+/** James's pose a number of seconds after a take: 0 camera up, 1 checking the screen. */
+export function photographerPose(sinceTake) {
+    return sinceTake >= CHECK_SECONDS.from && sinceTake < CHECK_SECONDS.to ? 1 : 0;
+}
+
 export function createShoot(THREE, { scene, onFigure, hits, hitMat }) {
+    const V = (p) => new THREE.Vector3(p.x, p.y ?? 0, p.z);
     const g = new THREE.Group();
     g.name = 'shoot';
     g.position.set(SHOOT.x, 0.012, SHOOT.z); // a hair above the stage floor, or the paper z-fights it
     g.rotation.y = SHOOT.ry;
     scene.add(g);
 
-    // the paper sweep: floor, a cove, a back wall, one surface
-    const W = 6.2, D = 3.8, R = 0.6, H = 3.6; // wide enough that a desktop frame is all paper
+    // the paper sweep: floor, a cove, a back wall, one surface; deep enough that he stands on it too
+    const W = 13, D = 4.6, R = 0.6, H = 3.8; // wide enough that the over-the-shoulder frame is all paper
     const prof = [[D, 0]];
     for (let i = 0; i <= 10; i++) { const a = (i / 10) * Math.PI / 2; prof.push([R - Math.sin(a) * R, R - Math.cos(a) * R]); }
     prof.push([0, H]);
@@ -66,12 +90,13 @@ export function createShoot(THREE, { scene, onFigure, hits, hitMat }) {
 
     const steel = new THREE.MeshStandardMaterial({ color: 0x1a1a1f, roughness: 0.45, metalness: 0.6 });
     const glow = new THREE.MeshBasicMaterial({ color: 0xffffff, toneMapped: false });
-    const stand = (x, z, ry, h) => {
+    // two softboxes on stands, each turned to face her
+    for (const sx of [-1, 1]) {
         const s = new THREE.Group();
-        s.position.set(x, 0, z);
-        s.rotation.y = ry;
-        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, h, 8), steel);
-        pole.position.y = h / 2;
+        s.position.set(sx * 2.5, 0, 0.9);
+        s.rotation.y = sx * 1.25;
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 1.9, 8), steel);
+        pole.position.y = 0.95;
         s.add(pole);
         for (let i = 0; i < 3; i++) {
             const a = (i * Math.PI * 2) / 3;
@@ -80,46 +105,33 @@ export function createShoot(THREE, { scene, onFigure, hits, hitMat }) {
             leg.rotation.set(-Math.cos(a) * 0.65, 0, Math.sin(a) * 0.65); // top in, foot out
             s.add(leg);
         }
-        g.add(s);
-        return s;
-    };
-    // two softboxes, each turned to face the couple
-    for (const sx of [-1, 1]) {
-        const s = stand(sx * 2.1, 1.2, sx * 1.2, 1.9);
-        const box = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.95, 0.35), steel);
+        const box = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.82, 0.22), steel);
         box.position.set(0, 2.05, 0);
         s.add(box);
-        const face = new THREE.Mesh(new THREE.PlaneGeometry(0.68, 0.88), glow);
-        face.position.set(0, 2.05, -0.18);
+        const face = new THREE.Mesh(new THREE.PlaneGeometry(0.56, 0.76), glow);
+        face.position.set(0, 2.05, -0.12);
         face.rotation.y = Math.PI;
         s.add(face);
+        g.add(s);
     }
-    // the camera on its tripod, off to one side so the view over its shoulder stays clear
-    const cam = stand(-0.95, 2.5, Math.PI - 0.41, 1.35);
-    const body = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.14, 0.12), steel);
-    body.position.set(0, 1.45, 0);
-    cam.add(body);
-    const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.05, 0.12, 16), steel);
-    lens.rotation.x = Math.PI / 2;
-    lens.position.set(0, 1.45, 0.11);
-    cam.add(lens);
-    const flashLamp = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.05, 0.03), glow);
-    flashLamp.position.set(0, 1.56, 0.04);
-    cam.add(flashLamp);
+    // his flash: a strobe light and a lamp, moved onto his camera once he is loaded
     const strobe = new THREE.PointLight(0xffffff, 0, 7, 1.5);
-    strobe.position.set(-0.8, 1.7, 2.3);
-    g.add(strobe);
+    const flashLamp = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.03, 0.03), glow);
+    strobe.position.set(0.35, 1.75, 2.85);
+    flashLamp.position.copy(strobe.position);
+    g.add(strobe, flashLamp);
 
     const hot = { type: 'shoot', id: 'shoot', label: 'The shoot · tap to take a photo', tint: '#ff2d55' };
-    const hit = new THREE.Mesh(new THREE.BoxGeometry(5, 2.4, 3.8), hitMat);
-    hit.position.set(0, 1.2, 0.8);
+    const hit = new THREE.Mesh(new THREE.BoxGeometry(5, 2.4, 4.4), hitMat);
+    hit.position.set(0, 1.2, 1.4);
     hit.userData.hot = hot;
     g.add(hit);
     hits.push(hit);
 
-    // the couple: stand-ins loaded on first use, three baked poses each
-    const people = {};
-    let pose = 0, take = 0, flash = 0, loading = null;
+    // the two of them: stand-ins loaded on first use, each pose baked to its own mesh
+    const people = {}, roots = {};
+    let flashNode = null;
+    let pose = 0, take = 0, flash = 0, since = 99, loading = null;
     function load() {
         if (loading) return loading;
         loading = import('./vendor/GLTFLoader.js').then(async ({ GLTFLoader }) => {
@@ -135,11 +147,21 @@ export function createShoot(THREE, { scene, onFigure, hits, hitMat }) {
                     root.position.set(mk.x, 0, mk.z);
                     root.rotation.y = mk.ry;
                     poses.forEach((p, i) => {
-                        p.visible = i === pose % poses.length;
+                        p.visible = i === 0;
                         p.traverse((o) => { if (o.isMesh) o.castShadow = true; });
                     });
                     g.add(root);
                     people[who] = poses;
+                    roots[who] = root;
+                    if (who === 'james') {
+                        flashNode = root.getObjectByName('flash_0');
+                        if (flashNode) {
+                            g.updateMatrixWorld(true);
+                            const p = g.worldToLocal(flashNode.getWorldPosition(new THREE.Vector3()));
+                            strobe.position.copy(p).add(new THREE.Vector3(0, 0.05, -0.15));
+                            flashLamp.position.copy(p);
+                        }
+                    }
                 } catch (e) {
                     console.warn(`studio: shoot stand-in ${who} not loaded (${e.message})`);
                 }
@@ -149,29 +171,41 @@ export function createShoot(THREE, { scene, onFigure, hits, hitMat }) {
         });
         return loading;
     }
-    function show(k) {
-        for (const poses of Object.values(people)) poses.forEach((p, i) => { p.visible = i === k % poses.length; });
-    }
+    const showOne = (poses, k) => poses?.forEach((p, i) => { p.visible = i === k % poses.length; });
+    const eye = new THREE.Vector3();
     return {
         group: g,
         load,
-        /** One take: the flash fires and the couple moves to the next pose. Returns the take number. */
+        /** One take: his flash fires and she moves to her next pose. Returns the take number. */
         snap() {
-            const n = Math.max(0, ...Object.values(people).map((p) => p.length));
-            if (take > 0) pose = nextPose(pose, n);
-            show(pose);
+            if (take > 0) pose = nextPose(pose, people.costar?.length || 0);
+            showOne(people.costar, pose);
+            showOne(people.james, 0);
             take += 1;
             flash = 1;
+            since = 0;
             return take;
         },
         update(dt) {
+            since += dt;
+            showOne(people.james, photographerPose(since));
             if (flash <= 0) return;
             flash = Math.max(0, flash - dt * 3.5);
-            strobe.intensity = flash * 60;
-            flashLamp.scale.setScalar(1 + flash * 2);
+            strobe.intensity = flash * 26; // bright enough to read as a flash, not enough to blow out her skin
+            flashLamp.scale.setScalar(1 + flash * 3);
         },
-        spot: () => g.localToWorld(new THREE.Vector3(0, 1.1, 0.35)),
-        facing: () => new THREE.Vector3(0, 0, 1).applyQuaternion(g.quaternion),
-        state: () => ({ loaded: Object.keys(people), pose, take, flash }),
+        /** Point cam where his camera is, at her. False until he is loaded. */
+        aim(cam) {
+            if (!flashNode) return false;
+            flashNode.getWorldPosition(eye);
+            cam.position.copy(eye);
+            cam.lookAt(g.localToWorld(V(SHOOT_SUBJECT)));
+            return true;
+        },
+        /** Hide him for the photo taken from his own camera. */
+        photographer(on) { if (roots.james) roots.james.visible = on; },
+        spot: () => g.localToWorld(V(SHOOT_VIEW.spot)),
+        facing: () => V(SHOOT_VIEW.dir).normalize().applyQuaternion(g.quaternion),
+        state: () => ({ loaded: Object.keys(people), pose, take, flash, james: photographerPose(since) }),
     };
 }

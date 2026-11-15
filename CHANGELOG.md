@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.77.0
+version: 4.78.0
 last_updated: 2026-11-15
 
 ---
@@ -11,6 +11,16 @@ last_updated: 2026-11-15
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.78.0 — 2026-11-15 · The Shoot: James behind the camera
+
+James: "White backdrop with her standing on it, me with a camera." The co-star now poses alone on the paper and James stands in front of her shooting; the set's camera looks over his right shoulder.
+
+- **James, photographer** (`build_shoot.py`): two poses, the camera up to his eye and the camera at his chest with his head down checking the screen. The arms are placed by a two-bone reach (wrist to a point, elbow toward a pole) instead of hand-tuned angles, and a black body, lens and prism hump are built into his hands. An empty `flash_<k>` on top of each camera tells the site where his flash fires and where the photo is taken from. Every pose now shares the first pose's offset, so a pose change moves the arms and nothing else.
+- **The co-star**: four poses (relaxed, a hand on the hip, both, a hand in her hair), darker brown hair.
+- **The photo is his shot.** Each take renders the scene from his camera with him hidden, crops it 4:5, then redraws the set's view before the frame is shown; the polaroid is her full length on white. The strobe was cut from 60 to 26 (60 blew out her skin in the photo).
+- **The corner**: the sweep is 13 m wide and 4.6 m deep (narrower sweeps showed the main set past the paper's edge in the over-the-shoulder frame), the softboxes smaller and turned in, the tripod gone. Faces +Z now, so the framing camera stands on open floor.
+- Tests (845): her marks against his and his facing toward her, his pose timing (shooting at the flash, checking the screen after), the photo camera's field of view, the hide-render-redraw order, the framing camera's clearance at both distances, each glTF's nodes (his flash points). Rendered at 1440 and 390, the photo saved and looked at.
 
 ## 4.77.0 — 2026-11-15 · The Shoot (behind a flag)
 
