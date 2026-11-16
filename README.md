@@ -1,8 +1,8 @@
 <div align="center">
 
-# ◈ PASSION OS
+# ◈ PASSION OS: an OS-style portfolio website in the browser
 
-### A Desktop Operating System in the Browser — Zero Frameworks, Pure Web Standards
+### A Desktop Operating System in the Browser: Zero Frameworks, Pure Web Standards
 
 [![Version](https://img.shields.io/github/package-json/v/DareDev256/portfolio-os?style=flat-square&labelColor=0d0d0d&color=00f0ff)](package.json)
 [![Last commit](https://img.shields.io/github/last-commit/DareDev256/portfolio-os?style=flat-square&labelColor=0d0d0d&color=00e676)](https://github.com/DareDev256/portfolio-os/commits/main)
@@ -13,9 +13,27 @@
 
 ---
 
-A fully interactive desktop environment — draggable windows, GPU-composited glass UI, Three.js cyberspace, Spotlight-style command palette — running entirely in the browser. No UI framework: the DOM is built by hand. The browser bundle carries one dependency, `@vercel/analytics`; the two serverless routes under `api/` use `@anthropic-ai/sdk`.
+The source of [jamesdare.com](https://jamesdare.com). Its `/os` page, Passion OS, is an OS-style portfolio website for anyone who wants a portfolio that works like a desktop: draggable windows, a GPU-composited glass UI, a Three.js lock screen and a Spotlight-style command palette, running entirely in the browser.
 
-Built by [**James Olusoga**](https://github.com/DareDev256) — AI Solutions Engineer & Creative Technologist, Toronto.
+![Passion OS at jamesdare.com/os: the desktop with its app icons, the dock, and the Applications window open over it](docs/screenshots/2026-11-15_passion-os-window-1280.png)
+
+## Quick start
+
+```bash
+git clone https://github.com/DareDev256/portfolio-os.git
+cd portfolio-os
+npm install
+npm run dev     # Vite dev server; Passion OS is at /os
+npm test        # Vitest
+```
+
+License: MIT, see [LICENSE](LICENSE).
+
+## About
+
+No UI framework: the DOM is built by hand. The browser bundle carries one dependency, `@vercel/analytics`; the two serverless routes under `api/` use `@anthropic-ai/sdk`.
+
+Built by [**James Olusoga**](https://github.com/DareDev256), AI Solutions Engineer & Creative Technologist, Toronto.
 
 Every number below is reproducible from a clean clone. No figure in this README is typed by hand.
 
@@ -39,7 +57,7 @@ yourself with `grep -c "resolve(import.meta.dirname" vite.config.js`, or read
 | `/` | `studio/index.html` + `css/studio.css` + `js/studio.js` + `js/studio/` | **THE STUDIO** — the home page since 4.69.0. The Monitor's 16 crew agents on a white soundstage in three.js, under a hiring masthead (open to roles, book a call, résumé, the Monitor). The room is modelled and light-baked in Blender (`tools/studio/build_set.py`), each station plays that source's real footage, an A camera covers one source at a time, the director's monitor opens Passion OS and the Digivice opens Passion. Reads the crew from `/monitor` and every number from `figures.json`. A first visit opens on a short pass across the lab, the Vegapunk board and the throne (4.67.0). Each station screen shows its real takes (commits) from git, a 14-day strip and the newest take's age, and a tally lamp burns red on stations that shipped in the last 24 hours (4.68.0). The Monarch on the throne is built to James's build in Blender with MPFB and seated forward on the throne the way he sits (`tools/studio/build_monarch.py`, 4.70.0); the hand-built figure stays as the fallback. `--hair=afro|braids` builds design options and `tools/studio/monarch-bench.html` (dev only) renders any build in the site's own shader (4.72.1). In the anime look the throne seats the **anime Monarch** (4.73.0): James's design (braids, a black long coat with violet trim, Jordan 4 Black Cats, 4.74.0) from a front/side/back sheet through Tripo P2 and Tripo's auto-rig, seated and given a bone per braid in Blender (`tools/studio/build_monarch_anime.py`, `blackcat_texture.py`), loaded by `js/studio/monarch-anime.js` (the GLTF loader is a lazy chunk), cel-shaded with glowing violet trim (`INK.monarch`), head following the camera, braids on springs (`js/studio/springs.js`). Since 4.76.0 the hooded Monarch (all-black trench, hood up) sits the throne, with the braids one as its fallback. If it cannot load, the MPFB Monarch takes the throne. `tools/studio/monarch-live.html` is its dev viewer. **The Shoot** (4.77.0, `js/studio/shoot.js`, only on `?shoot=1` until the co-star's yes): a photoshoot corner on open floor stage right: his co-star poses on a white paper sweep between two softboxes and James stands in front of her with a camera, seen over his shoulder (Blender stand-ins from `tools/studio/build_shoot.py`, MPFB; her four poses, his two: camera up, checking the screen, 4.78.0). A `The Shoot` pill flies there; each tap fires his flash, moves her to her next pose and prints the shot from his camera as a polaroid with a Save link. Every live figure is drawn cel-shaded with ink lines, and the throne as shadows in violet (`js/studio/anime.js`, 4.71.0; the default since 4.72.0). The `Clean look` pill in the masthead switches back, the pick is stored per visitor, and `?look=clean` or `?look=anime` forces one. A device with no WebGL is sent to `/monitor`. Added at `/studio` in 4.65.0, baked set in 4.66.0. |
 | `/monitor` | `index.html` + `css/monitor.css` + `js/monitor.js` | **THE MONITOR** — the hiring surface from 4.62.0 to 4.68.1, `/` until the studio took it. A director's video village: program monitor, a switcher with one button per project, a slate with each project's receipt, and Crew / Reel / Call tabs. Every figure and link as plain HTML. The old Passion OS routes (`/about`, `/work`, `/resume`...) land here. |
 | `/os` | `os/index.html` + `js/main.js` | **Passion OS** — the desktop environment this README documents. Everything below describes this surface. |
-| `/coldopen` | `coldopen/index.html` | **COLD OPEN** — the writeup of the artist-site engine at [github.com/DareDev256/coldopen](https://github.com/DareDev256/coldopen). Added in 4.21.0. |
+| `/coldopen` | `coldopen/index.html` | **COLD OPEN** — the writeup of the artist-site engine at [github.com/DareDev256/musician-website-builder](https://github.com/DareDev256/musician-website-builder). Added in 4.21.0. |
 
 ### Rebuilding the studio set
 
