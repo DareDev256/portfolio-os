@@ -9,7 +9,7 @@
  * None of them is a source, so none of them carries a number. The words they
  * show on click live in EXTRA_SLATES so the name rule can be tested.
  */
-import { buildBody, stride } from './rig.js';
+import { buildBody, stride, crewBadge } from './rig.js';
 import { stationPoint, CENTER, DOLLY, CRAFT, THRONE, LAB, POSTER, FLAT } from './layout.js';
 import { loadMonarch } from './monarch.js';
 import { loadAnimeMonarch, turnHead, MONARCH_ANIME, MONARCH_HOOD } from './monarch-anime.js';
@@ -110,7 +110,7 @@ export function createCast(THREE, k) {
     const tally = new THREE.Mesh(new THREE.SphereGeometry(0.025, 12, 8), new THREE.MeshBasicMaterial({ color: 0xff2d55, toneMapped: false }));
     tally.position.set(0.12, 0.17, 0.2);
     tilt.add(tally);
-    const grip = buildBody(THREE, RoundedBox, { body: M.white, visor: M.visor, steel: M.steel }, new THREE.MeshStandardMaterial({ color: '#a98bff', emissive: '#a98bff', emissiveIntensity: 1.2 }));
+    const grip = buildBody(THREE, RoundedBox, { body: M.white, visor: M.visor, steel: M.steel, badge: crewBadge(THREE) }, new THREE.MeshStandardMaterial({ color: '#a98bff', emissive: '#a98bff', emissiveIntensity: 1.2 }));
     grip.a.position.z = -0.62;
     pan.add(grip.a);
     grip.arms.forEach((p) => { p.rotation.x = -1.1; });
@@ -124,7 +124,7 @@ export function createCast(THREE, k) {
     const airTarget = V(0, 0, 0);
 
     /* ------------------------------------------------ the runner */
-    const runner = buildBody(THREE, RoundedBox, { body: M.white, visor: M.visor, steel: M.steel }, new THREE.MeshStandardMaterial({ color: '#ff2d55', emissive: '#ff2d55', emissiveIntensity: 1.2 }));
+    const runner = buildBody(THREE, RoundedBox, { body: M.white, visor: M.visor, steel: M.steel, badge: crewBadge(THREE) }, new THREE.MeshStandardMaterial({ color: '#ff2d55', emissive: '#ff2d55', emissiveIntensity: 1.2 }));
     scene.add(runner.a);
     {
         const tray = new THREE.Group();
@@ -343,9 +343,10 @@ export function createCast(THREE, k) {
         const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.035, 0.01), gold);
         stripe.position.set(0, 0.36, 0.162);
         robot.add(stripe);
-        const emblem = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.012, 6), gold);
-        emblem.rotation.x = Math.PI / 2;
-        emblem.position.set(0, 0.22, 0.162);
+        // Robot 01 wears the TdotsSolutionsz atom too (4.79.0; was a gold hexagon).
+        const emblem = new THREE.Mesh(new THREE.PlaneGeometry(0.17, 0.17), crewBadge(THREE));
+        emblem.userData.noToon = true;
+        emblem.position.set(0, 0.2, 0.161);
         robot.add(emblem);
         robot.add(at(new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.08, 10), joint), 0, 0.5, 0));
         rHead.position.y = 0.64;
@@ -438,7 +439,7 @@ export function createCast(THREE, k) {
         arm.add(b2);
         shadowAll(arm);
     }
-    const builder = buildBody(THREE, RoundedBox, { body: M.white, visor: M.visor, steel: M.steel }, new THREE.MeshStandardMaterial({ color: '#ffd76a', emissive: '#ffd76a', emissiveIntensity: 1.2 }));
+    const builder = buildBody(THREE, RoundedBox, { body: M.white, visor: M.visor, steel: M.steel, badge: crewBadge(THREE) }, new THREE.MeshStandardMaterial({ color: '#ffd76a', emissive: '#ffd76a', emissiveIntensity: 1.2 }));
     builder.a.position.set(LAB.builder.x, 0, LAB.builder.z);
     robot.updateMatrixWorld();
     const sockW = robot.localToWorld(socket.clone().add(V(-0.08, 0, 0)));

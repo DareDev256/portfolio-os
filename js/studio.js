@@ -27,7 +27,7 @@ import { createScreens, createRibbon } from './studio/screens.js';
 import { createCast, EXTRA_SLATES } from './studio/cast.js';
 import { createShoot, shootFrom, polaroidCaption, polaroidCrop, povFov } from './studio/shoot.js';
 import { lookFrom, otherLook, toonify, inkSize, LOOK_KEY } from './studio/anime.js';
-import { buildBody } from './studio/rig.js';
+import { buildBody, crewBadge } from './studio/rig.js';
 import { walkinPose, shouldWalkIn, WALKIN_KEY } from './studio/walkin.js';
 import { activitySummary, agentFeedLabel } from './monitor.js';
 import { STATIONS_URL, takesFor, takesLine, takeDate, stripHeights, stripLabel, rolling, ageLabel, num } from './studio/takes.js';
@@ -565,7 +565,7 @@ function makeAgent(c, i, total) {
     halo.visible = false;
     lamp.add(halo);
 
-    const rig = buildBody(THREE, RoundedBoxGeometry, { body: M.white, visor: M.visor, steel: M.steel }, tintMat(c.tint));
+    const rig = buildBody(THREE, RoundedBoxGeometry, { body: M.white, visor: M.visor, steel: M.steel, badge: crewBadge(THREE) }, tintMat(c.tint));
     rig.a.position.set(STATION.agent.x, 0, STATION.agent.z);
     rig.a.rotation.y = STATION.agent.ry;
     st.add(rig.a);

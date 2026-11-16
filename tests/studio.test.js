@@ -1064,3 +1064,26 @@ describe('the shoot', () => {
         });
     }
 });
+
+describe('the TdotsSolutionsz atom badge (4.79.0)', () => {
+    const rig = read('js/studio/rig.js');
+    const badgeFile = rig.match(/BADGE_URL = '([^']+)'/)[1];
+    it('ships the file the rig points at', () => {
+        expect(existsSync(resolve(root, 'public' + badgeFile))).toBe(true);
+    });
+    it('every white crew body wears it; the violet shadows do not', () => {
+        const whiteRigs = (src) => src.match(/buildBody\([^)]*\{ body: M\.white[^}]*\}/g) || [];
+        const all = [...whiteRigs(read('js/studio.js')), ...whiteRigs(read('js/studio/cast.js'))];
+        expect(all.length).toBe(4); // station crew, grip, runner, builder
+        for (const r of all) expect(r).toContain('badge: crewBadge(THREE)');
+        expect(read('js/studio/cast.js')).toMatch(/body: shadowBody, visor: M\.visor, steel: joint \}/);
+    });
+    it('rig builds the badge only when given one, and keeps it out of the anime pass', () => {
+        expect(rig).toMatch(/if \(mats\.badge\)/);
+        expect(rig).toMatch(/strip\.userData\.noToon = true/);
+        expect(rig).toMatch(/for \(const centre of \[0, Math\.PI\]\)/);
+    });
+    it('Robot 01 carries the atom, not the old gold hexagon', () => {
+        expect(read('js/studio/cast.js')).toMatch(/emblem = new THREE\.Mesh\(new THREE\.PlaneGeometry\([^)]*\), crewBadge\(THREE\)\)/);
+    });
+});

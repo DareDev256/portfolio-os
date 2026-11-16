@@ -3,14 +3,22 @@
 ---
 
 title: Passion OS Changelog
-version: 4.78.0
-last_updated: 2026-11-15
+version: 4.79.0
+last_updated: 2026-11-16
 
 ---
 
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.79.0 — 2026-11-16 · The crew wear the TdotsSolutionsz atom
+
+James: the little robots are the TdotsSolutionsz brand, so put the atom logo (his GitHub avatar) on all of them.
+
+- **Badge** (`js/studio/rig.js`): `crewBadge()` is one shared material on `/assets/studio/atom-badge.v1.webp` (the atom on a dark disc; on the bare white shell the white orbits vanished). `buildBody` wraps it round the capsule as two curved strips, chest and back, because at their stations the crew face their screens and the camera mostly sees their backs. The strips skip the anime pass (it would drop alphaTest and ink a hull round them).
+- **Who wears it**: every station agent, the dolly grip, the coffee runner and the lab builder. The Monarch's violet shadows do not. Robot 01 in the lab swaps its gold hexagon emblem for the atom.
+- Tests (849): the badge file ships, all four white rig calls pass it and the shadows do not, the strips stay out of the anime pass, Robot 01 carries it. Mutation-checked: removing the badge from the crew or deleting the file turns them red. Rendered at 960x600: badges read on every crew body and on Robot 01.
 
 ## 4.78.0 — 2026-11-15 · The Shoot: James behind the camera
 

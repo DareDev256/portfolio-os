@@ -6,10 +6,25 @@
  * eyes, bulb. Nothing here moves; studio.js and cast.js do the moving.
  */
 
+/* The TdotsSolutionsz atom, worn on the chest of every crew robot (4.79.0). Versioned filename:
+ * /assets is cached, so a new badge ships as atom-badge.v2.webp, never over this one. */
+export const BADGE_URL = '/assets/studio/atom-badge.v1.webp';
+let badgeMat = null;
+
+/** One shared material for every badge, so the texture loads once. */
+export function crewBadge(THREE) {
+    if (!badgeMat) {
+        const tex = new THREE.TextureLoader().load(BADGE_URL);
+        tex.colorSpace = THREE.SRGBColorSpace;
+        badgeMat = new THREE.MeshStandardMaterial({ map: tex, transparent: true, alphaTest: 0.4, roughness: 0.45, polygonOffset: true, polygonOffsetFactor: -2 });
+    }
+    return badgeMat;
+}
+
 /**
  * @param {object} THREE three module
  * @param {Function} RoundedBox RoundedBoxGeometry
- * @param {{body, visor, steel}} mats shell, visor and metal materials
+ * @param {{body, visor, steel, badge?}} mats shell, visor and metal materials; badge = chest logo
  * @param {object} glow material for the eyes, belt and antenna bulb
  */
 export function buildBody(THREE, RoundedBox, mats, glow) {
@@ -21,6 +36,21 @@ export function buildBody(THREE, RoundedBox, mats, glow) {
     belt.rotation.x = Math.PI / 2;
     belt.position.y = 0.66;
     a.add(belt);
+    let badge = null;
+    if (mats.badge) {
+        // Strips of the capsule, a hair proud of it, so the logo follows the curve. Chest and
+        // back: at their stations the crew face their screens, so the camera mostly sees backs.
+        const arc = 0.95;
+        badge = new THREE.Group();
+        badge.position.y = 0.8;
+        for (const centre of [0, Math.PI]) {
+            const strip = new THREE.Mesh(new THREE.CylinderGeometry(0.204, 0.204, 0.17, 16, 1, true, centre - arc / 2, arc), mats.badge);
+            strip.userData.noToon = true; // the anime pass would drop alphaTest and ink a hull round it
+            strip.castShadow = false;
+            badge.add(strip);
+        }
+        a.add(badge);
+    }
     const head = new THREE.Group();
     head.position.y = 1.2;
     a.add(head);
@@ -65,7 +95,7 @@ export function buildBody(THREE, RoundedBox, mats, glow) {
         hip.add(leg);
         legs.push(hip);
     }
-    return { a, head, arms, legs, eyes, bulb, belt };
+    return { a, head, arms, legs, eyes, bulb, belt, badge };
 }
 
 /** Walk cycle: legs and arms swing with the distance covered. */
