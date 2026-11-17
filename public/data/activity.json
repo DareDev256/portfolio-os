@@ -1,54 +1,58 @@
 {
-  "generatedAt": "2026-11-16T14:45:33.700Z",
+  "generatedAt": "2026-11-17T14:42:50.355Z",
   "windowHours": 36,
-  "ranInWindow": 7,
+  "ranInWindow": 6,
   "jobsWatched": 8,
   "events": [
+    {
+      "id": "branch-shepherd",
+      "label": "Branches swept for drift",
+      "source": "branch-shepherd",
+      "at": "2026-11-17T14:14:54.767Z",
+      "time": "09:14",
+      "ageMinutes": 28
+    },
+    {
+      "id": "check-daily-rollup",
+      "label": "Agent rollup written",
+      "source": "check-daily-rollup",
+      "at": "2026-11-17T13:00:09.195Z",
+      "time": "08:00",
+      "ageMinutes": 103
+    },
+    {
+      "id": "daily-brief",
+      "label": "Morning brief compiled and sent",
+      "source": "daily-brief · Discord",
+      "at": "2026-11-17T11:48:30.669Z",
+      "time": "06:48",
+      "ageMinutes": 174
+    },
+    {
+      "id": "life-rhythm",
+      "label": "Life-rhythm check ran",
+      "source": "life-rhythm",
+      "at": "2026-11-17T04:09:00.396Z",
+      "time": "23:09",
+      "ageMinutes": 634
+    },
     {
       "id": "career-digest",
       "label": "Career pipeline digested",
       "source": "career-digest · Discord",
       "at": "2026-11-16T14:21:04.474Z",
       "time": "09:21",
-      "ageMinutes": 24
-    },
-    {
-      "id": "branch-shepherd",
-      "label": "Branches swept for drift",
-      "source": "branch-shepherd",
-      "at": "2026-11-16T14:18:17.906Z",
-      "time": "09:18",
-      "ageMinutes": 27
-    },
-    {
-      "id": "portfolio-traffic-radar",
-      "label": "Portfolio traffic swept",
-      "source": "portfolio-traffic-radar",
-      "at": "2026-11-16T14:15:05.138Z",
-      "time": "09:15",
-      "ageMinutes": 30
-    },
-    {
-      "id": "check-daily-rollup",
-      "label": "Agent rollup written",
-      "source": "check-daily-rollup",
-      "at": "2026-11-16T13:00:06.530Z",
-      "time": "08:00",
-      "ageMinutes": 105
-    },
-    {
-      "id": "daily-brief",
-      "label": "Morning brief compiled and sent",
-      "source": "daily-brief · Discord",
-      "at": "2026-11-16T11:59:19.961Z",
-      "time": "06:59",
-      "ageMinutes": 166
+      "ageMinutes": 1462
     }
   ],
   "skipped": [
     {
       "id": "sandra-digest",
-      "why": "last ran 1602h ago"
+      "why": "last ran 1626h ago"
+    },
+    {
+      "id": "drift-check",
+      "why": "last ran 40h ago"
     }
   ],
   "definitions": {
