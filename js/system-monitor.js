@@ -112,8 +112,6 @@ export function renderSystemMonitor(container) {
         ctx.beginPath();
         ctx.strokeStyle = '#00ff88';
         ctx.lineWidth = 1.5;
-        ctx.shadowColor = '#00ff88';
-        ctx.shadowBlur = 4;
 
         fpsHistory.forEach((fps, i) => {
             const x = (i / (fpsHistory.length - 1)) * w;
@@ -121,7 +119,6 @@ export function renderSystemMonitor(container) {
             i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
         });
         ctx.stroke();
-        ctx.shadowBlur = 0;
 
         // Fill under curve
         const lastIdx = fpsHistory.length - 1;

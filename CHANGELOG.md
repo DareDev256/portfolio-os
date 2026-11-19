@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.79.1
+version: 4.79.2
 last_updated: 2026-11-19
 
 ---
@@ -11,6 +11,11 @@ last_updated: 2026-11-19
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.79.2 — 2026-11-19 · Dead portfolio window and canvas glows out
+
+- **Dead code**: `openPortfolio()` removed. Nothing called it (the portfolio dock icon opens `openServices()`, and `/portfolio` returns 404), and it carried a stale 20-item demo list with emoji icons and `#` links for demos that are live today (pet, events). The live demo list in `openServices()` already uses the SVG icon set. Closes the old memory flag "openPortfolio() defined TWICE".
+- **Canvas glows**: the pomodoro ring, the skills-graph hover and the FPS sparkline no longer draw a `shadowBlur` halo; skills hover still thickens the stroke and bolds the label. The 3D studio screen's texture glow stays (WebGL, same rule as 4.79.1).
 
 ## 4.79.1 — 2026-11-19 · Glow and AI tells out
 

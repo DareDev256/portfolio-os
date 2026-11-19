@@ -309,14 +309,7 @@ export const SkillsUniverse = {
 
         // Draw Nodes
         this.nodes.forEach(node => {
-            // Draw Glow
             const isHover = (node === this.hoveredNode || node === this.draggedNode);
-            if (isHover) {
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = node.color;
-            } else {
-                ctx.shadowBlur = 0;
-            }
 
             // Node Circle
             ctx.beginPath();

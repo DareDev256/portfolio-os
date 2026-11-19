@@ -105,10 +105,7 @@ export function renderPomodoroTimer(container) {
         ctx.strokeStyle = color;
         ctx.lineWidth = lw;
         ctx.lineCap = 'round';
-        ctx.shadowColor = color;
-        ctx.shadowBlur = 12;
         ctx.stroke();
-        ctx.shadowBlur = 0;
     }
 
     function setPhase(p) {
