@@ -67,7 +67,6 @@ body.galaxy-active .cyber-button:hover {
     border-color: rgba(40, 80, 170, 0.4);
     color: #fff;
     box-shadow:
-        0 0 30px rgba(40, 80, 170, 0.25),
         0 8px 25px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
@@ -112,20 +111,13 @@ body.galaxy-active .desktop .taskbar {
 
 /* Brand text — shift from gold metallic to cobalt/platinum */
 body.galaxy-active .brand {
-    background: linear-gradient(90deg, #3a6cc9, #5b8fd9, #e0e8f0, #5b8fd9, #2a5cb9) !important;
-    background-size: 200% 100% !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
-    filter: drop-shadow(0 0 6px rgba(30, 70, 160, 0.5)) !important;
     text-shadow: none !important;
-    animation: brand-shimmer 8s ease-in-out infinite !important;
+    color: #5b8fd9 !important;
 }
 
 /* Logo wheel — apply galaxy hue-rotate */
 body.galaxy-active .logo-wheel {
-    filter: hue-rotate(235deg) saturate(1.4) brightness(0.9)
-            drop-shadow(0 0 8px rgba(30, 70, 160, 0.6));
+    filter: hue-rotate(235deg) saturate(1.4) brightness(0.9);
 }
 
 /* Top bar — stronger glass with galaxy tint */
@@ -166,7 +158,6 @@ body.galaxy-active .taskbar.dock-style {
     border: 1px solid rgba(30, 70, 160, 0.15);
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.5),
-        0 0 20px rgba(20, 50, 140, 0.1),
         inset 0 1px 0 rgba(80, 130, 200, 0.08);
 }
 
@@ -213,19 +204,19 @@ body.galaxy-active .taskbar-window-btn {
 
 body.galaxy-active .taskbar-window-btn:hover {
     border-color: rgba(50, 100, 200, 0.35);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(30, 70, 160, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 body.galaxy-active .taskbar-window-btn.active {
     background: rgba(30, 70, 160, 0.2);
     border-color: rgba(50, 100, 200, 0.35);
-    box-shadow: 0 0 20px rgba(30, 70, 160, 0.25), inset 0 0 10px rgba(30, 70, 160, 0.08);
+    box-shadow: none;
 }
 
 /* Active indicator dot — galaxy blue */
 body.galaxy-active .taskbar-window-btn.active::after {
     background: rgba(80, 140, 220, 1);
-    box-shadow: 0 0 8px rgba(50, 100, 200, 0.8);
+    box-shadow: none;
 }
 
 /* Dock icon hover tooltip — galaxy-styled */
@@ -239,7 +230,7 @@ body.galaxy-active .hud-brackets::after,
 body.galaxy-active .hud-bracket-tr,
 body.galaxy-active .hud-bracket-bl {
     border-color: rgba(50, 100, 200, 0.5);
-    box-shadow: 0 0 4px rgba(30, 70, 160, 0.3);
+    box-shadow: none;
 }
 
 /* Hide old background wheel when galaxy is active */
@@ -259,20 +250,7 @@ body.galaxy-active::before {
     /* MMBN digital aesthetic - geometric and cyber */
     font-family: 'Orbitron', 'Tomorrow', sans-serif !important;
     letter-spacing: 4px !important;
-    /* Space pattern inside text */
-    background: url('/assets/space-pattern.svg') !important;
-    background-size: 150px 150px !important;
-    background-position: center !important;
-    background-clip: text !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    color: transparent !important;
-    /* Subtle animation - pan through space */
-    animation: space-drift 20s linear infinite !important;
-    /* Cosmic glow effect */
-    filter: drop-shadow(0 0 15px rgba(30, 70, 160, 0.8))
-            drop-shadow(0 0 30px rgba(50, 90, 180, 0.6))
-            drop-shadow(0 0 50px rgba(15, 40, 120, 0.4)) !important;
+    color: #5b8fd9 !important;
 }
 
 /* Drift through space animation */
@@ -288,14 +266,10 @@ body.galaxy-active::before {
 /* Pulsing glow for text */
 @keyframes galaxy-text-glow {
     0%, 100% {
-        filter: drop-shadow(0 0 15px rgba(30, 70, 160, 0.8))
-                drop-shadow(0 0 30px rgba(50, 90, 180, 0.6))
-                drop-shadow(0 0 50px rgba(15, 40, 120, 0.4));
+        filter: none;
     }
     50% {
-        filter: drop-shadow(0 0 25px rgba(30, 70, 160, 1))
-                drop-shadow(0 0 50px rgba(50, 90, 180, 0.8))
-                drop-shadow(0 0 80px rgba(15, 40, 120, 0.6));
+        filter: none;
     }
 }
 
@@ -308,35 +282,15 @@ body.galaxy-active::before {
 /* Fallback static gradient for reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .galaxy-text {
-        background: linear-gradient(
-            135deg,
-            #0a0e2e 0%,
-            #142050 30%,
-            #1e3a7a 60%,
-            #301a60 100%
-        );
-        background-clip: text;
-        -webkit-background-clip: text;
-        color: transparent;
         animation: none;
+        color: #1e3a7a;
     }
 }
 
 /* Preserve original gold styling as fallback */
 .gold-metallic {
-    background: linear-gradient(
-        135deg,
-        #B8860B 0%,
-        #FFD700 25%,
-        #FFF8DC 50%,
-        #FFD700 75%,
-        #B8860B 100%
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))
-            drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    color: #FFD700;
 }
 
 /* Galaxy wheel treatment */
@@ -349,9 +303,7 @@ body.galaxy-active::before {
 }
 
 .galaxy-wheel-glow {
-    filter: drop-shadow(0 0 15px rgba(30, 70, 160, 0.6))
-            drop-shadow(0 0 30px rgba(50, 90, 180, 0.4))
-            drop-shadow(0 0 45px rgba(30, 70, 160, 0.3));
+    filter: none;
 }
 
 /* Galaxy color overlay for SVGs - shift gold to purple/magenta
@@ -364,23 +316,16 @@ body.galaxy-active::before {
 /* Pulsing glow animation for wheel - includes hue-rotate */
 @keyframes galaxyPulse {
     0%, 100% {
-        filter: hue-rotate(235deg) saturate(1.4) brightness(0.9)
-                drop-shadow(0 0 15px rgba(30, 70, 160, 0.7))
-                drop-shadow(0 0 30px rgba(50, 90, 180, 0.5));
+        filter: hue-rotate(235deg) saturate(1.4) brightness(0.9);
     }
     50% {
-        filter: hue-rotate(235deg) saturate(1.6) brightness(1.0)
-                drop-shadow(0 0 25px rgba(30, 70, 160, 0.9))
-                drop-shadow(0 0 50px rgba(50, 90, 180, 0.7))
-                drop-shadow(0 0 70px rgba(15, 40, 120, 0.4));
+        filter: hue-rotate(235deg) saturate(1.6) brightness(1.0);
     }
 }
 
 .galaxy-wheel-animated {
     /* Initial state before animation kicks in */
-    filter: hue-rotate(235deg) saturate(1.4) brightness(0.9)
-            drop-shadow(0 0 15px rgba(30, 70, 160, 0.7))
-            drop-shadow(0 0 30px rgba(50, 90, 180, 0.5));
+    filter: hue-rotate(235deg) saturate(1.4) brightness(0.9);
     animation: galaxyPulse 4s ease-in-out infinite;
     /* 3D tilt preserved during pulse */
     transform: rotateX(55deg);
@@ -388,9 +333,7 @@ body.galaxy-active::before {
 
 /* Watermark wheel in cinematic intro */
 body.galaxy-active .intro-watermark-img {
-    filter: hue-rotate(235deg) saturate(1.4) brightness(0.9)
-            drop-shadow(0 0 15px rgba(30, 70, 160, 0.7))
-            drop-shadow(0 0 30px rgba(50, 90, 180, 0.5));
+    filter: hue-rotate(235deg) saturate(1.4) brightness(0.9);
 }
 
 /* Title-specific galaxy styling — cinematic size */

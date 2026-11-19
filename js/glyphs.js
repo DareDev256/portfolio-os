@@ -19,7 +19,7 @@ export const Glyphs = {
         this.el.style.zIndex = '82';
         this.el.style.pointerEvents = 'none';
         this.el.innerHTML = `
-      <svg class="holo-ring" viewBox="0 0 600 600" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(70vw,70vh);height:auto;filter: drop-shadow(0 0 12px rgba(0,231,255,0.45)); opacity:.6; animation: holo-ring-spin 7s linear infinite;">
+      <svg class="holo-ring" viewBox="0 0 600 600" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(70vw,70vh);height:auto;filter: none; opacity:.6; animation: holo-ring-spin 7s linear infinite;">
         <defs>
           <linearGradient id="neonGrad" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="var(--neon-cyan)"/>

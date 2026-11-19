@@ -470,7 +470,7 @@ button:focus-visible {
     height: 6px;
     border-radius: 50%;
     background: var(--sys-gold);
-    box-shadow: 0 0 8px var(--sys-gold);
+    box-shadow: none;
     flex-shrink: 0;
     animation: blink 2.4s steps(1) infinite;
 }
@@ -658,13 +658,11 @@ button:focus-visible {
     0%,
     100% {
         box-shadow:
-            0 0 40px rgba(50, 150, 255, 0.22),
-            inset 0 0 60px var(--sys-glow);
+            none;
     }
     50% {
         box-shadow:
-            0 0 60px rgba(50, 150, 255, 0.34),
-            inset 0 0 76px rgba(30, 100, 200, 0.16);
+            none;
     }
 }
 
@@ -894,14 +892,12 @@ button:focus-visible {
 
 .rg-core-dot {
     fill: var(--sys-cyan-pale);
-    animation: rgCore 2.6s var(--sys-cubic) infinite;
 }
 
 .rg-core-ring {
     fill: none;
     stroke: rgba(var(--sys-cyan-rgb), 0.45);
     stroke-width: 1;
-    animation: rgRing 3.4s var(--sys-expo) infinite;
 }
 
 @keyframes rgCore {
@@ -1937,12 +1933,12 @@ button:focus-visible {
     background: var(--sys-panel-solid);
     display: grid;
     place-items: center;
-    box-shadow: inset 0 0 22px rgba(var(--sys-wash-rgb), 0.2);
+    box-shadow: none;
     font-family: var(--sys-mono);
     font-size: 27px;
     font-weight: 700;
     color: var(--sys-gold);
-    text-shadow: 0 0 14px rgba(var(--sys-gold-rgb), 0.55);
+    text-shadow: none;
 }
 
 .gate-head .tag {
@@ -2080,7 +2076,7 @@ button:focus-visible {
     background: var(--sys-panel-solid);
     border: 1px solid rgba(var(--sys-cyan-rgb), 0.35);
     padding: 20px 22px;
-    box-shadow: inset 0 0 20px var(--sys-glow);
+    box-shadow: none;
     transition:
         border-color 0.28s var(--sys-cubic),
         transform 0.28s var(--sys-cubic);
@@ -2299,7 +2295,7 @@ button:focus-visible {
         rgba(var(--sys-cyan-rgb), 0.9) 78%,
         transparent
     );
-    box-shadow: 0 0 18px rgba(var(--sys-cyan-rgb), 0.55);
+    box-shadow: none;
     animation: gateSweep 0.9s var(--sys-cubic) 1 both;
 }
 

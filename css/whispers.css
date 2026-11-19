@@ -20,7 +20,7 @@
     white-space: nowrap;
     user-select: none;
     pointer-events: none;
-    text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
+    text-shadow: none;
     transform: rotate(var(--tilt, 0deg));
     animation: whisper-drift var(--drift-duration, 16s) linear forwards;
     will-change: transform, opacity;
@@ -28,7 +28,7 @@
 
 .whisper--gold {
     color: var(--gold);
-    text-shadow: 0 0 8px var(--gold-dim);
+    text-shadow: none;
 }
 
 /* Drift animation: fade in → float → fade out.

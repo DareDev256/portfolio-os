@@ -29,7 +29,7 @@ function createGauge(label, value, max, color, unit = '') {
         <div class="sysmon-gauge">
             <div class="sysmon-gauge-label">${label}</div>
             <div class="sysmon-gauge-bar">
-                <div class="sysmon-gauge-fill" style="width:${pct}%;background:${color};box-shadow:0 0 8px ${color}55;"></div>
+                <div class="sysmon-gauge-fill" style="width:${pct}%;background:${color};box-shadow:none;"></div>
             </div>
             <div class="sysmon-gauge-value" style="color:${color};">${typeof value === 'number' ? Math.round(value) : value}${unit}</div>
         </div>`;

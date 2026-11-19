@@ -36,9 +36,9 @@
     --accent-active: #009ea8;
 
     --border-color: rgba(0, 240, 255, 0.3);
-    --shadow-sm: 0 0 10px rgba(0, 240, 255, 0.1);
-    --shadow-md: 0 0 20px rgba(0, 240, 255, 0.15);
-    --shadow-lg: 0 0 60px rgba(0, 240, 255, 0.2);
+    --shadow-sm: 0 0 0 0 transparent;
+    --shadow-md: 0 0 0 0 transparent;
+    --shadow-lg: 0 0 0 0 transparent;
 
     --overlay-bg: rgba(0, 0, 0, 0.8);
     --focus-color: var(--neon-cyan);
@@ -93,16 +93,16 @@
     --transition-bounce: 0.3s var(--ease-spring);
 
     /* Common Glow Effects */
-    --glow-cyan-sm: 0 0 10px rgba(0, 240, 255, 0.3);
-    --glow-cyan-md: 0 0 20px rgba(0, 240, 255, 0.4);
-    --glow-cyan-lg: 0 0 40px rgba(0, 240, 255, 0.5);
-    --glow-magenta-sm: 0 0 10px rgba(255, 0, 170, 0.3);
-    --glow-magenta-md: 0 0 20px rgba(255, 0, 170, 0.4);
-    --glow-gold-sm: 0 0 10px rgba(212, 175, 55, 0.3);
-    --glow-gold-md: 0 0 20px rgba(212, 175, 55, 0.4);
-    --glow-amethyst-sm: 0 0 10px rgba(139, 92, 246, 0.3);
-    --glow-amethyst-md: 0 0 20px rgba(139, 92, 246, 0.4);
-    --glow-neon-border: 0 0 15px currentColor, inset 0 0 10px rgba(0, 240, 255, 0.05);
+    --glow-cyan-sm: 0 0 0 0 transparent;
+    --glow-cyan-md: 0 0 0 0 transparent;
+    --glow-cyan-lg: 0 0 0 0 transparent;
+    --glow-magenta-sm: 0 0 0 0 transparent;
+    --glow-magenta-md: 0 0 0 0 transparent;
+    --glow-gold-sm: 0 0 0 0 transparent;
+    --glow-gold-md: 0 0 0 0 transparent;
+    --glow-amethyst-sm: 0 0 0 0 transparent;
+    --glow-amethyst-md: 0 0 0 0 transparent;
+    --glow-neon-border: 0 0 0 0 transparent;
 
     /* Typography */
     --font-family: 'Tomorrow', 'Orbitron', sans-serif;

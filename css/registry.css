@@ -78,14 +78,12 @@
 
 .rg-core-dot {
     fill: var(--sys-cyan-pale);
-    animation: rgCore 2.6s var(--sys-cubic) infinite;
 }
 
 .rg-core-ring {
     fill: none;
     stroke: rgba(var(--sys-cyan-rgb), 0.45);
     stroke-width: 1;
-    animation: rgRing 3.4s var(--sys-expo) infinite;
 }
 
 @keyframes rgCore {

@@ -59,7 +59,7 @@
 .cv-copy--done {
     color: #d4af37;
     border-color: rgba(212, 175, 55, 0.5);
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+    box-shadow: none;
 }
 
 /* Code area */

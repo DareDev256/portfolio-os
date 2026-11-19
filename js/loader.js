@@ -136,7 +136,7 @@ export class PixelLoader {
                     width: 100%;
                     height: 100%;
                 }
-                .pixel.c-1 { background: var(--neon-cyan); box-shadow: 0 0 5px var(--neon-cyan); }
+                .pixel.c-1 { background: var(--neon-cyan); box-shadow: none; }
                 .pixel.c-2 { background: #fff; }
                 .pixel-message {
                     color: var(--neon-cyan);
@@ -145,7 +145,7 @@ export class PixelLoader {
                     letter-spacing: 2px;
                     margin-bottom: 15px;
                     font-size: 14px;
-                    text-shadow: 0 0 10px var(--neon-cyan);
+                    text-shadow: none;
                 }
                 .pixel-bar {
                     width: 200px;
@@ -159,7 +159,7 @@ export class PixelLoader {
                     background: var(--neon-cyan);
                     width: 0%;
                     transition: width 0.2s linear;
-                    box-shadow: 0 0 10px var(--neon-cyan);
+                    box-shadow: none;
                 }
                 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
             `;

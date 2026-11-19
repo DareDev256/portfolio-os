@@ -34,7 +34,7 @@
 
 .sticky-notes-add:hover {
     background: rgba(0, 240, 255, 0.2);
-    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+    box-shadow: none;
 }
 
 .sticky-notes-count {
@@ -99,7 +99,7 @@
 
 .sticky-note-color-btn:hover {
     transform: scale(1.3);
-    box-shadow: 0 0 8px currentColor;
+    box-shadow: none;
 }
 
 .sticky-note-del-btn {

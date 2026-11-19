@@ -267,7 +267,7 @@ export const EasterEggs = {
                 color: ${['#00f0ff', '#ff00aa', '#00ff88', '#ffaa00'][i % 4]};
                 pointer-events: none;
                 z-index: 10000;
-                text-shadow: 0 0 10px currentColor;
+                text-shadow: none;
             `;
 
             document.body.appendChild(particle);

@@ -54,8 +54,6 @@
 .window.active.arc-reactor-on {
     box-shadow:
         0 12px 40px rgba(0, 0, 0, 0.5),
-        0 0 30px rgba(0, 240, 255, 0.1),
-        0 0 60px rgba(139, 92, 246, 0.06),
         0 0 2px rgba(212, 175, 55, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
@@ -67,8 +65,7 @@
     border-radius: 50%;
     background: var(--gold, #d4af37);
     box-shadow:
-        0 0 6px var(--gold, #d4af37),
-        0 0 12px rgba(139, 92, 246, 0.4);
+        none;
     opacity: 0;
     transition: opacity 0.6s ease-out;
     pointer-events: none;

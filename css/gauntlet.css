@@ -128,7 +128,7 @@
     height: 1px;
     background: var(--gold);
     margin: 14px 0;
-    box-shadow: 0 0 8px var(--gold-dim);
+    box-shadow: none;
     opacity: 0;
     transform: scaleX(0);
     transform-origin: left;

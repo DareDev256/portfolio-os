@@ -90,7 +90,7 @@ export const DigiviceIntro = {
     // Autoplay blocked (common on mobile) — show tap prompt
     const tap = document.createElement('div');
     tap.textContent = 'TAP TO PLAY';
-    Object.assign(tap.style, { position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',fontFamily:'monospace',fontSize:'12px',letterSpacing:'0.3em',textTransform:'uppercase',color:'#00f0ff',textShadow:'0 0 8px rgba(0,240,255,0.5)',padding:'16px 28px',border:'1px solid rgba(0,240,255,0.3)',borderRadius:'6px',cursor:'pointer',zIndex:'1',animation:'pulse 1.5s ease-in-out infinite' });
+    Object.assign(tap.style, { position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',fontFamily:'monospace',fontSize:'12px',letterSpacing:'0.3em',textTransform:'uppercase',color:'#00f0ff',padding:'16px 28px',border:'1px solid rgba(0,240,255,0.3)',borderRadius:'6px',cursor:'pointer',zIndex:'1',animation:'pulse 1.5s ease-in-out infinite' });
     this._tapPrompt = tap;
     this._overlay.appendChild(tap);
     // Inject pulse animation

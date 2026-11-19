@@ -33,8 +33,7 @@
 /* Phase 1 — fracture lines glow amethyst via drop-shadow on clipped shapes */
 .obsidian-veil--glowing .obsidian-shard {
     filter:
-        drop-shadow(0 0 6px rgba(139, 92, 246, 0.6))
-        drop-shadow(0 0 14px rgba(139, 92, 246, 0.25));
+        none;
 }
 
 /* Phase 2 — shards translate outward, rotate, fade */

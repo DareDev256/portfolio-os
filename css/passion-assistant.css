@@ -55,7 +55,7 @@
 }
 @keyframes pa-notify-pulse {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); box-shadow: 0 0 8px rgba(255, 51, 102, 0.5); }
+    50% { transform: scale(1.15); box-shadow: none; }
 }
 /* Tooltip label */
 .pa-bubble-label {
@@ -99,7 +99,7 @@
     transform: translateY(20px) scale(0.95);
     pointer-events: none;
     transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(170, 0, 255, 0.05);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
 }
 .pa-panel--open {
     opacity: 1;
@@ -139,7 +139,7 @@
     height: 6px;
     border-radius: 50%;
     background: #4ade80;
-    box-shadow: 0 0 6px #4ade80;
+    box-shadow: none;
 }
 .pa-close {
     background: none;

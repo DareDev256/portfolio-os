@@ -62,7 +62,7 @@ function spawn(char) {
         left:${x}px;
         top:${y}px;
         color:${color};
-        text-shadow: 0 0 8px ${color}, 0 0 20px ${color};
+        text-shadow: none;
         font-size:${FONT_SIZE + (Math.random() * 8 - 4)}px;
         --drift-x:${driftX}px;
     `;

@@ -27,9 +27,7 @@
     position: absolute;
     border-radius: 12px;
     box-shadow:
-        0 0 0 9999px rgba(0, 0, 0, 0.8),
-        0 0 30px rgba(0, 240, 255, 0.5),
-        inset 0 0 20px rgba(0, 240, 255, 0.3);
+        0 0 0 9999px rgba(0, 0, 0, 0.8);
     border: 2px solid var(--neon-cyan);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
@@ -65,7 +63,6 @@
     border: 2px solid var(--neon-cyan);
     border-radius: 12px;
     box-shadow:
-        0 0 40px rgba(0, 240, 255, 0.3),
         0 20px 60px rgba(0, 0, 0, 0.5);
     padding: 0;
     width: 340px;
@@ -191,10 +188,10 @@
 
 @keyframes tourTargetPulse {
     0%, 100% {
-        filter: drop-shadow(0 0 10px var(--neon-cyan));
+        filter: none;
     }
     50% {
-        filter: drop-shadow(0 0 20px var(--neon-cyan)) drop-shadow(0 0 30px rgba(0, 240, 255, 0.5));
+        filter: none;
     }
 }
 

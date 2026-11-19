@@ -575,7 +575,7 @@ export const Admin = {
 
             const defaultIcons = {
                 'Real Estate': '🏠',
-                'Glamour': '✨',
+                'Glamour': '💄',
                 'Cars': '🏎️',
                 'Music Videos': '🎵',
                 'Archive': '📦'

@@ -371,7 +371,6 @@ export const Desktop = {
             particle.style.left = `${x + (Math.random() - 0.5) * 40}px`;
             particle.style.top = `${y}px`;
             particle.style.color = color;
-            particle.style.textShadow = `0 0 5px ${color}`;
             particle.style.animationDelay = `${Math.random() * 0.2}s`;
 
             document.body.appendChild(particle);
@@ -523,7 +522,7 @@ export const Desktop = {
                 : `<span class="desktop-icon-emoji">${Sanitize.text(item.icon)}</span>`;
 
             icon.innerHTML = `
-                <div class="desktop-icon-box hud-scannable" style="border-color: ${safeColor}40; box-shadow: 0 0 20px ${safeColor}20;">
+                <div class="desktop-icon-box hud-scannable" style="border-color: ${safeColor}40; box-shadow: none;">
                     ${iconContent}
                     <div class="hud-scan-ring"></div>
                     <div class="hud-scan-ring"></div>
@@ -2657,7 +2656,7 @@ export const Desktop = {
             { name: 'Nails, Lashes & Beauty', url: '#', live: false, icon: '💅' },
             { name: 'Tattoo & Piercing', url: '#', live: false, icon: '🖋' },
             { name: 'Pet Services', url: '#', live: false, icon: '🐾' },
-            { name: 'Cleaning Services', url: '#', live: false, icon: '✨' },
+            { name: 'Cleaning Services', url: '#', live: false, icon: '🧹' },
             { name: 'Medical & Dental', url: '#', live: false, icon: '🏥' },
             { name: 'Wedding & Events', url: '#', live: false, icon: '💐' },
             { name: 'Cannabis Dispensary', url: '#', live: false, icon: '🌿' },
@@ -2687,7 +2686,7 @@ export const Desktop = {
             <div class="portfolio-clients scroll-reveal" data-reveal="fade-up" data-reveal-delay="2">
                 ${CLIENT_WORK.map(c => `
                     <a href="${Sanitize.text(c.url)}" target="_blank" rel="noopener" class="portfolio-client-item" style="text-decoration:none;color:inherit;--client-color:${c.color}">
-                        <span class="portfolio-client-dot" style="background:${c.color};box-shadow:0 0 8px ${c.color};"></span>
+                        <span class="portfolio-client-dot" style="background:${c.color};box-shadow:none;"></span>
                         <div class="portfolio-client-info">
                             <span class="portfolio-client-name">${Sanitize.text(c.name)}</span>
                             <span class="portfolio-client-type">${Sanitize.text(c.type)}</span>

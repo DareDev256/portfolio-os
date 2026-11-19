@@ -28,7 +28,7 @@
 /* Blueprint corners illuminate on hover (tilt active) */
 .project-card:hover .bp-corner {
     border-color: var(--gold);
-    filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.4));
+    filter: none;
     transition: border-color 0.3s, filter 0.3s;
 }
 
@@ -45,9 +45,7 @@
 /* Edge glow intensifies on tilt */
 .project-card:hover {
     box-shadow:
-        0 4px 20px rgba(0, 0, 0, 0.3),
-        0 0 15px rgba(139, 92, 246, 0.1),
-        0 0 30px rgba(212, 175, 55, 0.05);
+        0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 @media (prefers-reduced-motion: reduce) {

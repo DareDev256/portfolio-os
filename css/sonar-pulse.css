@@ -27,14 +27,14 @@
 /* Ring 0 — gold, fastest */
 .sonar-ring--0 {
     border: 1.5px solid var(--gold, #d4af37);
-    box-shadow: 0 0 8px var(--gold-dim, rgba(212,175,55,0.4));
+    box-shadow: none;
     animation: sonar-expand 1.2s var(--ease-decel, ease-out) forwards;
 }
 
 /* Ring 1 — amethyst, slightly delayed */
 .sonar-ring--1 {
     border: 1px solid var(--amethyst, #8b5cf6);
-    box-shadow: 0 0 6px var(--amethyst-dim, rgba(139,92,246,0.3));
+    box-shadow: none;
     animation: sonar-expand 1.2s 0.12s var(--ease-decel, ease-out) forwards;
 }
 
@@ -98,7 +98,7 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--gold-light, #f5d76e);
-    text-shadow: 0 0 6px var(--gold-dim, rgba(212,175,55,0.5));
+    text-shadow: none;
     animation: sonar-hud-rise 1.4s var(--ease-decel, ease-out) forwards;
     pointer-events: none;
 }

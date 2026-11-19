@@ -27,7 +27,7 @@
   --ink:#ffffff; --ink-2:rgba(255,255,255,.72); --ink-3:rgba(0,240,255,.55);
   --glass:rgba(15,10,30,.45);
   --line:rgba(0,240,255,.22); --line-soft:rgba(0,240,255,.10);
-  --glow-sm:0 0 10px rgba(0,240,255,.30); --glow-md:0 0 22px rgba(0,240,255,.22);
+  --glow-sm:0 0 0 0 transparent; --glow-md:0 0 0 0 transparent;
   --f-disp:'Tomorrow','Orbitron',system-ui,sans-serif;
   --f-mono:'JetBrains Mono','Fira Code',ui-monospace,monospace;
   --f-label:'Barlow Condensed','Tomorrow',system-ui,sans-serif;
@@ -54,7 +54,7 @@ body::after{content:""; position:fixed; inset:0; pointer-events:none; z-index:60
 #boot{position:fixed; inset:0; z-index:80; background:#010108;
   display:flex; align-items:center; justify-content:center;
   font-family:var(--f-mono); font-size:13px; color:var(--cyan);
-  letter-spacing:.22em; text-shadow:var(--glow-sm)}
+  letter-spacing:.22em; text-shadow:none}
 #boot.gone{opacity:0; pointer-events:none; transition:opacity .34s var(--in)}
 #boot{cursor:pointer}
 #boot .bar{width:210px; height:2px; background:rgba(0,240,255,.18); margin-top:14px}
@@ -67,11 +67,11 @@ body::after{content:""; position:fixed; inset:0; pointer-events:none; z-index:60
 .head{display:flex; justify-content:space-between; align-items:flex-end; gap:20px;
   flex-wrap:wrap; border-bottom:1px solid var(--line); padding-bottom:16px}
 h1{font-family:var(--f-disp); font-weight:700; margin:0; font-size:clamp(21px,2.8vw,29px);
-  line-height:1.1; letter-spacing:.01em; text-shadow:0 0 22px rgba(0,240,255,.3)}
+  line-height:1.1; letter-spacing:.01em; text-shadow:none}
 h1 b{color:var(--cyan); font-weight:700}
 .stamp{font-size:11px; color:var(--ink-3); text-align:right; line-height:1.9}
 .stamp b{color:rgba(255,255,255,.8); font-weight:400}
-.stale{color:var(--red); text-shadow:0 0 10px rgba(255,0,102,.5)}
+.stale{color:var(--red); text-shadow:none}
 
 /* top rail --------------------------------------------------------------- */
 .rail{display:flex; gap:8px; margin:18px 0 20px; flex-wrap:wrap}
@@ -84,7 +84,7 @@ h1 b{color:var(--cyan); font-weight:700}
 .rail-btn:hover{color:var(--ink); border-color:color-mix(in srgb,var(--c) 45%,transparent)}
 .rail-btn[aria-selected="true"]{color:var(--ink); border-color:var(--c);
   background:color-mix(in srgb,var(--c) 12%,rgba(10,10,20,.5));
-  box-shadow:0 0 20px color-mix(in srgb,var(--c) 28%,transparent)}
+  box-shadow:none}
 .rail-btn:focus-visible{outline:1px solid var(--cyan); outline-offset:3px}
 .rail-btn .ico{width:20px; height:20px}
 
@@ -97,7 +97,7 @@ h1 b{color:var(--cyan); font-weight:700}
   padding:0 0 4px; box-shadow:var(--glow-md), inset 0 1px 0 rgba(255,255,255,.05);
   overflow:hidden; min-height:clamp(430px,60vh,660px)}
 .sys::before,.sys::after{content:""; position:absolute; width:16px; height:16px;
-  border:1px solid var(--a); box-shadow:0 0 10px color-mix(in srgb,var(--a) 60%,transparent);
+  border:1px solid var(--a); box-shadow:none;
   opacity:0; transition:opacity .3s var(--in) .22s}
 .sys::before{top:-1px; left:-1px; border-right:0; border-bottom:0}
 .sys::after{bottom:-1px; right:-1px; border-left:0; border-top:0}
@@ -110,7 +110,7 @@ h1 b{color:var(--cyan); font-weight:700}
 .view.enter .sys > .sweep{animation:sweep .55s var(--in) .06s both}
 .sweep{position:absolute; left:0; right:0; top:0; height:2px; opacity:0; pointer-events:none;
   background:linear-gradient(90deg,transparent,var(--a),transparent);
-  box-shadow:0 0 16px var(--a); z-index:5}
+  box-shadow:none; z-index:5}
 @keyframes sweep{0%{opacity:1; transform:translateY(0)}
   90%{opacity:.8} 100%{opacity:0; transform:translateY(var(--sweep-h,420px))}}
 
@@ -123,7 +123,7 @@ h1 b{color:var(--cyan); font-weight:700}
   color:var(--ink-3); transition:color .18s var(--in), border-color .18s var(--in)}
 .sub:hover{color:var(--ink)}
 .sub[aria-selected="true"]{color:var(--ink); border-bottom-color:var(--a);
-  text-shadow:0 0 12px var(--a)}
+  text-shadow:none}
 .sub:focus-visible{outline:1px solid var(--cyan); outline-offset:-2px}
 .pane{display:none; padding:26px}
 .pane.on{display:block}
@@ -137,7 +137,7 @@ h1 b{color:var(--cyan); font-weight:700}
 /* quest ------------------------------------------------------------------ */
 .quest{display:flex; gap:28px; align-items:center; flex-wrap:wrap}
 .qn{font-family:var(--f-mono); font-size:40px; font-weight:700; color:var(--a);
-  text-shadow:0 0 24px color-mix(in srgb,var(--a) 55%,transparent); line-height:1}
+  text-shadow:none; line-height:1}
 .qn small{font-size:19px; color:var(--ink-3); font-weight:400}
 .qlab{font-family:var(--f-label); font-size:11px; letter-spacing:.24em;
   text-transform:uppercase; color:var(--ink-3); margin-top:7px}
@@ -145,7 +145,7 @@ h1 b{color:var(--cyan); font-weight:700}
 .pip{width:20px; height:38px; border:1px solid rgba(0,240,255,.26); border-radius:1px;
   background:rgba(0,240,255,.05); transform-origin:bottom}
 .pip.on{background:var(--a); border-color:var(--a);
-  box-shadow:0 0 12px color-mix(in srgb,var(--a) 70%,transparent)}
+  box-shadow:none}
 .pip.next{border-color:var(--a); border-style:dashed}
 .pane.enter .pip.on{animation:pipin .3s var(--snap) both}
 @keyframes pipin{from{transform:scaleY(.15); opacity:0} to{transform:none; opacity:1}}
@@ -153,11 +153,11 @@ h1 b{color:var(--cyan); font-weight:700}
 
 /* status ----------------------------------------------------------------- */
 .wname{font-size:27px; font-weight:700; display:flex; align-items:center; gap:12px;
-  color:var(--a); text-shadow:0 0 20px color-mix(in srgb,var(--a) 45%,transparent)}
+  color:var(--a); text-shadow:none}
 .ico{width:36px; height:36px; flex:none; border-radius:3px; display:block;
   border:1px solid color-mix(in srgb,var(--c,var(--a)) 55%,transparent);
   background:rgba(0,0,0,.35); padding:2px;
-  box-shadow:0 0 14px color-mix(in srgb,var(--c,var(--a)) 30%,transparent)}
+  box-shadow:none}
 .wrole{font-family:var(--f-label); font-size:11.5px; letter-spacing:.22em;
   text-transform:uppercase; color:var(--ink-3); margin-top:6px}
 .links{display:flex; gap:7px; flex-wrap:wrap; margin-top:13px}
@@ -175,7 +175,7 @@ h1 b{color:var(--cyan); font-weight:700}
 .wblurb{color:var(--ink-2); font-size:14px; margin:16px 0 22px; max-width:70ch}
 .clip{position:relative; margin:20px 0 4px; border-radius:2px; overflow:hidden;
   border:1px solid color-mix(in srgb,var(--a) 30%,transparent);
-  box-shadow:0 0 26px color-mix(in srgb,var(--a) 16%,transparent); line-height:0}
+  box-shadow:none; line-height:0}
 .clip img{width:100%; height:190px; object-fit:cover; display:block;
   filter:saturate(1.05) contrast(1.03)}
 .clip::after{content:""; position:absolute; inset:0; pointer-events:none;
@@ -186,7 +186,7 @@ h1 b{color:var(--cyan); font-weight:700}
 .gauge{height:10px; background:rgba(0,240,255,.07);
   border:1px solid var(--line-soft); margin-bottom:8px; overflow:hidden}
 .gauge i{display:block; height:100%; width:0; background:var(--a);
-  box-shadow:0 0 14px color-mix(in srgb,var(--a) 70%,transparent);
+  box-shadow:none;
   transition:width .9s var(--in) .12s}
 .gl{font-size:11.5px; color:var(--ink-3); display:flex; justify-content:space-between;
   margin-bottom:24px; font-family:var(--f-mono)}
@@ -244,7 +244,7 @@ tr.daybreak:hover td{background:color-mix(in srgb,var(--a) 11%,rgba(0,0,0,.34))}
 .lead strong{color:var(--ink); font-weight:600}
 .st{font-family:var(--f-label); font-size:11px; letter-spacing:.14em; text-transform:uppercase}
 .st.done{color:var(--green)} .st.pending{color:var(--ink-3)}
-.st.blocked{color:var(--red); text-shadow:0 0 10px rgba(255,0,102,.45)}
+.st.blocked{color:var(--red); text-shadow:none}
 .hint{font-family:var(--f-label); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
   color:var(--ink-3); margin-top:18px; text-align:center}
 @media (prefers-reduced-motion:reduce){

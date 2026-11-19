@@ -410,8 +410,7 @@
     .desktop-icon:active .desktop-icon-box {
         transform: scale(0.95);
         box-shadow:
-            0 0 20px currentColor,
-            0 0 40px rgba(0, 240, 255, 0.3);
+            none;
     }
 
     /* Faster transitions for touch */

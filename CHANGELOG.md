@@ -3,14 +3,24 @@
 ---
 
 title: Passion OS Changelog
-version: 4.79.0
-last_updated: 2026-11-16
+version: 4.79.1
+last_updated: 2026-11-19
 
 ---
 
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.79.1 — 2026-11-19 · Glow and AI tells out
+
+House rule of 2026-11-19 (design-taste-house 2.B2 and 2.J): near-black plus a neon glow is the second-wave AI look. Identity stays (accent colours, Orbitron, the HUD panels, the Monarch and every WebGL scene); the halos and tells go. `slop-lint` went from 18 gradient-text + 2 sparkle BANs and 94 neon-glow, 16 purple-glow, 2 pulse-dot WARNs to none.
+
+- **Glow**: every decorative `text-shadow` / `box-shadow` / `drop-shadow` of `0 0 <blur>` removed across 40 stylesheets, the inline styles and four scripts (hover glows, animated glow keyframes and the `--glow-*` / `--shadow-*` tokens included). Black depth shadows kept (nudged `0 1px`); `0 0 0 Npx` focus rings untouched. 2D canvas `shadowBlur` and the 3D scenes untouched.
+- **Gradient text**: nine rules (`.brand` x2, `.os-title`, `.galaxy-text` x2, `.gold-metallic`, `.shimmer-text`, `.reign-chapter__title`, `.welcome-header h2`) are now a solid colour, the gradient's dominant stop, and their shimmer animations are gone.
+- **Sparkles**: two placeholder category icons swapped for emoji already in the same sets.
+- **Purple**: the amethyst stops in the blueprint trace lines, scan line, reign underline and spectral corner brackets are the site's gold.
+- **Pulsing dots**: the registry core's breathing dot and expanding ring (`rgCore`, `rgRing`) no longer animate.
 
 ## 4.79.0 — 2026-11-16 · The crew wear the TdotsSolutionsz atom
 

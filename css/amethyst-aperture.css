@@ -102,7 +102,7 @@
 .reign-hero--resolved .aperture-name {
     opacity: 1;
     letter-spacing: 6px;
-    text-shadow: 0 0 18px rgba(212, 175, 55, 0.25);
+    text-shadow: none;
     animation: none;
 }
 

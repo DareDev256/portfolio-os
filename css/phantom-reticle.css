@@ -47,7 +47,7 @@
     margin: -1.5px 0 0 -1.5px;
     background: var(--gold, #d4af37);
     border-radius: 50%;
-    box-shadow: 0 0 6px var(--gold-dim, rgba(212, 175, 55, 0.5));
+    box-shadow: none;
     transition: background var(--duration-normal, 250ms) var(--ease-decel, ease-out),
                 box-shadow var(--duration-normal, 250ms) var(--ease-decel, ease-out);
 }
@@ -86,7 +86,7 @@
 
 .phantom-reticle.pr-locked .pr-dot {
     background: var(--amethyst, #8b5cf6);
-    box-shadow: 0 0 10px var(--amethyst-dim, rgba(139, 92, 246, 0.5));
+    box-shadow: none;
 }
 
 .phantom-reticle.pr-locked .pr-crosshair {

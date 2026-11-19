@@ -22,7 +22,7 @@
     font-size: 14px;
     transition: all 0.3s ease;
     outline: none;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: none;
 }
 
 /* Focus States */
@@ -31,8 +31,7 @@
 .cyber-select:focus {
     border-color: var(--input-focus);
     box-shadow:
-        inset 0 0 15px rgba(0, 0, 0, 0.8),
-        0 0 10px rgba(0, 240, 255, 0.2);
+        none;
     background: rgba(0, 20, 40, 0.6);
 }
 
@@ -52,7 +51,7 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 600;
-    text-shadow: 0 0 5px rgba(0, 240, 255, 0.3);
+    text-shadow: none;
 }
 
 /* Form Groups */
@@ -86,7 +85,7 @@
 .cyber-button:hover {
     background: var(--neon-cyan);
     color: #000;
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    box-shadow: none;
 }
 
 .cyber-button:active {
@@ -103,7 +102,7 @@
     border-color: #fff;
     color: #fff;
     background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    box-shadow: none;
 }
 
 /* Placeholder styling */
@@ -115,7 +114,7 @@
 /* Invalid State */
 .cyber-input:invalid:not(:placeholder-shown) {
     border-color: var(--neon-magenta);
-    box-shadow: 0 0 5px rgba(255, 0, 170, 0.3);
+    box-shadow: none;
 }
 
 /* Custom validation state — set by JS on submit, since the contact form
@@ -124,7 +123,7 @@
 .cyber-input--invalid,
 .cyber-textarea.cyber-input--invalid {
     border-color: var(--neon-magenta);
-    box-shadow: 0 0 5px rgba(255, 0, 170, 0.3);
+    box-shadow: none;
 }
 
 .cyber-error {

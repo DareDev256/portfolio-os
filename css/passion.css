@@ -17,8 +17,7 @@
     border-radius: 50%;
     border: 3px solid var(--neon-cyan);
     box-shadow:
-        0 0 20px rgba(0, 240, 255, 0.4),
-        0 0 40px rgba(0, 240, 255, 0.2);
+        none;
     object-fit: cover;
     animation: passionAvatarPulse 3s ease-in-out infinite;
 }
@@ -31,8 +30,8 @@
 }
 
 @keyframes passionAvatarPulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), 0 0 40px rgba(0, 240, 255, 0.2); }
-    50% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.6), 0 0 60px rgba(0, 240, 255, 0.3); }
+    0%, 100% { box-shadow: none; }
+    50% { box-shadow: none; }
 }
 
 /* ── Speech Bubble with Typing Effect ───────────────────────────────── */
@@ -101,13 +100,13 @@
 
 .passion-status-dot.green {
     background: #00ff88;
-    box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+    box-shadow: none;
     animation: passionDotPulse 2s ease-in-out infinite;
 }
 
 .passion-status-dot.amber {
     background: #ffaa00;
-    box-shadow: 0 0 8px rgba(255, 170, 0, 0.6);
+    box-shadow: none;
     animation: passionDotPulse 2s ease-in-out infinite;
 }
 
@@ -352,8 +351,7 @@
     border: 1px solid rgba(0, 240, 255, 0.3);
     border-radius: 12px;
     box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(0, 240, 255, 0.15);
+        0 8px 32px rgba(0, 0, 0, 0.4);
     z-index: 850;
     animation: passionToastIn 0.4s var(--ease-spring);
     cursor: pointer;

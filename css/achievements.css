@@ -52,27 +52,27 @@
 .achievement-rarity-common .achievement-popup-icon svg { color: var(--ach-common); }
 .achievement-rarity-rare .achievement-popup-icon svg { color: var(--ach-rare); }
 .achievement-rarity-epic .achievement-popup-icon svg { color: var(--ach-epic); }
-.achievement-rarity-legendary .achievement-popup-icon svg { color: var(--ach-legendary); filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6)); }
+.achievement-rarity-legendary .achievement-popup-icon svg { color: var(--ach-legendary); filter: none; }
 
 /* Rarity border glow */
 .achievement-rarity-common { border-color: var(--ach-common); }
 .achievement-rarity-rare {
     border-color: var(--ach-rare);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 240, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 .achievement-rarity-epic {
     border-color: var(--ach-epic);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(170, 0, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 .achievement-rarity-legendary {
     border-color: var(--ach-legendary);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 30px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     animation: achLegendaryGlow 2s ease-in-out infinite;
 }
 
 @keyframes achLegendaryGlow {
-    0%, 100% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 30px rgba(212, 175, 55, 0.3); }
-    50% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 50px rgba(212, 175, 55, 0.5); }
+    0%, 100% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
+    50% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
 }
 
 .achievement-popup-icon {
@@ -165,7 +165,7 @@
     background: linear-gradient(90deg, var(--gold), var(--neon-cyan));
     border-radius: 3px;
     transition: width 0.6s var(--ease-spring);
-    box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+    box-shadow: none;
 }
 
 .trophy-progress-text {
@@ -220,7 +220,7 @@
 .trophy-card.unlocked.rarity-common .trophy-card-icon svg { color: var(--ach-common); }
 .trophy-card.unlocked.rarity-rare .trophy-card-icon svg { color: var(--ach-rare); }
 .trophy-card.unlocked.rarity-epic .trophy-card-icon svg { color: var(--ach-epic); }
-.trophy-card.unlocked.rarity-legendary .trophy-card-icon svg { color: var(--ach-legendary); filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5)); }
+.trophy-card.unlocked.rarity-legendary .trophy-card-icon svg { color: var(--ach-legendary); filter: none; }
 .trophy-card.locked .trophy-card-icon svg { color: rgba(255, 255, 255, 0.25); }
 
 .trophy-card.unlocked.rarity-common { border-left: 3px solid var(--ach-common); }

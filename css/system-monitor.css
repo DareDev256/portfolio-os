@@ -29,7 +29,7 @@
     height: 8px;
     border-radius: 50%;
     background: #00ff88;
-    box-shadow: 0 0 6px #00ff88;
+    box-shadow: none;
     animation: sysmon-blink 1.2s ease-in-out infinite;
 }
 

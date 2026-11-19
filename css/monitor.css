@@ -133,8 +133,8 @@ h1 { margin: 0; font: 800 clamp(40px, 12vw, 116px)/0.88 var(--display); font-str
 .hud .tr { top: 5.5%; right: 3.5%; display: flex; align-items: center; gap: 0.5em; max-width: 34%; }
 .hud .bl { bottom: 6%; left: 3.5%; font-variant-numeric: tabular-nums; }
 .hud .br { bottom: 6%; right: 3.5%; color: rgba(255, 255, 255, 0.8); }
-.tally { flex: none; width: 0.75em; height: 0.75em; border-radius: 50%; background: var(--rec); box-shadow: 0 0 6px var(--rec); }
-.tally.log, .tally.still, .tally.play, .tally.graph { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.tally { flex: none; width: 0.75em; height: 0.75em; border-radius: 50%; background: var(--rec); box-shadow: none; }
+.tally.log, .tally.still, .tally.play, .tally.graph { background: var(--cyan); box-shadow: none; }
 .tally.none, .tally.held { background: #888; box-shadow: none; }
 .guide { position: absolute; width: 4.5%; aspect-ratio: 1; border-color: rgba(255, 255, 255, 0.7); border-style: solid; border-width: 0; }
 .g1 { top: 14%; left: 7%; border-top-width: 1.5px; border-left-width: 1.5px; }
@@ -153,7 +153,7 @@ h1 { margin: 0; font: 800 clamp(40px, 12vw, 116px)/0.88 var(--display); font-str
 .src { position: relative; height: 34px; display: grid; align-content: center; justify-items: center; text-align: center; background: #0d1520; border: 1px solid var(--line); border-radius: 3px; padding: 0 2px; font: 700 8px/1.1 var(--mono); letter-spacing: 0.02em; color: var(--muted); overflow-wrap: anywhere; hyphens: manual; transition: background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease; }
 .src .n { position: absolute; top: 2px; left: 3px; font-size: 6.5px; color: var(--faint); }
 .src:hover { border-color: var(--muted); color: var(--text); }
-.src[aria-selected="true"] { background: var(--rec); border-color: var(--rec); color: #fff; box-shadow: 0 0 12px rgba(255, 59, 48, 0.45); }
+.src[aria-selected="true"] { background: var(--rec); border-color: var(--rec); color: #fff; box-shadow: none; }
 .src[aria-selected="true"] .n { color: rgba(255, 255, 255, 0.8); }
 
 /* the crew: each source is an agent with a job on set (js/crew.js draws them) */
@@ -436,7 +436,7 @@ dialog.ask::backdrop { background: rgba(4, 8, 15, 0.78); }
 .co-slate dt { font: 600 10px/1 var(--mono); letter-spacing: 0.14em; color: var(--faint); }
 .co-slate dd { margin: 0; font: 800 clamp(22px, 6vw, 40px)/0.95 var(--display); font-stretch: 62%; color: var(--white); }
 .co-roll { position: absolute; bottom: 12%; display: flex; gap: 10px; align-items: center; font: 700 clamp(13px, 3.6vw, 18px)/1 var(--mono); letter-spacing: 0.3em; color: #fff; opacity: 0; }
-.co-roll i { width: 12px; height: 12px; border-radius: 50%; background: var(--rec); box-shadow: 0 0 12px var(--rec); }
+.co-roll i { width: 12px; height: 12px; border-radius: 50%; background: var(--rec); box-shadow: none; }
 .co-skip { position: absolute; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); right: 18px; font: 600 10px/1 var(--mono); letter-spacing: 0.12em; color: var(--faint); }
 .coldopen.run .co-quiet { animation: coQuiet 2.9s linear forwards; }
 .coldopen.run .co-slate { animation: coSlate 2.9s linear forwards; }

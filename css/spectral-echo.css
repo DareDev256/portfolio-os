@@ -13,9 +13,7 @@
     border-radius: var(--glass-radius, 12px);
     border: 1.5px solid var(--gold, #d4af37);
     box-shadow:
-        0 0 12px rgba(212, 175, 55, 0.3),
-        0 0 24px rgba(139, 92, 246, 0.15),
-        inset 0 0 8px rgba(212, 175, 55, 0.1);
+        none;
     animation: spectral-burst var(--duration-dramatic, 600ms) var(--ease-decel, ease-out) forwards;
     will-change: transform, opacity;
 }
@@ -45,17 +43,17 @@
     border-radius: inherit;
     background:
         /* Top-left */
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 0 / 16px 1.5px no-repeat,
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 0 / 1.5px 16px no-repeat,
+        linear-gradient(var(--gold, #d4af37), var(--gold, #d4af37)) 0 0 / 16px 1.5px no-repeat,
+        linear-gradient(var(--gold, #d4af37), var(--gold, #d4af37)) 0 0 / 1.5px 16px no-repeat,
         /* Top-right */
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 0 / 16px 1.5px no-repeat,
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 0 / 1.5px 16px no-repeat,
+        linear-gradient(var(--gold, #d4af37), var(--gold, #d4af37)) 100% 0 / 16px 1.5px no-repeat,
+        linear-gradient(var(--gold, #d4af37), var(--gold, #d4af37)) 100% 0 / 1.5px 16px no-repeat,
         /* Bottom-left */
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 100% / 16px 1.5px no-repeat,
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 0 100% / 1.5px 16px no-repeat,
+        linear-gradient(var(--gold, #d4af37), var(--gold, #d4af37)) 0 100% / 16px 1.5px no-repeat,
+        linear-gradient(var(--gold, #d4af37), var(--gold, #d4af37)) 0 100% / 1.5px 16px no-repeat,
         /* Bottom-right */
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 100% / 16px 1.5px no-repeat,
-        linear-gradient(var(--amethyst, #8b5cf6), var(--amethyst, #8b5cf6)) 100% 100% / 1.5px 16px no-repeat;
+        linear-gradient(var(--gold, #d4af37), var(--gold, #d4af37)) 100% 100% / 16px 1.5px no-repeat,
+        linear-gradient(var(--gold, #d4af37), var(--gold, #d4af37)) 100% 100% / 1.5px 16px no-repeat;
     opacity: 0;
     animation: spectral-corners var(--duration-dramatic, 600ms) var(--ease-decel, ease-out) forwards;
 }
@@ -68,12 +66,12 @@
     }
     40% {
         opacity: 0.5;
-        border-color: var(--amethyst, #8b5cf6);
+        border-color: var(--gold, #d4af37);
     }
     100% {
         transform: scale(1.06);
         opacity: 0;
-        border-color: var(--amethyst, #8b5cf6);
+        border-color: var(--gold, #d4af37);
     }
 }
 

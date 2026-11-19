@@ -34,7 +34,7 @@
     font-size: 2rem;
     color: var(--neon-cyan);
     font-weight: 700;
-    text-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+    text-shadow: none;
     line-height: 1.2;
     overflow: hidden;
     text-overflow: ellipsis;
