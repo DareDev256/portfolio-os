@@ -75,7 +75,7 @@ export default {
 
     // /passion proxy (no CSP on these, same as the vercel.json negative lookahead)
     if (p === '/passion' || p.startsWith('/passion/')) {
-      const upstream = new URL('https://passion-dashboard.vercel.app' + p + url.search);
+      const upstream = new URL('https://passion-dashboard.mini-outage-watch.workers.dev' + p + url.search);
       let up;
       try { up = await fetch(new Request(upstream, request)); } catch { up = null; }
       if (up && (up.status < 400 || up.status === 404)) return up;
