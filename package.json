@@ -13,7 +13,8 @@
     "audit:links": "node tools/link-audit.mjs",
     "audit:links:net": "node tools/link-audit.mjs --external",
     "figures": "node tools/build-figures.mjs",
-    "activity": "node tools/build-activity.mjs"
+    "activity": "node tools/build-activity.mjs",
+    "deploy": "bash scripts/cf-deploy.sh"
   },
   "keywords": [],
   "author": "",
