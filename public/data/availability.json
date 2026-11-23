@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T21:01:24.642Z",
+  "generatedAt": "2026-11-23T12:00:35.960Z",
   "timeZone": "America/Toronto",
   "window": "15:00-17:00",
   "slotMinutes": 30,
@@ -12,16 +12,6 @@
   },
   "method": "Offered slots sit after the day's last delivery deadline. Flat-rate work, so the schedule is mine to sequence; the deadline is what is fixed.",
   "days": [
-    {
-      "date": "2026-11-23",
-      "weekday": "Mon",
-      "carsDue": 0,
-      "lastDeadline": null,
-      "confidence": "measured",
-      "slots": [
-        "16:30"
-      ]
-    },
     {
       "date": "2026-11-24",
       "weekday": "Tue",
@@ -153,6 +143,16 @@
     {
       "date": "2026-12-11",
       "weekday": "Fri",
+      "carsDue": 0,
+      "lastDeadline": null,
+      "confidence": "unbooked-so-far",
+      "slots": [
+        "16:30"
+      ]
+    },
+    {
+      "date": "2026-12-14",
+      "weekday": "Mon",
       "carsDue": 0,
       "lastDeadline": null,
       "confidence": "unbooked-so-far",
