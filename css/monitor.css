@@ -73,7 +73,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .top-in { max-width: 1320px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); height: 44px; display: flex; align-items: center; gap: 14px; }
 .who { white-space: nowrap; font: 700 15px/1 var(--display); font-stretch: 75%; letter-spacing: 0.08em; color: var(--white); text-decoration: none; }
 .status { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; font: 600 10px/1 var(--mono); color: var(--muted); letter-spacing: 0.06em; display: flex; align-items: center; gap: 6px; }
-.status::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: #3ddc84; }
 @media (max-width: 720px) { .wide { display: none; } }
 
 .tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--ground); border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, 1fr); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }

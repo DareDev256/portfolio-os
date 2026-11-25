@@ -3,7 +3,7 @@
 ---
 
 title: Passion OS Changelog
-version: 4.79.3
+version: 4.79.4
 last_updated: 2026-11-25
 
 ---
@@ -11,6 +11,10 @@ last_updated: 2026-11-25
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.79.4 — 2026-11-25 · Open-to-roles dot out
+
+- Copy: section headings are labels; no indicator lights or staccato slogans (James 2026-11-24). The still green dot beside OPEN TO ROLES in the monitor header is removed; the words stay.
 
 ## 4.79.3 — 2026-11-25 · Copy tells out
 
