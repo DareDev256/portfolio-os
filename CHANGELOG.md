@@ -3,14 +3,18 @@
 ---
 
 title: Passion OS Changelog
-version: 4.79.2
-last_updated: 2026-11-19
+version: 4.79.3
+last_updated: 2026-11-25
 
 ---
 
 <!-- AI Context: Complete development history organized by phases.
      Related files: All js/*.js, css/*.css
      See: DOCUMENTATION.md for usage, FEATURE_VERIFICATION.md for testing -->
+
+## 4.79.3 — 2026-11-25 · Copy tells out
+
+- Copy: section headings are labels; no indicator lights or staccato slogans (James 2026-11-24). Three fragment stacks folded into sentences and the decorative dot on the BetMetrics work card removed; the Passion status dots stay (they encode live state with the word beside them).
 
 ## 4.79.2 — 2026-11-19 · Dead portfolio window and canvas glows out
 

@@ -2588,7 +2588,7 @@ export const Desktop = {
 
             <div class="services-cta" style="opacity:1;transform:none;">
                 <div class="services-cta-text">Ready to build something?</div>
-                <p style="font-size:11px;color:rgba(255,255,255,0.4);margin:6px 0 14px;">Custom builds for any industry. No templates. You own everything.</p>
+                <p style="font-size:11px;color:rgba(255,255,255,0.4);margin:6px 0 14px;">Custom builds for any industry, with no templates, and you own everything.</p>
                 <a href="mailto:dev@jamesdare.com?subject=Service%20Inquiry%20from%20jamesdare.com" class="cyber-button services-cta-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
                     <span>GET IN TOUCH</span>
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
