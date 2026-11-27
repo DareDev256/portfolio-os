@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T12:00:36.998Z",
+  "generatedAt": "2026-11-27T01:00:47.659Z",
   "timeZone": "America/Toronto",
   "window": "15:00-17:00",
   "slotMinutes": 30,
@@ -35,7 +35,7 @@
       "weekday": "Tue",
       "carsDue": 0,
       "lastDeadline": null,
-      "confidence": "unbooked-so-far",
+      "confidence": "measured",
       "slots": [
         "16:30"
       ]
